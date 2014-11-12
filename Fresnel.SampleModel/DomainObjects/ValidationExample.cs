@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
-using Envivo.Sample.Model.BasicTypes;
-using Envivo.DomainTypes;
+using Envivo.Fresnel.SampleModel.BasicTypes;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
-namespace Envivo.Sample.Model.Objects
+namespace Envivo.Fresnel.SampleModel.Objects
 {
     public class ValidationExample : IValidatable
     {
@@ -58,13 +59,13 @@ namespace Envivo.Sample.Model.Objects
 
                 var temp = new string[_Errors.Count];
                 _Errors.Values.CopyTo(temp, 0);
-                return "The following problems we identified:" + 
-                        Environment.NewLine + 
-                        string.Join(Environment.NewLine, temp);
+                return "The following problems we identified:" +
+                Environment.NewLine +
+                string.Join(Environment.NewLine, temp);
             }
         }
 
-        string System.ComponentModel.IDataErrorInfo.this[string columnName]
+        string System.ComponentModel.IDataErrorInfo.this [string columnName]
         {
             get
             {

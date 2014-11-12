@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.DomainTypes;
-using Envivo.TrueView.Domain.Attributes;
+using System.Text;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
 using System.Diagnostics;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
-namespace Envivo.Sample.Model.Objects
+namespace Envivo.Fresnel.SampleModel.Objects
 {
     /// <summary>
     /// A Product has a many-to-many relationship with Category.
@@ -60,7 +62,7 @@ namespace Envivo.Sample.Model.Objects
         /// The Categories that this Product belongs to
         /// </summary>
         [CollectionProperty(CanModifyContents = false, 
-                            Relationship = ManyRelationship.HasMany)]
+            Relationship = ManyRelationship.HasMany)]
         public IList<Category> Categories { get; private set; }
 
         /// <summary>

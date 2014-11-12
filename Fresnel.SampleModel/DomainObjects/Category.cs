@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.DomainTypes;using Envivo.TrueView.Domain;
-using Envivo.TrueView.Domain.Attributes;
+using System.Text;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
 using System.Diagnostics;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
-namespace Envivo.Sample.Model.Objects
+namespace Envivo.Fresnel.SampleModel.Objects
 {
     /// <summary>
     /// A Category has a many-to-many relationship with Product.
     /// When a Product is added to a Category, a bi-directional relationship should be automatically setup.
     /// </summary>
-    public class Category : AggregateRootBase
+    public class Category : BaseAggregateRoot
     {
         public Category()
         {
@@ -50,14 +52,11 @@ namespace Envivo.Sample.Model.Objects
             e.Item.Categories.Remove(this);
         }
 
-        public IAudit Audit { get; protected set; }
+        // Not sure why this property is declared here, as it hides the one in the base class:
+        //        public IAudit Audit { get; protected set; }
 
-        private Money _Money;
-        public Money Money
-        {
-            get { return _Money; }
-            set { _Money = value; }
-        }
+
+        public Money Money { get; set; }
 
 
         /// <summary>

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.DomainTypes;
-using Envivo.TrueView.Domain.Attributes;
+using System.Text;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
 
-namespace Envivo.Sample.Model
+namespace Envivo.Fresnel.SampleModel.Miscellaneous
 {
     /// <summary>
     /// A set of Exception handling
@@ -72,8 +73,6 @@ namespace Envivo.Sample.Model
         public string ThrowAnException()
         {
             throw new ApplicationException("This is a forced exception");
-
-            return System.Reflection.MethodBase.GetCurrentMethod().Name;
         }
     }
 }

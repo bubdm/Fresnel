@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{77810A26-5586-42C5-B05A-4C06DB029FD2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Fresnel.SampleModel</RootNamespace>
+    <RootNamespace>Envivo.Fresnel.SampleModel</RootNamespace>
     <AssemblyName>Fresnel.SampleModel</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -29,16 +29,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Miscellaneous\ExceptionTests.cs" />
     <Compile Include="BasicTypes\BooleanValues.cs" />
     <Compile Include="BasicTypes\DateValues.cs" />
     <Compile Include="BasicTypes\EnumValues.cs" />
     <Compile Include="BasicTypes\EnumValuesFilterSpecification.cs" />
-    <Compile Include="BasicTypes\FilePathValues.cs" />
     <Compile Include="BasicTypes\NullableValues.cs" />
     <Compile Include="BasicTypes\NumberValues.cs" />
     <Compile Include="BasicTypes\StructValues.cs" />
@@ -66,5 +67,18 @@
     <Folder Include="BasicTypes\" />
     <Folder Include="DomainObjects\" />
     <Folder Include="Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fresnel.DomainTypes\Fresnel.DomainTypes.csproj">
+      <Project>{BEEC9A50-F328-43D1-AAF1-F818AA56653E}</Project>
+      <Name>Fresnel.DomainTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Core\Fresnel.Core.csproj">
+      <Project>{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}</Project>
+      <Name>Fresnel.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BasicTypes\FilePathValues.cs.broken" />
   </ItemGroup>
 </Project>

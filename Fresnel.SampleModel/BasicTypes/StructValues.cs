@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.DomainTypes;
-using Envivo.TrueView.Domain.Attributes;
-using System.Drawing;
+using System.Text;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
+using System.Windows;
+using System.Windows.Media;
 
-namespace Envivo.Sample.Model.BasicTypes
+namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
     /// <summary>
     /// A set of Struct properties
@@ -17,15 +19,15 @@ namespace Envivo.Sample.Model.BasicTypes
         {
             this.ArrayOfNumbers = new int[] { 1, 2, 3, 5, 7, 11, 13 };
 
-            this.ArrayOfColours = new Color[] { Color.Red, Color.Yellow, Color.Pink, Color.Green, Color.Purple, Color.Orange, Color.Blue };
+            this.ArrayOfColours = new Color[] { Colors.Red, Colors.Yellow, Colors.Pink, Colors.Green, Colors.Purple, Colors.Orange, Colors.Blue };
         }
 
         public Guid ID { get; internal set; }
 
-        /// <summary>
-        /// This property will not be visible, because it isn't a Value type
-        /// </summary>
-        public Font Font { get; set; }
+        //        /// <summary>
+        //        /// This property will not be visible, because it isn't a Value type
+        //        /// </summary>
+        //        public Font Font { get; set; }
 
         /// <summary>
         /// This will show a PropertyGrid with X/Y values.
@@ -33,21 +35,21 @@ namespace Envivo.Sample.Model.BasicTypes
         /// </summary>
         public Point Point { get; set; }
 
-        private Rectangle _Rectangle;
-
-        /// <summary>
-        /// This will show a PropertyGrid with X/Y values.
-        /// The Point value will change too, to show that associated properties are updated
-        /// </summary>
-        public Rectangle Rectangle
-        {
-            get { return _Rectangle; }
-            set
-            {
-                _Rectangle = value;
-                this.Point = new Point(this.Point.X + 1, this.Point.Y + 1);
-            }
-        }
+        //        private Rectangle _Rectangle;
+        //
+        //        /// <summary>
+        //        /// This will show a PropertyGrid with X/Y values.
+        //        /// The Point value will change too, to show that associated properties are updated
+        //        /// </summary>
+        //        public Rectangle Rectangle
+        //        {
+        //            get { return _Rectangle; }
+        //            set
+        //            {
+        //                _Rectangle = value;
+        //                this.Point = new Point(this.Point.X + 1, this.Point.Y + 1);
+        //            }
+        //        }
 
         /// <summary>
         /// This will show a PropertyGrid with a colour selector

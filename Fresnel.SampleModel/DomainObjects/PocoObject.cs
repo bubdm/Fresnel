@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
-using Envivo.Sample.Model.BasicTypes;
-using Envivo.DomainTypes;using Envivo.TrueView.Domain.Attributes;
+using Envivo.Fresnel.SampleModel.BasicTypes;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
+using System.Windows;
 
-namespace Envivo.Sample.Model.Objects
+namespace Envivo.Fresnel.SampleModel.Objects
 {
     /// <summary>
     /// This class is not inherited, and doesn't use custom attributes.
@@ -16,7 +18,7 @@ namespace Envivo.Sample.Model.Objects
 
         private ICollection<PocoObject> _ChildObjects = new Collection<PocoObject>();
         private DateTime _NormalDate = DateTime.UtcNow;
-        
+
         public override bool Equals(object obj)
         {
             if (object.ReferenceEquals(this, obj))
@@ -33,7 +35,7 @@ namespace Envivo.Sample.Model.Objects
         {
             return this.ID.GetHashCode();
         }
-        
+
         public virtual Guid ID { get; set; }
 
         public virtual long Version { get; set; }
@@ -88,7 +90,7 @@ namespace Envivo.Sample.Model.Objects
         /// This will show a PropertyGrid with X/Y values.
         /// The background colour should change when the control gets focus
         /// </summary>
-        public virtual System.Drawing.Point Point { get; set; }
+        public virtual Point Point { get; set; }
 
         public virtual ICollection<PocoObject>ChildObjects
         {

@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.DomainTypes;
-using Envivo.TrueView.Domain.Attributes;
-using Envivo.TrueView.UI;using System.Diagnostics;
+using System.Text;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
+using System.Diagnostics;
 using System.Reflection;
-using Envivo.Sample.Model.Objects;
+using Envivo.Fresnel.SampleModel.Objects;
 
-namespace Envivo.Sample.Model
+namespace Envivo.Fresnel.SampleModel
 {
     /// <summary>
     /// A set of static methods.
@@ -18,7 +19,8 @@ namespace Envivo.Sample.Model
     {
 
         private StaticMethodTests()
-        { }
+        {
+        }
 
         public Guid ID { get; internal set; }
 

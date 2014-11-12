@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
-using Envivo.Sample.Model.BasicTypes;
-using Envivo.DomainTypes;using Envivo.TrueView.Domain.Attributes;
+using Envivo.Fresnel.SampleModel.BasicTypes;
+using Envivo.Fresnel.DomainTypes;using Envivo.Fresnel.Core.Configuration;
 
-namespace Envivo.Sample.Model.Objects
+namespace Envivo.Fresnel.SampleModel.Objects
 {
     public class NonInterceptablePropertyObjects
     {

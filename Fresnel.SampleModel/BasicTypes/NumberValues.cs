@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.DomainTypes;
-using Envivo.TrueView.Domain.Attributes;
+using System.Text;using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
 
-namespace Envivo.Sample.Model.BasicTypes
+namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
     /// <summary>
     /// A set of Number properties

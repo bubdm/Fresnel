@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.DomainTypes;
-using Envivo.TrueView.Domain.Attributes;
+using System.Text;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
 
-namespace Envivo.Sample.Model.BasicTypes
+namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
     /// <summary>
     /// A set of Boolean properties
     /// </summary>
     public class BooleanValues
     {
-
-        private bool _BoolValue = false;
 
         public Guid ID { get; internal set; }
 
@@ -26,7 +25,6 @@ namespace Envivo.Sample.Model.BasicTypes
         /// </summary>
         [Boolean(TrueValue = "Clockwise", FalseValue = "Anti-clockwise")]
         public bool Orientation { get; set; }
-
 
         /// <summary>
         /// This is a read-only Boolean

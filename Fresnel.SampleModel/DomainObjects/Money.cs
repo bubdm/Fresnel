@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.DomainTypes;
-using Envivo.TrueView.Domain.Attributes;
+using System.Text;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
 
-namespace Envivo.Sample.Model.Objects
+namespace Envivo.Fresnel.SampleModel.Objects
 {
-    public class Money : ValueObjectBase
+    public class Money : BaseValueObject
     {
 
         public string Name { get; set; }
@@ -27,8 +28,12 @@ namespace Envivo.Sample.Model.Objects
                 return false;
 
             return string.Equals(this.Name, money.Name) &&
-                   string.Equals(this.Description, money.Description);
+            string.Equals(this.Description, money.Description);
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

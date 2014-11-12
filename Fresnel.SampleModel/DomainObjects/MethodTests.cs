@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.DomainTypes;
-using Envivo.TrueView.Domain.Attributes;
-using Envivo.TrueView.UI;using System.Diagnostics;
+using System.Text;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
+using System.Diagnostics;
 using System.Reflection;
-using Envivo.Sample.Model.Objects;
-using Envivo.TrueView.Domain;
+using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
-namespace Envivo.Sample.Model
+namespace Envivo.Fresnel.SampleModel
 {
     /// <summary>
     /// A set of methods
@@ -132,7 +133,7 @@ namespace Envivo.Sample.Model
         /// <returns></returns>
         public string MethodThatSupportsCancellation()
         {
-            var progressArgs = new ProgressArgs();
+            var progressArgs = new ProgressEventArgs();
             progressArgs.IsCancellationAllowed = true;
 
             for (var i = 1; i < 100; i++)
@@ -149,7 +150,6 @@ namespace Envivo.Sample.Model
                     if (progressArgs.IsCancellationPending)
                     {
                         return string.Concat("Operation was cancelled after ", i, " steps");
-                        break;
                     }
                 }
             }

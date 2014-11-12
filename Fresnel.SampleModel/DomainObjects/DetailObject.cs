@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
-using Envivo.DomainTypes;
-using Envivo.TrueView.Domain.Attributes;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
 using System.Diagnostics;
 
-namespace Envivo.Sample.Model.Objects
+namespace Envivo.Fresnel.SampleModel.Objects
 {
     /// <summary>
     /// 

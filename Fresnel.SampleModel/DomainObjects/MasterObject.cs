@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.DomainTypes;
-using Envivo.TrueView.Domain.Attributes;
+using System.Text;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Core.Configuration;
 using System.Diagnostics;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
-namespace Envivo.Sample.Model.Objects
+namespace Envivo.Fresnel.SampleModel.Objects
 {
     //[Permissions(User = "Vij", AllowedOperations = Allow.Read)]
     //[Permissions(Role = "User", AllowedOperations = Allow.Read)]
@@ -17,10 +19,10 @@ namespace Envivo.Sample.Model.Objects
         public MasterObject()
         {
             var children = new Collection<DetailObject>();
-            children.Adding +=new NotifyCollectionChangesEventHandler<DetailObject>(children_Adding);
-            children.Added +=new NotifyCollectionChangesEventHandler<DetailObject>(children_Added);
-            children.Removing +=new NotifyCollectionChangesEventHandler<DetailObject>(children_Removing);
-            children.Removed +=new NotifyCollectionChangesEventHandler<DetailObject>(children_Removed);
+            children.Adding += new NotifyCollectionChangesEventHandler<DetailObject>(children_Adding);
+            children.Added += new NotifyCollectionChangesEventHandler<DetailObject>(children_Added);
+            children.Removing += new NotifyCollectionChangesEventHandler<DetailObject>(children_Removing);
+            children.Removed += new NotifyCollectionChangesEventHandler<DetailObject>(children_Removed);
 
             this.Children = children;
         }
