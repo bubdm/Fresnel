@@ -235,7 +235,7 @@ namespace Envivo.Fresnel.Utils
         /// Collections will return the inner item Type, otherwise it will return the orignal type
         /// </summary>
         /// <remarks></remarks>
-        internal static Type DetermineInnerType(this Type originalType)
+        public static Type DetermineInnerType(this Type originalType)
         {
             var result = typeof(object);
 
