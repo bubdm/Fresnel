@@ -7,7 +7,7 @@ using Fresnel.DomainTypes.Interfaces;
 
 namespace Fresnel.DomainTypes
 {
-    public class ProgressArgs : EventArgs, IProgressArgs
+    public class ProgressEventArgs : EventArgs, IProgressArgs
     {
 
         /// <summary>

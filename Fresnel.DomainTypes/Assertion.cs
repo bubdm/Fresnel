@@ -34,7 +34,7 @@ namespace Fresnel.DomainTypes
         public static Assertion Fail(string failureReason)
         {
             if (string.IsNullOrEmpty(failureReason))
-                throw new ArgumentNullException("reason");
+                throw new ArgumentNullException("failureReason");
 
             return new Assertion()
             {

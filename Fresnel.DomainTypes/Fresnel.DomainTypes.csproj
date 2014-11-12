@@ -37,7 +37,6 @@
     <Compile Include="Audit.cs" />
     <Compile Include="Collection.cs" />
     <Compile Include="CollectionChangeEventArgs.cs" />
-    <Compile Include="ProgressArgs.cs" />
     <Compile Include="Interfaces\IAggregateLock.cs" />
     <Compile Include="Interfaces\IAggregateRoot.cs" />
     <Compile Include="Interfaces\IApplicationService.cs" />
@@ -67,6 +66,7 @@
     <Compile Include="BaseEntity.cs" />
     <Compile Include="BaseValueObject.cs" />
     <Compile Include="BaseDomainObject.cs" />
+    <Compile Include="z:\VS Projects\Fresnel\Fresnel.DomainTypes\ProgressEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

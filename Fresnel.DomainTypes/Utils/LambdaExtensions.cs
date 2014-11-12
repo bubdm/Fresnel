@@ -26,7 +26,7 @@ namespace Fresnel.DomainTypes.Utils
                 return methodExpression.Method.Name;
             }
 
-            throw new ArgumentOutOfRangeException("Unable to determine member/method name for given expression");
+            throw new ArgumentOutOfRangeException("expression", "Unable to determine member/method name for given expression");
         }
 
     }

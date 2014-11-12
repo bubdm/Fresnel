@@ -14,7 +14,7 @@ namespace Fresnel.DomainTypes.Interfaces
         /// Returns a set of results
         /// </summary>
         /// <returns></returns>
-        IEnumerable<TResult> GetResults(object requester);
+        IEnumerable<TResult> GetResults();
 
     }
 }
