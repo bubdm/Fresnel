@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
 
-namespace Envivo.TrueView.Utils
+namespace Envivo.Fresnel.Utils
 {
 
     /// <summary>

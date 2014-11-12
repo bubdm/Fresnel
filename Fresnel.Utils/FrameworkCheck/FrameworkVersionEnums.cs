@@ -1,8 +1,5 @@
 
-// TODO: Change copyright
-
-
-namespace Envivo.TrueView.Utils
+namespace Envivo.Fresnel.Utils
 {
 
     /// <summary>
