@@ -27,6 +27,7 @@ packages
 *.log
 *.swp
 *.user
+*.userprefs
 _compareTemp
 _notes
 aspnet_client
