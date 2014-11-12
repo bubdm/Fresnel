@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System;
 
-namespace Fresnel.DomainTypes.Interfaces
+namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
     /// <summary>
     /// Used to load/save Aggregates of the given type to a Persistence Store.

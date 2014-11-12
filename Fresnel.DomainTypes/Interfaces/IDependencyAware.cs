@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Fresnel.DomainTypes.Interfaces
+namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
     /// <summary>
     /// Used by objects that depend on other services hosted by an IoC container

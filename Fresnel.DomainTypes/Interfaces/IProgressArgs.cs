@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Reflection;
 
-namespace Fresnel.DomainTypes.Interfaces
+namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
 
     public interface IProgressArgs

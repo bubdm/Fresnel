@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System;
 
-namespace Fresnel.DomainTypes.Interfaces
+namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
     /// <summary>
     /// Captures the state of an Entity (or Entities) at a point in time.

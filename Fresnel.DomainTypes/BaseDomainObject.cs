@@ -4,9 +4,9 @@ using System.Text;
 using System.ComponentModel;
 using System.Linq;
 using System;
-using Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
-namespace Fresnel.DomainTypes
+namespace Envivo.Fresnel.DomainTypes
 {
     /// <summary>
     /// Any object within a Domain that ha unique identity.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System;
 
-namespace Fresnel.DomainTypes.Interfaces
+namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
     /// <summary>
     /// Any object within a Domain that has unique identity.

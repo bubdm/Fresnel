@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
 using System;
-using Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
-namespace Fresnel.DomainTypes
+namespace Envivo.Fresnel.DomainTypes
 {
     /// <summary>
     /// A collection of Domain Objects

@@ -4,7 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System;
 
-namespace Fresnel.DomainTypes.Utils
+namespace Envivo.Fresnel.DomainTypes.Utils
 {
 
     /// <summary>

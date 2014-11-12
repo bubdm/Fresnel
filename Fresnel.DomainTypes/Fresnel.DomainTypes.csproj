@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BEEC9A50-F328-43D1-AAF1-F818AA56653E}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Fresnel.DomainTypes</RootNamespace>
+    <RootNamespace>Envivo.Fresnel.DomainTypes</RootNamespace>
     <AssemblyName>Fresnel.DomainTypes</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>

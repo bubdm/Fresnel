@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Fresnel.DomainTypes.Utils
+namespace Envivo.Fresnel.DomainTypes.Utils
 {
 
     public static class LambdaExtensions

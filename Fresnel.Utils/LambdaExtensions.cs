@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Envivo.DomainTypes.Utils
+namespace Envivo.Fresnel.Utils
 {
 
     public static class LambdaExtensions
@@ -26,7 +26,7 @@ namespace Envivo.DomainTypes.Utils
                 return methodExpression.Method.Name;
             }
 
-            throw new ArgumentOutOfRangeException("Unable to determine member/method name for given expression");
+            throw new ArgumentOutOfRangeException("expression", "Unable to determine member/method name for given expression");
         }
 
     }

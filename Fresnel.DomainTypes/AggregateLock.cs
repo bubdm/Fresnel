@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System;
-using Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
-namespace Fresnel.DomainTypes
+namespace Envivo.Fresnel.DomainTypes
 {
     /// <summary>
     /// Used to apply a pessimistic lock to an Aggregate Root

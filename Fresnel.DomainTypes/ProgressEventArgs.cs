@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
 using System;
-using Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
-namespace Fresnel.DomainTypes
+namespace Envivo.Fresnel.DomainTypes
 {
     public class ProgressEventArgs : EventArgs, IProgressArgs
     {

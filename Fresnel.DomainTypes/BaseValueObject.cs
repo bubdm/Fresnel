@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System;
-using Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
-namespace Fresnel.DomainTypes
+namespace Envivo.Fresnel.DomainTypes
 {
     /// <summary>
     /// A object within a Domain that is described by it's characteristics, not identity.

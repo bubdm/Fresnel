@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System;
-using Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
-namespace Fresnel.DomainTypes
+namespace Envivo.Fresnel.DomainTypes
 {
     /// <summary>
     /// An object within a Domain that has unique identity.

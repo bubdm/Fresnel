@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Fresnel.DomainTypes.Interfaces
+namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
 
     public delegate void NotifyCollectionChangesEventHandler<T>(object sender,ICollectionChangeEventArgs<T> e)
