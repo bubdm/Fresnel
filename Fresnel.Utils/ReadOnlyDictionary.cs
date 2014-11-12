@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.Utils
     /// <typeparam name="TValue"></typeparam>
     public class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
-        private IDictionary<TKey, TValue> _Items;
+        private readonly IDictionary<TKey, TValue> _Items;
 
         public ReadOnlyDictionary()
         {
@@ -22,24 +22,6 @@ namespace Envivo.Fresnel.Utils
         public ReadOnlyDictionary(IDictionary<TKey, TValue> dictionary)
         {
             _Items = dictionary;
-        }
-
-        [Obsolete("This should not be accessed")]
-        public void AddItem(TKey key, TValue value)
-        {
-            _Items.Add(key, value);
-        }
-
-        [Obsolete("This should not be accessed")]
-        public void RemoveItem(TKey key)
-        {
-            _Items.Remove(key);
-        }
-
-        [Obsolete("This should not be accessed")]
-        public void ClearItems()
-        {
-            _Items.Clear();
         }
 
         #region IDictionary<TKey,TValue> Members

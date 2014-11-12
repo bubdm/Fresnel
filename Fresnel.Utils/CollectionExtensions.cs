@@ -218,19 +218,19 @@ namespace Envivo.Fresnel.Utils
                 collection.Clear();
             }
         }
-
-        /// <summary>
-        /// Null safe version of ReadOnlyDictionary.ClearItems()
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="list"></param>
-        public static void ClearSafely<TKey, TValue>(this ReadOnlyDictionary<TKey, TValue> dictionary)
-        {
-            if (dictionary != null)
-            {
-                dictionary.ClearItems();
-            }
-        }
+        //
+        //        /// <summary>
+        //        /// Null safe version of ReadOnlyDictionary.ClearItems()
+        //        /// </summary>
+        //        /// <typeparam name="T"></typeparam>
+        //        /// <param name="list"></param>
+        //        public static void ClearSafely<TKey, TValue>(this ReadOnlyDictionary<TKey, TValue> dictionary)
+        //        {
+        //            if (dictionary != null)
+        //            {
+        //                dictionary.ClearItems();
+        //            }
+        //        }
 
     }
 }
