@@ -50,6 +50,6 @@ Global
 		{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Fresnel.Core\Fresnel.Core.csproj
+		StartupItem = Fresnel.Tests\Fresnel.Tests.csproj
 	EndGlobalSection
 EndGlobal

@@ -34,10 +34,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test.cs" />
+    <Compile Include="Domain\CollectionTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domain\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fresnel.SampleModel\Fresnel.SampleModel.csproj">
+      <Project>{77810A26-5586-42C5-B05A-4C06DB029FD2}</Project>
+      <Name>Fresnel.SampleModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Core\Fresnel.Core.csproj">
+      <Project>{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}</Project>
+      <Name>Fresnel.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.DomainTypes\Fresnel.DomainTypes.csproj">
+      <Project>{BEEC9A50-F328-43D1-AAF1-F818AA56653E}</Project>
+      <Name>Fresnel.DomainTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Utils\Fresnel.Utils.csproj">
+      <Project>{3BA54D1E-0D73-4C83-A3C7-5FD199E0F468}</Project>
+      <Name>Fresnel.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
