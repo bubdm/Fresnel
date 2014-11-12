@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.Core", "Fresnel.Core\Fresnel.Core.csproj", "{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.SampleModel", "Fresnel.SampleModel\Fresnel.SampleModel.csproj", "{77810A26-5586-42C5-B05A-4C06DB029FD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.DomainTypes", "Fresnel.DomainTypes\Fresnel.DomainTypes.csproj", "{BEEC9A50-F328-43D1-AAF1-F818AA56653E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.Tests", "Fresnel.Tests\Fresnel.Tests.csproj", "{90CDC6C5-0808-4556-BE22-DD6602197425}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.Utils", "Fresnel.Utils\Fresnel.Utils.csproj", "{3BA54D1E-0D73-4C83-A3C7-5FD199E0F468}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Default|Any CPU = Default|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3BA54D1E-0D73-4C83-A3C7-5FD199E0F468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BA54D1E-0D73-4C83-A3C7-5FD199E0F468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BA54D1E-0D73-4C83-A3C7-5FD199E0F468}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BA54D1E-0D73-4C83-A3C7-5FD199E0F468}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{3BA54D1E-0D73-4C83-A3C7-5FD199E0F468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BA54D1E-0D73-4C83-A3C7-5FD199E0F468}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77810A26-5586-42C5-B05A-4C06DB029FD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77810A26-5586-42C5-B05A-4C06DB029FD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77810A26-5586-42C5-B05A-4C06DB029FD2}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{77810A26-5586-42C5-B05A-4C06DB029FD2}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{77810A26-5586-42C5-B05A-4C06DB029FD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77810A26-5586-42C5-B05A-4C06DB029FD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90CDC6C5-0808-4556-BE22-DD6602197425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90CDC6C5-0808-4556-BE22-DD6602197425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90CDC6C5-0808-4556-BE22-DD6602197425}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{90CDC6C5-0808-4556-BE22-DD6602197425}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{90CDC6C5-0808-4556-BE22-DD6602197425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90CDC6C5-0808-4556-BE22-DD6602197425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEEC9A50-F328-43D1-AAF1-F818AA56653E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEEC9A50-F328-43D1-AAF1-F818AA56653E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEEC9A50-F328-43D1-AAF1-F818AA56653E}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEEC9A50-F328-43D1-AAF1-F818AA56653E}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{BEEC9A50-F328-43D1-AAF1-F818AA56653E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEEC9A50-F328-43D1-AAF1-F818AA56653E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Fresnel.Core\Fresnel.Core.csproj
+	EndGlobalSection
+EndGlobal

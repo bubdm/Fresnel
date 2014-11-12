@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Text;using Envivo.DomainTypes;
+using Envivo.TrueView.Domain.Attributes;
+
+namespace Envivo.Sample.Model.BasicTypes
+{
+    /// <summary>
+    /// A set of Number properties
+    /// </summary>
+    public class NumberValues
+    {
+
+        public NumberValues()
+        {
+            this.DoubleNumber = double.NaN;
+        }
+
+        private int _IntValue = 0;
+
+        public Guid ID { get; internal set; }
+
+        /// <summary>
+        /// This is a normal Number
+        /// </summary>
+        public int NormalNumber
+        {
+            get { return _IntValue; }
+            set { _IntValue = value; }
+        }
+
+        /// <summary>
+        /// This is a Number with a public Getter, but a hidden Setter.
+        /// </summary>
+        public int ReadOnlyNumber
+        {
+            get { return _IntValue; }
+            internal set { _IntValue = value; }
+        }
+
+        /// <summary>
+        /// This is a Number with a hidden Getter, but a public Setter.
+        /// This should not be visible in the UI.
+        /// </summary>
+        public int WriteOnlyNumber
+        {
+            internal get { return _IntValue; }
+            set { _IntValue = value; }
+        }
+
+        /// <summary>
+        /// This is a public Number, but should be hidden in the UI.
+        /// </summary>
+        [Number(IsVisible = false)]
+        public int HiddenNumber
+        {
+            get { return _IntValue; }
+            set { _IntValue = value; }
+        }
+
+        /// <summary>
+        /// This is a Number with a range of -234 to +234.
+        /// Values beyond the ranges should not be allowed from the UI.
+        /// </summary>
+        [Number(MinValue = -234, MaxValue = 234)]
+        public int NumberWithRange
+        {
+            get { return _IntValue; }
+            set { _IntValue = value; }
+        }
+
+        /// <summary>
+        /// This is a Float number
+        /// </summary>
+        public float FloatNumber { get; set; }
+
+        /// <summary>
+        /// This is a Double that is shown using CurrentCulture.NumberFormat.CurrencyDecimalDigits
+        /// </summary>
+        [Number(IsCurrency = true)]
+        public double DoubleNumber { get; set; }
+
+
+        /// <summary>
+        /// This is a Float number shown to 5 decimal places
+        /// </summary>
+        [Number(DecimalPlaces = 5)]
+        public float FloatNumberWithPlaces { get; set; }
+
+        /// <summary>
+        /// This is a normal Decimal Number
+        /// </summary>
+        public decimal DecimalNumber { get; set; }
+
+        /// <summary>
+        /// This is a number property with a custom title
+        /// </summary>
+        [Property(Name = "This name has been made up")]
+        internal int CustomNumber
+        {
+            get { return _IntValue; }
+            set { _IntValue = value; }
+        }
+
+    }
+}

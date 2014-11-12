@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{77810A26-5586-42C5-B05A-4C06DB029FD2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Fresnel.SampleModel</RootNamespace>
+    <AssemblyName>Fresnel.SampleModel</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MyClass.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Miscellaneous\ExceptionTests.cs" />
+    <Compile Include="BasicTypes\BooleanValues.cs" />
+    <Compile Include="BasicTypes\DateValues.cs" />
+    <Compile Include="BasicTypes\EnumValues.cs" />
+    <Compile Include="BasicTypes\EnumValuesFilterSpecification.cs" />
+    <Compile Include="BasicTypes\FilePathValues.cs" />
+    <Compile Include="BasicTypes\NullableValues.cs" />
+    <Compile Include="BasicTypes\NumberValues.cs" />
+    <Compile Include="BasicTypes\StructValues.cs" />
+    <Compile Include="BasicTypes\TextValues.cs" />
+    <Compile Include="DomainObjects\BiDirectionalExample.cs" />
+    <Compile Include="DomainObjects\Category.cs" />
+    <Compile Include="DomainObjects\DetailObject.cs" />
+    <Compile Include="DomainObjects\MasterObject.cs" />
+    <Compile Include="DomainObjects\MethodTests.cs" />
+    <Compile Include="DomainObjects\Money.cs" />
+    <Compile Include="DomainObjects\NonInterceptablePropertyObjects.cs" />
+    <Compile Include="DomainObjects\PocoObject.cs" />
+    <Compile Include="DomainObjects\Product.cs" />
+    <Compile Include="DomainObjects\SecuredObject.cs" />
+    <Compile Include="DomainObjects\StaticMethodTests.cs" />
+    <Compile Include="DomainObjects\SubProductA.cs" />
+    <Compile Include="DomainObjects\SubProductB.cs" />
+    <Compile Include="DomainObjects\UnsupportedTypes.cs" />
+    <Compile Include="DomainObjects\ValidationExample.cs" />
+    <Compile Include="Interfaces\IDummy.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Miscellaneous\" />
+    <Folder Include="BasicTypes\" />
+    <Folder Include="DomainObjects\" />
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+</Project>
