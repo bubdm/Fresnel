@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.DomainTypes
                                                      IDisposable
     {
 
-        private Guid _ID = Utils.GuidFactory.NewSequentialGuid();
+        private Guid _ID = Guid.NewGuid();
         private long _Version = -1;
         private IAudit _Audit = new Audit();
 

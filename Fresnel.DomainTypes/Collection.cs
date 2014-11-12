@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.DomainTypes
         where T : class
     {
 
-        private Guid _ID = Utils.GuidFactory.NewSequentialGuid();
+        private Guid _ID = Guid.NewGuid();
         private List<T> _Items = new List<T>();
         private IList<T> _InnerList = new List<T>();
 

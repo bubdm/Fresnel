@@ -59,8 +59,6 @@
     <Compile Include="Interfaces\ISpecification.cs" />
     <Compile Include="Interfaces\IValidatable.cs" />
     <Compile Include="Interfaces\IValueObject.cs" />
-    <Compile Include="Utils\GuidFactory.cs" />
-    <Compile Include="Utils\LambdaExtensions.cs" />
     <Compile Include="BaseAggregateRoot.cs" />
     <Compile Include="BaseDomainEvent.cs" />
     <Compile Include="BaseEntity.cs" />
@@ -71,6 +69,5 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Interfaces\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
 </Project>
