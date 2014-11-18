@@ -11,11 +11,10 @@ namespace Envivo.Fresnel.Introspection.Assemblies
     /// <summary>
     /// A collection of AssemblyReader objects. Each entry is keyed by an Assembly object
     /// </summary>
-    
+
     public class AssemblyReaderMap : Dictionary<Assembly, AssemblyReader>
     {
         private AssemblyReaderBuilder _AssemblyReaderBuilder;
-        private readonly List<AssemblyReader> _AssemblyReaders;
 
         public AssemblyReaderMap
         (
@@ -23,20 +22,25 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         )
         {
             _AssemblyReaderBuilder = assemblyReaderBuilder;
-            _AssemblyReaders = new List<AssemblyReader>();
         }
 
-        public AssemblyReader this[Type key]
+        public new AssemblyReader this[Assembly assembly]
         {
-            get {
-                var assembly = key.Assembly;
+            get
+            {
                 var result = this.TryGetValueOrNull(assembly);
                 if (result == null)
                 {
                     result = _AssemblyReaderBuilder.BuildFor(assembly);
                 }
-                
-                return this[key.Assembly]; }
+
+                return result;
+            }
+        }
+
+        public AssemblyReader this[Type key]
+        {
+            get { return this[key.Assembly]; }
         }
 
         public AssemblyReader this[IClassTemplate template]
@@ -44,46 +48,29 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             get { return this[template.RealObjectType.Assembly]; }
         }
 
-        public AssemblyReader this[string assemblyName]
-        {
-            get
-            {
-                foreach (var reader in _AssemblyReaders)
-                {
-                    if (reader.Assembly.FullName == assemblyName)
-                    {
-                        return reader;
-                    }
-                }
-                return null;
-            }
-        }
+        //public AssemblyReader this[string assemblyName]
+        //{
+        //    get
+        //    {
+        //        var match = this.Values.SingleOrDefault(ar => ar.Assembly.GetName() == assemblyName);
+        //        return match;
+        //    }
+        //}
 
-        public AssemblyReader this[int index]
-        {
-            get { return _AssemblyReaders[index]; }
-        }
-
-        public bool Contains(AssemblyName assemblyName)
-        {
-            foreach (var reader in _AssemblyReaders)
-            {
-                if (reader.Assembly.GetName() == assemblyName)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        //public bool Contains(AssemblyName assemblyName)
+        //{
+        //    var match = this.Values.SingleOrDefault(ar => ar.Assembly.GetName() == assemblyName);
+        //    return match != null;
+        //}
 
         /// <summary>
         /// Returns all AssemblyReaders that contain Domain Assemblies
         /// </summary>
-        
+
         public IEnumerable<AssemblyReader> GetDomainAssemblies()
         {
             // Sort so that the Assemblies with more Domain Classes are higher in the list:
-            var matches = _AssemblyReaders.Where(p => p.IsFrameworkAssembly == false &&
+            var matches = this.Values.Where(p => p.IsFrameworkAssembly == false &&
                                                       p.ContainsDomainClasses)
                                              .OrderByDescending(p => p.TemplateCount);
             return matches;
@@ -91,7 +78,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         public void Dispose()
         {
-            foreach (var reader in _AssemblyReaders)
+            foreach (var reader in this.Values)
             {
                 reader.Dispose();
             }

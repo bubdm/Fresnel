@@ -39,7 +39,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             _AbstractClassTemplateBuilder = abstractClassTemplateBuilder;
         }
 
-
         /// <summary>
         /// The Assembly associated with this reader
         /// </summary>

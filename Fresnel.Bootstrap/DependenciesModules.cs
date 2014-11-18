@@ -11,8 +11,13 @@ namespace Envivo.Fresnel.Bootstrap
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterTypes(this.GetSingleInstanceTypes()).SingleInstance();
-            builder.RegisterTypes(this.GetPerDependencyInstanceTypes()).InstancePerDependency();
+            builder.RegisterTypes(this.GetSingleInstanceTypes())
+                    .SingleInstance()
+                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+
+            builder.RegisterTypes(this.GetPerDependencyInstanceTypes())
+                    .InstancePerDependency()
+                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
         }
 
         private Type[] GetSingleInstanceTypes()
@@ -29,16 +34,15 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Introspection.Assemblies.IsFrameworkAssemblySpecification),
 
                 typeof(Fresnel.Introspection.Templates.AbstractClassTemplateBuilder),
+                typeof(Fresnel.Introspection.Templates.BackingFieldIdentifier),
                 typeof(Fresnel.Introspection.Templates.ClassHierarchyBuilder),
                 typeof(Fresnel.Introspection.Templates.ClassTemplateBuilder),
-                typeof(Fresnel.Introspection.Templates.DynamicMethodBuilder),
-                typeof(Fresnel.Introspection.Templates.EnumItemTemplateMapBuilder),
-                typeof(Fresnel.Introspection.Templates.AbstractClassTemplateBuilder),
-                typeof(Fresnel.Introspection.Templates.BackingFieldIdentifier),
                 typeof(Fresnel.Introspection.Templates.ClassHierarchyDepthComparer),
                 typeof(Fresnel.Introspection.Templates.ClassTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.CollectionTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.CollectionTypeIdentifier),
+                typeof(Fresnel.Introspection.Templates.DynamicMethodBuilder),
+                typeof(Fresnel.Introspection.Templates.EnumItemTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.EnumItemTemplateMapBuilder),
                 typeof(Fresnel.Introspection.Templates.EnumTemplateBulider),
                 typeof(Fresnel.Introspection.Templates.EnumTemplateMapBuilder),

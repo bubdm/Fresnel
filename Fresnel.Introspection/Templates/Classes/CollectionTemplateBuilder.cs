@@ -25,6 +25,8 @@ namespace Envivo.Fresnel.Introspection.Templates
             _CollectionTypeIdentifier = collectionTypeIdentifier;
         }
 
+        public TemplateCache TemplateCache { get; set; }
+
         public ClassTemplate BuildFor(Type objectType, AttributesMap collectionAttributes)
         {
             var result = _CollectionTemplateFactory();
@@ -34,6 +36,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.FriendlyName = result.RealObjectType.Name.CreateFriendlyName();
             result.FullName = result.RealObjectType.FullName;
             result.ElementType = _CollectionTypeIdentifier.DetermineItemType(result.RealObjectType);
+            result.InnerClass = (ClassTemplate)this.TemplateCache.GetTemplate(result.RealObjectType);
             result.Attributes = collectionAttributes;
 
             result.FinaliseConstruction();

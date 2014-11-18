@@ -11,6 +11,10 @@ using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel;
 using Envivo.Fresnel.Bootstrap;
 using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.Assemblies;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Tests.Domain
 {
@@ -36,6 +40,27 @@ namespace Envivo.Fresnel.Tests.Domain
             // Assert:
             Assert.IsNotNull(template);
         }
+
+        [Test()]
+        public void ShouldGetClassTemplateFromCache()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var typeToInspect = typeof(SampleModel.BasicTypes.TextValues);
+
+            var assemblyReaderMap = container.Resolve<AssemblyReaderMap>();
+            var assemblyReader = assemblyReaderMap[typeToInspect];
+
+            var templateCache = container.Resolve<TemplateCache>();
+
+            // Act:
+            var template = templateCache.GetTemplate(typeToInspect);
+
+            // Assert:
+            Assert.IsNotNull(template);
+        }
+
 
         [Test()]
         public void ShouldCreatePropertyTemplates()

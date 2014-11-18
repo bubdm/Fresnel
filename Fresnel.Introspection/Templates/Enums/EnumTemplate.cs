@@ -16,7 +16,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         private Lazy<EnumItemTemplateMap> _EnumItemTemplateMap;
 
-        private EnumTemplate
+        public EnumTemplate
         (
             EnumItemTemplateMapBuilder enumItemTemplateMapBuilder
         )
