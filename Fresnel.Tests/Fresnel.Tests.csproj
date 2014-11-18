@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\ClassTemplateTests.cs" />
+    <Compile Include="Domain\MethodTests.cs" />
     <Compile Include="Domain\PropertyTests.cs" />
     <Compile Include="Domain\CollectionTests.cs" />
   </ItemGroup>
