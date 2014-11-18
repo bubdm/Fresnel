@@ -14,7 +14,7 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// Returns TRUE if this specification is met by the given Domain Object
         /// </summary>
         /// <param name="obj"></param>
-        /// <returns></returns>
+        
         IAssertion IsSatisfiedBy(T obj);
 
     }

@@ -1,0 +1,207 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using Envivo.Fresnel.Introspection.Configuration;
+using System.Diagnostics;
+
+namespace Envivo.Fresnel.Introspection.Templates
+{
+
+    public class MemberTemplatesBuilder
+    {
+
+        public void CreateMembersFor(ClassTemplate tClass)
+        {
+            var classConfig = tClass.Configuration.ObjectInstanceConfiguration;
+
+            if (classConfig.MemberDisplayOrder.Length == 0)
+            {
+                this.CreateMembersInDefaultOrder(tClass);
+            }
+            else
+            {
+                this.CreateMembersInCustomOrder(tClass, classConfig.MemberDisplayOrder);
+            }
+
+            this.CreateStaticMethods();
+        }
+
+        private void CreateMembersInDefaultOrder(ClassTemplate tClass)
+        {
+            var propertyMap = new Dictionary<Type, PropertyInfoMap>();
+            var methodMap = new Dictionary<Type, MethodInfoMap>();
+
+            IEnumerable<Type> hierarchy = null;
+            if (tClass.RealObjectType.IsInterface)
+            {
+                hierarchy = this.GetInterfaceHierarchy();
+            }
+            else
+            {
+                hierarchy = this.GetClassHierarchy();
+            }
+
+            // First we need to create a 'map' to determine which members are associated with which class:
+            foreach (var objectType in hierarchy)
+            {
+                propertyMap.Add(objectType, new PropertyInfoMap());
+                methodMap.Add(objectType, new MethodInfoMap());
+            }
+
+            var properties = new PropertyInfoMap(tClass.RealObjectType);
+            foreach (var prop in properties.Values)
+            {
+                propertyMap[prop.DeclaringType].Add(prop);
+            }
+
+            var methods = new MethodInfoMap(tClass.RealObjectType);
+            foreach (var method in methods.Values)
+            {
+                methodMap[method.DeclaringType].Add(method);
+            }
+
+            // Now that the members are sorted, we can create the MemberTemplates:
+            foreach (var objectType in hierarchy)
+            {
+                this.CreatePropertyTemplates(propertyMap[objectType]);
+                this.CreateMethodTemplates(methodMap[objectType]);
+            }
+        }
+
+        private void CreateMembersInCustomOrder(ClassTemplate tClass, string[] displayOrder)
+        {
+            var unsortedProperties = new PropertyInfoMap(tClass.RealObjectType);
+            var sortedProperties = new PropertyInfoMap();
+
+            var unsortedMethods = new MethodInfoMap(tClass.RealObjectType);
+            var sortedMethods = new MethodInfoMap();
+
+            foreach (var name in displayOrder)
+            {
+                var memberName = name.Trim();
+                PropertyInfo prop = null;
+                MethodInfo method = null;
+
+                if (unsortedProperties.TryGetValue(memberName, out prop))
+                {
+                    sortedProperties.Add(prop);
+                    unsortedProperties.RemoveItem(memberName);
+                }
+                else if (unsortedMethods.TryGetValue(memberName, out method))
+                {
+                    sortedMethods.Add(method);
+                    unsortedMethods.RemoveItem(method.Name);
+                }
+                else
+                {
+                    Trace.TraceWarning("The member [{0}.{1}]' was not found", tClass.Name, memberName);
+                }
+            }
+
+            // There may be members that were not shown in the display order.
+            // We need to make sure that they are still visible:
+            foreach (var remainingProperty in unsortedProperties.Values)
+            {
+                sortedProperties.Add(remainingProperty);
+            }
+            foreach (var remainingMethod in unsortedMethods.Values)
+            {
+                sortedMethods.Add(remainingMethod);
+            }
+
+            // Now we can create the templates:
+            CreatePropertyTemplates(sortedProperties);
+            CreateMethodTemplates(sortedMethods);
+        }
+
+        private void CreatePropertyTemplates(PropertyInfoMap properties)
+        {
+            foreach (var prop in properties.Values)
+            {
+                if (prop.GetGetMethod(false) == null)
+                    // Ignore properties that cannot be accessed:
+                    continue;
+
+                var attributes = new AttributesMap(prop, tClass.Configuration);
+                var tProp = new PropertyTemplate(tClass, prop, attributes);
+                tClass.Properties.Add(tProp);
+            }
+        }
+
+        private void CreateMethodTemplates(MethodInfoMap methods)
+        {
+            foreach (var method in methods.Values)
+            {
+                var attributes = new AttributesMap(method, tClass.Configuration);
+                var tMethod = new MethodTemplate(tClass, method, attributes);
+                tClass.Methods.Add(tMethod);
+            }
+        }
+
+        private void CreateStaticMethods()
+        {
+            var staticMethods = new MethodInfoMap(tClass.RealObjectType);
+
+            foreach (var method in staticMethods.Values)
+            {
+                var attributes = new AttributesMap(method, tClass.Configuration);
+                tClass.StaticMethods.Add(new MethodTemplate(tClass, method, attributes));
+            }
+        }
+
+        internal Dictionary<string, PropertyTemplateMap> CreatePropertyCategories()
+        {
+            var unsortedCategoryMap = new Dictionary<string, PropertyTemplateMap>();
+            var sortedCategoryMap = new Dictionary<string, PropertyTemplateMap>();
+
+            // First identify and categorise:
+            foreach (var tProperty in tClass.Properties.Values)
+            {
+                var category = tProperty.Attributes.Get<PropertyAttribute>().Category;
+
+                var tProperties = unsortedCategoryMap.TryGetValueOrNull(category);
+                if (tProperties == null)
+                {
+                    tProperties = new PropertyTemplateMap();
+                    unsortedCategoryMap.Add(category, tProperties);
+                }
+
+                tProperties.Add(tProperty);
+            }
+
+            // Now sort the categories:
+            var categoryDisplayOrder = tClass.Attributes.Get<ObjectInstanceAttribute>().CategoryDisplayOrder;
+            if (categoryDisplayOrder.Length > 0)
+            {
+                foreach (var item in categoryDisplayOrder)
+                {
+                    var categoryName = item.Trim();
+
+                    var existingCategory = unsortedCategoryMap.TryGetValueOrNull(categoryName);
+                    if (existingCategory != null)
+                    {
+                        sortedCategoryMap.Add(categoryName, existingCategory);
+                        unsortedCategoryMap.Remove(categoryName);
+                    }
+                }
+
+                // We mustn't discard any Categories that weren't explicitly defined in the display order:
+                foreach (var item in unsortedCategoryMap)
+                {
+                    sortedCategoryMap.Add(item.Key, item.Value);
+                }
+            }
+
+            return (sortedCategoryMap.Count > 0) ? sortedCategoryMap :
+                                                   unsortedCategoryMap;
+        }
+
+        public void Dispose()
+        {
+            tClass = null;
+        }
+
+    }
+
+}

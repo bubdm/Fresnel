@@ -1,6 +1,5 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
@@ -24,5 +23,36 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// </summary>
         string FailureReason { get; }
 
+        /// <summary>
+        /// Returns the underlying exception
+        /// </summary>
+        Exception FailureException { get; }
+
+        /// <summary>
+        /// Throws an exception created from the underlying failure
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        void Throw<T>() where T : Exception;
+
+        /// <summary>
+        /// Returns TRUE if a warning was raised
+        /// </summary>
+        bool HasWarning { get; }
+
+        /// <summary>
+        /// Returns the warning message (if any)
+        /// </summary>
+        string WarningReason { get; }
+
+        IEnumerable<IAssertion> ToEnumerable();
+    }
+
+    public interface IAssertion<T> : IAssertion
+    {
+        /// <summary>
+        /// The value that would be returned naturally by the method
+        /// </summary>
+        T ReturnValue { get; set; }
     }
 }

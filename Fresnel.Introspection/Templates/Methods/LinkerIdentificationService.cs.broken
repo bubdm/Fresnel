@@ -1,0 +1,216 @@
+using System.Linq;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Envivo.Fresnel.Utils;
+
+namespace Envivo.Fresnel.Introspection.Templates
+{
+
+    public class LinkerIdentificationService
+    {
+        // Is this functionality deprecated?
+        private LinkMethodResolver _LinkMethodResolver;
+        private UnlinkMethodResolver _UnlinkMethodResolver;
+
+        public LinkerIdentificationService(
+            LinkMethodResolver linkMethodResolver,
+            UnlinkMethodResolver unlinkMethodResolver
+        )
+        {
+            _LinkMethodResolver = linkMethodResolver;
+            _UnlinkMethodResolver = unlinkMethodResolver;
+        }
+
+        /// <summary>
+        /// Returns all methods that are used for Linking objects together
+        /// </summary>
+        /// <param name="tClass"></param>
+        /// <returns></returns>
+        public IEnumerable<MethodTemplate> GetLinkMethods(ClassTemplate tClass)
+        {
+            var tMethods = tClass.Methods.Values.ToArray();
+
+            var matches = new List<MethodTemplate>();
+
+            foreach (var tMethod in tMethods)
+            {
+                var resolveOperation = _LinkMethodResolver.ResolveFor(tMethod);
+                if (resolveOperation.Failed)
+                    continue;
+
+                var propertyName = resolveOperation.ReturnValue;
+                if (propertyName.IsEmpty())
+                    continue;
+
+                var tProp = tClass.Properties.TryGetValueOrNull(propertyName);
+
+                // If the method contains the Property name, see if we can identify it:
+                if (tProp == null)
+                {
+                    // Try to identify a Property that has the same type as the Method param:
+                    var paramType = tMethod.Parameters.First().Value.ParameterType;
+                    var candidateMatches = new List<PropertyTemplate>();
+                    foreach (var tObjectProp in tClass.Properties.ForObjects)
+                    {
+                        if (tObjectProp.IsCollection &&
+                            tObjectProp.InnerClass.RealObjectType.IsDerivedFrom(paramType))
+                        {
+                            candidateMatches.Add(tObjectProp);
+                        }
+                        else if (tObjectProp.PropertyType.IsDerivedFrom(paramType))
+                        {
+                            candidateMatches.Add(tObjectProp);
+                        }
+                    }
+
+                    if (candidateMatches.Count == 1)
+                    {
+                        tProp = candidateMatches[0];
+                    }
+                    else
+                    {
+                        Trace.TraceError(string.Concat("Unable to determine the Property to use with [", tMethod.FullName, "]"));
+                    }
+                }
+
+                matches.Add(tMethod);
+            }
+
+            return matches;
+        }
+
+        /// <summary>
+        /// Returns all methods that are used for unlinking objects
+        /// </summary>
+        /// <param name="tClass"></param>
+        /// <returns></returns>
+        public IEnumerable<MethodTemplate> GetUnlinkMethods(ClassTemplate tClass)
+        {
+            var tMethods = tClass.Methods.Values.ToArray();
+
+            var matches = new List<MethodTemplate>();
+
+            foreach (var tMethod in tMethods)
+            {
+                var resolveOperation = _UnlinkMethodResolver.ResolveFor(tMethod);
+                if (resolveOperation.Failed)
+                    continue;
+
+                PropertyTemplate tProp = null;
+                var propertyName = resolveOperation.ReturnValue;
+
+                // If the method contains the Property name, see if we can identify it:
+                if (propertyName.IsNotEmpty())
+                {
+                    tProp = tClass.Properties.TryGetValueOrNull(propertyName);
+                }
+
+                if (tProp == null)
+                {
+                    // Try to identify a Property that has the same type as the Method param:
+                    var paramType = tMethod.Parameters.First().Value.ParameterType;
+                    var candidateMatches = new List<PropertyTemplate>();
+                    foreach (var tObjectProp in tClass.Properties.ForObjects)
+                    {
+                        if (tObjectProp.IsCollection &&
+                            tObjectProp.InnerClass.RealObjectType.IsDerivedFrom(paramType))
+                        {
+                            candidateMatches.Add(tObjectProp);
+                        }
+                        else if (tObjectProp.PropertyType.IsDerivedFrom(paramType))
+                        {
+                            candidateMatches.Add(tObjectProp);
+                        }
+                    }
+
+                    if (candidateMatches.Count == 1)
+                    {
+                        tProp = candidateMatches[0];
+                    }
+                    else
+                    {
+                        Trace.TraceError(string.Concat("Unable to determine the Property to use with [", tMethod.FullName, "]"));
+                    }
+                }
+
+                matches.Add(tMethod);
+            }
+
+            return matches;
+        }
+
+
+        internal void IdentifyLinkerMethodsFor(ClassTemplate tClass)
+        {
+            var tMethods = new MethodTemplate[tClass.Methods.Count];
+            tClass.Methods.Values.CopyTo(tMethods, 0);
+
+            foreach (var tMethod in tMethods)
+            {
+                PropertyTemplate tProp = null;
+                string propertyName;
+                var isLinkMethod = false;
+                var isUnlinkMethod = false;
+
+                if (_LinkMethodResolver.IsSatisfiedBy(tMethod, out propertyName).Passed)
+                {
+                    isLinkMethod = true;
+                }
+                else if (_UnlinkMethodResolver.ResolveFor(tMethod, out propertyName).Passed)
+                {
+                    isUnlinkMethod = true;
+                }
+                else
+                {
+                    continue;
+                }
+
+                //-----
+
+                // If the method contains the Property name, see if we can identify it:
+                if (propertyName.IsNotEmpty())
+                {
+                    tProp = tClass.Properties.TryGetValueOrNull(propertyName);
+                }
+
+                var paramType = tMethod.Parameters.First().Value.ParameterType;
+                if (tProp == null)
+                {
+                    // Try to identify a Property that has the same type as the Method param:
+                    var candidateMatches = new List<PropertyTemplate>();
+                    foreach (var tObjectProp in tClass.Properties.ForObjects)
+                    {
+                        if (tObjectProp.IsCollection &&
+                            tObjectProp.InnerClass.RealObjectType.IsDerivedFrom(paramType))
+                        {
+                            candidateMatches.Add(tObjectProp);
+                        }
+                        else if (tObjectProp.PropertyType.IsDerivedFrom(paramType))
+                        {
+                            candidateMatches.Add(tObjectProp);
+                        }
+                    }
+
+                    if (candidateMatches.Count == 1)
+                    {
+                        tProp = candidateMatches[0];
+                    }
+                    else
+                    {
+                        Trace.TraceError(string.Concat("Unable to determine the Property to use with [", tMethod.FullName, "]"));
+                    }
+                }
+
+                // Prevent the method from appearing as a regular 'Action' method:
+                var targetCollection = isLinkMethod ? tClass.Methods.ForLinking :
+                                       isUnlinkMethod ? tClass.Methods.ForUnlinking :
+                                       null;
+                targetCollection.Add(tMethod);
+                tMethod.IsVisible = false;
+            }
+
+        }
+
+    }
+
+}

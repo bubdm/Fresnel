@@ -18,7 +18,7 @@ namespace Envivo.Fresnel.Utils
         /// <summary>
         /// Generates a Sequential Guid using Rpcrt4.DLL. The resulting GUID performs very well with SQL Server.
         /// </summary>
-        /// <returns></returns>
+        
         /// <remarks>
         /// UuidCreateSequential isn't directly compatible with SQL Server 2005's NewSequentialID()
         /// See http://codebetter.com/blogs/scott.bellware/archive/2006/12/27/156671.aspx

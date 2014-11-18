@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// <summary>
         /// Returns a set of results
         /// </summary>
-        /// <returns></returns>
+        
         IEnumerable<TResult> GetResults();
 
     }

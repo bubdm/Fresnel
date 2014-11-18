@@ -81,7 +81,7 @@ namespace Envivo.Fresnel.DomainTypes
         /// <param name="propertyName"></param>
         /// <example>this.Set(ref _Name, value, "Name");
         /// </example>
-        /// <returns></returns>
+        
         virtual protected bool Set<T>(ref T backingField, T newValue, string propertyName)
         {
             if (EqualityComparer<T>.Default.Equals(backingField, newValue))

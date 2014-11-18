@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Core.Configuration;
+using Envivo.Fresnel.Introspection.Configuration;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -76,7 +76,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         }
 
         /// <summary>
-        /// This is a multi-line Text. Use CTRL-ENTER to add new lines.
+        /// This is a multi-line Text. Use CTRL-ENTER to method new lines.
         /// </summary>
         [Text(IsMultiLine = true)]
         public virtual string MultiLineText
@@ -86,7 +86,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         }
 
         /// <summary>
-        /// This is a Rich Text Text. Use CTRL-ENTER to add new lines.
+        /// This is a Rich Text Text. Use CTRL-ENTER to method new lines.
         /// </summary>
         [Text(IsRichText = true)]
         public virtual string RichTextText

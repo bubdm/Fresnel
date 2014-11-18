@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
-        /// <returns></returns>
+        
         TAggregateRoot Load(Guid id);
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// Saves the given list of Domain Objects within a transaction. Changes made to other objects within the Aggregate will now be persisted.
         /// </summary>
         /// <param name="objects"></param>
-        /// <returns></returns>
+        
         void Save(params IDomainObject[] domainObjects);
 
         /// <summary>

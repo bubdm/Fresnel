@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -28,12 +28,16 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\ClassTemplateTests.cs" />
     <Compile Include="Domain\CollectionTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -41,16 +45,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Domain\" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fresnel.Bootstrap\Fresnel.Bootstrap.csproj">
+      <Project>{5d50ab72-1e6a-4930-8a70-4dd940ecbeb0}</Project>
+      <Name>Fresnel.Bootstrap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fresnel.SampleModel\Fresnel.SampleModel.csproj">
       <Project>{77810A26-5586-42C5-B05A-4C06DB029FD2}</Project>
       <Name>Fresnel.SampleModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fresnel.Core\Fresnel.Core.csproj">
-      <Project>{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}</Project>
-      <Name>Fresnel.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fresnel.DomainTypes\Fresnel.DomainTypes.csproj">
       <Project>{BEEC9A50-F328-43D1-AAF1-F818AA56653E}</Project>

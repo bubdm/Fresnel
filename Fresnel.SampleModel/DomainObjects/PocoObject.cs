@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Text;
 using Envivo.Fresnel.SampleModel.BasicTypes;
 using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Core.Configuration;
+using Envivo.Fresnel.Introspection.Configuration;
 using System.Windows;
 
 namespace Envivo.Fresnel.SampleModel.Objects
@@ -99,7 +99,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         }
 
         /// <summary>
-        /// This wil add some objects to the "Child Objects" property.
+        /// This wil method some objects to the "Child Objects" property.
         /// Actions can only be invoked if there are no unsaved objects on the Workbench.
         /// </summary>
         public virtual void AddSomeChildObjects()

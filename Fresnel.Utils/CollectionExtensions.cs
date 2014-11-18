@@ -61,7 +61,7 @@ namespace Envivo.Fresnel.Utils
         ///// </summary>
         ///// <typeparam name="T"></typeparam>
         ///// <param name="items"></param>
-        ///// <returns></returns>
+        //
         //internal static int Count<T>(this IEnumerable<T> items)
         //{
         //    if (items == null)
@@ -98,7 +98,7 @@ namespace Envivo.Fresnel.Utils
         ///// <typeparam name="T"></typeparam>
         ///// <param name="items"></param>
         ///// <param name="item"></param>
-        ///// <returns></returns>
+        //
         //internal static bool Contains<T>(this IEnumerable<T> items, T item)
         //{
         //    if (items == null)
@@ -144,7 +144,7 @@ namespace Envivo.Fresnel.Utils
         /// <typeparam name="TValue"></typeparam>
         /// <param name="items"></param>
         /// <param name="key"></param>
-        /// <returns></returns>
+        
         public static bool Contains<TKey, TValue>(this IDictionary<TKey, TValue> items, TKey key)
         {
             TValue dummy;
@@ -158,7 +158,7 @@ namespace Envivo.Fresnel.Utils
         /// <typeparam name="TValue"></typeparam>
         /// <param name="items"></param>
         /// <param name="key"></param>
-        /// <returns></returns>
+        
         public static bool DoesNotContain<TKey, TValue>(this IDictionary<TKey, TValue> items, TKey key)
         {
             return Contains(items, key) == false;

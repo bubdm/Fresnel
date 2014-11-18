@@ -7,7 +7,7 @@ using NUnit.Framework;
 using System;
 using Envivo.Fresnel.SampleModel.Objects;
 
-namespace Fresnel.Tests.Domain
+namespace Envivo.Fresnel.Tests.Domain
 {
     [TestFixture()]
     public class CollectionTests

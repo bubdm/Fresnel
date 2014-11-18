@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Utils
@@ -10,11 +11,11 @@ namespace Envivo.Fresnel.Utils
     public static class TypeExtensions
     {
 
-        static readonly private Type IEnumerableType = typeof(IEnumerable);
+        private static readonly Type IEnumerableType = typeof(IEnumerable);
 
-        static readonly internal Type IGenericDictionary = typeof(IDictionary<,>);
-        static readonly internal Type IGenericCollection = typeof(ICollection<>);
-        static readonly internal Type IGenericEnumerable = typeof(IEnumerable<>);
+        internal static readonly Type IGenericDictionary = typeof(IDictionary<,>);
+        internal static readonly  Type IGenericCollection = typeof(ICollection<>);
+        internal static readonly Type IGenericEnumerable = typeof(IEnumerable<>);
 
         static readonly private ICollection<Type> NonReferenceTypes = new List<Type>()
         { 
@@ -31,20 +32,8 @@ namespace Envivo.Fresnel.Utils
             typeof(byte), 
             typeof(Guid)
         };
-
-        public enum TypeKind
-        {
-            Unidentified,
-            Boolean,
-            Integer,
-            Floating,
-            Enumeration,
-            Time,
-            Text,
-            Guid
-        }
-
-        static readonly Dictionary<Type, TypeKind> s_TypeKindMap = CreateTypeKindMap();
+        
+        private static readonly Dictionary<Type, TypeKind> _TypeKindMap = CreateTypeKindMap();
 
         private static Dictionary<Type, TypeKind> CreateTypeKindMap()
         {
@@ -75,8 +64,8 @@ namespace Envivo.Fresnel.Utils
         /// Determines if the given type implements IEnumerable
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
-        public static bool IsEnumerable(this Type type)
+        
+        public static bool IsCollection(this Type type)
         {
             return type.IsDerivedFrom(IEnumerableType);
         }
@@ -85,7 +74,7 @@ namespace Envivo.Fresnel.Utils
         /// Returns TRUE if the Type of the given Class is considered as a non-reference type
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
+        
         /// <remarks>The value is determined if the Object is neither Complex nor a Collection</remarks>
         public static bool IsNonReference(this Type type)
         {
@@ -107,8 +96,8 @@ namespace Envivo.Fresnel.Utils
         /// Returns TRUE if the given valueType is Nullable
         /// </summary>
         /// <param name="valueType"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        
+        
         public static bool IsNullableType(this Type valueType)
         {
             return valueType.IsGenericType && valueType.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
@@ -119,7 +108,7 @@ namespace Envivo.Fresnel.Utils
         /// </summary>
         /// <typeparam name="TSuperType"></typeparam>
         /// <param name="subType"></param>
-        /// <returns></returns>
+        
         public static bool IsDerivedFrom<TSuperType>(this Type subType)
         {
             return IsDerivedFrom(subType, typeof(TSuperType));
@@ -130,8 +119,8 @@ namespace Envivo.Fresnel.Utils
         /// </summary>
         /// <param name="subType"></param>
         /// <param name="superType"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        
+        
         public static bool IsDerivedFrom(this Type subType, Type superType)
         {
             if (subType.IsPrimitive)
@@ -182,7 +171,7 @@ namespace Envivo.Fresnel.Utils
         /// Returns all of the Classes and Interfaces that this Type inherits from
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
+        
         public static IEnumerable<Type> GetSuperClasses(this Type type)
         {
             var results = new List<Type>();
@@ -205,7 +194,7 @@ namespace Envivo.Fresnel.Utils
             return results;
         }
 
-        private static Type GetInterfaceGenericTypeFrom(Type inspectedType, Type expectedInterface)
+        public static Type GetInterfaceGenericType(Type inspectedType, Type expectedInterface)
         {
             var interfaces = inspectedType.GetInterfaces();
             for (int i = 0; i < interfaces.Length; i++)
@@ -234,7 +223,7 @@ namespace Envivo.Fresnel.Utils
         /// <summary>
         /// Collections will return the inner item Type, otherwise it will return the orignal type
         /// </summary>
-        /// <remarks></remarks>
+        
         public static Type DetermineInnerType(this Type originalType)
         {
             var result = typeof(object);
@@ -269,7 +258,8 @@ namespace Envivo.Fresnel.Utils
             }
             catch (Exception ex)
             {
-                // Ignore any exceptions
+                // What to do??
+                Debug.WriteLine(ex);
             }
 
             return result;
@@ -277,15 +267,56 @@ namespace Envivo.Fresnel.Utils
 
         public static TypeKind GetTypeKind(this Type nonReferenceType)
         {
-            var type = nonReferenceType.IsNullableType() ? nonReferenceType.GetGenericArguments()[0] :
-                                                           nonReferenceType;
+            var type = nonReferenceType.IsNullableType() ? 
+                       nonReferenceType.GetGenericArguments()[0] :
+                       nonReferenceType;
 
             if (type.IsEnum)
                 return TypeKind.Enumeration;
 
-            var result = TypeKind.Unidentified;
-            s_TypeKindMap.TryGetValue(type, out result);
+            var result = _TypeKindMap.TryGetValueOrDefault(type, TypeKind.Unidentified);
             return result;
+        }
+
+        /// <summary>
+        /// Returns a list of classes up the hierarchy chain.  The Root class is at the beginning of the list.
+        /// </summary>
+        
+        
+        public static IEnumerable<Type> GetClassHierarchy(this Type originalType)
+        {
+            var hierarchy = new List<Type>();
+
+            var type = originalType;
+            while (type != null)
+            {
+                hierarchy.Insert(0, type);
+                type = type.BaseType;
+            }
+
+            return hierarchy;
+        }
+
+        public static IEnumerable<Type> GetInterfaceHierarchy(this Type originalInterfaceType)
+        {
+            var hierarchy = new List<Type>();
+            GetInterfaceHierarchy(originalInterfaceType, ref hierarchy);
+            return hierarchy;
+        }
+
+        public static void GetInterfaceHierarchy(Type interfaceType, ref List<Type> hierarchy)
+        {
+            hierarchy.Insert(0, interfaceType);
+
+            var interfaces = interfaceType.GetInterfaces();
+            for (int i = 0; i < interfaces.Length; i++)
+            {
+                var inheritedInterface = interfaces[i];
+                //if (!inheritedInterface.IsTrackable())
+                //    continue;
+
+                GetInterfaceHierarchy(inheritedInterface, ref hierarchy);
+            }
         }
 
     }

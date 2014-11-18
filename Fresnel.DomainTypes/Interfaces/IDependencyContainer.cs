@@ -69,7 +69,7 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// Returns the Domain Service implementation matching the given type
         /// </summary>
         /// <typeparam name="T">The type of the required Service</typeparam>
-        /// <returns></returns>
+        
         T GetDomainService<T>()
             where T : IDomainService;
 

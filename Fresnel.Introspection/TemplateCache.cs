@@ -1,0 +1,81 @@
+using Envivo.Fresnel.Introspection.Assemblies;
+using Envivo.Fresnel.Introspection.Templates;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+
+namespace Envivo.Fresnel.Introspection
+{
+
+    /// <summary>
+    /// Creates and returns Class Templates for all known Domain Assemblies
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    public class TemplateCache
+    {
+        private AssemblyReaderMap _AssemblyReaders = null;
+
+        public TemplateCache(AssemblyReaderMap assemblyReaders)
+        {
+            if (assemblyReaders == null)
+                throw new ArgumentNullException("assemblyReaders");
+
+            _AssemblyReaders = assemblyReaders;
+        }
+
+        /// <summary>
+        /// Returns a Template from the cache for the given object Type. A new Template is created if one does not already exist in the cache.
+        /// </summary>
+        /// <param name="realObjectType">The Type of the Object</param>
+        /// <returns>A Template for the given object Type</returns>
+        /// <remarks>
+        /// </remarks>
+        public IClassTemplate GetTemplate(Type objectType)
+        {
+            var assemblyReader = _AssemblyReaders[objectType.Assembly];
+            return assemblyReader.GetTemplate(objectType);
+        }
+
+        public IClassTemplate GetTemplate<T>()
+            where T: class
+        {
+            var objectType = typeof(T);
+            var assemblyReader = _AssemblyReaders[objectType.Assembly];
+            return assemblyReader.GetTemplate(objectType);
+        }
+
+        /// <summary>
+        /// Returns a list of all ClassTemplates for the given Assembly
+        /// </summary>
+        /// <param name="domainAssembly">The name of the assembly to read</param>
+        /// <returns>A generic sorted list of matching Class Templates</returns>
+        
+        public IEnumerable<ClassTemplate> GetAllTemplates(Assembly domainAssembly)
+        {
+            // Delegate the request to the appropriate AssemblyReader:
+            return _AssemblyReaders[domainAssembly].GetTemplates();
+        }
+
+        /// <summary>
+        /// Returns the assembly name for the given class name
+        /// </summary>
+        /// <param name="className"></param>
+        
+        
+        private string ExtractAssemblyName(string className)
+        {
+            var lastPeriodPos = className.LastIndexOf('.');
+            if (lastPeriodPos > 0)
+            {
+                return className.Substring(0, lastPeriodPos);
+            }
+            else
+            {
+                return className;
+            }
+        }
+
+    }
+
+}

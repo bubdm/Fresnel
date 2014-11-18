@@ -1,0 +1,145 @@
+using System;
+using System.Reflection;
+using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Utils;
+
+namespace Envivo.Fresnel.Introspection.Templates
+{
+
+    public class PropertyTemplateBuilder
+    {
+        private RealTypeResolver _RealTypeResolver;
+        private AttributesMapBuilder _AttributesMapBuilder;
+        private Func<PropertyTemplate> _PropertyTemplateFactory;
+        private IsObjectTrackableSpecification _IsObjectTrackableSpecification;
+
+        public PropertyTemplateBuilder
+        (
+            RealTypeResolver realTypeResolver,
+            AttributesMapBuilder attributesMapBuilder,
+            Func<PropertyTemplate> propertyTemplateFactory,
+            IsObjectTrackableSpecification isObjectTrackableSpecification
+        )
+        {
+            _RealTypeResolver = realTypeResolver;
+            _AttributesMapBuilder = attributesMapBuilder;
+            _PropertyTemplateFactory = propertyTemplateFactory;
+            _IsObjectTrackableSpecification = isObjectTrackableSpecification;
+        }
+
+        public PropertyTemplate BuildFor(ClassTemplate tOuterClass, PropertyInfo propertyInfo, IClassConfiguration classConfiguration)
+        {
+            var result = _PropertyTemplateFactory();
+
+            result.OuterClass = tOuterClass;
+            result.PropertyInfo = propertyInfo;
+            result.PropertyType = propertyInfo.PropertyType;
+            result.Name = propertyInfo.Name;
+            result.FriendlyName = result.Name.CreateFriendlyName();
+            result.FullName = string.Concat(propertyInfo.ReflectedType.Namespace, ".",
+                                            propertyInfo.ReflectedType.Name, ".",
+                                            propertyInfo.Name);
+
+            result.Attributes = _AttributesMapBuilder.BuildFor(propertyInfo, classConfiguration);
+
+            this.CheckPropertyType(result);
+
+            var propertyAttr = result.Attributes.Get<PropertyAttribute>();
+
+            var isPrimaryKey = tOuterClass.IdProperty != null &&
+                               tOuterClass.IdProperty.Name == propertyInfo.Name;
+            if (isPrimaryKey)
+            {
+                // Users aren't allowed to change PK values:
+                propertyAttr.CanWrite = false;
+
+                // PK values must be persisted:
+                propertyAttr.CanPersist = true;
+            }
+
+            // If the Property name starts with "Parent", we'll treat it as a parent:
+            if (!propertyAttr.IsConfiguredAtRunTime && result.FriendlyName.StartsWith("Parent "))
+            {
+                var attr = result.Attributes.Get<ObjectPropertyAttribute>();
+                attr.Relationship = SingleRelationship.OwnedBy;
+                result.IsParentRelationship = true;
+            }
+
+            result.FinaliseConstruction();
+
+            return result;
+        }
+
+        private void CheckPropertyType(PropertyTemplate tProp)
+        {
+            var propertyType = tProp.PropertyType;
+
+            var check = _IsObjectTrackableSpecification.IsSatisfiedBy(propertyType);
+            if (check.Failed &&
+                propertyType.IsNonReference())
+            {
+                tProp.IsNonReference = true;
+
+                if (propertyType.IsNullableType() || propertyType.IsDerivedFrom<string>())
+                {
+                    tProp.IsNullableType = true;
+                }
+                return;
+            }
+
+            if (propertyType.IsCollection())
+            {
+                tProp.IsCollection = true;
+                tProp.IsReferenceType = true;
+
+                var attr = tProp.Attributes.Get<CollectionPropertyAttribute>();
+                tProp.CanCreate = attr.CanCreate;
+                tProp.CanAdd = attr.CanAdd;
+                tProp.CanRemove = attr.CanRemove;
+
+                tProp.IsCompositeRelationship = (attr.Relationship == ManyRelationship.OwnsMany);
+                tProp.IsAggregateRelationship = (attr.Relationship == ManyRelationship.HasMany);
+
+                // We don't want modifications to the list to affect the parent:
+                attr.UseOptimisticLock = false;
+
+                //tProp.BackingFieldName = attr.BackingFieldName;
+                return;
+            }
+
+            if (propertyType.IsValueObject())
+            {
+                tProp.IsValueObject = true;
+                tProp.IsReferenceType = true;
+
+                var attr = tProp.Attributes.Get<ObjectPropertyAttribute>();
+                attr.Relationship = SingleRelationship.OwnsA;
+                tProp.IsCompositeRelationship = true;
+            }
+
+            if (propertyType.IsTrackable())
+            {
+                tProp.IsDomainObject = true;
+                tProp.IsReferenceType = true;
+
+                var attr = tProp.Attributes.Get<ObjectPropertyAttribute>();
+                tProp.CanCreate = attr.CanCreate;
+
+                tProp.IsCompositeRelationship = (attr.Relationship == SingleRelationship.OwnsA);
+                tProp.IsAggregateRelationship = (attr.Relationship == SingleRelationship.HasA);
+                tProp.IsParentRelationship = (attr.Relationship == SingleRelationship.OwnedBy);
+            }
+
+            // If the Property name starts with "Parent", we'll treat it as a parent:
+            var propertyAttr = tProp.Attributes.Get<PropertyAttribute>();
+            if (!propertyAttr.IsConfiguredAtRunTime && 
+                tProp.FriendlyName.StartsWith("Parent "))
+            {
+                var attr = tProp.Attributes.Get<ObjectPropertyAttribute>();
+                attr.Relationship = SingleRelationship.OwnedBy;
+                tProp.IsParentRelationship = true;
+            }
+        }
+
+    }
+}

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -62,20 +62,11 @@
     <Compile Include="Interfaces\IDummy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Miscellaneous\" />
-    <Folder Include="BasicTypes\" />
-    <Folder Include="DomainObjects\" />
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Fresnel.DomainTypes\Fresnel.DomainTypes.csproj">
       <Project>{BEEC9A50-F328-43D1-AAF1-F818AA56653E}</Project>
       <Name>Fresnel.DomainTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fresnel.Core\Fresnel.Core.csproj">
-      <Project>{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}</Project>
-      <Name>Fresnel.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

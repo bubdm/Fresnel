@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Utils
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="expression"></param>
-        /// <returns></returns>
+        
         public static string NameOf<T>(Expression<Func<T>> expression)
         {
             var memberExpression = expression.Body as MemberExpression;
