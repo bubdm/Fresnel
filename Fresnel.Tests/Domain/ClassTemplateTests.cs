@@ -118,6 +118,29 @@ namespace Envivo.Fresnel.Tests.Domain
             }
         }
 
+        [Test()]
+        public void ShouldCreateCollectionTemplate()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
+            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+
+            var typeToInspect = typeof(SampleModel.Objects.PocoObject);
+
+            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+
+            // Act:
+            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+            var collectionPropertyTemplate = classTemplate.Properties["ChildObjects"];
+
+            // Assert:
+            var collectionTemplate = (CollectionTemplate)collectionPropertyTemplate.InnerClass;
+            Assert.IsNotNull(collectionTemplate);
+            Assert.IsNotNull(collectionTemplate.InnerClass);
+        }
+
     }
 }
 
