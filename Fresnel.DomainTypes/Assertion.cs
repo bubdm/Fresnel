@@ -1,7 +1,8 @@
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
 using System.Collections.Generic;
 
-namespace Envivo.Fresnel.DomainTypes.Interfaces
+namespace Envivo.Fresnel.DomainTypes
 {
 
     /// <summary>

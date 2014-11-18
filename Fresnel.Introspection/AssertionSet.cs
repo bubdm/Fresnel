@@ -5,6 +5,7 @@ using System.Text;
 using System.Linq;
 using System.Collections.ObjectModel;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.DomainTypes;
 
 namespace Envivo.Fresnel.Introspection
 {
