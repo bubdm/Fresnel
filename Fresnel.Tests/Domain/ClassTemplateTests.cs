@@ -49,9 +49,6 @@ namespace Envivo.Fresnel.Tests.Domain
 
             var typeToInspect = typeof(SampleModel.BasicTypes.TextValues);
 
-            var assemblyReaderMap = container.Resolve<AssemblyReaderMap>();
-            var assemblyReader = assemblyReaderMap[typeToInspect];
-
             var templateCache = container.Resolve<TemplateCache>();
 
             // Act:
@@ -60,7 +57,6 @@ namespace Envivo.Fresnel.Tests.Domain
             // Assert:
             Assert.IsNotNull(template);
         }
-
 
         [Test()]
         public void ShouldCreatePropertyTemplates()
