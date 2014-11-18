@@ -11,21 +11,21 @@ namespace Envivo.Fresnel.Introspection.Templates
     {
         private PropertyInfoMapBuilder _PropertyInfoMapBuilder;
         private AttributesMapBuilder _AttributesMapBuilder;
-        private Func<IClassTemplate, PropertyInfo, AttributesMap, PropertyTemplate> _propertyTemplateFactory;
+        private PropertyTemplateBuilder _PropertyTemplateBuilder;
 
         public PropertyTemplateMapBuilder
         (
             PropertyInfoMapBuilder propertyInfoMapBuilder,
             AttributesMapBuilder attributesMapBuilder,
-            Func<IClassTemplate, PropertyInfo, AttributesMap, PropertyTemplate> propertyTemplateFactory
+            PropertyTemplateBuilder propertyTemplateBuilder
         )
         {
             _PropertyInfoMapBuilder = propertyInfoMapBuilder;
             _AttributesMapBuilder = attributesMapBuilder;
-            _propertyTemplateFactory = propertyTemplateFactory;
+            _PropertyTemplateBuilder = propertyTemplateBuilder;
         }
 
-        public PropertyTemplateMap BuildFor(BaseClassTemplate tClass)
+        public PropertyTemplateMap BuildFor(ClassTemplate tClass)
         {
             var results = new Dictionary<string, PropertyTemplate>();
 
@@ -38,7 +38,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                     continue;
 
                 var propertyAttributes = _AttributesMapBuilder.BuildFor(prop, tClass.Configuration);
-                var tProp = _propertyTemplateFactory(tClass, prop, propertyAttributes);
+                var tProp = _PropertyTemplateBuilder.BuildFor(tClass, prop, propertyAttributes);
                 results.Add(tProp.Name, tProp);
             }
 

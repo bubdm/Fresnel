@@ -52,6 +52,10 @@
       <Project>{5d50ab72-1e6a-4930-8a70-4dd940ecbeb0}</Project>
       <Name>Fresnel.Bootstrap</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Introspection\Fresnel.Introspection.csproj">
+      <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>
+      <Name>Fresnel.Introspection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fresnel.SampleModel\Fresnel.SampleModel.csproj">
       <Project>{77810A26-5586-42C5-B05A-4C06DB029FD2}</Project>
       <Name>Fresnel.SampleModel</Name>

@@ -9,28 +9,26 @@ namespace Envivo.Fresnel.Introspection.Templates
     public class PropertyTemplateBuilder
     {
         private RealTypeResolver _RealTypeResolver;
-        private AttributesMapBuilder _AttributesMapBuilder;
         private Func<PropertyTemplate> _PropertyTemplateFactory;
         private IsObjectTrackableSpecification _IsObjectTrackableSpecification;
 
         public PropertyTemplateBuilder
         (
             RealTypeResolver realTypeResolver,
-            AttributesMapBuilder attributesMapBuilder,
             Func<PropertyTemplate> propertyTemplateFactory,
             IsObjectTrackableSpecification isObjectTrackableSpecification
         )
         {
             _RealTypeResolver = realTypeResolver;
-            _AttributesMapBuilder = attributesMapBuilder;
             _PropertyTemplateFactory = propertyTemplateFactory;
             _IsObjectTrackableSpecification = isObjectTrackableSpecification;
         }
 
-        public PropertyTemplate BuildFor(ClassTemplate tOuterClass, PropertyInfo propertyInfo, IClassConfiguration classConfiguration)
+        public PropertyTemplate BuildFor(ClassTemplate tOuterClass, PropertyInfo propertyInfo, AttributesMap propertyAttributes)
         {
             var result = _PropertyTemplateFactory();
 
+            result.Attributes = propertyAttributes;
             result.OuterClass = tOuterClass;
             result.PropertyInfo = propertyInfo;
             result.PropertyType = propertyInfo.PropertyType;
@@ -39,8 +37,6 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.FullName = string.Concat(propertyInfo.ReflectedType.Namespace, ".",
                                             propertyInfo.ReflectedType.Name, ".",
                                             propertyInfo.Name);
-
-            result.Attributes = _AttributesMapBuilder.BuildFor(propertyInfo, classConfiguration);
 
             this.CheckPropertyType(result);
 

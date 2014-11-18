@@ -11,21 +11,62 @@ namespace Envivo.Fresnel.Bootstrap
     {
         protected override void Load(ContainerBuilder builder)
         {
-            foreach (var type in this.GetSingleInstanceTypes())
-            {
-                builder.RegisterType(type).SingleInstance();
-            }
-
+            builder.RegisterTypes(this.GetSingleInstanceTypes()).SingleInstance();
+            builder.RegisterTypes(this.GetPerDependencyInstanceTypes()).InstancePerDependency();
         }
 
-        private IEnumerable<Type> GetSingleInstanceTypes()
+        private Type[] GetSingleInstanceTypes()
         {
             return new Type[] { 
+                typeof(Fresnel.Introspection.RealTypeResolver),
+
+                typeof(Fresnel.Introspection.Configuration.AttributesMapBuilder),
+                typeof(Fresnel.Introspection.Configuration.ConfigurationMapBuilder),
+
                 typeof(Fresnel.Introspection.Templates.ClassHierarchyBuilder),
                 typeof(Fresnel.Introspection.Templates.ClassTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.DynamicMethodBuilder),
                 typeof(Fresnel.Introspection.Templates.EnumItemTemplateMapBuilder),
-            
+                typeof(Fresnel.Introspection.Templates.AbstractClassTemplateBuilder),
+                typeof(Fresnel.Introspection.Templates.BackingFieldIdentifier),
+                typeof(Fresnel.Introspection.Templates.ClassHierarchyDepthComparer),
+                typeof(Fresnel.Introspection.Templates.ClassTemplateBuilder),
+                typeof(Fresnel.Introspection.Templates.CollectionTemplateBuilder),
+                typeof(Fresnel.Introspection.Templates.CollectionTypeIdentifier),
+                typeof(Fresnel.Introspection.Templates.EnumItemTemplateMapBuilder),
+                typeof(Fresnel.Introspection.Templates.EnumTemplateBulider),
+                typeof(Fresnel.Introspection.Templates.EnumTemplateMapBuilder),
+                typeof(Fresnel.Introspection.Templates.FieldInfoMapBuilder),
+                typeof(Fresnel.Introspection.Templates.MethodInfoMapBuilder),
+                typeof(Fresnel.Introspection.Templates.MethodTemplateBuilder),
+                typeof(Fresnel.Introspection.Templates.MethodTemplateMapBuilder),
+                typeof(Fresnel.Introspection.Templates.NonReferenceTemplateBuilder),
+                typeof(Fresnel.Introspection.Templates.ParameterTemplateBuilder),
+                typeof(Fresnel.Introspection.Templates.ParameterTemplateMapBuilder),
+                typeof(Fresnel.Introspection.Templates.PropertyInfoMapBuilder),
+                typeof(Fresnel.Introspection.Templates.PropertyTemplateBuilder),
+                typeof(Fresnel.Introspection.Templates.PropertyTemplateMapBuilder),
+                typeof(Fresnel.Introspection.Templates.StaticMethodInfoMapBuilder),
+                typeof(Fresnel.Introspection.Templates.StaticMethodTemplateMapBuilder),
+                typeof(Fresnel.Introspection.Templates.TrackingPropertiesIdentifier),
+
+                typeof(Fresnel.Introspection.Templates.IsObjectAuditableSpecification),
+                typeof(Fresnel.Introspection.Templates.IsObjectTrackableSpecification),
+                typeof(Fresnel.Introspection.Templates.IsObjectValidatableSpecification),
+            };
+        }
+
+        private Type[] GetPerDependencyInstanceTypes()
+        {
+            return new Type[] { 
+                typeof(Fresnel.Introspection.Templates.ClassTemplate),
+                typeof(Fresnel.Introspection.Templates.CollectionTemplate),
+                typeof(Fresnel.Introspection.Templates.EnumItemTemplate),
+                typeof(Fresnel.Introspection.Templates.EnumTemplate),
+                typeof(Fresnel.Introspection.Templates.MethodTemplate),
+                typeof(Fresnel.Introspection.Templates.NonReferenceTemplate),
+                typeof(Fresnel.Introspection.Templates.ParameterTemplate),
+                typeof(Fresnel.Introspection.Templates.PropertyTemplate),
             };
         }
 

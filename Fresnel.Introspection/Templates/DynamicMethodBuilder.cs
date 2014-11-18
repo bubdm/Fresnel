@@ -19,10 +19,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         private readonly Type _objectType = typeof(object);
         private readonly Type _nullType = typeof(void);
 
-        private DynamicMethodBuilder()
-        {
-        }
-
         /// <summary>
         /// Returns a delegate to handle instantiation of the given Class
         /// </summary>

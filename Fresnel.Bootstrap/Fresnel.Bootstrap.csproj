@@ -54,6 +54,10 @@
       <Project>{beec9a50-f328-43d1-aaf1-f818aa56653e}</Project>
       <Name>Fresnel.DomainTypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Introspection\Fresnel.Introspection.csproj">
+      <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>
+      <Name>Fresnel.Introspection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fresnel.Utils\Fresnel.Utils.csproj">
       <Project>{3ba54d1e-0d73-4c83-a3c7-5fd199e0f468}</Project>
       <Name>Fresnel.Utils</Name>
