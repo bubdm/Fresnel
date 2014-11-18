@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         public ConfigurationMap ConfigurationMap { get; internal set; }
 
-        public AssemblyDocsReader AssemblyDocsReader { get; internal set; }
+        public AssemblyDocsReader XmlDocReader { get; internal set; }
 
         public bool IsFrameworkAssembly { get; internal set; }
 
@@ -128,12 +128,32 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             return this.Assembly.ToString();
         }
 
+        public void PreLoadClassTemplates()
+        {
+            var publicTypes = this.Assembly.GetExportedTypes();
+
+            // These are the kinds of Types that we're interested in:
+            var matches = publicTypes.Where(type =>
+                                            type.IsTrackable() ||
+                                            type.IsFactory() ||
+                                            type.IsRepository() ||
+                                            type.IsDomainService() ||
+                                            type.IsEnum);
+
+            foreach (var type in matches)
+            {
+                var classConfig = this.ConfigurationMap.GetClassConfiguration(type);
+                var tClass = _AbstractClassTemplateBuilder.CreateTemplate(type, classConfig);
+                _TemplateMap.Add(type, tClass);
+            }
+        }
+
         public void Dispose()
         {
             this.Assembly = null;
             _TemplateMap = null;
             _ClassStructureXml = null;
-            this.AssemblyDocsReader = null;
+            this.XmlDocReader = null;
         }
 
     }

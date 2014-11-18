@@ -38,12 +38,12 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             var reader = _AssemblyReaderFactory();
             reader.Assembly = domainAssembly;
             reader.ConfigurationMap = _ConfigurationMapBuilder.BuildFor(domainAssembly);
-            reader.AssemblyDocsReader = new AssemblyDocsReader();
+            reader.XmlDocReader = new AssemblyDocsReader();
 
             this.Initialise(reader);
 
-            this.CreateClassTemplates(reader, reader.ConfigurationMap);
-            reader.AssemblyDocsReader.InitialiseFrom(reader);
+            reader.PreLoadClassTemplates();
+            reader.XmlDocReader.InitialiseFrom(reader);
 
             return reader;
         }
@@ -67,32 +67,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             }
 
             //_ClassStructureXml = new ClassStructureBuilder(_Assembly).GetClassStructureXml();
-        }
-
-
-        private void CreateClassTemplates(AssemblyReader assemblyReader, ConfigurationMap configMap)
-        {
-            //using (new Utils.ExecutionTimer(string.Concat("CreateClassTemplates for ", _AssemblyName)))
-            {
-
-                var publicTypes = assemblyReader.Assembly.GetExportedTypes();
-
-                for (var i = 0; i < publicTypes.Length; i++)
-                {
-                    var type = publicTypes[i];
-
-                    // These are the kinds of Types that we're interested in:
-                    if (type.IsTrackable() ||
-                        type.IsFactory() ||
-                        type.IsRepository() ||
-                        type.IsDomainService() ||
-                        type.IsEnum)
-                    {
-                        var classConfig = configMap.GetClassConfiguration(type);
-                        var tClass = _AbstractClassTemplateBuilder.CreateTemplate(type, classConfig);
-                    }
-                }
-            }
         }
 
     }
