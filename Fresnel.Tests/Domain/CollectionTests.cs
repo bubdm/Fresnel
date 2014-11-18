@@ -41,6 +41,28 @@ namespace Envivo.Fresnel.Tests.Domain
             // Assert:
             Assert.AreNotEqual(0, pocoObject.ChildObjects.Count);
         }
+        
+        [Test()]
+        public void ShouldAddToCollectionProperty()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+            var addCommand = container.Resolve<AddToCollectionCommand>();
+
+            var pocoObject = new SampleModel.Objects.PocoObject();
+            Assert.AreEqual(0, pocoObject.ChildObjects.Count);
+
+            var classTemplate = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
+            var collectionPropertyTemplate = classTemplate.Properties["ChildObjects"];
+
+            // Act:
+            var newItem = new SampleModel.Objects.PocoObject();
+            addCommand.Invoke(pocoObject, collectionPropertyTemplate, newItem);
+
+            // Assert:
+            Assert.AreNotEqual(0, pocoObject.ChildObjects.Count);
+        }
 
         [Test()]
         public void ShouldRemoveFromCollection()
