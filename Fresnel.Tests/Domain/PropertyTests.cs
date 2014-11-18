@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var template = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
 
             // Act:
-            pocoObject.NormalText = "1234";
+            pocoObject.NormalText = DateTime.Now.ToString();
 
             // Assert:
             var value = getCommand.Invoke(template, pocoObject, "NormalText");
@@ -43,7 +43,21 @@ namespace Envivo.Fresnel.Tests.Domain
         [Test()]
         public void ShouldSetProperty()
         {
-            Assert.Inconclusive();
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+            var setCommand = container.Resolve<SetPropertyCommand>();
+
+            var pocoObject = new SampleModel.Objects.PocoObject();
+
+            var template = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
+
+            // Act:
+            var newValue = DateTime.Now.ToString();
+            setCommand.Invoke(template, pocoObject, "NormalText", newValue);
+            
+            // Assert:
+            Assert.AreEqual(newValue, pocoObject.NormalText);
         }
 
     }
