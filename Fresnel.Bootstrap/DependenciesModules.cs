@@ -33,6 +33,9 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Introspection.Assemblies.AssemblyReaderMapBuilder),
                 typeof(Fresnel.Introspection.Assemblies.IsFrameworkAssemblySpecification),
 
+                typeof(Fresnel.Introspection.Commands.CreateObjectCommand),
+                typeof(Fresnel.Introspection.Commands.GetPropertyCommand),
+
                 typeof(Fresnel.Introspection.Templates.AbstractClassTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.BackingFieldIdentifier),
                 typeof(Fresnel.Introspection.Templates.ClassHierarchyBuilder),
