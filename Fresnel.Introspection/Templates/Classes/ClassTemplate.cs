@@ -16,6 +16,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         private readonly string[] _AbstractTypePrefixes = { "Abstract ", "Base ", "I " };
         private readonly string[] _AbstractTypeSuffixes = { " Base" };
 
+        private Lazy<RapidCtor> _RapidCtor;
         private Lazy<ConstructorInfo[]> _Constructors;
         private Lazy<FieldInfoMap> _Fields;
         private Lazy<PropertyTemplateMap> _tProperties;
@@ -25,6 +26,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         private ObjectInstanceAttribute _ObjectInstanceAttr;
         private Lazy<int> _InheritanceDepth;
 
+        private DynamicMethodBuilder _DynamicMethodBuilder;
         private FieldInfoMapBuilder _FieldInfoMapBuilder;
         private PropertyTemplateMapBuilder _PropertyTemplateMapBuilder;
         private MethodTemplateMapBuilder _MethodTemplateMapBuilder;
@@ -37,6 +39,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public ClassTemplate
         (
+            DynamicMethodBuilder dynamicMethodBuilder,
             FieldInfoMapBuilder fieldInfoMapBuilder,
             PropertyTemplateMapBuilder propertyTemplateMapBuilder,
             MethodTemplateMapBuilder methodTemplateMapBuilder,
@@ -45,6 +48,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         )
             : base()
         {
+            _DynamicMethodBuilder = dynamicMethodBuilder;
             _FieldInfoMapBuilder = fieldInfoMapBuilder;
             _PropertyTemplateMapBuilder = propertyTemplateMapBuilder;
             _MethodTemplateMapBuilder = methodTemplateMapBuilder;
@@ -61,6 +65,10 @@ namespace Envivo.Fresnel.Introspection.Templates
             this.DetermineInterfaces();
 
             _ObjectInstanceAttr = this.Attributes.Get<ObjectInstanceAttribute>();
+
+            _RapidCtor = new Lazy<RapidCtor>(
+                                () => _DynamicMethodBuilder.BuildCreateObjectHandler(this.RealObjectType),
+                                System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _InheritanceDepth = new Lazy<int>(() =>
                                 DetermineInheritanceDepth(this.RealObjectType),
@@ -218,20 +226,12 @@ namespace Envivo.Fresnel.Introspection.Templates
             get { return _Constructors.Value; }
         }
 
-        public ConstructorInfo DefaultConstructor
-        {
-            get
-            {
-                return _Constructors.Value.SingleOrDefault(c => !c.GetParameters().Any());
-            }
-        }
-
         /// <summary>
         /// Determines if an Object can be instantiated with zero arguments
         /// </summary>
         public bool HasDefaultConstructor
         {
-            get { return DefaultConstructor != null; }
+            get { return _RapidCtor.Value != null; }
         }
 
         /// <summary>
@@ -309,6 +309,12 @@ namespace Envivo.Fresnel.Introspection.Templates
             }
         }
 
+        public object CreateInstance()
+        {
+            var result = _RapidCtor.Value.Invoke();
+            return result;
+        }
+
         //
         //        /// <summary>
         //        /// All of the relationships that this Object has to other Domain Objects
@@ -335,8 +341,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         //        public bool HasRelationshipWith(ClassTemplate tTargetClass)
         //        {
         //            // Find a Relationship in the Target class that points back to this Property's class:
-        //            var result = tTargetClass.Relationships.Any(r => r.TargetClass == this);
-        //            return result;
+        //            var reader = tTargetClass.Relationships.Any(r => r.TargetClass == this);
+        //            return reader;
         //        }
         //
         //        /// <summary>
@@ -348,8 +354,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         //        public bool HasRelationshipWith(PropertyTemplate tTargetProperty)
         //        {
         //            // Find a Relationship in the Target property's class that points back to this Property:
-        //            var result = tTargetProperty.OuterClass.Relationships.Any(r => r.TargetClass == tTargetProperty.OuterClass);
-        //            return result;
+        //            var reader = tTargetProperty.OuterClass.Relationships.Any(r => r.TargetClass == tTargetProperty.OuterClass);
+        //            return reader;
         //        }
 
         /// <summary>

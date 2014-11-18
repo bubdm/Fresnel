@@ -59,7 +59,7 @@ namespace Envivo.Fresnel.Introspection.Commands
         
         private object CreateClone(ClassTemplate tClass, object source)
         {
-            var result = tClass.DefaultConstructor.Invoke(_EmptyCtorArgs);
+            var result = tClass.CreateInstance();
 
             foreach (var tProp in tClass.Properties.Values)
             {

@@ -25,6 +25,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public CollectionTemplate
         (
+            DynamicMethodBuilder dynamicMethodBuilder,
             FieldInfoMapBuilder fieldInfoMapBuilder,
             PropertyTemplateMapBuilder propertyTemplateMapBuilder,
             MethodTemplateMapBuilder methodTemplateMapBuilder,
@@ -32,7 +33,8 @@ namespace Envivo.Fresnel.Introspection.Templates
             TrackingPropertiesIdentifier trackingPropertiesIdentifier,
             TemplateCache templateCache
         )
-            : base(fieldInfoMapBuilder,
+            : base( dynamicMethodBuilder,
+                    fieldInfoMapBuilder,
                     propertyTemplateMapBuilder,
                     methodTemplateMapBuilder,
                     staticMethodTemplateMapBuilder,
