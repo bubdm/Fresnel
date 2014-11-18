@@ -27,16 +27,18 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var result = _paramterFactory();
 
+            result.OuterClass = tMethod.OuterClass;
             result.OuterMethod = tMethod;
             result.ParameterInfo = paramInfo;
             result.ParameterType = paramInfo.ParameterType;
             result.Attributes = parameterAttributes;
-            result.InnerClass = (ClassTemplate)this.TemplateCache.GetTemplate(result.ParameterType);
             result.Name = paramInfo.Name.IsEmpty() ?
                             paramInfo.Position.ToString() :
                             paramInfo.Name;
 
             result.FriendlyName = paramInfo.Name.CreateFriendlyName();
+
+            result.FinaliseConstruction();
 
             this.CheckParameterType(result);
 

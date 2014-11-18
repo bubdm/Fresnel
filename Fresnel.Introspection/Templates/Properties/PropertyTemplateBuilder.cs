@@ -24,6 +24,8 @@ namespace Envivo.Fresnel.Introspection.Templates
             _IsObjectTrackableSpecification = isObjectTrackableSpecification;
         }
 
+        public TemplateCache TemplateCache { get; set; }
+
         public PropertyTemplate BuildFor(ClassTemplate tOuterClass, PropertyInfo propertyInfo, AttributesMap propertyAttributes)
         {
             var result = _PropertyTemplateFactory();
@@ -32,6 +34,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.OuterClass = tOuterClass;
             result.PropertyInfo = propertyInfo;
             result.PropertyType = propertyInfo.PropertyType;
+            result.InnerClass = this.TemplateCache.GetTemplate(result.PropertyType);
             result.Name = propertyInfo.Name;
             result.FriendlyName = result.Name.CreateFriendlyName();
             result.FullName = string.Concat(propertyInfo.ReflectedType.Namespace, ".",

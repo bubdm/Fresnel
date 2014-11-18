@@ -13,12 +13,22 @@ namespace Envivo.Fresnel.Introspection.Templates
     /// </remarks>
     public class ParameterTemplate : BaseMemberTemplate, ISettableMemberTemplate
     {
-        
+        private TemplateCache _TemplateCache;
+        private Lazy<IClassTemplate> _InnerClass;
+
+        public ParameterTemplate
+        (
+            TemplateCache templateCache
+        )
+        {
+            _TemplateCache = templateCache;
+        }
+
         /// <summary>
         /// The .NET Reflection of the Parameter
         /// </summary>
         /// <value>A ParameterInfo object that reflects the Parameter</value>
-        
+
         public ParameterInfo ParameterInfo { get; internal set; }
 
         /// <summary>
@@ -29,7 +39,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns the Template for the value of the Parameter
         /// </summary>
-        public IClassTemplate InnerClass { get; internal set; }
+        public IClassTemplate InnerClass { get { return _InnerClass.Value; } }
 
         /// <summary>
         /// Determines if the value of the Parameter is a Non-Reference value
@@ -59,27 +69,38 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns TRUE if the property contains a Nullable type
         /// </summary>
         /// <value></value>
-        
-        
         public bool IsNullableType { get; internal set; }
 
         /// <summary>
         /// The MethodTemplate that owns this Parameter
         /// </summary>
         /// <value></value>
-        
-        
         public MethodTemplate OuterMethod { get; internal set; }
 
         /// <summary>
         /// Returns TRUE if the parameter acccepts the given type
         /// </summary>
         /// <param name="type"></param>
-        
         public bool CanAccept(Type type)
         {
             return type.IsDerivedFrom(this.ParameterType);
         }
+
+        internal override void FinaliseConstruction()
+        {
+            base.FinaliseConstruction();
+
+            _InnerClass = new Lazy<IClassTemplate>(
+                                    () => this.DetermineInnerClass(),
+                                    System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+        }
+
+        private IClassTemplate DetermineInnerClass()
+        {
+            var result = _TemplateCache.GetTemplate(this.ParameterType);
+            return result;
+        }
+
 
     }
 }

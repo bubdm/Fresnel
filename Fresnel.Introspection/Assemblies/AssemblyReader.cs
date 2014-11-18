@@ -96,7 +96,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             {
                 var classConfiguration = this.ConfigurationMap.GetClassConfiguration(classType);
                 tClass = _AbstractClassTemplateBuilder.CreateTemplate(classType, classConfiguration);
-                ((ClassTemplate)tClass).AssemblyReader = this;
+                ((BaseClassTemplate)tClass).AssemblyReader = this;
                 _TemplateMap.Add(classType, tClass);
             }
 

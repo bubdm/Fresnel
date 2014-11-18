@@ -18,6 +18,8 @@ namespace Envivo.Fresnel.Introspection.Templates
     /// </remarks>
     public class CollectionTemplate : ClassTemplate
     {
+        private TemplateCache _TemplateCache;
+        private Lazy<ClassTemplate> _InnerClass;
         private Lazy<List<MethodTemplate>> _AddMethods;
         private Lazy<List<MethodTemplate>> _RemoveMethods;
 
@@ -27,7 +29,8 @@ namespace Envivo.Fresnel.Introspection.Templates
             PropertyTemplateMapBuilder propertyTemplateMapBuilder,
             MethodTemplateMapBuilder methodTemplateMapBuilder,
             StaticMethodTemplateMapBuilder staticMethodTemplateMapBuilder,
-            TrackingPropertiesIdentifier trackingPropertiesIdentifier
+            TrackingPropertiesIdentifier trackingPropertiesIdentifier,
+            TemplateCache templateCache
         )
             : base(fieldInfoMapBuilder,
                     propertyTemplateMapBuilder,
@@ -35,6 +38,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                     staticMethodTemplateMapBuilder,
                     trackingPropertiesIdentifier)
         {
+            _TemplateCache = templateCache;
         }
 
         internal override void FinaliseConstruction()
@@ -48,6 +52,10 @@ namespace Envivo.Fresnel.Introspection.Templates
             {
                 this.FriendlyName = string.Concat("Collection of '", this.ElementType.Name.CreateFriendlyName(), "'");
             }
+
+            _InnerClass = new Lazy<ClassTemplate>(
+                                    () => this.DetermineInnerClass(),
+                                    System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _AddMethods = new Lazy<List<MethodTemplate>>(
                                     () => this.DetermineAddMethods(),
@@ -86,7 +94,13 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         public Type ElementType { get; internal set; }
 
-        public ClassTemplate InnerClass { get; internal set; }
+        public ClassTemplate InnerClass { get { return _InnerClass.Value; } }
+
+        private ClassTemplate DetermineInnerClass()
+        {
+            var result = (ClassTemplate)_TemplateCache.GetTemplate(this.RealObjectType);
+            return result;
+        }
 
         private List<MethodTemplate> DetermineAddMethods()
         {

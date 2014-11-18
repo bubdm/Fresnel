@@ -42,27 +42,28 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
             this.Initialise(reader);
 
-            reader.PreLoadClassTemplates();
             reader.XmlDocReader.InitialiseFrom(reader);
 
             return reader;
         }
 
 
-        private void Initialise(AssemblyReader assemblyReader)
+        private void Initialise(AssemblyReader reader)
         {
-
-            assemblyReader.IsFrameworkAssembly = _IsFrameworkAssemblySpecification
-                                            .IsSatisfiedBy(assemblyReader.Assembly.GetName())
+            reader.IsFrameworkAssembly = _IsFrameworkAssemblySpecification
+                                            .IsSatisfiedBy(reader.Assembly.GetName())
                                             .Passed;
 
 
-            if (assemblyReader.IsFrameworkAssembly)
+            if (reader.IsFrameworkAssembly)
             {
-                //assemblyReader.AreInfrastructureServicesEnabled = false;
+                //reader.AreInfrastructureServicesEnabled = false;
             }
             else
             {
+                // We need to ensure that all top-level Domain Classes are recognised:
+                reader.PreLoadClassTemplates();
+
                 //this.AreInfrastructureServicesEnabled = areInfrastructureServicesEnabled;
             }
 

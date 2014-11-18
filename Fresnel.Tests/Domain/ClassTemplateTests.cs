@@ -80,6 +80,11 @@ namespace Envivo.Fresnel.Tests.Domain
 
             // Assert:
             Assert.AreNotEqual(0, template.Properties.Count());
+
+            foreach (var prop in template.Properties.Values)
+            {
+                Assert.IsNotNull(prop.InnerClass);
+            }
         }
 
         [Test()]
@@ -105,6 +110,11 @@ namespace Envivo.Fresnel.Tests.Domain
             {
                 var parameters = method.Parameters;
                 Assert.IsNotNull(method.Parameters);
+
+                foreach (var p in parameters.Values)
+                {
+                    Assert.IsNotNull(p.InnerClass);
+                }
             }
         }
 

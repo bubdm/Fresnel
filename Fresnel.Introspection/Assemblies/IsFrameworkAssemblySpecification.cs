@@ -7,7 +7,7 @@ using Envivo.Fresnel.DomainTypes;
 namespace Envivo.Fresnel.Introspection.Assemblies
 {
     /// <summary>
-    /// Checks if an Assembly is a Framework assembly (e.g. .NET Framework, Nhibernate, TrueView, etc)
+    /// Checks if an Assembly is a Framework assembly (e.g. .NET Framework, Fresnel, Nhibernate, etc)
     /// </summary>
     public class IsFrameworkAssemblySpecification : ISpecification<AssemblyName>
     {
@@ -32,11 +32,8 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             results.Add(new byte[] { 170, 149, 242, 7, 121, 141, 253, 180 });
             results.Add(new byte[] { 64, 125, 208, 128, 141, 68, 251, 220 });
 
-            // TrueView V3:
+            // Fresnel:
             results.Add(new byte[] { 1, 220, 146, 135, 78, 188, 72, 218 });
-
-            // TrueView V2:
-            results.Add(new byte[] { 152, 254, 2, 70, 105, 133, 176, 209 });
 
             // AzRoles:
             results.Add(new byte[] { 49, 191, 56, 86, 173, 54, 78, 53 });

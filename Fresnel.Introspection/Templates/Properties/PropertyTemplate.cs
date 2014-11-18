@@ -13,6 +13,8 @@ namespace Envivo.Fresnel.Introspection.Templates
     public class PropertyTemplate : BaseMemberTemplate, ISettableMemberTemplate
     {
         private PropertyAttribute _Attribute;
+        private TemplateCache _TemplateCache;
+        private Lazy<IClassTemplate> _InnerClass;
 
         private DynamicMethodBuilder _DynamicMethodBuilder;
         private Lazy<RapidGet> _RapidFieldGet;
@@ -22,10 +24,13 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public PropertyTemplate
         (
-            DynamicMethodBuilder dynamicMethodBuilder
+            DynamicMethodBuilder dynamicMethodBuilder,
+            TemplateCache templateCache
+
         )
         {
             _DynamicMethodBuilder = dynamicMethodBuilder;
+            _TemplateCache = templateCache;
         }
 
         internal override void FinaliseConstruction()
@@ -33,6 +38,10 @@ namespace Envivo.Fresnel.Introspection.Templates
             base.FinaliseConstruction();
 
             _Attribute = this.Attributes.Get<PropertyAttribute>();
+
+            _InnerClass = new Lazy<IClassTemplate>(
+                                () => this.DetermineInnerClass(),
+                                System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _RapidFieldGet = new Lazy<RapidGet>(
                                 () => _DynamicMethodBuilder.BuildGetHandler(this.BackingField), 
@@ -50,7 +59,13 @@ namespace Envivo.Fresnel.Introspection.Templates
                                 () => _DynamicMethodBuilder.BuildSetHandler(this.PropertyInfo), 
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
-        
+
+        private IClassTemplate DetermineInnerClass()
+        {
+            var result = _TemplateCache.GetTemplate(this.PropertyType);
+            return result;
+        }
+
         /// <summary>
         /// Returns the value of the property using the property getter
         /// </summary>
