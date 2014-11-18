@@ -6,6 +6,7 @@
 using Autofac;
 using NUnit.Framework;
 using System;
+using System.Linq;
 using Envivo.Fresnel.SampleModel.Objects;
 using Envivo.Fresnel.Bootstrap;
 using Envivo.Fresnel.Introspection.Templates;
@@ -41,7 +42,7 @@ namespace Envivo.Fresnel.Tests.Domain
             // Assert:
             Assert.AreNotEqual(0, pocoObject.ChildObjects.Count);
         }
-        
+
         [Test()]
         public void ShouldAddToCollectionProperty()
         {
@@ -67,7 +68,52 @@ namespace Envivo.Fresnel.Tests.Domain
         [Test()]
         public void ShouldRemoveFromCollection()
         {
-            Assert.Inconclusive();
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+            var removeCommand = container.Resolve<RemoveFromCollectionCommand>();
+
+            var pocoObject = new SampleModel.Objects.PocoObject();
+            pocoObject.AddSomeChildObjects();
+            Assert.AreNotEqual(0, pocoObject.ChildObjects.Count);
+
+            var classTemplate = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
+            var collectionPropertyTemplate = classTemplate.Properties["ChildObjects"];
+            var collectionTemplate = (CollectionTemplate)collectionPropertyTemplate.InnerClass;
+
+            // Act:
+            var items = pocoObject.ChildObjects.ToList();
+            foreach (var item in items)
+            {
+                removeCommand.Invoke(collectionTemplate, pocoObject.ChildObjects, classTemplate, item);
+            }
+
+            // Assert:
+            Assert.AreEqual(0, pocoObject.ChildObjects.Count);
+        }
+
+        [Test()]
+        public void ShouldRemoveFromCollectionProperty()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+            var removeCommand = container.Resolve<RemoveFromCollectionCommand>();
+
+            var pocoObject = new SampleModel.Objects.PocoObject();
+            Assert.AreEqual(0, pocoObject.ChildObjects.Count);
+
+            var classTemplate = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
+            var collectionPropertyTemplate = classTemplate.Properties["ChildObjects"];
+
+            // Act:
+            var items = pocoObject.ChildObjects.ToList();
+            foreach (var item in items)
+            {
+                removeCommand.Invoke(pocoObject, collectionPropertyTemplate, item);
+            }
+            // Assert:
+            Assert.AreEqual(0, pocoObject.ChildObjects.Count);
         }
 
     }

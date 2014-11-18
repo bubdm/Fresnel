@@ -37,6 +37,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Introspection.Commands.GetPropertyCommand),
                 typeof(Fresnel.Introspection.Commands.SetPropertyCommand),
                 typeof(Fresnel.Introspection.Commands.AddToCollectionCommand),
+                typeof(Fresnel.Introspection.Commands.RemoveFromCollectionCommand),
 
                 typeof(Fresnel.Introspection.Templates.AbstractClassTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.BackingFieldIdentifier),
