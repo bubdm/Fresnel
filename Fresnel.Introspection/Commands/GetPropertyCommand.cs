@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.Introspection.Commands
                 throw new ArgumentNullException("obj");
 
             if (propertyName == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException("propertyName");
 
             var tProp = tClass.Properties[propertyName];
             if (tProp == null)
