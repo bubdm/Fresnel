@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         {
             var result = new AssemblyReaderMap(null);
 
-            //var result = _AssemblyReaderBuilder.Create(domainAssembly, enableInfrastructureServices);
+            //var reader = _AssemblyReaderBuilder.Create(domainAssembly, enableInfrastructureServices);
             return result;
         }
 

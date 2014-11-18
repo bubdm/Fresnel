@@ -28,13 +28,14 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         {
             get
             {
-                var result = this.TryGetValueOrNull(assembly);
-                if (result == null)
+                var reader = this.TryGetValueOrNull(assembly);
+                if (reader == null)
                 {
-                    result = _AssemblyReaderBuilder.BuildFor(assembly);
+                    reader = _AssemblyReaderBuilder.BuildFor(assembly);
+                    this.Add(assembly, reader);
                 }
 
-                return result;
+                return reader;
             }
         }
 
