@@ -69,7 +69,7 @@ namespace Envivo.Fresnel.Introspection.Commands
                 throw new ArgumentNullException("collection");
 
             if (item == null)
-                throw new ArgumentNullException("itemToAdd");
+                throw new ArgumentNullException("item");
 
             tCollection.Add(collection, item, tItem.RealObjectType);
         }
