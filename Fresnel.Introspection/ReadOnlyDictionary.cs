@@ -13,30 +13,26 @@ namespace Envivo.Fresnel.Introspection
     public class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         private readonly IDictionary<TKey, TValue> _Items;
-        private readonly IDictionary<string, TValue> _NamedItems;
 
         public ReadOnlyDictionary()
         {
             _Items = new Dictionary<TKey, TValue>();
-            _NamedItems = new Dictionary<string, TValue>();
         }
 
         public ReadOnlyDictionary(IDictionary<TKey, TValue> items)
         {
             _Items = items;
-            _NamedItems = new Dictionary<string, TValue>();
+        }
+
+        public ReadOnlyDictionary(IDictionary<TKey, TValue> items, IDictionary<string, TValue> namedItems)
+        {
+            _Items = items;
         }
 
         protected void AddItem(TKey key, string name, TValue value)
         {
             _Items.Add(key, value);
-            _NamedItems.Add(name, value);
         }
-
-        //        protected void RemoveItem(TKey key)
-        //        {
-        //            _Items.Remove(key);
-        //        }
 
         protected void ClearItems()
         {
@@ -56,19 +52,9 @@ namespace Envivo.Fresnel.Introspection
             return _Items.ContainsKey(key);
         }
 
-        public bool ContainsName(string name)
-        {
-            return _NamedItems.ContainsKey(name);
-        }
-
         public ICollection<TKey> Keys
         {
             get { return _Items.Keys; }
-        }
-
-        public ICollection<string> Names
-        {
-            get { return _NamedItems.Keys; }
         }
 
         public bool Remove(TKey key)
@@ -91,18 +77,6 @@ namespace Envivo.Fresnel.Introspection
             get
             {
                 return _Items[key];
-            }
-            set
-            {
-                throw new NotSupportedException("This dictionary is read-only");
-            }
-        }
-
-        public TValue this [string name]
-        {
-            get
-            {
-                return _NamedItems[name];
             }
             set
             {
