@@ -1,7 +1,7 @@
 using System;
 
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace Envivo.Fresnel.Introspection.Configuration
         /// <value></value>
         
         
-        internal bool CanCreate { get; set; }
+        public bool CanCreate { get; set; }
 
     }
 

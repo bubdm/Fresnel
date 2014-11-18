@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
 
     /// <summary>

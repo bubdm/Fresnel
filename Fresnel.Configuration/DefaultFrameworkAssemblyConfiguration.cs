@@ -3,19 +3,20 @@
 
 
 
+
 using System.Reflection;
 
-namespace Envivo.Fresnel.Configuration
+namespace Envivo.TrueView.Domain.Configuration
 {
 
-    internal class DefaultDomainAssemblyConfiguration : AssemblyConfiguration<object>
+    internal class DefaultFrameworkAssemblyConfiguration : AssemblyConfiguration<object>
     {
-        public DefaultDomainAssemblyConfiguration(Assembly domainAssembly)
+        public DefaultFrameworkAssemblyConfiguration(Assembly domainAssembly)
         {
             this.ConfigurePersistence(new Persistence.InMemoryDtoConfiguration());
             this.ConfigureQueryRepository(new Persistence.QueryTokenRepositoryConfiguration());
             this.ConfigurePreferencesRepository(new Preferences.UserPreferencesFileRepositoryConfiguration());
-            this.ConfigureSecurityService(new Security.ClassConfiguredSecurityServiceConfiguration());
+            this.ConfigureSecurityService(new Security.SuperUserSecurityConfiguration());
             this.ConfigureExportService(new Export.DefaultConfiguration());
         }
 

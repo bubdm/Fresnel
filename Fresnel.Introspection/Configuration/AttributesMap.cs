@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Envivo.Fresnel.Utils;
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
 
     /// <summary>

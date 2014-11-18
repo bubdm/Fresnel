@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Configuration;
 using System.Diagnostics;
 using Envivo.Fresnel.Utils;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Utils;
 using System.Reflection;
 

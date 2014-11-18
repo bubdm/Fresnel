@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Envivo.Fresnel.Utils;
 using System;
-using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {

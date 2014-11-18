@@ -1,5 +1,5 @@
 ﻿using System;
-using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection.Assemblies;
 
 namespace Envivo.Fresnel.Introspection.Templates

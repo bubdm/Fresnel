@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
     public interface IApplicationConfiguration
     {

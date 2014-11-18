@@ -25,8 +25,8 @@ namespace Envivo.Fresnel.Bootstrap
             return new Type[] { 
                 typeof(Fresnel.Introspection.RealTypeResolver),
 
-                typeof(Fresnel.Introspection.Configuration.AttributesMapBuilder),
-                typeof(Fresnel.Introspection.Configuration.ConfigurationMapBuilder),
+                typeof(Fresnel.Configuration.AttributesMapBuilder),
+                typeof(Fresnel.Configuration.ConfigurationMapBuilder),
 
                 typeof(Fresnel.Introspection.Assemblies.AssemblyDocsReader),
                 typeof(Fresnel.Introspection.Assemblies.AssemblyReaderBuilder),

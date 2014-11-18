@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.Bootstrap", "Fresne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.Introspection", "Fresnel.Introspection\Fresnel.Introspection.csproj", "{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.Configuration", "Fresnel.Configuration\Fresnel.Configuration.csproj", "{B3122093-8EBB-423B-A4ED-951752690288}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,12 @@ Global
 		{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}.Default|Any CPU.Build.0 = Debug|Any CPU
 		{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3122093-8EBB-423B-A4ED-951752690288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3122093-8EBB-423B-A4ED-951752690288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3122093-8EBB-423B-A4ED-951752690288}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3122093-8EBB-423B-A4ED-951752690288}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{B3122093-8EBB-423B-A4ED-951752690288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3122093-8EBB-423B-A4ED-951752690288}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

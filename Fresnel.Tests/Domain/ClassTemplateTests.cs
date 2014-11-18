@@ -10,7 +10,7 @@ using System.Linq;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel;
 using Envivo.Fresnel.Bootstrap;
-using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using System.Reflection;

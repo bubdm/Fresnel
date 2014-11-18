@@ -1,6 +1,6 @@
 using System;
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
 
     /// <summary>

@@ -5,10 +5,8 @@ using System.ComponentModel;
 using System.Reflection;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.Introspection.Configuration;
 
-namespace Envivo.Fresnel.Introspection
+namespace Envivo.Fresnel.Configuration
 {
 
     public static class ConfigurationTypeExtensions

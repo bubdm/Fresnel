@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Envivo.Fresnel.Utils;
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
 
     /// <summary>
@@ -138,17 +138,17 @@ namespace Envivo.Fresnel.Introspection.Configuration
         /// Determines whether the user can elect to lock the object prior to editing it
         /// </summary>
         /// <value></value>
-        
-        
-        internal bool AllowPessimisticLocking { get; set; }
+
+
+        public bool AllowPessimisticLocking { get; set; }
 
         /// <summary>
         /// Determines whether the object is forcefully locked as soon as it is edited
         /// </summary>
         /// <value></value>
-        
-        
-        internal bool ForcePessimisticLocking { get; set; }
+
+
+        public bool ForcePessimisticLocking { get; set; }
 
         /// <summary>
         /// A list of Member names in the order that should be displayed to the end user
@@ -189,8 +189,8 @@ namespace Envivo.Fresnel.Introspection.Configuration
         /// Returns TRUE if the Member with the given name should be hidden
         /// </summary>
         /// <param name="memberName"></param>
-        
-        internal bool HasHiddenMemberNamed(string memberName)
+
+        public bool HasHiddenMemberNamed(string memberName)
         {
             if (_HiddenMemberNamesMap.Count == 0)
             {
@@ -204,8 +204,8 @@ namespace Envivo.Fresnel.Introspection.Configuration
         /// Returns TRUE if the Member with the given name is a Framework member
         /// </summary>
         /// <param name="memberName"></param>
-        
-        internal bool HasFrameworkMemberCalled(string memberName)
+
+        public bool HasFrameworkMemberCalled(string memberName)
         {
             return s_FrameworkMemberNameMap.Contains(memberName.ToLower());
         }

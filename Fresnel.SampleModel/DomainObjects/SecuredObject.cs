@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Envivo.Fresnel.SampleModel.BasicTypes;
 using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {

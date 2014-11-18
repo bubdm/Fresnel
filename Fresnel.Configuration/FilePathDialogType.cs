@@ -1,7 +1,7 @@
 using System;
 
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
     [Serializable()]
     public enum FileDialogType

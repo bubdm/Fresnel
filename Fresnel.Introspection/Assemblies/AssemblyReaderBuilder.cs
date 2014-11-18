@@ -1,4 +1,4 @@
-using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
 using System.Collections.Generic;

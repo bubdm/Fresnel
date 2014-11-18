@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {

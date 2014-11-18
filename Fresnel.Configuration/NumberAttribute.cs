@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
 
     /// <summary>

@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.Introspection.Configuration
         /// <summary>
         /// Determines if the Attribute values were provided by the consumer (i.e. we're NOT using default values)
         /// </summary>
-        internal bool IsConfiguredAtRunTime { get; set; }
+        public bool IsConfiguredAtRunTime { get; set; }
 
     }
 

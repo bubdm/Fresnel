@@ -6,7 +6,7 @@
 
 using System.Reflection;
 
-namespace Envivo.TrueView.Domain.Configuration
+namespace Envivo.Fresnel.Configuration
 {
 
     internal class DefaultFrameworkAssemblyConfiguration : AssemblyConfiguration<object>

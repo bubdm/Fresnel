@@ -8,7 +8,7 @@ using Envivo.Fresnel.DomainTypes.Interfaces;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
     /// Used to configure a Domain Assembly

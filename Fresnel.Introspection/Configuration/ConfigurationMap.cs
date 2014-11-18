@@ -5,7 +5,7 @@ using System.Reflection;
 using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Assemblies;
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
 
     /// <summary>

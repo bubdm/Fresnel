@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
     public interface IClassConfiguration
     {

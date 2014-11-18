@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
 using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Configuration;
 using System.Diagnostics;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 

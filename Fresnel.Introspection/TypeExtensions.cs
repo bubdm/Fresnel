@@ -6,7 +6,7 @@ using System.Reflection;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.Introspection
 {

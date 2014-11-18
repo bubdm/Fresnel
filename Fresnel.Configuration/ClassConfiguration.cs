@@ -3,10 +3,9 @@ using System.ComponentModel;
 
 using System;
 using System.Linq.Expressions;
-using Envivo.Fresnel.Introspection.Configuration;
 using Envivo.Fresnel.Utils;
 
-namespace Envivo.Fresnel.Introspection.Configuration
+namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
     /// Used to configure a Domain Object's behaviour at run-time
@@ -82,7 +81,7 @@ namespace Envivo.Fresnel.Introspection.Configuration
             if (this.ObjectInstanceConfiguration != null)
             {
                 var msg = string.Concat("Cannot have multiple configurations for class ", _DomainClassName);
-                throw new FresnelException(msg);
+                throw new ConfigurationException(msg);
             }
 
             this.ObjectInstanceConfiguration = objectInstanceAttribute;
@@ -97,7 +96,7 @@ namespace Envivo.Fresnel.Introspection.Configuration
             if (this.ConstructorConfiguration != null)
             {
                 var msg = string.Concat("Cannot have multiple configurations for constructor on ", _DomainClassName);
-                throw new FresnelException(msg);
+                throw new ConfigurationException(msg);
             }
 
             this.ConstructorConfiguration = constructorAttribute;
@@ -114,7 +113,7 @@ namespace Envivo.Fresnel.Introspection.Configuration
             if (this.PropertyConfigurations.Contains(key))
             {
                 var msg = string.Concat("Cannot have multiple configurations for property ", _DomainClassName, ".", propertyName);
-                throw new FresnelException(msg);
+                throw new ConfigurationException(msg);
             }
 
             this.PropertyConfigurations.Add(key, propertyAttribute);
@@ -131,7 +130,7 @@ namespace Envivo.Fresnel.Introspection.Configuration
             if (this.MethodConfigurations.Contains(key))
             {
                 var msg = string.Concat("Cannot have multiple configurations for method ", _DomainClassName, ".", methodName);
-                throw new FresnelException(msg);
+                throw new ConfigurationException(msg);
             }
 
             this.MethodConfigurations.Add(key, methodAttribute);
@@ -149,7 +148,7 @@ namespace Envivo.Fresnel.Introspection.Configuration
             if (this.ParameterConfigurations.Contains(key))
             {
                 var msg = string.Concat("Cannot have multiple configurations for parameter ", _DomainClassName, ".", methodName, "(", parameterName, ")");
-                throw new FresnelException(msg);
+                throw new ConfigurationException(msg);
             }
 
             this.ParameterConfigurations.Add(key, parameterAttribute);

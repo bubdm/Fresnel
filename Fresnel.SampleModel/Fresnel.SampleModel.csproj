@@ -64,13 +64,13 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Fresnel.Configuration\Fresnel.Configuration.csproj">
+      <Project>{b3122093-8ebb-423b-a4ed-951752690288}</Project>
+      <Name>Fresnel.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fresnel.DomainTypes\Fresnel.DomainTypes.csproj">
       <Project>{BEEC9A50-F328-43D1-AAF1-F818AA56653E}</Project>
       <Name>Fresnel.DomainTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fresnel.Introspection\Fresnel.Introspection.csproj">
-      <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>
-      <Name>Fresnel.Introspection</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

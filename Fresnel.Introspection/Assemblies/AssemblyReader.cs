@@ -6,7 +6,7 @@ using System.Xml;
 using System.ComponentModel;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection.Configuration;
+using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
 {
