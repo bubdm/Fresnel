@@ -14,16 +14,29 @@ namespace Envivo.Fresnel.Introspection.Assemblies
     
     public class AssemblyReaderMap : Dictionary<Assembly, AssemblyReader>
     {
+        private AssemblyReaderBuilder _AssemblyReaderBuilder;
         private readonly List<AssemblyReader> _AssemblyReaders;
 
-        public AssemblyReaderMap()
+        public AssemblyReaderMap
+        (
+            AssemblyReaderBuilder assemblyReaderBuilder
+        )
         {
+            _AssemblyReaderBuilder = assemblyReaderBuilder;
             _AssemblyReaders = new List<AssemblyReader>();
         }
 
         public AssemblyReader this[Type key]
         {
-            get { return this[key.Assembly]; }
+            get {
+                var assembly = key.Assembly;
+                var result = this.TryGetValueOrNull(assembly);
+                if (result == null)
+                {
+                    result = _AssemblyReaderBuilder.BuildFor(assembly);
+                }
+                
+                return this[key.Assembly]; }
         }
 
         public AssemblyReader this[IClassTemplate template]

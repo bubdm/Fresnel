@@ -33,7 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assemblies\AssemblyDocsReader.cs" />
-    <Compile Include="Assemblies\AssemblyReaderMapBulider.cs" />
+    <Compile Include="Assemblies\AssemblyReaderMapBuilder.cs" />
     <Compile Include="Assemblies\IsFrameworkAssemblySpecification.cs" />
     <Compile Include="AssertionSet.cs" />
     <Compile Include="Configuration\ConfigurationTypeExtensions.cs" />

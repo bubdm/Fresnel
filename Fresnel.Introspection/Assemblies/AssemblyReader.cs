@@ -19,15 +19,10 @@ namespace Envivo.Fresnel.Introspection.Assemblies
     /// </remarks>
     public class AssemblyReader : IDisposable
     {
-        private Assembly _Assembly;
-        private AssemblyDocsReader _AssemblyDocsReader;
-        private ConfigurationMap _ConfigurationMap;
-
         private Dictionary<Type, IClassTemplate> _TemplateMap = new Dictionary<Type, IClassTemplate>();
         private XmlDocument _ClassStructureXml = new XmlDocument();
 
         private AbstractClassTemplateBuilder _AbstractClassTemplateBuilder;
-        private IsFrameworkAssemblySpecification _IsFrameworkAssemblySpecification;
 
         //public event PropertyChangedEventHandler PropertyChanged;
 
@@ -35,27 +30,26 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// Creates and caches Class Templates for the given Assembly
         /// </summary>
         /// <param name="assembly">The Assembly whose details are to be read</param>
-        
-        public AssemblyReader(
-            Assembly domainAssembly,
-            ConfigurationMap configurationMap,
-            AssemblyDocsReader assemblyDocsReader,
-            AbstractClassTemplateBuilder abstractClassTemplateBuilder,
-            IsFrameworkAssemblySpecification isFrameworkAssemblySpecification
+
+        public AssemblyReader
+        (
+            AbstractClassTemplateBuilder abstractClassTemplateBuilder
         )
         {
-            _Assembly = domainAssembly;
-            _ConfigurationMap = configurationMap;
-            _AssemblyDocsReader = assemblyDocsReader;
             _AbstractClassTemplateBuilder = abstractClassTemplateBuilder;
-            _IsFrameworkAssemblySpecification = isFrameworkAssemblySpecification;
-
-            this.IsFrameworkAssembly = _IsFrameworkAssemblySpecification
-                                            .IsSatisfiedBy(_Assembly.GetName())
-                                            .Passed;
         }
 
-        public bool IsFrameworkAssembly { get; private set; }
+
+        /// <summary>
+        /// The Assembly associated with this reader
+        /// </summary>
+        public Assembly Assembly { get; internal set; }
+
+        public ConfigurationMap ConfigurationMap { get; internal set; }
+
+        public AssemblyDocsReader AssemblyDocsReader { get; internal set; }
+
+        public bool IsFrameworkAssembly { get; internal set; }
 
         //public bool AreInfrastructureServicesEnabled { get; private set; }
 
@@ -71,28 +65,20 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// An XML representation of the class structure of the Domain Assembly
         /// </summary>
         /// <value>An XmlDocument containing the class structure</value>
-        
+
         public XmlDocument ClassStructureXml
         {
             get { return _ClassStructureXml; }
         }
 
         /// <summary>
-        /// The Assembly associated with this reader
-        /// </summary>
-        public Assembly Assembly
-        {
-            get { return _Assembly; }
-        }
-
-        /// <summary>
         /// Returns the codebase of the Assembly as a file path (not a URI)
         /// </summary>
         /// <param name="assembly"></param>
-        
+
         public string GetAssemblyLocation()
         {
-            var path = _Assembly.CodeBase.Replace(@"file:///", string.Empty);
+            var path = this.Assembly.CodeBase.Replace(@"file:///", string.Empty);
             return path.Replace(@"/", @"\");
         }
 
@@ -109,7 +95,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
             if (tClass == null)
             {
-                var classConfiguration = _ConfigurationMap.GetClassConfiguration(classType);
+                var classConfiguration = this.ConfigurationMap.GetClassConfiguration(classType);
                 tClass = _AbstractClassTemplateBuilder.CreateTemplate(classType, classConfiguration);
                 ((ClassTemplate)tClass).AssemblyReader = this;
                 _TemplateMap.Add(classType, tClass);
@@ -140,15 +126,15 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         public override string ToString()
         {
-            return _Assembly.ToString();
+            return this.Assembly.ToString();
         }
 
         public void Dispose()
         {
-            _Assembly = null;
+            this.Assembly = null;
             _TemplateMap = null;
             _ClassStructureXml = null;
-            _AssemblyDocsReader = null;
+            this.AssemblyDocsReader = null;
         }
 
     }

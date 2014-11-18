@@ -35,9 +35,52 @@ namespace Envivo.Fresnel.Tests.Domain
 
             // Assert:
             Assert.IsNotNull(template);
+        }
 
-            Assert.AreNotEqual(0, template.Constructors.Count());
+        [Test()]
+        public void ShouldCreatePropertyTemplates()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
+            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+
+            var typeToInspect = typeof(SampleModel.Objects.PocoObject);
+
+            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+
+            // Act:
+            var template = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+
+            // Assert:
             Assert.AreNotEqual(0, template.Properties.Count());
+        }
+
+        [Test()]
+        public void ShouldCreateMethodTemplates()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
+            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+
+            var typeToInspect = typeof(SampleModel.Objects.PocoObject);
+
+            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+
+            // Act:
+            var template = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+
+            // Assert:
+            Assert.AreNotEqual(0, template.Methods.Count());
+
+            foreach (var method in template.Methods.Values)
+            {
+                var parameters = method.Parameters;
+                Assert.IsNotNull(method.Parameters);
+            }
         }
 
     }

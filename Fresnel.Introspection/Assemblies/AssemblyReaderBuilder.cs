@@ -10,17 +10,21 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
     public class AssemblyReaderBuilder
     {
+        private IsFrameworkAssemblySpecification _IsFrameworkAssemblySpecification;
+
         private ConfigurationMapBuilder _ConfigurationMapBuilder;
-        private Func<Assembly, ConfigurationMap, AssemblyDocsReader, AssemblyReader> _AssemblyReaderFactory;
+        private Func<AssemblyReader> _AssemblyReaderFactory;
         private AbstractClassTemplateBuilder _AbstractClassTemplateBuilder;
 
         public AssemblyReaderBuilder
         (
+            IsFrameworkAssemblySpecification isFrameworkAssemblySpecification,
             ConfigurationMapBuilder configurationMapBuilder,
-            Func<Assembly, ConfigurationMap, AssemblyDocsReader, AssemblyReader> assemblyReaderFactory,
+            Func<AssemblyReader> assemblyReaderFactory,
             AbstractClassTemplateBuilder abstractClassTemplateBuilder
         )
         {
+            _IsFrameworkAssemblySpecification = isFrameworkAssemblySpecification;
             _ConfigurationMapBuilder = configurationMapBuilder;
             _AssemblyReaderFactory = assemblyReaderFactory;
             _AbstractClassTemplateBuilder = abstractClassTemplateBuilder;
@@ -31,14 +35,15 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             if (domainAssembly == null)
                 return null;
 
-            var configMap = _ConfigurationMapBuilder.BuildFor(domainAssembly);
-            var docsReader = new AssemblyDocsReader();
+            var reader = _AssemblyReaderFactory();
+            reader.Assembly = domainAssembly;
+            reader.ConfigurationMap = _ConfigurationMapBuilder.BuildFor(domainAssembly);
+            reader.AssemblyDocsReader = new AssemblyDocsReader();
 
-            var reader = _AssemblyReaderFactory(domainAssembly, configMap, docsReader);
-            
             this.Initialise(reader);
-            this.CreateClassTemplates(reader, configMap);
-            docsReader.InitialiseFrom(reader);
+
+            this.CreateClassTemplates(reader, reader.ConfigurationMap);
+            reader.AssemblyDocsReader.InitialiseFrom(reader);
 
             return reader;
         }
@@ -46,6 +51,12 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         private void Initialise(AssemblyReader assemblyReader)
         {
+
+            assemblyReader.IsFrameworkAssembly = _IsFrameworkAssemblySpecification
+                                            .IsSatisfiedBy(assemblyReader.Assembly.GetName())
+                                            .Passed;
+
+
             if (assemblyReader.IsFrameworkAssembly)
             {
                 //assemblyReader.AreInfrastructureServicesEnabled = false;

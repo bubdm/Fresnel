@@ -12,20 +12,17 @@ namespace Envivo.Fresnel.Introspection.Templates
         private RealTypeResolver _RealTypeResolver;
         private Func<CollectionTemplate> _CollectionTemplateFactory;
         private CollectionTypeIdentifier _CollectionTypeIdentifier;
-        private TemplateCache _TemplateCache;
 
         public CollectionTemplateBuilder
         (
             RealTypeResolver realTypeResolver,
             Func<CollectionTemplate> collectionTemplateFactory,
-            CollectionTypeIdentifier collectionTypeIdentifier,
-            TemplateCache templateCache
+            CollectionTypeIdentifier collectionTypeIdentifier
         )
         {
             _RealTypeResolver = realTypeResolver;
             _CollectionTemplateFactory = collectionTemplateFactory;
             _CollectionTypeIdentifier = collectionTypeIdentifier;
-            _TemplateCache = templateCache;
         }
 
         public ClassTemplate BuildFor(Type objectType, AttributesMap collectionAttributes)
@@ -37,7 +34,6 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.FriendlyName = result.RealObjectType.Name.CreateFriendlyName();
             result.FullName = result.RealObjectType.FullName;
             result.ElementType = _CollectionTypeIdentifier.DetermineItemType(result.RealObjectType);
-            result.InnerClass = (ClassTemplate)_TemplateCache.GetTemplate(result.RealObjectType);
             result.Attributes = collectionAttributes;
 
             result.FinaliseConstruction();

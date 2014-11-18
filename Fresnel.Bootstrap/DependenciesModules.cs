@@ -23,6 +23,12 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Introspection.Configuration.AttributesMapBuilder),
                 typeof(Fresnel.Introspection.Configuration.ConfigurationMapBuilder),
 
+                typeof(Fresnel.Introspection.Assemblies.AssemblyDocsReader),
+                typeof(Fresnel.Introspection.Assemblies.AssemblyReaderBuilder),
+                typeof(Fresnel.Introspection.Assemblies.AssemblyReaderMapBuilder),
+                typeof(Fresnel.Introspection.Assemblies.IsFrameworkAssemblySpecification),
+
+                typeof(Fresnel.Introspection.Templates.AbstractClassTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.ClassHierarchyBuilder),
                 typeof(Fresnel.Introspection.Templates.ClassTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.DynamicMethodBuilder),
@@ -53,12 +59,22 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Introspection.Templates.IsObjectAuditableSpecification),
                 typeof(Fresnel.Introspection.Templates.IsObjectTrackableSpecification),
                 typeof(Fresnel.Introspection.Templates.IsObjectValidatableSpecification),
+
+                typeof(Fresnel.Introspection.Assemblies.AssemblyReaderMap),
+                typeof(Fresnel.Introspection.TemplateCache),
             };
+        }
+
+        private Type[] GetPerSessioInstanceTypes()
+        {
+            return new Type[] { };
         }
 
         private Type[] GetPerDependencyInstanceTypes()
         {
             return new Type[] { 
+                typeof(Fresnel.Introspection.Assemblies.AssemblyReader),
+
                 typeof(Fresnel.Introspection.Templates.ClassTemplate),
                 typeof(Fresnel.Introspection.Templates.CollectionTemplate),
                 typeof(Fresnel.Introspection.Templates.EnumItemTemplate),

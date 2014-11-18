@@ -8,18 +8,18 @@ using Envivo.Fresnel.Introspection.Templates;
 namespace Envivo.Fresnel.Introspection.Assemblies
 {
 
-    public class AssemblyReaderMapBulider 
+    public class AssemblyReaderMapBuilder 
     {
         private readonly AssemblyReaderBuilder _AssemblyReaderBuilder;
 
-        public AssemblyReaderMapBulider(AssemblyReaderBuilder assemblyReaderBuilder)
+        public AssemblyReaderMapBuilder(AssemblyReaderBuilder assemblyReaderBuilder)
         {
             _AssemblyReaderBuilder = assemblyReaderBuilder;
         }
 
         public AssemblyReaderMap BuildFor(IEnumerable<Assembly> domainAssemblies)
         {
-            var result = new AssemblyReaderMap();
+            var result = new AssemblyReaderMap(null);
 
             //var result = _AssemblyReaderBuilder.Create(domainAssembly, enableInfrastructureServices);
             return result;

@@ -23,16 +23,21 @@ namespace Envivo.Fresnel.Introspection.Templates
             _MethodTemplateFactory = methodTemplateFactory;
         }
 
-        public MethodTemplate BuildFor(BaseClassTemplate tParent, MethodInfo methodInfo, AttributesMap methodAttributes)
+        public MethodTemplate BuildFor(ClassTemplate tParent, MethodInfo methodInfo, AttributesMap methodAttributes)
         {
             var result = _MethodTemplateFactory();
 
+            result.OuterClass = tParent;
+            result.MethodInfo = methodInfo;
+            result.MemberInfo = methodInfo;
             result.Name = methodInfo.Name;
             result.FriendlyName = result.Name.CreateFriendlyName();
             result.FullName = string.Concat(methodInfo.ReflectedType.Namespace, ".",
                                             methodInfo.ReflectedType.Name, ".",
                                             methodInfo.Name);
             result.Attributes = methodAttributes;
+
+            result.FinaliseConstruction();
 
             if (methodInfo.Name.StartsWith("AddTo") && result.Parameters.Count == 1)
             {

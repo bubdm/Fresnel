@@ -10,18 +10,15 @@ namespace Envivo.Fresnel.Introspection.Templates
     {
         private Func<ParameterTemplate> _paramterFactory;
         private IsObjectTrackableSpecification _IsObjectTrackableSpecification;
-        private TemplateCache _TemplateCache;
 
         public ParameterTemplateBuilder
         (
             Func<ParameterTemplate> paramterFactory,
-            IsObjectTrackableSpecification isObjectTrackableSpecification,
-            TemplateCache templateCache
+            IsObjectTrackableSpecification isObjectTrackableSpecification
         )
         {
             _paramterFactory = paramterFactory;
             _IsObjectTrackableSpecification = isObjectTrackableSpecification;
-            _TemplateCache = templateCache;
         }
 
         public ParameterTemplate BuildFor(MethodTemplate tMethod, ParameterInfo paramInfo, AttributesMap parameterAttributes)
@@ -31,7 +28,6 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.OuterMethod = tMethod;
             result.ParameterInfo = paramInfo;
             result.ParameterType = paramInfo.ParameterType;
-            result.InnerClass = _TemplateCache.GetTemplate(result.ParameterType);
             result.Attributes = parameterAttributes;
 
             result.Name = paramInfo.Name.IsEmpty() ?

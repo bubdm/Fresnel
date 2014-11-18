@@ -25,14 +25,14 @@ namespace Envivo.Fresnel.Introspection.Templates
             _MethodTemplateBuilder = methodTemplateBuilder;
         }
 
-        public MethodTemplateMap BuildFor(BaseClassTemplate tClass)
+        public MethodTemplateMap BuildFor(ClassTemplate tClass)
         {
             var methodInfoMap = _MethodInfoMapBuilder.BuildFor(tClass.RealObjectType);
             var result = this.BuildFrom(tClass, methodInfoMap);
             return result;
         }
 
-        public MethodTemplateMap BuildFrom(BaseClassTemplate tClass, MethodInfoMap methodInfoMap)
+        public MethodTemplateMap BuildFrom(ClassTemplate tClass, MethodInfoMap methodInfoMap)
         {
             var results = new Dictionary<string, MethodTemplate>();
 

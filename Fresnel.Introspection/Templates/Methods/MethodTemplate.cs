@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Introspection.Templates
     /// <summary>
     /// A Template that represents a method in a .NET class
     /// </summary>
-    
+
     public class MethodTemplate : BaseMemberTemplate
     {
         private DynamicMethodBuilder _DynamicMethodBuilder;
@@ -51,7 +51,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         /// <param name="obj">The instance to execute the method on</param>
         /// <param name="parameters"></param>
-        
+
         public object Invoke(object obj, object[] parameters)
         {
             var rapidMethod = _RapidMethod.Value;
@@ -76,15 +76,18 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// The .NET Reflection of the Method
         /// </summary>
         /// <value>A MethodInfo object that reflects the Method</value>
-        
+
         public MethodInfo MethodInfo { get; internal set; }
 
         /// <summary>
         /// The collection of ParameterTemplates associated with the Method
         /// </summary>
         /// <value></value>
-        
-        public ParameterTemplateMap Parameters { get; private set; }
+
+        public ParameterTemplateMap Parameters
+        {
+            get { return _Parameters.Value; }
+        }
 
         ///// <summary>
         ///// Determines if the Method can be invoked
