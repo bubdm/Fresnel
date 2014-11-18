@@ -51,7 +51,8 @@ namespace Envivo.Fresnel.Introspection.Templates
                 result.IsVisible = false;
             }
 
-            if (result.Parameters.Any())
+            // We're using GetParameters here, so that resul.Parameters doesn't get initialised prematurely:
+            if (result.MethodInfo.GetParameters().Any())
                 result.FriendlyName += "...";
 
             return result;
