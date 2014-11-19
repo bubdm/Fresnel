@@ -36,9 +36,11 @@
     <Compile Include="Assemblies\AssemblyReaderMapBuilder.cs" />
     <Compile Include="Assemblies\IsFrameworkAssemblySpecification.cs" />
     <Compile Include="AssertionSet.cs" />
+    <Compile Include="Commands\GetBackingFieldCommand.cs" />
     <Compile Include="Commands\RemoveFromCollectionCommand.cs" />
     <Compile Include="Commands\AddToCollectionCommand.cs" />
     <Compile Include="Commands\InvokeMethodCommand.cs" />
+    <Compile Include="Commands\SetBackingFieldCommand.cs" />
     <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Commands\GetPropertyCommand.cs" />
     <Compile Include="Configuration\AttributesMap.cs" />

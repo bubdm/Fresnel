@@ -60,6 +60,46 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual(newValue, pocoObject.NormalText);
         }
 
+        [Test()]
+        public void ShouldGetBackingField()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+            var getCommand = container.Resolve<GetBackingFieldCommand>();
+
+            var pocoObject = new SampleModel.Objects.PocoObject();
+
+            var template = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
+
+            // Act:
+            pocoObject.NormalText = DateTime.Now.ToString();
+
+            // Assert:
+            var value = getCommand.Invoke(template, pocoObject, "NormalText");
+            Assert.AreEqual(pocoObject.NormalText, value);
+        }
+
+        [Test()]
+        public void ShouldSetBackingField()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+            var setCommand = container.Resolve<SetBackingFieldCommand>();
+
+            var pocoObject = new SampleModel.Objects.PocoObject();
+
+            var template = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
+
+            // Act:
+            var newValue = DateTime.Now.ToString();
+            setCommand.Invoke(template, pocoObject, "NormalText", newValue);
+
+            // Assert:
+            Assert.AreEqual(newValue, pocoObject.NormalText);
+        }
+
     }
 }
 

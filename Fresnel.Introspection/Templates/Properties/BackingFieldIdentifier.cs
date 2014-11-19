@@ -19,15 +19,19 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var tClass = tProperty.OuterClass;
             if (tClass.RealObjectType.IsInterface)
+            {
+                // Interfaces don't have fields:
                 return null;
-
-            if (tProperty.BackingField != null)
-                // This property has already been matched:
-                return null;
+            }
 
             foreach (var field in tClass.Fields.Values)
             {
-                var isMatch = IsAutoProperty(tProperty, field);
+                var isMatch = IsCustomProperty(tProperty, field);
+
+                if (!isMatch)
+                {
+                    isMatch = IsAutoProperty(tProperty, field);
+                }
 
                 if (!isMatch)
                 {
@@ -45,6 +49,12 @@ namespace Envivo.Fresnel.Introspection.Templates
             }
 
             return null;
+        }
+
+        private bool IsCustomProperty(PropertyTemplate tProperty, FieldInfo field)
+        {
+            var attr = tProperty.Attributes.Get<PropertyAttribute>();
+            return field.Name.IsSameAs(attr.BackingFieldName);
         }
 
         private bool IsAutoProperty(PropertyTemplate tProperty, FieldInfo field)
@@ -95,63 +105,6 @@ namespace Envivo.Fresnel.Introspection.Templates
                 Trace.TraceWarning(string.Concat("Cannot find the Backing Field for ", tProperty.FullName));
             }
         }
-
-        ///// <summary>
-        ///// Assigns the backing fields for the properties using pseudo-fuzzy matching
-        ///// </summary>
-        //public void AssignFieldsToProperties(ClassTemplate tClass)
-        //{
-        //    if (tClass.RealObjectType.IsInterface)
-        //        return;
-
-        //    foreach (var tProperty in tClass.Properties.Values)
-        //    {
-        //        if (tProperty.BackingField != null)
-        //            // This property has already been matched:
-        //            continue;
-
-        //        var fuzzyPropName = tProperty.Name.Replace("_", string.Empty);
-
-        //        // Auto-property backing fields have the format "<prop_name>k__BackingField".
-        //        // E.g. the auto-property "StartDate" would use the field "<StartDate>k__BackingField"
-        //        var autoPropFieldName = string.Concat("<", tProperty.Name, ">k__BackingField");
-
-        //        foreach (var field in tClass.Fields.Values)
-        //        {
-        //            var fuzzyFieldName = field.Name.Replace("_", string.Empty);
-
-        //            if (field.Name.IsSameAs(autoPropFieldName))
-        //            {
-        //                // This must be a C# 3.0 auto-property:
-        //            }
-        //            else if (!fuzzyFieldName.ToLower().EndsWith(fuzzyPropName.ToLower()))
-        //            {
-        //                // This isn't a candidate match:
-        //                continue;
-        //            }
-        //            else
-        //            {
-        //                int distance = fuzzyFieldName.CalculateDistanceFrom(fuzzyPropName);
-        //                if (distance > 2)
-        //                {
-        //                    // The difference beween the field and property name is too big:
-        //                    continue;
-        //                }
-        //            }
-
-        //            if (field.FieldType != tProperty.PropertyType)
-        //            {
-        //                // Types don't match:
-        //                continue;
-        //            }
-
-        //            // Got it:
-        //            tProperty.BackingField = field;
-        //            break;
-        //        }
-
-        //    }
-        //}
 
     }
 

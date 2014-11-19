@@ -9,14 +9,17 @@ namespace Envivo.Fresnel.Introspection.Templates
     /// <summary>
     /// A Template that represents a Property in a .NET class
     /// </summary>
-    
+
     public class PropertyTemplate : BaseMemberTemplate, ISettableMemberTemplate
     {
         private PropertyAttribute _Attribute;
-        private TemplateCache _TemplateCache;
         private Lazy<IClassTemplate> _InnerClass;
 
         private DynamicMethodBuilder _DynamicMethodBuilder;
+        private TemplateCache _TemplateCache;
+        private BackingFieldIdentifier _BackingFieldIdentifier;
+
+        private Lazy<FieldInfo> _BackingField;
         private Lazy<RapidGet> _RapidFieldGet;
         private Lazy<RapidSet> _RapidFieldSet;
         private Lazy<RapidGet> _RapidPropGet;
@@ -25,12 +28,13 @@ namespace Envivo.Fresnel.Introspection.Templates
         public PropertyTemplate
         (
             DynamicMethodBuilder dynamicMethodBuilder,
-            TemplateCache templateCache
-
+            TemplateCache templateCache,
+            BackingFieldIdentifier backingFieldIdentifier
         )
         {
             _DynamicMethodBuilder = dynamicMethodBuilder;
             _TemplateCache = templateCache;
+            _BackingFieldIdentifier = backingFieldIdentifier;
         }
 
         internal override void FinaliseConstruction()
@@ -39,24 +43,28 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             _Attribute = this.Attributes.Get<PropertyAttribute>();
 
+            _BackingField = new Lazy<FieldInfo>(
+                                () => _BackingFieldIdentifier.GetBackingField(this),
+                                System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+
             _InnerClass = new Lazy<IClassTemplate>(
                                 () => this.DetermineInnerClass(),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _RapidFieldGet = new Lazy<RapidGet>(
-                                () => _DynamicMethodBuilder.BuildGetHandler(this.BackingField), 
+                                () => _DynamicMethodBuilder.BuildGetHandler(this.BackingField),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _RapidFieldSet = new Lazy<RapidSet>(
-                                () => _DynamicMethodBuilder.BuildSetHandler(this.BackingField), 
+                                () => _DynamicMethodBuilder.BuildSetHandler(this.BackingField),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _RapidPropGet = new Lazy<RapidGet>(
-                                () => _DynamicMethodBuilder.BuildGetHandler(this.PropertyInfo), 
+                                () => _DynamicMethodBuilder.BuildGetHandler(this.PropertyInfo),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _RapidPropSet = new Lazy<RapidSet>(
-                                () => _DynamicMethodBuilder.BuildSetHandler(this.PropertyInfo), 
+                                () => _DynamicMethodBuilder.BuildSetHandler(this.PropertyInfo),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
@@ -87,7 +95,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                 throw new MethodAccessException("Unable to identify Property Getter for " + this.FullName);
             }
         }
-        
+
         /// <summary>
         /// Gets the value of the property using the backing field
         /// </summary>
@@ -153,11 +161,11 @@ namespace Envivo.Fresnel.Introspection.Templates
                 throw new MethodAccessException("Unable to identify Backing Field for " + this.FullName);
             }
         }
-        
+
         /// <summary>
         /// The reflected backing field for this Property
         /// </summary>
-        public FieldInfo BackingField { get; internal set; }
+        public FieldInfo BackingField { get { return _BackingField.Value; } }
 
         /// <summary>
         /// The reflected Property
@@ -172,7 +180,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns the Template of the declared type of the Property.
         /// </summary>
-        public IClassTemplate InnerClass { get; internal set; }
+        public IClassTemplate InnerClass { get { return _InnerClass.Value; } }
 
         /// <summary>
         /// Determines if the value of the Property is a Reference object
@@ -278,8 +286,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns the ClassTemplate which has a many-to-many relationship with the owner of this Property.
         /// Note that this function is only useful against Collection properties.
         /// </summary>
-        
-        
+
+
         public ClassTemplate GetManyToManyClass(TemplateCache templateCache)
         {
             if (!this.IsCollection)
