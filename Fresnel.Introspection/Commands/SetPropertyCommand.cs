@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.Introspection.Commands
         }
 
         /// <summary>
-        /// Creates and returns an instance of the Object, using any zero-arg constructor (including internal/protected/private)
+        /// Sets the value of the property on the given object
         /// </summary>
         public void Invoke(ClassTemplate tClass, object obj, string propertyName, object value)
         {
