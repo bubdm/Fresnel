@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.Introspection.Commands
         /// <summary>
         /// Creates and returns an instance of the Object, using any zero-arg constructor (including internal/protected/private)
         /// </summary>
-        public void Invoke(ClassTemplate tClass, object obj, string methodName, IEnumerable<object> args)
+        public object Invoke(ClassTemplate tClass, object obj, string methodName, IEnumerable<object> args)
         {
             if (tClass == null)
                 throw new ArgumentNullException("tClass");
@@ -51,14 +51,8 @@ namespace Envivo.Fresnel.Introspection.Commands
                 throw new ArgumentException(msg);
             }
 
-            if (args == null)
-            {
-                tMethod.Invoke(obj, null);
-            }
-            else
-            {
-                tMethod.Invoke(obj, args.ToArray());
-            }
+            var result = tMethod.Invoke(obj, args);
+            return result;
         }
 
     }

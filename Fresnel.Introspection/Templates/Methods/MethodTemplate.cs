@@ -4,6 +4,7 @@ using System.Reflection;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Utils;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -50,20 +51,24 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Executes the method on the given Object with the given parameters
         /// </summary>
         /// <param name="obj">The instance to execute the method on</param>
-        /// <param name="parameters"></param>
+        /// <param name="args"></param>
 
-        public object Invoke(object obj, object[] parameters)
+        public object Invoke(object obj, IEnumerable<object> args)
         {
             var rapidMethod = _RapidMethod.Value;
 
+            var argsArray = args != null ?
+                            args.ToArray() :
+                            null;
+
             if (rapidMethod != null)
             {
-                return rapidMethod.Invoke(obj, parameters);
+                return rapidMethod.Invoke(obj, argsArray);
             }
             else
             {
                 // Fallback is using standard Reflection:
-                return this.MethodInfo.Invoke(obj, parameters);
+                return this.MethodInfo.Invoke(obj, argsArray);
             }
         }
 
