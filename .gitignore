@@ -23,6 +23,7 @@ packages
  
 # Other useful stuff
 *.bak
+*.7z*
 *.cache
 *.log
 *.swp
