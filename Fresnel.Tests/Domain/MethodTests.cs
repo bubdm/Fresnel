@@ -40,7 +40,6 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreNotEqual(0, domainObject.ChildObjects);
         }
 
-
         [Test()]
         public void ShouldReturnValueFromMethod()
         {
@@ -58,6 +57,7 @@ namespace Envivo.Fresnel.Tests.Domain
 
             // Assert:
             Assert.IsNotNull(result);
+            Assert.IsInstanceOf<string>(result);
         }
 
         [Test()]
