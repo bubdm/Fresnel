@@ -90,6 +90,11 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// </remarks>
         public IClassTemplate GetTemplate(Type classType)
         {
+            if (classType.IsDerivedFrom<ITemplate>())
+            {
+                throw new ArgumentOutOfRangeException("Type cannot be a Template");
+            }
+
             var tClass = _TemplateMap.TryGetValueOrNull(classType);
 
             if (tClass == null)
