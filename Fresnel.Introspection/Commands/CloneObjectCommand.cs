@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Introspection.Commands
 {
-    public class CloneObject
+    public class CloneObjectCommand
     {
         private readonly object[] _EmptyCtorArgs = new object[0];
 
         private TemplateCache _TemplateCache;
 
 
-        public CloneObject(TemplateCache templateCache)
+        public CloneObjectCommand(TemplateCache templateCache)
         {
             _TemplateCache = templateCache;
         }
@@ -22,8 +22,7 @@ namespace Envivo.Fresnel.Introspection.Commands
         /// <summary>
         /// Returns a shallow copy of the given object. If the source object implements ICloneable, it will use that to get a clone. Otherwise, a clone will be created using brute force.
         /// </summary>
-        
-        public object Clone(object source, bool withForce)
+        public object Invoke(object source, bool withForce)
         {
             var realType = source.GetType();
             var tClass = (ClassTemplate)_TemplateCache.GetTemplate(realType);
@@ -52,11 +51,6 @@ namespace Envivo.Fresnel.Introspection.Commands
             return result;
         }
 
-        /// <summary>
-        /// Creates a shallow clone using brute force reflection
-        /// </summary>
-        /// <param name="source"></param>
-        
         private object CreateClone(ClassTemplate tClass, object source)
         {
             var result = tClass.CreateInstance();

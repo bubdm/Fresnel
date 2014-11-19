@@ -50,7 +50,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Templates\AbstractClassTemplateBuilder.cs" />
-    <Compile Include="Commands\CloneObject.cs" />
+    <Compile Include="Commands\CloneObjectCommand.cs" />
     <Compile Include="Commands\CreateObjectCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Assemblies\AssemblyReaderBuilder.cs" />
