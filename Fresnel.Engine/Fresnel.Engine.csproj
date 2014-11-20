@@ -50,6 +50,7 @@
     <Compile Include="Commands\RemoveFromCollectionCommand.cs" />
     <Compile Include="Commands\AddToCollectionCommand.cs" />
     <None Include="Observers\ObserverCache.cs.broken" />
+    <Compile Include="Observers\Methods\MethodObserverMapBuilder.cs" />
     <Compile Include="Observers\OuterObjectsIdentifier.cs" />
     <Compile Include="Observers\ObjectIdResolver.cs" />
     <Compile Include="Observers\Methods\MethodObserverBuilder.cs" />

@@ -18,6 +18,7 @@ namespace Envivo.Fresnel.Engine.Observers
         private Lazy<MethodObserverMap> _StaticMethods;
 
         private PropertyObserverMapBuilder _PropertyObserverMapBuilder;
+        private MethodObserverMapBuilder _MethodObserverMapBuilder;
 
         /// <summary>
         ///
@@ -29,11 +30,13 @@ namespace Envivo.Fresnel.Engine.Observers
             object obj,
             Type objectType,
             ClassTemplate tClass,
-            PropertyObserverMapBuilder propertyObserverMapBuilder
+            PropertyObserverMapBuilder propertyObserverMapBuilder,
+            MethodObserverMapBuilder methodObserverMapBuilder
         )
             : base(obj, objectType, tClass)
         {
             _PropertyObserverMapBuilder = propertyObserverMapBuilder;
+            _MethodObserverMapBuilder = methodObserverMapBuilder;
         }
 
         public override void FinaliseConstruction()
@@ -44,7 +47,13 @@ namespace Envivo.Fresnel.Engine.Observers
                                 () => _PropertyObserverMapBuilder.BuildFor(this),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
+            _Methods = new Lazy<MethodObserverMap>(
+                              () => _MethodObserverMapBuilder.BuildFor(this),
+                              System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
+            _StaticMethods = new Lazy<MethodObserverMap>(
+                              () => _MethodObserverMapBuilder.BuildStaticMethodsFor(this),
+                              System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>

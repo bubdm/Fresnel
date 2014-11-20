@@ -23,9 +23,10 @@ namespace Envivo.Fresnel.Engine.Observers
             object collection,
             Type collectionType,
             CollectionTemplate tCollection,
-            PropertyObserverMapBuilder propertyObserverMapBuilder
+            PropertyObserverMapBuilder propertyObserverMapBuilder,
+            MethodObserverMapBuilder methodObserverMapBuilder
         )
-            : base(collection, collectionType, tCollection, propertyObserverMapBuilder)
+            : base(collection, collectionType, tCollection, propertyObserverMapBuilder, methodObserverMapBuilder)
         {
 
         }
@@ -102,7 +103,7 @@ namespace Envivo.Fresnel.Engine.Observers
         //        oRemovedItem.ChangeTracker.MarkForRemovalFrom(this);
         //    }
         //}
-        
+
         public override void Dispose()
         {
             base.Dispose();
