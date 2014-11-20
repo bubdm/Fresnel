@@ -59,6 +59,7 @@
     <Compile Include="ITypeResolverStrategy.cs" />
     <Compile Include="RealTypeResolver.cs" />
     <Compile Include="Templates\Classes\ClassHierarchyBuilder.cs" />
+    <Compile Include="Templates\Classes\NullTemplate.cs" />
     <Compile Include="Templates\Classes\NonReferenceTemplateBuilder.cs" />
     <Compile Include="Templates\Classes\CollectionTemplateBuilder.cs" />
     <Compile Include="Templates\Classes\CollectionTypeIdentifier.cs" />
