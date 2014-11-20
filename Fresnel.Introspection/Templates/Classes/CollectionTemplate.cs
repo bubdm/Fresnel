@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             TrackingPropertiesIdentifier trackingPropertiesIdentifier,
             TemplateCache templateCache
         )
-            : base( dynamicMethodBuilder,
+            : base(dynamicMethodBuilder,
                     fieldInfoMapBuilder,
                     propertyTemplateMapBuilder,
                     methodTemplateMapBuilder,
@@ -155,7 +155,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         /// <param name="targetCollection"></param>
         /// <param name="args"></param>
-        
+
         public object Add(object targetCollection, object itemToAdd, Type realItemType)
         {
             var tMethod = GetAddMethodThatAccepts(realItemType);
@@ -188,97 +188,95 @@ namespace Envivo.Fresnel.Introspection.Templates
             return false;
         }
 
-        /// <summary>
-        /// Returns an Enumerator of the given List
-        /// </summary>
-        
-        /// <remarks>Returns an IEnumerator regardless of whether it's a Collection, List, a Dictionary</remarks>
-        internal IEnumerator GetEnumerator(object collection, Type realCollectionType)
-        {
-            if (collection is IEnumerable)
-            {
-                return ((IEnumerable)collection).GetEnumerator();
-            }
-            else if (realCollectionType.IsDerivedFrom(TypeExtensions.IGenericEnumerable))
-            {
-                var flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
-                return (IEnumerator)TypeExtensions.IGenericEnumerable.InvokeMember("GetEnumerator", flags, null, collection, null);
-            }
+        ///// <summary>
+        ///// Returns an Enumerator of the given List
+        ///// </summary>
+        //internal IEnumerable GetEnumerator(object collection, Type realCollectionType)
+        //{
+        //    IEnumerable enumerable = null;
+        //    if (collection is IEnumerable)
+        //    {
+        //        enumerable = ((IEnumerable)collection);
+        //    }
+        //    else if (realCollectionType.IsDerivedFrom(TypeExtensions.IGenericEnumerable))
+        //    {
 
-            throw new FresnelException("The given list does not expose GetEnumerator");
-        }
+        //        var flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
+        //        enumerable = (IEnumerator)TypeExtensions.IGenericEnumerable.InvokeMember("GetEnumerator", flags, null, collection, null);
+        //    }
 
-        internal void Clear(object collection)
-        {
-            var tClearMethod = this.Methods.TryGetValueOrNull("Clear");
-            if (tClearMethod != null)
-            {
-                tClearMethod.Invoke(collection, null);
-            }
-        }
+        //    enumerable.
+
+        //    throw new FresnelException("The given list does not expose GetEnumerator");
+        //}
 
         /// <summary>
         /// Returns the number of items in the given list
         /// </summary>
-        /// <param name="collectioresultsparam>
-        
         internal int Count(object collection)
         {
-            if (collection == null)
+            var enumerable = collection as IEnumerable;
+            if (enumerable == null)
                 return 0;
 
-            var tCountProp = this.Properties.TryGetValueOrNull("Count");
-            if (tCountProp != null)
-            {
-                return (int)tCountProp.GetProperty(collection);
-            }
-            else
-            {
-                var enumerator = ((IEnumerable)collection).GetEnumerator();
-                var count = 0;
-                while (enumerator.MoveNext())
-                {
-                    count += 1;
-                }
+            return enumerable
+                    .Cast<object>()
+                    .Count();
 
-                return count;
-            }
+            //var tCountProp = this.Properties.TryGetValueOrNull("Count");
+            //if (tCountProp != null)
+            //{
+            //    return (int)tCountProp.GetProperty(collection);
+            //}
+            //else
+            //{
+            //    var enumerator = ((IEnumerable)collection).GetEnumerator();
+            //    var count = 0;
+            //    while (enumerator.MoveNext())
+            //    {
+            //        count += 1;
+            //    }
+
+            //    return count;
+            //}
         }
 
         /// <summary>
         /// Returns TRUE if the given list contains the given item
         /// </summary>
-        /// <param name="list"></param>
-        /// <param name="item"></param>
-        
-        internal bool Contains(object list, object item, Type realItemType)
+        internal bool Contains(object collection, object item, Type realItemType)
         {
-            if (list == null)
+            var enumerable = collection as IEnumerable;
+            if (enumerable == null)
                 return false;
 
-            var expectedItemType = this.ElementType;
-            if (!realItemType.IsDerivedFrom(expectedItemType))
-                return false;
+            return enumerable
+                    .Cast<object>()
+                    .Contains(item);
 
-            var tContainsMethod = this.Methods.TryGetValueOrNull("Contains");
-            if (tContainsMethod != null)
-            {
-                var args = new object[] { item };
-                return (bool)tContainsMethod.Invoke(list, args);
-            }
-            else
-            {
-                // Brute force scan:
-                var enumerator = ((IEnumerable)list).GetEnumerator();
-                while (enumerator.MoveNext())
-                {
-                    if (object.Equals(enumerator.Current, item))
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
+            //var expectedItemType = this.ElementType;
+            //if (!realItemType.IsDerivedFrom(expectedItemType))
+            //    return false;
+
+            //var tContainsMethod = this.Methods.TryGetValueOrNull("Contains");
+            //if (tContainsMethod != null)
+            //{
+            //    var args = new object[] { item };
+            //    return (bool)tContainsMethod.Invoke(list, args);
+            //}
+            //else
+            //{
+            //    // Brute force scan:
+            //    var enumerator = ((IEnumerable)list).GetEnumerator();
+            //    while (enumerator.MoveNext())
+            //    {
+            //        if (object.Equals(enumerator.Current, item))
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //    return false;
+            //}
         }
 
     }
