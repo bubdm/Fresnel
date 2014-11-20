@@ -41,8 +41,7 @@ namespace Envivo.Fresnel.Introspection
             where T: class
         {
             var objectType = typeof(T);
-            var assemblyReader = _AssemblyReaders[objectType.Assembly];
-            return assemblyReader.GetTemplate(objectType);
+            return this.GetTemplate(objectType);
         }
 
         /// <summary>
