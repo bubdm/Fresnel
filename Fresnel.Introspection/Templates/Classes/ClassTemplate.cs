@@ -155,18 +155,18 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns the Property used to retrieve the Domain Object's unique ID
         /// </summary>
-        public PropertyTemplate IdProperty { get; private set; }
+        public PropertyTemplate IdProperty { get { return _IdProperty.Value; } }
 
         /// <summary>
         /// Returns the Property used to retrieve the object's Version
         /// </summary>
-        public PropertyTemplate VersionProperty { get; private set; }
+        public PropertyTemplate VersionProperty { get { return _VersionProperty.Value; } }
 
 
         /// <summary>
         /// Returns the Property used to retrieve the object's IAudit details
         /// </summary>
-        public PropertyTemplate AuditProperty { get; private set; }
+        public PropertyTemplate AuditProperty { get { return _AuditProperty.Value; } }
 
         /// <summary>
         /// Determines if the Domain Object can be persisted to a repository

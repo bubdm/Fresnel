@@ -11,18 +11,49 @@ namespace Envivo.Fresnel.Introspection.Templates
 
     public class TrackingPropertiesIdentifier
     {
-        private readonly Type  _IAuditType = typeof(IAudit);
+        private readonly Type _GuidType = typeof(Guid);
+        private readonly Type _IAuditType = typeof(IAudit);
 
         public PropertyTemplate DetermineIdProperty(ClassTemplate tClass, ObjectInstanceAttribute objectInstanceAttribute)
         {
+            var properties = tClass.Properties.Values;
+
+            // See if the Id property has been explicitly stated:
             var idPropertyName = objectInstanceAttribute.IdPropertyName;
-            var idProperty = tClass.Properties.Values.FirstOrDefault(p => p.Name.IsSameAs(idPropertyName, true));
-            if (idProperty != null && idProperty.PropertyType == typeof(Guid))
+            var idProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
+                                                            p.Name.IsSameAs(idPropertyName, true));
+
+            // Look for a GUID property that starts or ends in "ID".
+            // Possible matches are "Id", "ID", "RecordID", "RecordId", etc
+            if (idProperty == null)
             {
-                return idProperty;
+                idProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
+                                                            p.Name.StartsWith(idPropertyName, StringComparison.OrdinalIgnoreCase));
             }
 
-            return null;
+            if (idProperty == null)
+            {
+                idProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
+                                                            p.Name.EndsWith(idPropertyName, StringComparison.OrdinalIgnoreCase));
+            }
+
+            this.FixIdPropertyAttributes(idProperty);
+
+            return idProperty;
+        }
+
+        private void FixIdPropertyAttributes(PropertyTemplate idProperty)
+        {
+            if (idProperty == null)
+                return;
+
+            var propertyAttr = idProperty.Attributes.Get<PropertyAttribute>();
+
+            // Users aren't allowed to change PK values:
+            propertyAttr.CanWrite = false;
+
+            // PK values must be persisted:
+            propertyAttr.CanPersist = true;
         }
 
         public PropertyTemplate DetermineVersionProperty(ClassTemplate tClass, ObjectInstanceAttribute objectInstanceAttribute)

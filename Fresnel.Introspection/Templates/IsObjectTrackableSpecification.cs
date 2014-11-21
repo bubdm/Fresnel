@@ -15,25 +15,27 @@ namespace Envivo.Fresnel.Introspection.Templates
         private readonly Type _GuidType = typeof(Guid);
         private readonly string _IdSearchText = "Id";
 
-        public IAssertion IsSatisfiedBy(Type sender)
+        public IAssertion IsSatisfiedBy(Type classType)
         {
-            if (sender.IsEntity() || sender.IsValueObject())
+            if (classType.IsEntity() || classType.IsValueObject())
                 return Assertion.Pass();
+
+            var properties = classType.GetProperties();
 
             // Look for a GUID property that starts or ends in "ID".
             // Possible matches are "Id", "ID", "RecordID", "RecordId", etc
-            var idProperty = sender.GetProperties().FirstOrDefault(p => p.PropertyType == _GuidType &&
-                                 p.Name.StartsWith(_IdSearchText, StringComparison.OrdinalIgnoreCase));
+            var idProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
+                                                            p.Name.StartsWith(_IdSearchText, StringComparison.OrdinalIgnoreCase));
             if (idProperty == null)
             {
-                idProperty = sender.GetProperties().FirstOrDefault(p => p.PropertyType == _GuidType &&
-                    p.Name.EndsWith(_IdSearchText, StringComparison.OrdinalIgnoreCase));
+                idProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
+                                                            p.Name.EndsWith(_IdSearchText, StringComparison.OrdinalIgnoreCase));
             }
 
             if (idProperty != null)
                 return Assertion.Pass();
 
-            var msg = string.Concat(sender.Name, " is not a Trackable domain object. Consider implementing a DomainTypes interface, or adding a Guid ID property.");
+            var msg = string.Concat(classType.Name, " is not a Trackable domain object. Consider implementing a DomainTypes interface, or adding a Guid ID property.");
             return Assertion.FailWithWarning(msg);
         }
     }

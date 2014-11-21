@@ -170,7 +170,7 @@ namespace Envivo.Fresnel.Introspection
         //}
 
         /// <summary>
-        /// Returns TRUE if the given type is a candidate for TrueView
+        /// Returns TRUE if the given type can be tracked by the framework
         /// </summary>
         /// <param name="realObjectType"></param>
         

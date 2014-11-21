@@ -42,17 +42,6 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             var propertyAttr = result.Attributes.Get<PropertyAttribute>();
 
-            var isPrimaryKey = tOuterClass.IdProperty != null &&
-                               tOuterClass.IdProperty.Name == propertyInfo.Name;
-            if (isPrimaryKey)
-            {
-                // Users aren't allowed to change PK values:
-                propertyAttr.CanWrite = false;
-
-                // PK values must be persisted:
-                propertyAttr.CanPersist = true;
-            }
-
             // If the Property name starts with "Parent", we'll treat it as a parent:
             if (!propertyAttr.IsConfiguredAtRunTime && result.FriendlyName.StartsWith("Parent "))
             {
