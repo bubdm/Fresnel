@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Engine.Observers
     public class ObjectIdResolver
     {
        
-        public object GetId(object obj, ClassTemplate tClass)
+        public Guid GetId(object obj, ClassTemplate tClass)
         {
             if (obj == null)
                 return Guid.NewGuid();
@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.Engine.Observers
             if (tClass.IdProperty != null)
             {
                 var result = tClass.IdProperty.GetProperty(obj);
-                return result;
+                return (Guid)result;
             }
 
             var msg = string.Concat("Unable to determine ID for ", tClass.FriendlyName);

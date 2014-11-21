@@ -14,8 +14,8 @@ namespace Envivo.Fresnel.Engine.Observers
     /// </summary>
     public class ObserverCache
     {
-        private Dictionary<object, ObjectObserver> _ObjectMap = new Dictionary<object, ObjectObserver>();
-        private Dictionary<object, NonReferenceObserver> _NonReferenceMap = new Dictionary<object, NonReferenceObserver>();
+        private Dictionary<Guid, ObjectObserver> _ObjectMap = new Dictionary<Guid, ObjectObserver>();
+        private Dictionary<Guid, NonReferenceObserver> _NonReferenceMap = new Dictionary<Guid, NonReferenceObserver>();
 
         private TemplateCache _TemplateCache;
         private AbstractObserverBuilder _AbstractObserverBuilder;
@@ -69,7 +69,7 @@ namespace Envivo.Fresnel.Engine.Observers
             if (obj == null)
                 return _NullObserver;
 
-            var result = this.GetCachedObserver(obj);
+            var result = this.GetObserver(obj);
             if (result == null)
             {
                 result = CreateAndCacheObserver(obj, objectType);
@@ -78,34 +78,39 @@ namespace Envivo.Fresnel.Engine.Observers
             return result;
         }
 
-        private BaseObjectObserver CreateAndCacheObserver(object obj, Type objectType)
+        private BaseObjectObserver GetObserver(Guid id)
         {
-            BaseObjectObserver result = null;
-
-            var template = _TemplateCache.GetTemplate(objectType);
-
-            var tClass = template as ClassTemplate;
-            if (tClass != null)
-            {
-                var key = _ObjectIdResolver.GetId(obj, tClass);
-                result = _AbstractObserverBuilder.BuildFor(obj, template.RealObjectType, key);
-                MergeObjectsWithSameId(obj, (ObjectObserver)result);
-            }
-
-            if (result == null)
-            {
-                var key = Guid.NewGuid();
-                result = _AbstractObserverBuilder.BuildFor(obj, template.RealObjectType, key);
-                _NonReferenceMap.Add(key, (NonReferenceObserver)result);
-            }
+            var result = (BaseObjectObserver)_NonReferenceMap.TryGetValueOrNull(id) ??
+                                             _ObjectMap.TryGetValueOrNull(id);
             return result;
         }
 
-        private BaseObjectObserver GetCachedObserver(object obj)
+        private BaseObjectObserver CreateAndCacheObserver(object obj, Type objectType)
         {
-            var result = (BaseObjectObserver)_NonReferenceMap.TryGetValueOrNull(obj) ??
-                                             _ObjectMap.TryGetValueOrNull(obj);
-            return result;
+            if (obj == null)
+                return _NullObserver;
+
+            var template = _TemplateCache.GetTemplate(objectType);
+            var tClass = template as ClassTemplate;
+
+            if (tClass != null)
+            {
+                var key = _ObjectIdResolver.GetId(obj, tClass);
+                var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealObjectType);
+                _ObjectMap.Add(key,result);
+                MergeObjectsWithSameId(obj, result);
+                return result;
+            }
+
+            if (tClass == null)
+            {
+                var key = Guid.NewGuid();
+                var result = (NonReferenceObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealObjectType);
+                _NonReferenceMap.Add(key, result);
+                return result;
+            }
+
+            return null;
         }
 
         private void MergeObjectsWithSameId(object obj, ObjectObserver oObject)
