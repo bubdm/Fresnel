@@ -32,6 +32,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assemblies\NamespaceHierarchyBuilder.cs" />
     <Compile Include="Assemblies\AssemblyDocsReader.cs" />
     <Compile Include="Assemblies\AssemblyReaderMapBuilder.cs" />
     <Compile Include="Assemblies\IsFrameworkAssemblySpecification.cs" />
