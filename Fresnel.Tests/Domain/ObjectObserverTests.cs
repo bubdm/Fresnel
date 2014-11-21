@@ -41,6 +41,21 @@ namespace Envivo.Fresnel.Tests.Domain
         }
 
         [Test()]
+        public void ShouldCreateNullObserver()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var observerBuilder = container.Resolve<AbstractObserverBuilder>();
+
+            // Act:
+            var observer = observerBuilder.BuildFor(null, typeof(SampleModel.Objects.PocoObject));
+
+            // Assert:
+            Assert.IsInstanceOf<NullObserver>(observer);
+        }
+
+        [Test()]
         public void ShouldGetObjectObserverFromCache()
         {
             // Arrange:

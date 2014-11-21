@@ -104,6 +104,8 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Engine.Observers.ParameterObserverMapBuilder),
                 typeof(Fresnel.Engine.Observers.PropertyObserverBuilder),
                 typeof(Fresnel.Engine.Observers.PropertyObserverMapBuilder),
+
+                typeof(Fresnel.Engine.Observers.NullObserver),
             };
         }
 
@@ -130,7 +132,6 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Engine.Observers.EnumObserver),
                 typeof(Fresnel.Engine.Observers.MethodObserver),
                 typeof(Fresnel.Engine.Observers.NonReferenceObserver),
-                typeof(Fresnel.Engine.Observers.NullObserver),
                 typeof(Fresnel.Engine.Observers.ObjectObserver),
                 typeof(Fresnel.Engine.Observers.ObjectPropertyObserver),
                 typeof(Fresnel.Engine.Observers.ParameterObserver),

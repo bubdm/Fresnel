@@ -21,13 +21,14 @@ namespace Envivo.Fresnel.Engine.Observers
         private AbstractObserverBuilder _AbstractObserverBuilder;
         private ObjectIdResolver _ObjectIdResolver;
 
-        private NullObserver _NullObserver = new NullObserver();
+        private NullObserver _NullObserver;
 
         public ObserverCache
         (
             TemplateCache templateCache,
             AbstractObserverBuilder abstractObserverBuilder,
-            ObjectIdResolver objectIdResolver
+            ObjectIdResolver objectIdResolver,
+            NullObserver nullObserver
         )
         {
             if (templateCache == null)
@@ -39,6 +40,7 @@ namespace Envivo.Fresnel.Engine.Observers
             _TemplateCache = templateCache;
             _AbstractObserverBuilder = abstractObserverBuilder;
             _ObjectIdResolver = objectIdResolver;
+            _NullObserver = nullObserver;
         }
 
         /// <summary>
