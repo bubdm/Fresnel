@@ -10,8 +10,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
     public class AssemblyReaderBuilder
     {
-        private IsFrameworkAssemblySpecification _IsFrameworkAssemblySpecification;
-
         private ConfigurationMapBuilder _ConfigurationMapBuilder;
         private Func<AssemblyReader> _AssemblyReaderFactory;
         private AbstractClassTemplateBuilder _AbstractClassTemplateBuilder;
@@ -24,13 +22,12 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             AbstractClassTemplateBuilder abstractClassTemplateBuilder
         )
         {
-            _IsFrameworkAssemblySpecification = isFrameworkAssemblySpecification;
             _ConfigurationMapBuilder = configurationMapBuilder;
             _AssemblyReaderFactory = assemblyReaderFactory;
             _AbstractClassTemplateBuilder = abstractClassTemplateBuilder;
         }
 
-        public AssemblyReader BuildFor(Assembly domainAssembly)
+        public AssemblyReader BuildFor(Assembly domainAssembly, bool isSystemAssembly)
         {
             if (domainAssembly == null)
                 return null;
@@ -39,6 +36,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             reader.Assembly = domainAssembly;
             reader.ConfigurationMap = _ConfigurationMapBuilder.BuildFor(domainAssembly);
             reader.XmlDocReader = new AssemblyDocsReader();
+            reader.IsFrameworkAssembly = isSystemAssembly;
 
             this.Initialise(reader);
 
@@ -47,14 +45,8 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             return reader;
         }
 
-
         private void Initialise(AssemblyReader reader)
         {
-            reader.IsFrameworkAssembly = _IsFrameworkAssemblySpecification
-                                            .IsSatisfiedBy(reader.Assembly.GetName())
-                                            .Passed;
-
-
             if (reader.IsFrameworkAssembly)
             {
                 //reader.AreInfrastructureServicesEnabled = false;

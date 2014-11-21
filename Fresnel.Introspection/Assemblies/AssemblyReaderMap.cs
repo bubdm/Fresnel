@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
                 var reader = this.TryGetValueOrNull(assembly);
                 if (reader == null)
                 {
-                    reader = _AssemblyReaderBuilder.BuildFor(assembly);
+                    reader = _AssemblyReaderBuilder.BuildFor(assembly, false);
                     this.Add(assembly, reader);
                 }
 
