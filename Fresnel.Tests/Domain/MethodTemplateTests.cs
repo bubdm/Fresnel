@@ -17,7 +17,7 @@ using Envivo.Fresnel.Introspection.Commands;
 namespace Envivo.Fresnel.Tests.Domain
 {
     [TestFixture()]
-    public class MethodTests
+    public class MethodTemplateTests
     {
 
         [Test()]

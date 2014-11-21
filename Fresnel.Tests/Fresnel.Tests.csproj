@@ -38,9 +38,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\ClassTemplateTests.cs" />
-    <Compile Include="Domain\MethodTests.cs" />
-    <Compile Include="Domain\PropertyTests.cs" />
-    <Compile Include="Domain\CollectionTests.cs" />
+    <Compile Include="Domain\MethodTemplateTests.cs" />
+    <Compile Include="Domain\PropertyTemplateTests.cs" />
+    <Compile Include="Domain\CollectionTemplateTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
