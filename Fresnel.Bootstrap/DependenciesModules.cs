@@ -96,6 +96,8 @@ namespace Envivo.Fresnel.Bootstrap
         private Type[] GetEngineSingleInstanceTypes()
         {
             return new Type[] { 
+                typeof(Fresnel.Engine.Engine),
+
                 typeof(Fresnel.Engine.OuterObjectsIdentifier),
 
                 typeof(Fresnel.Engine.Observers.AbstractObserverBuilder),
