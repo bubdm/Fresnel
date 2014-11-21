@@ -71,7 +71,12 @@ namespace Envivo.Fresnel.Engine.Observers
             if (obj == null)
                 return _NullObserver;
 
-            var result = this.GetObserver(obj);
+            var template = _TemplateCache.GetTemplate(objectType);
+            var tClass = template as ClassTemplate;
+            var id = _ObjectIdResolver.GetId(obj, tClass);
+
+
+            var result = this.GetCachedObserver(obj, objectType);
             if (result == null)
             {
                 result = CreateAndCacheObserver(obj, objectType);
@@ -80,8 +85,12 @@ namespace Envivo.Fresnel.Engine.Observers
             return result;
         }
 
-        private BaseObjectObserver GetObserver(Guid id)
+        private BaseObjectObserver GetCachedObserver(object obj, Type objectType)
         {
+            var template = _TemplateCache.GetTemplate(objectType);
+            var tClass = template as ClassTemplate;
+            var id = _ObjectIdResolver.GetId(obj, tClass);
+
             var result = (BaseObjectObserver)_NonReferenceMap.TryGetValueOrNull(id) ??
                                              _ObjectMap.TryGetValueOrNull(id);
             return result;
@@ -99,7 +108,7 @@ namespace Envivo.Fresnel.Engine.Observers
             {
                 var key = _ObjectIdResolver.GetId(obj, tClass);
                 var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealObjectType);
-                _ObjectMap.Add(key,result);
+                _ObjectMap.Add(key, result);
                 MergeObjectsWithSameId(obj, result);
                 return result;
             }
