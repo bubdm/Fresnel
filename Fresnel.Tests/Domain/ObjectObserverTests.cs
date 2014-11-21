@@ -73,6 +73,25 @@ namespace Envivo.Fresnel.Tests.Domain
         }
 
         [Test()]
+        public void ShouldGetSameCachedObserver()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var poco = new SampleModel.Objects.PocoObject();
+
+            var observerCache = container.Resolve<ObserverCache>();
+
+            // Act:
+            var observer1 = observerCache.GetObserver(poco);
+
+            var observer2 = observerCache.GetObserver(poco);
+
+            // Assert:
+            Assert.AreSame(observer1, observer2);
+        }
+
+        [Test()]
         public void ShouldCreatePropertyObservers()
         {
             // Arrange:
