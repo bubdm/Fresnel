@@ -10,11 +10,11 @@ namespace Envivo.Fresnel.Engine.Observers
 
     public class ParameterObserverMapBuilder
     {
-        private Func<ParameterObserver> _ParameterObserverFactory;
+        private Func<MethodObserver, ParameterTemplate, ParameterObserver> _ParameterObserverFactory;
 
         public ParameterObserverMapBuilder
         (
-            Func<ParameterObserver> parameterObserverFactory
+            Func<MethodObserver, ParameterTemplate, ParameterObserver> parameterObserverFactory
         )
         {
             _ParameterObserverFactory = parameterObserverFactory;
@@ -27,7 +27,8 @@ namespace Envivo.Fresnel.Engine.Observers
             var tMethod = oMethod.TemplateAs<MethodTemplate>();
             foreach (var tParam in tMethod.Parameters.Values)
             {
-                var oParam = _ParameterObserverFactory();
+                var oParam = _ParameterObserverFactory(oMethod, tParam);
+                oParam.FinaliseConstruction();
                 results.Add(tParam.Name, oParam);
             }
 

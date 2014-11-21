@@ -18,7 +18,7 @@ namespace Envivo.Fresnel.Engine.Observers
         /// </summary>
         /// <param name="oProperty">The MethodObserver that owns this Parameter</param>
         /// <param name="tParameter">The ParameterTemplate that reflects the parameter</param>
-        internal ParameterObserver(MethodObserver oParentMethod, ParameterTemplate tParameter)
+        public ParameterObserver(MethodObserver oParentMethod, ParameterTemplate tParameter)
             : base(oParentMethod.OuterObject, tParameter)
         {
             this.OuterMethod = oParentMethod;
