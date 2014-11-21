@@ -142,7 +142,9 @@ namespace Envivo.Fresnel.Bootstrap
         {
             return new Type[] { 
                 typeof(Fresnel.Engine.Observers.ObserverCache),
-
+                typeof(Fresnel.Engine.Persistence.UnitOfWork),
+                typeof(Fresnel.Engine.IdentityMap),
+                typeof(Fresnel.Engine.UserSession),
             };
         }
 

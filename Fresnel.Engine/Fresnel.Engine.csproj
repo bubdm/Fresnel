@@ -49,6 +49,9 @@
     <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Commands\RemoveFromCollectionCommand.cs" />
     <Compile Include="Commands\AddToCollectionCommand.cs" />
+    <Compile Include="Persistence\UnitOfWork.cs" />
+    <Compile Include="Proxies\ProxyBuilder.cs" />
+    <Compile Include="UserSession.cs" />
     <None Include="Observers\ObserverCache.cs.broken" />
     <Compile Include="Observers\Methods\MethodObserverMapBuilder.cs" />
     <Compile Include="Observers\OuterObjectsIdentifier.cs" />
@@ -76,7 +79,7 @@
     <Compile Include="Observers\BaseObserver.cs" />
     <Compile Include="Observers\ObserverCache.cs" />
     <Compile Include="Observers\ObserverExtensions.cs" />
-    <Compile Include="Observers\IdentityMap.cs" />
+    <Compile Include="IdentityMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
