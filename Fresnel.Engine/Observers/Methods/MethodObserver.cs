@@ -7,21 +7,21 @@ namespace Envivo.Fresnel.Engine.Observers
     /// <summary>
     /// An Observer for a Method belonging to the Object
     /// </summary>
-    
+
     public class MethodObserver : BaseMemberObserver
     {
         private ParameterObserverMapBuilder _ParameterObserverMapBuilder;
 
-        private Lazy<ParameterObserverMap> _ParameterObserverMap;
+        private Lazy<ParameterObserverMap> _ParameterObservers;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="parentObject">The ObjectObserver that owns this Method</param>
         /// <param name="methodTemplate">The MethodTemplate that reflects the Method</param>
-        internal MethodObserver
+        public MethodObserver
         (
-            ObjectObserver oParent, 
+            ObjectObserver oParent,
             MethodTemplate tMethod,
             ParameterObserverMapBuilder parameterObserverMapBuilder
         )
@@ -30,19 +30,19 @@ namespace Envivo.Fresnel.Engine.Observers
             _ParameterObserverMapBuilder = parameterObserverMapBuilder;
         }
 
-        public override void FinaliseConstruction()
+        internal override void FinaliseConstruction()
         {
             base.FinaliseConstruction();
 
-            _ParameterObserverMap = new Lazy<ParameterObserverMap>(
-                                            ()=> _ParameterObserverMapBuilder.BuildFor(this),    
+            _ParameterObservers = new Lazy<ParameterObserverMap>(
+                                            () => _ParameterObserverMapBuilder.BuildFor(this),
                                             System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>
         /// A set of all Parameters that belong to this Method
         /// </summary>
-        public ParameterObserverMap Parameters { get; internal set; }
+        public ParameterObserverMap Parameters { get { return _ParameterObservers.Value; } }
 
 
         ///// <summary>
