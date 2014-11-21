@@ -39,7 +39,7 @@ namespace Envivo.Fresnel.Engine.Observers
             _MethodObserverMapBuilder = methodObserverMapBuilder;
         }
 
-        public override void FinaliseConstruction()
+        internal override void FinaliseConstruction()
         {
             base.FinaliseConstruction();
 

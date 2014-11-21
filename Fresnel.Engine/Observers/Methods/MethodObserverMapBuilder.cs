@@ -28,6 +28,8 @@ namespace Envivo.Fresnel.Engine.Observers
             foreach (var tMethod in tClass.Methods.Values)
             {
                 var oMethod = _MethodObserverFactory(oParent, tMethod);
+                oMethod.FinaliseConstruction();
+
                 results.Add(tMethod.Name, oMethod);
             }
 
@@ -42,6 +44,8 @@ namespace Envivo.Fresnel.Engine.Observers
             foreach (var tMethod in tClass.StaticMethods.Values)
             {
                 var oMethod = _MethodObserverFactory(oParent, tMethod);
+                oMethod.FinaliseConstruction();
+
                 results.Add(tMethod.Name, oMethod);
             }
 

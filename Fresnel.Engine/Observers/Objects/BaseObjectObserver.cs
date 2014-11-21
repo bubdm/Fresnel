@@ -27,7 +27,7 @@ namespace Envivo.Fresnel.Engine.Observers
 
         }
 
-        public override void FinaliseConstruction()
+        internal override void FinaliseConstruction()
         {
             base.FinaliseConstruction();
 

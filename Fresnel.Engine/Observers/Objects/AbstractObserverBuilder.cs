@@ -37,7 +37,7 @@ namespace Envivo.Fresnel.Engine.Observers
         /// <summary>
         /// Returns a newly created Observer, based on the Type of the given Object
         /// </summary>
-        public BaseObjectObserver BuildFor(object obj, Type objectType, object objectId)
+        public BaseObjectObserver BuildFor(object obj, Type objectType)
         {
             var template = _TemplateCache.GetTemplate(objectType);
             BaseObjectObserver result = null;
@@ -58,6 +58,8 @@ namespace Envivo.Fresnel.Engine.Observers
             {
                 result = this.CreateEnumObserver(obj, objectType, (EnumTemplate)template);
             }
+
+            result.FinaliseConstruction();
 
             return result;
         }

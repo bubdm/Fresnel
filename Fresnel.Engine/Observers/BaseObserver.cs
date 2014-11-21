@@ -113,7 +113,7 @@ namespace Envivo.Fresnel.Engine.Observers
             return _CreatedAt < timePoint;
         }
 
-        public virtual void FinaliseConstruction()
+        internal virtual void FinaliseConstruction()
         {
         }
 
