@@ -35,13 +35,6 @@ namespace Envivo.Fresnel.Introspection.Templates
             _DynamicMethodBuilder = dynamicMethodBuilder;
             _TemplateCache = templateCache;
             _BackingFieldIdentifier = backingFieldIdentifier;
-        }
-
-        internal override void FinaliseConstruction()
-        {
-            base.FinaliseConstruction();
-
-            _Attribute = this.Attributes.Get<PropertyAttribute>();
 
             _BackingField = new Lazy<FieldInfo>(
                                 () => _BackingFieldIdentifier.GetBackingField(this),
@@ -66,6 +59,13 @@ namespace Envivo.Fresnel.Introspection.Templates
             _RapidPropSet = new Lazy<RapidSet>(
                                 () => _DynamicMethodBuilder.BuildSetHandler(this.PropertyInfo),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+        }
+
+        internal override void FinaliseConstruction()
+        {
+            base.FinaliseConstruction();
+
+            _Attribute = this.Attributes.Get<PropertyAttribute>();
         }
 
         private IClassTemplate DetermineInnerClass()

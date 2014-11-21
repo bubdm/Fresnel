@@ -30,13 +30,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             _DynamicMethodBuilder = dynamicMethodBuilder;
             _ParameterTemplateMapBuilder = parameterTemplateMapBuilder;
-        }
-
-        internal override void FinaliseConstruction()
-        {
-            base.FinaliseConstruction();
-
-            _Attribute = this.Attributes.Get<MethodAttribute>();
 
             _RapidMethod = new Lazy<RapidMethod>(
                                 () => _DynamicMethodBuilder.BuildMethodHandler(this.MethodInfo),
@@ -45,6 +38,13 @@ namespace Envivo.Fresnel.Introspection.Templates
             _Parameters = new Lazy<ParameterTemplateMap>(
                                 () => _ParameterTemplateMapBuilder.BuildFor(this),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+        }
+
+        internal override void FinaliseConstruction()
+        {
+            base.FinaliseConstruction();
+
+            _Attribute = this.Attributes.Get<MethodAttribute>();
         }
 
         /// <summary>

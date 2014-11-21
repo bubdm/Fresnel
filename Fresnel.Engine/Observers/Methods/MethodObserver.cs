@@ -28,11 +28,6 @@ namespace Envivo.Fresnel.Engine.Observers
             : base(oParent, tMethod)
         {
             _ParameterObserverMapBuilder = parameterObserverMapBuilder;
-        }
-
-        internal override void FinaliseConstruction()
-        {
-            base.FinaliseConstruction();
 
             _ParameterObservers = new Lazy<ParameterObserverMap>(
                                             () => _ParameterObserverMapBuilder.BuildFor(this),

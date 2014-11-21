@@ -22,6 +22,10 @@ namespace Envivo.Fresnel.Introspection.Templates
         )
         {
             _TemplateCache = templateCache;
+
+            _InnerClass = new Lazy<IClassTemplate>(
+                                    () => this.DetermineInnerClass(),
+                                    System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>
@@ -84,15 +88,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         public bool CanAccept(Type type)
         {
             return type.IsDerivedFrom(this.ParameterType);
-        }
-
-        internal override void FinaliseConstruction()
-        {
-            base.FinaliseConstruction();
-
-            _InnerClass = new Lazy<IClassTemplate>(
-                                    () => this.DetermineInnerClass(),
-                                    System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         private IClassTemplate DetermineInnerClass()

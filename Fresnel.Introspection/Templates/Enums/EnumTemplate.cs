@@ -22,11 +22,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         )
         {
             _EnumItemTemplateMapBuilder = enumItemTemplateMapBuilder;
-        }
-
-        internal override void FinaliseConstruction()
-        {
-            base.FinaliseConstruction();
 
             _EnumItemTemplateMap = new Lazy<EnumItemTemplateMap>(
                                 () => _EnumItemTemplateMapBuilder.BuildFor(this),

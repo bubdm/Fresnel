@@ -41,6 +41,18 @@ namespace Envivo.Fresnel.Introspection.Templates
                     trackingPropertiesIdentifier)
         {
             _TemplateCache = templateCache;
+
+            _InnerClass = new Lazy<ClassTemplate>(
+                                    () => this.DetermineInnerClass(),
+                                    System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+
+            _AddMethods = new Lazy<List<MethodTemplate>>(
+                                    () => this.DetermineAddMethods(),
+                                    System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+
+            _RemoveMethods = new Lazy<List<MethodTemplate>>(
+                                    () => this.DetermineRemoveMethods(),
+                                    System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         internal override void FinaliseConstruction()
@@ -54,18 +66,6 @@ namespace Envivo.Fresnel.Introspection.Templates
             {
                 this.FriendlyName = string.Concat("Collection of '", this.ElementType.Name.CreateFriendlyName(), "'");
             }
-
-            _InnerClass = new Lazy<ClassTemplate>(
-                                    () => this.DetermineInnerClass(),
-                                    System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
-
-            _AddMethods = new Lazy<List<MethodTemplate>>(
-                                    () => this.DetermineAddMethods(),
-                                    System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
-
-            _RemoveMethods = new Lazy<List<MethodTemplate>>(
-                                    () => this.DetermineRemoveMethods(),
-                                    System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>

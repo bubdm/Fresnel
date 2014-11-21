@@ -37,11 +37,6 @@ namespace Envivo.Fresnel.Engine.Observers
         {
             _PropertyObserverMapBuilder = propertyObserverMapBuilder;
             _MethodObserverMapBuilder = methodObserverMapBuilder;
-        }
-
-        internal override void FinaliseConstruction()
-        {
-            base.FinaliseConstruction();
 
             _Properties = new Lazy<PropertyObserverMap>(
                                 () => _PropertyObserverMapBuilder.BuildFor(this),

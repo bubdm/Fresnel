@@ -54,17 +54,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             _MethodTemplateMapBuilder = methodTemplateMapBuilder;
             _StaticMethodTemplateMapBuilder = staticMethodTemplateMapBuilder;
             _TrackingPropertiesIdentifier = trackingPropertiesIdentifier;
-        }
 
-        internal override void FinaliseConstruction()
-        {
-            base.FinaliseConstruction();
-
-            this.CreateNames();
-
-            this.DetermineInterfaces();
-
-            _ObjectInstanceAttr = this.Attributes.Get<ObjectInstanceAttribute>();
 
             _RapidCtor = new Lazy<RapidCtor>(
                                 () => _DynamicMethodBuilder.BuildCreateObjectHandler(this.RealObjectType),
@@ -105,6 +95,17 @@ namespace Envivo.Fresnel.Introspection.Templates
             _AuditProperty = new Lazy<PropertyTemplate>(
                                 () => _TrackingPropertiesIdentifier.DetermineAuditProperty(this, _ObjectInstanceAttr),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+        }
+
+        internal override void FinaliseConstruction()
+        {
+            base.FinaliseConstruction();
+
+            this.CreateNames();
+
+            this.DetermineInterfaces();
+
+            _ObjectInstanceAttr = this.Attributes.Get<ObjectInstanceAttribute>();
         }
 
         private void CreateNames()

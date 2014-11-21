@@ -25,12 +25,6 @@ namespace Envivo.Fresnel.Engine.Observers
             : base(obj, objectType, sourceTemplate)
         {
 
-        }
-
-        internal override void FinaliseConstruction()
-        {
-            base.FinaliseConstruction();
-
             _OuterCollections = new Lazy<List<CollectionObserver>>(
                                     () => new List<CollectionObserver>(),
                                     System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
