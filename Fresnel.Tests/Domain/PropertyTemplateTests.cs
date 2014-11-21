@@ -55,7 +55,7 @@ namespace Envivo.Fresnel.Tests.Domain
             // Act:
             var newValue = DateTime.Now.ToString();
             setCommand.Invoke(template, pocoObject, "NormalText", newValue);
-            
+
             // Assert:
             Assert.AreEqual(newValue, pocoObject.NormalText);
         }
@@ -98,6 +98,32 @@ namespace Envivo.Fresnel.Tests.Domain
 
             // Assert:
             Assert.AreEqual(newValue, pocoObject.NormalText);
+        }
+
+        [Test()]
+        public void ShouldIdentifyInheritedProperties()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+            var getCommand = container.Resolve<GetPropertyCommand>();
+
+            var subProduct = new SampleModel.Objects.SubProductA()
+            {
+                Name = "Test_" + Environment.TickCount,
+                Description = "1234",
+                Discount = 1234
+            };
+
+            var template = (ClassTemplate)templateCache.GetTemplate(subProduct.GetType());
+
+            // Act:
+            var description = getCommand.Invoke(template, subProduct, "Description");
+            var discount = getCommand.Invoke(template, subProduct, "Discount");
+
+            // Assert:
+            Assert.AreEqual(subProduct.Description, description);
+            Assert.AreEqual(subProduct.Discount, discount);
         }
 
     }
