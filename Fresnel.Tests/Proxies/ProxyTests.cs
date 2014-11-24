@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.Proxies;
+using System.ComponentModel;
 
 namespace Envivo.Fresnel.Tests.Proxies
 {
@@ -29,12 +30,10 @@ namespace Envivo.Fresnel.Tests.Proxies
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
             var proxyCache = container.Resolve<ProxyCache>();
 
-            var poco = new SampleModel.Objects.PocoObject();
-
             // Act:
+            var poco = new SampleModel.Objects.PocoObject();
             var pocoProxy = proxyCache.GetProxy(poco);
             var proxy = pocoProxy as IFresnelProxy;
 
@@ -74,23 +73,31 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    Assert.IsTrue(proxy.Meta.ChangeTracker.IsNewInstance);
         //}
 
-        //[Test]
-        //public void ShouldExposeINPC()
-        //{
-        //    var poco = new SampleModel.Objects.PocoObject();
-        //    var pocoProxy = My.Instance.Engine.ViewModelCache.GetViewModel(poco);
-        //    var proxy = pocoProxy as INotifyPropertyChanged;
+        [Test]
+        public void ShouldAttachINotifyPropertyChangedToProxy()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
 
-        //    var propertyChanges = new List<string>();
-        //    proxy.PropertyChanged += delegate(object sender, PropertyChangedEventArgs e)
-        //    {
-        //        propertyChanges.Add(e.PropertyName);
-        //    };
+            // Act:
+            var poco = new SampleModel.Objects.PocoObject();
+            var pocoProxy = proxyCache.GetProxy(poco);
+            var proxy = pocoProxy as INotifyPropertyChanged;
 
-        //    pocoProxy.FormattedText = "This is a new string";
+            // Assert:
+            Assert.IsNotNull(pocoProxy);
 
-        //    Assert.AreNotEqual(0, propertyChanges.Count);
-        //}
+            var propertyChanges = new List<string>();
+            proxy.PropertyChanged += delegate(object sender, PropertyChangedEventArgs e)
+            {
+                propertyChanges.Add(e.PropertyName);
+            };
+
+            pocoProxy.FormattedText = "This is a new string";
+
+            Assert.AreNotEqual(0, propertyChanges.Count);
+        }
 
         //[Test]
         //public void ShouldReportPropertyChanges()
@@ -152,21 +159,22 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    Assert.IsTrue(proxy.Meta.ChangeTracker.HasDirtyChildren);
         //}
 
-        //[Test]
-        //public void ShouldDetectMethodInvoke()
-        //{
-        //    var poco = new SampleModel.Objects.PocoObject();
-        //    var pocoProxy = My.Instance.Engine.ViewModelCache.GetViewModel(poco);
-        //    var proxy = pocoProxy as IFresnelProxy;
+        [Test]
+        public void ShouldDetectMethodInvoke()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
 
-        //    // This ensures that the Method can be invoked, and not complain:
-        //    My.Instance.Session.Save(poco);
+            // Act:
+            var poco = new SampleModel.Objects.PocoObject();
+            var pocoProxy = proxyCache.GetProxy(poco);
 
-        //    pocoProxy.AddSomeChildObjects();
-        //    Assert.AreEqual(3, pocoProxy.ChildObjects.Count);
+            pocoProxy.AddSomeChildObjects();
 
-        //    Assert.IsTrue(proxy.Meta.ChangeTracker.HasDirtyChildren);
-        //}
+            // Assert:
+            Assert.AreEqual(3, pocoProxy.ChildObjects.Count);
+        }
 
         //[Test]
         //public void ShouldDetectNumberOfDirtyObjects()
@@ -206,15 +214,21 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    Assert.IsNotNull(pocoProxy.ChildObjects);
         //}
 
-        //[Test]
-        //[ExpectedException(typeof(ArgumentOutOfRangeException))]
-        //public void ShouldDenyViewModelsForSystemTypes()
-        //{
-        //    // TODO : Change this to System.MulticastDelegate
-        //    var o = new object();
+        [Test]
+        public void ShouldDenyProxiesForSystemTypes()
+        {
+            // TODO : Change this to System.MulticastDelegate
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
 
-        //    var vm = My.Instance.Engine.ViewModelCache.GetViewModel(o);
-        //}
+            // Act:
+            var obj = new object();
+
+            // Assert:
+            Assert.Throws(typeof(ArgumentOutOfRangeException),
+                            () => proxyCache.GetProxy(obj));
+        }
 
         //[Test]
         //[ExpectedException(typeof(ArgumentOutOfRangeException))]
