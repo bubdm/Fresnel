@@ -50,8 +50,8 @@
     <Compile Include="Commands\RemoveFromCollectionCommand.cs" />
     <Compile Include="Commands\AddToCollectionCommand.cs" />
     <Compile Include="Persistence\UnitOfWork.cs" />
-    <Compile Include="Proxies\ProxyBuilder.cs" />
     <Compile Include="Engine.cs" />
+    <Compile Include="IProxyBuilder.cs" />
     <Compile Include="UserSession.cs" />
     <None Include="Observers\ObserverCache.cs.broken" />
     <Compile Include="Observers\Methods\MethodObserverMapBuilder.cs" />

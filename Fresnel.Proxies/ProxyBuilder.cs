@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Envivo.Fresnel.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Envivo.Fresnel.Core.Proxies
+namespace Envivo.Fresnel.Proxies
 {
-    public class ProxyBuilder
+    public class ProxyBuilder : IProxyBuilder
     {
 
         public T BuildFor<T>(T obj)

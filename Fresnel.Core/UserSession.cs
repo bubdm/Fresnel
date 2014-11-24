@@ -9,19 +9,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.DomainTypes.Interfaces;
-using Envivo.Fresnel.Core.Proxies;
 
 namespace Envivo.Fresnel.Core
 {
     public class UserSession
     {
         private CreateObjectCommand _CreateObjectCommand;
-        private ProxyBuilder _ProxyBuilder;
+        private IProxyBuilder _ProxyBuilder;
 
         public UserSession
             (
             CreateObjectCommand createObjectCommand,
-            ProxyBuilder proxyBuilder
+            IProxyBuilder proxyBuilder
             )
         {
             _CreateObjectCommand = createObjectCommand;

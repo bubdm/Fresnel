@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.DomainTypes.Interfaces;
-using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.Introspection.Assemblies;
 using System.Reflection;
 
