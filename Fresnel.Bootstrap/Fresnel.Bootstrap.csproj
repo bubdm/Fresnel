@@ -50,13 +50,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fresnel.Core\Fresnel.Core.csproj">
+      <Project>{06b6fc1c-5e9d-442a-a643-2eb1a6a53809}</Project>
+      <Name>Fresnel.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fresnel.DomainTypes\Fresnel.DomainTypes.csproj">
       <Project>{beec9a50-f328-43d1-aaf1-f818aa56653e}</Project>
       <Name>Fresnel.DomainTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fresnel.Engine\Fresnel.Engine.csproj">
-      <Project>{06b6fc1c-5e9d-442a-a643-2eb1a6a53809}</Project>
-      <Name>Fresnel.Engine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fresnel.Introspection\Fresnel.Introspection.csproj">
       <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>

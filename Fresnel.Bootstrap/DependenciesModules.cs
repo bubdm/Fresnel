@@ -96,19 +96,19 @@ namespace Envivo.Fresnel.Bootstrap
         private Type[] GetEngineSingleInstanceTypes()
         {
             return new Type[] { 
-                typeof(Fresnel.Engine.Engine),
+                typeof(Fresnel.Core.Engine),
 
-                typeof(Fresnel.Engine.OuterObjectsIdentifier),
+                typeof(Fresnel.Core.OuterObjectsIdentifier),
 
-                typeof(Fresnel.Engine.Observers.AbstractObserverBuilder),
-                typeof(Fresnel.Engine.Observers.MethodObserverBuilder),
-                typeof(Fresnel.Engine.Observers.MethodObserverMapBuilder),
-                typeof(Fresnel.Engine.Observers.ObjectIdResolver),
-                typeof(Fresnel.Engine.Observers.ParameterObserverMapBuilder),
-                typeof(Fresnel.Engine.Observers.PropertyObserverBuilder),
-                typeof(Fresnel.Engine.Observers.PropertyObserverMapBuilder),
+                typeof(Fresnel.Core.Observers.AbstractObserverBuilder),
+                typeof(Fresnel.Core.Observers.MethodObserverBuilder),
+                typeof(Fresnel.Core.Observers.MethodObserverMapBuilder),
+                typeof(Fresnel.Core.Observers.ObjectIdResolver),
+                typeof(Fresnel.Core.Observers.ParameterObserverMapBuilder),
+                typeof(Fresnel.Core.Observers.PropertyObserverBuilder),
+                typeof(Fresnel.Core.Observers.PropertyObserverMapBuilder),
 
-                typeof(Fresnel.Engine.Observers.NullObserver),
+                typeof(Fresnel.Core.Observers.NullObserver),
             };
         }
 
@@ -131,23 +131,23 @@ namespace Envivo.Fresnel.Bootstrap
         private Type[] GetEnginePerDependencyInstanceTypes()
         {
             return new Type[] { 
-                typeof(Fresnel.Engine.Observers.CollectionObserver),
-                typeof(Fresnel.Engine.Observers.EnumObserver),
-                typeof(Fresnel.Engine.Observers.MethodObserver),
-                typeof(Fresnel.Engine.Observers.NonReferenceObserver),
-                typeof(Fresnel.Engine.Observers.ObjectObserver),
-                typeof(Fresnel.Engine.Observers.ObjectPropertyObserver),
-                typeof(Fresnel.Engine.Observers.ParameterObserver),
+                typeof(Fresnel.Core.Observers.CollectionObserver),
+                typeof(Fresnel.Core.Observers.EnumObserver),
+                typeof(Fresnel.Core.Observers.MethodObserver),
+                typeof(Fresnel.Core.Observers.NonReferenceObserver),
+                typeof(Fresnel.Core.Observers.ObjectObserver),
+                typeof(Fresnel.Core.Observers.ObjectPropertyObserver),
+                typeof(Fresnel.Core.Observers.ParameterObserver),
             };
         }
 
         private Type[] GetPerSessionInstanceTypes()
         {
             return new Type[] { 
-                typeof(Fresnel.Engine.Observers.ObserverCache),
-                typeof(Fresnel.Engine.Persistence.UnitOfWork),
-                typeof(Fresnel.Engine.IdentityMap),
-                typeof(Fresnel.Engine.UserSession),
+                typeof(Fresnel.Core.Observers.ObserverCache),
+                typeof(Fresnel.Core.Persistence.UnitOfWork),
+                typeof(Fresnel.Core.IdentityMap),
+                typeof(Fresnel.Core.UserSession),
             };
         }
 

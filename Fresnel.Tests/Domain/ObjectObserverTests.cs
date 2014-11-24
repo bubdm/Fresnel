@@ -13,7 +13,7 @@ using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.Engine.Observers;
+using Envivo.Fresnel.Core.Observers;
 using System.Reflection;
 using System.Collections.Generic;
 

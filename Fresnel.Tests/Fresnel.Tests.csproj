@@ -60,9 +60,9 @@
       <Project>{b3122093-8ebb-423b-a4ed-951752690288}</Project>
       <Name>Fresnel.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fresnel.Engine\Fresnel.Engine.csproj">
+    <ProjectReference Include="..\Fresnel.Core\Fresnel.Core.csproj">
       <Project>{06b6fc1c-5e9d-442a-a643-2eb1a6a53809}</Project>
-      <Name>Fresnel.Engine</Name>
+      <Name>Fresnel.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fresnel.Introspection\Fresnel.Introspection.csproj">
       <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>
