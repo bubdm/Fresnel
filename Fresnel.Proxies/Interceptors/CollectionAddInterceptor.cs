@@ -11,12 +11,11 @@ namespace Envivo.Fresnel.Proxies
 
     public class CollectionAddInterceptor : IInterceptor, IDisposable
     {
-        private ProxyCache _ProxyCache;
-
-        public CollectionAddInterceptor(ProxyCache ProxyCache)
+        public CollectionAddInterceptor()
         {
-            _ProxyCache = ProxyCache;
         }
+
+        public ProxyCache ProxyCache { get; set; }
 
         public void Intercept(IInvocation invocation)
         {
@@ -27,7 +26,7 @@ namespace Envivo.Fresnel.Proxies
             if (item != null &&
                 item.GetType().IsNonReference() == false)
             {
-                var oItem = (ObjectObserver)((IFresnelProxy)_ProxyCache.GetProxy(item)).Meta;
+                var oItem = (ObjectObserver)((IFresnelProxy)this.ProxyCache.GetProxy(item)).Meta;
                 var oCollectionProp = this.DetermineOuterProperty(oCollection);
 
                 this.PreInvoke(invocation, oCollection, oCollectionProp, oItem);
@@ -38,7 +37,7 @@ namespace Envivo.Fresnel.Proxies
                     invocation.GetType().IsNonReference() == false)
                 {
                     // It's possible that the Add() method returns a different object:
-                    oAddedItem = (ObjectObserver)((IFresnelProxy)_ProxyCache.GetProxy(invocation.ReturnValue)).Meta;
+                    oAddedItem = (ObjectObserver)((IFresnelProxy)this.ProxyCache.GetProxy(invocation.ReturnValue)).Meta;
                     //oAddedItem.IsReflectionEnabled = false;
                 }
 
@@ -148,7 +147,7 @@ namespace Envivo.Fresnel.Proxies
 
         public void Dispose()
         {
-            _ProxyCache = null;
+            this.ProxyCache = null;
         }
 
     }

@@ -12,12 +12,11 @@ namespace Envivo.Fresnel.Proxies
 
     public class PropertySetInterceptor : IInterceptor, IDisposable
     {
-        private ProxyCache _ProxyCache;
-
-        public PropertySetInterceptor(ProxyCache ProxyCache)
+        public PropertySetInterceptor()
         {
-            _ProxyCache = ProxyCache;
         }
+
+        public ProxyCache ProxyCache { get; set; }
 
         public void Intercept(IInvocation invocation)
         {
@@ -55,7 +54,7 @@ namespace Envivo.Fresnel.Proxies
             var newValue = invocation.Arguments[0];
             if (newValue != null)
             {
-                oValue = ((IFresnelProxy)_ProxyCache.GetProxy(newValue)).Meta;
+                oValue = ((IFresnelProxy)this.ProxyCache.GetProxy(newValue)).Meta;
             }
         }
 
@@ -111,7 +110,7 @@ namespace Envivo.Fresnel.Proxies
 
             //try
             //{
-            //    var oOriginalValue = _ProxyCache.GetObserverForProxyUse(originalValue);
+            //    var oOriginalValue = this.ProxyCache.GetObserverForProxyUse(originalValue);
 
             //    // We're replacing the value, so disassociate the existing value from this property:
             //    if (oOriginalValue != null)
@@ -176,7 +175,7 @@ namespace Envivo.Fresnel.Proxies
 
         public void Dispose()
         {
-            _ProxyCache = null;
+            this.ProxyCache = null;
         }
 
     }

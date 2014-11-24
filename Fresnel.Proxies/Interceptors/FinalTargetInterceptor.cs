@@ -8,12 +8,12 @@ namespace Envivo.Fresnel.Proxies
     /// </summary>
     public class FinalTargetInterceptor : IInterceptor
     {
-        private ProxyCache _ProxyCache;
 
-        public FinalTargetInterceptor(ProxyCache proxyCache)
+        public FinalTargetInterceptor()
         {
-            _ProxyCache = proxyCache;
         }
+
+        public ProxyCache ProxyCache { get; set; }
 
         public void Intercept(IInvocation invocation)
         {

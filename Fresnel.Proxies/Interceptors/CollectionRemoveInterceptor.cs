@@ -12,12 +12,11 @@ namespace Envivo.Fresnel.Proxies
 
     public class CollectionRemoveInterceptor : IInterceptor, IDisposable
     {
-        private ProxyCache _ProxyCache;
-
-        public CollectionRemoveInterceptor(ProxyCache ProxyCache)
+        public CollectionRemoveInterceptor()
         {
-            _ProxyCache = ProxyCache;
         }
+
+        public ProxyCache ProxyCache { get; set; }
 
         public void Intercept(IInvocation invocation)
         {
@@ -27,7 +26,7 @@ namespace Envivo.Fresnel.Proxies
             if (item != null &&
                 item.GetType().IsNonReference() == false)
             {
-                var oItem = (ObjectObserver)((IFresnelProxy)_ProxyCache.GetProxy(item)).Meta;
+                var oItem = (ObjectObserver)((IFresnelProxy)this.ProxyCache.GetProxy(item)).Meta;
                 var oCollectionProp = this.DetermineOuterProperty(oCollection);
 
                 this.PreInvoke(oCollection, oCollectionProp, oItem);
@@ -153,7 +152,7 @@ namespace Envivo.Fresnel.Proxies
 
         public void Dispose()
         {
-            _ProxyCache = null;
+            this.ProxyCache = null;
         }
 
     }

@@ -15,12 +15,11 @@ namespace Envivo.Fresnel.Proxies
 
     public class MethodInvokeInterceptor : IInterceptor
     {
-        private ProxyCache _ProxyCache;
-
-        public MethodInvokeInterceptor(ProxyCache ProxyCache)
+        public MethodInvokeInterceptor()
         {
-            _ProxyCache = ProxyCache;
         }
+
+        public ProxyCache ProxyCache { get; set; }
 
         public void Intercept(IInvocation invocation)
         {
@@ -131,7 +130,7 @@ namespace Envivo.Fresnel.Proxies
 
             //if (invocation.InvocationTarget != null)
             //{
-            //    oTemp = _ProxyCache.GetObserverForProxyUse(invocation.InvocationTarget);
+            //    oTemp = this.ProxyCache.GetObserverForProxyUse(invocation.InvocationTarget);
             //    oTemp.ChangeTracker.DetectChanges();
             //}
 
@@ -143,7 +142,7 @@ namespace Envivo.Fresnel.Proxies
             //        if (argValue == null)
             //            continue;
 
-            //        oTemp = _ProxyCache.GetObserverForProxyUse(invocation.GetArgumentValue(i));
+            //        oTemp = this.ProxyCache.GetObserverForProxyUse(invocation.GetArgumentValue(i));
             //        oTemp.ChangeTracker.DetectChanges();
             //    }
             //}
@@ -162,7 +161,7 @@ namespace Envivo.Fresnel.Proxies
 
         public void Dispose()
         {
-            _ProxyCache = null;
+            this.ProxyCache = null;
         }
 
     }

@@ -11,14 +11,14 @@ namespace Envivo.Fresnel.Proxies
     /// </summary>
     public class PrimaryInterceptor : IInterceptor, IDisposable
     {
-        private ProxyCache _ProxyCache;
         private CanBeProxiedSpecification _CanBeProxiedSpecification;
 
-        public PrimaryInterceptor(ProxyCache proxyCache, CanBeProxiedSpecification canBeProxiedSpecification)
+        public PrimaryInterceptor(CanBeProxiedSpecification canBeProxiedSpecification)
         {
-            _ProxyCache = proxyCache;
             _CanBeProxiedSpecification = canBeProxiedSpecification;
         }
+
+        public ProxyCache ProxyCache { get; set; }
 
         public void Intercept(IInvocation invocation)
         {
@@ -69,7 +69,7 @@ namespace Envivo.Fresnel.Proxies
                 var check = _CanBeProxiedSpecification.IsSatisfiedBy(arg);
                 if (check.Passed)
                 {
-                    invocation.SetArgumentValue(i, _ProxyCache.GetProxy(arg));
+                    invocation.SetArgumentValue(i, this.ProxyCache.GetProxy(arg));
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace Envivo.Fresnel.Proxies
             var check = _CanBeProxiedSpecification.IsSatisfiedBy(invocation.ReturnValue);
             if (check.Passed)
             {
-                invocation.ReturnValue = _ProxyCache.GetProxy(invocation.ReturnValue);
+                invocation.ReturnValue = this.ProxyCache.GetProxy(invocation.ReturnValue);
             }
             else
             {
@@ -94,7 +94,7 @@ namespace Envivo.Fresnel.Proxies
         public void Dispose()
         {
             _CanBeProxiedSpecification = null;
-            _ProxyCache = null;
+            this.ProxyCache = null;
         }
 
     }

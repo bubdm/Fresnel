@@ -11,12 +11,11 @@ namespace Envivo.Fresnel.Proxies
 
     public class PropertyGetInterceptor : IInterceptor, IDisposable
     {
-        private ProxyCache _ProxyCache;
-
-        public PropertyGetInterceptor(ProxyCache ProxyCache)
+        public PropertyGetInterceptor()
         {
-            _ProxyCache = ProxyCache;
         }
+
+        public ProxyCache ProxyCache { get; set; }
 
         public void Intercept(IInvocation invocation)
         {
@@ -69,7 +68,7 @@ namespace Envivo.Fresnel.Proxies
             if (oProperty.IsLazyLoaded)
                 return;
 
-            //if (_ProxyCache.Configuration.IsAutoLoadingEnabled)
+            //if (this.ProxyCache.Configuration.IsAutoLoadingEnabled)
             //{
             //    // This should allow Nhibernate proxies to kick in:
             //    oProperty.IsLazyLoadPending = false;
@@ -94,7 +93,7 @@ namespace Envivo.Fresnel.Proxies
             if (returnValue == null)
                 return;
 
-            var oReturnValue = (ObjectObserver)((IFresnelProxy)_ProxyCache.GetProxy(returnValue)).Meta;
+            var oReturnValue = (ObjectObserver)((IFresnelProxy)this.ProxyCache.GetProxy(returnValue)).Meta;
             oReturnValue.AssociateWith(oProperty);
         }
 
@@ -110,7 +109,7 @@ namespace Envivo.Fresnel.Proxies
 
         public void Dispose()
         {
-            _ProxyCache = null;
+            this.ProxyCache = null;
         }
 
     }
