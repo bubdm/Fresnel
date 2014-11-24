@@ -43,6 +43,7 @@
     <Compile Include="Domain\MethodTemplateTests.cs" />
     <Compile Include="Domain\PropertyTemplateTests.cs" />
     <Compile Include="Domain\CollectionTemplateTests.cs" />
+    <Compile Include="Proxies\ProxyTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -67,6 +68,10 @@
     <ProjectReference Include="..\Fresnel.Introspection\Fresnel.Introspection.csproj">
       <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>
       <Name>Fresnel.Introspection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Proxies\Fresnel.Proxies.csproj">
+      <Project>{7975aea4-b516-4fd9-9b86-d6334833866f}</Project>
+      <Name>Fresnel.Proxies</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fresnel.SampleModel\Fresnel.SampleModel.csproj">
       <Project>{77810A26-5586-42C5-B05A-4C06DB029FD2}</Project>

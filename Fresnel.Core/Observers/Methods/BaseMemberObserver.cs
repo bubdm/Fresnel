@@ -72,7 +72,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// <summary>
         /// The time when this Member was last accessed
         /// </summary>
-        internal DateTime LastAccessedAtUtc { get; set; }
+        public DateTime LastAccessedAtUtc { get; set; }
 
         ///// <summary>
         ///// Returns TRUE if this Member can be accessed/invoked on another thread

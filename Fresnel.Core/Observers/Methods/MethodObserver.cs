@@ -60,7 +60,7 @@ namespace Envivo.Fresnel.Core.Observers
         //    }
         //}
 
-        public DateTime LastInvokedAtUtc { get; internal set; }
+        public DateTime LastInvokedAtUtc { get; set; }
 
         ///// <summary>
         ///// Returns a token (Memento) for the Observer

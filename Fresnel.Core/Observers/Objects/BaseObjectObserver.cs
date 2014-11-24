@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// </summary>
         /// <remarks>In any object graph, it is possible for a single object to be referenced from more than one object.
         /// This property allows a reference to each of those objects.</remarks>
-        internal IEnumerable<CollectionObserver> OuterCollections
+        public IEnumerable<CollectionObserver> OuterCollections
         {
             get { return _OuterCollections.Value; }
         }
@@ -53,7 +53,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// </summary>
         /// <remarks>In any object graph, it is possible for a single object to be referenced from more than one object (via a Property).
         /// This property allows a reference to each of those Properties.</remarks>
-        internal IEnumerable<ObjectPropertyObserver> OuterProperties
+        public IEnumerable<ObjectPropertyObserver> OuterProperties
         {
             get { return _OuterProperties.Value; }
         }
@@ -64,12 +64,16 @@ namespace Envivo.Fresnel.Core.Observers
         /// <value>A generic Dictionary of ParameterObserver</value>
         /// <remarks>In any object graph, it is possible for a single object to be referenced from more than one object (via a Parameter).
         /// This property allows a reference to each of those Parameters.</remarks>
-        internal IEnumerable<ParameterObserver> OuterParameters
+        public IEnumerable<ParameterObserver> OuterParameters
         {
             get { return _OuterParameters.Value; }
         }
 
-        internal void AssociateWith(CollectionObserver oOuterCollection)
+        /// <summary>
+        /// Associates this Observer with the given owner
+        /// </summary>
+        /// <param name="oOuterCollection"></param>
+        public void AssociateWith(CollectionObserver oOuterCollection)
         {
             var outerCollections = _OuterCollections.Value;
             if (outerCollections.DoesNotContain(oOuterCollection))
@@ -78,7 +82,11 @@ namespace Envivo.Fresnel.Core.Observers
             }
         }
 
-        internal void DisassociateFrom(CollectionObserver oOuterCollection)
+        /// <summary>
+        /// Disassociates this Observer from the given owner
+        /// </summary>
+        /// <param name="oOuterCollection"></param>
+        public void DisassociateFrom(CollectionObserver oOuterCollection)
         {
             var outerCollections = _OuterCollections.Value;
             if (_OuterCollections.Value.Contains(oOuterCollection))
@@ -87,7 +95,11 @@ namespace Envivo.Fresnel.Core.Observers
             }
         }
 
-        internal void AssociateWith(ObjectPropertyObserver oOuterProperty)
+        /// <summary>
+        /// Associates this Observer with the given owner
+        /// </summary>
+        /// <param name="oOuterProperty"></param>
+        public void AssociateWith(ObjectPropertyObserver oOuterProperty)
         {
             var outerProperties = _OuterProperties.Value;
             if (outerProperties.DoesNotContain(oOuterProperty))
@@ -96,7 +108,11 @@ namespace Envivo.Fresnel.Core.Observers
             }
         }
 
-        internal void DisassociateFrom(ObjectPropertyObserver oOuterProperty)
+        /// <summary>
+        /// Disassociates this Observer from the given owner
+        /// </summary>
+        /// <param name="oOuterProperty"></param>
+        public void DisassociateFrom(ObjectPropertyObserver oOuterProperty)
         {
             var outerProperties = _OuterProperties.Value;
             if (outerProperties.Contains(oOuterProperty))
@@ -109,7 +125,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// Detaches this Object from any owners
         /// </summary>
 
-        internal void MakeOrphan()
+        public void MakeOrphan()
         {
             // NB: We're using a While loop to circumvent a "Collection was modified" exception:
 

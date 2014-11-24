@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using Autofac.Features.ResolveAnything;
+using Envivo.Fresnel.Core.Proxies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,10 @@ namespace Envivo.Fresnel.Bootstrap
         public IContainer Build()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterModule<DependenciesModules>();
+            this.RegisterMandatoryModules(builder);
+
+            // THIS SEEMS TO BE VERY SLOW, HENCE IT IS DISABLED:
+            //builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
             return builder.Build();
         }
@@ -29,17 +34,24 @@ namespace Envivo.Fresnel.Bootstrap
         public IContainer Build(IEnumerable<Module> dependencyModules)
         {
             var builder = new ContainerBuilder();
+            this.RegisterMandatoryModules(builder);
 
-            // Make sure we've got the Fresnel dependencies loaded:
-            builder.RegisterModule<DependenciesModules>();
-
-            // Now bolt in the consumer's dependencies:
+            // Now bolt in the Consumer's dependencies:
             foreach (var module in dependencyModules)
             {
                 builder.RegisterModule(module);
             }
 
             return builder.Build();
+        }
+
+        private void RegisterMandatoryModules(ContainerBuilder builder)
+        {
+            builder.RegisterModule<IntrospectionDependencies>();
+            builder.RegisterModule<CoreDependencies>();
+            builder.RegisterModule<ProxiesDependencies>();
+
+            builder.RegisterType<Proxies.ProxyBuilder>().As<IProxyBuilder>().SingleInstance();
         }
 
     }

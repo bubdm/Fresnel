@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,8 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interceptors\InterceptorSelector.cs" />
+    <Compile Include="Interceptors\CollectionAddInterceptor.cs" />
+    <Compile Include="Interceptors\CollectionRemoveInterceptor.cs" />
+    <Compile Include="Interceptors\FinalTargetInterceptor.cs" />
+    <Compile Include="Interceptors\MethodInvokeInterceptor.cs" />
+    <Compile Include="Interceptors\NotifyCollectionChangedInterceptor.cs" />
+    <Compile Include="Interceptors\NotifyPropertyChangedInterceptor.cs" />
+    <Compile Include="Interceptors\PrimaryInterceptor.cs" />
+    <Compile Include="Interceptors\PropertyGetInterceptor.cs" />
+    <Compile Include="Interceptors\PropertySetInterceptor.cs" />
+    <Compile Include="CanBeProxiedSpecification.cs" />
     <Compile Include="ProxyBuilder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fresnel.Configuration\Fresnel.Configuration.csproj">
@@ -55,10 +70,17 @@
       <Project>{beec9a50-f328-43d1-aaf1-f818aa56653e}</Project>
       <Name>Fresnel.DomainTypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Introspection\Fresnel.Introspection.csproj">
+      <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>
+      <Name>Fresnel.Introspection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fresnel.Utils\Fresnel.Utils.csproj">
       <Project>{3ba54d1e-0d73-4c83-a3c7-5fd199e0f468}</Project>
       <Name>Fresnel.Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

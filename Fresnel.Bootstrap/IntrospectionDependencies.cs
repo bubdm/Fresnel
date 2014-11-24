@@ -7,34 +7,20 @@ using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Bootstrap
 {
-    public class DependenciesModules : Module
+    public class IntrospectionDependencies : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterTypes(this.GetIntrospectionSingleInstanceTypes())
+            builder.RegisterTypes(this.GetSingleInstanceTypes())
                     .SingleInstance()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
-            builder.RegisterTypes(this.GetIntrospectionPerDependencyInstanceTypes())
+            builder.RegisterTypes(this.GetPerDependencyInstanceTypes())
                     .InstancePerDependency()
-                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
-
-            //-----
-
-            builder.RegisterTypes(this.GetEngineSingleInstanceTypes())
-                    .SingleInstance()
-                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
-
-            builder.RegisterTypes(this.GetEnginePerDependencyInstanceTypes())
-                    .InstancePerDependency()
-                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
-
-            builder.RegisterTypes(this.GetPerSessionInstanceTypes())
-                    .InstancePerLifetimeScope()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
         }
 
-        private Type[] GetIntrospectionSingleInstanceTypes()
+        private Type[] GetSingleInstanceTypes()
         {
             return new Type[] { 
                 typeof(Fresnel.Introspection.RealTypeResolver),
@@ -93,26 +79,7 @@ namespace Envivo.Fresnel.Bootstrap
             };
         }
 
-        private Type[] GetEngineSingleInstanceTypes()
-        {
-            return new Type[] { 
-                typeof(Fresnel.Core.Engine),
-
-                typeof(Fresnel.Core.OuterObjectsIdentifier),
-
-                typeof(Fresnel.Core.Observers.AbstractObserverBuilder),
-                typeof(Fresnel.Core.Observers.MethodObserverBuilder),
-                typeof(Fresnel.Core.Observers.MethodObserverMapBuilder),
-                typeof(Fresnel.Core.Observers.ObjectIdResolver),
-                typeof(Fresnel.Core.Observers.ParameterObserverMapBuilder),
-                typeof(Fresnel.Core.Observers.PropertyObserverBuilder),
-                typeof(Fresnel.Core.Observers.PropertyObserverMapBuilder),
-
-                typeof(Fresnel.Core.Observers.NullObserver),
-            };
-        }
-
-        private Type[] GetIntrospectionPerDependencyInstanceTypes()
+        private Type[] GetPerDependencyInstanceTypes()
         {
             return new Type[] { 
                 typeof(Fresnel.Introspection.Assemblies.AssemblyReader),
@@ -128,28 +95,6 @@ namespace Envivo.Fresnel.Bootstrap
             };
         }
 
-        private Type[] GetEnginePerDependencyInstanceTypes()
-        {
-            return new Type[] { 
-                typeof(Fresnel.Core.Observers.CollectionObserver),
-                typeof(Fresnel.Core.Observers.EnumObserver),
-                typeof(Fresnel.Core.Observers.MethodObserver),
-                typeof(Fresnel.Core.Observers.NonReferenceObserver),
-                typeof(Fresnel.Core.Observers.ObjectObserver),
-                typeof(Fresnel.Core.Observers.ObjectPropertyObserver),
-                typeof(Fresnel.Core.Observers.ParameterObserver),
-            };
-        }
-
-        private Type[] GetPerSessionInstanceTypes()
-        {
-            return new Type[] { 
-                typeof(Fresnel.Core.Observers.ObserverCache),
-                typeof(Fresnel.Core.Persistence.UnitOfWork),
-                typeof(Fresnel.Core.IdentityMap),
-                typeof(Fresnel.Core.UserSession),
-            };
-        }
 
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.Core.Proxies;
 
 namespace Envivo.Fresnel.Core
 {
@@ -48,7 +49,7 @@ namespace Envivo.Fresnel.Core
 
             var proxy = _ProxyBuilder.BuildFor<T>(newInstance);
 
-            return proxy;
+            return (T)proxy;
         }
 
         /// <summary>

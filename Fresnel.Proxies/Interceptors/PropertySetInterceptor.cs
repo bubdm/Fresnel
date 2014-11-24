@@ -1,0 +1,184 @@
+using Castle.DynamicProxy;
+using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Core.Proxies;
+using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Utils;
+using System;
+using System.Diagnostics;
+
+namespace Envivo.Fresnel.Proxies
+{
+
+
+    public class PropertySetInterceptor : IInterceptor, IDisposable
+    {
+        private ProxyCache _ProxyCache;
+
+        public PropertySetInterceptor(ProxyCache ProxyCache)
+        {
+            _ProxyCache = ProxyCache;
+        }
+
+        public void Intercept(IInvocation invocation)
+        {
+            Debug.WriteLine(invocation.ToString());
+
+            var oObject = ((IFresnelProxy)invocation.Proxy).Meta;
+
+            BasePropertyObserver oProperty;
+            BaseObjectObserver oValue;
+
+            this.DetermineObservers(invocation, out oProperty, out oValue);
+
+            if (oProperty != null)
+            {
+                object originalValue = null;
+                //this.PreInvoke(invocation, oProperty, oValue);
+
+                invocation.Proceed();
+
+                this.PostInvoke(oProperty, oValue, originalValue);
+            }
+            else
+            {
+                // In case we don't recognise the operation:
+                invocation.Proceed();
+            }
+        }
+
+        private void DetermineObservers(IInvocation invocation, out BasePropertyObserver oProperty, out BaseObjectObserver oValue)
+        {
+            var oObject = ((IFresnelProxy)invocation.Proxy).Meta;
+            oProperty = oObject.Properties.TryGetValueOrNull(invocation.Method.Name.Remove(0, 4));
+
+            oValue = null;
+            var newValue = invocation.Arguments[0];
+            if (newValue != null)
+            {
+                oValue = ((IFresnelProxy)_ProxyCache.GetProxy(newValue)).Meta;
+            }
+        }
+
+        private void PreInvoke(IInvocation invocation, BasePropertyObserver oProperty, BaseObjectObserver oValue)
+        {
+            //// Check if the operation is valid for the "Aggregate Root" contraint:
+            //if (My.Application.UnitOfWorkManager.IsPartOfAggregateRoot(My.Application.UI.ActiveWidget) == false)
+            //{
+            //    var msg = string.Format("'{0}.{1}' cannot be modified here. Please find it's owner and modify it there.", oProperty.OuterObject.FriendlyName, oProp.FriendlyName);
+            //    throw new FresnelException(msg);
+            //}
+
+            //var writeCheck = oProperty.Permissions.Write.Check(oValue);
+            //if (writeCheck.Failed)
+            //{
+            //    oProperty.ErrorMessage = writeCheck.FailureReason;
+            //    throw new SecurityException(writeCheck.FailureReason);
+            //}
+
+            //var oObject = oProperty.OuterObject;
+            //var isImmutable = oObject.Template.Attributes.Get<ObjectInstanceAttribute>().IsImmutable;
+            //if (oObject.ChangeTracker.IsNewInstance == false && isImmutable)
+            //{
+            //    var msg = string.Format("'{0}' cannot be modifed once it has been saved", oObject.ToString(false, true, true), oObject);
+            //    oProperty.ErrorMessage = msg;
+            //    throw new FresnelException(msg);
+            //}
+
+            ////-----
+
+            //var isValueObject = oValue != null &&
+            //                    oValue.IsNull == false &&
+            //                    oValue.IsValueObject;
+            //if (isValueObject)
+            //{
+            //    // ValueObjects are cloned:
+            //    invocation.SetArgumentValue(0, ((ObjectObserver)oValue).Clone().RealObject);
+            //}
+
+            ////-----
+
+            //// Make the Persistor aware of the change that is about to happen:
+            //oObject.Persistor.WakeUp();
+
+            oProperty.LastAccessedAtUtc = DateTime.UtcNow;
+
+            //originalValue = oProperty.PropertyTemplate.GetValue(oObject.RealObject);
+        }
+
+        private void PostInvoke(BasePropertyObserver oProperty, BaseObjectObserver oNewValue, object originalValue)
+        {
+            //var oObject = oProperty.OuterObject;
+
+            //try
+            //{
+            //    var oOriginalValue = _ProxyCache.GetObserverForProxyUse(originalValue);
+
+            //    // We're replacing the value, so disassociate the existing value from this property:
+            //    if (oOriginalValue != null)
+            //    {
+            //        oOriginalValue.DisassociateFrom(oProperty);
+            //    }
+
+            //    if (oNewValue == null)
+            //    {
+            //        var oOriginalObject = oOriginalValue as ObjectObserver;
+            //        var canBeDeleted = oOriginalObject != null &&
+            //                           oOriginalObject.IsOwnedBy(oObject);
+
+            //        if (canBeDeleted)
+            //        {
+            //            // Composite objects can be deleted:
+            //            var objectsToDelete = new ObjectObserverCollection();
+            //            objectsToDelete.Add(oOriginalObject);
+            //            oObject.Persistor.Delete(objectsToDelete);
+
+            //            oOriginalObject.MakeOrphan();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        oNewValue.AssociateWith(oProperty);
+            //    }
+
+            //    oProperty.OuterObject.ChangeTracker.HasChanges = true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    var message = this.CreateDescriptiveErrorMessage(oProperty, oNewValue, ex.Message);
+            //    oProperty.ErrorMessage = message;
+
+            //    throw new FresnelException(message, ex);
+            //}
+            //finally
+            //{
+            //    oObject.Persistor.Suspend();
+            //}
+        }
+
+        private string CreateDescriptiveErrorMessage(BasePropertyObserver oProperty, BaseObjectObserver oNewValue, string errorMessage)
+        {
+            var tProp = oProperty.TemplateAs<PropertyTemplate>();
+            var message = string.Format("Unable to set '{0}' to '{1}':",
+                                        tProp.FriendlyName,
+                                        oNewValue == null ? "null" : oNewValue.RealObject.ToString());
+            return string.Concat(message, Environment.NewLine, errorMessage);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.GetType() == obj.GetType();
+        }
+
+        public override int GetHashCode()
+        {
+            return this.GetType().GetHashCode();
+        }
+
+        public void Dispose()
+        {
+            _ProxyCache = null;
+        }
+
+    }
+
+}
