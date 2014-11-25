@@ -89,10 +89,16 @@ namespace Envivo.Fresnel.Core.Observers
         {
             get
             {
-                var result = (BaseMemberObserver)this.Properties.TryGetValueOrNull(memberName) ??
-                              this.Methods.TryGetValueOrNull(memberName);
+                var result = (BaseMemberObserver)
+                                this.Properties.TryGetValueOrNull(memberName) ??
+                                this.Methods.TryGetValueOrNull(memberName);
 
-                throw new ArgumentOutOfRangeException();
+                if (result == null)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+
+                return result;
             }
         }
 
