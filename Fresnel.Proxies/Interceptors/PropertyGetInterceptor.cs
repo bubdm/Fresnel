@@ -82,10 +82,17 @@ namespace Envivo.Fresnel.Proxies
         /// <returns></returns>
         private bool IsPropertyAccessible(ObjectPropertyObserver oProperty)
         {
-            var tProperty = oProperty.TemplateAs<PropertyTemplate>();
-            return tProperty.IsNonReference ?
-                    true :
-                    oProperty.IsLazyLoaded;
+            // TODO: An InMemoryDataStore should force IsLazyLoaded = TRUE
+            return true;
+            //var tProperty = oProperty.TemplateAs<PropertyTemplate>();
+            //if (tProperty.IsReferenceType)
+            //{
+            //    return oProperty.IsLazyLoaded;
+            //}
+            //else
+            //{
+            //    return true;
+            //}
         }
 
         private void PostInvoke(ObjectPropertyObserver oProperty, object returnValue)
