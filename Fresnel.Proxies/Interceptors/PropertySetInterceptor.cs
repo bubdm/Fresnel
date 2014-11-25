@@ -12,28 +12,30 @@ namespace Envivo.Fresnel.Proxies
 
     public class PropertySetInterceptor : IInterceptor, IDisposable
     {
-        public PropertySetInterceptor()
+        private ObserverCache _ObserverCache;
+
+        public PropertySetInterceptor(ObserverCache observerCache)
         {
+            _ObserverCache = observerCache;
         }
 
         public ProxyCache ProxyCache { get; set; }
 
         public void Intercept(IInvocation invocation)
         {
-            Debug.WriteLine(this.GetType().Name); 
-            
+            Debug.WriteLine(this.GetType().Name);
+
             var oObject = ((IFresnelProxy)invocation.Proxy).Meta;
 
-            BasePropertyObserver oProperty;
-            BaseObjectObserver oValue;
-
-            this.DetermineObservers(invocation, out oProperty, out oValue);
+            var oProperty = this.GetPropertyObserver(oObject, invocation.Method.Name);
 
             if (oProperty != null)
             {
-                object originalValue = null;
+                var oValue = this.GetValueObserver(invocation.Arguments[0]);
+
                 //this.PreInvoke(invocation, oProperty, oValue);
 
+                object originalValue = null;
                 invocation.Proceed();
 
                 this.PostInvoke(oProperty, oValue, originalValue);
@@ -45,17 +47,23 @@ namespace Envivo.Fresnel.Proxies
             }
         }
 
-        private void DetermineObservers(IInvocation invocation, out BasePropertyObserver oProperty, out BaseObjectObserver oValue)
+        private BasePropertyObserver GetPropertyObserver(ObjectObserver oObject, string methodName)
         {
-            var oObject = ((IFresnelProxy)invocation.Proxy).Meta;
-            oProperty = oObject.Properties.TryGetValueOrNull(invocation.Method.Name.Remove(0, 4));
+            var result = oObject.Properties.TryGetValueOrNull(methodName.Remove(0, 4));
+            return result;
+        }
 
-            oValue = null;
-            var newValue = invocation.Arguments[0];
-            if (newValue != null)
-            {
-                oValue = ((IFresnelProxy)this.ProxyCache.GetProxy(newValue)).Meta;
-            }
+        private BaseObjectObserver GetValueObserver(object newValue)
+        {
+            if (newValue == null)
+                return null;
+
+            var type = newValue.GetType();
+            if (type.IsNonReference())
+                return null;
+
+            var result = _ObserverCache.GetObserver(newValue);
+            return result;
         }
 
         private void PreInvoke(IInvocation invocation, BasePropertyObserver oProperty, BaseObjectObserver oValue)

@@ -60,7 +60,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// <summary>
         /// The underlying Template used to create this Observer
         /// </summary>
-        protected ITemplate Template { get; private set; }
+        public ITemplate Template { get; private set; }
 
         /// <summary>
         /// Returns the underlying Template, casted to the given type

@@ -22,17 +22,9 @@ namespace Envivo.Fresnel.Proxies
         {
             Debug.WriteLine(this.GetType().Name);
 
-            if (invocation.Method.Name == "get_Meta")
-            {
-                var observer = ((IFresnelProxy)invocation.Proxy).Meta;
-                invocation.ReturnValue = observer;
-            }
-            else
-            {
-                this.ReplaceArgumentsWithProxies(invocation);
+            this.ReplaceArgumentsWithProxies(invocation);
 
-                invocation.Proceed();
-            }
+            invocation.Proceed();
         }
 
         private void ReplaceArgumentsWithProxies(IInvocation invocation)

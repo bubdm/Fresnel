@@ -35,8 +35,7 @@ namespace Envivo.Fresnel.Proxies
 
             if (method.DeclaringType.Equals(typeof(IFresnelProxy)))
             {
-                // The PrimaryInterceptor with deal with this:
-                results.Add(this.FindInstanceOf<PrimaryInterceptor>(interceptors));
+                results.Add(this.FindInstanceOf<ProxyMetaInterceptor>(interceptors));
                 return results.ToArray();
             }
 

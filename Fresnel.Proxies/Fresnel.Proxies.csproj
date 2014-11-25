@@ -49,6 +49,7 @@
     <Compile Include="Interceptors\MethodInvokeInterceptor.cs" />
     <Compile Include="Interceptors\NotifyCollectionChangedInterceptor.cs" />
     <Compile Include="Interceptors\NotifyPropertyChangedInterceptor.cs" />
+    <Compile Include="Interceptors\ProxyMetaInterceptor.cs" />
     <Compile Include="Interceptors\PrimaryInterceptor.cs" />
     <Compile Include="Interceptors\PropertyGetInterceptor.cs" />
     <Compile Include="Interceptors\PropertySetInterceptor.cs" />

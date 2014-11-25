@@ -27,6 +27,9 @@ namespace Envivo.Fresnel.Proxies
 
         public bool ShouldInterceptMethod(Type type, MethodInfo methodInfo)
         {
+            var msg = string.Concat("Inspecting ", type.Name, ".", methodInfo.Name);
+            Debug.WriteLine(msg);
+            
             if (_ProxyType == type)
                 return false;
 

@@ -1,4 +1,5 @@
 using Castle.DynamicProxy;
+using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
@@ -11,7 +12,7 @@ namespace Envivo.Fresnel.Proxies
 
     public class ProxyBuilder : Envivo.Fresnel.Core.Proxies.IProxyBuilder
     {
-        private TemplateCache _TemplateCache;
+        private ObserverCache _ObserverCache;
 
         private PrimaryInterceptor _PrimaryInterceptor;
         private PropertyGetInterceptor _PropertyGetInterceptor;
@@ -31,7 +32,7 @@ namespace Envivo.Fresnel.Proxies
 
         public ProxyBuilder
             (
-            TemplateCache templateCache,
+            ObserverCache observerCache,
             PrimaryInterceptor primaryInterceptor,
             PropertyGetInterceptor propertyGetInterceptor,
             PropertySetInterceptor propertySetInterceptor,
@@ -46,7 +47,7 @@ namespace Envivo.Fresnel.Proxies
             ProxyGenerationHook proxyGenerationHook
             )
         {
-            _TemplateCache = templateCache;
+            _ObserverCache = observerCache;
 
             _PrimaryInterceptor = primaryInterceptor;
             _PropertyGetInterceptor = propertyGetInterceptor;
@@ -62,8 +63,8 @@ namespace Envivo.Fresnel.Proxies
 
             _ProxyGenerationOptions = new ProxyGenerationOptions()
             {
-                Selector =interceptorSelector,
-                Hook = proxyGenerationHook
+                Selector = interceptorSelector,
+                //Hook = proxyGenerationHook
             };
         }
 
@@ -88,34 +89,41 @@ namespace Envivo.Fresnel.Proxies
         {
             //Debug.WriteLine(string.Concat("Creating ViewModel for ", oObj.DebugID));
 
-            var classType = obj.GetType();
-            var tClass = _TemplateCache.GetTemplate(classType) as ClassTemplate;
-            var tCollection = _TemplateCache.GetTemplate(classType) as CollectionTemplate;
+            var observer = _ObserverCache.GetObserver(obj);
 
-            var result = tCollection != null ?
-                            this.CreateCollectionProxy(obj, tCollection) :
-                            this.CreateObjectProxy(obj, tClass);
+            var oObject = observer as ObjectObserver;
+            var oCollection = observer as CollectionObserver;
+
+            var result = oCollection != null ?
+                            this.CreateCollectionProxy(obj, oCollection) :
+                            this.CreateObjectProxy(obj, oObject);
 
             if (result.Equals(obj) == false)
             {
                 var msg = string.Concat("Generated proxy is not equivalent to original object. ",
-                                        "Check that ", tClass.Name, ".Equals() and ", 
-                                        tClass.Name, ".GetHashCode() are overridden correctly.");
+                                        "Check that ", observer.Template.Name, ".Equals() and ",
+                                        observer.Template.Name, ".GetHashCode() are overridden correctly.");
                 throw new FresnelException(msg);
             }
 
             return result;
         }
 
-        private IFresnelProxy CreateObjectProxy<T>(T obj, ClassTemplate tClass)
+        private IFresnelProxy CreateObjectProxy<T>(T obj, ObjectObserver oObject)
             where T : class
         {
+            var tClass = oObject.TemplateAs<ClassTemplate>();
+         
+            // We need this interceptor to keep a reference to the Observer:
+            var metaInterceptor = new ProxyMetaInterceptor(oObject);
+
             var proxy = _ProxyGenerator
                             .CreateClassProxyWithTarget(
                             tClass.RealObjectType,
                             _ObjectProxyInterfaceList,
                             obj,
                             _ProxyGenerationOptions,
+                            metaInterceptor,
                             _PrimaryInterceptor,
                             _PropertyGetInterceptor,
                             _PropertySetInterceptor,
@@ -127,15 +135,21 @@ namespace Envivo.Fresnel.Proxies
             return (IFresnelProxy)proxy;
         }
 
-        private IFresnelProxy CreateCollectionProxy<T>(T collection, CollectionTemplate tCollection)
+        private IFresnelProxy CreateCollectionProxy<T>(T collection, CollectionObserver oCollection)
             where T : class
         {
+            var tCollection = oCollection.TemplateAs<CollectionTemplate>();
+
+            // We need this interceptor to keep a reference to the Observer:
+            var metaInterceptor = new ProxyMetaInterceptor(oCollection);
+
             var proxy = _ProxyGenerator
                             .CreateClassProxyWithTarget(
                             tCollection.RealObjectType,
                             _CollectionProxyInterfaceList,
                             collection,
                             _ProxyGenerationOptions,
+                            metaInterceptor,
                             _PrimaryInterceptor,
                             _PropertyGetInterceptor,
                             _PropertySetInterceptor,
