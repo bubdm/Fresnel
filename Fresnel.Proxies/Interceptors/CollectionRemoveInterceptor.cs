@@ -5,6 +5,7 @@ using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Envivo.Fresnel.Proxies
@@ -20,6 +21,7 @@ namespace Envivo.Fresnel.Proxies
 
         public void Intercept(IInvocation invocation)
         {
+            Debug.WriteLine(this.GetType().Name); 
             var oCollection = (CollectionObserver)((IFresnelProxy)invocation.Proxy).Meta;
 
             var item = this.ExtractItemToRemoveFrom(invocation);

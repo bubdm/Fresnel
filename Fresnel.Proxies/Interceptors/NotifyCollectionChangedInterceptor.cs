@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.Proxies
 
         public void Intercept(IInvocation invocation)
         {
-            Debug.WriteLine(invocation.ToString());
+            Debug.WriteLine(this.GetType().Name); 
             NotifyCollectionChangedEventHandler eventHandler = null;
 
             if (invocation.Method.DeclaringType.Equals(typeof(INotifyCollectionChanged)))

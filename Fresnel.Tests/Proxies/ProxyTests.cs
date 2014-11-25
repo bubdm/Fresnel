@@ -25,7 +25,7 @@ namespace Envivo.Fresnel.Tests.Proxies
     public class ProxyTests
     {
 
-        [Test]
+        [Test()]
         public void ShouldCreateProxyForDomainObject()
         {
             // Arrange:
@@ -73,7 +73,7 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    Assert.IsTrue(proxy.Meta.ChangeTracker.IsNewInstance);
         //}
 
-        [Test]
+        [Test()]
         public void ShouldAttachINotifyPropertyChangedToProxy()
         {
             // Arrange:
@@ -159,7 +159,7 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    Assert.IsTrue(proxy.Meta.ChangeTracker.HasDirtyChildren);
         //}
 
-        [Test]
+        [Test()]
         public void ShouldDetectMethodInvoke()
         {
             // Arrange:
@@ -214,7 +214,7 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    Assert.IsNotNull(pocoProxy.ChildObjects);
         //}
 
-        [Test]
+        [Test()]
         public void ShouldDenyProxiesForSystemTypes()
         {
             // TODO : Change this to System.MulticastDelegate

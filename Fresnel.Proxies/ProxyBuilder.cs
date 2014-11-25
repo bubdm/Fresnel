@@ -21,6 +21,7 @@ namespace Envivo.Fresnel.Proxies
         private CollectionRemoveInterceptor _CollectionRemoveInterceptor;
         private NotifyPropertyChangedInterceptor _NotifyPropertyChangedInterceptor;
         private NotifyCollectionChangedInterceptor _NotifyCollectionChangedInterceptor;
+        private FinalTargetInterceptor _FinalTargetInterceptor;
 
         private ProxyGenerator _ProxyGenerator = new ProxyGenerator();
         private ProxyGenerationOptions _ProxyGenerationOptions;
@@ -38,7 +39,11 @@ namespace Envivo.Fresnel.Proxies
             CollectionAddInterceptor collectionAddInterceptor,
             CollectionRemoveInterceptor collectionRemoveInterceptor,
             NotifyPropertyChangedInterceptor notifyPropertyChangedInterceptor,
-            NotifyCollectionChangedInterceptor notifyCollectionChangedInterceptor
+            NotifyCollectionChangedInterceptor notifyCollectionChangedInterceptor,
+            FinalTargetInterceptor finalTargetInterceptor,
+
+            InterceptorSelector interceptorSelector,
+            ProxyGenerationHook proxyGenerationHook
             )
         {
             _TemplateCache = templateCache;
@@ -51,33 +56,41 @@ namespace Envivo.Fresnel.Proxies
             _CollectionRemoveInterceptor = collectionRemoveInterceptor;
             _NotifyPropertyChangedInterceptor = notifyPropertyChangedInterceptor;
             _NotifyCollectionChangedInterceptor = notifyCollectionChangedInterceptor;
+            _FinalTargetInterceptor = finalTargetInterceptor;
 
             this.InitialseProxyInterfaceLists();
 
             _ProxyGenerationOptions = new ProxyGenerationOptions()
             {
-                Selector = new InterceptorSelector()
+                Selector =interceptorSelector,
+                Hook = proxyGenerationHook
             };
         }
 
         private void InitialseProxyInterfaceLists()
         {
-            _ObjectProxyInterfaceList = new Type[] {typeof(INotifyPropertyChanged),
-                                                    typeof(IFresnelProxy) };
+            _ObjectProxyInterfaceList = new Type[] 
+            {
+                typeof(INotifyPropertyChanged),
+                typeof(IFresnelProxy) 
+            };
 
-            _CollectionProxyInterfaceList = new Type[] {typeof(INotifyPropertyChanged),
-                                                        typeof(INotifyCollectionChanged),
-                                                        typeof(IFresnelProxy) };
+            _CollectionProxyInterfaceList = new Type[] 
+            {
+                typeof(INotifyPropertyChanged),
+                typeof(INotifyCollectionChanged),
+                typeof(IFresnelProxy) 
+            };
         }
 
 
-        public IFresnelProxy BuildFor<T>(T obj)
-            where T : class
+        public IFresnelProxy BuildFor(object obj)
         {
             //Debug.WriteLine(string.Concat("Creating ViewModel for ", oObj.DebugID));
 
-            var tClass = _TemplateCache.GetTemplate<T>() as ClassTemplate;
-            var tCollection = _TemplateCache.GetTemplate<T>() as CollectionTemplate;
+            var classType = obj.GetType();
+            var tClass = _TemplateCache.GetTemplate(classType) as ClassTemplate;
+            var tCollection = _TemplateCache.GetTemplate(classType) as CollectionTemplate;
 
             var result = tCollection != null ?
                             this.CreateCollectionProxy(obj, tCollection) :
@@ -86,7 +99,8 @@ namespace Envivo.Fresnel.Proxies
             if (result.Equals(obj) == false)
             {
                 var msg = string.Concat("Generated proxy is not equivalent to original object. ",
-                                        "Check that ", tClass.Name, ".Equals() and ", tClass.Name, ".GetHashCode() are overridden correctly.");
+                                        "Check that ", tClass.Name, ".Equals() and ", 
+                                        tClass.Name, ".GetHashCode() are overridden correctly.");
                 throw new FresnelException(msg);
             }
 
@@ -96,34 +110,44 @@ namespace Envivo.Fresnel.Proxies
         private IFresnelProxy CreateObjectProxy<T>(T obj, ClassTemplate tClass)
             where T : class
         {
-            return (IFresnelProxy)_ProxyGenerator.CreateClassProxyWithTarget(
-                                                     tClass.RealObjectType,
-                                                     _ObjectProxyInterfaceList,
-                                                     obj,
-                                                     _ProxyGenerationOptions,
-                                                     _PrimaryInterceptor,
-                                                     _PropertyGetInterceptor,
-                                                     _PropertySetInterceptor,
-                                                     _MethodInvokeInterceptor,
-                                                     _NotifyPropertyChangedInterceptor);
+            var proxy = _ProxyGenerator
+                            .CreateClassProxyWithTarget(
+                            tClass.RealObjectType,
+                            _ObjectProxyInterfaceList,
+                            obj,
+                            _ProxyGenerationOptions,
+                            _PrimaryInterceptor,
+                            _PropertyGetInterceptor,
+                            _PropertySetInterceptor,
+                            _MethodInvokeInterceptor,
+                            _NotifyPropertyChangedInterceptor,
+                            _FinalTargetInterceptor
+                            );
+
+            return (IFresnelProxy)proxy;
         }
 
         private IFresnelProxy CreateCollectionProxy<T>(T collection, CollectionTemplate tCollection)
             where T : class
         {
-            return (IFresnelProxy)_ProxyGenerator.CreateClassProxyWithTarget(
-                                                    tCollection.RealObjectType,
-                                                    _CollectionProxyInterfaceList,
-                                                    collection,
-                                                    _ProxyGenerationOptions,
-                                                    _PrimaryInterceptor,
-                                                    _PropertyGetInterceptor,
-                                                    _PropertySetInterceptor,
-                                                    _CollectionAddInterceptor,
-                                                    _CollectionRemoveInterceptor,
-                                                    _MethodInvokeInterceptor,
-                                                    _NotifyPropertyChangedInterceptor,
-                                                    _NotifyCollectionChangedInterceptor);
+            var proxy = _ProxyGenerator
+                            .CreateClassProxyWithTarget(
+                            tCollection.RealObjectType,
+                            _CollectionProxyInterfaceList,
+                            collection,
+                            _ProxyGenerationOptions,
+                            _PrimaryInterceptor,
+                            _PropertyGetInterceptor,
+                            _PropertySetInterceptor,
+                            _CollectionAddInterceptor,
+                            _CollectionRemoveInterceptor,
+                            _MethodInvokeInterceptor,
+                            _NotifyPropertyChangedInterceptor,
+                            _NotifyCollectionChangedInterceptor,
+                            _FinalTargetInterceptor
+                            );
+
+            return (IFresnelProxy)proxy;
         }
 
     }

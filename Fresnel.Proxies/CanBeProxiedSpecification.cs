@@ -22,8 +22,8 @@ namespace Envivo.Fresnel.Proxies
         private readonly RealTypeResolver _RealTypeResolver;
 
         private readonly TemplateCache _TemplateCache;
-        private readonly Dictionary<Type, string> _ValidViewModelTypes = new Dictionary<Type, string>();
-        private readonly Dictionary<Type, string> _InvalidViewModelTypes = new Dictionary<Type, string>();
+        private readonly Dictionary<Type, string> _ValidTypes = new Dictionary<Type, string>();
+        private readonly Dictionary<Type, string> _InvalidTypes = new Dictionary<Type, string>();
 
         private const BindingFlags _BindingFlags = BindingFlags.Public |
                                                    BindingFlags.NonPublic |
@@ -51,14 +51,14 @@ namespace Envivo.Fresnel.Proxies
 
             //-----
 
-            if (_ValidViewModelTypes.Contains(type))
+            if (_ValidTypes.Contains(type))
             {
                 return Assertion.Pass();
             }
 
-            if (_InvalidViewModelTypes.Contains(type))
+            if (_InvalidTypes.Contains(type))
             {
-                return Assertion.Fail(_InvalidViewModelTypes[type]);
+                return Assertion.Fail(_InvalidTypes[type]);
             }
 
             //-----
@@ -107,12 +107,12 @@ namespace Envivo.Fresnel.Proxies
 
             if (failureReason.IsNotEmpty())
             {
-                _InvalidViewModelTypes.Add(type, failureReason);
+                _InvalidTypes.Add(type, failureReason);
                 return Assertion.Fail(failureReason);
             }
             else
             {
-                _ValidViewModelTypes.Add(type, null);
+                _ValidTypes.Add(type, null);
                 return Assertion.Pass();
             }
         }

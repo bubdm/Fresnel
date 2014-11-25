@@ -23,7 +23,7 @@ namespace Envivo.Fresnel.Proxies
 
         public void Intercept(IInvocation invocation)
         {
-            Debug.WriteLine(invocation.ToString());
+            Debug.WriteLine(this.GetType().Name); 
             var oObject = ((IFresnelProxy)invocation.Proxy).Meta;
             var oMethod = oObject.Methods.TryGetValueOrNull(invocation.Method.Name);
 

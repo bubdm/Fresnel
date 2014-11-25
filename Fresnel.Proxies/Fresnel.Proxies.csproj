@@ -55,6 +55,7 @@
     <Compile Include="CanBeProxiedSpecification.cs" />
     <Compile Include="ProxyBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyGenerationHook.cs" />
     <Compile Include="ProxyCache.cs" />
   </ItemGroup>
   <ItemGroup>

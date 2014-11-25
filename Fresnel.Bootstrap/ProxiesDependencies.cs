@@ -28,7 +28,6 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Proxies.CollectionAddInterceptor),
                 typeof(Fresnel.Proxies.CollectionRemoveInterceptor),
                 typeof(Fresnel.Proxies.FinalTargetInterceptor),
-                typeof(Fresnel.Proxies.InterceptorSelector),
                 typeof(Fresnel.Proxies.MethodInvokeInterceptor),
                 typeof(Fresnel.Proxies.NotifyCollectionChangedInterceptor),
                 typeof(Fresnel.Proxies.NotifyPropertyChangedInterceptor),
@@ -37,6 +36,9 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Proxies.PropertySetInterceptor),
                 typeof(Fresnel.Proxies.ProxyBuilder),
                 typeof(Fresnel.Proxies.ProxyCache),
+
+                typeof(Fresnel.Proxies.InterceptorSelector),
+                typeof(Fresnel.Proxies.ProxyGenerationHook),
             };
         }
 

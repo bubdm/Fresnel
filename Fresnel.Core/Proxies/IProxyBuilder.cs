@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.Core.Proxies
 {
     public interface IProxyBuilder
     {
-        IFresnelProxy BuildFor<T>(T obj) where T : class;
+        IFresnelProxy BuildFor(object obj);
 
     }
 }
