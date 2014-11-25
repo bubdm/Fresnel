@@ -11,8 +11,11 @@ namespace Envivo.Fresnel.Proxies
 
     public class PropertyGetInterceptor : IInterceptor, IDisposable
     {
-        public PropertyGetInterceptor()
+        private ObserverCache _ObserverCache;
+
+        public PropertyGetInterceptor(ObserverCache observerCache)
         {
+            _ObserverCache = observerCache;
         }
 
         public ProxyCache ProxyCache { get; set; }
@@ -100,7 +103,8 @@ namespace Envivo.Fresnel.Proxies
             if (returnValue == null)
                 return;
 
-            var oReturnValue = (ObjectObserver)((IFresnelProxy)this.ProxyCache.GetProxy(returnValue)).Meta;
+            //var oReturnValue = (ObjectObserver)((IFresnelProxy)this.ProxyCache.GetProxy(returnValue)).Meta;
+            var oReturnValue = (ObjectObserver)_ObserverCache.GetObserver(returnValue);
             oReturnValue.AssociateWith(oProperty);
         }
 
