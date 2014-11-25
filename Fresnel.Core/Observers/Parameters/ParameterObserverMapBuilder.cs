@@ -24,7 +24,7 @@ namespace Envivo.Fresnel.Core.Observers
         {
             var results = new Dictionary<string, ParameterObserver>();
 
-            var tMethod = oMethod.TemplateAs<MethodTemplate>();
+            var tMethod = oMethod.Template;
             foreach (var tParam in tMethod.Parameters.Values)
             {
                 var oParam = _ParameterObserverFactory(oMethod, tParam);
@@ -37,7 +37,7 @@ namespace Envivo.Fresnel.Core.Observers
 
         private string CreateSignatureKey(MethodObserver oMethod)
         {
-            var tMethod = oMethod.TemplateAs<MethodTemplate>();
+            var tMethod = oMethod.Template;
 
             var parameterNames = new string[tMethod.Parameters.Count];
             var i = 0;

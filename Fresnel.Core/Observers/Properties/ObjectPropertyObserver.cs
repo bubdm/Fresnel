@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// </summary>
         internal void ResetLazyLoadStatus()
         {
-            var tProp = this.TemplateAs<PropertyTemplate>();
+            var tProp = this.Template;
             if (tProp.OuterClass.IsPersistable)
             {
                 // If the Property isn't marked as 'lazy loaded', we need to make sure it is loaded immediately:

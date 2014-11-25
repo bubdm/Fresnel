@@ -24,7 +24,7 @@ namespace Envivo.Fresnel.Core.Observers
         {
             var results = new Dictionary<string, MethodObserver>();
 
-            var tClass = oParent.TemplateAs<ClassTemplate>();
+            var tClass = oParent.Template;
             foreach (var tMethod in tClass.Methods.Values)
             {
                 var oMethod = _MethodObserverFactory(oParent, tMethod);
@@ -40,7 +40,7 @@ namespace Envivo.Fresnel.Core.Observers
         {
             var results = new Dictionary<string, MethodObserver>();
 
-            var tClass = oParent.TemplateAs<ClassTemplate>();
+            var tClass = oParent.Template;
             foreach (var tMethod in tClass.StaticMethods.Values)
             {
                 var oMethod = _MethodObserverFactory(oParent, tMethod);

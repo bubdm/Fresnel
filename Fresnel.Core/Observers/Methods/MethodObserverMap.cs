@@ -23,7 +23,7 @@ namespace Envivo.Fresnel.Core.Observers
 
             foreach (var oMethod in this.Values)
             {
-                var tMethod = oMethod.TemplateAs<MethodTemplate>();
+                var tMethod = oMethod.Template;
 
                 //var parameterInfos = tMethod.MethodInfo.GetParameters();
                 //if (parameterInfos.Length != argumentTypes.Length)

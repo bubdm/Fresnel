@@ -34,6 +34,11 @@ namespace Envivo.Fresnel.Core.Observers
                                             System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
+        public new MethodTemplate Template
+        {
+            get { return (MethodTemplate)base.Template; }
+        }
+
         /// <summary>
         /// A set of all Parameters that belong to this Method
         /// </summary>

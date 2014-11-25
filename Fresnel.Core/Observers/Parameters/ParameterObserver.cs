@@ -24,12 +24,17 @@ namespace Envivo.Fresnel.Core.Observers
             this.OuterMethod = oParentMethod;
         }
 
+        public new ParameterTemplate Template
+        {
+            get { return (ParameterTemplate)base.Template; }
+        }
+
         internal override string DebugID
         {
             get
             {
-                var tClass = this.OuterMethod.OuterObject.TemplateAs<ClassTemplate>();
-                var tMethod = this.OuterMethod.TemplateAs<MethodTemplate>();
+                var tClass = this.OuterMethod.OuterObject.Template;
+                var tMethod = this.OuterMethod.Template;
 
                 return string.Concat("[", this.OuterMethod.OuterObject.ID, " ",
                                           tClass.FullName, ".+",

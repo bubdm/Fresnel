@@ -26,7 +26,7 @@ namespace Envivo.Fresnel.Core.Commands
             var oMethod = oCollection.Methods.TryGetValueOrNull("Clear");
             if (oMethod != null)
             {
-                var tMethod = oMethod.TemplateAs<MethodTemplate>();
+                var tMethod = oMethod.Template;
                 tMethod.Invoke(oCollection.RealObject, null);
             }
         }

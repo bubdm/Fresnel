@@ -18,6 +18,11 @@ namespace Envivo.Fresnel.Core.Observers
         {
         }
 
+        public new EnumTemplate Template
+        {
+            get { return (EnumTemplate)base.Template; }
+        }
+
         ///// <summary>
         ///// The underlying Template used to create this Observer
         ///// </summary>

@@ -164,7 +164,7 @@ namespace Envivo.Fresnel.Proxies
 
         private string CreateDescriptiveErrorMessage(BasePropertyObserver oProperty, BaseObjectObserver oNewValue, string errorMessage)
         {
-            var tProp = oProperty.TemplateAs<PropertyTemplate>();
+            var tProp = oProperty.Template;
             var message = string.Format("Unable to set '{0}' to '{1}':",
                                         tProp.FriendlyName,
                                         oNewValue == null ? "null" : oNewValue.RealObject.ToString());

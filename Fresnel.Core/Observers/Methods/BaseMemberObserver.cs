@@ -19,16 +19,21 @@ namespace Envivo.Fresnel.Core.Observers
 
         internal BaseMemberObserver(ObjectObserver oOuterObject, BaseMemberTemplate tMember)
             : base(oOuterObject.RealObject,
-                   oOuterObject.TemplateAs<ClassTemplate>().RealType,
+                   oOuterObject.Template.RealType,
                    tMember)
         {
             this.OuterObject = oOuterObject;
         }
 
+        public new BaseMemberTemplate Template
+        {
+            get { return (BaseMemberTemplate)base.Template; }
+        }
+
         internal override string DebugID
         {
             get {
-                var tClass = this.OuterObject.TemplateAs<ClassTemplate>();
+                var tClass = this.OuterObject.Template;
 
                 return string.Concat("[", 
                                 this.OuterObject.ID.ToString().ToUpper(), 
@@ -49,7 +54,7 @@ namespace Envivo.Fresnel.Core.Observers
         {
             get
             {
-                var tClass = this.OuterObject.TemplateAs<ClassTemplate>();
+                var tClass = this.OuterObject.Template;
 
                 return string.Concat(tClass.FriendlyName,
                                      ".",

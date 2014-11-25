@@ -123,7 +123,7 @@ namespace Envivo.Fresnel.Proxies
         // Copied from CollectionObserver
         private void UpdateChangeTrackers(CollectionObserver oCollection, ObjectObserver oRemovedItem)
         {
-            var tRemovedItem = oRemovedItem.TemplateAs<CollectionTemplate>();
+            var tRemovedItem = oRemovedItem.Template;
 
             if (tRemovedItem.IsPersistable == false)
                 return;

@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.Core.Observers
 
         public MethodObserver BuildFor(ObjectObserver oParent, MethodTemplate tMethod)
         {
-            var tClass = oParent.TemplateAs<ClassTemplate>();
+            var tClass = oParent.Template;
 
             var attr = tClass.Attributes.Get<ObjectInstanceAttribute>();
             if (attr.HideAllMethods)

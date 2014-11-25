@@ -18,6 +18,11 @@ namespace Envivo.Fresnel.Core.Observers
             //LoadAttributes(this.Template.Attributes);
         }
 
+        public new NonReferenceTemplate Template
+        {
+            get { return (NonReferenceTemplate)base.Template; }
+        }
+
         /// <summary>
         /// The underlying Template used to create this Observer
         /// </summary>

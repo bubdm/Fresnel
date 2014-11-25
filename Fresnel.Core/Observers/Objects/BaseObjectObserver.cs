@@ -38,6 +38,11 @@ namespace Envivo.Fresnel.Core.Observers
                                     System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
+        public new BaseClassTemplate Template
+        {
+            get { return (BaseClassTemplate)base.Template; }
+        }
+
         /// <summary>
         /// A set of all Lists that have a reference to this Observer
         /// </summary>

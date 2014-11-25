@@ -28,17 +28,17 @@ namespace Envivo.Fresnel.Core.Commands
             _ObserverCache = observerCache;
         }
 
-        public BaseObjectObserver Invoke(BaseObjectObserver oObject)
+        public ObjectObserver Invoke(ObjectObserver oObject)
         {
             var clone = _CloneObjectCommand.Invoke(oObject, true);
 
-            var tClass = oObject.TemplateAs<ClassTemplate>();
+            var tClass = oObject.Template;
             if (tClass.IdProperty != null)
             {
                 tClass.IdProperty.SetProperty(clone, GuidFactory.NewSequentialGuid());
             }
 
-            var oClone = _ObserverCache.GetObserver(clone);
+            var oClone = (ObjectObserver)_ObserverCache.GetObserver(clone);
 
             // Make sure the clone can be edited before the user saves it:
             //oClone.ChangeTracker.IsNewInstance = true;

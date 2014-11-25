@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Core.Observers
             if (tProp.IsVisible == false)
                 return null;
 
-            var tClass = oParent.TemplateAs<ClassTemplate>();
+            var tClass = oParent.Template;
 
             var attr = tClass.Attributes.Get<ObjectInstanceAttribute>();
             if (attr.HideAllProperties)

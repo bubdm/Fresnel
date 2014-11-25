@@ -23,7 +23,7 @@ namespace Envivo.Fresnel.Core.Observers
 
         public PropertyObserverMap BuildFor(ObjectObserver oParent)
         {
-            var tClass = oParent.TemplateAs<ClassTemplate>();
+            var tClass = oParent.Template;
 
             var attr = tClass.Attributes.Get<ObjectInstanceAttribute>();
             if (attr.HideAllProperties)

@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.Proxies
             var isDomainObjectMethod = false;
             if (oMethod != null)
             {
-                var tClass = oMethod.OuterObject.TemplateAs<ClassTemplate>();
+                var tClass = oMethod.OuterObject.Template;
                 var objectAttr = tClass.Attributes.Get<ObjectInstanceAttribute>();
                 isDomainObjectMethod = (objectAttr.HasHiddenMemberNamed(invocation.Method.Name) == false);
             }
@@ -54,7 +54,7 @@ namespace Envivo.Fresnel.Proxies
         {
             // As a rule, methods can only be invoked if there are no pending changes to *any* objects in the ObserverCache.
             // This is to ensure that the client and the Persistor don't get out of sync:
-            var tClass = oMethod.OuterObject.TemplateAs<ClassTemplate>();
+            var tClass = oMethod.OuterObject.Template;
 
             var allowWithUnsavedObjects = tClass.Attributes.Get<MethodAttribute>().AllowWithUnsavedObjects;
             if (allowWithUnsavedObjects == false)

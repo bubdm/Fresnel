@@ -51,7 +51,7 @@ namespace Envivo.Fresnel.Core.Observers
 
             foreach (var oParameter in this.Values)
             {
-                var tParam = oParameter.TemplateAs<ParameterTemplate>();
+                var tParam = oParameter.Template;
                 var parameterType = tParam.ParameterType;
                 if (!valueType.IsDerivedFrom(parameterType))
                     continue;
@@ -68,7 +68,7 @@ namespace Envivo.Fresnel.Core.Observers
         {
             foreach (var oParameter in this.Values)
             {
-                var tParam = oParameter.TemplateAs<ParameterTemplate>();
+                var tParam = oParameter.Template;
                 if (tParam.IsNonReference &&
                     tParam.IsNullableType == false)
                 {

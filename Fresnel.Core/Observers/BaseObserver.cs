@@ -62,17 +62,6 @@ namespace Envivo.Fresnel.Core.Observers
         /// </summary>
         public ITemplate Template { get; private set; }
 
-        /// <summary>
-        /// Returns the underlying Template, casted to the given type
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public T TemplateAs<T>()
-            where T : class, ITemplate
-        {
-            return this.Template as T;
-        }
-
         public BaseObjectObserver InnerObserver { get; set; }
 
         public T InnerAs<T>()

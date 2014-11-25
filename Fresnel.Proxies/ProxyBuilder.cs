@@ -104,7 +104,7 @@ namespace Envivo.Fresnel.Proxies
         private IFresnelProxy CreateObjectProxy<T>(T obj, ObjectObserver oObject)
             where T : class
         {
-            var tClass = oObject.TemplateAs<ClassTemplate>();
+            var tClass = oObject.Template;
          
             // We need these interceptors to keep state for the individual Proxy:
             var metaInterceptor = new ProxyMetaInterceptor(oObject);
@@ -131,7 +131,7 @@ namespace Envivo.Fresnel.Proxies
         private IFresnelProxy CreateCollectionProxy<T>(T collection, CollectionObserver oCollection)
             where T : class
         {
-            var tCollection = oCollection.TemplateAs<CollectionTemplate>();
+            var tCollection = oCollection.Template;
 
             // We need these interceptors to keep state for the individual Proxy:
             var metaInterceptor = new ProxyMetaInterceptor(oCollection);

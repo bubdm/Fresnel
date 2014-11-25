@@ -7,7 +7,7 @@ namespace Envivo.Fresnel.Core.Observers
     /// <summary>
     /// An Observer for a Property belonging to a Object
     /// </summary>
-    
+
     public abstract class BasePropertyObserver : BaseMemberObserver
     {
         //private object _Value;
@@ -18,10 +18,15 @@ namespace Envivo.Fresnel.Core.Observers
         /// </summary>
         /// <param name="parentObject">The ObjectObserver that owns this Property</param>
         /// <param name="propertyTemplate">The PropertyTemplate that reflects the Property</param>
-        
+
         internal BasePropertyObserver(ObjectObserver oParent, PropertyTemplate tSourceProperty)
             : base(oParent, tSourceProperty)
         {
+        }
+
+        public new PropertyTemplate Template
+        {
+            get { return (PropertyTemplate)base.Template; }
         }
 
         public DateTime LastUpdatedAtUtc { get; internal set; }
@@ -100,8 +105,8 @@ namespace Envivo.Fresnel.Core.Observers
         /// Determines if the value is Nothing
         /// </summary>
         /// <value>True = The Property's value is Nothing</value>
-        
-        
+
+
         //public override bool IsNull
         //{
         //    get
@@ -188,7 +193,7 @@ namespace Envivo.Fresnel.Core.Observers
         ///// <param name="showStatus"></param>
         ///// <param name="showName"></param>
         ///// <param name="showSummary"></param>
-        
+
         ///// <remarks>This method must be as optimal as possible, as it will be called many times in rapid succession</remarks>
         //public override string ToString(bool showStatus, bool showName, bool showSummary)
         //{

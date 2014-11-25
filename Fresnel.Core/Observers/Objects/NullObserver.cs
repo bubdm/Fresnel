@@ -16,5 +16,10 @@ namespace Envivo.Fresnel.Core.Observers
 
         }
 
+        public new NullTemplate Template
+        {
+            get { return (NullTemplate)base.Template; }
+        }
+
     }
 }

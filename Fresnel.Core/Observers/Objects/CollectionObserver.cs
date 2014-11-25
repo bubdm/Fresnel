@@ -31,6 +31,11 @@ namespace Envivo.Fresnel.Core.Observers
 
         }
 
+        public new CollectionTemplate Template
+        {
+            get { return (CollectionTemplate)base.Template; }
+        }
+
         /// <summary>
         /// Ensures that all Domain Objects know that they belong to this Collection
         /// </summary>

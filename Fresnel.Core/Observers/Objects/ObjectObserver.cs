@@ -51,6 +51,11 @@ namespace Envivo.Fresnel.Core.Observers
                               System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
+        public new ClassTemplate Template
+        {
+            get { return (ClassTemplate)base.Template; }
+        }
+
         /// <summary>
         /// A set of all visible Properties for the proxied Object
         /// </summary>
@@ -112,7 +117,7 @@ namespace Envivo.Fresnel.Core.Observers
             {
                 foreach (var oProp in oCollection.OuterProperties)
                 {
-                    var tProp = oProp.TemplateAs<PropertyTemplate>();
+                    var tProp = oProp.Template;
                     if (tProp.IsCollection)
                     {
                         var relationship = tProp.Attributes.Get<CollectionPropertyAttribute>().Relationship;
@@ -133,7 +138,7 @@ namespace Envivo.Fresnel.Core.Observers
             // Do we have any properties marked as 'Parent' that point to the given Object?
             foreach (var oProp in this.OuterProperties)
             {
-                var tProp = oProp.TemplateAs<PropertyTemplate>();
+                var tProp = oProp.Template;
                 var relationship = tProp.Attributes.Get<ObjectPropertyAttribute>().Relationship;
                 if (relationship != SingleRelationship.OwnedBy)
                     continue;
@@ -155,8 +160,8 @@ namespace Envivo.Fresnel.Core.Observers
         //    // Do we have any properties marked as 'Parent' that point to the given entity?
         //    foreach (var oProp in this.Properties.ForObjects)
         //    {
-        //        var tParentClass = oProp.TemplateAs<ClassTemplate>();
-        //        var tProp = oProp.TemplateAs<PropertyTemplate>();
+        //        var tParentClass = oProp.Template;
+        //        var tProp = oProp.Template;
 
         //        if (tParentClass.RealObjectType.IsDerivedFrom(tProp.PropertyType) == false)
         //            continue;
@@ -183,7 +188,7 @@ namespace Envivo.Fresnel.Core.Observers
         //    // Do we have any properties marked as 'Parent' that point to the given Object?
         //    foreach (var oProp in this.Properties.ForObjects)
         //    {
-        //        var tProp = oProp.TemplateAs<PropertyTemplate>();
+        //        var tProp = oProp.Template;
         //        var relationship = tProp.Attributes.Get<ObjectPropertyAttribute>().Relationship;
         //        if (relationship != SingleRelationship.OwnedBy)
         //            continue;
