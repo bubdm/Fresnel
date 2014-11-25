@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
@@ -12,7 +10,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns the name of the given Property method
         /// </summary>
         /// <param name="method"></param>
-        
+
         public string GetPropertyName(MethodInfo method)
         {
             var name = method.Name;

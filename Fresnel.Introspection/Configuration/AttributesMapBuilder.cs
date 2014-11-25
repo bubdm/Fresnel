@@ -1,7 +1,7 @@
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Configuration
 {
@@ -9,7 +9,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Contains all Attributes for a particular Template. Attributes will be extracted from a ClassConfiguration if provided.
     /// </summary>
-    
+
     public class AttributesMapBuilder
     {
         public AttributesMap BuildFor(Type classType)
@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Configuration
         /// Instantiates and initialises the attributes for the given Object Type
         /// </summary>
         /// <param name="classType"></param>
-        
+
         public AttributesMap BuildFor(Type classType, IClassConfiguration classConfig)
         {
             var result = new AttributesMap();
@@ -84,7 +84,7 @@ namespace Envivo.Fresnel.Configuration
         /// Instantiates and initialises the attributes for the given Method
         /// </summary>
         /// <param name="methodInfo"></param>
-        
+
         public AttributesMap BuildFor(MethodInfo methodInfo, IClassConfiguration outerClassConfig)
         {
             var result = new AttributesMap();
@@ -116,7 +116,7 @@ namespace Envivo.Fresnel.Configuration
         /// Instantiates and initialises the attributes for the given Parameter
         /// </summary>
         /// <param name="parameterInfo"></param>
-        
+
         public AttributesMap BuildFor(ParameterInfo parameterInfo, IClassConfiguration outerClassConfig)
         {
             var result = new AttributesMap();

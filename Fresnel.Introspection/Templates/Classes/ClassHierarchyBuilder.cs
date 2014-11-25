@@ -1,6 +1,6 @@
-using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Assemblies;
+using Envivo.Fresnel.Utils;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -26,7 +26,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns a list of Class Templates for the entire tree (i.e. all Super-Classes and all Sub-Classes)
         /// </summary>
-        
+
         public IEnumerable<ClassTemplate> GetCompleteTree(ClassTemplate tRootClass)
         {
             var results = new List<ClassTemplate>();
@@ -82,8 +82,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         /// <param name="includeStartingClass"></param>
         /// <param name="useDeepScan"></param>
-        
-        
+
+
         public IEnumerable<ClassTemplate> GetSubClasses(ClassTemplate tRootClass, bool includeStartingClass, bool useDeepScan)
         {
             var results = new List<ClassTemplate>();
@@ -144,8 +144,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns all Class Templates for all the interfaces that this class implements
         /// </summary>
-        
-        
+
+
         public IEnumerable<ClassTemplate> GetInterfaces(ClassTemplate tRootClass)
         {
             var results = new List<ClassTemplate>();
@@ -165,8 +165,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns all Properties from all of the Sub-Classes in the Hierarchy
         /// </summary>
-        
-        
+
+
         public IEnumerable<PropertyTemplate> GetProperties(ClassTemplate tRootClass)
         {
             var tProperties = new Dictionary<string, PropertyTemplate>();

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -20,7 +18,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public FieldInfoMap
         (
-            IDictionary<string, FieldInfo> items, 
+            IDictionary<string, FieldInfo> items,
             IDictionary<string, FieldInfo> eventDelegates
         )
             : base(items)

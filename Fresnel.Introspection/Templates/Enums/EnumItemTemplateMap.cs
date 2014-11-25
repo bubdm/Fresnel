@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -12,7 +9,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         //private List<EnumItemTemplate> _tEnumItems;
 
         public EnumItemTemplateMap(IDictionary<string, EnumItemTemplate> items)
-            :base(items)
+            : base(items)
         {
             //_tEnumItems = results.Values.ToList();
         }

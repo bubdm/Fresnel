@@ -1,14 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection.Templates;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
 {
 
-    public class AssemblyReaderMapBuilder 
+    public class AssemblyReaderMapBuilder
     {
         private readonly AssemblyReaderBuilder _AssemblyReaderBuilder;
 

@@ -1,8 +1,8 @@
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Envivo.Fresnel.DomainTypes.Interfaces;
-using Envivo.Fresnel.DomainTypes;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
 {

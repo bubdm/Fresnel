@@ -1,11 +1,10 @@
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using System.Collections.ObjectModel;
-using Envivo.Fresnel.DomainTypes.Interfaces;
-using Envivo.Fresnel.DomainTypes;
+using System.Linq;
 
 namespace Envivo.Fresnel.Introspection
 {
@@ -119,7 +118,7 @@ namespace Envivo.Fresnel.Introspection
                 case 1:
                     return exceptions[0];
                 default:
-                    var messages = string.Join(Environment.NewLine, exceptions.Select(e=> e.Message));
+                    var messages = string.Join(Environment.NewLine, exceptions.Select(e => e.Message));
                     var ex = new FresnelException(messages);
                     return ex;
             }

@@ -1,12 +1,9 @@
+using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Utils;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reflection;
-using Envivo.Fresnel.DomainTypes.Interfaces;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.Introspection
 {
@@ -36,7 +33,7 @@ namespace Envivo.Fresnel.Introspection
         /// Determines if the given type implements IEntity
         /// </summary>
         /// <param name="type"></param>
-        
+
         /// <remarks>The value is determined if the Object implements the IEntity interface</remarks>
         public static bool IsEntity(this Type type)
         {
@@ -47,7 +44,7 @@ namespace Envivo.Fresnel.Introspection
         /// Determines if the given type implements ICollectionAdapter
         /// </summary>
         /// <param name="type"></param>
-        
+
         /// <remarks>The value is determined if the Object implements the IListAdapterType interface</remarks>
         public static bool IsListAdapter(this Type type)
         {
@@ -58,7 +55,7 @@ namespace Envivo.Fresnel.Introspection
         /// Determines if the given type implements IValueObject. It is NOTHING to do with IsValueType()!
         /// </summary>
         /// <param name="type"></param>
-        
+
         /// <remarks>The value is determined if the Object implements the IValueObject interface</remarks>
         public static bool IsValueObject(this Type type)
         {
@@ -69,7 +66,7 @@ namespace Envivo.Fresnel.Introspection
         /// Determines if the given type implements IAggregateRoot
         /// </summary>
         /// <param name="type"></param>
-        
+
         /// <remarks>The value is determined if the Object implements the IAggregateRoot interface</remarks>
         public static bool IsAggregateRoot(this Type type)
         {
@@ -80,7 +77,7 @@ namespace Envivo.Fresnel.Introspection
         /// Determines if the given type implements IFactory
         /// </summary>
         /// <param name="type"></param>
-        
+
         public static bool IsFactory(this Type type)
         {
             return type.IsDerivedFrom(IFactoryType);
@@ -91,7 +88,7 @@ namespace Envivo.Fresnel.Introspection
         /// </summary>
         /// <param name="type"></param>
         /// <param name="realObjectType">The type of Object created by the factory</param>
-        
+
         public static bool IsFactory(this Type type, out Type objectType)
         {
             objectType = null;
@@ -108,7 +105,7 @@ namespace Envivo.Fresnel.Introspection
         /// Determines if the given type implements IRepository
         /// </summary>
         /// <param name="type"></param>
-        
+
         public static bool IsRepository(this Type type)
         {
             return type.IsDerivedFrom(IRepositoryType);
@@ -118,7 +115,7 @@ namespace Envivo.Fresnel.Introspection
         /// Determines if the given type implements IRepository
         /// </summary>
         /// <param name="type">The type of Object created by the Repository</param>
-        
+
         public static bool IsRepository(this Type type, out Type objectType)
         {
             objectType = null;
@@ -135,7 +132,7 @@ namespace Envivo.Fresnel.Introspection
         /// Determines if the given type implements IDomainService
         /// </summary>
         /// <param name="type"></param>
-        
+
         public static bool IsDomainService(this Type type)
         {
             return type.IsDerivedFrom(IDomainServiceType);
@@ -173,12 +170,12 @@ namespace Envivo.Fresnel.Introspection
         /// Returns TRUE if the given type can be tracked by the framework
         /// </summary>
         /// <param name="realObjectType"></param>
-        
+
         public static bool IsTrackable(this Type objectType)
         {
             bool isValid = (objectType.DeclaringType == null) &&
                                    s_IsObjectTrackableSpecification.IsSatisfiedBy(objectType).Passed;
-        
+
             return isValid;
         }
 
@@ -186,7 +183,7 @@ namespace Envivo.Fresnel.Introspection
         /// Returns TRUE if the given type has an IAudit property
         /// </summary>
         /// <param name="realObjectType"></param>
-        
+
         public static bool IsAuditable(this Type objectType)
         {
             bool isValid = (objectType.DeclaringType == null) &&
@@ -200,7 +197,7 @@ namespace Envivo.Fresnel.Introspection
         /// Returns TRUE if the given type has an IsValid():bool method
         /// </summary>
         /// <param name="realObjectType"></param>
-        
+
         public static bool IsValidatable(this Type objectType)
         {
             bool isValid = (objectType.DeclaringType == null) &&
@@ -208,16 +205,16 @@ namespace Envivo.Fresnel.Introspection
 
             return isValid;
         }
-        
-        
+
+
         /// Determines if the given type implements IDataErrorInfo
         /// </summary>
         /// <param name="type"></param>
-        
+
         public static bool IsDataErrorInfo(this Type type)
         {
             return type.IsDerivedFrom(IDataErrorInfoType);
         }
-    
+
     }
 }

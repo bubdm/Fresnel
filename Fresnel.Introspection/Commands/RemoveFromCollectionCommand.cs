@@ -1,10 +1,5 @@
 ﻿using Envivo.Fresnel.Introspection.Templates;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Introspection.Commands
 {
@@ -38,7 +33,7 @@ namespace Envivo.Fresnel.Introspection.Commands
 
             this.Invoke(tCollection, collection, tItem, item);
         }
-        
+
         /// <summary>
         /// Removes the given item from the collection property on the given object
         /// </summary>

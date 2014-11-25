@@ -1,9 +1,7 @@
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection.Assemblies;
 
 namespace Envivo.Fresnel.Configuration
 {
@@ -25,14 +23,14 @@ namespace Envivo.Fresnel.Configuration
         /// <summary>
         /// Returns the IAssemblyConfiguration for the given Assembly
         /// </summary>
-        
+
         public IAssemblyConfiguration GetAssemblyConfiguration { get; internal set; }
 
         /// <summary>
         /// Returns the IAssemblyConfiguration for the given Class
         /// </summary>
         /// <param name="classType"></param>
-        
+
         public IClassConfiguration GetClassConfiguration(Type classType)
         {
             return _ClassConfigurationMap.TryGetValueOrNull(classType);

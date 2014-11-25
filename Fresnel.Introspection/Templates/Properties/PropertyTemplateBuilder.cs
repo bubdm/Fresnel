@@ -1,7 +1,7 @@
-using System;
-using System.Reflection;
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Utils;
+using System;
+using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -117,7 +117,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             // If the Property name starts with "Parent", we'll treat it as a parent:
             var propertyAttr = tProp.Attributes.Get<PropertyAttribute>();
-            if (!propertyAttr.IsConfiguredAtRunTime && 
+            if (!propertyAttr.IsConfiguredAtRunTime &&
                 tProp.FriendlyName.StartsWith("Parent "))
             {
                 var attr = tProp.Attributes.Get<ObjectPropertyAttribute>();

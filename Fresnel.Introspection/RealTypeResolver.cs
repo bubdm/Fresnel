@@ -1,9 +1,5 @@
-using Envivo.Fresnel.Introspection.Assemblies;
-using Envivo.Fresnel.Introspection.Templates;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection
 {
@@ -16,7 +12,7 @@ namespace Envivo.Fresnel.Introspection
     public class RealTypeResolver
     {
         private List<IRealTypeResolver> _Resolvers = new List<IRealTypeResolver>();
-        
+
         /// <summary>
         /// Adds the given Type Resolver strategy to the internal list of strategies
         /// </summary>
@@ -39,7 +35,7 @@ namespace Envivo.Fresnel.Introspection
                     return realType;
                 }
             }
-            
+
             // Couldn't find one, so return the original Type:
             return proxyType;
         }

@@ -1,7 +1,5 @@
-using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
-using System.Reflection;
 using Envivo.Fresnel.Configuration;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {

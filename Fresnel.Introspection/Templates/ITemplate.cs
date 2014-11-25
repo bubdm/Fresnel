@@ -1,5 +1,4 @@
-﻿using System;
-using Envivo.Fresnel.Configuration;
+﻿using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection.Assemblies;
 
 namespace Envivo.Fresnel.Introspection.Templates
@@ -15,7 +14,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         string Remarks { get; }
 
         string Summary { get; }
-        
+
         AttributesMap Attributes { get; }
 
         /// <summary>

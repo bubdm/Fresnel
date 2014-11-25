@@ -1,10 +1,7 @@
-using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using System.Xml.XPath;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
 {

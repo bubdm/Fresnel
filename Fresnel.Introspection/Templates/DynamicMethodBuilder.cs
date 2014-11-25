@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.Introspection.Templates
     public delegate object RapidGet(object target);
     public delegate void RapidSet(object target, object value);
     public delegate object RapidMethod(object target, object[] parameters);
-    
+
     /// <summary>
     /// This class has been cobbled together from various sources:
     ///     http://www.codeproject.com/useritems/Dynamic_Code_Generation.asp
@@ -23,7 +23,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns a delegate to handle instantiation of the given Class
         /// </summary>
         /// <param name="type"></param>
-        
+
         public RapidCtor BuildCreateObjectHandler(Type type)
         {
             var ctorInfo = type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
@@ -50,7 +50,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns TRUE if the given MethodInfo uses Generics in any way
         /// </summary>
         /// <param name="method"></param>
-        
+
         private bool UsesGenerics(MethodInfo method)
         {
             if (method.ContainsGenericParameters)
@@ -69,7 +69,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns a delegate to handle value retrieval from the given field
         /// </summary>
         /// <param name="fieldInfo"></param>
-        
+
         public RapidGet BuildGetHandler(FieldInfo fieldInfo)
         {
             if (fieldInfo == null)
@@ -92,7 +92,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns a delegate to handle setting the given field
         /// </summary>
         /// <param name="fieldInfo"></param>
-        
+
         public RapidSet BuildSetHandler(FieldInfo fieldInfo)
         {
             if (fieldInfo == null)
@@ -116,7 +116,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns a delegate to handle value retrieval from the given Property
         /// </summary>
         /// <param name="propertyInfo"></param>
-        
+
         public RapidGet BuildGetHandler(PropertyInfo propertyInfo)
         {
             var getInfo = propertyInfo.GetGetMethod(true);
@@ -148,7 +148,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns a delegate to handle setting the given Property
         /// </summary>
         /// <param name="propertyInfo"></param>
-        
+
         public RapidSet BuildSetHandler(PropertyInfo propertyInfo)
         {
             var setInfo = propertyInfo.GetSetMethod(true);

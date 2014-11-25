@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using Envivo.Fresnel.Configuration;
 
 
 namespace Envivo.Fresnel.Introspection.Templates
@@ -9,7 +7,7 @@ namespace Envivo.Fresnel.Introspection.Templates
     /// <summary>
     /// A Template that represents an Enumeration
     /// </summary>
-    
+
     public class EnumTemplate : NonReferenceTemplate
     {
         private EnumItemTemplateMapBuilder _EnumItemTemplateMapBuilder;

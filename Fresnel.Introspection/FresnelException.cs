@@ -15,17 +15,17 @@ namespace Envivo.Fresnel.Introspection
         {
         }
 
-        public  FresnelException(string message)
+        public FresnelException(string message)
             : base(message)
         {
         }
 
-        public  FresnelException(string message, Exception innerException)
+        public FresnelException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
-        public  FresnelException(SerializationInfo info, StreamingContext context)
+        public FresnelException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }

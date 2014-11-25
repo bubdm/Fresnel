@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {

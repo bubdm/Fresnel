@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.Utils;
+using System;
+using System.Linq;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {

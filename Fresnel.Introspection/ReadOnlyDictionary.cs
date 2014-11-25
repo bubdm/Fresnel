@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 
@@ -72,7 +71,7 @@ namespace Envivo.Fresnel.Introspection
             get { return _Items.Values; }
         }
 
-        public TValue this [TKey key]
+        public TValue this[TKey key]
         {
             get
             {

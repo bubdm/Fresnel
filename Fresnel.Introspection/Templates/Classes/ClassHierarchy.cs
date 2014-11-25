@@ -1,6 +1,6 @@
-using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Assemblies;
+using Envivo.Fresnel.Utils;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.Introspection.Templates
     /// <summary>
     /// The hierarchy of Classes that descend from the associated Class
     /// </summary>
-    
+
     public class ClassHierarchy
     {
         private AssemblyReaderMap _AssemblyReaderMap;
@@ -20,8 +20,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         ///
         /// </summary>
         /// <param name="tRootClass">The ClassTemplate that this hierarchy belongs to</param>
-        
-        internal ClassHierarchy(AssemblyReaderMap assemblyReaderMap, 
+
+        internal ClassHierarchy(AssemblyReaderMap assemblyReaderMap,
                                 TemplateCache templateCache,
                                 ClassTemplate tRootClass)
         {
@@ -153,8 +153,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns all Class Templates for all the interfaces that this class implements
         /// </summary>
-        
-        
+
+
         public IEnumerable<ClassTemplate> GetInterfaces()
         {
             var results = new List<ClassTemplate>();
@@ -173,8 +173,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns all Properties from all of the Sub-Classes in the Hierarchy
         /// </summary>
-        
-        
+
+
         public IEnumerable<PropertyTemplate> GetProperties()
         {
             var tProperties = new Dictionary<string, PropertyTemplate>();

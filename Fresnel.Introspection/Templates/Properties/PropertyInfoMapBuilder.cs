@@ -1,8 +1,8 @@
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -81,7 +81,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                     item.DeclaringType.Name, item.Name);
                 return;
             }
-         
+
             // Determine if it's a hidden property:
             var isHiddenProperty = item.DeclaringType.IsDerivedFrom(existingProperty.DeclaringType);
             if (isHiddenProperty)

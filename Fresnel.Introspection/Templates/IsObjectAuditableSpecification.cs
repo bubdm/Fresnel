@@ -1,6 +1,6 @@
-using System;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.DomainTypes.Interfaces;
+using System;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {

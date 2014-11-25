@@ -1,7 +1,7 @@
-using System;
-using System.Linq;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using System;
+using System.Linq;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {

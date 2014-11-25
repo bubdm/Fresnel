@@ -1,6 +1,4 @@
 using System;
-using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Introspection.Assemblies;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -12,7 +10,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// The Type of the Object that this Template represents
         /// </summary>
         /// <value></value>
-        
+
         Type RealObjectType { get; }
 
     }

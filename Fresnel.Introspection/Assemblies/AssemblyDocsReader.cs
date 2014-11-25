@@ -1,10 +1,9 @@
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Utils;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml.XPath;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
 {
@@ -348,7 +347,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
             return comment.Value.Trim();
         }
-        
+
         /// <summary>
         /// Returns the comment text for the given Member and comment type
         /// </summary>

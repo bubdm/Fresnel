@@ -1,7 +1,6 @@
 
-using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Utils;
+using Envivo.Fresnel.Introspection.Assemblies;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -28,8 +27,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// The fully qualified name for the Template
         /// </summary>
         /// <value></value>
-        
-        
+
+
         public string FullName { get; internal set; }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         }
 
         internal virtual void FinaliseConstruction()
-        { 
+        {
         }
     }
 }

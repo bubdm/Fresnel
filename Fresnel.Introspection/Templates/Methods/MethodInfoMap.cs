@@ -1,8 +1,5 @@
-using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -19,7 +16,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns the method that accepts the given arguments
         /// </summary>
         /// <param name="tArguments"></param>
-        
+
         public MethodInfo FindMethodThatAccepts(ClassTemplate[] tArguments)
         {
             foreach (var method in this.Values)

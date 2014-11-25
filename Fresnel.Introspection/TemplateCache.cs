@@ -50,7 +50,7 @@ namespace Envivo.Fresnel.Introspection
         }
 
         public IClassTemplate GetTemplate<T>()
-            where T: class
+            where T : class
         {
             var objectType = typeof(T);
             return this.GetTemplate(objectType);
@@ -61,7 +61,7 @@ namespace Envivo.Fresnel.Introspection
         /// </summary>
         /// <param name="domainAssembly">The name of the assembly to read</param>
         /// <returns>A generic sorted list of matching Class Templates</returns>
-        
+
         public IEnumerable<ClassTemplate> GetAllTemplates(Assembly domainAssembly)
         {
             // Delegate the request to the appropriate AssemblyReader:
@@ -72,8 +72,8 @@ namespace Envivo.Fresnel.Introspection
         /// Returns the assembly name for the given class name
         /// </summary>
         /// <param name="className"></param>
-        
-        
+
+
         private string ExtractAssemblyName(string className)
         {
             var lastPeriodPos = className.LastIndexOf('.');

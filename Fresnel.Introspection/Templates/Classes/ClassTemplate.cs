@@ -1,8 +1,7 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Utils;
+using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
@@ -284,7 +283,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns TRUE if the class has a constructor that accepts the given argument
         /// </summary>
         /// <param name="constructorArgType"></param>
-        
+
         public bool CanBeCreatedWith(Type constructorArgType)
         {
             if (constructorArgType == null)

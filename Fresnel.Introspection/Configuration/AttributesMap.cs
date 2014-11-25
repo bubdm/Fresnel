@@ -1,7 +1,6 @@
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Configuration
 {
@@ -9,7 +8,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Contains all Attributes for a particular Template. Attributes will be extracted from a ClassConfiguration if provided.
     /// </summary>
-    
+
     public class AttributesMap : Dictionary<Type, BaseAttribute>
     {
 
@@ -18,8 +17,8 @@ namespace Envivo.Fresnel.Configuration
         /// If the attribute doesn't exist, a new one is created and returned
         /// </summary>
         /// <param name="requestedAttributeType"></param>
-        
-        
+
+
         private BaseAttribute GetAttribute(Type requestedAttributeType)
         {
             // First we'll try to find an exact match:
@@ -51,7 +50,7 @@ namespace Envivo.Fresnel.Configuration
         /// If the attribute doesn't exist, a new one is created and returned
         /// </summary>
         /// <typeparam name="TClass"></typeparam>
-        
+
         public T Get<T>() where T : BaseAttribute
         {
             return (T)this.GetAttribute(typeof(T));

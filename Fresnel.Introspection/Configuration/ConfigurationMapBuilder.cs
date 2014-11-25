@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Assemblies;
+using System.Reflection;
 
 namespace Envivo.Fresnel.Configuration
 {
