@@ -10,6 +10,8 @@ namespace Envivo.Fresnel.Proxies
     /// </summary>
     public class NotifyPropertyChangedInterceptor : IInterceptor
     {
+        private PropertyChangedEventHandler _EventHandler = null;
+
         public NotifyPropertyChangedInterceptor()
         {
         }
@@ -17,21 +19,20 @@ namespace Envivo.Fresnel.Proxies
         public void Intercept(IInvocation invocation)
         {
             Debug.WriteLine(this.GetType().Name);
-            PropertyChangedEventHandler eventHandler = null;
 
             if (invocation.Method.IsSpecialName && invocation.Method.Name.StartsWith("set_"))
             {
-                this.RaiseEvent(invocation, eventHandler);
+                this.RaiseEvent(invocation, _EventHandler);
             }
             else if (invocation.Method.DeclaringType.Equals(typeof(INotifyPropertyChanged)))
             {
                 if (invocation.Method.Name == "add_PropertyChanged")
                 {
-                    eventHandler += invocation.Arguments[0] as PropertyChangedEventHandler;
+                    _EventHandler += invocation.Arguments[0] as PropertyChangedEventHandler;
                 }
                 else if (invocation.Method.Name == "remove_PropertyChanged")
                 {
-                    eventHandler -= invocation.Arguments[0] as PropertyChangedEventHandler;
+                    _EventHandler -= invocation.Arguments[0] as PropertyChangedEventHandler;
                 }
             }
 

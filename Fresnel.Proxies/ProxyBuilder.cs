@@ -20,8 +20,6 @@ namespace Envivo.Fresnel.Proxies
         private MethodInvokeInterceptor _MethodInvokeInterceptor;
         private CollectionAddInterceptor _CollectionAddInterceptor;
         private CollectionRemoveInterceptor _CollectionRemoveInterceptor;
-        private NotifyPropertyChangedInterceptor _NotifyPropertyChangedInterceptor;
-        private NotifyCollectionChangedInterceptor _NotifyCollectionChangedInterceptor;
         private FinalTargetInterceptor _FinalTargetInterceptor;
 
         private ProxyGenerator _ProxyGenerator = new ProxyGenerator();
@@ -39,12 +37,9 @@ namespace Envivo.Fresnel.Proxies
             MethodInvokeInterceptor methodInvokeInterceptor,
             CollectionAddInterceptor collectionAddInterceptor,
             CollectionRemoveInterceptor collectionRemoveInterceptor,
-            NotifyPropertyChangedInterceptor notifyPropertyChangedInterceptor,
-            NotifyCollectionChangedInterceptor notifyCollectionChangedInterceptor,
             FinalTargetInterceptor finalTargetInterceptor,
 
-            InterceptorSelector interceptorSelector,
-            ProxyGenerationHook proxyGenerationHook
+            InterceptorSelector interceptorSelector
             )
         {
             _ObserverCache = observerCache;
@@ -55,8 +50,6 @@ namespace Envivo.Fresnel.Proxies
             _MethodInvokeInterceptor = methodInvokeInterceptor;
             _CollectionAddInterceptor = collectionAddInterceptor;
             _CollectionRemoveInterceptor = collectionRemoveInterceptor;
-            _NotifyPropertyChangedInterceptor = notifyPropertyChangedInterceptor;
-            _NotifyCollectionChangedInterceptor = notifyCollectionChangedInterceptor;
             _FinalTargetInterceptor = finalTargetInterceptor;
 
             this.InitialseProxyInterfaceLists();
@@ -64,7 +57,6 @@ namespace Envivo.Fresnel.Proxies
             _ProxyGenerationOptions = new ProxyGenerationOptions()
             {
                 Selector = interceptorSelector,
-                //Hook = proxyGenerationHook
             };
         }
 
@@ -114,8 +106,9 @@ namespace Envivo.Fresnel.Proxies
         {
             var tClass = oObject.TemplateAs<ClassTemplate>();
          
-            // We need this interceptor to keep a reference to the Observer:
+            // We need these interceptors to keep state for the individual Proxy:
             var metaInterceptor = new ProxyMetaInterceptor(oObject);
+            var notifyPropertyChangedInterceptor = new NotifyPropertyChangedInterceptor();
 
             var proxy = _ProxyGenerator
                             .CreateClassProxyWithTarget(
@@ -128,7 +121,7 @@ namespace Envivo.Fresnel.Proxies
                             _PropertyGetInterceptor,
                             _PropertySetInterceptor,
                             _MethodInvokeInterceptor,
-                            _NotifyPropertyChangedInterceptor,
+                            notifyPropertyChangedInterceptor,
                             _FinalTargetInterceptor
                             );
 
@@ -140,8 +133,10 @@ namespace Envivo.Fresnel.Proxies
         {
             var tCollection = oCollection.TemplateAs<CollectionTemplate>();
 
-            // We need this interceptor to keep a reference to the Observer:
+            // We need these interceptors to keep state for the individual Proxy:
             var metaInterceptor = new ProxyMetaInterceptor(oCollection);
+            var notifyPropertyChangedInterceptor = new NotifyPropertyChangedInterceptor();
+            var notifyCollectionChangedInterceptor = new NotifyCollectionChangedInterceptor();
 
             var proxy = _ProxyGenerator
                             .CreateClassProxyWithTarget(
@@ -156,8 +151,8 @@ namespace Envivo.Fresnel.Proxies
                             _CollectionAddInterceptor,
                             _CollectionRemoveInterceptor,
                             _MethodInvokeInterceptor,
-                            _NotifyPropertyChangedInterceptor,
-                            _NotifyCollectionChangedInterceptor,
+                            notifyPropertyChangedInterceptor,
+                            notifyCollectionChangedInterceptor,
                             _FinalTargetInterceptor
                             );
 

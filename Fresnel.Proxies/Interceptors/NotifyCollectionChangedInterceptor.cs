@@ -7,6 +7,8 @@ namespace Envivo.Fresnel.Proxies
 
     public class NotifyCollectionChangedInterceptor : IInterceptor
     {
+        private NotifyCollectionChangedEventHandler _EventHandler = null;
+
         public NotifyCollectionChangedInterceptor()
         {
         }
@@ -14,22 +16,21 @@ namespace Envivo.Fresnel.Proxies
         public void Intercept(IInvocation invocation)
         {
             Debug.WriteLine(this.GetType().Name); 
-            NotifyCollectionChangedEventHandler eventHandler = null;
 
             if (invocation.Method.DeclaringType.Equals(typeof(INotifyCollectionChanged)))
             {
                 if (invocation.Method.Name == "add_CollectionChanged")
                 {
-                    eventHandler += invocation.Arguments[0] as NotifyCollectionChangedEventHandler;
+                    _EventHandler += invocation.Arguments[0] as NotifyCollectionChangedEventHandler;
                 }
                 else if (invocation.Method.Name == "remove_CollectionChanged")
                 {
-                    eventHandler -= invocation.Arguments[0] as NotifyCollectionChangedEventHandler;
+                    _EventHandler -= invocation.Arguments[0] as NotifyCollectionChangedEventHandler;
                 }
             }
             else if (invocation.Method.IsSpecialName && invocation.Method.Name.StartsWith("set_"))
             {
-                this.RaiseEvent(invocation, eventHandler);
+                this.RaiseEvent(invocation, _EventHandler);
             }
 
             if (invocation.InvocationTarget != null)
