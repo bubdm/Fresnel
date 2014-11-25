@@ -29,6 +29,10 @@ namespace Envivo.Fresnel.Proxies
             {
                 invocation.ReturnValue = _oObject;
             }
+            else
+            {
+                invocation.Proceed();
+            }
         }
 
         public void Dispose()
