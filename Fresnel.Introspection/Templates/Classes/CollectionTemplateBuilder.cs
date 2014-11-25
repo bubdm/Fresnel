@@ -27,11 +27,11 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var result = _CollectionTemplateFactory();
 
-            result.RealObjectType = _RealTypeResolver.GetRealType(objectType);
-            result.Name = result.RealObjectType.Name;
-            result.FriendlyName = result.RealObjectType.Name.CreateFriendlyName();
-            result.FullName = result.RealObjectType.FullName;
-            result.ElementType = _CollectionTypeIdentifier.DetermineItemType(result.RealObjectType);
+            result.RealType = _RealTypeResolver.GetRealType(objectType);
+            result.Name = result.RealType.Name;
+            result.FriendlyName = result.RealType.Name.CreateFriendlyName();
+            result.FullName = result.RealType.FullName;
+            result.ElementType = _CollectionTypeIdentifier.DetermineItemType(result.RealType);
             result.Attributes = collectionAttributes;
 
             result.FinaliseConstruction();

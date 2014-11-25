@@ -26,13 +26,13 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var result = _EnumTemplateFactory();
 
-            result.RealObjectType = _RealTypeResolver.GetRealType(enumType);
-            result.Name = result.RealObjectType.Name;
-            result.FriendlyName = result.RealObjectType.Name.CreateFriendlyName();
-            result.FullName = result.RealObjectType.FullName;
+            result.RealType = _RealTypeResolver.GetRealType(enumType);
+            result.Name = result.RealType.Name;
+            result.FriendlyName = result.RealType.Name.CreateFriendlyName();
+            result.FullName = result.RealType.FullName;
             result.Attributes = enumAttributes;
 
-            result.IsBitwiseEnum = result.RealObjectType.GetCustomAttributes(typeof(FlagsAttribute), true).Any();
+            result.IsBitwiseEnum = result.RealType.GetCustomAttributes(typeof(FlagsAttribute), true).Any();
 
             // We don't want Generics to spoil the name format, hence the manual formatting:
             result.FullName = enumType.DeclaringType != null ?

@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                 var i = 0;
                 foreach (var param in methodParams)
                 {
-                    if (param.ParameterType.IsAssignableFrom(tArguments[i].RealObjectType))
+                    if (param.ParameterType.IsAssignableFrom(tArguments[i].RealType))
                     {
                         i++;
                     }

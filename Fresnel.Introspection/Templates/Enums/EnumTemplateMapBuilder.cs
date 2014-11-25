@@ -23,7 +23,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public EnumTemplateMap BuildFrom(ClassTemplate tClass, IClassConfiguration classConfiguration)
         {
-            var nestedTypes = tClass.RealObjectType.GetNestedTypes(BindingFlags.Public | BindingFlags.DeclaredOnly);
+            var nestedTypes = tClass.RealType.GetNestedTypes(BindingFlags.Public | BindingFlags.DeclaredOnly);
 
             var results = new Dictionary<Type, EnumTemplate>();
 

@@ -56,19 +56,19 @@ namespace Envivo.Fresnel.Introspection.Templates
 
 
             _RapidCtor = new Lazy<RapidCtor>(
-                                () => _DynamicMethodBuilder.BuildCreateObjectHandler(this.RealObjectType),
+                                () => _DynamicMethodBuilder.BuildCreateObjectHandler(this.RealType),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _InheritanceDepth = new Lazy<int>(() =>
-                                DetermineInheritanceDepth(this.RealObjectType),
+                                DetermineInheritanceDepth(this.RealType),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _Constructors = new Lazy<ConstructorInfo[]>(
-                                () => this.RealObjectType.GetConstructors(),
+                                () => this.RealType.GetConstructors(),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _Fields = new Lazy<FieldInfoMap>(
-                                () => _FieldInfoMapBuilder.BuildFor(this.RealObjectType),
+                                () => _FieldInfoMapBuilder.BuildFor(this.RealType),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _tProperties = new Lazy<PropertyTemplateMap>(
@@ -110,15 +110,15 @@ namespace Envivo.Fresnel.Introspection.Templates
         private void CreateNames()
         {
             // Generic objects (usually collections) need to be uniquely identifiable:
-            foreach (var genericArg in this.RealObjectType.GetGenericArguments())
+            foreach (var genericArg in this.RealType.GetGenericArguments())
             {
                 this.Name += "_" + genericArg.Name;
             }
 
-            this.FullName = string.Concat(this.RealObjectType.Namespace, ".", this.RealObjectType.Name);
+            this.FullName = string.Concat(this.RealType.Namespace, ".", this.RealType.Name);
 
             // Users shouldn't need to know about Abstract or Interfaces types, so let's fix that:
-            if (this.RealObjectType.IsAbstract || this.RealObjectType.IsInterface)
+            if (this.RealType.IsAbstract || this.RealType.IsInterface)
             {
                 this.FriendlyName = this.CreateFriendlyNameForAbstractTypes();
             }
@@ -143,13 +143,13 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         private void DetermineInterfaces()
         {
-            this.IsEntity = this.RealObjectType.IsEntity();
-            this.IsValueObject = this.RealObjectType.IsValueObject();
-            this.IsAggregateRoot = this.RealObjectType.IsAggregateRoot();
-            this.IsCloneable = this.RealObjectType.IsDerivedFrom<ICloneable>();
+            this.IsEntity = this.RealType.IsEntity();
+            this.IsValueObject = this.RealType.IsValueObject();
+            this.IsAggregateRoot = this.RealType.IsAggregateRoot();
+            this.IsCloneable = this.RealType.IsDerivedFrom<ICloneable>();
 
-            this.HasErrorInfo = this.RealObjectType.IsDataErrorInfo();
-            this.IsValidatable = this.RealObjectType.IsValidatable();
+            this.HasErrorInfo = this.RealType.IsDataErrorInfo();
+            this.IsValidatable = this.RealType.IsValidatable();
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             get
             {
                 return _ObjectInstanceAttr.IsCreatable &&
-                        !this.RealObjectType.IsAbstract &&
+                        !this.RealType.IsAbstract &&
                         this.HasDefaultConstructor;
             }
         }

@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         /// <value></value>
 
-        Type RealObjectType { get; }
+        Type RealType { get; }
 
     }
 }

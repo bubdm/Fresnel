@@ -112,7 +112,7 @@ namespace Envivo.Fresnel.Proxies
 
             var proxy = _ProxyGenerator
                             .CreateClassProxyWithTarget(
-                            tClass.RealObjectType,
+                            tClass.RealType,
                             _ObjectProxyInterfaceList,
                             obj,
                             _ProxyGenerationOptions,
@@ -140,7 +140,7 @@ namespace Envivo.Fresnel.Proxies
 
             var proxy = _ProxyGenerator
                             .CreateClassProxyWithTarget(
-                            tCollection.RealObjectType,
+                            tCollection.RealType,
                             _CollectionProxyInterfaceList,
                             collection,
                             _ProxyGenerationOptions,

@@ -57,7 +57,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             base.FinaliseConstruction();
 
-            this.IsDictionary = this.RealObjectType.IsDerivedFrom(TypeExtensions.IGenericDictionary);
+            this.IsDictionary = this.RealType.IsDerivedFrom(TypeExtensions.IGenericDictionary);
 
             // We should also have a friendly name than "IList`1":
             if (this.Name.Contains("`"))
@@ -98,7 +98,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         private ClassTemplate DetermineInnerClass()
         {
-            var result = (ClassTemplate)_TemplateCache.GetTemplate(this.RealObjectType);
+            var result = (ClassTemplate)_TemplateCache.GetTemplate(this.RealType);
             return result;
         }
 

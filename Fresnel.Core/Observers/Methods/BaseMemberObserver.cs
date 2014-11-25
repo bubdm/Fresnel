@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.Core.Observers
 
         internal BaseMemberObserver(ObjectObserver oOuterObject, BaseMemberTemplate tMember)
             : base(oOuterObject.RealObject,
-                   oOuterObject.TemplateAs<ClassTemplate>().RealObjectType,
+                   oOuterObject.TemplateAs<ClassTemplate>().RealType,
                    tMember)
         {
             this.OuterObject = oOuterObject;

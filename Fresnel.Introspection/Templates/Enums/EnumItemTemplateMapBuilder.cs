@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public EnumItemTemplateMap BuildFor(EnumTemplate tEnum)
         {
-            var enumFields = tEnum.RealObjectType.GetFields(BindingFlags.Public | BindingFlags.Static);
+            var enumFields = tEnum.RealType.GetFields(BindingFlags.Public | BindingFlags.Static);
 
             var results = new Dictionary<string, EnumItemTemplate>();
             foreach (var enumField in enumFields)

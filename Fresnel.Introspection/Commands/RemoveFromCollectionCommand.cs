@@ -66,7 +66,7 @@ namespace Envivo.Fresnel.Introspection.Commands
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            tCollection.Remove(collection, item, tItem.RealObjectType);
+            tCollection.Remove(collection, item, tItem.RealType);
         }
 
     }

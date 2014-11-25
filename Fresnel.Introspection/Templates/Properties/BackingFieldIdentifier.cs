@@ -16,7 +16,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         public FieldInfo GetBackingField(PropertyTemplate tProperty)
         {
             var tClass = tProperty.OuterClass;
-            if (tClass.RealObjectType.IsInterface)
+            if (tClass.RealType.IsInterface)
             {
                 // Interfaces don't have fields:
                 return null;

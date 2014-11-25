@@ -26,7 +26,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public MethodTemplateMap BuildFor(ClassTemplate tClass)
         {
-            var methodInfoMap = _MethodInfoMapBuilder.BuildFor(tClass.RealObjectType);
+            var methodInfoMap = _MethodInfoMapBuilder.BuildFor(tClass.RealType);
             var result = this.BuildFrom(tClass, methodInfoMap);
             return result;
         }

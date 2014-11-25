@@ -24,10 +24,10 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var result = _ClassTemplateFactory();
 
-            result.RealObjectType = _RealTypeResolver.GetRealType(classType);
-            result.Name = result.RealObjectType.Name;
-            result.FriendlyName = result.RealObjectType.Name.CreateFriendlyName();
-            result.FullName = result.RealObjectType.FullName;
+            result.RealType = _RealTypeResolver.GetRealType(classType);
+            result.Name = result.RealType.Name;
+            result.FriendlyName = result.RealType.Name.CreateFriendlyName();
+            result.FullName = result.RealType.FullName;
             result.Attributes = classAttributes;
 
             result.FinaliseConstruction();

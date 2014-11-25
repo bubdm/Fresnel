@@ -70,7 +70,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             if (searchHierarchy)
             {
                 // If the summary is empty, we need to obtain the value from one of the classes up the inheritance chain:
-                var superType = tClass.RealObjectType.BaseType;
+                var superType = tClass.RealType.BaseType;
                 while ((superType != null) && tClass.Summary.IsEmpty())
                 {
                     // Base generic types don't return a FullName:
@@ -102,7 +102,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
                 try
                 {
                     // If the summary is empty, we need to obtain the value from one of the classes up the inheritance chain:
-                    var superType = tProperty.OuterClass.RealObjectType.BaseType;
+                    var superType = tProperty.OuterClass.RealType.BaseType;
                     while ((superType != null) && tProperty.Summary.IsEmpty())
                     {
                         // Base generic types don't return a FullName:
@@ -154,7 +154,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             if (searchHierarchy)
             {
                 // If the summary is empty, we need to obtain the value from one of the Super classes:
-                var superType = tMethod.OuterClass.RealObjectType.BaseType;
+                var superType = tMethod.OuterClass.RealType.BaseType;
                 while ((superType != null) && tMethod.Summary.IsEmpty())
                 {
                     // NB: If we can't find the super class, there's no point in continuing:
@@ -181,8 +181,8 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         private void ResolveComments(ClassTemplate tClass)
         {
-            tClass.Summary = SearchForComment("TClass", "summary", string.Empty, string.Empty, tClass.RealObjectType);
-            tClass.Remarks = SearchForComment("TClass", "remarks", string.Empty, string.Empty, tClass.RealObjectType);
+            tClass.Summary = SearchForComment("TClass", "summary", string.Empty, string.Empty, tClass.RealType);
+            tClass.Remarks = SearchForComment("TClass", "remarks", string.Empty, string.Empty, tClass.RealType);
         }
 
         /// <summary>
@@ -221,19 +221,19 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         internal void ResolveComments(EnumTemplate tEnum)
         {
-            tEnum.Summary = SearchForComment("TClass", "summary", tEnum.FullName, string.Empty, tEnum.RealObjectType);
-            tEnum.Remarks = SearchForComment("TClass", "remarks", tEnum.FullName, string.Empty, tEnum.RealObjectType);
+            tEnum.Summary = SearchForComment("TClass", "summary", tEnum.FullName, string.Empty, tEnum.RealType);
+            tEnum.Remarks = SearchForComment("TClass", "remarks", tEnum.FullName, string.Empty, tEnum.RealType);
 
             foreach (var tItem in tEnum.EnumItems.Values)
             {
-                var declaringType = tEnum.RealObjectType.DeclaringType;
+                var declaringType = tEnum.RealType.DeclaringType;
                 string fieldName = string.Empty;
 
                 if (declaringType == null)
                 {
                     // This deals with enums:
                     fieldName = tItem.Name;
-                    declaringType = tEnum.RealObjectType;
+                    declaringType = tEnum.RealType;
                 }
                 else
                 {

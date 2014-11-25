@@ -106,7 +106,7 @@ namespace Envivo.Fresnel.Core.Observers
             if (tClass != null)
             {
                 var key = _ObjectIdResolver.GetId(obj, tClass);
-                var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealObjectType);
+                var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealType);
                 _ObjectMap.Add(key, result);
                 MergeObjectsWithSameId(obj, result);
                 return result;
@@ -115,7 +115,7 @@ namespace Envivo.Fresnel.Core.Observers
             if (tClass == null)
             {
                 var key = Guid.NewGuid();
-                var result = (NonReferenceObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealObjectType);
+                var result = (NonReferenceObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealType);
                 _NonReferenceMap.Add(key, result);
                 return result;
             }

@@ -26,7 +26,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var results = new Dictionary<string, PropertyTemplate>();
 
-            var properties = _PropertyInfoMapBuilder.BuildFor(tClass.RealObjectType);
+            var properties = _PropertyInfoMapBuilder.BuildFor(tClass.RealType);
 
             foreach (var prop in properties.Values)
             {

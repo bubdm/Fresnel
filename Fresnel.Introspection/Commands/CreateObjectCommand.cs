@@ -51,7 +51,7 @@ namespace Envivo.Fresnel.Introspection.Commands
                 if (tClass.CanBeCreatedWith(realType))
                 {
                     object[] args = { constructorArg };
-                    result = tClass.RealObjectType.Assembly.CreateInstance(tClass.RealObjectType.FullName, true, BindingFlags.CreateInstance, null, args, null, null);
+                    result = tClass.RealType.Assembly.CreateInstance(tClass.RealType.FullName, true, BindingFlags.CreateInstance, null, args, null, null);
                 }
             }
 

@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         /// <value></value>
 
-        public Type RealObjectType { get; internal set; }
+        public Type RealType { get; internal set; }
 
         public override string ToString()
         {

@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         public AssemblyReader this[IClassTemplate template]
         {
-            get { return this[template.RealObjectType.Assembly]; }
+            get { return this[template.RealType.Assembly]; }
         }
 
         //public AssemblyReader this[string assemblyName]

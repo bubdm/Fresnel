@@ -309,8 +309,8 @@ namespace Envivo.Fresnel.Introspection.Templates
                 if (tOtherElement == null)
                     continue;
 
-                if (tOtherCollection.RealObjectType.IsDerivedFrom(this.OuterClass.RealObjectType) ||
-                    this.OuterClass.RealObjectType.IsDerivedFrom(tOtherCollection.RealObjectType))
+                if (tOtherCollection.RealType.IsDerivedFrom(this.OuterClass.RealType) ||
+                    this.OuterClass.RealType.IsDerivedFrom(tOtherCollection.RealType))
                 {
                     // We've found the class:
                     return tElement;

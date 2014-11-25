@@ -31,11 +31,11 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var results = new List<ClassTemplate>();
 
-            var assemblyReader = _AssemblyReaderMap[tRootClass.RealObjectType];
+            var assemblyReader = _AssemblyReaderMap[tRootClass.RealType];
 
             //-----
 
-            var superClass = tRootClass.RealObjectType;
+            var superClass = tRootClass.RealType;
             while (superClass != null)
             {
                 var tClass = assemblyReader.GetTemplate(superClass) as ClassTemplate;
@@ -52,7 +52,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             foreach (var tClass in assemblyReader.GetTemplates())
             {
                 // This allows us to test for Interfaces inheritance too:
-                if (tClass.RealObjectType.IsDerivedFrom(tRootClass.RealObjectType) == false)
+                if (tClass.RealType.IsDerivedFrom(tRootClass.RealType) == false)
                     continue;
 
                 if (results.Contains(tClass))
@@ -93,7 +93,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                 results.Add(tRootClass);
             }
 
-            var superClass = tRootClass.RealObjectType;
+            var superClass = tRootClass.RealType;
             var assemblyReader = _AssemblyReaderMap[superClass];
 
             // We're using two separate loops for optimsation.
@@ -103,7 +103,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                 foreach (var tClass in assemblyReader.GetTemplates())
                 {
                     // This allows us to test for Interfaces inheritance too:
-                    if (tClass.RealObjectType.IsDerivedFrom(superClass) == false)
+                    if (tClass.RealType.IsDerivedFrom(superClass) == false)
                         continue;
 
                     if (results.Contains(tClass))
@@ -119,7 +119,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             {
                 foreach (var tClass in assemblyReader.GetTemplates())
                 {
-                    if (tClass.RealObjectType.BaseType != superClass)
+                    if (tClass.RealType.BaseType != superClass)
                         continue;
 
                     if (results.Contains(tClass))
@@ -150,7 +150,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var results = new List<ClassTemplate>();
 
-            foreach (var iFace in tRootClass.RealObjectType.GetInterfaces())
+            foreach (var iFace in tRootClass.RealType.GetInterfaces())
             {
                 if (iFace.IsTrackable() || iFace.IsValueObject())
                 {
