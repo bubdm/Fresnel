@@ -361,6 +361,26 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    Assert.IsTrue(detailObjectChangeTracker.HasChanges);
         //}
 
+        [Test()]
+        public void ShouldIdentifyRealTypeFromProxy()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            var pocoProxy = proxyCache.GetProxy(poco);
+
+            var typeResolver = container.Resolve<FresnelTypeResolver>();
+
+            // Act:
+            var realType = typeResolver.GetRealType(pocoProxy.GetType());
+
+            // Assert:
+            Assert.AreEqual(poco.GetType(), realType);
+        }
+
     }
+
 }
 

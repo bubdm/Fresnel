@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Introspection
 {
-    public interface ITypeResolverStrategy
+    public interface IRealTypeResolver
     {
-        Type GetRealType(Type proxiedType);
+        Type GetRealType(Type proxyType);
     }
 }

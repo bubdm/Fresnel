@@ -18,6 +18,7 @@ namespace Envivo.Fresnel.Core
     {
         private AssemblyReaderBuilder _AssemblyReaderBuilder;
         private AssemblyReaderMap _AssemblyReaderMap;
+        private RealTypeResolver _RealTypeResolver;
 
         private Func<UserSession> _UserSessionFactory;
 
@@ -25,11 +26,13 @@ namespace Envivo.Fresnel.Core
             (
             AssemblyReaderBuilder assemblyReaderBuilder,
             AssemblyReaderMap assemblyReaderMap,
+            RealTypeResolver realTypeResolver,
             Func<UserSession> userSessionFactory
             )
         {
             _AssemblyReaderBuilder = assemblyReaderBuilder;
             _AssemblyReaderMap = assemblyReaderMap;
+            _RealTypeResolver = realTypeResolver;
             _UserSessionFactory = userSessionFactory;
         }
 
@@ -43,6 +46,11 @@ namespace Envivo.Fresnel.Core
         {
             var newReader = _AssemblyReaderBuilder.BuildFor(nonDomainAssembly, true);
             _AssemblyReaderMap.Add(nonDomainAssembly, newReader);
+        }
+
+        public void RegisterTypeResolver(IRealTypeResolver typeResolver)
+        {
+            _RealTypeResolver.Register(typeResolver);
         }
 
         public UserSession CreateNewSession()

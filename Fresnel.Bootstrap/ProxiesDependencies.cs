@@ -36,8 +36,8 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Proxies.PropertySetInterceptor),
                 typeof(Fresnel.Proxies.ProxyBuilder),
                 typeof(Fresnel.Proxies.ProxyCache),
-
                 typeof(Fresnel.Proxies.InterceptorSelector),
+                typeof(Fresnel.Proxies.FresnelTypeResolver),
             };
         }
 

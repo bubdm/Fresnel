@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
 using Envivo.Fresnel.Core.Proxies;
+using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Proxies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,19 @@ namespace Envivo.Fresnel.Bootstrap
             // THIS SEEMS TO BE VERY SLOW, HENCE IT IS DISABLED:
             //builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
-            return builder.Build();
+            var result = builder.Build();
+
+            this.SetupContainer(result);
+
+            return result;
+        }
+
+        private void SetupContainer(IContainer container)
+        {
+            var realTypeResolver = container.Resolve<RealTypeResolver>();
+            var fresnelTypeResolver = container.Resolve<FresnelTypeResolver>();
+
+            realTypeResolver.Register(fresnelTypeResolver);
         }
 
         /// <summary>

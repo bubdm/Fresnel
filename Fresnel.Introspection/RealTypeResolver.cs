@@ -1,6 +1,7 @@
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -8,22 +9,38 @@ namespace Envivo.Fresnel.Introspection
 {
 
     /// <summary>
-    /// Returns the true Type of a proxied type
+    /// Returns the true Type of a proxied object
     /// </summary>
     /// <remarks>
     /// </remarks>
     public class RealTypeResolver
     {
-        private List<ITypeResolverStrategy> _Strategies = new List<ITypeResolverStrategy>();
+        private List<IRealTypeResolver> _Resolvers = new List<IRealTypeResolver>();
         
-        public void Register(ITypeResolverStrategy strategy)
+        /// <summary>
+        /// Adds the given Type Resolver strategy to the internal list of strategies
+        /// </summary>
+        /// <param name="resolver"></param>
+        public void Register(IRealTypeResolver resolver)
         {
-            _Strategies.Add(strategy);
+            _Resolvers.Add(resolver);
         }
 
         public Type GetRealType(Type proxyType)
         {
-            // TODO: Loop through the resolvers until we find one that works
+            if (proxyType == null)
+                return null;
+
+            foreach (var resolver in _Resolvers)
+            {
+                var realType = resolver.GetRealType(proxyType);
+                if (realType != null && realType != proxyType)
+                {
+                    return realType;
+                }
+            }
+            
+            // Couldn't find one, so return the original Type:
             return proxyType;
         }
     }

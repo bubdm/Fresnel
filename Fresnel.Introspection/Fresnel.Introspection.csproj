@@ -57,7 +57,7 @@
     <Compile Include="Commands\CreateObjectCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Assemblies\AssemblyReaderBuilder.cs" />
-    <Compile Include="ITypeResolverStrategy.cs" />
+    <Compile Include="IRealTypeResolver.cs" />
     <Compile Include="RealTypeResolver.cs" />
     <Compile Include="Templates\Classes\ClassHierarchyBuilder.cs" />
     <Compile Include="Templates\Classes\NullTemplate.cs" />
