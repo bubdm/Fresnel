@@ -14,13 +14,22 @@ namespace Envivo.Fresnel.Introspection
     /// </remarks>
     public class TemplateCache
     {
+        private RealTypeResolver _RealTypeResolver;
         private AssemblyReaderMap _AssemblyReaders = null;
 
-        public TemplateCache(AssemblyReaderMap assemblyReaders)
+        public TemplateCache
+            (
+            RealTypeResolver realTypeResolver,
+            AssemblyReaderMap assemblyReaders
+            )
         {
+            if (realTypeResolver == null)
+                throw new ArgumentNullException("realTypeResolver");
+
             if (assemblyReaders == null)
                 throw new ArgumentNullException("assemblyReaders");
 
+            _RealTypeResolver = realTypeResolver;
             _AssemblyReaders = assemblyReaders;
         }
 
@@ -33,8 +42,11 @@ namespace Envivo.Fresnel.Introspection
         /// </remarks>
         public IClassTemplate GetTemplate(Type objectType)
         {
-            var assemblyReader = _AssemblyReaders[objectType.Assembly];
-            return assemblyReader.GetTemplate(objectType);
+            // We may have been given a proxy type, so make sure we know the real type:
+            var realType = _RealTypeResolver.GetRealType(objectType);
+
+            var assemblyReader = _AssemblyReaders[realType.Assembly];
+            return assemblyReader.GetTemplate(realType);
         }
 
         public IClassTemplate GetTemplate<T>()

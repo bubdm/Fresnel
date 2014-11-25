@@ -38,7 +38,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var proxy = pocoProxy as IFresnelProxy;
 
             // Assert:
-            Assert.IsNotNull(pocoProxy);
+            Assert.IsInstanceOf<IFresnelProxy>(pocoProxy);
         }
 
         //[Test]
@@ -83,11 +83,10 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Act:
             var poco = new SampleModel.Objects.PocoObject();
             var pocoProxy = proxyCache.GetProxy(poco);
+
+            Assert.IsInstanceOf<INotifyPropertyChanged>(pocoProxy);
+
             var proxy = pocoProxy as INotifyPropertyChanged;
-
-            // Assert:
-            Assert.IsNotNull(pocoProxy);
-
             var propertyChanges = new List<string>();
             proxy.PropertyChanged += delegate(object sender, PropertyChangedEventArgs e)
             {
@@ -96,7 +95,25 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             pocoProxy.FormattedText = "This is a new string";
 
+            // Assert:
             Assert.AreNotEqual(0, propertyChanges.Count);
+        }
+
+        [Test()]
+        public void ShouldConvertPropertyValueToProxy()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
+
+            // Act:
+            var poco = new SampleModel.Objects.PocoObject();
+            var pocoProxy = proxyCache.GetProxy(poco);
+
+            // Assert:
+            var childObjects = pocoProxy.ChildObjects;
+
+            Assert.IsInstanceOf<IFresnelProxy>(pocoProxy.ChildObjects);
         }
 
         //[Test]

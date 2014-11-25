@@ -86,7 +86,7 @@ namespace Envivo.Fresnel.Proxies
             }
             else
             {
-                return _ObserverCache.GetObserver(domainObject, domainObject.GetType());
+                return _ObserverCache.GetObserver(domainObject);
             }
         }
 

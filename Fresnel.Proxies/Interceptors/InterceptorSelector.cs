@@ -83,6 +83,8 @@ namespace Envivo.Fresnel.Proxies
                 results.Add(this.FindInstanceOf<NotifyPropertyChangedInterceptor>(interceptors));
             }
 
+            results.Add(this.FindInstanceOf<FinalTargetInterceptor>(interceptors));
+
             return results.ToArray();
         }
 

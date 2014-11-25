@@ -104,6 +104,12 @@ namespace Envivo.Fresnel.Proxies
 
             this.MarkChangedObjects(oMethod);
 
+            if (invocation.ReturnValue != null)
+            {
+                var returnValueProxy = (IFresnelProxy)this.ProxyCache.GetProxy(invocation.ReturnValue);
+                invocation.ReturnValue = returnValueProxy;
+            }
+
             //oMethod.OuterObject.Persistor.Suspend();
         }
 

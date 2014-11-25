@@ -11,13 +11,6 @@ namespace Envivo.Fresnel.Proxies
 
     public class PropertyGetInterceptor : IInterceptor, IDisposable
     {
-        private ObserverCache _ObserverCache;
-
-        public PropertyGetInterceptor(ObserverCache observerCache)
-        {
-            _ObserverCache = observerCache;
-        }
-
         public ProxyCache ProxyCache { get; set; }
 
         public void Intercept(IInvocation invocation)
@@ -37,7 +30,7 @@ namespace Envivo.Fresnel.Proxies
                     invocation.Proceed();
                 }
 
-                this.PostInvoke(oProperty, invocation.ReturnValue);
+                this.PostInvoke(invocation, oProperty);
             }
             else
             {
@@ -98,13 +91,15 @@ namespace Envivo.Fresnel.Proxies
             //}
         }
 
-        private void PostInvoke(ObjectPropertyObserver oProperty, object returnValue)
+        private void PostInvoke(IInvocation invocation, ObjectPropertyObserver oProperty)
         {
-            if (returnValue == null)
+            if (invocation.ReturnValue == null)
                 return;
 
-            //var oReturnValue = (ObjectObserver)((IFresnelProxy)this.ProxyCache.GetProxy(returnValue)).Meta;
-            var oReturnValue = (ObjectObserver)_ObserverCache.GetObserver(returnValue);
+            var returnValueProxy = (IFresnelProxy)this.ProxyCache.GetProxy(invocation.ReturnValue);
+            invocation.ReturnValue = returnValueProxy;
+
+            var oReturnValue = (ObjectObserver)(returnValueProxy).Meta;
             oReturnValue.AssociateWith(oProperty);
         }
 
