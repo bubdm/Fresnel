@@ -53,11 +53,6 @@ namespace Envivo.Fresnel.Core.Observers
                 throw new ArgumentNullException("obj");
 
             var objectType = obj.GetType();
-            if (objectType.IsNonReference())
-            {
-                throw new ArgumentOutOfRangeException("The given object cannot be a non-reference type");
-            }
-
             return this.GetObserver(obj, objectType);
         }
 
@@ -71,10 +66,14 @@ namespace Envivo.Fresnel.Core.Observers
             if (obj == null)
                 return _NullObserver;
 
+            if (objectType.IsNonReference())
+            {
+                throw new ArgumentOutOfRangeException("The given object cannot be a non-reference type");
+            }
+
             var template = _TemplateCache.GetTemplate(objectType);
             var tClass = template as ClassTemplate;
             var id = _ObjectIdResolver.GetId(obj, tClass);
-
 
             var result = this.GetCachedObserver(obj, objectType);
             if (result == null)
