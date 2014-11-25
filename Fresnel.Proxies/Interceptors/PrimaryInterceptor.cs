@@ -2,13 +2,11 @@ using Castle.DynamicProxy;
 using Envivo.Fresnel.Core.Proxies;
 using System;
 using System.Diagnostics;
+using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Proxies
 {
 
-    /// <summary>
-    /// This interceptor MUST be placed first, as it knows how to replace Proxies with actual Domain Objects
-    /// </summary>
     public class PrimaryInterceptor : IInterceptor, IDisposable
     {
         private CanBeProxiedSpecification _CanBeProxiedSpecification;
@@ -22,7 +20,7 @@ namespace Envivo.Fresnel.Proxies
 
         public void Intercept(IInvocation invocation)
         {
-            Debug.WriteLine(invocation.ToString());
+            Debug.WriteLine(this.GetType().Name);
 
             if (invocation.Method.Name == "get_Meta")
             {
@@ -31,16 +29,13 @@ namespace Envivo.Fresnel.Proxies
             }
             else
             {
-                this.ReplaceArgumentProxiesWithRealObjects(invocation);
+                this.ReplaceArgumentsWithProxies(invocation);
 
                 invocation.Proceed();
             }
-
-            // If the result is an Object/Collection, replace it with an IFresnelProxy:
-            this.ReplaceReturnValueWithProxy(invocation);
         }
 
-        private void ReplaceArgumentProxiesWithRealObjects(IInvocation invocation)
+        private void ReplaceArgumentsWithProxies(IInvocation invocation)
         {
             if (invocation.Arguments.Length == 0)
                 return;
@@ -48,52 +43,28 @@ namespace Envivo.Fresnel.Proxies
             for (var i = 0; i < invocation.Arguments.Length; i++)
             {
                 var arg = invocation.GetArgumentValue(i);
+                if (arg == null)
+                    continue;
+
+                var argType = arg.GetType();
+                if (argType.IsNonReference())
+                    continue;
 
                 var proxy = arg as IFresnelProxy;
                 if (proxy != null)
-                {
-                    invocation.SetArgumentValue(i, proxy.Meta.RealObject);
-                }
-            }
-        }
-
-        private void ReplaceArgumentObjectsWithProxies(IInvocation invocation)
-        {
-            if (invocation.Arguments.Length == 0)
-                return;
-
-            for (var i = 0; i < invocation.Arguments.Length; i++)
-            {
-                var arg = invocation.GetArgumentValue(i);
+                    continue;
 
                 var check = _CanBeProxiedSpecification.IsSatisfiedBy(arg);
-                if (check.Passed)
-                {
-                    invocation.SetArgumentValue(i, this.ProxyCache.GetProxy(arg));
-                }
-                else
-                {
-                    // Continue using the original argument value
-                }
-            }
-        }
+                if (check.Failed)
+                    continue;
 
-        private void ReplaceReturnValueWithProxy(IInvocation invocation)
-        {
-            var check = _CanBeProxiedSpecification.IsSatisfiedBy(invocation.ReturnValue);
-            if (check.Passed)
-            {
-                invocation.ReturnValue = this.ProxyCache.GetProxy(invocation.ReturnValue);
-            }
-            else
-            {
-                // Continue using the original return value
+                proxy = (IFresnelProxy)this.ProxyCache.GetProxy(arg);
+                invocation.SetArgumentValue(i, proxy);
             }
         }
 
         public void Dispose()
         {
-            _CanBeProxiedSpecification = null;
             this.ProxyCache = null;
         }
 

@@ -1,4 +1,5 @@
 using Castle.DynamicProxy;
+using System.Diagnostics;
 
 namespace Envivo.Fresnel.Proxies
 {
@@ -8,19 +9,36 @@ namespace Envivo.Fresnel.Proxies
     /// </summary>
     public class FinalTargetInterceptor : IInterceptor
     {
+        private CanBeProxiedSpecification _CanBeProxiedSpecification;
 
-        public FinalTargetInterceptor()
+        public FinalTargetInterceptor(CanBeProxiedSpecification canBeProxiedSpecification)
         {
+            _CanBeProxiedSpecification = canBeProxiedSpecification;
         }
 
         public ProxyCache ProxyCache { get; set; }
 
         public void Intercept(IInvocation invocation)
         {
-            // Only let the invocation proceed if a previous Interceptor didn't handle it already:
+            Debug.WriteLine(this.GetType().Name);
 
+            invocation.Proceed();
 
+            // If the result is an Object/Collection, replace it with an IFresnelProxy:
+            this.ReplaceReturnValueWithProxy(invocation);
+        }
 
+        private void ReplaceReturnValueWithProxy(IInvocation invocation)
+        {
+            var check = _CanBeProxiedSpecification.IsSatisfiedBy(invocation.ReturnValue);
+            if (check.Passed)
+            {
+                invocation.ReturnValue = this.ProxyCache.GetProxy(invocation.ReturnValue);
+            }
+            else
+            {
+                // Continue using the original return value
+            }
         }
 
     }
