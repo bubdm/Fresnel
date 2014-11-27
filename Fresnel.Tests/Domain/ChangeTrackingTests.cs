@@ -107,6 +107,38 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsTrue(oCollection.ChangeTracker.IsDirty);
             Assert.IsTrue(oObject.ChangeTracker.IsDirty);
         }
+
+
+        [Test()]
+        public void ShouldDetectRemoveFromCollection()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var getCommand = container.Resolve<GetPropertyCommand>();
+            var removeCommand = container.Resolve<RemoveFromCollectionCommand>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+
+            poco.AddSomeChildObjects();
+
+            var oObject = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
+            var oProp = oObject.Properties["ChildObjects"];
+            var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
+
+            // Act:
+            var childObject = poco.ChildObjects.Last();
+            var oChildObject = (ObjectObserver)observerCache.GetObserver(childObject, childObject.GetType());
+
+            var result = removeCommand.Invoke(oCollection, oChildObject);
+
+            // Assert:
+            Assert.IsTrue(oChildObject.ChangeTracker.IsDirty);
+            Assert.IsTrue(oChildObject.ChangeTracker.IsMarkedForRemoval);
+            Assert.IsTrue(oCollection.ChangeTracker.IsDirty);
+            Assert.IsTrue(oObject.ChangeTracker.IsDirty);
+        }
     }
 
 
