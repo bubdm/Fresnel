@@ -37,7 +37,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\ChangeTrackingTests.cs" />
     <Compile Include="Domain\NamespaceHierarchyBuilderTests.cs" />
+    <Compile Include="Domain\CollectionObserverTests.cs" />
     <Compile Include="Domain\ObjectObserverTests.cs" />
     <Compile Include="Domain\ClassTemplateTests.cs" />
     <Compile Include="Domain\MethodTemplateTests.cs" />

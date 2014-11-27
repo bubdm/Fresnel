@@ -42,14 +42,14 @@ namespace Envivo.Fresnel.Core.Observers
                     null;
         }
 
-        internal void ResetLazyLoadStatus()
+        internal void ResetLazyLoadStatus(bool isOuterClassPersistable)
         {
             if (_ForObjects == null)
                 return;
 
             foreach (var oProp in _ForObjects)
             {
-                oProp.ResetLazyLoadStatus();
+                oProp.ResetLazyLoadStatus(isOuterClassPersistable);
             }
         }
 

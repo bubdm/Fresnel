@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.Core.Observers
         public ObjectPropertyObserver(ObjectObserver oParent, PropertyTemplate tProperty)
             : base(oParent, tProperty)
         {
-            this.ResetLazyLoadStatus();
+            
         }
 
         /// <summary>
@@ -30,12 +30,12 @@ namespace Envivo.Fresnel.Core.Observers
         /// <summary>
         /// Sets the lazy-loading flags to their original states
         /// </summary>
-        internal void ResetLazyLoadStatus()
+        internal void ResetLazyLoadStatus(bool isOuterClassPersistable)
         {
-            var tProp = this.Template;
-            if (tProp.OuterClass.IsPersistable)
+            if (isOuterClassPersistable)
             {
                 // If the Property isn't marked as 'lazy loaded', we need to make sure it is loaded immediately:
+                var tProp = this.Template;
                 this.IsLazyLoadPending = tProp.Attributes.Get<ObjectPropertyBaseAttribute>().IsLazyLoaded;
             }
             else
