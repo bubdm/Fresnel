@@ -1,4 +1,6 @@
-﻿using Envivo.Fresnel.Core.Observers;
+﻿using Envivo.Fresnel.Core.ChangeTracking;
+using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
 using System.Collections.Generic;
@@ -10,55 +12,67 @@ namespace Envivo.Fresnel.Core.Commands
 {
     public class AddToCollectionCommand
     {
+        private DirtyObjectNotifier _DirtyObjectNotifier;
+        private ObserverCache _ObserverCache;
+        private Fresnel.Introspection.Commands.AddToCollectionCommand _AddCommand;
+        private RealTypeResolver _RealTypeResolver;
 
-        public BaseObjectObserver Invoke(CollectionObserver oCollection, ObjectObserver oItem)
+        public AddToCollectionCommand
+            (
+            ObserverCache observerCache,
+            DirtyObjectNotifier dirtyObjectNotifier,
+            Fresnel.Introspection.Commands.AddToCollectionCommand addCommand,
+            RealTypeResolver realTypeResolver
+            )
         {
+            _ObserverCache = observerCache;
+            _DirtyObjectNotifier = dirtyObjectNotifier;
+            _AddCommand = addCommand;
+            _RealTypeResolver = realTypeResolver;
+        }
 
-            //ObjectObserver oAddedItem = oItem;
+        public BaseObjectObserver Invoke(CollectionObserver oCollection, ObjectObserver oItemToAdd)
+        {
+            // TODO: Check permissions 
 
-            //if (this.IsReflectionEnabled)
+            //var preSnapshot = new CollectionChangeSnapshot(this);
+
+            var result = _AddCommand.Invoke(oCollection.Template, oCollection.RealObject, oItemToAdd.Template, oItemToAdd.RealObject);
+
+            //var postSnapshot = new CollectionChangeSnapshot(this);
+            //if (postSnapshot.IsUnchangedSince(preSnapshot))
             //{
-            //    var preSnapshot = new CollectionChangeSnapshot(this);
-
-            //    // The Add() method might be a function, in which case we want to get the return value:
-            //    var returnValue = tAddMethod.Invoke(oMethodOwner.RealObject, new object[] { oItem.RealObject });
-            //    var newObject = returnValue;
-
-            //    var postSnapshot = new CollectionChangeSnapshot(this);
-            //    if (postSnapshot.IsUnchangedSince(preSnapshot))
-            //    {
-            //        // Because we don't have any hooks into the list/collection,
-            //        // this is the easiest away to determine that nothing changed:
-            //        return null;
-            //    }
-
-            //    var elementType = this.Template.InnerClass.RealObjectType;
-            //    if ((newObject != null) && returnValue.GetRealType().IsDerivedFrom(elementType))
-            //    {
-            //        // The returned object can be assigned to the Collection:
-            //        oAddedItem = this.Session.GetObjectObserver(newObject);
-            //    }
-            //    else if ((newObject == null) && oItem.RealObjectType.IsDerivedFrom(elementType))
-            //    {
-            //        // The given Item can be assigned to the Collection:
-            //        oAddedItem = oItem;
-            //    }
+            //    // Because we don't have any hooks into the list/collection,
+            //    // this is the easiest away to determine that nothing changed:
+            //    return null;
             //}
 
-            //if (oAddedItem != null)
-            //{
-            //    // Make the item aware that it is associated with this Collection:
-            //    this.AssociateWith(oAddedItem);
-            //}
+            BaseObjectObserver oAddedItem;
+            if (result == null)
+            {
+                oAddedItem = oItemToAdd;
+            }
+            else
+            {
+                var resultType = _RealTypeResolver.GetRealType(result.GetType());
+                oAddedItem = _ObserverCache.GetObserver(result, resultType);
+            }
 
-            //if (oAddedItem.IsPersistable)
-            //{
-            //    oAddedItem.ChangeTracker.IsMarkedForAddition = true;
-            //}
+            var oResult = oAddedItem as ObjectObserver;
+            if (oResult != null)
+            {
+                // Make the item aware that it is associated with this Collection:
+                oResult.AssociateWith(oCollection);
 
-            //return oAddedItem;
+                _DirtyObjectNotifier.ObjectWasAddedToCollection(oResult, oCollection);
 
-            throw new NotImplementedException();
+                if (oResult.Template.IsPersistable)
+                {
+                    oResult.ChangeTracker.IsMarkedForAddition = true;
+                }
+            }
+
+            return oAddedItem;
         }
 
     }

@@ -28,14 +28,13 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
-            var observerBuilder = container.Resolve<AbstractObserverBuilder>();
+            var observerCache = container.Resolve<ObserverCache>();
 
             var poco = new SampleModel.Objects.PocoObject();
             poco.ID = Guid.NewGuid();
 
             // Act:
-            var observer = (ObjectObserver)observerBuilder.BuildFor(poco, poco.GetType());
+            var observer = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
 
             // Assert:
             Assert.IsFalse(observer.ChangeTracker.IsDirty);
@@ -46,16 +45,15 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
             var setCommand = container.Resolve<SetPropertyCommand>();
-
-            var observerBuilder = container.Resolve<AbstractObserverBuilder>();
 
             var poco = new SampleModel.Objects.PocoObject();
             poco.ID = Guid.NewGuid();
 
-            var oObject = (ObjectObserver)observerBuilder.BuildFor(poco, poco.GetType());
+            var oObject = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
             var oProp = oObject.Properties["NormalText"];
-            var oValue = observerBuilder.BuildFor("1234", typeof(string));
+            var oValue = observerCache.GetObserver("1234", typeof(string));
 
             // Act:
             setCommand.Invoke(oProp, oValue);
@@ -69,20 +67,46 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-            var createaCommand = container.Resolve<CreateObjectCommand>();
-
-            var observerBuilder = container.Resolve<AbstractObserverBuilder>();
+            var createCommand = container.Resolve<CreateObjectCommand>();
 
             // Act:
             var pocoType = typeof(SampleModel.Objects.PocoObject);
-            var oObject = createaCommand.Invoke(pocoType, null);
+            var oObject = createCommand.Invoke(pocoType, null);
 
             // Assert:
             Assert.IsNotNull(oObject);
             Assert.IsInstanceOf<SampleModel.Objects.PocoObject>(oObject.RealObject);
         }
 
+        [Test()]
+        public void ShouldDetectAddToCollection()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var getCommand = container.Resolve<GetPropertyCommand>();
+            var addCommand = container.Resolve<AddToCollectionCommand>();
 
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+
+            var oObject = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
+            var oProp = oObject.Properties["ChildObjects"];
+            var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
+
+            // Act:
+            var newItem = new SampleModel.Objects.PocoObject();
+            newItem.ID = Guid.NewGuid();
+            var oNewItem = (ObjectObserver)observerCache.GetObserver(newItem, newItem.GetType());
+
+            var result = addCommand.Invoke(oCollection, oNewItem);
+
+            // Assert:
+            Assert.IsTrue(oNewItem.ChangeTracker.IsDirty);
+            Assert.IsTrue(oNewItem.ChangeTracker.IsMarkedForAddition);
+            Assert.IsTrue(oCollection.ChangeTracker.IsDirty);
+            Assert.IsTrue(oObject.ChangeTracker.IsDirty);
+        }
     }
 
 
