@@ -189,24 +189,24 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    Assert.IsTrue(proxy.Meta.ChangeTracker.HasDirtyChildren);
         //}
 
-        //[Test()]
-        //public void ShouldDetectMethodInvoke()
-        //{
-        //    // Arrange:
-        //    var container = new ContainerFactory().Build();
-        //    var proxyCache = container.Resolve<ProxyCache>();
+        [Test()]
+        public void ShouldDetectMethodInvoke()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
 
-        //    // Act:
-        //    var poco = new SampleModel.Objects.PocoObject();
-        //    var pocoProxy = proxyCache.GetProxy(poco);
+            // Act:
+            var poco = new SampleModel.Objects.PocoObject();
+            var pocoProxy = proxyCache.GetProxy(poco);
 
-        //    pocoProxy.AddSomeChildObjects();
+            pocoProxy.AddSomeChildObjects();
 
-        //    // Assert:
-        //    var childObjectsProxy = pocoProxy.ChildObjects;
+            // Assert:
+            var childObjectsProxy = pocoProxy.ChildObjects;
 
-        //    //Assert.AreEqual(3, childObjectsProxy.Count());
-        //}
+            Assert.AreEqual(3, childObjectsProxy.Count());
+        }
 
         //[Test]
         //public void ShouldDetectNumberOfDirtyObjects()

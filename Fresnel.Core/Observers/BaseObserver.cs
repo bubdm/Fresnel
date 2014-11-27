@@ -70,29 +70,6 @@ namespace Envivo.Fresnel.Core.Observers
             return this.InnerObserver as T;
         }
 
-        ///// <summary>
-        ///// Returns the InnerObserver converted to an ObjectObserver
-        ///// </summary>
-        //public ObjectObserver InnerObject
-        //{
-        //    get { return this.InnerObserver as ObjectObserver; }
-        //}
-
-        ///// <summary>
-        ///// Returns the InnerObserver converted to a NonReferenceObserver
-        ///// </summary>
-        //public NonReferenceObserver InnerNonReference
-        //{
-        //    get { return this.InnerObserver as NonReferenceObserver; }
-        //}
-
-        ///// <summary>
-        ///// Returns the InnerObserver converted to a ListObserver
-        ///// </summary>
-        //internal CollectionObserver InnerCollection
-        //{
-        //    get { return this.InnerObserver as CollectionObserver; }
-        //}
 
         /// <summary>
         /// Returns TRUE if this Observer was created before the given time point (i.e. DateTime.UtcNow)

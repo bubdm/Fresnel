@@ -1,3 +1,4 @@
+using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
@@ -13,6 +14,9 @@ namespace Envivo.Fresnel.Core.Observers
     public class AbstractObserverBuilder
     {
         private TemplateCache _TemplateCache;
+        private Func<ObjectObserver, ObjectTracker> _ObjectTrackerFactory;
+        private Func<CollectionObserver, CollectionTracker> _CollectionTrackerFactory;
+
         private Func<object, Type, CollectionTemplate, CollectionObserver> _CollectionObserverFactory;
         private Func<object, Type, ClassTemplate, ObjectObserver> _ObjectObserverFactory;
         private Func<object, Type, NonReferenceTemplate, NonReferenceObserver> _NonReferenceObserverFactory;
@@ -22,6 +26,8 @@ namespace Envivo.Fresnel.Core.Observers
         public AbstractObserverBuilder
         (
             TemplateCache templateCache,
+            Func<ObjectObserver, ObjectTracker> objectTrackerFactory,
+            Func<CollectionObserver, CollectionTracker> collectionTrackerFactory,
             Func<object, Type, CollectionTemplate, CollectionObserver> collectionObserverFactory,
             Func<object, Type, ClassTemplate, ObjectObserver> objectObserverFactory,
             Func<object, Type, NonReferenceTemplate, NonReferenceObserver> nonReferenceObserverFactory,
@@ -30,6 +36,9 @@ namespace Envivo.Fresnel.Core.Observers
         )
         {
             _TemplateCache = templateCache;
+            _ObjectTrackerFactory = objectTrackerFactory;
+            _CollectionTrackerFactory = collectionTrackerFactory;
+
             _ObjectObserverFactory = objectObserverFactory;
             _CollectionObserverFactory = collectionObserverFactory;
             _NonReferenceObserverFactory = nonReferenceObserverFactory;
@@ -59,7 +68,7 @@ namespace Envivo.Fresnel.Core.Observers
             {
                 result = this.CreateObjectObserver(obj, objectType, (ClassTemplate)template);
             }
-            else if (template is NonReferenceObserver)
+            else if (template is NonReferenceTemplate)
             {
                 result = this.CreateNonReferenceObserver(obj, objectType, (NonReferenceTemplate)template);
             }
@@ -76,6 +85,7 @@ namespace Envivo.Fresnel.Core.Observers
         private CollectionObserver CreateCollectionObserver(object collection, Type collectionType, CollectionTemplate tCollection)
         {
             var result = _CollectionObserverFactory(collection, collectionType, tCollection);
+            result.ChangeTracker = _CollectionTrackerFactory(result);
 
             // Ensure the CollectionObserver is aware of it's contents:
             //if (result.RealObject != null)
@@ -89,6 +99,7 @@ namespace Envivo.Fresnel.Core.Observers
         private ObjectObserver CreateObjectObserver(object obj, Type objectType, ClassTemplate tClass)
         {
             var result = _ObjectObserverFactory(obj, objectType, tClass);
+            result.ChangeTracker = _ObjectTrackerFactory(result);
             return result;
         }
 

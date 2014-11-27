@@ -39,6 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeTracking\DirtyObjectNotifier.cs" />
+    <Compile Include="ChangeTracking\AbstractChangeTrackerBuilder.cs" />
+    <Compile Include="ChangeTracking\IChangeTracker.cs" />
+    <Compile Include="ChangeTracking\ObjectTracker.cs" />
     <Compile Include="Commands\CloneObjectCommand.cs" />
     <Compile Include="Commands\CreateObjectCommand.cs" />
     <Compile Include="Commands\ClearCollectionCommand.cs" />
@@ -54,6 +58,7 @@
     <Compile Include="Engine.cs" />
     <Compile Include="Proxies\IProxyBuilder.cs" />
     <Compile Include="UserSession.cs" />
+    <Compile Include="ChangeTracking\CollectionTracker.cs" />
     <None Include="Observers\ObserverCache.cs.broken" />
     <Compile Include="Observers\Methods\MethodObserverMapBuilder.cs" />
     <Compile Include="Observers\OuterObjectsIdentifier.cs" />

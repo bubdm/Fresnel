@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Core.ChangeTracking;
 
 namespace Envivo.Fresnel.Core.Observers
 {

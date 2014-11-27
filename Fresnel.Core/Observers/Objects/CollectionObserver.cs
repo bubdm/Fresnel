@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Core.ChangeTracking;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -24,9 +25,10 @@ namespace Envivo.Fresnel.Core.Observers
             Type collectionType,
             CollectionTemplate tCollection,
             PropertyObserverMapBuilder propertyObserverMapBuilder,
-            MethodObserverMapBuilder methodObserverMapBuilder
+            MethodObserverMapBuilder methodObserverMapBuilder,
+            AbstractChangeTrackerBuilder changeTrackerBuilder
         )
-            : base(collection, collectionType, tCollection, propertyObserverMapBuilder, methodObserverMapBuilder)
+            : base(collection, collectionType, tCollection, propertyObserverMapBuilder, methodObserverMapBuilder, changeTrackerBuilder)
         {
 
         }
@@ -34,6 +36,12 @@ namespace Envivo.Fresnel.Core.Observers
         public new CollectionTemplate Template
         {
             get { return (CollectionTemplate)base.Template; }
+        }
+
+        public new CollectionTracker ChangeTracker
+        {
+            get { return (CollectionTracker)base.ChangeTracker; }
+            internal set { base.ChangeTracker = value; }
         }
 
         /// <summary>

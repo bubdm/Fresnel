@@ -32,6 +32,17 @@ namespace Envivo.Fresnel.Bootstrap
 
                 typeof(Fresnel.Core.OuterObjectsIdentifier),
 
+                typeof(Fresnel.Core.Commands.AddToCollectionCommand),
+                typeof(Fresnel.Core.Commands.ClearCollectionCommand),
+                typeof(Fresnel.Core.Commands.CloneObjectCommand),
+                typeof(Fresnel.Core.Commands.CreateObjectCommand),
+                typeof(Fresnel.Core.Commands.GetCollectionItemsCommand),
+                typeof(Fresnel.Core.Commands.GetPropertyCommand),
+                typeof(Fresnel.Core.Commands.InvokeMethodCommand),
+                typeof(Fresnel.Core.Commands.RemoveFromCollectionCommand),
+                typeof(Fresnel.Core.Commands.SetParameterCommand),
+                typeof(Fresnel.Core.Commands.SetPropertyCommand),
+
                 typeof(Fresnel.Core.Observers.AbstractObserverBuilder),
                 typeof(Fresnel.Core.Observers.MethodObserverBuilder),
                 typeof(Fresnel.Core.Observers.MethodObserverMapBuilder),
@@ -39,8 +50,12 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Core.Observers.ParameterObserverMapBuilder),
                 typeof(Fresnel.Core.Observers.PropertyObserverBuilder),
                 typeof(Fresnel.Core.Observers.PropertyObserverMapBuilder),
-
                 typeof(Fresnel.Core.Observers.NullObserver),
+
+                typeof(Fresnel.Core.ChangeTracking.DirtyObjectNotifier),
+                typeof(Fresnel.Core.ChangeTracking.ObjectTracker),
+                typeof(Fresnel.Core.ChangeTracking.CollectionTracker),
+                typeof(Fresnel.Core.ChangeTracking.AbstractChangeTrackerBuilder),
             };
         }
 

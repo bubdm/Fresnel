@@ -4,6 +4,7 @@ using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
 using System.Collections.Generic;
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.Core.ChangeTracking;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -16,9 +17,11 @@ namespace Envivo.Fresnel.Core.Observers
         private Lazy<PropertyObserverMap> _Properties;
         private Lazy<MethodObserverMap> _Methods;
         private Lazy<MethodObserverMap> _StaticMethods;
+        private Lazy<ObjectTracker> _ObjectTracker;
 
         private PropertyObserverMapBuilder _PropertyObserverMapBuilder;
         private MethodObserverMapBuilder _MethodObserverMapBuilder;
+        private AbstractChangeTrackerBuilder _ChangeTrackerBuilder;
 
         /// <summary>
         ///
@@ -31,12 +34,18 @@ namespace Envivo.Fresnel.Core.Observers
             Type objectType,
             ClassTemplate tClass,
             PropertyObserverMapBuilder propertyObserverMapBuilder,
-            MethodObserverMapBuilder methodObserverMapBuilder
+            MethodObserverMapBuilder methodObserverMapBuilder,
+            AbstractChangeTrackerBuilder changeTrackerBuilder
         )
             : base(obj, objectType, tClass)
         {
             _PropertyObserverMapBuilder = propertyObserverMapBuilder;
             _MethodObserverMapBuilder = methodObserverMapBuilder;
+            _ChangeTrackerBuilder = changeTrackerBuilder;
+
+            _ObjectTracker = new Lazy<ObjectTracker>(
+                                () => (ObjectTracker)_ChangeTrackerBuilder.BuildForObject(this),
+                                System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _Properties = new Lazy<PropertyObserverMap>(
                                 () => _PropertyObserverMapBuilder.BuildFor(this),
@@ -50,11 +59,13 @@ namespace Envivo.Fresnel.Core.Observers
                               () => _MethodObserverMapBuilder.BuildStaticMethodsFor(this),
                               System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
-
+        
         public new ClassTemplate Template
         {
             get { return (ClassTemplate)base.Template; }
         }
+
+        public ObjectTracker ChangeTracker { get; internal set; }
 
         /// <summary>
         /// A set of all visible Properties for the proxied Object
