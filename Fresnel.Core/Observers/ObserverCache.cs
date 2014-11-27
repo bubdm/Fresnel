@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Core.Observers
     public class ObserverCache
     {
         private Dictionary<Guid, ObjectObserver> _ObjectMap = new Dictionary<Guid, ObjectObserver>();
-        private Dictionary<Guid, NonReferenceObserver> _NonReferenceMap = new Dictionary<Guid, NonReferenceObserver>();
+        private Dictionary<object, NonReferenceObserver> _NonReferenceMap = new Dictionary<object, NonReferenceObserver>();
 
         private TemplateCache _TemplateCache;
         private AbstractObserverBuilder _AbstractObserverBuilder;
@@ -66,15 +66,6 @@ namespace Envivo.Fresnel.Core.Observers
             if (obj == null)
                 return _NullObserver;
 
-            if (objectType.IsNonReference())
-            {
-                throw new ArgumentOutOfRangeException("The given object cannot be a non-reference type");
-            }
-
-            var template = _TemplateCache.GetTemplate(objectType);
-            var tClass = template as ClassTemplate;
-            var id = _ObjectIdResolver.GetId(obj, tClass);
-
             var result = this.GetCachedObserver(obj, objectType);
             if (result == null)
             {
@@ -88,11 +79,15 @@ namespace Envivo.Fresnel.Core.Observers
         {
             var template = _TemplateCache.GetTemplate(objectType);
             var tClass = template as ClassTemplate;
-            var id = _ObjectIdResolver.GetId(obj, tClass);
-
-            var result = (BaseObjectObserver)_NonReferenceMap.TryGetValueOrNull(id) ??
-                                             _ObjectMap.TryGetValueOrNull(id);
-            return result;
+            if (tClass != null)
+            {
+                var id = _ObjectIdResolver.GetId(obj, tClass);
+                return _ObjectMap.TryGetValueOrNull(id);
+            }
+            else
+            {
+                return _NonReferenceMap.TryGetValueOrNull(obj);
+            }
         }
 
         private BaseObjectObserver CreateAndCacheObserver(object obj, Type objectType)
