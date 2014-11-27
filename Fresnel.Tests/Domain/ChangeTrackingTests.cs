@@ -64,6 +64,25 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsTrue(oObject.ChangeTracker.IsDirty);
         }
 
+        [Test()]
+        public void ShouldDetectNewInstances()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var createaCommand = container.Resolve<CreateObjectCommand>();
+
+            var observerBuilder = container.Resolve<AbstractObserverBuilder>();
+
+            // Act:
+            var pocoType = typeof(SampleModel.Objects.PocoObject);
+            var oObject = createaCommand.Invoke(pocoType, null);
+
+            // Assert:
+            Assert.IsNotNull(oObject);
+            Assert.IsInstanceOf<SampleModel.Objects.PocoObject>(oObject.RealObject);
+        }
+
+
     }
 
 
