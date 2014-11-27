@@ -22,8 +22,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         //private Dictionary<Guid, ObjectObserver> _oDirtyChildren = new Dictionary<Guid, ObjectObserver>();
         private Dictionary<Guid, ObjectObserver> _oPreviousOwners = new Dictionary<Guid, ObjectObserver>();
 
-        private bool _IsLazyLoadingAlreadyDetermined = false;
-
         public ObjectTracker
             (
             OuterObjectsIdentifier outerObjectsIdentifier,
