@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,24 @@ namespace Envivo.Fresnel.Core.Commands
 {
     public class GetPropertyCommand
     {
+        private ObserverCache _ObserverCache;
+        private Fresnel.Introspection.Commands.GetPropertyCommand _GetCommand;
+        private RealTypeResolver _RealTypeResolver;
 
-        public void Invoke(BasePropertyObserver oProperty)
+        public GetPropertyCommand
+            (
+            ObserverCache observerCache,
+            Fresnel.Introspection.Commands.GetPropertyCommand getCommand,
+            RealTypeResolver realTypeResolver
+            )
         {
-            //if (this.IsReflectionEnabled == false)
-            //{
-            //    return _Value;
-            //}
+            _ObserverCache = observerCache;
+            _GetCommand = getCommand;
+            _RealTypeResolver = realTypeResolver;
+        }
 
-            ////-----
-
+        public BaseObjectObserver Invoke(BasePropertyObserver oProperty)
+        {
             //var check = this.Permissions.Read.Check();
             //if (check.Failed)
             //{
@@ -29,18 +38,15 @@ namespace Envivo.Fresnel.Core.Commands
 
             ////-----
 
-            //try
-            //{
-            //    return this.PropertyTemplate.GetProperty(this.RealObject);
-            //}
-            //catch (Exception ex)
-            //{
-            //    // If the Domain Property throws an exception, the framework expects the ErrorMessage to be set:
-            //    this.ErrorMessage = this.CreateDescriptiveErrorMessage(ex.Message);
-            //    return null;
-            //}
+            var oOuterObject = oProperty.OuterObject;
 
-            throw new NotImplementedException();
+            var value = _GetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name);
+            if (value  == null)
+                return null;
+
+            var valueType = _RealTypeResolver.GetRealType(value.GetType());
+            var oValue = _ObserverCache.GetObserver(value, valueType);
+            return oValue;
         }
 
 
@@ -103,6 +109,6 @@ namespace Envivo.Fresnel.Core.Commands
         //    set { }
         //}
 
-        
+
     }
 }
