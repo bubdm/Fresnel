@@ -65,11 +65,6 @@ namespace Envivo.Fresnel.Core.Commands
                 oResult.AssociateWith(oCollection);
 
                 _DirtyObjectNotifier.ObjectWasAddedToCollection(oResult, oCollection);
-
-                if (oResult.Template.IsPersistable)
-                {
-                    oResult.ChangeTracker.IsMarkedForAddition = true;
-                }
             }
 
             return oAddedItem;

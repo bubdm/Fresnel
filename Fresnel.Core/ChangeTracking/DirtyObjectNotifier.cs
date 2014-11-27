@@ -115,9 +115,9 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         public void ObjectWasRemovedFromCollection(ObjectObserver oRemovedItem, CollectionObserver oTargetCollection)
         {
             oRemovedItem.ChangeTracker.IsMarkedForRemoval = true;
+            oRemovedItem.ChangeTracker.MarkForRemovalFrom(oTargetCollection);
 
             oTargetCollection.ChangeTracker.HasChanges = true;
-            oRemovedItem.ChangeTracker.MarkForRemovalFrom(oTargetCollection);
 
             var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oTargetCollection, int.MaxValue);
             foreach (var outerObject in outerObjects)

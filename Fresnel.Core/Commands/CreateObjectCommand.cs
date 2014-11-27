@@ -1,4 +1,5 @@
-﻿using Envivo.Fresnel.Core.Observers;
+﻿using Envivo.Fresnel.Core.ChangeTracking;
+using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
@@ -14,17 +15,20 @@ namespace Envivo.Fresnel.Core.Commands
         private Introspection.Commands.CreateObjectCommand _CreateObjectCommand;
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
+        private DirtyObjectNotifier _DirtyObjectNotifier;
 
         public CreateObjectCommand
         (
             Introspection.Commands.CreateObjectCommand createObjectCommand,
             TemplateCache templateCache,
-            ObserverCache observerCache
+            ObserverCache observerCache,
+            DirtyObjectNotifier dirtyObjectNotifier
         )
         {
             _CreateObjectCommand = createObjectCommand;
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
+            _DirtyObjectNotifier = dirtyObjectNotifier;
         }
 
         public BaseObjectObserver Invoke(Type classType, IEnumerable<object> args)
@@ -33,9 +37,12 @@ namespace Envivo.Fresnel.Core.Commands
 
             var newInstance = _CreateObjectCommand.Invoke(tClass, args);
 
-            var oObject = _ObserverCache.GetObserver(newInstance);
+            var oNewObject = (ObjectObserver)_ObserverCache.GetObserver(newInstance);
 
-            return oObject;
+            // Make sure the instance can be edited before the user saves it:
+            _DirtyObjectNotifier.ObjectWasCreated(oNewObject);
+
+            return oNewObject;
         }
 
     }

@@ -41,11 +41,20 @@ namespace Envivo.Fresnel.Core.Commands
             var oOuterObject = oProperty.OuterObject;
 
             var value = _GetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name);
-            if (value  == null)
+            if (value == null)
                 return null;
 
             var valueType = _RealTypeResolver.GetRealType(value.GetType());
             var oValue = _ObserverCache.GetObserver(value, valueType);
+
+            // Make the object aware that it is associated with this property:
+            var oObjectProperty = oProperty as ObjectPropertyObserver;
+            if (oObjectProperty != null)
+            {
+                var oValueObject = (ObjectObserver)oValue;
+                oValueObject.AssociateWith(oObjectProperty);
+            }
+
             return oValue;
         }
 

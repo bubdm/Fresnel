@@ -1,4 +1,5 @@
-﻿using Envivo.Fresnel.Core.Observers;
+﻿using Envivo.Fresnel.Core.ChangeTracking;
+using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
@@ -15,17 +16,20 @@ namespace Envivo.Fresnel.Core.Commands
         private Introspection.Commands.CloneObjectCommand _CloneObjectCommand;
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
+        private DirtyObjectNotifier _DirtyObjectNotifier;
 
         public CloneObjectCommand
         (
             Introspection.Commands.CloneObjectCommand cloneObjectCommand,
             TemplateCache templateCache,
-            ObserverCache observerCache
+            ObserverCache observerCache,
+            DirtyObjectNotifier dirtyObjectNotifier
         )
         {
             _CloneObjectCommand = cloneObjectCommand;
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
+            _DirtyObjectNotifier = dirtyObjectNotifier;
         }
 
         public ObjectObserver Invoke(ObjectObserver oObject)
@@ -41,7 +45,7 @@ namespace Envivo.Fresnel.Core.Commands
             var oClone = (ObjectObserver)_ObserverCache.GetObserver(clone);
 
             // Make sure the clone can be edited before the user saves it:
-            //oClone.ChangeTracker.IsNewInstance = true;
+            _DirtyObjectNotifier.ObjectWasCreated(oClone);
 
             return oClone;
         }

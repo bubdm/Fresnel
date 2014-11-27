@@ -49,15 +49,10 @@ namespace Envivo.Fresnel.Core.Commands
 
             if (passed)
             {
-                // Make the item aware that it is associated with this Collection:
+                // Make the item is no longer associated with the Collection:
                 oItemToRemove.DisassociateFrom(oCollection);
 
                 _DirtyObjectNotifier.ObjectWasRemovedFromCollection(oItemToRemove, oCollection);
-
-                if (oItemToRemove.Template.IsPersistable)
-                {
-                    oItemToRemove.ChangeTracker.MarkForRemovalFrom(oCollection);
-                }
             }
 
             //    var postSnapshot = new CollectionChangeSnapshot(this);

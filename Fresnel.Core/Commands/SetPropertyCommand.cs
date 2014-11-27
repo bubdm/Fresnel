@@ -53,6 +53,7 @@ namespace Envivo.Fresnel.Core.Commands
                     innerObserver.DisassociateFrom(oObjectProperty);
                 }
             }
+
             _SetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name, oValue.RealObject);
 
             _DirtyObjectNotifier.PropertyHasChanged(oProperty);
