@@ -23,6 +23,8 @@ namespace Envivo.Fresnel.Core.Observers
         private MethodObserverMapBuilder _MethodObserverMapBuilder;
         private AbstractChangeTrackerBuilder _ChangeTrackerBuilder;
 
+        private bool _IsLazyLoadingAlreadyDetermined;
+
         /// <summary>
         ///
         /// </summary>
@@ -59,7 +61,14 @@ namespace Envivo.Fresnel.Core.Observers
                               () => _MethodObserverMapBuilder.BuildStaticMethodsFor(this),
                               System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
-        
+
+        internal override void FinaliseConstruction()
+        {
+            base.FinaliseConstruction();
+
+            this.CheckIfPropertiesShouldLazyLoad();
+        }
+
         public new ClassTemplate Template
         {
             get { return (ClassTemplate)base.Template; }
@@ -158,6 +167,57 @@ namespace Envivo.Fresnel.Core.Observers
             }
 
             return false;
+        }
+
+
+        /// <summary>
+        /// Determines if the associated Object is new, and allows reading of all properties
+        /// </summary>
+        internal void CheckIfPropertiesShouldLazyLoad()
+        {
+            if (_IsLazyLoadingAlreadyDetermined)
+                return;
+
+            if (this.ChangeTracker.IsNewInstance)
+            {
+                this.MakePropertyValuesImmediatelyAvailable();
+            }
+
+            _IsLazyLoadingAlreadyDetermined = true;
+        }
+
+        /// <summary>
+        /// Makes all Object/List properties instantly available (subject to the Persistor's lazy-load mechanism)
+        /// </summary>
+        internal void MakePropertyValuesImmediatelyAvailable()
+        {
+            foreach (var oProp in this.Properties.ForObjects)
+            {
+                oProp.IsLazyLoadPending = false;
+            }
+
+            _IsLazyLoadingAlreadyDetermined = true;
+        }
+
+        /// <summary>
+        /// Resets all Object/List properties so that they are forced to load again
+        /// </summary>
+        internal void MakePropertiesLazyLoad()
+        {
+            if (this.ChangeTracker.IsNewInstance)
+            {
+                this.MakePropertyValuesImmediatelyAvailable();
+            }
+            else
+            {
+                var tClass = this.Template;
+                foreach (var oProp in this.Properties.ForObjects)
+                {
+                    oProp.ResetLazyLoadStatus(tClass.IsPersistable);
+                }
+            }
+
+            _IsLazyLoadingAlreadyDetermined = false;
         }
 
         ///// <summary>

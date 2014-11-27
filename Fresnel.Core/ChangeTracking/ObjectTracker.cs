@@ -41,8 +41,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             if (tClass.RealType.IsNonReference())
                 return;
 
-            this.CheckIfPropertiesShouldLazyLoad();
-
             //_ObjectSnapshotTracker = new ObjectSnapshotTracker(_oObject.InnerObject);
             //_ObjectSnapshotTracker.DetermineInitialState();
         }
@@ -224,57 +222,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         internal void AddDirtyObject(ObjectObserver oDirtyObject)
         {
             _oDirtyObjectGraph.Add(oDirtyObject.ID, oDirtyObject);
-        }
-
-
-        /// <summary>
-        /// Determines if the associated Object is new, and allows reading of all properties
-        /// </summary>
-        internal void CheckIfPropertiesShouldLazyLoad()
-        {
-            if (_IsLazyLoadingAlreadyDetermined)
-                return;
-
-            if (this.IsNewInstance)
-            {
-                this.MakePropertyValuesImmediatelyAvailable();
-            }
-
-            _IsLazyLoadingAlreadyDetermined = true;
-        }
-
-        /// <summary>
-        /// Makes all Object/List properties instantly available (subject to the Persistor's lazy-load mechanism)
-        /// </summary>
-        internal void MakePropertyValuesImmediatelyAvailable()
-        {
-            foreach (var oProp in _oObject.Properties.ForObjects)
-            {
-                oProp.IsLazyLoadPending = false;
-            }
-
-            _IsLazyLoadingAlreadyDetermined = true;
-        }
-
-        /// <summary>
-        /// Resets all Object/List properties so that they are forced to load again
-        /// </summary>
-        internal void MakePropertiesLazyLoad()
-        {
-            if (this.IsNewInstance)
-            {
-                this.MakePropertyValuesImmediatelyAvailable();
-            }
-            else
-            {
-                var tClass = _oObject.Template;
-                foreach (var oProp in _oObject.Properties.ForObjects)
-                {
-                    oProp.ResetLazyLoadStatus(tClass.IsPersistable);
-                }
-            }
-
-            _IsLazyLoadingAlreadyDetermined = false;
         }
 
         public bool CanDispose
