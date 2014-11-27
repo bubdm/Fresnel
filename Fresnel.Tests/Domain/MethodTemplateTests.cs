@@ -31,10 +31,8 @@ namespace Envivo.Fresnel.Tests.Domain
             var domainObject = new SampleModel.Objects.PocoObject();
             Assert.AreEqual(0, domainObject.ChildObjects.Count());
 
-            var classTemplate = (ClassTemplate)templateCache.GetTemplate(domainObject.GetType());
-
             // Act:
-            methodCommand.Invoke(classTemplate, domainObject, "AddSomeChildObjects", null);
+            methodCommand.Invoke(domainObject, "AddSomeChildObjects", null);
 
             // Assert:
             Assert.AreNotEqual(0, domainObject.ChildObjects);
@@ -50,10 +48,8 @@ namespace Envivo.Fresnel.Tests.Domain
 
             var domainObject = new SampleModel.MethodTests();
 
-            var classTemplate = (ClassTemplate)templateCache.GetTemplate(domainObject.GetType());
-
             // Act:
-            var result = methodCommand.Invoke(classTemplate, domainObject, "MethodThatReturnsA_String", null);
+            var result = methodCommand.Invoke(domainObject, "MethodThatReturnsA_String", null);
 
             // Assert:
             Assert.IsNotNull(result);
@@ -71,10 +67,11 @@ namespace Envivo.Fresnel.Tests.Domain
             var domainObject = new SampleModel.MethodTests();
 
             var classTemplate = (ClassTemplate)templateCache.GetTemplate(domainObject.GetType());
+            var tMethod = classTemplate.Methods["MethodWithOneParameter"];
 
             // Act:
             var args = new object[] { DateTime.Now };
-            methodCommand.Invoke(classTemplate, domainObject, "MethodWithOneParameter", args);
+            methodCommand.Invoke(domainObject, tMethod, args);
         }
     }
 }

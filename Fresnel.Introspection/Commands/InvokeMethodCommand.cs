@@ -19,33 +19,25 @@ namespace Envivo.Fresnel.Introspection.Commands
             _TemplateCache = templateCache;
         }
 
-        public void Invoke(object obj, string methodName, IEnumerable<object> args)
+        public object Invoke(object obj, string methodName, IEnumerable<object> args)
         {
             var realType = _RealTypeResolver.GetRealType(obj.GetType());
             var tClass = (ClassTemplate)_TemplateCache.GetTemplate(realType);
-            this.Invoke(tClass, obj, methodName, args);
+            var tMethod = tClass.Methods[methodName];
+            var result = this.Invoke(obj, tMethod, args);
+            return result;
         }
 
         /// <summary>
         /// Invokes the method on the given object, using the provided arguments
         /// </summary>
-        public object Invoke(ClassTemplate tClass, object obj, string methodName, IEnumerable<object> args)
+        public object Invoke(object obj, MethodTemplate tMethod, IEnumerable<object> args)
         {
-            if (tClass == null)
-                throw new ArgumentNullException("tClass");
-
             if (obj == null)
                 throw new ArgumentNullException("obj");
 
-            if (methodName == null)
-                throw new ArgumentNullException("methodName");
-
-            var tMethod = tClass.Methods[methodName];
             if (tMethod == null)
-            {
-                var msg = string.Concat("Cannot determine ", tClass.Name, ".", methodName);
-                throw new ArgumentException(msg);
-            }
+                throw new ArgumentException("tMethod");
 
             var result = tMethod.Invoke(obj, args);
             return result;
