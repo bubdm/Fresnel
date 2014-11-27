@@ -39,6 +39,11 @@ namespace Envivo.Fresnel.Introspection.Templates
             {
                 var methodAttributes = _AttributesMapBuilder.BuildFor(method, tClass.Configuration);
                 var tMethod = _MethodTemplateBuilder.BuildFor(tClass, method, methodAttributes);
+
+                if (results.ContainsKey(tMethod.Name))
+                {
+                    tMethod.Name += GetOverloadIndex(tMethod, results);
+                }
                 results.Add(tMethod.Name, tMethod);
             }
 
