@@ -23,7 +23,7 @@ namespace Envivo.Fresnel.Introspection.Commands
         /// </summary>
         /// <param name="collection"></param>
         /// <param name="item"></param>
-        public void Invoke(object collection, object item)
+        public object Invoke(object collection, object item)
         {
             var realCollectionType = _RealTypeResolver.GetRealType(collection.GetType());
             var tCollection = (CollectionTemplate)_TemplateCache.GetTemplate(realCollectionType);
@@ -31,7 +31,8 @@ namespace Envivo.Fresnel.Introspection.Commands
             var realItemType = _RealTypeResolver.GetRealType(item.GetType());
             var tItem = (ClassTemplate)_TemplateCache.GetTemplate(realItemType);
 
-            this.Invoke(tCollection, collection, tItem, item);
+            var result = this.Invoke(tCollection, collection, tItem, item);
+            return result;
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace Envivo.Fresnel.Introspection.Commands
         /// <param name="obj"></param>
         /// <param name="tCollectionProperty"></param>
         /// <param name="item"></param>
-        public void Invoke(object obj, PropertyTemplate tCollectionProperty, object item)
+        public object Invoke(object obj, PropertyTemplate tCollectionProperty, object item)
         {
             var collection = tCollectionProperty.GetProperty(obj);
 
@@ -49,13 +50,14 @@ namespace Envivo.Fresnel.Introspection.Commands
             var realItemType = _RealTypeResolver.GetRealType(item.GetType());
             var tItem = (ClassTemplate)_TemplateCache.GetTemplate(realItemType);
 
-            this.Invoke(tCollection, collection, tItem, item);
+            var result = this.Invoke(tCollection, collection, tItem, item);
+            return result;
         }
 
         /// <summary>
         /// Adds the given item to the collection
         /// </summary>
-        public void Invoke(CollectionTemplate tCollection, object collection, ClassTemplate tItem, object item)
+        public object Invoke(CollectionTemplate tCollection, object collection, ClassTemplate tItem, object item)
         {
             if (tCollection == null)
                 throw new ArgumentNullException("tCollection");
@@ -66,7 +68,8 @@ namespace Envivo.Fresnel.Introspection.Commands
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            tCollection.Add(collection, item, tItem.RealType);
+            var result = tCollection.Add(collection, item, tItem.RealType);
+            return result;
         }
 
     }
