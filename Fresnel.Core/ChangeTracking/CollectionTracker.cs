@@ -41,7 +41,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         public override void DetectChanges()
         {
             // Optimisation: Don't bother taking a snapshot if the value is already dirty:
-            if (this.HasChanges)
+            if (this.IsDirty)
                 return;
 
             base.DetectChanges();

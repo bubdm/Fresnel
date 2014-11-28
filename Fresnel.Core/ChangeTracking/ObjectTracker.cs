@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
     /// <summary>
     /// Tracks changes made to an ObjectObserverBase
     /// </summary>
-    public class ObjectTracker : IChangeTracker 
+    public class ObjectTracker : IChangeTracker
     {
         private OuterObjectsIdentifier _OuterObjectsIdentifier;
         private ObjectObserver _oObject;
@@ -21,6 +21,8 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         private Dictionary<Guid, ObjectObserver> _oDirtyObjectGraph = new Dictionary<Guid, ObjectObserver>();
         //private Dictionary<Guid, ObjectObserver> _oDirtyChildren = new Dictionary<Guid, ObjectObserver>();
         private Dictionary<Guid, ObjectObserver> _oPreviousOwners = new Dictionary<Guid, ObjectObserver>();
+
+        private bool _HasLocalChanges = false;
 
         public ObjectTracker
             (
@@ -50,7 +52,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         {
             get
             {
-                if (this.HasChanges)
+                if (_HasLocalChanges)
                     return true;
 
                 if (this.IsMarkedForRemoval && this.IsNewInstance && this.IsMarkedForAddition == false)
@@ -67,6 +69,10 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
                 return false;
             }
+            set
+            {
+                _HasLocalChanges = value;
+            }
         }
 
         /// <summary>
@@ -74,15 +80,10 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// </summary>
         public bool IsNewInstance { get; set; }
 
-        /// <summary>
-        /// Determines if the associated Object has itself been modified (e.g. property value changes)
-        /// </summary>
-        public bool HasChanges { get; set; }
-
         public virtual void DetectChanges()
         {
             // Optimisation: Don't bother taking a snapshot if the value is already dirty:
-            if (this.HasChanges)
+            if (this.IsDirty)
                 return;
 
             //if (_ObjectSnapshotTracker != null &&
@@ -206,7 +207,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         internal void ResetDirtyFlags()
         {
             this.IsNewInstance = false;
-            this.HasChanges = false;
+            this.IsDirty = false;
             this.IsMarkedForAddition = false;
 
             if (this.IsMarkedForRemoval)
@@ -224,7 +225,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
         public bool CanDispose
         {
-            get { return this.HasChanges == false; }
+            get { return this.IsDirty == false; }
         }
 
         public virtual void Dispose()

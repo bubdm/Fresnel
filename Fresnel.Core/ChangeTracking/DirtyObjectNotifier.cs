@@ -78,7 +78,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             if (oDirtyObject == null)
                 return;
 
-            oDirtyObject.ChangeTracker.HasChanges = true;
+            oDirtyObject.ChangeTracker.IsDirty = true;
 
             var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oDirtyObject, int.MaxValue);
             foreach (var outerObject in outerObjects)
@@ -104,7 +104,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         {
             oAddedItem.ChangeTracker.IsMarkedForAddition = true;
 
-            oTargetCollection.ChangeTracker.HasChanges = true;
+            oTargetCollection.ChangeTracker.IsDirty = true;
             var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oTargetCollection, int.MaxValue);
             foreach (var outerObject in outerObjects)
             {
@@ -117,7 +117,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             oRemovedItem.ChangeTracker.IsMarkedForRemoval = true;
             oRemovedItem.ChangeTracker.MarkForRemovalFrom(oTargetCollection);
 
-            oTargetCollection.ChangeTracker.HasChanges = true;
+            oTargetCollection.ChangeTracker.IsDirty = true;
 
             var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oTargetCollection, int.MaxValue);
             foreach (var outerObject in outerObjects)
