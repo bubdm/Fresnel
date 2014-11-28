@@ -105,7 +105,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsTrue(oNewItem.ChangeTracker.IsDirty);
             Assert.IsTrue(oNewItem.ChangeTracker.IsMarkedForAddition);
             Assert.IsTrue(oCollection.ChangeTracker.IsDirty);
-            Assert.IsTrue(oObject.ChangeTracker.IsDirty);
+            Assert.IsTrue(oObject.ChangeTracker.HasDirtyObjectGraph);
         }
 
 
@@ -137,7 +137,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsTrue(oChildObject.ChangeTracker.IsDirty);
             Assert.IsTrue(oChildObject.ChangeTracker.IsMarkedForRemoval);
             Assert.IsTrue(oCollection.ChangeTracker.IsDirty);
-            Assert.IsTrue(oObject.ChangeTracker.IsDirty);
+            Assert.IsTrue(oObject.ChangeTracker.HasDirtyObjectGraph);
         }
     }
 
