@@ -6,7 +6,7 @@ using Envivo.Fresnel.Utils;
 using System;
 using System.Diagnostics;
 
-namespace Envivo.Fresnel.Proxies
+namespace Envivo.Fresnel.Proxies.Interceptors
 {
 
 

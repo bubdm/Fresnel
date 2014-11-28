@@ -2,7 +2,7 @@ using Castle.DynamicProxy;
 using System.ComponentModel;
 using System.Diagnostics;
 
-namespace Envivo.Fresnel.Proxies
+namespace Envivo.Fresnel.Proxies.Interceptors
 {
 
     /// <summary>

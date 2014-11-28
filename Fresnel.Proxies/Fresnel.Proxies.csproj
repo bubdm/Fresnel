@@ -42,10 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interceptors\InterceptorSelector.cs" />
+    <Compile Include="InterceptorSelectors\NotifyCollectionChangedInterceptorsSelector.cs" />
+    <Compile Include="InterceptorSelectors\NotifyPropertyChangedInterceptorsSelector.cs" />
+    <Compile Include="InterceptorSelectors\MethodInvokeInterceptorsSelector.cs" />
+    <Compile Include="InterceptorSelectors\ProxyMetaInterceptorsSelector.cs" />
+    <Compile Include="InterceptorSelectors\PropertyGetInterceptorsSelector.cs" />
+    <Compile Include="InterceptorSelectors\PropertySetInterceptorsSelector.cs" />
+    <Compile Include="InterceptorSelectors\IgnoreMethodInterceptorsSelector.cs" />
+    <Compile Include="InterceptorSelectors\CollectionRemoveInterceptorsSelector.cs" />
+    <Compile Include="InterceptorSelectors\InterceptorSelector.cs" />
+    <Compile Include="InterceptorSelectors\CollectionAddInterceptorsSelector.cs" />
     <Compile Include="Interceptors\CollectionAddInterceptor.cs" />
     <Compile Include="Interceptors\CollectionRemoveInterceptor.cs" />
     <Compile Include="Interceptors\FinalTargetInterceptor.cs" />
+    <Compile Include="InterceptorSelectors\IInterceptorsSelector.cs" />
     <Compile Include="Interceptors\MethodInvokeInterceptor.cs" />
     <Compile Include="Interceptors\NotifyCollectionChangedInterceptor.cs" />
     <Compile Include="Interceptors\NotifyPropertyChangedInterceptor.cs" />
@@ -84,6 +94,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

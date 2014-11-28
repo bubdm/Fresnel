@@ -53,9 +53,6 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Core.Observers.NullObserver),
 
                 typeof(Fresnel.Core.ChangeTracking.DirtyObjectNotifier),
-                typeof(Fresnel.Core.ChangeTracking.ObjectTracker),
-                typeof(Fresnel.Core.ChangeTracking.CollectionTracker),
-                typeof(Fresnel.Core.ChangeTracking.AbstractChangeTrackerBuilder),
             };
         }
 
@@ -69,6 +66,10 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Core.Observers.ObjectObserver),
                 typeof(Fresnel.Core.Observers.ObjectPropertyObserver),
                 typeof(Fresnel.Core.Observers.ParameterObserver),
+
+                typeof(Fresnel.Core.ChangeTracking.AbstractChangeTrackerBuilder),
+                typeof(Fresnel.Core.ChangeTracking.ObjectTracker),
+                typeof(Fresnel.Core.ChangeTracking.CollectionTracker),
             };
         }
 

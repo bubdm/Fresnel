@@ -5,7 +5,7 @@ using System.Diagnostics;
 using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Core.Observers;
 
-namespace Envivo.Fresnel.Proxies
+namespace Envivo.Fresnel.Proxies.Interceptors
 {
     /// <summary>
     /// This interceptor allows consumers to retrieve the underlying Observer for a Proxy

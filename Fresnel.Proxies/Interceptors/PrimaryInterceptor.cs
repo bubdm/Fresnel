@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 using Envivo.Fresnel.Utils;
 
-namespace Envivo.Fresnel.Proxies
+namespace Envivo.Fresnel.Proxies.Interceptors
 {
 
     public class PrimaryInterceptor : IInterceptor, IDisposable

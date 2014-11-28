@@ -8,7 +8,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Envivo.Fresnel.Proxies
+namespace Envivo.Fresnel.Proxies.Interceptors
 {
 
     public class CollectionRemoveInterceptor : IInterceptor, IDisposable

@@ -1,7 +1,7 @@
 using Castle.DynamicProxy;
 using System.Diagnostics;
 
-namespace Envivo.Fresnel.Proxies
+namespace Envivo.Fresnel.Proxies.Interceptors
 {
 
     public class FinalTargetInterceptor : IInterceptor

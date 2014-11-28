@@ -19,31 +19,74 @@ namespace Envivo.Fresnel.Bootstrap
             builder.RegisterTypes(this.GetPerDependencyInstanceTypes())
                     .InstancePerDependency()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+
+            this.RegisterIInterceptorSelectors(builder);
         }
 
         private Type[] GetSingleInstanceTypes()
         {
             return new Type[] { 
                 typeof(Fresnel.Proxies.CanBeProxiedSpecification),
-                typeof(Fresnel.Proxies.CollectionAddInterceptor),
-                typeof(Fresnel.Proxies.CollectionRemoveInterceptor),
-                typeof(Fresnel.Proxies.FinalTargetInterceptor),
-                typeof(Fresnel.Proxies.MethodInvokeInterceptor),
-                typeof(Fresnel.Proxies.NotifyCollectionChangedInterceptor),
-                typeof(Fresnel.Proxies.NotifyPropertyChangedInterceptor),
-                typeof(Fresnel.Proxies.PrimaryInterceptor),
-                typeof(Fresnel.Proxies.PropertyGetInterceptor),
-                typeof(Fresnel.Proxies.PropertySetInterceptor),
                 typeof(Fresnel.Proxies.ProxyBuilder),
                 typeof(Fresnel.Proxies.ProxyCache),
-                typeof(Fresnel.Proxies.InterceptorSelector),
                 typeof(Fresnel.Proxies.FresnelTypeResolver),
+
+                typeof(Fresnel.Proxies.Interceptors.CollectionAddInterceptor),
+                typeof(Fresnel.Proxies.Interceptors.CollectionRemoveInterceptor),
+                typeof(Fresnel.Proxies.Interceptors.FinalTargetInterceptor),
+                typeof(Fresnel.Proxies.Interceptors.MethodInvokeInterceptor),
+                typeof(Fresnel.Proxies.Interceptors.PrimaryInterceptor),
+                typeof(Fresnel.Proxies.Interceptors.PropertyGetInterceptor),
+                typeof(Fresnel.Proxies.Interceptors.PropertySetInterceptor),
+
+                typeof(Fresnel.Proxies.Interceptors.InterceptorSelector),
+                //typeof(Fresnel.Proxies.Interceptors.IgnoreMethodInterceptorsSelector),
+                //typeof(Fresnel.Proxies.Interceptors.ProxyMetaInterceptorsSelector),
+                //typeof(Fresnel.Proxies.Interceptors.MethodInvokeInterceptorsSelector),
+                //typeof(Fresnel.Proxies.Interceptors.CollectionAddInterceptorsSelector),
+                //typeof(Fresnel.Proxies.Interceptors.CollectionRemoveInterceptorsSelector),
+                //typeof(Fresnel.Proxies.Interceptors.NotifyCollectionChangedInterceptorsSelector),
+                //typeof(Fresnel.Proxies.Interceptors.PropertyGetnterceptorsSelector),
+                //typeof(Fresnel.Proxies.Interceptors.PropertySetnterceptorsSelector),
+                //typeof(Fresnel.Proxies.Interceptors.NotifyPropertyChangedInterceptorsSelector),
             };
+        }
+
+        private void RegisterIInterceptorSelectors(ContainerBuilder builder)
+        {
+            var types = new Type[] { 
+                typeof(Fresnel.Proxies.Interceptors.IgnoreMethodInterceptorsSelector),
+                typeof(Fresnel.Proxies.Interceptors.ProxyMetaInterceptorsSelector),
+                typeof(Fresnel.Proxies.Interceptors.MethodInvokeInterceptorsSelector),
+                typeof(Fresnel.Proxies.Interceptors.CollectionAddInterceptorsSelector),
+                typeof(Fresnel.Proxies.Interceptors.CollectionRemoveInterceptorsSelector),
+                typeof(Fresnel.Proxies.Interceptors.NotifyCollectionChangedInterceptorsSelector),
+                typeof(Fresnel.Proxies.Interceptors.PropertyGetInterceptorsSelector),
+                typeof(Fresnel.Proxies.Interceptors.PropertySetInterceptorsSelector),
+                typeof(Fresnel.Proxies.Interceptors.NotifyPropertyChangedInterceptorsSelector),
+            };
+
+            foreach (var type in types)
+            {
+                //builder.RegisterType(type).As<Fresnel.Proxies.Interceptors.IInterceptorsSelector>()
+                //        .SingleInstance();
+                builder.RegisterType(type)
+                        .SingleInstance();
+            }
+
+            //builder.Register<IEnumerable<Fresnel.Proxies.Interceptors.IInterceptorsSelector>>(c =>
+            //{
+            //    var ctx = c.Resolve<IComponentContext>();
+            //    return ctx.Resolve<IEnumerable<Fresnel.Proxies.Interceptors.IInterceptorsSelector>>();
+            //});
         }
 
         private Type[] GetPerDependencyInstanceTypes()
         {
             return new Type[] { 
+                typeof(Fresnel.Proxies.Interceptors.ProxyMetaInterceptor),
+                typeof(Fresnel.Proxies.Interceptors.NotifyCollectionChangedInterceptor),
+                typeof(Fresnel.Proxies.Interceptors.NotifyPropertyChangedInterceptor),
             };
         }
 
