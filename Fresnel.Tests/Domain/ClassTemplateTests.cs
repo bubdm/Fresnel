@@ -15,6 +15,7 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using System.Reflection;
 using System.Collections.Generic;
+using Envivo.Fresnel.Introspection.Commands;
 
 namespace Envivo.Fresnel.Tests.Domain
 {
@@ -137,6 +138,53 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(collectionTemplate.InnerClass);
         }
 
+        [Test()]
+        public void ShouldCreateInstanceWithNoArgs()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
+            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+            var createCommand = container.Resolve<CreateObjectCommand>();
+
+            var typeToInspect = typeof(SampleModel.Objects.PocoObject);
+            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+
+            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+
+            // Act:
+            var newInstance = createCommand.Invoke(classTemplate);
+
+            // Assert:
+            Assert.IsNotNull(newInstance);
+            Assert.IsInstanceOf<SampleModel.Objects.PocoObject>(newInstance);
+        }
+
+        [Test()]
+        public void ShouldCreateInstanceWithArgs()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
+            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+            var createCommand = container.Resolve<CreateObjectCommand>();
+
+            var typeToInspect = typeof(SampleModel.Objects.DetailObject);
+            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+
+            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+
+            // Act:
+            var master = new SampleModel.Objects.MasterObject();
+            var detail = (SampleModel.Objects.DetailObject)createCommand.Invoke(classTemplate, master);
+
+            // Assert:
+            Assert.IsNotNull(detail);
+            Assert.AreSame(master, detail.Parent);
+        }
+        
     }
 }
 
