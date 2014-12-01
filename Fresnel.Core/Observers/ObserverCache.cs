@@ -5,6 +5,7 @@ using System.Linq;
 using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using System.Diagnostics;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -71,6 +72,10 @@ namespace Envivo.Fresnel.Core.Observers
             {
                 result = CreateAndCacheObserver(obj, objectType);
             }
+            else
+            {
+                Debug.WriteLine(string.Concat("Found Observer for ", result.Template.Name, " with ID ", result.ID));
+            }
 
             return result;
         }
@@ -100,7 +105,9 @@ namespace Envivo.Fresnel.Core.Observers
 
             if (tClass != null)
             {
-                var id = _ObjectIdResolver.GetId(obj, tClass);
+                var id = _ObjectIdResolver.TryGetValue(obj, tClass, Guid.NewGuid());
+                Debug.WriteLine(string.Concat("Creating Observer for " ,tClass.Name, " with ID ", id));
+
                 var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealType);
                 _ObjectMap.Add(id, result);
                 MergeObjectsWithSameId(obj, result);
