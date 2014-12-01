@@ -1,6 +1,7 @@
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
@@ -10,6 +11,8 @@ namespace Envivo.Fresnel.Core.ChangeTracking
     /// </summary>
     public class CollectionTracker : ObjectTracker
     {
+        private Dictionary<Guid, ObjectObserver> _DirtyChildren = new Dictionary<Guid, ObjectObserver>();
+
         //private CollectionSnapshotTracker _CollectionSnapshotTracker;
 
         public CollectionTracker
@@ -38,6 +41,43 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         //    //}
         //}
 
+        public IEnumerable<ObjectObserver> DirtyChildren
+        {
+            get { return _DirtyChildren.Values; }
+        }
+
+        internal void MarkAsAdded(ObjectObserver oAddedItem)
+        {
+            _DirtyChildren[oAddedItem.ID] = oAddedItem;
+        }
+
+        internal void MarkAsRemoved(ObjectObserver oRemovedItem)
+        {
+            if (oRemovedItem.ChangeTracker.IsTransient)
+            {
+                _DirtyChildren.Remove(oRemovedItem.ID);
+            }
+            else
+            {
+                _DirtyChildren[oRemovedItem.ID] = oRemovedItem;
+            }
+        }
+
+        public override bool IsDirty
+        {
+            get
+            {
+                if (_DirtyChildren.Any())
+                    return true;
+
+                return base.IsDirty;
+            }
+            set
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
         public override void DetectChanges()
         {
             // Optimisation: Don't bother taking a snapshot if the value is already dirty:
@@ -55,9 +95,12 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             //    this.HasChanges = true;
             //}
         }
-        
+
         public override void Dispose()
         {
+            _DirtyChildren.Clear();
+            _DirtyChildren = null;
+
             // TODO: Re-enable this:
             //_CollectionSnapshotTracker.DisposeSafely();
             //_CollectionSnapshotTracker = null;

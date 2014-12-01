@@ -108,7 +108,6 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsTrue(oObject.ChangeTracker.HasDirtyObjectGraph);
         }
 
-
         [Test()]
         public void ShouldDetectRemoveFromCollection()
         {
@@ -138,6 +137,41 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsTrue(oChildObject.ChangeTracker.IsMarkedForRemoval);
             Assert.IsTrue(oCollection.ChangeTracker.IsDirty);
             Assert.IsTrue(oObject.ChangeTracker.HasDirtyObjectGraph);
+        }
+
+        [Test()]
+        public void ShouldLeaveCollectionUnchangedWhenAddingAndRemovingNewInstance()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var getCommand = container.Resolve<GetPropertyCommand>();
+            var createCommand = container.Resolve<CreateObjectCommand>();
+            var addCommand = container.Resolve<AddToCollectionCommand>();
+            var removeCommand = container.Resolve<RemoveFromCollectionCommand>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+
+            poco.AddSomeChildObjects();
+
+            var oObject = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
+            var oProp = oObject.Properties["ChildObjects"];
+            var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
+
+            // Act:
+            var oNewItem = (ObjectObserver)createCommand.Invoke(typeof(SampleModel.Objects.PocoObject), null);
+            ((SampleModel.Objects.PocoObject)oNewItem.RealObject).ID = Guid.NewGuid();
+
+            var addResult = addCommand.Invoke(oCollection, oNewItem);
+            var removeResult = removeCommand.Invoke(oCollection, oNewItem);
+
+            // Assert:
+            Assert.IsTrue(oNewItem.ChangeTracker.IsTransient);
+            Assert.IsFalse(oNewItem.ChangeTracker.IsMarkedForAddition);
+            Assert.IsFalse(oNewItem.ChangeTracker.IsMarkedForRemoval);
+            Assert.IsFalse(oCollection.ChangeTracker.IsDirty);
+            Assert.IsFalse(oObject.ChangeTracker.HasDirtyObjectGraph);
         }
     }
 

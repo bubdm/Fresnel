@@ -178,7 +178,7 @@ namespace Envivo.Fresnel.Core.Observers
             if (_IsLazyLoadingAlreadyDetermined)
                 return;
 
-            if (this.ChangeTracker.IsNewInstance)
+            if (this.ChangeTracker.IsTransient)
             {
                 this.MakePropertyValuesImmediatelyAvailable();
             }
@@ -204,7 +204,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// </summary>
         internal void MakePropertiesLazyLoad()
         {
-            if (this.ChangeTracker.IsNewInstance)
+            if (this.ChangeTracker.IsTransient)
             {
                 this.MakePropertyValuesImmediatelyAvailable();
             }
