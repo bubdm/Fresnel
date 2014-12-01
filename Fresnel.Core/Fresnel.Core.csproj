@@ -59,7 +59,6 @@
     <Compile Include="Proxies\IProxyBuilder.cs" />
     <Compile Include="UserSession.cs" />
     <Compile Include="ChangeTracking\CollectionTracker.cs" />
-    <None Include="Observers\ObserverCache.cs.broken" />
     <Compile Include="Observers\Methods\MethodObserverMapBuilder.cs" />
     <Compile Include="Observers\OuterObjectsIdentifier.cs" />
     <Compile Include="Observers\ObjectIdResolver.cs" />

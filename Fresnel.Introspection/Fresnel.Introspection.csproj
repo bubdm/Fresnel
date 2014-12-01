@@ -77,11 +77,6 @@
     <Compile Include="Templates\Classes\NonReferenceTemplate.cs" />
     <Compile Include="Templates\Classes\TrackingPropertiesIdentifier.cs" />
     <Compile Include="Templates\ISettableMemberTemplate.cs" />
-    <None Include="Templates\Methods\LinkerIdentificationService.cs.broken">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="Templates\Methods\LinkMethodResolver.cs.broken" />
-    <None Include="Templates\Methods\UnlinkMethodResolver.cs.broken" />
     <Compile Include="Templates\BaseMemberTemplate.cs" />
     <Compile Include="Templates\Methods\MethodTemplateBuilder.cs" />
     <Compile Include="Templates\Methods\MethodTemplate.cs" />
@@ -116,7 +111,6 @@
     <Compile Include="Templates\Methods\ParameterTemplateMapBuilder.cs" />
     <Compile Include="Templates\Properties\PropertyTemplateMap.cs" />
     <Compile Include="ReadOnlyDictionary.cs" />
-    <None Include="Templates\Methods\MemberTemplatesBuilder.cs.broken" />
     <Compile Include="Templates\Methods\MethodTemplateMapBuilder.cs" />
     <Compile Include="Assemblies\AssemblyReader.cs" />
     <Compile Include="Assemblies\AssemblyReaderMap.cs" />

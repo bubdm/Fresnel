@@ -43,7 +43,4 @@
     <Compile Include="StringExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <None Include="SystemInfo.cs.broken" />
-  </ItemGroup>
 </Project>
