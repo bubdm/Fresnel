@@ -12,21 +12,17 @@ var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
         function ToolboxController($scope, $http) {
-            this.http = $http;
             $scope.message = { title: "Hello World!!" };
-            this.getNamespaceHierarchy();
+            $scope.loadNamespaceTree = function () {
+                var _this = this;
+                $http.get("api/Toolbox/GetNamespaceTree").success(function (data, status) { return _this.namespaceTree = data; });
+            };
         }
-        ToolboxController.prototype.getNamespaceHierarchy = function () {
-            var _this = this;
-            var uri = "/GetNamespaceHierarchy";
-            this.http.get(uri).success(function (data, status) { return _this.namespaceHierarchy = data; });
-        };
         return ToolboxController;
     })();
     FresnelApp.ToolboxController = ToolboxController;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    angular.module("fresnelApp", []).controller("ToolboxController", FresnelApp.ToolboxController).controller("ExplorerController", FresnelApp.ExplorerController);
+    angular.module("fresnelApp", []).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController);
 })(FresnelApp || (FresnelApp = {}));
-//# sourceMappingURL=FresnelApp.js.map

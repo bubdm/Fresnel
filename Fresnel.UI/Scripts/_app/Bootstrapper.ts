@@ -1,5 +1,5 @@
 ﻿module FresnelApp {
     angular.module("fresnelApp", [])
-        .controller("ToolboxController", FresnelApp.ToolboxController)
-        .controller("ExplorerController", FresnelApp.ExplorerController);
+        .controller("toolboxController", FresnelApp.ToolboxController)
+        .controller("explorerController", FresnelApp.ExplorerController);
 }

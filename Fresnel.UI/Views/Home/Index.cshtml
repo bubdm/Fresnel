@@ -14,11 +14,12 @@
     <div>
         Angular JS Demo <br />
         Input :  <input type="text" ng-model="text" /><br />
-        {{name}}
+        {{text}}
 
-        <div ng-controller="ToolboxController">
+        <div ng-controller="toolboxController">
             {{message.title}}
 
+            <button ng-click="loadNamespaceTree()">Hit me</button>
         </div>
     </div>
 </body>

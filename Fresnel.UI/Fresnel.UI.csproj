@@ -30,6 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -881,9 +882,9 @@
     <Compile Include="App_Start\UiDependencies.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\ObjectExplorerController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ToolboxController.cs" />
+    <Compile Include="Controllers\HomeController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -905,7 +906,7 @@
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Views\Home\index.cshtml" />
-    <Content Include="Views\ObjectExplorer\index.cshtml" />
+    <Content Include="Views\Explorer\index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -927,7 +928,7 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Scripts\_app\ExplorerToolboxController.ts" />
+    <TypeScriptCompile Include="Scripts\_app\ExplorerController.ts" />
     <TypeScriptCompile Include="Scripts\_app\ToolboxController.ts" />
     <TypeScriptCompile Include="Scripts\_app\Interfaces.ts" />
     <TypeScriptCompile Include="Scripts\_app\Bootstrapper.ts" />
@@ -949,6 +950,10 @@
       <Project>{77810a26-5586-42c5-b05a-4c06db029fd2}</Project>
       <Name>Fresnel.SampleModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fresnel.UiCore\Fresnel.UiCore.csproj">
+      <Project>{81df9fcc-50e5-4d2e-b47b-4e61efd2fbf3}</Project>
+      <Name>Fresnel.UiCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -957,6 +962,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptOutFile>Scripts/_app/FresnelApp.js</TypeScriptOutFile>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

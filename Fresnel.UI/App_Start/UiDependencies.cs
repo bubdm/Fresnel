@@ -13,9 +13,18 @@ namespace Envivo.Fresnel.Bootstrap
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterTypes(this.GetSingleInstanceTypes())
+                .SingleInstance()
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+
             builder.RegisterType<HomeController>().InstancePerLifetimeScope();
-            builder.RegisterType<ToolboxController>().InstancePerLifetimeScope();
-            builder.RegisterType<ObjectExplorerController>().InstancePerLifetimeScope();
+        }
+
+        private Type[] GetSingleInstanceTypes()
+        {
+            return new Type[] { 
+                typeof(Fresnel.UI.Controllers.HomeController),
+            };
         }
 
     }

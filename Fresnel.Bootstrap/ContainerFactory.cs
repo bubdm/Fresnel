@@ -64,6 +64,7 @@ namespace Envivo.Fresnel.Bootstrap
             builder.RegisterModule<IntrospectionDependencies>();
             builder.RegisterModule<CoreDependencies>();
             builder.RegisterModule<ProxiesDependencies>();
+            builder.RegisterModule<UiCoreDependencies>();
 
             builder.RegisterType<Proxies.ProxyBuilder>().As<IProxyBuilder>().SingleInstance();
         }
