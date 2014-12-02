@@ -1,7 +1,4 @@
-﻿/// <reference path="../typings/angularjs/angular.d.ts" />
-/// <reference path="../typings/jquery/jquery.d.ts" />
-
-module FresnelApp {
+﻿module FresnelApp {
 
     export interface IToolboxControllerScope extends ng.IScope {
         message: any;

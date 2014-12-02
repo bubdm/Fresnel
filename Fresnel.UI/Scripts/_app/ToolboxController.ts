@@ -1,14 +1,27 @@
-﻿/// <reference path="../typings/angularjs/angular.d.ts" />
-/// <reference path="../typings/jquery/jquery.d.ts" />
-/// <reference path="interfaces.ts" />
-
-module FresnelApp {
+﻿module FresnelApp {
 
     export class ToolboxController {
-        constructor($scope: IToolboxControllerScope) {
+        private http: ng.IHttpService
+        private namespaceHierarchy: any;
+
+        constructor(
+            $scope: IToolboxControllerScope,
+            $http: ng.IHttpService) {
+
+            this.http = $http;
+
             $scope.message = { title: "Hello World!!" };
 
+            this.getNamespaceHierarchy();
         }
-    }
 
+        getNamespaceHierarchy() {
+            var uri = "/GetNamespaceHierarchy";
+
+            this.http.get(uri)
+                .success(
+                (data, status) => this.namespaceHierarchy = data);
+        }
+
+    }
 }

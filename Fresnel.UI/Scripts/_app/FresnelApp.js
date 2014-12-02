@@ -1,14 +1,5 @@
-/// <reference path="../typings/angularjs/angular.d.ts" />
-/// <reference path="../typings/jquery/jquery.d.ts" />
 var FresnelApp;
 (function (FresnelApp) {
-    var HomeController = (function () {
-        function HomeController($scope) {
-            $scope.message = { title: "Hello World!!" };
-        }
-        return HomeController;
-    })();
-    FresnelApp.HomeController = HomeController;
     var ExplorerController = (function () {
         function ExplorerController($scope) {
             $scope.message = { title: "Goodbye!!" };
@@ -17,5 +8,25 @@ var FresnelApp;
     })();
     FresnelApp.ExplorerController = ExplorerController;
 })(FresnelApp || (FresnelApp = {}));
-angular.module("fresnelApp", []).controller("HomeController", FresnelApp.HomeController).controller("ExplorerController", FresnelApp.ExplorerController);
+var FresnelApp;
+(function (FresnelApp) {
+    var ToolboxController = (function () {
+        function ToolboxController($scope, $http) {
+            this.http = $http;
+            $scope.message = { title: "Hello World!!" };
+            this.getNamespaceHierarchy();
+        }
+        ToolboxController.prototype.getNamespaceHierarchy = function () {
+            var _this = this;
+            var uri = "/GetNamespaceHierarchy";
+            this.http.get(uri).success(function (data, status) { return _this.namespaceHierarchy = data; });
+        };
+        return ToolboxController;
+    })();
+    FresnelApp.ToolboxController = ToolboxController;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    angular.module("fresnelApp", []).controller("ToolboxController", FresnelApp.ToolboxController).controller("ExplorerController", FresnelApp.ExplorerController);
+})(FresnelApp || (FresnelApp = {}));
 //# sourceMappingURL=FresnelApp.js.map
