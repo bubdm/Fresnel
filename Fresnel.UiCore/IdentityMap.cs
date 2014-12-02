@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore
 {
-    public class IdentityMap
+    public class IdentityMap : Dictionary<Guid, object>
     {
-        public Dictionary<Guid, object> Items { get; set; }
+        
     }
 }

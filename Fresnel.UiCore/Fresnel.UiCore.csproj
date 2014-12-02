@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\GetClassHierarchyCommand.cs" />
+    <Compile Include="IdentityMapMerger.cs" />
+    <Compile Include="IdentityMapDelta.cs" />
     <Compile Include="StyleVM.cs" />
     <Compile Include="IdentityMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
