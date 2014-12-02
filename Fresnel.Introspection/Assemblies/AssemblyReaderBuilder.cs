@@ -14,7 +14,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         public AssemblyReaderBuilder
         (
-            IsFrameworkAssemblySpecification isFrameworkAssemblySpecification,
             ConfigurationMapBuilder configurationMapBuilder,
             Func<AssemblyReader> assemblyReaderFactory,
             AbstractClassTemplateBuilder abstractClassTemplateBuilder

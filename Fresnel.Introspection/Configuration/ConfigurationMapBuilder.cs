@@ -6,14 +6,10 @@ namespace Envivo.Fresnel.Configuration
 
     public class ConfigurationMapBuilder
     {
-        private readonly IsFrameworkAssemblySpecification _IsFrameworkAssemblySpecification;
-
         public ConfigurationMapBuilder
         (
-            IsFrameworkAssemblySpecification isFrameworkAssemblySpecification
         )
         {
-            _IsFrameworkAssemblySpecification = isFrameworkAssemblySpecification;
         }
 
         /// <summary>

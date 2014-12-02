@@ -35,7 +35,6 @@
     <Compile Include="Assemblies\NamespaceHierarchyBuilder.cs" />
     <Compile Include="Assemblies\AssemblyDocsReader.cs" />
     <Compile Include="Assemblies\AssemblyReaderMapBuilder.cs" />
-    <Compile Include="Assemblies\IsFrameworkAssemblySpecification.cs" />
     <Compile Include="AssertionSet.cs" />
     <Compile Include="Commands\GetBackingFieldCommand.cs" />
     <Compile Include="Commands\RemoveFromCollectionCommand.cs" />
