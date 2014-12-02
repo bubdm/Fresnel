@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Fresnel.UI
+namespace Envivo.Fresnel.UI
 {
     public class RouteConfig
     {

@@ -4,14 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Fresnel.UI.Controllers
+namespace Envivo.Fresnel.UI.Controllers
 {
     public class HomeController : Controller
     {
+        // GET: Home
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
-
             return View();
         }
     }

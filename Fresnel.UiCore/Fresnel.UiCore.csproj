@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{81DF9FCC-50E5-4D2E-B47B-4E61EFD2FBF3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Envivo.Fresnel.UiCore</RootNamespace>
+    <AssemblyName>Fresnel.UiCore</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\GetClassHierarchyCommand.cs" />
+    <Compile Include="StyleVM.cs" />
+    <Compile Include="IdentityMap.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Fresnel.Configuration\Fresnel.Configuration.csproj">
+      <Project>{b3122093-8ebb-423b-a4ed-951752690288}</Project>
+      <Name>Fresnel.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Core\Fresnel.Core.csproj">
+      <Project>{06b6fc1c-5e9d-442a-a643-2eb1a6a53809}</Project>
+      <Name>Fresnel.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.DomainTypes\Fresnel.DomainTypes.csproj">
+      <Project>{beec9a50-f328-43d1-aaf1-f818aa56653e}</Project>
+      <Name>Fresnel.DomainTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Introspection\Fresnel.Introspection.csproj">
+      <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>
+      <Name>Fresnel.Introspection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Proxies\Fresnel.Proxies.csproj">
+      <Project>{7975aea4-b516-4fd9-9b86-d6334833866f}</Project>
+      <Name>Fresnel.Proxies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Utils\Fresnel.Utils.csproj">
+      <Project>{3ba54d1e-0d73-4c83-a3c7-5fd199e0f468}</Project>
+      <Name>Fresnel.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
