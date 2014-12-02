@@ -33,6 +33,13 @@ namespace Envivo.Fresnel.UiCore.Commands
             var assemblyReader = _AssemblyReaderMap.Values.First(a => !a.IsFrameworkAssembly);
             var hierarchyNodes = _NamespaceHierarchyBuilder.BuildListFor(assemblyReader.Assembly);
 
+            // Exclude any namespace nodes that don't have actual classes:
+            var itemsToExclude = hierarchyNodes.Where(n => n.IsNamespace &&
+                                                            n.Children.Count() == 1 &&
+                                                            n.Children.First().IsNamespace);
+
+            hierarchyNodes = hierarchyNodes.Except(itemsToExclude);
+
             var results = hierarchyNodes.Select(h => _ClassHierarchyItemBuilder.BuildFor(h));
             return results;
         }
