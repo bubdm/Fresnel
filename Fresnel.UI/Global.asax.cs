@@ -24,6 +24,10 @@ namespace Envivo.Fresnel.UI
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             ConfigureAutofac();
+
+            // TODO: Decouple this registration:
+            var engine = DependencyResolver.Current.GetService<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
         }
 
         private static void ConfigureAutofac()

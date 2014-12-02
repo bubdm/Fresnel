@@ -937,9 +937,17 @@
       <Project>{5d50ab72-1e6a-4930-8a70-4dd940ecbeb0}</Project>
       <Name>Fresnel.Bootstrap</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Core\Fresnel.Core.csproj">
+      <Project>{06b6fc1c-5e9d-442a-a643-2eb1a6a53809}</Project>
+      <Name>Fresnel.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fresnel.Introspection\Fresnel.Introspection.csproj">
       <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>
       <Name>Fresnel.Introspection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.SampleModel\Fresnel.SampleModel.csproj">
+      <Project>{77810a26-5586-42c5-b05a-4c06db029fd2}</Project>
+      <Name>Fresnel.SampleModel</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
