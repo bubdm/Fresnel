@@ -1,26 +1,25 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
+
 <!DOCTYPE html>
-<html ng-app="myApp">
+<html ng-app="fresnelApp">
 <head>
     <meta name="viewport" content="width=device-width" />
     <script src="~/scripts/angular.js"></script>
-    <script src="~/scripts/_app/Test.js"></script>
+    <script src="~/scripts/_app/FresnelApp.js"></script>
     <title>Index</title>
 </head>
 <body>
     <div>
         Angular JS Demo <br />
-        Input :  <input type="text" ng-model="helloworld" /><br />
+        Input :  <input type="text" ng-model="text" /><br />
+        {{name}}
 
-        {{helloworld}}
-
-        <div ng-controller="MyOtherController">
+        <div ng-controller="ExplorerController">
             {{message.title}}
 
         </div>
     </div>
 </body>
-
+</html>
