@@ -11,15 +11,20 @@
     <title>Index</title>
 </head>
 <body>
-    <div>
+    <div ng-controller="toolboxController">
         Angular JS Demo <br />
         Input :  <input type="text" ng-model="text" /><br />
         {{text}}
 
-        <div ng-controller="toolboxController">
+        <div>
             {{message.title}}
 
-            <button ng-click="loadNamespaceTree()">Hit me</button>
+            <button ng-click="loadClassHierarchy()">Hit me</button>
+        </div>
+
+        <div ng-repeat="item in classHierarchy">
+            {{ item.Name }}
+
         </div>
     </div>
 </body>

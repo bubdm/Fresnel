@@ -6,6 +6,7 @@ using System.Web.Http;
 
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.UiCore.Commands;
+using Envivo.Fresnel.UiCore.ClassHierarchy;
 
 namespace Envivo.Fresnel.UiCore.Controllers
 {
@@ -26,10 +27,10 @@ namespace Envivo.Fresnel.UiCore.Controllers
             return DateTime.Now.ToString();
         }
 
-        public HierarchyNode GetNamespaceTree()
+        public IEnumerable<ClassHierarchyItem> GetClassHierarchy()
         {
-            var result = _GetClassHierarchyCommand.Invoke();
-            return result;
+            var results = _GetClassHierarchyCommand.Invoke();
+            return results;
         }
     }
 }

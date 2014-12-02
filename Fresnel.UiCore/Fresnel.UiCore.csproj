@@ -39,12 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InteractionPoint.cs" />
+    <Compile Include="ClassHierarchy\ClassHierarchyItem.cs" />
+    <Compile Include="ClassHierarchy\ClassHierarchyItemBuilder.cs" />
     <Compile Include="Commands\GetClassHierarchyCommand.cs" />
     <Compile Include="Controllers\ExplorerController.cs" />
     <Compile Include="Controllers\ToolboxController.cs" />
     <Compile Include="IdentityMapMerger.cs" />
     <Compile Include="IdentityMapDelta.cs" />
-    <Compile Include="StyleVM.cs" />
+    <Compile Include="BaseViewModel.cs" />
     <Compile Include="IdentityMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

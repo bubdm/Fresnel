@@ -6,21 +6,19 @@ using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore
 {
-    public class StyleVM
+    public abstract class BaseViewModel
     {
-        public string Name { get; set; }
+        public bool IsVisible { get; set; }
 
-        public string Summary { get; set; }
+        public bool IsEnabled { get; set; }
+
+        public string Name { get; set; }
 
         public string Description { get; set; }
 
         public string Tooltip { get; set; }
 
         public string CssStyleName { get; set; }
-
-        public string IsVisible { get; set; }
-
-        public string IsEnabled { get; set; }
 
     }
 }

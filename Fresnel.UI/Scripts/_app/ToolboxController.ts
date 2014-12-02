@@ -2,7 +2,7 @@
 
     export class ToolboxController {
         private http: ng.IHttpService
-        private namespaceTree: any;
+        private classHierarchy: any;
 
         constructor(
             $scope: IToolboxControllerScope,
@@ -10,10 +10,10 @@
 
             $scope.message = { title: "Hello World!!" };
 
-            $scope.loadNamespaceTree = function () {
-                $http.get("api/Toolbox/GetNamespaceTree")
+            $scope.loadClassHierarchy = function () {
+                $http.get("api/Toolbox/GetClassHierarchy")
                     .success(
-                    (data, status) => this.namespaceTree = data);
+                    (data, status) => this.classHierarchy = data);
             }
 
         }

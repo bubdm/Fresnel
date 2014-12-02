@@ -2,8 +2,9 @@
 
     export interface IToolboxControllerScope extends ng.IScope {
         message: any;
+        classHierarchy: any;
 
-        loadNamespaceTree();
+        loadClassHierarchy();
     }
 
     export interface IExplorerControllerScope extends ng.IScope {

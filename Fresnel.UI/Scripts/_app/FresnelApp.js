@@ -13,9 +13,9 @@ var FresnelApp;
     var ToolboxController = (function () {
         function ToolboxController($scope, $http) {
             $scope.message = { title: "Hello World!!" };
-            $scope.loadNamespaceTree = function () {
+            $scope.loadClassHierarchy = function () {
                 var _this = this;
-                $http.get("api/Toolbox/GetNamespaceTree").success(function (data, status) { return _this.namespaceTree = data; });
+                $http.get("api/Toolbox/GetClassHierarchy").success(function (data, status) { return _this.classHierarchy = data; });
             };
         }
         return ToolboxController;

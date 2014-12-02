@@ -1,4 +1,6 @@
-﻿using Envivo.Fresnel.Introspection.Assemblies;
+﻿using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.Assemblies;
+using Envivo.Fresnel.UiCore.ClassHierarchy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,28 +14,33 @@ namespace Envivo.Fresnel.UiCore.Commands
     {
         private AssemblyReaderMap _AssemblyReaderMap;
         private NamespaceHierarchyBuilder _NamespaceHierarchyBuilder;
+        private ClassHierarchyItemBuilder _ClassHierarchyItemBuilder;
 
         public GetClassHierarchyCommand
             (
             AssemblyReaderMap assemblyReaderMap,
-            NamespaceHierarchyBuilder namespaceHierarchyBuilder
+            NamespaceHierarchyBuilder namespaceHierarchyBuilder,
+            ClassHierarchyItemBuilder classHierarchyItemBuilder
             )
         {
             _AssemblyReaderMap = assemblyReaderMap;
             _NamespaceHierarchyBuilder = namespaceHierarchyBuilder;
+            _ClassHierarchyItemBuilder = classHierarchyItemBuilder;
         }
 
-        public HierarchyNode Invoke()
+        public IEnumerable<ClassHierarchyItem> Invoke()
         {
             var assemblyReader = _AssemblyReaderMap.Values.First(a => !a.IsFrameworkAssembly);
-            var result = _NamespaceHierarchyBuilder.BuildFor(assemblyReader.Assembly);
-            return result;
+            var hierarchyNodes = _NamespaceHierarchyBuilder.BuildListFor(assemblyReader.Assembly);
+
+            var results = hierarchyNodes.Select(h => _ClassHierarchyItemBuilder.BuildFor(h));
+            return results;
         }
 
-        public HierarchyNode Invoke(Assembly domainAssembly)
+        public IEnumerable<HierarchyNode> Invoke(Assembly domainAssembly)
         {
-            var result = _NamespaceHierarchyBuilder.BuildFor(domainAssembly);
-            return result;
+            var results = _NamespaceHierarchyBuilder.BuildListFor(domainAssembly);
+            return results;
         }
 
     }
