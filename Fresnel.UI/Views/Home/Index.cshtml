@@ -1,13 +1,15 @@
 ﻿@{
     Layout = null;
+    var version = Environment.TickCount.ToString();
 }
 
 <!DOCTYPE html>
 <html ng-app="fresnelApp">
 <head>
     <meta name="viewport" content="width=device-width" />
+    
     <script src="~/scripts/angular.js"></script>
-    <script src="~/scripts/_app/FresnelApp.js"></script>
+    <script src="~/scripts/_app/FresnelApp.js?v=@version"></script>
     <title>Index</title>
 </head>
 <body>
