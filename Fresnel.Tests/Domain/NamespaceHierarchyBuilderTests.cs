@@ -30,13 +30,15 @@ namespace Envivo.Fresnel.Tests.Domain
             var hierarchyBuilder = container.Resolve<NamespaceHierarchyBuilder>();
             
             // Act:
-            var hierarchy = hierarchyBuilder.BuildFor(typeof(SampleModel.Objects.PocoObject).Assembly);
+            var hierarchy = hierarchyBuilder.BuildTreeFor(typeof(SampleModel.Objects.PocoObject).Assembly);
 
             // Assert:
             Assert.IsNotNull(hierarchy);
 
             var productNode = hierarchy.FindNodeByName("Product");
             Assert.AreNotEqual(0, productNode.Children.Count());
+
+            Assert.IsTrue(productNode.Children.All(c => c.IsSubClass));
         }
 
     }

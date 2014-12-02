@@ -1,3 +1,4 @@
+using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
     public class NamespaceHierarchyBuilder
     {
-        public HierarchyNode BuildFor(Assembly domainAssembly)
+        public HierarchyNode BuildTreeFor(Assembly domainAssembly)
         {
             var rootNode = new HierarchyNode();
 
@@ -16,6 +17,28 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             this.CreateNodesFor(domainAssembly, rootNode);
 
             return rootNode;
+        }
+
+        public IEnumerable<HierarchyNode> BuildListFor(Assembly domainAssembly)
+        {
+            var rootNode = this.BuildTreeFor(domainAssembly);
+
+            var results = new List<HierarchyNode>();
+            this.FlattenRecursive(rootNode, results);
+            return results;
+        }
+
+        private void FlattenRecursive(HierarchyNode node, List<HierarchyNode> flatList)
+        {
+            if (node == null)
+                return;
+
+            flatList.Add(node);
+
+            foreach (var childNode in node.Children)
+            {
+                this.FlattenRecursive(childNode, flatList);
+            }
         }
 
         private void CreateNamespaceNodesFor(Assembly domainAssembly, HierarchyNode rootNode)
@@ -177,10 +200,11 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         {
             var newNode = new HierarchyNode()
             {
+                Type = classType,
                 Name = classType.Name,
                 IsAbstract = classType.IsAbstract,
                 IsClass = classType.IsClass,
-                IsSubClass = classType.DeclaringType != null,
+                IsSubClass = classType.BaseType != null,
                 IsGeneric = classType.IsGenericType,
             };
 
@@ -198,6 +222,8 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         public string Name { get; internal set; }
 
         public string FullPath { get; internal set; }
+
+        public Type Type { get; internal set; }
 
         public bool IsNamespace { get; internal set; }
         public bool IsAbstract { get; internal set; }
