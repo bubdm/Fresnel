@@ -7,6 +7,10 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
+using Envivo.Fresnel.Bootstrap;
+using Autofac;
+using Autofac.Integration.Mvc;
+using Autofac.Integration.WebApi;
 
 namespace Envivo.Fresnel.UI
 {
@@ -17,7 +21,19 @@ namespace Envivo.Fresnel.UI
             // Code that runs on application startup
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);            
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            ConfigureAutofac();
+        }
+
+        private static void ConfigureAutofac()
+        {
+            var additionalDependencies = new Module[] { new UiDependencies() };
+            var container = new ContainerFactory()
+                                .Build(additionalDependencies);
+
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
         }
     }
 }
