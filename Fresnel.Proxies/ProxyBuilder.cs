@@ -4,6 +4,7 @@ using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Proxies.Interceptors;
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -103,13 +104,15 @@ namespace Envivo.Fresnel.Proxies
                             this.CreateCollectionProxy(obj, oCollection) :
                             this.CreateObjectProxy(obj, oObject);
 
-            if (result.Equals(obj) == false)
+#if DEBUG
+            if (!result.GetType().IsDerivedFrom(observer.Template.RealType))
             {
                 var msg = string.Concat("Generated proxy is not equivalent to original object. ",
                                         "Check that ", observer.Template.Name, ".Equals() and ",
                                         observer.Template.Name, ".GetHashCode() are overridden correctly.");
                 throw new FresnelException(msg);
             }
+#endif
 
             return result;
         }
@@ -118,7 +121,7 @@ namespace Envivo.Fresnel.Proxies
             where T : class
         {
             var tClass = oObject.Template;
-         
+
             // We need these interceptors to keep state for the individual Proxy:
             var metaInterceptor = _ProxyMetaInterceptorFactory(oObject);
             var notifyPropertyChangedInterceptor = _NotifyPropertyChangedInterceptorFactory();

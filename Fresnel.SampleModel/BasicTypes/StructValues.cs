@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
             this.ArrayOfColours = new Color[] { Colors.Red, Colors.Yellow, Colors.Pink, Colors.Green, Colors.Purple, Colors.Orange, Colors.Blue };
         }
 
-        public Guid ID { get; internal set; }
+        public Guid ID { get; set; }
 
         //        /// <summary>
         //        /// This property will not be visible, because it isn't a Value type

@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         private int _IntValue = 0;
 
-        public Guid ID { get; internal set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This is a normal Number

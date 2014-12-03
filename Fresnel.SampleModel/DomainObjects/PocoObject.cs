@@ -19,23 +19,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
         private ICollection<PocoObject> _ChildObjects = new Collection<PocoObject>();
         private DateTime _NormalDate = DateTime.UtcNow;
 
-        public override bool Equals(object obj)
-        {
-            if (object.ReferenceEquals(this, obj))
-                return true;
-
-            var that = obj as PocoObject;
-            if (that == null)
-                return false;
-
-            return this.ID.Equals(that.ID);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.ID.GetHashCode();
-        }
-
         public virtual Guid ID { get; set; }
 
         public virtual long Version { get; set; }

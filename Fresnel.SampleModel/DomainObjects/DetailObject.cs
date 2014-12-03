@@ -13,11 +13,10 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public class DetailObject
     {
-        public Guid ID { get; internal set; }
+        public Guid ID { get; set; }
 
         public DetailObject()
         {
-            this.ID = Guid.NewGuid();
             this.MoreChildren = new List<DetailObject>();
         }
 
@@ -26,24 +25,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         {
             this.Parent = parent;
         }
-
-        //public override bool Equals(object obj)
-        //{
-        //    if (object.ReferenceEquals(this, obj))
-        //        return true;
-
-        //    var that = obj as DetailObject;
-        //    if (that == null)
-        //        return false;
-
-        //    return this.ID.Equals(that.ID);
-        //}
-
-        //public override int GetHashCode()
-        //{
-        //    return this.ID.GetHashCode();
-        //}
-
+        
         public string Name { get; set; }
 
         private MasterObject _Parent;

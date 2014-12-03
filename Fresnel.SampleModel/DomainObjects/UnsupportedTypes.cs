@@ -16,23 +16,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
 
         private Dictionary<string, PocoObject> _Map = new Dictionary<string, PocoObject>();
         
-        public override bool Equals(object obj)
-        {
-            if (object.ReferenceEquals(this, obj))
-                return true;
-
-            var that = obj as UnsupportedTypes;
-            if (that == null)
-                return false;
-
-            return this.ID.Equals(that.ID);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.ID.GetHashCode();
-        }
-
         public virtual Guid ID { get; set; }
 
         public virtual Dictionary<string, PocoObject> Map

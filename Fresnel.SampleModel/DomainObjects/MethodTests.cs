@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.SampleModel
 
         #endregion
 
-        public Guid ID { get; internal set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This method returns no value.

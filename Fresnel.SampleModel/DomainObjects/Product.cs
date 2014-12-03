@@ -16,7 +16,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public abstract class Product
     {
-        public Guid ID { get; internal set; }
+        public Guid ID { get; set; }
 
         public long Version { get; internal set; }
 

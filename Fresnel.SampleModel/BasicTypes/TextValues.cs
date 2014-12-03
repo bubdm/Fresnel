@@ -14,24 +14,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     {
         private string _TextValue = string.Empty;
 
-        public override bool Equals(object obj)
-        {
-            if (object.ReferenceEquals(this, obj))
-                return true;
-
-            var that = obj as TextValues;
-            if (that == null)
-                return false;
-
-            return this.ID.Equals(that.ID);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.ID.GetHashCode();
-        }
-
-        public virtual Guid ID { get; internal set; }
+        public virtual Guid ID { get; set; }
 
         /// <summary>
         /// This is a normal Char.  It shouldn't allow more than 1 character to be entered.

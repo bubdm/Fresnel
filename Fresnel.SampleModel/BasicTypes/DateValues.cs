@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         private DateTime _DateTime = DateTime.Now;
 
-        public Guid ID { get; internal set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This is an unformatted Date.

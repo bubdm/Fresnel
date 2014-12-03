@@ -14,7 +14,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     public class NullableValues
     {
 
-        public Guid ID { get; internal set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// It should be possible to clear this value.

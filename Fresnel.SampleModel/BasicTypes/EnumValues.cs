@@ -66,7 +66,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         private IndividualOptions _EnumValue = IndividualOptions.None;
 
-        public Guid ID { get; internal set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This enum should be shown as a drop-down list.

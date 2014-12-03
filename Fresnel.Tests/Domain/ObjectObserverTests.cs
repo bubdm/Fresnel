@@ -62,6 +62,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
 
             var observerCache = container.Resolve<ObserverCache>();
 
@@ -79,6 +80,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
 
             var observerCache = container.Resolve<ObserverCache>();
 
@@ -89,6 +91,29 @@ namespace Envivo.Fresnel.Tests.Domain
 
             // Assert:
             Assert.AreSame(observer1, observer2);
+        }
+
+        [Test()]
+        public void ShouldReturnSeparateObserversForSeparateInstances()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var poco1 = new SampleModel.Objects.PocoObject();
+            poco1.ID = Guid.NewGuid();
+
+            var poco2 = new SampleModel.Objects.PocoObject();
+            poco2.ID = Guid.NewGuid();
+
+            var observerCache = container.Resolve<ObserverCache>();
+
+            // Act:
+            var observer1 = observerCache.GetObserver(poco1);
+
+            var observer2 = observerCache.GetObserver(poco2);
+
+            // Assert:
+            Assert.AreNotSame(observer1, observer2);
         }
 
         [Test()]

@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     public class BooleanValues
     {
 
-        public Guid ID { get; internal set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This is a normal Boolean

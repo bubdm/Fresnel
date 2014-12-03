@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
         private bool _Bool = false;
         private string _PropertyValue;
 
-        public Guid ID { get; internal set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This property will thrown an exception when it is read

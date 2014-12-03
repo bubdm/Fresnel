@@ -10,23 +10,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
     public class SecuredObject
     {
 
-        public override bool Equals(object obj)
-        {
-            if (object.ReferenceEquals(this, obj))
-                return true;
-
-            var that = obj as SecuredObject;
-            if (that == null)
-                return false;
-
-            return this.ID.Equals(that.ID);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.ID.GetHashCode();
-        }
-
         public virtual Guid ID { get; set; }
 
         /// <summary>
