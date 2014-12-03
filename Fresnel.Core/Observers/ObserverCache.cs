@@ -6,6 +6,7 @@ using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -15,7 +16,7 @@ namespace Envivo.Fresnel.Core.Observers
     /// </summary>
     public class ObserverCache
     {
-        private Dictionary<Guid, ObjectObserver> _ObjectMap = new Dictionary<Guid, ObjectObserver>();
+        private ConditionalWeakTable<object, ObjectObserver> _ObjectMap = new ConditionalWeakTable<object, ObjectObserver>();
         private Dictionary<object, NonReferenceObserver> _NonReferenceMap = new Dictionary<object, NonReferenceObserver>();
 
         private TemplateCache _TemplateCache;
@@ -86,8 +87,9 @@ namespace Envivo.Fresnel.Core.Observers
             var tClass = template as ClassTemplate;
             if (tClass != null)
             {
-                var id = _ObjectIdResolver.GetId(obj, tClass);
-                return _ObjectMap.TryGetValueOrNull(id);
+                ObjectObserver match = null;
+                _ObjectMap.TryGetValue(obj, out match);
+                return match;
             }
             else
             {
@@ -105,11 +107,10 @@ namespace Envivo.Fresnel.Core.Observers
 
             if (tClass != null)
             {
-                var id = _ObjectIdResolver.TryGetValue(obj, tClass, Guid.NewGuid());
-                Debug.WriteLine(string.Concat("Creating Observer for " ,tClass.Name, " with ID ", id));
+                Debug.WriteLine(string.Concat("Creating Observer for ", tClass.Name, " with hash code", obj.GetHashCode()));
 
                 var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealType);
-                _ObjectMap.Add(id, result);
+                _ObjectMap.Add(obj, result);
                 MergeObjectsWithSameId(obj, result);
                 return result;
             }
@@ -145,17 +146,6 @@ namespace Envivo.Fresnel.Core.Observers
             //    _ObjectMerger.MergeValues(obj, oParent.RealObject);
             //}
         }
-
-        public IEnumerable<ObjectObserver> CachedObjectObservers
-        {
-            get { return _ObjectMap.Values; }
-        }
-
-        public IEnumerable<NonReferenceObserver> CachedNonReferenceObservers
-        {
-            get { return _NonReferenceMap.Values; }
-        }
-
     }
 
 }
