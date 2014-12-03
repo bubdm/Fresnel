@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.UiCore.ClassHierarchy
             var search = item.Search = new InteractionPoint();
             search.IsVisible = true;
             search.IsEnabled = hierarchyNode.IsClass;
-            create.Tooltip = item.IsEnabled ? "Search for existing instances of " + hierarchyNode.Name : "This item cannot be searched for";
+            search.Tooltip = item.IsEnabled ? "Search for existing instances of " + hierarchyNode.Name : "This item cannot be searched for";
 
             // TODO: Add other Interaction Points (Factory, Service, Static methods, etc)
 
