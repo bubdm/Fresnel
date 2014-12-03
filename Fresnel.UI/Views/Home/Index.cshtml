@@ -9,11 +9,24 @@
     <meta name="viewport" content="width=device-width" />
     
     <script src="~/scripts/angular.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+
     <script src="~/scripts/_app/FresnelApp.js?v=@version"></script>
+    <script src="~/scripts/_app/Toolbox.js?v=@version"></script>
+    <link href="~/Content/toolbox.css" rel="stylesheet" />
+
     <title>Index</title>
 </head>
 <body>
-    <div ng-controller="toolboxController">
+
+
+    <div id="" ng-controller="toolboxController">
+        <i id="toolboxPanelOpener" class="fa fa-caret-right"></i>
+        Panel Content
+
         Angular JS Demo <br />
         Input :  <input type="text" ng-model="text" /><br />
         {{text}}
@@ -24,9 +37,7 @@
             <button ng-click="loadClassHierarchy()">Hit me</button>
         </div>
 
-        <div ng-repeat="item in classHierarchy">
-            {{ item.Name }} {{item.IsEnabled }}
-
+        <div ng-repeat="item in classHierarchy" ng-include="'/Toolbox/classItem.html'">
         </div>
     </div>
 </body>
