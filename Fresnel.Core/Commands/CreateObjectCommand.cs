@@ -37,6 +37,8 @@ namespace Envivo.Fresnel.Core.Commands
 
             var newInstance = _CreateObjectCommand.Invoke(tClass, args);
 
+            SetDefaultId(tClass, newInstance);
+
             var oNewObject = (ObjectObserver)_ObserverCache.GetObserver(newInstance);
 
             // Make sure the instance can be edited before the user saves it:
@@ -44,6 +46,21 @@ namespace Envivo.Fresnel.Core.Commands
 
             return oNewObject;
         }
+        
+        private void SetDefaultId(ClassTemplate tClass, object newInstance)
+        {
+            if (newInstance == null)
+                return;
 
+            var idProperty = tClass.IdProperty;
+            if (idProperty == null)
+                return;
+
+            var id = (Guid)idProperty.GetProperty(newInstance);
+            if (id != Guid.Empty)
+                return;
+
+            idProperty.SetProperty(newInstance, Guid.NewGuid());
+        }
     }
 }
