@@ -44,6 +44,22 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreNotEqual(0, results.Count());
         }
 
+        [Test()]
+        public void ShouldCreateNewInstance()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var controller = container.Resolve<ToolboxController>();
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            //// Act:
+            //var result = controller.Create("Envivo.Fresnel.SampleModel.Objects.PocoObject");
+
+            //// Assert:
+            //Assert.IsInstanceOf<SampleModel.Objects.PocoObject>(result);
+        }
     }
 
 }

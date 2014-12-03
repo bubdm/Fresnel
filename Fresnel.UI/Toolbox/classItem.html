@@ -1,1 +1,9 @@
-﻿{{ item.Name }} {{item.IsEnabled }}
+﻿
+<div id="classItem">
+    <b>{{ item.Name }}</b>
+    <i>{{ item.Description }}</i>
+    <div>
+        <button ng-disabled="!item.Create.IsEnabled" ng-click="create(item.FQN)"><i class="fa fa-plus-circle"> </i></button>
+        <button ng-disabled="!item.Search.IsEnabled" ng-click="search(item.FQN)"><i class="fa fa-search"> </i></button>
+    </div>
+</div>

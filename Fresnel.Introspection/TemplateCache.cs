@@ -56,6 +56,21 @@ namespace Envivo.Fresnel.Introspection
             return this.GetTemplate(objectType);
         }
 
+        public IClassTemplate GetTemplate(string fullyQualifiedName)
+        {
+            Type type = null;
+            foreach (var reader in _AssemblyReaders.Values)
+            {
+                type = reader.Assembly.GetType(fullyQualifiedName, false, true);
+                if (type != null)
+                    break;
+            }
+
+            return type != null ?
+                    this.GetTemplate(type) :
+                    null;
+        }
+
         /// <summary>
         /// Returns a list of all ClassTemplates for the given Assembly
         /// </summary>

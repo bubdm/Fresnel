@@ -29,6 +29,7 @@ namespace Envivo.Fresnel.UiCore.ClassHierarchy
             var item = new ClassHierarchyItem()
             {
                 Name = hierarchyNode.Name,
+                FQN = hierarchyNode.FQN,
                 Description = tClass != null ? tClass.Summary : "",
                 Tooltip = tClass != null ? tClass.Remarks : "",
                 IsEnabled = hierarchyNode.IsClass,
@@ -40,7 +41,7 @@ namespace Envivo.Fresnel.UiCore.ClassHierarchy
             create.IsEnabled = hierarchyNode.IsClass && !hierarchyNode.IsAbstract;
             create.Tooltip = item.IsEnabled ? "Create a new " + hierarchyNode.Name : "This item is not creatable. Consider using a sub item instead.";
             create.CommandUri = item.IsEnabled ? "/Toolbox/Create" : "";
-            create.CommandArg = item.IsEnabled ? hierarchyNode.FullPath : "";
+            create.CommandArg = item.IsEnabled ? hierarchyNode.FQN : "";
 
             var search = item.Search = new InteractionPoint();
             search.IsVisible = true;

@@ -221,7 +221,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         public string Name { get; internal set; }
 
-        public string FullPath { get; internal set; }
+        public string FQN { get; internal set; }
 
         public Type Type { get; internal set; }
 
@@ -243,7 +243,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         public HierarchyNode FindNodeByPath(string fullPath)
         {
-            return this.FindChildNode(this, n => n.FullPath == fullPath);
+            return this.FindChildNode(this, n => n.FQN == fullPath);
         }
 
         private HierarchyNode FindChildNode(HierarchyNode startNode, Func<HierarchyNode, bool> predicate)
@@ -269,9 +269,9 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         internal void AppendChild(HierarchyNode childToAdd)
         {
             _Nodes.Add(childToAdd);
-            childToAdd.FullPath = this.FullPath.IsEmpty() ?
+            childToAdd.FQN = this.FQN.IsEmpty() ?
                                     childToAdd.Name :
-                                    string.Concat(this.FullPath, ".", childToAdd.Name);
+                                    string.Concat(this.FQN, ".", childToAdd.Name);
         }
     }
 

@@ -2,7 +2,12 @@
 
     export interface IToolboxControllerScope extends ng.IScope {
         message: any;
+
+        newInstance: any;
+
         classHierarchy: any;
+
+        create(fullyQualifiedName : string);
 
         loadClassHierarchy();
     }

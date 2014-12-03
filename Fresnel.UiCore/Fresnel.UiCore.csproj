@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CreateCommand.cs" />
     <Compile Include="InteractionPoint.cs" />
     <Compile Include="ClassHierarchy\ClassHierarchyItem.cs" />
     <Compile Include="ClassHierarchy\ClassHierarchyItemBuilder.cs" />
