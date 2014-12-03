@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.UiCore.ClassHierarchy
 {
     public class ClassHierarchyItem : BaseViewModel
     {
-        public string FQN { get; set; }
+        public string TypeName { get; set; }
 
         public InteractionPoint Create{ get; set; }
 

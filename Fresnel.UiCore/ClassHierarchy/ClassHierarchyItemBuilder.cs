@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.UiCore.ClassHierarchy
             var item = new ClassHierarchyItem()
             {
                 Name = hierarchyNode.Name,
-                FQN = hierarchyNode.FQN,
+                TypeName = tClass != null ? hierarchyNode.Type.FullName : "",
                 Description = tClass != null ? tClass.Summary : "",
                 Tooltip = tClass != null ? tClass.Remarks : "",
                 IsEnabled = hierarchyNode.IsClass,
