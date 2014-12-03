@@ -107,7 +107,7 @@ namespace Envivo.Fresnel.Core.Observers
 
             if (tClass != null)
             {
-                Debug.WriteLine(string.Concat("Creating Observer for ", tClass.Name, " with hash code", obj.GetHashCode()));
+                Debug.WriteLine(string.Concat("Creating Observer for ", tClass.Name, " with hash code ", obj.GetHashCode()));
 
                 var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealType);
                 _ObjectMap.Add(obj, result);
