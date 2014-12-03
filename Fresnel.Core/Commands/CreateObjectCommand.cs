@@ -60,7 +60,7 @@ namespace Envivo.Fresnel.Core.Commands
             if (id != Guid.Empty)
                 return;
 
-            idProperty.SetProperty(newInstance, Guid.NewGuid());
+            idProperty.SetField(newInstance, Guid.NewGuid());
         }
     }
 }
