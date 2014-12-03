@@ -6,11 +6,18 @@
 <!DOCTYPE html>
 <html ng-app="fresnelApp">
 <head>
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+
     <meta name="viewport" content="width=device-width" />
-    
+
     <script src="~/scripts/angular.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+    <script src="~/Scripts/ng-pageslide/angular-pageslide-directive.js"></script>
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
 
@@ -22,24 +29,19 @@
 </head>
 <body>
 
+    <div ng-controller="toolboxController">
+        <h2>Class Libary</h2>
 
-    <div id="" ng-controller="toolboxController">
-        <i id="toolboxPanelOpener" class="fa fa-caret-right"></i>
-        Panel Content
+        <a class="toolboxPanelOpener" pageslide ps-side="left" ps-speed="0.5" ps-size="400px" href="#toolboxPanel">Open</a>
 
-        Angular JS Demo <br />
-        Input :  <input type="text" ng-model="text" /><br />
-        {{text}}
+        <div id="toolboxPanel">
+            <a ng-click="loadClassHierarchy()">Load</a>
+            <a id="toolboxPanel-close" href="#">Close</a>
+            {{newInstance}}
 
-        {{newInstance}}
-
-        <div>
-            {{message.title}}
-
-            <button ng-click="loadClassHierarchy()">Hit me</button>
-        </div>
-
-        <div ng-repeat="item in classHierarchy" ng-include="'/Toolbox/classItem.html'">
+            <hr />
+            <div ng-repeat="item in classHierarchy" ng-include="'/Toolbox/classItem.html'">
+            </div>
         </div>
     </div>
 </body>

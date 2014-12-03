@@ -1,19 +1,31 @@
 #toolboxPanel {
-    width:300px;
-    height:300px;
-    padding:10px;
-    background:#eee;
-    margin-left:-300px;
+    width: 400px;
+    height: inherit;
+    overflow: scroll;
+    padding: 10px;
+    background: #eee;
 }
 
 #toolboxPanelOpener {
-    float:right;
-    margin:-10px -50px 0px 0px;
-    border-radius:0;
+    float: right;
+    margin: -10px -50px 0px 0px;
+    border-radius: 0;
 }
 
+#toolboxPanel-close {
+    float: right;
+}
 
 #classItem {
-    margin:10px 10px 10px 10px;
+    margin: 10px 10px 10px 10px;
     /*border-radius:0;*/
+}
+
+#classNameArea {
+    height: 24px;
+}
+
+#classItemButtonArea {
+    height: 24px;
+    float: right;
 }

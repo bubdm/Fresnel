@@ -1,9 +1,5 @@
 var FresnelApp;
 (function (FresnelApp) {
-    angular.module("fresnelApp", []).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController);
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
     var ExplorerController = (function () {
         function ExplorerController($scope) {
             $scope.message = { title: "Goodbye!!" };
@@ -34,4 +30,8 @@ var FresnelApp;
         return ToolboxController;
     })();
     FresnelApp.ToolboxController = ToolboxController;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    angular.module("fresnelApp", ["pageslide-directive"]).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController);
 })(FresnelApp || (FresnelApp = {}));

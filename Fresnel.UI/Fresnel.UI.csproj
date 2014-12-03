@@ -897,6 +897,8 @@
     <None Include="Scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.0.js" />
     <Content Include="Scripts\jquery-1.9.0.min.js" />
+    <Content Include="Scripts\ng-pageslide\angular-pageslide-directive.js" />
+    <Content Include="Scripts\ng-pageslide\angular-pageslide-directive.min.js" />
     <Content Include="Scripts\_app\Toolbox.js" />
     <Content Include="Toolbox\classItem.html" />
     <Content Include="Web.config" />
