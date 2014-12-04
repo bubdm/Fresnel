@@ -1,14 +1,12 @@
 ﻿module FresnelApp {
 
     export class ToolboxController {
-        private http: ng.IHttpService
-        private classHierarchy: any;
+        public classHierarchy: any;
 
         constructor(
             $scope: IToolboxControllerScope,
-            $http: ng.IHttpService) {
-
-            $scope.message = { title: "Hello World!!" };
+            $http: ng.IHttpService,
+            appService: AppService) {
 
             $scope.loadClassHierarchy = function () {
                 var uri = "api/Toolbox/GetClassHierarchy";
@@ -26,7 +24,7 @@
                 };
                 $http.post(uri, arg, config)
                     .success(
-                    (data, status) => $scope.newInstance = data);
+                    (data: any, status) => appService.identityMap.add(data.ID, data));
             }
 
         }

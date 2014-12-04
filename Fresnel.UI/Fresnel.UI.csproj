@@ -958,8 +958,10 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\_app\AppController.ts" />
+    <TypeScriptCompile Include="Scripts\_app\AppService.ts" />
     <TypeScriptCompile Include="Scripts\_app\ExplorerController.ts" />
-    <TypeScriptCompile Include="Scripts\_app\IdentityMapController.ts" />
+    <TypeScriptCompile Include="Scripts\_app\IdentityMap.ts" />
     <TypeScriptCompile Include="Scripts\_app\ToolboxController.ts" />
     <TypeScriptCompile Include="Scripts\_app\Interfaces.ts" />
     <TypeScriptCompile Include="Scripts\_app\Bootstrapper.ts" />

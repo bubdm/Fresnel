@@ -1,8 +1,27 @@
 var FresnelApp;
 (function (FresnelApp) {
+    var AppController = (function () {
+        function AppController($scope, appService) {
+            appService.identityMap = new FresnelApp.IdentityMap();
+            $scope.identityMap = appService.identityMap;
+        }
+        return AppController;
+    })();
+    FresnelApp.AppController = AppController;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var AppService = (function () {
+        function AppService() {
+        }
+        return AppService;
+    })();
+    FresnelApp.AppService = AppService;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     var ExplorerController = (function () {
         function ExplorerController($scope) {
-            $scope.message = { title: "Goodbye!!" };
         }
         return ExplorerController;
     })();
@@ -11,23 +30,23 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var IdentityMap = (function () {
-        function IdentityMap($scope) {
-            $scope.items = [];
-            $scope.add = function (key, value) {
-                $scope.items.push({
-                    key: key,
-                    value: value
-                });
-            };
-            $scope.remove = function (key) {
-                var index = $scope.items.indexOf(key);
-                if (index > -1) {
-                    $scope.items.splice(index, 1);
-                }
-            };
-            $scope.merge = function (delta) {
-            };
+        function IdentityMap() {
+            this.items = [];
         }
+        IdentityMap.prototype.add = function (key, value) {
+            this.items.push({
+                key: key,
+                value: value
+            });
+        };
+        IdentityMap.prototype.remove = function (key) {
+            var index = this.items.indexOf(key);
+            if (index > -1) {
+                this.items.splice(index, 1);
+            }
+        };
+        IdentityMap.prototype.merge = function (delta) {
+        };
         return IdentityMap;
     })();
     FresnelApp.IdentityMap = IdentityMap;
@@ -41,8 +60,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
-        function ToolboxController($scope, $http) {
-            $scope.message = { title: "Hello World!!" };
+        function ToolboxController($scope, $http, appService) {
             $scope.loadClassHierarchy = function () {
                 var _this = this;
                 var uri = "api/Toolbox/GetClassHierarchy";
@@ -54,7 +72,7 @@ var FresnelApp;
                 var config = {
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
                 };
-                $http.post(uri, arg, config).success(function (data, status) { return $scope.newInstance = data; });
+                $http.post(uri, arg, config).success(function (data, status) { return appService.identityMap.add(data.ID, data); });
             };
         }
         return ToolboxController;
@@ -63,5 +81,5 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    angular.module("fresnelApp", ["pageslide-directive"]).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController);
+    angular.module("fresnelApp", ["pageslide-directive"]).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController);
 })(FresnelApp || (FresnelApp = {}));
