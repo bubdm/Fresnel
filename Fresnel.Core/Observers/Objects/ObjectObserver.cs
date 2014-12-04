@@ -17,7 +17,7 @@ namespace Envivo.Fresnel.Core.Observers
     {
         private Lazy<PropertyObserverMap> _Properties;
         private Lazy<MethodObserverMap> _Methods;
-        private Lazy<MethodObserverMap> _StaticMethods;
+        //private Lazy<MethodObserverMap> _StaticMethods;
         private Lazy<ObjectTracker> _ObjectTracker;
 
         private PropertyObserverMapBuilder _PropertyObserverMapBuilder;
@@ -58,9 +58,9 @@ namespace Envivo.Fresnel.Core.Observers
                               () => _MethodObserverMapBuilder.BuildFor(this),
                               System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
-            _StaticMethods = new Lazy<MethodObserverMap>(
-                              () => _MethodObserverMapBuilder.BuildStaticMethodsFor(this),
-                              System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+            //_StaticMethods = new Lazy<MethodObserverMap>(
+            //                  () => _MethodObserverMapBuilder.BuildStaticMethodsFor(this),
+            //                  System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         internal override void FinaliseConstruction()
@@ -98,15 +98,15 @@ namespace Envivo.Fresnel.Core.Observers
             get { return _Methods.Value; }
         }
 
-        /// <summary>
-        /// A set of all visible Static Methods
-        /// </summary>
-        /// <value>A generic Dictionary of MethodObservers</value>
+        ///// <summary>
+        ///// A set of all visible Static Methods
+        ///// </summary>
+        ///// <value>A generic Dictionary of MethodObservers</value>
 
-        public MethodObserverMap StaticMethods
-        {
-            get { return _StaticMethods.Value; }
-        }
+        //public MethodObserverMap StaticMethods
+        //{
+        //    get { return _StaticMethods.Value; }
+        //}
 
         /// <summary>
         /// Returns the Member Observer for the given member name
@@ -393,11 +393,11 @@ namespace Envivo.Fresnel.Core.Observers
             }
             _Properties = null;
 
-            if (_StaticMethods.IsValueCreated)
-            {
-                _StaticMethods.Value.ClearSafely();
-            }
-            _StaticMethods = null;
+            //if (_StaticMethods.IsValueCreated)
+            //{
+            //    _StaticMethods.Value.ClearSafely();
+            //}
+            //_StaticMethods = null;
 
             //_ObjectValidator.DisposeSafely();
             //_ObjectValidator = null;
