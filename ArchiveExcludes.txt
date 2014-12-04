@@ -6,6 +6,8 @@
 
 *\TestResults\*
 
+Packages\*
+
 *.zip
 
 *.7z
