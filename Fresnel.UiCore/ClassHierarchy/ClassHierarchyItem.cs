@@ -16,12 +16,12 @@ namespace Envivo.Fresnel.UiCore.ClassHierarchy
 
         public InteractionPoint ShowAll { get; set; }
 
-        public InteractionPoint RepositoryCommands { get; set; }
+        public InteractionPoint[] RepositoryCommands { get; set; }
 
         public InteractionPoint[] StaticMethodCommands { get; set; }
 
-        public InteractionPoint FactoryCommands { get; set; }
+        public InteractionPoint[] FactoryCommands { get; set; }
 
-        public InteractionPoint ServiceCommands { get; set; }
+        public InteractionPoint[] ServiceCommands { get; set; }
     }
 }
