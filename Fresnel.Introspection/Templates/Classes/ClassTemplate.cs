@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -53,7 +54,6 @@ namespace Envivo.Fresnel.Introspection.Templates
             _MethodTemplateMapBuilder = methodTemplateMapBuilder;
             _StaticMethodTemplateMapBuilder = staticMethodTemplateMapBuilder;
             _TrackingPropertiesIdentifier = trackingPropertiesIdentifier;
-
 
             _RapidCtor = new Lazy<RapidCtor>(
                                 () => _DynamicMethodBuilder.BuildCreateObjectHandler(this.RealType),
@@ -155,17 +155,19 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns the Property used to retrieve the Domain Object's unique ID
         /// </summary>
+        [JsonIgnore]
         public PropertyTemplate IdProperty { get { return _IdProperty.Value; } }
 
         /// <summary>
         /// Returns the Property used to retrieve the object's Version
         /// </summary>
+        [JsonIgnore]
         public PropertyTemplate VersionProperty { get { return _VersionProperty.Value; } }
-
-
+        
         /// <summary>
         /// Returns the Property used to retrieve the object's IAudit details
         /// </summary>
+        [JsonIgnore]
         public PropertyTemplate AuditProperty { get { return _AuditProperty.Value; } }
 
         /// <summary>
@@ -221,6 +223,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// The collection of available public Constructors
         /// </summary>
+        [JsonIgnore]
         public ConstructorInfo[] Constructors
         {
             get { return _Constructors.Value; }
@@ -231,12 +234,24 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         public bool HasDefaultConstructor
         {
-            get { return _RapidCtor.Value != null; }
+            get
+            {
+                try
+                {
+                    return _RapidCtor.Value != null;
+                }
+                catch (Exception ex)
+                {
+                    // Not sure what to do here
+                }
+                return false;
+            }
         }
 
         /// <summary>
         /// The collection of Fields within the Object
         /// </summary>
+        [JsonIgnore]
         internal FieldInfoMap Fields
         {
             get { return _Fields.Value; }

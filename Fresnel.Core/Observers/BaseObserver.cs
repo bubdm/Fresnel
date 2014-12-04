@@ -2,6 +2,7 @@ using System;
 
 using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
+using Newtonsoft.Json;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -42,6 +43,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// <summary>
         /// The object (or value) that is being observed
         /// </summary>
+        [JsonIgnore]
         public object RealObject { get; private set; }
 
         internal virtual void SetRealObject(object obj)
@@ -60,8 +62,10 @@ namespace Envivo.Fresnel.Core.Observers
         /// <summary>
         /// The underlying Template used to create this Observer
         /// </summary>
+        [JsonIgnore]
         public ITemplate Template { get; private set; }
 
+        [JsonIgnore]
         public BaseObjectObserver InnerObserver { get; set; }
 
         public T InnerAs<T>()

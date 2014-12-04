@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
+using Newtonsoft.Json;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -18,6 +19,7 @@ namespace Envivo.Fresnel.Core.Observers
         {
         }
 
+        [JsonIgnore]
         public new EnumTemplate Template
         {
             get { return (EnumTemplate)base.Template; }

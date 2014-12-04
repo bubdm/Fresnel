@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Introspection.Templates;
+using Newtonsoft.Json;
 using System;
 
 namespace Envivo.Fresnel.Core.Observers
@@ -24,6 +25,7 @@ namespace Envivo.Fresnel.Core.Observers
         {
         }
 
+        [JsonIgnore]
         public new PropertyTemplate Template
         {
             get { return (PropertyTemplate)base.Template; }

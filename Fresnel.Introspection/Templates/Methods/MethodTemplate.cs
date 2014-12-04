@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,7 +81,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// The .NET Reflection of the Method
         /// </summary>
         /// <value>A MethodInfo object that reflects the Method</value>
-
+        [JsonIgnore]
         public MethodInfo MethodInfo { get; internal set; }
 
         /// <summary>

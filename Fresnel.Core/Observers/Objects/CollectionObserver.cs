@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Core.ChangeTracking;
+using Newtonsoft.Json;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -33,6 +34,7 @@ namespace Envivo.Fresnel.Core.Observers
 
         }
 
+        [JsonIgnore]
         public new CollectionTemplate Template
         {
             get { return (CollectionTemplate)base.Template; }

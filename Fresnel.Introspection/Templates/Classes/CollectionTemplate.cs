@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -92,9 +93,14 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// The type of Item contained in the collection
         /// </summary>
+        [JsonIgnore]
         public Type ElementType { get; internal set; }
 
-        public ClassTemplate InnerClass { get { return _InnerClass.Value; } }
+        [JsonIgnore]
+        public ClassTemplate InnerClass
+        {
+            get { return _InnerClass.Value; }
+        }
 
         private ClassTemplate DetermineInnerClass()
         {

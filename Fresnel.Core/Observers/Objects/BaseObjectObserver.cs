@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Core.ChangeTracking;
+using Newtonsoft.Json;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -39,6 +40,7 @@ namespace Envivo.Fresnel.Core.Observers
                                     System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
+        [JsonIgnore]
         public new BaseClassTemplate Template
         {
             get { return (BaseClassTemplate)base.Template; }
@@ -49,6 +51,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// </summary>
         /// <remarks>In any object graph, it is possible for a single object to be referenced from more than one object.
         /// This property allows a reference to each of those objects.</remarks>
+        [JsonIgnore]
         public IEnumerable<CollectionObserver> OuterCollections
         {
             get { return _OuterCollections.Value; }
@@ -59,6 +62,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// </summary>
         /// <remarks>In any object graph, it is possible for a single object to be referenced from more than one object (via a Property).
         /// This property allows a reference to each of those Properties.</remarks>
+        [JsonIgnore]
         public IEnumerable<ObjectPropertyObserver> OuterProperties
         {
             get { return _OuterProperties.Value; }
@@ -70,6 +74,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// <value>A generic Dictionary of ParameterObserver</value>
         /// <remarks>In any object graph, it is possible for a single object to be referenced from more than one object (via a Parameter).
         /// This property allows a reference to each of those Parameters.</remarks>
+        [JsonIgnore]
         public IEnumerable<ParameterObserver> OuterParameters
         {
             get { return _OuterParameters.Value; }

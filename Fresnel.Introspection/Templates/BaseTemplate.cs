@@ -1,6 +1,7 @@
 
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection.Assemblies;
+using Newtonsoft.Json;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -11,6 +12,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// The AssemblyReader associated with this Template
         /// </summary>
+        [JsonIgnore]
         public AssemblyReader AssemblyReader { get; internal set; }
 
         /// <summary>
@@ -27,13 +29,13 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// The fully qualified name for the Template
         /// </summary>
         /// <value></value>
-
-
+        [JsonIgnore]
         public string FullName { get; internal set; }
 
         /// <summary>
         /// All custom Attributes defined for this Template. Values from ClassConfigurations are accessible here.
         /// </summary>
+        [JsonIgnore]
         public AttributesMap Attributes { get; internal set; }
 
         /// <summary>

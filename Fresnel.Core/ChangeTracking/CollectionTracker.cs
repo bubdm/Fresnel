@@ -3,6 +3,7 @@ using Envivo.Fresnel.Introspection.Templates;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
@@ -41,6 +42,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         //    //}
         //}
 
+        [JsonIgnore]
         public IEnumerable<ObjectObserver> DirtyChildren
         {
             get { return _DirtyChildren.Values; }

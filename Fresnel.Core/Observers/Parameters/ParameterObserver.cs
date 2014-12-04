@@ -1,6 +1,7 @@
 
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
+using Newtonsoft.Json;
 
 
 namespace Envivo.Fresnel.Core.Observers
@@ -9,7 +10,7 @@ namespace Envivo.Fresnel.Core.Observers
     /// <summary>
     /// An Observer for a Parameter belonging to a Member
     /// </summary>
-    
+
     public class ParameterObserver : BaseMemberObserver
     {
 
@@ -24,11 +25,13 @@ namespace Envivo.Fresnel.Core.Observers
             this.OuterMethod = oParentMethod;
         }
 
+        [JsonIgnore]
         public new ParameterTemplate Template
         {
             get { return (ParameterTemplate)base.Template; }
         }
 
+        [JsonIgnore]
         internal override string DebugID
         {
             get
@@ -52,19 +55,19 @@ namespace Envivo.Fresnel.Core.Observers
         /// The Value of the Parameter
         /// </summary>
         /// <remarks>Unlike the BasePropertyObserver, the ParameterReflection doesn't give us access it's values</remarks>
-        
+
         public object Value { get; set; }
 
         /// <summary>
         /// The MethodObserver that owns this Parameter
         /// </summary>
-        
+        [JsonIgnore]
         public MethodObserver OuterMethod { get; private set; }
 
         /////// <summary>
         /////// The Observer that proxies this Parameter's *value*
         /////// </summary>
-        
+
         ////public override BaseObjectObserver InnerObserver
         ////{
         ////    get
@@ -116,7 +119,7 @@ namespace Envivo.Fresnel.Core.Observers
         ///// <param name="showStatus"></param>
         ///// <param name="showName"></param>
         ///// <param name="showSummary"></param>
-        
+
         ///// <remarks>This method must be as optimal as possible, as it will be called many times in rapid succession</remarks>
         //public override string ToString(bool showStatus, bool showName, bool showSummary)
         //{

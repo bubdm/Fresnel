@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Configuration;
+using Newtonsoft.Json;
 using System;
 
 namespace Envivo.Fresnel.Introspection.Templates
@@ -20,7 +21,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// The Type of the Object that this Template represents
         /// </summary>
         /// <value></value>
-
+        [JsonIgnore]
         public Type RealType { get; internal set; }
 
         public override string ToString()

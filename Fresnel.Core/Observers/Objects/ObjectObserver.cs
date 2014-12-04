@@ -5,6 +5,7 @@ using Envivo.Fresnel.Introspection.Templates;
 using System.Collections.Generic;
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.ChangeTracking;
+using Newtonsoft.Json;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -69,6 +70,7 @@ namespace Envivo.Fresnel.Core.Observers
             this.CheckIfPropertiesShouldLazyLoad();
         }
 
+        [JsonIgnore]
         public new ClassTemplate Template
         {
             get { return (ClassTemplate)base.Template; }

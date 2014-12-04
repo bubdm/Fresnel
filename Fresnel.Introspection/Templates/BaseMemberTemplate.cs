@@ -1,6 +1,7 @@
 
 
 using Envivo.Fresnel.Configuration;
+using Newtonsoft.Json;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
@@ -63,8 +64,10 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// The ClassTemplate that owns this Member
         /// </summary>
+        [JsonIgnore]
         public ClassTemplate OuterClass { get; internal set; }
 
+        [JsonIgnore]
         public MemberInfo MemberInfo { get; internal set; }
 
         public bool IsFrameworkMember { get; internal set; }

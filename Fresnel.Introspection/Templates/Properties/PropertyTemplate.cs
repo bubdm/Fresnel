@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Reflection;
 
@@ -165,22 +166,29 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// The reflected backing field for this Property
         /// </summary>
+        [JsonIgnore]
         public FieldInfo BackingField { get { return _BackingField.Value; } }
 
         /// <summary>
         /// The reflected Property
         /// </summary>
+        [JsonIgnore]
         public PropertyInfo PropertyInfo { get; internal set; }
 
         /// <summary>
         /// Returns the actual type of the Property (e.g. if it's a Nullable type)
         /// </summary>
+        [JsonIgnore]
         public Type PropertyType { get; internal set; }
 
         /// <summary>
         /// Returns the Template of the declared type of the Property.
         /// </summary>
-        public IClassTemplate InnerClass { get { return _InnerClass.Value; } }
+        [JsonIgnore]
+        public IClassTemplate InnerClass
+        {
+            get { return _InnerClass.Value; }
+        }
 
         /// <summary>
         /// Determines if the value of the Property is a Reference object

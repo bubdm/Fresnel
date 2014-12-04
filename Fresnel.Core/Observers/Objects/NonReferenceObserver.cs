@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Introspection.Templates;
+using Newtonsoft.Json;
 using System;
 using System.Text;
 
@@ -18,6 +19,7 @@ namespace Envivo.Fresnel.Core.Observers
             //LoadAttributes(this.Template.Attributes);
         }
 
+        [JsonIgnore]
         public new NonReferenceTemplate Template
         {
             get { return (NonReferenceTemplate)base.Template; }
