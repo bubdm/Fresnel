@@ -35,6 +35,8 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Controllers.ToolboxController),
                 typeof(Fresnel.UiCore.Controllers.ExplorerController),
                 typeof(Fresnel.UiCore.Controllers.TestController),
+
+                typeof(Fresnel.UiCore.Objects.AbstractObjectVMBuilder),
             };
         }
 

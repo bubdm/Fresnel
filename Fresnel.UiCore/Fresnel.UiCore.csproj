@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CreateCommand.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="InteractionPoint.cs" />
     <Compile Include="ClassHierarchy\ClassHierarchyItem.cs" />
     <Compile Include="ClassHierarchy\ClassHierarchyItemBuilder.cs" />
@@ -50,6 +51,12 @@
     <Compile Include="IdentityMapDelta.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="IdentityMap.cs" />
+    <Compile Include="Objects\CollectionVM.cs" />
+    <Compile Include="Objects\AbstractObjectVMBuilder.cs" />
+    <Compile Include="Objects\ParameterVM.cs" />
+    <Compile Include="Objects\MethodVM.cs" />
+    <Compile Include="Objects\PropertyVM.cs" />
+    <Compile Include="Objects\ObjectVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

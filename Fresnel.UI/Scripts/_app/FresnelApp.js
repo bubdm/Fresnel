@@ -10,6 +10,36 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
+    var IdentityMap = (function () {
+        function IdentityMap($scope) {
+            $scope.items = [];
+            $scope.add = function (key, value) {
+                $scope.items.push({
+                    key: key,
+                    value: value
+                });
+            };
+            $scope.remove = function (key) {
+                var index = $scope.items.indexOf(key);
+                if (index > -1) {
+                    $scope.items.splice(index, 1);
+                }
+            };
+            $scope.merge = function (delta) {
+            };
+        }
+        return IdentityMap;
+    })();
+    FresnelApp.IdentityMap = IdentityMap;
+    var IdentityMapDelta = (function () {
+        function IdentityMapDelta() {
+        }
+        return IdentityMapDelta;
+    })();
+    FresnelApp.IdentityMapDelta = IdentityMapDelta;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     var ToolboxController = (function () {
         function ToolboxController($scope, $http) {
             $scope.message = { title: "Hello World!!" };

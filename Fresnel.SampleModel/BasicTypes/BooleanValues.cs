@@ -13,23 +13,23 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     public class BooleanValues
     {
 
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
         /// <summary>
         /// This is a normal Boolean
         /// </summary>
-        public bool NormalBoolean { get; set; }
+        public virtual bool NormalBoolean { get; set; }
 
         /// <summary>
         /// This is a Boolean with custom titles
         /// </summary>
         [Boolean(TrueValue = "Clockwise", FalseValue = "Anti-clockwise")]
-        public bool Orientation { get; set; }
+        public virtual bool Orientation { get; set; }
 
         /// <summary>
         /// This is a read-only Boolean
         /// </summary>
-        public bool ReadOnlyBool
+        public virtual bool ReadOnlyBool
         {
             get { return this.NormalBoolean; }
         }
