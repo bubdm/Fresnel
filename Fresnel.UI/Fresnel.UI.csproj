@@ -903,7 +903,7 @@
     <Content Include="Scripts\ng-pageslide\angular-pageslide-directive.min.js" />
     <Content Include="Scripts\_app\Workbench.js" />
     <Content Include="Scripts\_app\Toolbox.js" />
-    <Content Include="Toolbox\classItem.html" />
+    <Content Include="Templates\classItem.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

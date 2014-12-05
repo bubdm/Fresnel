@@ -34,14 +34,10 @@
 </head>
 <body>
 
-    <div ng-controller="appController">
-        <h2>{{identityMap}}</h2>
-    </div>
-
     <div ng-controller="toolboxController">
         <h2>Class Libary</h2>
 
-        <a class="toolboxPanelOpener" pageslide ps-side="left" ps-speed="0.5" ps-size="400px" href="#toolboxPanel">Open</a>
+        <a class="toolboxPanelOpener" pageslide ps-side="top" ps-speed="0.5" ps-size="400px" href="#toolboxPanel">Open</a>
 
         <div id="toolboxPanel">
             <a ng-click="loadClassHierarchy()">Load</a>
@@ -49,13 +45,13 @@
             {{newInstance}}
 
             <hr />
-            <div ng-repeat="item in classHierarchy" ng-include="'/Toolbox/classItem.html'">
+            <div ng-repeat="item in classHierarchy" ng-include="'/Templates/classItem.html'">
             </div>
         </div>
 
         <div id="workbench" class="workbenchContainer js-isotope" data-isotope-options='{ "itemSelector": ".explorerPanel" }'>
-            <div class="explorerPanel ">
-                Item #1
+            <div class="explorerPanel " ng-controller="appController">
+                <h2>{{identityMap}}</h2>
             </div>
             <div class="explorerPanel ">
                 Item #2
@@ -81,6 +77,5 @@
         </div>
     </div>
 
-    </div>
 </body>
 </html>

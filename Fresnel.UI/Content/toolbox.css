@@ -1,5 +1,5 @@
 #toolboxPanel {
-    width: 400px;
+    width: auto;
     height: inherit;
     overflow: scroll;
     padding: 10px;
