@@ -903,6 +903,7 @@
     <Content Include="Scripts\ng-pageslide\angular-pageslide-directive.min.js" />
     <Content Include="Scripts\_app\Workbench.js" />
     <Content Include="Scripts\_app\Toolbox.js" />
+    <Content Include="Templates\objectExplorer.html" />
     <Content Include="Templates\classItem.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -933,8 +934,7 @@
     <Content Include="Scripts\angular-cookies.min.js.map" />
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
-    <Content Include="Views\Home\index.cshtml" />
-    <Content Include="Views\Explorer\index.cshtml" />
+    <None Include="Views\Home\index.cshtml" />
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
@@ -949,7 +949,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />

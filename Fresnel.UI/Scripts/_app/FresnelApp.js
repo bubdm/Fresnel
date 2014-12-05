@@ -21,8 +21,14 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ExplorerController = (function () {
-        function ExplorerController($scope) {
+        function ExplorerController($scope, appService) {
+            $scope.openExplorers = [];
+            $scope.$on('objectCreated', function (event, data) {
+                var obj = appService.identityMap.items[data.ID];
+                $scope.openExplorers.push[obj];
+            });
         }
+        ExplorerController.$inject = ['$scope', 'appService'];
         return ExplorerController;
     })();
     FresnelApp.ExplorerController = ExplorerController;
@@ -33,11 +39,8 @@ var FresnelApp;
         function IdentityMap() {
             this.items = [];
         }
-        IdentityMap.prototype.add = function (key, value) {
-            this.items.push({
-                key: key,
-                value: value
-            });
+        IdentityMap.prototype.add = function (obj) {
+            this.items[obj.ID] = obj;
         };
         IdentityMap.prototype.remove = function (key) {
             var index = this.items.indexOf(key);
@@ -60,7 +63,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
-        function ToolboxController($scope, $http, appService) {
+        function ToolboxController($rootScope, $scope, $http, appService) {
             $scope.loadClassHierarchy = function () {
                 var _this = this;
                 var uri = "api/Toolbox/GetClassHierarchy";
@@ -72,9 +75,13 @@ var FresnelApp;
                 var config = {
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
                 };
-                $http.post(uri, arg, config).success(function (data, status) { return appService.identityMap.add(data.ID, data); });
+                $http.post(uri, arg, config).success(function (data, status) {
+                    appService.identityMap.add(data);
+                    $rootScope.$broadcast("objectCreated", data);
+                });
             };
         }
+        ToolboxController.$inject = ['$rootScope', '$scope', '$http', 'appService'];
         return ToolboxController;
     })();
     FresnelApp.ToolboxController = ToolboxController;

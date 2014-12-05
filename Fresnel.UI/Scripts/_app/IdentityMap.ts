@@ -5,14 +5,11 @@
 
         public items: any[] = [];
 
-        add(key, value) {
-            this.items.push({
-                key: key,
-                value: value
-            });
+        add(obj: IObjectVM) {
+            this.items[obj.ID] = obj;
         }
 
-        remove(key) {
+        remove(key: string) {
             var index = this.items.indexOf(key);
             if (index > -1) {
                 this.items.splice(index, 1);

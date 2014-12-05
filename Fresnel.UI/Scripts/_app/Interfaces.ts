@@ -18,6 +18,14 @@
 
     export interface IExplorerControllerScope extends ng.IScope {
 
+        openExplorers: any[];
+
     }
-     
+ 
+
+    export interface IObjectVM  {
+
+        ID: string;
+
+    }    
 }

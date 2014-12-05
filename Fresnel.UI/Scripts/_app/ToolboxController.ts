@@ -3,7 +3,10 @@
     export class ToolboxController {
         public classHierarchy: any;
 
+        static $inject = ['$rootScope', '$scope', '$http', 'appService']; 
+
         constructor(
+            $rootScope: ng.IRootScopeService,
             $scope: IToolboxControllerScope,
             $http: ng.IHttpService,
             appService: AppService) {
@@ -23,11 +26,12 @@
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
                 };
                 $http.post(uri, arg, config)
-                    .success(
-                    (data: any, status) => appService.identityMap.add(data.ID, data));
+                    .success(function (data: IObjectVM, status) {
+                        appService.identityMap.add(data);
+                        $rootScope.$broadcast("objectCreated", data);
+                    });
             }
-
         }
-    }
 
+    }
 }

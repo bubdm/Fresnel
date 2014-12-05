@@ -1,0 +1,28 @@
+﻿
+<div id="objectExplorer" class="row">
+    <b>{{ obj.Name }}</b>
+    <div ng-repeat='prop in obj.Properties'>
+        <div class="row">
+            <div class="span2">
+                <span>{{ prop.Name }}</span>
+            </div>
+            <div class="span3">
+                <i>{{ prop.EditorWidget }}</i>
+            </div>
+            <div class="span1">
+                <button type="button" class="btn btn-default" ng-disabled="true" ng-click="openNewExplorer(prop.ObjectId, prop.RealName)" tooltip="prop.Tooltip"><i class="fa fa-ellipsis-h"> </i></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span2">
+            </div>
+            <div class="span3">
+                <i>{{ prop.Description }}</i>
+            </div>
+        </div>
+    </div>
+
+    <div id="explorerButtonArea">
+        <button type="button" class="btn btn-default" ng-disabled="obj.Create.IsEnabled" ng-click="save(obj.ID)" tooltip="prop.Tooltip"><i class="fa fa-save"> </i></button>
+    </div>
+</div>

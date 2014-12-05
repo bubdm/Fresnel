@@ -14,7 +14,6 @@
 
     <meta name="viewport" content="width=device-width" />
 
-    @*3rd party:*@
     <script src="~/scripts/angular.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
@@ -24,7 +23,6 @@
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
 
-    @*Custom content:*@
     <script src="~/scripts/_app/FresnelApp.js?v=@version"></script>
     <script src="~/scripts/_app/Toolbox.js?v=@version"></script>
     <link href="~/Content/toolbox.css?v=@version" rel="stylesheet" />
@@ -32,8 +30,8 @@
 
     <title>Index</title>
 </head>
-<body>
 
+<body>
     <div ng-controller="toolboxController">
         <h2>Class Libary</h2>
 
@@ -42,38 +40,23 @@
         <div id="toolboxPanel">
             <a ng-click="loadClassHierarchy()">Load</a>
             <a id="toolboxPanel-close" href="#">Close</a>
-            {{newInstance}}
-
             <hr />
             <div ng-repeat="item in classHierarchy" ng-include="'/Templates/classItem.html'">
             </div>
+
         </div>
 
         <div id="workbench" class="workbenchContainer js-isotope" data-isotope-options='{ "itemSelector": ".explorerPanel" }'>
             <div class="explorerPanel " ng-controller="appController">
-                <h2>{{identityMap}}</h2>
+                <span>{{identityMap}}</span>
             </div>
-            <div class="explorerPanel ">
-                Item #2
+            <div class="explorerPanel " ng-controller="explorerController">
+                <span>{{openExplorers.length}}</span>
             </div>
-            <div class="explorerPanel ">
-                Item #3
+
+            <div ng-controller="explorerController" ng-repeat="obj in openExplorers" ng-include="'/Templates/objectExplorer.html'">
             </div>
-            <div class="explorerPanel ">
-                Item #3
-            </div>
-            <div class="explorerPanel ">
-                Item #4
-            </div>
-            <div class="explorerPanel ">
-                Item #5
-            </div>
-            <div class="explorerPanel ">
-                Item #6
-            </div>
-            <div class="explorerPanel ">
-                Item #7
-            </div>
+
         </div>
     </div>
 
