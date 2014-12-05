@@ -2,7 +2,7 @@
 
     export class ExplorerController {
 
-        static $inject = ['$scope', 'appService']; 
+        static $inject = ['$scope', 'appService'];
 
         constructor(
             $scope: IExplorerControllerScope,
@@ -10,9 +10,8 @@
 
             $scope.openExplorers = [];
 
-            $scope.$on('objectCreated', function (event, data: IObjectVM) {
-                var obj = appService.identityMap.items[data.ID];
-                $scope.openExplorers.push[obj];
+            $scope.$on('objectCreated', function (event, obj: IObjectVM) {
+                $scope.openExplorers.push(obj);
             });
 
         }

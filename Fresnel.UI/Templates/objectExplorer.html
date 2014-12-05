@@ -7,7 +7,7 @@
                 <span>{{ prop.Name }}</span>
             </div>
             <div class="span3">
-                <i>{{ prop.EditorWidget }}</i>
+                <i>{{ prop.Value }}</i>
             </div>
             <div class="span1">
                 <button type="button" class="btn btn-default" ng-disabled="true" ng-click="openNewExplorer(prop.ObjectId, prop.RealName)" tooltip="prop.Tooltip"><i class="fa fa-ellipsis-h"> </i></button>
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div id="explorerButtonArea">
+    <div id="explorerButtonArea" class="span6">
         <button type="button" class="btn btn-default" ng-disabled="obj.Create.IsEnabled" ng-click="save(obj.ID)" tooltip="prop.Tooltip"><i class="fa fa-save"> </i></button>
     </div>
 </div>

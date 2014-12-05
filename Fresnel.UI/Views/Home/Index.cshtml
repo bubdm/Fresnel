@@ -4,7 +4,7 @@
 }
 
 <!DOCTYPE html>
-<html ng-app="fresnelApp">
+<html lang="en" ng-app="fresnelApp">
 <head>
     <meta http-equiv="cache-control" content="max-age=0" />
     <meta http-equiv="cache-control" content="no-cache" />
@@ -32,29 +32,28 @@
 </head>
 
 <body>
-    <div ng-controller="toolboxController">
-        <h2>Class Libary</h2>
 
-        <a class="toolboxPanelOpener" pageslide ps-side="top" ps-speed="0.5" ps-size="400px" href="#toolboxPanel">Open</a>
+    <div ng-controller="appController" class="container-fluid">
+        <span>{{appControlleridentityMap.items}}</span>
 
-        <div id="toolboxPanel">
-            <a ng-click="loadClassHierarchy()">Load</a>
-            <a id="toolboxPanel-close" href="#">Close</a>
-            <hr />
-            <div ng-repeat="item in classHierarchy" ng-include="'/Templates/classItem.html'">
+        <div ng-controller="toolboxController">
+            <h2>Class Libary</h2>
+
+            <a class="toolboxPanelOpener" pageslide ps-side="top" ps-speed="0.5" ps-size="400px" href="#toolboxPanel">Open</a>
+
+            <div id="toolboxPanel">
+                <a ng-click="loadClassHierarchy()">Load</a>
+                <a id="toolboxPanel-close" href="#">Close</a>
+                <hr />
+                <div ng-repeat="item in classHierarchy" ng-include="'/Templates/classItem.html'">
+                </div>
             </div>
 
-        </div>
-
-        <div id="workbench" class="workbenchContainer js-isotope" data-isotope-options='{ "itemSelector": ".explorerPanel" }'>
-            <div class="explorerPanel " ng-controller="appController">
-                <span>{{identityMap}}</span>
-            </div>
-            <div class="explorerPanel " ng-controller="explorerController">
-                <span>{{openExplorers.length}}</span>
-            </div>
-
-            <div ng-controller="explorerController" ng-repeat="obj in openExplorers" ng-include="'/Templates/objectExplorer.html'">
+            <div id="workbench" ng-controller="explorerController" class="workbenchContainer js-isotope" data-isotope-options='{ "itemSelector": ".explorerPanel" }'>
+                @*<div ng-repeat="obj in openExplorers" ng-include="'/Templates/objectExplorer.html'" class="explorerPanel">*@
+                <div ng-repeat="obj in openExplorers" class="explorerPanel">
+                    {{obj.Name}}
+                </div>
             </div>
 
         </div>

@@ -23,9 +23,8 @@ var FresnelApp;
     var ExplorerController = (function () {
         function ExplorerController($scope, appService) {
             $scope.openExplorers = [];
-            $scope.$on('objectCreated', function (event, data) {
-                var obj = appService.identityMap.items[data.ID];
-                $scope.openExplorers.push[obj];
+            $scope.$on('objectCreated', function (event, obj) {
+                $scope.openExplorers.push(obj);
             });
         }
         ExplorerController.$inject = ['$scope', 'appService'];
@@ -37,15 +36,25 @@ var FresnelApp;
 (function (FresnelApp) {
     var IdentityMap = (function () {
         function IdentityMap() {
+            this.hash = [];
             this.items = [];
         }
-        IdentityMap.prototype.add = function (obj) {
-            this.items[obj.ID] = obj;
+        IdentityMap.prototype.getItem = function (key) {
+            var item = this.hash[key];
+            return item;
         };
-        IdentityMap.prototype.remove = function (key) {
+        IdentityMap.prototype.addItem = function (obj) {
+            this.items.push({
+                key: obj.ID,
+                value: obj
+            });
+            this.hash[obj.ID] = obj;
+        };
+        IdentityMap.prototype.removeItem = function (key) {
             var index = this.items.indexOf(key);
             if (index > -1) {
                 this.items.splice(index, 1);
+                delete this.hash[key];
             }
         };
         IdentityMap.prototype.merge = function (delta) {
@@ -76,7 +85,7 @@ var FresnelApp;
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
                 };
                 $http.post(uri, arg, config).success(function (data, status) {
-                    appService.identityMap.add(data);
+                    appService.identityMap.addItem(data);
                     $rootScope.$broadcast("objectCreated", data);
                 });
             };

@@ -3,16 +3,29 @@
 
     export class IdentityMap {
 
+        private hash: any[] = [];
         public items: any[] = [];
 
-        add(obj: IObjectVM) {
-            this.items[obj.ID] = obj;
+        getItem(key: string) {
+            var item = this.hash[key];
+            return item;
         }
 
-        remove(key: string) {
+        addItem(obj: IObjectVM) {
+            this.items.push(
+                { 
+                    key: obj.ID,
+                    value: obj
+                });
+
+            this.hash[obj.ID] = obj;
+        }
+
+        removeItem(key: string) {
             var index = this.items.indexOf(key);
             if (index > -1) {
                 this.items.splice(index, 1);
+                delete this.hash[key];
             }
         }
 

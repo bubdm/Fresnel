@@ -27,7 +27,7 @@
                 };
                 $http.post(uri, arg, config)
                     .success(function (data: IObjectVM, status) {
-                        appService.identityMap.add(data);
+                        appService.identityMap.addItem(data);
                         $rootScope.$broadcast("objectCreated", data);
                     });
             }
