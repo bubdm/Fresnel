@@ -1,3 +1,7 @@
+.container {
+    width: 100%;
+}
+
 .workbenchContainer {
     /*overflow-x: auto;*/
     /*overflow-y: visible;*/
@@ -5,11 +9,16 @@
 
 .explorerPanel {
     float: left;
-    overflow-y:  auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     background-color: gray;
     color: white;
     border: 1px solid blue;
     width: 600px;
-    height: 400px;
+    min-height: 400px;
     margin: 10px;
+}
+
+#explorerButtonArea{
+    float: right;
 }

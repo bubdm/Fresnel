@@ -1,28 +1,40 @@
 ﻿
 <div id="objectExplorer" class="row">
-    <b>{{ obj.Name }}</b>
+    <div class="row">
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-11">
+            <h3>{{ obj.Name }}</h3>
+        </div>
+    </div>
+
     <div ng-repeat='prop in obj.Properties'>
         <div class="row">
-            <div class="span2">
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-3">
                 <span>{{ prop.Name }}</span>
             </div>
-            <div class="span3">
+            <div class="col-xs-6">
                 <i>{{ prop.Value }}</i>
             </div>
-            <div class="span1">
+            <div class="col-xs-1">
                 <button type="button" class="btn btn-default" ng-disabled="true" ng-click="openNewExplorer(prop.ObjectId, prop.RealName)" tooltip="prop.Tooltip"><i class="fa fa-ellipsis-h"> </i></button>
             </div>
         </div>
+
         <div class="row">
-            <div class="span2">
+            <div class="col-xs-4">
             </div>
-            <div class="span3">
+            <div class="col-xs-7">
                 <i>{{ prop.Description }}</i>
             </div>
         </div>
     </div>
 
-    <div id="explorerButtonArea" class="span6">
-        <button type="button" class="btn btn-default" ng-disabled="obj.Create.IsEnabled" ng-click="save(obj.ID)" tooltip="prop.Tooltip"><i class="fa fa-save"> </i></button>
+    <div class="row">
+        <div class="col-xs-11">
+            <button type="button" class="btn btn-default" ng-disabled="obj.Create.IsEnabled" ng-click="save(obj.ID)" tooltip="prop.Tooltip"><i class="fa fa-save"> </i></button>
+        </div>
     </div>
 </div>
