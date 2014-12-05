@@ -14,16 +14,21 @@
 
     <meta name="viewport" content="width=device-width" />
 
+    @*3rd party:*@
     <script src="~/scripts/angular.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
     <script src="~/Scripts/ng-pageslide/angular-pageslide-directive.js"></script>
+    <script src="~/Scripts/isotope.pkgd.min.js"></script>
+
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
 
+    @*Custom content:*@
     <script src="~/scripts/_app/FresnelApp.js?v=@version"></script>
     <script src="~/scripts/_app/Toolbox.js?v=@version"></script>
-    <link href="~/Content/toolbox.css" rel="stylesheet" />
+    <link href="~/Content/toolbox.css?v=@version" rel="stylesheet" />
+    <link href="~/Content/workbench.css?v=@version" rel="stylesheet" />
 
     <title>Index</title>
 </head>
@@ -47,6 +52,35 @@
             <div ng-repeat="item in classHierarchy" ng-include="'/Toolbox/classItem.html'">
             </div>
         </div>
+
+        <div id="workbench" class="workbenchContainer js-isotope" data-isotope-options='{ "itemSelector": ".explorerPanel" }'>
+            <div class="explorerPanel ">
+                Item #1
+            </div>
+            <div class="explorerPanel ">
+                Item #2
+            </div>
+            <div class="explorerPanel ">
+                Item #3
+            </div>
+            <div class="explorerPanel ">
+                Item #3
+            </div>
+            <div class="explorerPanel ">
+                Item #4
+            </div>
+            <div class="explorerPanel ">
+                Item #5
+            </div>
+            <div class="explorerPanel ">
+                Item #6
+            </div>
+            <div class="explorerPanel ">
+                Item #7
+            </div>
+        </div>
+    </div>
+
     </div>
 </body>
 </html>

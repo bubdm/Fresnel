@@ -1,0 +1,14 @@
+.workbenchContainer {
+    /*overflow-x: auto;*/
+    /*overflow-y: visible;*/
+}
+
+.explorerPanel {
+    overflow-y:  auto;
+    background-color: gray;
+    color: white;
+    border: 1px solid blue;
+    min-width: 600px;
+    min-height: 400px;
+    margin: 10px;
+}
