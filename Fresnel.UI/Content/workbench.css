@@ -4,6 +4,7 @@
 }
 
 .explorerPanel {
+    float: left;
     overflow-y:  auto;
     background-color: gray;
     color: white;
