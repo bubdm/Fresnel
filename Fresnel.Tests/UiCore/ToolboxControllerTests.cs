@@ -20,6 +20,7 @@ using Envivo.Fresnel.Proxies;
 using System.ComponentModel;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.UiCore.Controllers;
+using Envivo.Fresnel.UiCore.Objects;
 
 namespace Envivo.Fresnel.Tests.Proxies
 {
@@ -58,7 +59,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var result = controller.Create("Envivo.Fresnel.SampleModel.Objects.PocoObject");
 
             // Assert:
-            Assert.IsInstanceOf<SampleModel.Objects.PocoObject>(result);
+            Assert.IsInstanceOf<ObjectVM>(result);
         }
 
     }
