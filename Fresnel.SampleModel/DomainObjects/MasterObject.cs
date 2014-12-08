@@ -14,7 +14,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
     //[Permissions(Role = "Administrator", AllowedOperations = Allow.All)]
     public class MasterObject
     {
-        public Guid ID { get; set; }
+        public virtual  Guid ID { get; set; }
 
         public MasterObject()
         {

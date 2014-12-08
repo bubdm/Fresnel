@@ -94,14 +94,14 @@ namespace Envivo.Fresnel.Proxies
                 }
             }
 
-            if (failureReason.IsEmpty())
-            {
-                var collectionPropertiesCheck = this.CheckCollectionPropertiesHaveCorrectType(type);
-                if (collectionPropertiesCheck.Failed)
-                {
-                    failureReason = collectionPropertiesCheck.FailureReason;
-                }
-            }
+            //if (failureReason.IsEmpty())
+            //{
+            //    var collectionPropertiesCheck = this.CheckCollectionPropertiesHaveCorrectType(type);
+            //    if (collectionPropertiesCheck.Failed)
+            //    {
+            //        failureReason = collectionPropertiesCheck.FailureReason;
+            //    }
+            //}
 
             //-----
 
@@ -169,32 +169,32 @@ namespace Envivo.Fresnel.Proxies
         }
 
 
-        private IAssertion CheckCollectionPropertiesHaveCorrectType(Type objectType)
-        {
-            // All Collection properties must be interface (otherwise Castle won't intercept the methods!) 
-            var tClass = _TemplateCache.GetTemplate(objectType) as ClassTemplate;
+        //private IAssertion CheckCollectionPropertiesHaveCorrectType(Type objectType)
+        //{
+        //    // All Collection properties must be interface (otherwise Castle won't intercept the methods!) 
+        //    var tClass = _TemplateCache.GetTemplate(objectType) as ClassTemplate;
 
-            var invalidPropertyNames = new List<string>();
-            foreach (var tProp in tClass.Properties.ForObjects)
-            {
-                if (tProp.IsCollection && tProp.PropertyType.IsInterface == false)
-                {
-                    invalidPropertyNames.Add(tProp.Name);
-                }
-            }
+        //    var invalidPropertyNames = new List<string>();
+        //    foreach (var tProp in tClass.Properties.ForObjects)
+        //    {
+        //        if (tProp.IsCollection && tProp.PropertyType.IsInterface == false)
+        //        {
+        //            invalidPropertyNames.Add(tProp.Name);
+        //        }
+        //    }
 
-            if (invalidPropertyNames.Count == 0)
-            {
-                return Assertion.Pass();
-            }
-            else
-            {
-                var msg = string.Concat("'", objectType.Name,
-                                        "' MUST have Collection properties that return Interfaces (not concrete types): ",
-                                        string.Join(", ", invalidPropertyNames.ToArray()));
-                return Assertion.Fail(msg);
-            }
-        }
+        //    if (invalidPropertyNames.Count == 0)
+        //    {
+        //        return Assertion.Pass();
+        //    }
+        //    else
+        //    {
+        //        var msg = string.Concat("'", objectType.Name,
+        //                                "' MUST have Collection properties that return Interfaces (not concrete types): ",
+        //                                string.Join(", ", invalidPropertyNames.ToArray()));
+        //        return Assertion.Fail(msg);
+        //    }
+        //}
 
     }
 

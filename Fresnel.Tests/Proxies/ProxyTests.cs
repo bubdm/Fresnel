@@ -19,6 +19,7 @@ using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.Proxies;
 using System.ComponentModel;
 using Envivo.Fresnel.DomainTypes;
+using System.Diagnostics;
 
 namespace Envivo.Fresnel.Tests.Proxies
 {
@@ -40,6 +41,50 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // Assert:
             Assert.IsInstanceOf<IFresnelProxy>(pocoProxy);
+        }
+
+        [Test()]
+        public void ShouldCreateProxyForAllSampleObjects()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
+
+            // Act:
+            var types = new Type[]
+            {
+                typeof(SampleModel.BasicTypes.BooleanValues),
+                typeof(SampleModel.BasicTypes.DateValues),
+                typeof(SampleModel.BasicTypes.EnumValues),
+                typeof(SampleModel.BasicTypes.FilePathValues),
+                typeof(SampleModel.BasicTypes.NullableValues),
+                typeof(SampleModel.BasicTypes.NumberValues),
+                typeof(SampleModel.BasicTypes.StructValues),
+                typeof(SampleModel.BasicTypes.TextValues),
+
+                typeof(SampleModel.Objects.BiDirectionalExample),
+                typeof(SampleModel.Objects.Category),
+                typeof(SampleModel.Objects.DetailObject),
+                typeof(SampleModel.Objects.MasterObject),
+                typeof(SampleModel.Objects.Money),
+                typeof(SampleModel.Objects.NonInterceptablePropertyObjects),
+                typeof(SampleModel.Objects.PocoObject),
+                typeof(SampleModel.Objects.SecuredObject),
+                typeof(SampleModel.Objects.SubProductA),
+                typeof(SampleModel.Objects.SubProductB),
+                typeof(SampleModel.Objects.UnsupportedTypes),
+                typeof(SampleModel.Objects.ValidationExample),
+            };
+
+            foreach (var type in types)
+            {
+                Debug.WriteLine("Creating proxy for " + type.Name);
+                var instance = Activator.CreateInstance(type);
+                var proxy = proxyCache.GetProxy(instance);
+
+                // Assert:
+                Assert.IsInstanceOf<IFresnelProxy>(proxy);
+            }
         }
 
         [Test]

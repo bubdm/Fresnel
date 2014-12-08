@@ -16,9 +16,9 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public abstract class Product
     {
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
-        public long Version { get; internal set; }
+        public virtual long Version { get; internal set; }
 
         public Product()
         {
@@ -61,7 +61,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The Categories that this Product belongs to
         /// </summary>
-        [CollectionProperty(CanModifyContents = false, 
+        [CollectionProperty(CanModifyContents = false,
             Relationship = ManyRelationship.HasMany)]
         public virtual IList<Category> Categories { get; private set; }
 

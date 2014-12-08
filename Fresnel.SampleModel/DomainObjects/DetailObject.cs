@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public class DetailObject
     {
-        public Guid ID { get; set; }
+        private MasterObject _Parent;
 
         public DetailObject()
         {
@@ -25,10 +25,10 @@ namespace Envivo.Fresnel.SampleModel.Objects
         {
             this.Parent = parent;
         }
-        
-        public string Name { get; set; }
 
-        private MasterObject _Parent;
+        public virtual Guid ID { get; set; }
+
+        public virtual string Name { get; set; }
 
         public virtual MasterObject Parent
         {
