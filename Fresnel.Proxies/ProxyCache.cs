@@ -71,7 +71,7 @@ namespace Envivo.Fresnel.Proxies
             var result = _ProxyMap.TryGetValueOrNull(oObj.ID);
             if (result == null)
             {
-                result = _ProxyBuilder.BuildFor(domainObject);
+                result = _ProxyBuilder.BuildFor(domainObject, oObj);
                 _ProxyMap.Add(oObj.ID, result);
             }
 

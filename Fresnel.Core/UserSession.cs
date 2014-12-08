@@ -47,7 +47,7 @@ namespace Envivo.Fresnel.Core
 
             var newInstance = (T)oObject.RealObject;
 
-            var proxy = _ProxyBuilder.BuildFor(newInstance);
+            var proxy = _ProxyBuilder.BuildFor(newInstance, oObject);
 
             return (T)proxy;
         }

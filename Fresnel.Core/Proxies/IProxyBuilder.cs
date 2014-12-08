@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Envivo.Fresnel.Core.Observers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace Envivo.Fresnel.Core.Proxies
 {
     public interface IProxyBuilder
     {
-        IFresnelProxy BuildFor(object obj);
+        IFresnelProxy BuildFor(object obj, BaseObjectObserver observer);
 
     }
 }

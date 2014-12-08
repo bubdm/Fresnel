@@ -91,12 +91,8 @@ namespace Envivo.Fresnel.Proxies
         }
 
 
-        public IFresnelProxy BuildFor(object obj)
+        public IFresnelProxy BuildFor(object obj, BaseObjectObserver observer)
         {
-            //Debug.WriteLine(string.Concat("Creating ViewModel for ", oObj.DebugID));
-
-            var observer = _ObserverCache.GetObserver(obj);
-
             var oObject = observer as ObjectObserver;
             var oCollection = observer as CollectionObserver;
 
