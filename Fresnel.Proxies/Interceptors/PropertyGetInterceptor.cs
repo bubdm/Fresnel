@@ -96,6 +96,7 @@ namespace Envivo.Fresnel.Proxies.Interceptors
             if (invocation.ReturnValue == null)
                 return;
 
+            // Make sure we're returning a proxy (so that it can be intercepted further):
             var returnValueProxy = (IFresnelProxy)this.ProxyCache.GetProxy(invocation.ReturnValue);
             invocation.ReturnValue = returnValueProxy;
 
