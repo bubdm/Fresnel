@@ -14,11 +14,15 @@
     background-color: gray;
     color: white;
     border: 1px solid blue;
-    width: 600px;
+    width: 417px;
     height: 400px;
     margin: 10px;
 }
 
 #explorerButtonArea{
     float: right;
+}
+
+.editorWidget{
+    width: 100%;
 }
