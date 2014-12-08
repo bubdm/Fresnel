@@ -85,8 +85,9 @@ var FresnelApp;
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
                 };
                 $http.post(uri, arg, config).success(function (data, status) {
-                    appService.identityMap.addItem(data);
-                    $rootScope.$broadcast("objectCreated", data);
+                    var newObject = data.NewObject;
+                    appService.identityMap.addItem(newObject);
+                    $rootScope.$broadcast("objectCreated", newObject);
                 });
             };
         }
