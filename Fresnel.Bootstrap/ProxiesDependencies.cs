@@ -38,17 +38,9 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Proxies.Interceptors.PrimaryInterceptor),
                 typeof(Fresnel.Proxies.Interceptors.PropertyGetInterceptor),
                 typeof(Fresnel.Proxies.Interceptors.PropertySetInterceptor),
+                typeof(Fresnel.Proxies.Interceptors.ProxyMetaInterceptor),
 
                 typeof(Fresnel.Proxies.Interceptors.InterceptorSelector),
-                //typeof(Fresnel.Proxies.Interceptors.IgnoreMethodInterceptorsSelector),
-                //typeof(Fresnel.Proxies.Interceptors.ProxyMetaInterceptorsSelector),
-                //typeof(Fresnel.Proxies.Interceptors.MethodInvokeInterceptorsSelector),
-                //typeof(Fresnel.Proxies.Interceptors.CollectionAddInterceptorsSelector),
-                //typeof(Fresnel.Proxies.Interceptors.CollectionRemoveInterceptorsSelector),
-                //typeof(Fresnel.Proxies.Interceptors.NotifyCollectionChangedInterceptorsSelector),
-                //typeof(Fresnel.Proxies.Interceptors.PropertyGetnterceptorsSelector),
-                //typeof(Fresnel.Proxies.Interceptors.PropertySetnterceptorsSelector),
-                //typeof(Fresnel.Proxies.Interceptors.NotifyPropertyChangedInterceptorsSelector),
             };
         }
 
@@ -68,23 +60,14 @@ namespace Envivo.Fresnel.Bootstrap
 
             foreach (var type in types)
             {
-                //builder.RegisterType(type).As<Fresnel.Proxies.Interceptors.IInterceptorsSelector>()
-                //        .SingleInstance();
                 builder.RegisterType(type)
                         .SingleInstance();
             }
-
-            //builder.Register<IEnumerable<Fresnel.Proxies.Interceptors.IInterceptorsSelector>>(c =>
-            //{
-            //    var ctx = c.Resolve<IComponentContext>();
-            //    return ctx.Resolve<IEnumerable<Fresnel.Proxies.Interceptors.IInterceptorsSelector>>();
-            //});
         }
 
         private Type[] GetPerDependencyInstanceTypes()
         {
             return new Type[] { 
-                typeof(Fresnel.Proxies.Interceptors.ProxyMetaInterceptor),
                 typeof(Fresnel.Proxies.Interceptors.NotifyCollectionChangedInterceptor),
                 typeof(Fresnel.Proxies.Interceptors.NotifyPropertyChangedInterceptor),
             };

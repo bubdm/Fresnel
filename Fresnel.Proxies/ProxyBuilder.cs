@@ -22,14 +22,15 @@ namespace Envivo.Fresnel.Proxies
         private MethodInvokeInterceptor _MethodInvokeInterceptor;
         private CollectionAddInterceptor _CollectionAddInterceptor;
         private CollectionRemoveInterceptor _CollectionRemoveInterceptor;
+        private ProxyMetaInterceptor _ProxyMetaInterceptor;
         private FinalTargetInterceptor _FinalTargetInterceptor;
 
-        private Func<ObjectObserver, ProxyMetaInterceptor> _ProxyMetaInterceptorFactory;
+        private InterceptorSelector _InterceptorSelector;
+
         private Func<NotifyPropertyChangedInterceptor> _NotifyPropertyChangedInterceptorFactory;
         private Func<NotifyCollectionChangedInterceptor> _NotifyCollectionChangedInterceptorFactory;
 
         private ProxyGenerator _ProxyGenerator = new ProxyGenerator();
-        private ProxyGenerationOptions _ProxyGenerationOptions;
 
         private Type[] _ObjectProxyInterfaceList;
         private Type[] _CollectionProxyInterfaceList;
@@ -44,12 +45,11 @@ namespace Envivo.Fresnel.Proxies
             CollectionAddInterceptor collectionAddInterceptor,
             CollectionRemoveInterceptor collectionRemoveInterceptor,
             FinalTargetInterceptor finalTargetInterceptor,
+            ProxyMetaInterceptor proxyMetaInterceptor,
+            InterceptorSelector interceptorSelector,
 
-            Func<ObjectObserver, ProxyMetaInterceptor> proxyMetaInterceptorFactory,
             Func<NotifyPropertyChangedInterceptor> notifyPropertyChangedInterceptorFactory,
-            Func<NotifyCollectionChangedInterceptor> notifyCollectionChangedInterceptorFactory,
-
-            InterceptorSelector interceptorSelector
+            Func<NotifyCollectionChangedInterceptor> notifyCollectionChangedInterceptorFactory
             )
         {
             _ObserverCache = observerCache;
@@ -61,17 +61,13 @@ namespace Envivo.Fresnel.Proxies
             _CollectionAddInterceptor = collectionAddInterceptor;
             _CollectionRemoveInterceptor = collectionRemoveInterceptor;
             _FinalTargetInterceptor = finalTargetInterceptor;
+            _ProxyMetaInterceptor = proxyMetaInterceptor;
+            _InterceptorSelector = interceptorSelector;
 
-            _ProxyMetaInterceptorFactory = proxyMetaInterceptorFactory;
             _NotifyPropertyChangedInterceptorFactory = notifyPropertyChangedInterceptorFactory;
             _NotifyCollectionChangedInterceptorFactory = notifyCollectionChangedInterceptorFactory;
 
             this.InitialseProxyInterfaceLists();
-
-            _ProxyGenerationOptions = new ProxyGenerationOptions()
-            {
-                Selector = interceptorSelector,
-            };
         }
 
         private void InitialseProxyInterfaceLists()
@@ -119,16 +115,22 @@ namespace Envivo.Fresnel.Proxies
             var tClass = oObject.Template;
 
             // We need these interceptors to keep state for the individual Proxy:
-            var metaInterceptor = _ProxyMetaInterceptorFactory(oObject);
             var notifyPropertyChangedInterceptor = _NotifyPropertyChangedInterceptorFactory();
+
+            var proxyGenerationOptions = new ProxyGenerationOptions()
+            {
+                Selector = _InterceptorSelector,
+            };
+            var proxyState = new ProxyState() { Meta = oObject };
+            proxyGenerationOptions.AddMixinInstance(proxyState);
 
             var proxy = _ProxyGenerator
                             .CreateClassProxyWithTarget(
                             tClass.RealType,
                             _ObjectProxyInterfaceList,
                             obj,
-                            _ProxyGenerationOptions,
-                            metaInterceptor,
+                            proxyGenerationOptions,
+                            _ProxyMetaInterceptor,
                             _PrimaryInterceptor,
                             _PropertyGetInterceptor,
                             _PropertySetInterceptor,
@@ -146,17 +148,23 @@ namespace Envivo.Fresnel.Proxies
             var tCollection = oCollection.Template;
 
             // We need these interceptors to keep state for the individual Proxy:
-            var metaInterceptor = _ProxyMetaInterceptorFactory(oCollection);
             var notifyPropertyChangedInterceptor = _NotifyPropertyChangedInterceptorFactory();
             var notifyCollectionChangedInterceptor = _NotifyCollectionChangedInterceptorFactory();
+
+            var proxyGenerationOptions = new ProxyGenerationOptions()
+            {
+                Selector = _InterceptorSelector,
+            };
+            var proxyState = new ProxyState() { Meta = oCollection };
+            proxyGenerationOptions.AddMixinInstance(proxyState);
 
             var proxy = _ProxyGenerator
                             .CreateClassProxyWithTarget(
                             tCollection.RealType,
                             _CollectionProxyInterfaceList,
                             collection,
-                            _ProxyGenerationOptions,
-                            metaInterceptor,
+                            proxyGenerationOptions,
+                            _ProxyMetaInterceptor,
                             _PrimaryInterceptor,
                             _PropertyGetInterceptor,
                             _PropertySetInterceptor,
