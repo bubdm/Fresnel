@@ -56,9 +56,9 @@ namespace Envivo.Fresnel.SampleModel.Objects
             }
         }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
-        public Collection<DetailObject> Children { get; private set; }
+        public virtual Collection<DetailObject> Children { get; private set; }
 
         public override string ToString()
         {

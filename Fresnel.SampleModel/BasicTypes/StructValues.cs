@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
             this.ArrayOfColours = new Color[] { Colors.Red, Colors.Yellow, Colors.Pink, Colors.Green, Colors.Purple, Colors.Orange, Colors.Blue };
         }
 
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
         //        /// <summary>
         //        /// This property will not be visible, because it isn't a Value type
@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This will show a PropertyGrid with X/Y values.
         /// The background colour should change when the control gets focus
         /// </summary>
-        public Point Point { get; set; }
+        public virtual Point Point { get; set; }
 
         //        private Rectangle _Rectangle;
         //
@@ -54,19 +54,19 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This will show a PropertyGrid with a colour selector
         /// </summary>
-        public Color Colour { get; set; }
+        public virtual Color Colour { get; set; }
 
         /// <summary>
         /// This will show a PropertyGrid, but the value cannot be changed
         /// </summary>
-        public Color ReadOnlyColour
+        public virtual Color ReadOnlyColour
         {
             get { return this.Colour; }
         }
 
-        public int[] ArrayOfNumbers { get; set; }
+        public virtual int[] ArrayOfNumbers { get; set; }
 
-        public Color[] ArrayOfColours { get; set; }
+        public virtual Color[] ArrayOfColours { get; set; }
 
     }
 }

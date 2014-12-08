@@ -14,43 +14,43 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     public class NullableValues
     {
 
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
         /// <summary>
         /// It should be possible to clear this value.
         /// You can also to 'Cut' this value using the clipboard commands.
         /// </summary>
-        public bool? NullableBool { get; set; }
+        public virtual bool? NullableBool { get; set; }
         
         /// <summary>
         /// It should be possible to clear this value.
         /// You can also 'Cut' this value using the clipboard commands.
         /// </summary>
-        public int? NullableInt { get; set; }
+        public virtual int? NullableInt { get; set; }
 
         /// <summary>
         /// It should be possible to clear this value.
         /// You can also to 'Cut' this value using the clipboard commands.
         /// </summary>
-        public double? NullableDouble { get; set; }
+        public virtual double? NullableDouble { get; set; }
         
         /// <summary>
         /// It should be possible to clear this value.
         /// You can also 'Cut' this value using the clipboard commands.
         /// </summary>
-        public DateTime? NullableDateTime { get; set; }
+        public virtual DateTime? NullableDateTime { get; set; }
 
         /// <summary>
         /// It should be possible to clear this value.
         /// You can also 'Cut' this value using the clipboard commands.
         /// </summary>
-        public DateTime? NullableDateTime2 { get; set; }
+        public virtual DateTime? NullableDateTime2 { get; set; }
 
         /// <summary>
         /// It should be possible to clear this value.
         /// You can also 'Cut' this value using the clipboard commands.
         /// </summary>
-        public string NullableString { get; set; }
+        public virtual string NullableString { get; set; }
 
 
     }

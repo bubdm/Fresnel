@@ -63,34 +63,34 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// </summary>
         [CollectionProperty(CanModifyContents = false, 
             Relationship = ManyRelationship.HasMany)]
-        public IList<Category> Categories { get; private set; }
+        public virtual IList<Category> Categories { get; private set; }
 
         /// <summary>
         /// The name of this Product
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// The description for this Product
         /// </summary>
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
 
         /// <summary>
         /// This is from the base class
         /// </summary>
         [Property(IsVisible = false)]
-        public string HiddenProperty { get; set; }
+        public virtual string HiddenProperty { get; set; }
 
         /// <summary>
         /// This has a custom view
         /// </summary>
-        public Money Money { get; set; }
+        public virtual Money Money { get; set; }
 
         /// <summary>
         /// This should render itself as a button with a Green icon
         /// </summary>
         /// <returns></returns>
-        public bool TestMethod1()
+        public virtual bool TestMethod1()
         {
             return true;
         }
@@ -99,7 +99,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// This should render itself as a button with a Grey icon, which only turns green when the argument is provided
         /// </summary>
         /// <returns></returns>
-        public bool TestMethod2(Category categoryParameter)
+        public virtual bool TestMethod2(Category categoryParameter)
         {
             return true;
         }

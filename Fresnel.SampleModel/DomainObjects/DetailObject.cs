@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
 
         private MasterObject _Parent;
 
-        public MasterObject Parent
+        public virtual MasterObject Parent
         {
             get { return _Parent; }
             internal set
@@ -50,7 +50,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
             }
         }
 
-        public IList<DetailObject> MoreChildren { get; private set; }
+        public virtual IList<DetailObject> MoreChildren { get; private set; }
 
         public override string ToString()
         {

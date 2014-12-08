@@ -17,9 +17,9 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// This property should only be available on SubProductB
         /// </summary>
         [Number(MinValue = 0, MaxValue = 10000)]
-        public double Quantity { get; set; }
+        public virtual double Quantity { get; set; }
 
-        public DateTime DeliveryDate { get; set; }
+        public virtual DateTime DeliveryDate { get; set; }
 
     }
 }

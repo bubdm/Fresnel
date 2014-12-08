@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Introspection.Configuration;
+using System.Text;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -14,14 +15,14 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         private string _PathValue = string.Empty;
 
-        public Guid ID { get; set; }
+        public virtual  Guid ID { get; set; }
 
         /// <summary>
         /// This is a path to an existing file.
         /// You can drag a Windows file onto this location.
         /// </summary>
         [FilePath(DialogType = FileDialogType.None)]
-        public string NormalFilePath
+        public virtual string NormalFilePath
         {
             get { return _PathValue; }
             set { _PathValue = value; }
@@ -33,7 +34,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can drag a Windows file onto this location.
         /// </summary>
         [FilePath(DialogType = FileDialogType.OpenFile)]
-        public string OpenFilePath
+        public virtual string OpenFilePath
         {
             get { return _PathValue; }
             set { _PathValue = value; }
@@ -45,7 +46,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can drag a Windows file onto this location.
         /// </summary>
         [FilePath(DialogType = FileDialogType.SaveFile)]
-        public string SaveFilePath
+        public virtual string SaveFilePath
         {
             get { return _PathValue; }
             set { _PathValue = value; }
@@ -57,7 +58,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can drag a Windows folder onto this location.
         /// </summary>
         [FilePath(DialogType = FileDialogType.FolderBrowser)]
-        public string FolderPath
+        public virtual string FolderPath
         {
             get { return _PathValue; }
             set { _PathValue = value; }
@@ -70,7 +71,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can drag a Windows image file onto this location.
         /// </summary>
         [FilePath(DialogType = FileDialogType.OpenFile, IsImage = true)]
-        public string ImageFilePath
+        public virtual string ImageFilePath
         {
             get { return _PathValue; }
             set { _PathValue = value; }
@@ -83,7 +84,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can drag a Windows image file onto this location.
         /// </summary>
         [FilePath(DialogType = FileDialogType.OpenFile, Filter = "DOC files|*.doc|All files (*.*)|*.*")]
-        public string FilePathWithFilter
+        public virtual string FilePathWithFilter
         {
             get { return _PathValue; }
             set { _PathValue = value; }

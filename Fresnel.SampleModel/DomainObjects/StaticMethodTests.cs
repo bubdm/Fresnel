@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.SampleModel
         {
         }
 
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
         /// <summary>
         /// This method returns no value.

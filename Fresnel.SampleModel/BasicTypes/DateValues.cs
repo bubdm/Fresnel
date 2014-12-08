@@ -15,13 +15,13 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         private DateTime _DateTime = DateTime.Now;
 
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
         /// <summary>
         /// This is an unformatted Date.
         /// Clicking the down-arrow will reveal the DatePicker dialog.
         /// </summary>
-        public DateTime NormalDate
+        public virtual DateTime NormalDate
         {
             get { return _DateTime; }
             set { _DateTime = value; }
@@ -35,7 +35,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This should ideally show a PropertyGrid instead of a DatePicker
         /// </remarks>
         [DateTime(CustomFormat = "T")]
-        public DateTime TimeFormat
+        public virtual DateTime TimeFormat
         {
             get { return _DateTime; }
             set { _DateTime = value; }
@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// Clicking the down-arrow will reveal the DatePicker dialog.
         /// </summary>
         [DateTime(CustomFormat = "D")]
-        public DateTime DateFormat
+        public virtual DateTime DateFormat
         {
             get { return _DateTime; }
             set { _DateTime = value; }
@@ -56,7 +56,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This is a Date showing a custom format "yyyy MMMM dd (dddd) h:mm tt"
         /// </summary>
         [DateTime(CustomFormat = "yyyy MMMM dd (dddd) h:mm tt")]
-        public DateTime CustomDateFormat
+        public virtual DateTime CustomDateFormat
         {
             get { return _DateTime; }
             set { _DateTime = value; }
@@ -65,7 +65,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This date has no setter, so should be read-only
         /// </summary>
-        public DateTime DisabledDateFormat
+        public virtual DateTime DisabledDateFormat
         {
             get { return _DateTime; }
         }
@@ -75,7 +75,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a TimeSpan value, and should be editable using an appropriate editor
         /// </summary>
-        public TimeSpan Timespan
+        public virtual TimeSpan Timespan
         {
             get { return _Timespan; }
             set { _Timespan = value; }

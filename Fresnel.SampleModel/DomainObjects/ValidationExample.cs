@@ -11,24 +11,24 @@ namespace Envivo.Fresnel.SampleModel.Objects
     public class ValidationExample : IValidatable
     {
 
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
-        public long Version { get; set; }
+        public virtual long Version { get; set; }
 
         /// <summary>
         /// Please enter the person's Name
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Please enter the person's Age
         /// </summary>
-        public int Age { get; set; }
+        public virtual int Age { get; set; }
 
 
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
-        public bool IsValid()
+        public virtual bool IsValid()
         {
             _Errors.Clear();
             // Run through the checks here:
@@ -65,7 +65,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
             }
         }
 
-        string System.ComponentModel.IDataErrorInfo.this [string columnName]
+        string System.ComponentModel.IDataErrorInfo.this[string columnName]
         {
             get
             {

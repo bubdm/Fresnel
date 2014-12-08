@@ -66,12 +66,12 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         private IndividualOptions _EnumValue = IndividualOptions.None;
 
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
         /// <summary>
         /// This enum should be shown as a drop-down list.
         /// </summary>
-        public IndividualOptions EnumValue
+        public virtual IndividualOptions EnumValue
         {
             get { return _EnumValue; }
             set { _EnumValue = value; }
@@ -82,7 +82,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This enum should be shown as a multi-choice check-list.
         /// </summary>
-        public CombinationOptions EnumSwitches
+        public virtual CombinationOptions EnumSwitches
         {
             get { return _EnumSwitches; }
             set { _EnumSwitches = value; }
@@ -94,7 +94,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// The items are restricted (at run-time) using EnumValuesFilterSpecification
         /// </summary>
         [Enum(Category = "Enum presentation", ItemFilter = typeof(EnumValuesFilterSpecification))]
-        public IndividualOptions EnumValueDropDown
+        public virtual IndividualOptions EnumValueDropDown
         {
             get { return _EnumValue; }
             set { _EnumValue = value; }
@@ -104,7 +104,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This enum should be shown as a Slider
         /// </summary>
         [Enum(Category = "Enum presentation", PreferredUiControl = EnumEditorControl.Slider)]
-        public IndividualOptions EnumSlider
+        public virtual IndividualOptions EnumSlider
         {
             get { return _EnumValue; }
             set { _EnumValue = value; }
@@ -114,7 +114,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This enum should be shown as a set of Radio Options
         /// </summary>
         [Enum(Category = "Enum presentation", PreferredUiControl = EnumEditorControl.RadioOptions)]
-        public IndividualOptions EnumRadioOptions
+        public virtual IndividualOptions EnumRadioOptions
         {
             get { return _EnumValue; }
             set { _EnumValue = value; }

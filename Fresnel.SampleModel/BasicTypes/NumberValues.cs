@@ -20,12 +20,12 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         private int _IntValue = 0;
 
-        public Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
         /// <summary>
         /// This is a normal Number
         /// </summary>
-        public int NormalNumber
+        public virtual int NormalNumber
         {
             get { return _IntValue; }
             set { _IntValue = value; }
@@ -34,7 +34,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Number with a public Getter, but a hidden Setter.
         /// </summary>
-        public int ReadOnlyNumber
+        public virtual int ReadOnlyNumber
         {
             get { return _IntValue; }
             internal set { _IntValue = value; }
@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This is a Number with a hidden Getter, but a public Setter.
         /// This should not be visible in the UI.
         /// </summary>
-        public int WriteOnlyNumber
+        public virtual int WriteOnlyNumber
         {
             internal get { return _IntValue; }
             set { _IntValue = value; }
@@ -54,7 +54,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This is a public Number, but should be hidden in the UI.
         /// </summary>
         [Number(IsVisible = false)]
-        public int HiddenNumber
+        public virtual int HiddenNumber
         {
             get { return _IntValue; }
             set { _IntValue = value; }
@@ -65,7 +65,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// Values beyond the ranges should not be allowed from the UI.
         /// </summary>
         [Number(MinValue = -234, MaxValue = 234)]
-        public int NumberWithRange
+        public virtual int NumberWithRange
         {
             get { return _IntValue; }
             set { _IntValue = value; }
@@ -74,13 +74,13 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Float number
         /// </summary>
-        public float FloatNumber { get; set; }
+        public virtual float FloatNumber { get; set; }
 
         /// <summary>
         /// This is a Double that is shown using CurrentCulture.NumberFormat.CurrencyDecimalDigits
         /// </summary>
         [Number(IsCurrency = true)]
-        public double DoubleNumber { get; set; }
+        public virtual double DoubleNumber { get; set; }
 
 
         /// <summary>
@@ -92,13 +92,13 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a normal Decimal Number
         /// </summary>
-        public decimal DecimalNumber { get; set; }
+        public virtual decimal DecimalNumber { get; set; }
 
         /// <summary>
         /// This is a number property with a custom title
         /// </summary>
         [Property(Name = "This name has been made up")]
-        internal int CustomNumber
+        internal virtual int CustomNumber
         {
             get { return _IntValue; }
             set { _IntValue = value; }

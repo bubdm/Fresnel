@@ -74,6 +74,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BasicTypes\FilePathValues.cs.broken" />
+    <Compile Include="BasicTypes\FilePathValues.cs" />
   </ItemGroup>
 </Project>

@@ -61,7 +61,7 @@ namespace Envivo.Fresnel.SampleModel
         /// It should appear with a 'ready to invoke' icon.
         /// </summary>
         /// <returns></returns>
-        public string MethodThatReturnsA_String()
+        public virtual string MethodThatReturnsA_String()
         {
             return "This is a string";
         }
@@ -71,7 +71,7 @@ namespace Envivo.Fresnel.SampleModel
         /// It should appear with a 'ready to invoke' icon.
         /// </summary>
         /// <returns></returns>
-        public PocoObject MethodThatReturnsAnObject()
+        public virtual PocoObject MethodThatReturnsAnObject()
         {
             return new PocoObject();
         }
@@ -82,7 +82,7 @@ namespace Envivo.Fresnel.SampleModel
         /// <param name="pocoFactory"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public PocoObject MethodUsingDoubleDispatch(IFactory<PocoObject> pocoFactory, string someRandomText)
+        public virtual PocoObject MethodUsingDoubleDispatch(IFactory<PocoObject> pocoFactory, string someRandomText)
         {
             var result = pocoFactory.Create();
             result.NormalText = someRandomText;
@@ -95,7 +95,7 @@ namespace Envivo.Fresnel.SampleModel
         /// This button has a custom icon.
         /// </summary>
         [Method(IsThreadSafe = true)]
-        public void LongRunningAsyncMethod()
+        public virtual void LongRunningAsyncMethod()
         {
             var runFor = TimeSpan.FromSeconds(10);
             var runUntil = DateTime.Now.Add(runFor);
@@ -113,7 +113,7 @@ namespace Envivo.Fresnel.SampleModel
         /// </summary>
         /// <returns></returns>
         [Method(IsThreadSafe = false)]
-        public string LongRunningSyncMethod()
+        public virtual string LongRunningSyncMethod()
         {
             var runFor = TimeSpan.FromSeconds(10);
             var runUntil = DateTime.Now.Add(runFor);
@@ -131,7 +131,7 @@ namespace Envivo.Fresnel.SampleModel
         /// This method can be cancelled by the user at any time.
         /// </summary>
         /// <returns></returns>
-        public string MethodThatSupportsCancellation()
+        public virtual string MethodThatSupportsCancellation()
         {
             var progressArgs = new ProgressEventArgs();
             progressArgs.IsCancellationAllowed = true;

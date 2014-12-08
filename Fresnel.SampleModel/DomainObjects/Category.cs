@@ -56,23 +56,23 @@ namespace Envivo.Fresnel.SampleModel.Objects
         //        public IAudit Audit { get; protected set; }
 
 
-        public Money Money { get; set; }
+        public virtual Money Money { get; set; }
 
 
         /// <summary>
         /// The Products that belong to this Category
         /// </summary>
-        public IList<Product> Products { get; private set; }
+        public virtual IList<Product> Products { get; private set; }
 
         /// <summary>
         /// The name of this category
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// The description for this category
         /// </summary>
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
 
         public override string ToString()
         {
