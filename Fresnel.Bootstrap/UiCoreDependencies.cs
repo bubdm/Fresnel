@@ -33,6 +33,8 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Editing.IntegerIdentifier),
                 typeof(Fresnel.UiCore.Editing.NumberIdentifier),
                 typeof(Fresnel.UiCore.Editing.TextIdentifier),
+                typeof(Fresnel.UiCore.Editing.ObjectIdentifier),
+                typeof(Fresnel.UiCore.Editing.CollectionIdentifier),
                 typeof(Fresnel.UiCore.Editing.ObjectSelectionIdentifier),
             };
         }

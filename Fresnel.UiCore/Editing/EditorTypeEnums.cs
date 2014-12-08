@@ -33,6 +33,8 @@ namespace Envivo.Fresnel.UiCore.Editing
         FileDialog,
         ObjectSelectionList,
         InlineObject,
-        InlineCollection
+        InlineCollection,
+        Object,
+        Collection
     }
 }

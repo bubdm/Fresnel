@@ -2,7 +2,7 @@
     <div class="col-xs-1">
     </div>
     <div class="col-xs-4">
-        <span>{{ prop.Name }}</span><span>{{ prop.EditorType }}</span>
+        <span>{{ prop.Name }}</span>
     </div>
 
     <div class="col-xs-5" ng-switch="prop.EditorType">
@@ -14,7 +14,13 @@
     </div>
 
     <div class="col-xs-1">
-        <button type="button" class="btn btn-default" ng-disabled="true" ng-click="openNewExplorer(prop.ObjectId, prop.RealName)" tooltip="prop.Tooltip"><i class="fa fa-ellipsis-h"> </i></button>
+        <button type="button"
+                class="btn btn-default btn-xs"
+                ng-show="prop.IsExpandable"
+                ng-click="openNewExplorer(prop.ObjectId, prop.RealName)"
+                tooltip="prop.Tooltip">
+            <i class="fa fa-ellipsis-h"> </i>
+        </button>
     </div>
 
     <div class="row" ng-disabled="!prop.IsVisible">

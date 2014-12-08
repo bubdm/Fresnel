@@ -23,6 +23,8 @@ namespace Envivo.Fresnel.UiCore.Editing
             IntegerIdentifier integerIdentifier,
             NumberIdentifier numberIdentifier,
             TextIdentifier textIdentifier,
+            ObjectIdentifier objectIdentifier,
+            CollectionIdentifier collectionIdentifier,
             ObjectSelectionIdentifier objectSelectionIdentifier
             )
         {
@@ -34,7 +36,9 @@ namespace Envivo.Fresnel.UiCore.Editing
                 integerIdentifier,
                 numberIdentifier,
                 textIdentifier,
-                objectSelectionIdentifier
+                objectIdentifier,
+                objectSelectionIdentifier,
+                collectionIdentifier,
             };
         }
 

@@ -86,12 +86,15 @@ namespace Envivo.Fresnel.UiCore.Objects
 
                 var propVM = new PropertyVM()
                 {
-                    //ObjectID = oObject.ID,
+                    ObjectID = oObject.ID,
                     Name = prop.Template.FriendlyName,
-                    Value = prop.Template.GetProperty(oObject.RealObject),
+                    NonRefValue = prop.Template.GetProperty(oObject.RealObject),
                     IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true,
                     IsVisible = !prop.Template.IsFrameworkMember && prop.Template.IsVisible,
+                    IsEnabled = true,
+                    IsExpandable = objectProp != null,
                 };
+
                 properties.Add(propVM);
             }
             return properties;

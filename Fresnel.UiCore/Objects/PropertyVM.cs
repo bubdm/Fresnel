@@ -13,8 +13,10 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public bool IsLoaded { get; set; }
 
-        public object Value { get; set; }
+        public object NonRefValue { get; set; }
 
         public EditorType EditorType { get; set; }
+
+        public bool IsExpandable { get; set; }
     }
 }

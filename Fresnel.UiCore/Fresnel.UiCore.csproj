@@ -47,10 +47,12 @@
     <Compile Include="Editing\IEditorTypeIdentifier.cs" />
     <Compile Include="Editing\BooleanIdentifier.cs" />
     <Compile Include="Editing\EnumIdentifier.cs" />
+    <Compile Include="Editing\CollectionIdentifier.cs" />
     <Compile Include="Editing\ObjectSelectionIdentifier.cs" />
     <Compile Include="Editing\NumberIdentifier.cs" />
     <Compile Include="Editing\IntegerIdentifier.cs" />
     <Compile Include="Editing\DateTimeIdentifier.cs" />
+    <Compile Include="Editing\ObjectIdentifier.cs" />
     <Compile Include="Editing\TextIdentifier.cs" />
     <Compile Include="InteractionPoint.cs" />
     <Compile Include="ClassHierarchy\ClassHierarchyItem.cs" />
