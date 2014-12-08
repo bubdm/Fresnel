@@ -26,6 +26,14 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Commands.GetClassHierarchyCommand),
                 typeof(Fresnel.UiCore.Commands.CreateCommand),
                 typeof(Fresnel.UiCore.ClassHierarchy.ClassHierarchyItemBuilder),
+                typeof(Fresnel.UiCore.Editing.EditorTypeIdentifier),
+                typeof(Fresnel.UiCore.Editing.BooleanIdentifier),
+                typeof(Fresnel.UiCore.Editing.DateTimeIdentifier),
+                typeof(Fresnel.UiCore.Editing.EnumIdentifier),
+                typeof(Fresnel.UiCore.Editing.IntegerIdentifier),
+                typeof(Fresnel.UiCore.Editing.NumberIdentifier),
+                typeof(Fresnel.UiCore.Editing.TextIdentifier),
+                typeof(Fresnel.UiCore.Editing.ObjectSelectionIdentifier),
             };
         }
 

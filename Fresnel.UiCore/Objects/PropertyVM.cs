@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Envivo.Fresnel.UiCore.Editing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

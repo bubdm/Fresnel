@@ -33,33 +33,6 @@ namespace Envivo.Fresnel.Utils
             typeof(Guid)
         };
         
-        private static readonly Dictionary<Type, TypeKind> _TypeKindMap = CreateTypeKindMap();
-
-        private static Dictionary<Type, TypeKind> CreateTypeKindMap()
-        {
-            var result = new Dictionary<Type, TypeKind>();
-
-            result.Add(typeof(Int16), TypeKind.Integer);
-            result.Add(typeof(Int32), TypeKind.Integer);
-            result.Add(typeof(Int64), TypeKind.Integer);
-            result.Add(typeof(byte), TypeKind.Integer);
-
-            result.Add(typeof(Guid), TypeKind.Guid);
-
-            result.Add(typeof(double), TypeKind.Floating);
-            result.Add(typeof(decimal), TypeKind.Floating);
-            result.Add(typeof(float), TypeKind.Floating);
-
-            result.Add(typeof(bool), TypeKind.Boolean);
-
-            result.Add(typeof(DateTime), TypeKind.Time);
-
-            result.Add(typeof(char), TypeKind.Text);
-            result.Add(typeof(string), TypeKind.Text);
-
-            return result;
-        }
-
         /// <summary>
         /// Determines if the given type implements IEnumerable
         /// </summary>
@@ -262,19 +235,6 @@ namespace Envivo.Fresnel.Utils
                 Debug.WriteLine(ex);
             }
 
-            return result;
-        }
-
-        public static TypeKind GetTypeKind(this Type nonReferenceType)
-        {
-            var type = nonReferenceType.IsNullableType() ? 
-                       nonReferenceType.GetGenericArguments()[0] :
-                       nonReferenceType;
-
-            if (type.IsEnum)
-                return TypeKind.Enumeration;
-
-            var result = _TypeKindMap.TryGetValueOrDefault(type, TypeKind.Unidentified);
             return result;
         }
 

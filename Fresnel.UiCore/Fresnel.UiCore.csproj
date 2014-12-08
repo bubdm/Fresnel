@@ -43,7 +43,15 @@
     <Compile Include="Commands\CreateCommandResult.cs" />
     <Compile Include="Commands\CreateCommand.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="EditorTypeEnums.cs" />
+    <Compile Include="Editing\EditorTypeEnums.cs" />
+    <Compile Include="Editing\IEditorTypeIdentifier.cs" />
+    <Compile Include="Editing\BooleanIdentifier.cs" />
+    <Compile Include="Editing\EnumIdentifier.cs" />
+    <Compile Include="Editing\ObjectSelectionIdentifier.cs" />
+    <Compile Include="Editing\NumberIdentifier.cs" />
+    <Compile Include="Editing\IntegerIdentifier.cs" />
+    <Compile Include="Editing\DateTimeIdentifier.cs" />
+    <Compile Include="Editing\TextIdentifier.cs" />
     <Compile Include="InteractionPoint.cs" />
     <Compile Include="ClassHierarchy\ClassHierarchyItem.cs" />
     <Compile Include="ClassHierarchy\ClassHierarchyItemBuilder.cs" />
@@ -58,7 +66,7 @@
     <Compile Include="Objects\AbstractObjectVMBuilder.cs" />
     <Compile Include="Objects\ParameterVM.cs" />
     <Compile Include="Objects\MethodVM.cs" />
-    <Compile Include="Objects\EditorTypeIdentifier.cs" />
+    <Compile Include="Editing\EditorTypeIdentifier.cs" />
     <Compile Include="Objects\PropertyVM.cs" />
     <Compile Include="Objects\ObjectVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

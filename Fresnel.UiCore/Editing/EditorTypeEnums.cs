@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Envivo.Fresnel.UiCore
+namespace Envivo.Fresnel.UiCore.Editing
 {
     public enum EditorType
     {
+        Unknown,
         None,
         Boolean,
         Date,
@@ -16,15 +17,21 @@ namespace Envivo.Fresnel.UiCore
         EnumCheckboxes,
         EnumRadioOptions,
         EnumSlider,
+        EnumDropDown,
         Integer,
+        IntegerSlider,
         Number,
+        NumberSlider,
         Currency,
         String,
         Character,
-        Text,
+        MultiLineText,
+        Password,
         MaskedString,
+        MarkdownText,
         Hyperlink,
         FileDialog,
+        ObjectSelectionList,
         InlineObject,
         InlineCollection
     }
