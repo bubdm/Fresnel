@@ -87,7 +87,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This is a Float number shown to 5 decimal places
         /// </summary>
         [Number(DecimalPlaces = 5)]
-        public float FloatNumberWithPlaces { get; set; }
+        public virtual float FloatNumberWithPlaces { get; set; }
 
         /// <summary>
         /// This is a normal Decimal Number
