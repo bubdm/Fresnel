@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public ObjectVM BuildFor(BaseObjectObserver observer)
         {
-            var oCollection  = observer as CollectionObserver;
+            var oCollection = observer as CollectionObserver;
             var oObject = observer as ObjectObserver;
 
             if (oCollection != null)
@@ -90,7 +90,7 @@ namespace Envivo.Fresnel.UiCore.Objects
                     Name = prop.Template.FriendlyName,
                     Value = prop.Template.GetProperty(oObject.RealObject),
                     IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true,
-                    IsVisible = prop.Template.IsVisible,
+                    IsVisible = !prop.Template.IsFrameworkMember && prop.Template.IsVisible,
                 };
                 properties.Add(propVM);
             }

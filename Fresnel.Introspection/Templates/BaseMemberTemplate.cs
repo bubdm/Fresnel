@@ -34,6 +34,12 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             base.FinaliseConstruction();
 
+            if (this.Attributes.Count > 0)
+            {
+                var memberAttr = this.Attributes.Get<MemberAttribute>();
+                this.IsVisible = memberAttr.IsVisible;
+            }
+
             // We don't want hidden members to be visible:
             var memberName = this.Name;
             var attr = this.OuterClass.Attributes.Get<ObjectInstanceAttribute>();
@@ -49,11 +55,11 @@ namespace Envivo.Fresnel.Introspection.Templates
                 this.IsFrameworkMember = true;
             }
 
-            if (this.Attributes.Count > 0)
-            {
-                var memberAttr = this.Attributes.Get<MemberAttribute>();
-                this.IsVisible = memberAttr.IsVisible;
-            }
+            //if (this.Attributes.Count > 0)
+            //{
+            //    var memberAttr = this.Attributes.Get<MemberAttribute>();
+            //    this.IsVisible = memberAttr.IsVisible;
+            //}
         }
 
         /// <summary>
