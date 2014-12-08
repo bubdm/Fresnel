@@ -8,6 +8,8 @@ using System.Web.Http;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.ClassHierarchy;
+using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.UiCore.Objects;
 
 namespace Envivo.Fresnel.UiCore.Controllers
 {
@@ -40,7 +42,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public object Create([FromBody]string id)
+        public CreateCommandResult Create([FromBody]string id)
         {
             var fullyQualifiedName = id;
             var result = _CreateCommand.Invoke(fullyQualifiedName);

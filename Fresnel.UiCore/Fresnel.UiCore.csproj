@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\BaseCommandResult.cs" />
+    <Compile Include="Commands\CreateCommandResult.cs" />
     <Compile Include="Commands\CreateCommand.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="InteractionPoint.cs" />

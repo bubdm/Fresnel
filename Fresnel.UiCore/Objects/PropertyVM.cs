@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.UiCore.Objects
 {
     public class PropertyVM : BaseViewModel
     {
-        //public Guid ObjectID { get; set; }
+        public Guid ObjectID { get; set; }
 
         public bool IsLoaded { get; set; }
 

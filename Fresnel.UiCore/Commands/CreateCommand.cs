@@ -1,4 +1,6 @@
 ﻿using Envivo.Fresnel.Core.Commands;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Proxies;
@@ -34,19 +36,35 @@ namespace Envivo.Fresnel.UiCore.Commands
             _ObjectVMBuilder = objectVMBuilder;
         }
 
-        public object Invoke(string fullyQualifiedName)
+        public CreateCommandResult Invoke(string fullyQualifiedName)
         {
-            var tClass = _TemplateCache.GetTemplate(fullyQualifiedName);
-            if (tClass == null)
-                return null;
+            try
+            {
+                var tClass = _TemplateCache.GetTemplate(fullyQualifiedName);
+                if (tClass == null)
+                    return null;
 
-            var oObject = _CreateObjectCommand.Invoke(tClass.RealType, null);
+                var oObject = _CreateObjectCommand.Invoke(tClass.RealType, null);
 
-            // Make sure we cache the proxy for use later in the session:
-            var proxy = _ProxyCache.GetProxy(oObject.RealObject);
+                // Make sure we cache the proxy for use later in the session:
+                var proxy = _ProxyCache.GetProxy(oObject.RealObject);
 
-            var vm = _ObjectVMBuilder.BuildFor(oObject);
-            return vm;
+                var vm = _ObjectVMBuilder.BuildFor(oObject);
+
+                return new CreateCommandResult()
+                {
+                    Passed = true,
+                    NewObject = vm
+                };
+            }
+            catch (Exception ex)
+            {
+                return new CreateCommandResult()
+                {
+                    Failed = true,
+                    ErrorMessages = new string[] { ex.Message }
+                };
+            }
         }
 
 

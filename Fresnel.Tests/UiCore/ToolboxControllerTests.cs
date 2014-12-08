@@ -56,10 +56,11 @@ namespace Envivo.Fresnel.Tests.Proxies
             engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
 
             // Act:
-            var result = controller.Create("Envivo.Fresnel.SampleModel.Objects.PocoObject");
+            var createOperation = controller.Create("Envivo.Fresnel.SampleModel.Objects.PocoObject");
 
             // Assert:
-            Assert.IsInstanceOf<ObjectVM>(result);
+            Assert.IsTrue(createOperation.Passed);
+            Assert.IsInstanceOf<ObjectVM>(createOperation.NewObject);
         }
 
     }
