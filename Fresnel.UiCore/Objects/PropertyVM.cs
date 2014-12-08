@@ -12,9 +12,13 @@ namespace Envivo.Fresnel.UiCore.Objects
     {
         public Guid ObjectID { get; set; }
 
-        public bool IsLoaded { get; set; }
-
         public object Value { get; set; }
+
+        public bool CanRead { get; set; }
+
+        public bool CanWrite { get; set; }
+
+        public bool IsLoaded { get; set; }
 
         public bool IsExpandable { get; set; }
 

@@ -70,6 +70,10 @@
     <Compile Include="Editing\EditorTypeIdentifier.cs" />
     <Compile Include="Objects\PropertyVM.cs" />
     <Compile Include="Objects\ObjectVM.cs" />
+    <Compile Include="Objects\TypeInfo\DateTimeVM.cs" />
+    <Compile Include="Objects\TypeInfo\EnumVM.cs" />
+    <Compile Include="Objects\TypeInfo\NumberVM.cs" />
+    <Compile Include="Objects\TypeInfo\StringVM.cs" />
     <Compile Include="Objects\TypeInfo\BooleanVM.cs" />
     <Compile Include="Objects\TypeInfo\ITypeInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
