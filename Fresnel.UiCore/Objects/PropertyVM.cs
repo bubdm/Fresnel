@@ -14,5 +14,6 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public object Value { get; set; }
 
+        public EditorType EditorType { get; set; }
     }
 }

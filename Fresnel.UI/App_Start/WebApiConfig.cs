@@ -26,8 +26,10 @@ namespace Envivo.Fresnel.UI
             );
 
             // Make sure we return JSON from any API calls:
-            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
-            config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
+            var jsonFormatter = config.Formatters.JsonFormatter;
+            jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            jsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
+            jsonFormatter.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
         }
     }
 }

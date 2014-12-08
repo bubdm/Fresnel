@@ -1,0 +1,27 @@
+﻿<div class="row" ng-disabled="!prop.IsVisible">
+    <div class="col-xs-1">
+    </div>
+    <div class="col-xs-4">
+        <span>{{ prop.Name }}</span><span>{{ prop.EditorType }}</span>
+    </div>
+
+    <div class="col-xs-5" ng-switch="prop.EditorType">
+        <ng-switch-when ="String" ng-include="'/Templates/Editors/stringEditor.html'" />
+        <ng-switch-when ="Text" ng-include="'/Templates/Editors/textEditor.html'" />
+        <ng-switch-when ="Date" ng-include="'/Templates/Editors/dateEditor.html'" />
+        <ng-switch-when ="Time" ng-include="'/Templates/Editors/timeEditor.html'" />
+        <ng-switch-default ng-include="'/Templates/Editors/defaultEditor.html'" />
+    </div>
+
+    <div class="col-xs-1">
+        <button type="button" class="btn btn-default" ng-disabled="true" ng-click="openNewExplorer(prop.ObjectId, prop.RealName)" tooltip="prop.Tooltip"><i class="fa fa-ellipsis-h"> </i></button>
+    </div>
+
+    <div class="row" ng-disabled="!prop.IsVisible">
+        <div class="col-xs-4">
+        </div>
+        <div class="col-xs-7">
+            <i>{{ prop.Description }}</i>
+        </div>
+    </div>
+</div>

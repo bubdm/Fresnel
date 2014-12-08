@@ -26,9 +26,11 @@
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
                 };
                 $http.post(uri, arg, config)
-                    .success(function (data: IObjectVM, status) {
-                        appService.identityMap.addItem(data);
-                        $rootScope.$broadcast("objectCreated", data);
+                    .success(function (data: any, status) {
+                        var newObject = data.NewObject;
+
+                        appService.identityMap.addItem(newObject);
+                        $rootScope.$broadcast("objectCreated", newObject);
                     });
             }
         }
