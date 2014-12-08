@@ -13,15 +13,14 @@ namespace Envivo.Fresnel.UiCore.Editing
 {
     public class NumberIdentifier : IEditorTypeIdentifier
     {
-        public bool CanHandle(BasePropertyObserver oProp)
+        public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
-            var tClass = oProp.Template.InnerClass; 
-            return tClass.RealType == typeof(double) ||
-                   tClass.RealType == typeof(float) ||
-                   tClass.RealType == typeof(decimal);
+            return actualType == typeof(double) ||
+                    actualType == typeof(float) ||
+                    actualType == typeof(decimal);
         }
 
-        public EditorType DetermineEditorType(BasePropertyObserver oProp)
+        public EditorType DetermineEditorType(BasePropertyObserver oProp, Type actualType)
         {
             var numberAttr = oProp.Template.Attributes.Get<NumberAttribute>();
             if (numberAttr.IsCurrency)

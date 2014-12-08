@@ -13,14 +13,14 @@ namespace Envivo.Fresnel.UiCore.Editing
 {
     public class TextIdentifier : IEditorTypeIdentifier
     {
-        public bool CanHandle(BasePropertyObserver oProp)
+        public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
-            var tClass = oProp.Template.InnerClass; 
-            return tClass.RealType == typeof(char) ||
-                   tClass.RealType == typeof(string);
+            var tClass = oProp.Template.InnerClass;
+            return actualType == typeof(char) ||
+                   actualType == typeof(string);
         }
 
-        public EditorType DetermineEditorType(BasePropertyObserver oProp)
+        public EditorType DetermineEditorType(BasePropertyObserver oProp, Type actualType)
         {
             var tClass = oProp.Template.InnerClass;
             var fileAttr = oProp.Template.Attributes.Get<FilePathAttribute>();
@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.UiCore.Editing
             {
                 return EditorType.Password;
             }
-            else if (tClass.RealType == typeof(char))
+            else if (actualType == typeof(char))
             {
                 return EditorType.Character;
             }

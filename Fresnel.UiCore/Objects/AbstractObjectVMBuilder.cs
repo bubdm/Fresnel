@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.UiCore.Editing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,16 @@ namespace Envivo.Fresnel.UiCore.Objects
     public class AbstractObjectVMBuilder
     {
         private ObserverCache _ObserverCache;
+        private PropertyVmBuilder _PropertyVmBuilder;
 
         public AbstractObjectVMBuilder
             (
-            ObserverCache observerCache
+            ObserverCache observerCache,
+            PropertyVmBuilder propertyVmBuilder
             )
         {
             _ObserverCache = observerCache;
+            _PropertyVmBuilder = propertyVmBuilder;
         }
 
         public ObjectVM BuildFor(BaseObjectObserver observer)
@@ -80,21 +84,9 @@ namespace Envivo.Fresnel.UiCore.Objects
         private IEnumerable<PropertyVM> CreateProperties(ObjectObserver oObject)
         {
             var properties = new List<PropertyVM>();
-            foreach (var prop in oObject.Properties.Values)
+            foreach (var oProp in oObject.Properties.Values)
             {
-                var objectProp = prop as ObjectPropertyObserver;
-
-                var propVM = new PropertyVM()
-                {
-                    ObjectID = oObject.ID,
-                    Name = prop.Template.FriendlyName,
-                    NonRefValue = prop.Template.GetProperty(oObject.RealObject),
-                    IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true,
-                    IsVisible = !prop.Template.IsFrameworkMember && prop.Template.IsVisible,
-                    IsEnabled = true,
-                    IsExpandable = objectProp != null,
-                };
-
+                var propVM = _PropertyVmBuilder.BuildFor(oObject, oProp);
                 properties.Add(propVM);
             }
             return properties;

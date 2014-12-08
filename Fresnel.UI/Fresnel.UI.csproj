@@ -904,6 +904,8 @@
     <Content Include="Scripts\ng-pageslide\angular-pageslide-directive.min.js" />
     <Content Include="Scripts\_app\Workbench.js" />
     <Content Include="Scripts\_app\Toolbox.js" />
+    <Content Include="Templates\Editors\booleanEditor.html" />
+    <Content Include="Templates\Editors\dateTimeEditor.html" />
     <Content Include="Templates\Editors\timeEditor.html" />
     <Content Include="Templates\Editors\dateEditor.html" />
     <Content Include="Templates\Editors\textEditor.html" />

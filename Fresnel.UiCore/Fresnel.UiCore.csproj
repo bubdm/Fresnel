@@ -47,12 +47,10 @@
     <Compile Include="Editing\IEditorTypeIdentifier.cs" />
     <Compile Include="Editing\BooleanIdentifier.cs" />
     <Compile Include="Editing\EnumIdentifier.cs" />
-    <Compile Include="Editing\CollectionIdentifier.cs" />
     <Compile Include="Editing\ObjectSelectionIdentifier.cs" />
     <Compile Include="Editing\NumberIdentifier.cs" />
     <Compile Include="Editing\IntegerIdentifier.cs" />
     <Compile Include="Editing\DateTimeIdentifier.cs" />
-    <Compile Include="Editing\ObjectIdentifier.cs" />
     <Compile Include="Editing\TextIdentifier.cs" />
     <Compile Include="InteractionPoint.cs" />
     <Compile Include="ClassHierarchy\ClassHierarchyItem.cs" />
@@ -64,6 +62,7 @@
     <Compile Include="IdentityMapDelta.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="IdentityMap.cs" />
+    <Compile Include="Objects\PropertyVmBuilder.cs" />
     <Compile Include="Objects\CollectionVM.cs" />
     <Compile Include="Objects\AbstractObjectVMBuilder.cs" />
     <Compile Include="Objects\ParameterVM.cs" />
@@ -71,6 +70,8 @@
     <Compile Include="Editing\EditorTypeIdentifier.cs" />
     <Compile Include="Objects\PropertyVM.cs" />
     <Compile Include="Objects\ObjectVM.cs" />
+    <Compile Include="Objects\TypeInfo\BooleanVM.cs" />
+    <Compile Include="Objects\TypeInfo\ITypeInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

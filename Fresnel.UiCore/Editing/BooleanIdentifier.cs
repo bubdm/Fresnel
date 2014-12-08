@@ -13,13 +13,12 @@ namespace Envivo.Fresnel.UiCore.Editing
 {
     public class BooleanIdentifier : IEditorTypeIdentifier
     {
-        public bool CanHandle(BasePropertyObserver oProp)
+        public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
-            var tClass = oProp.Template.InnerClass;
-            return tClass.RealType == typeof(bool);
+            return actualType == typeof(bool);
         }
 
-        public EditorType DetermineEditorType(BasePropertyObserver oProp)
+        public EditorType DetermineEditorType(BasePropertyObserver oProp, Type actualType)
         {
             var tClass = oProp.Template.InnerClass;
             if (tClass.RealType.IsNullableType())

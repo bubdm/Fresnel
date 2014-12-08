@@ -13,13 +13,13 @@ namespace Envivo.Fresnel.UiCore.Editing
 {
     public class ObjectSelectionIdentifier : IEditorTypeIdentifier
     {
-        public bool CanHandle(BasePropertyObserver oProp)
+        public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
-           var tClass = oProp.Template.InnerClass; 
+            var tClass = oProp.Template.InnerClass;
             return tClass is ClassTemplate;
         }
 
-        public EditorType DetermineEditorType(BasePropertyObserver oProp)
+        public EditorType DetermineEditorType(BasePropertyObserver oProp, Type actualType)
         {
             var attr = oProp.Template.Attributes.Get<ObjectPropertyAttribute>();
 
@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.UiCore.Editing
                 return EditorType.ObjectSelectionList;
             }
 
-            return EditorType.None;
+            return EditorType.Object;
         }
     }
 }

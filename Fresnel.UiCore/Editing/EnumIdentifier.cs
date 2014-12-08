@@ -13,13 +13,12 @@ namespace Envivo.Fresnel.UiCore.Editing
 {
     public class EnumIdentifier : IEditorTypeIdentifier
     {
-        public bool CanHandle(BasePropertyObserver oProp)
+        public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
-            var tClass = oProp.Template.InnerClass;
-            return tClass.RealType.IsEnum;
+            return actualType.IsEnum;
         }
 
-        public EditorType DetermineEditorType(BasePropertyObserver oProp)
+        public EditorType DetermineEditorType(BasePropertyObserver oProp, Type actualType)
         {
             var tEnum = (EnumTemplate)oProp.Template.InnerClass;
             if (tEnum.IsBitwiseEnum)

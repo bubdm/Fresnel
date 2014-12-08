@@ -13,16 +13,15 @@ namespace Envivo.Fresnel.UiCore.Editing
 {
     public class IntegerIdentifier : IEditorTypeIdentifier
     {
-        public bool CanHandle(BasePropertyObserver oProp)
+        public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
-            var tClass = oProp.Template.InnerClass; 
-            return tClass.RealType == typeof(Int16) ||
-                   tClass.RealType == typeof(Int32) ||
-                   tClass.RealType == typeof(Int64) ||
-                   tClass.RealType == typeof(byte);
+            return actualType == typeof(Int16) ||
+                   actualType == typeof(Int32) ||
+                   actualType == typeof(Int64) ||
+                   actualType == typeof(byte);
         }
 
-        public EditorType DetermineEditorType(BasePropertyObserver oProp)
+        public EditorType DetermineEditorType(BasePropertyObserver oProp, Type actualType)
         {
             return EditorType.Integer;
         }

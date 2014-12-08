@@ -13,8 +13,8 @@ namespace Envivo.Fresnel.UiCore.Editing
 {
     public interface IEditorTypeIdentifier
     {
-        bool CanHandle(BasePropertyObserver oProp);
+        bool CanHandle(BasePropertyObserver oProp, Type actualType);
 
-        EditorType DetermineEditorType(BasePropertyObserver oProp);
+        EditorType DetermineEditorType(BasePropertyObserver oProp, Type actualType);
     }
 }

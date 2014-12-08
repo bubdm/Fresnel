@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.UiCore.Editing;
+using Envivo.Fresnel.UiCore.Objects.TypeInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public bool IsLoaded { get; set; }
 
-        public object NonRefValue { get; set; }
+        public object Value { get; set; }
+
+        public bool IsExpandable { get; set; }
 
         public EditorType EditorType { get; set; }
 
-        public bool IsExpandable { get; set; }
+        public ITypeInfo TypeInfo { get; set; }
     }
 }

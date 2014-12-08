@@ -3,14 +3,19 @@
     </div>
     <div class="col-xs-4">
         <span>{{ prop.Name }}</span>
+        <a href="#" title="{{prop.EditorType}}"><i class="fa fa-info-circle"></i></a>
     </div>
 
     <div class="col-xs-5" ng-switch="prop.EditorType">
-        <ng-switch-when ="String" ng-include="'/Templates/Editors/stringEditor.html'" />
+        <!--<ng-switch-when ="String" ng-include="'/Templates/Editors/stringEditor.html'" />
         <ng-switch-when ="Text" ng-include="'/Templates/Editors/textEditor.html'" />
+        <ng-switch-when ="MultiLineText" ng-include="'/Templates/Editors/textEditor.html'" />
         <ng-switch-when ="Date" ng-include="'/Templates/Editors/dateEditor.html'" />
-        <ng-switch-when ="Time" ng-include="'/Templates/Editors/timeEditor.html'" />
+        <ng-switch-when ="DateTime" ng-include="'/Templates/Editors/dateTimeEditor.html'" />-->
+        <ng-switch-when ="Boolean" ng-include="'/Templates/Editors/booleanEditor.html'" />
+        <!--<ng-switch-when ="Time" ng-include="'/Templates/Editors/timeEditor.html'" />-->
         <ng-switch-default ng-include="'/Templates/Editors/defaultEditor.html'" />
+
     </div>
 
     <div class="col-xs-1">
@@ -30,4 +35,5 @@
             <i>{{ prop.Description }}</i>
         </div>
     </div>
+
 </div>

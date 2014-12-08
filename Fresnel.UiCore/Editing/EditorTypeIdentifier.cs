@@ -5,6 +5,7 @@ using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,8 +24,6 @@ namespace Envivo.Fresnel.UiCore.Editing
             IntegerIdentifier integerIdentifier,
             NumberIdentifier numberIdentifier,
             TextIdentifier textIdentifier,
-            ObjectIdentifier objectIdentifier,
-            CollectionIdentifier collectionIdentifier,
             ObjectSelectionIdentifier objectSelectionIdentifier
             )
         {
@@ -36,9 +35,7 @@ namespace Envivo.Fresnel.UiCore.Editing
                 integerIdentifier,
                 numberIdentifier,
                 textIdentifier,
-                objectIdentifier,
                 objectSelectionIdentifier,
-                collectionIdentifier,
             };
         }
 
@@ -47,13 +44,15 @@ namespace Envivo.Fresnel.UiCore.Editing
             var tClass = oProp.Template.InnerClass;
 
             var valueType = tClass.RealType;
-            var type = valueType.IsNullableType() ?
+            var actualType = valueType.IsNullableType() ?
                        valueType.GetGenericArguments()[0] :
                        valueType;
 
-            var identifier = _IdentifierStrategies.Single(s => s.CanHandle(oProp));
+            var identifier = _IdentifierStrategies.SingleOrDefault(s => s.CanHandle(oProp, actualType));
 
-            var result = identifier.DetermineEditorType(oProp);
+            var result = identifier != null ?
+                            identifier.DetermineEditorType(oProp, actualType) :
+                            EditorType.Unknown;
             return result;
         }
 

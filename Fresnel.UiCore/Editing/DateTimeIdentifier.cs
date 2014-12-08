@@ -13,14 +13,13 @@ namespace Envivo.Fresnel.UiCore.Editing
 {
     public class DateTimeIdentifier : IEditorTypeIdentifier
     {
-        public bool CanHandle(BasePropertyObserver oProp)
+        public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
-            var tClass = oProp.Template.InnerClass; 
-            return tClass.RealType == typeof(DateTime) ||
-                   tClass.RealType == typeof(DateTimeOffset);
+            return actualType == typeof(DateTime) ||
+                   actualType == typeof(DateTimeOffset);
         }
 
-        public EditorType DetermineEditorType(BasePropertyObserver oProp)
+        public EditorType DetermineEditorType(BasePropertyObserver oProp, Type actualType)
         {
             return EditorType.DateTime;
         }
