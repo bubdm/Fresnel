@@ -24,7 +24,7 @@ namespace Envivo.Fresnel.Tests.Domain
     public class CollectionObserverTests
     {
         [Test()]
-        public void ShouldCreateIdentifyCollectionProperties()
+        public void ShouldIdentifyCollectionProperties()
         {
             // Arrange:
             var container = new ContainerFactory().Build();
@@ -37,7 +37,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var observer = (CollectionObserver)observerBuilder.BuildFor(poco, poco.GetType());
 
             // Assert:
-            Assert.AreNotEqual(0, observer.Properties.Count());
+            Assert.AreNotEqual(0, observer.Template.Properties.Count());
         }
 
     }
