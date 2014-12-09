@@ -15,9 +15,17 @@
     overflow-x: hidden;
     overflow-y: auto;
     border: 1px solid WindowFrame;
-    width: 426px;   /* 426px allows 3 horzontal panels on a 1366 screen */
-    height: 400px;
     margin: 4px;
+}
+
+.explorerPanelNormalSize {
+    width: 426px; /* 426px allows 3 horzontal panels on a 1366 screen */
+    height: 400px;
+}
+
+.explorerPanelMaximised {
+    width: 1200px;
+    height: 600px;
 }
 
 .explorerToolbar {
@@ -25,8 +33,8 @@
     color: WindowText;
 }
 
-.propertyItemContainer {
-    /*overflow-x: auto;
+.propertyItems {
+    /*overflow-x: hidden;
     overflow-y: auto;*/
 }
 
@@ -37,7 +45,7 @@
     background: linear-gradient(ThreeDHighlight, Window); /* Standard syntax */
     color: black;
     padding-top: 2px;
-    padding-bottom: 2px;
+    padding-bottom: 4px;
     margin-top: 2px;
     margin-bottom: 2px;
 }

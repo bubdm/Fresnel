@@ -14,6 +14,14 @@
                 $scope.openExplorers.push(obj);
             });
 
+            $scope.minimise = function (obj: IObjectVM) {
+                obj.IsMaximised = false;
+            }
+
+            $scope.maximise = function (obj: IObjectVM) {
+                obj.IsMaximised = true;
+            }
+
             $scope.close = function (obj: IObjectVM) {
                 // TODO: Check for dirty status
 
@@ -24,6 +32,7 @@
                     // TODO: If the object is no longer in the UI, Let the server know that it can be GCed
                 }
             }
+
         }
     }
 

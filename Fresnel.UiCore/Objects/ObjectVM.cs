@@ -12,5 +12,6 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public IEnumerable<PropertyVM> Properties { get; set; }
 
+        public bool IsMaximised { get; set; }
     }
 }

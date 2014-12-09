@@ -26,6 +26,12 @@ var FresnelApp;
             $scope.$on('objectCreated', function (event, obj) {
                 $scope.openExplorers.push(obj);
             });
+            $scope.minimise = function (obj) {
+                obj.IsMaximised = false;
+            };
+            $scope.maximise = function (obj) {
+                obj.IsMaximised = true;
+            };
             $scope.close = function (obj) {
                 // TODO: Check for dirty status
                 var index = $scope.openExplorers.indexOf(obj);
