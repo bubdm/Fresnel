@@ -19,7 +19,9 @@
     <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
 
     <script src="~/Scripts/ng-pageslide/angular-pageslide-directive.js"></script>
+
     <script src="~/Scripts/angular-isotope.js"></script>
+    <link href="~/Content/isotope.css" rel="stylesheet" />
 
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -51,8 +53,8 @@
             </div>
         </div>
 
-        <div ng-controller="explorerController" isotope-container="">
-            <div class="explorerPanel" isotope-item="" ng-repeat="obj in openExplorers" ng-include="'/Templates/objectExplorer.html'">
+        <div ng-controller="explorerController" isotope-container="" class="isotope">
+            <div class="explorerPanel isotope-item" isotope-item="" ng-repeat="obj in openExplorers" ng-include="'/Templates/objectExplorer.html'">
             </div>
         </div>
 
