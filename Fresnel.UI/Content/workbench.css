@@ -11,15 +11,19 @@
     float: left;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: gray;
+    background-color: lightsteelblue;
     color: white;
     border: 1px solid blue;
     width: 417px;
     height: 400px;
-    margin: 10px;
+    margin: 4px;
 }
 
-#explorerButtonArea{
+#explorerToolbar{
+    float: right;
+}
+
+#explorerFooter{
     float: right;
 }
 
