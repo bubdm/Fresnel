@@ -7,7 +7,7 @@ using System.Web.Http;
 
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.UiCore.Commands;
-using Envivo.Fresnel.UiCore.ClassHierarchy;
+using Envivo.Fresnel.UiCore.Classes;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;

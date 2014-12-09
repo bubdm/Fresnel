@@ -40,25 +40,26 @@
         <span>{{appControlleridentityMap.items}}</span>
 
         <div ng-controller="toolboxController">
-            <h2>Class Libary</h2>
+            <a class="toolboxPanelOpener" pageslide ps-side="top" ps-speed="0.5" href="#toolboxPanel">Open</a>
 
-            <a class="toolboxPanelOpener" pageslide ps-side="top" ps-speed="0.5" ps-size="400px" href="#toolboxPanel">Open</a>
-
-            <div id="toolboxPanel">
+            <div id="toolboxPanel" >
                 <a ng-click="loadClassHierarchy()">Load</a>
                 <a id="toolboxPanel-close" href="#">Close</a>
+                <h2>Class library</h2>
                 <hr />
-                <div ng-repeat="item in classHierarchy" ng-include="'/Templates/classItem.html'">
+                <div ng-repeat="namespace in classHierarchy" isotope-container="" class="isotope row">
+                    <h3>{{namespace.Name}}</h3>
+                    <div ng-repeat="item in namespace.Classes" ng-include="'/Templates/classItem.html'" class="col-xs-2">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div ng-controller="explorerController" isotope-container="" class="isotope">
-            <div class="isotope-item" isotope-item="" ng-repeat="obj in openExplorers" ng-include="'/Templates/objectExplorer.html'">
+            <div ng-controller="explorerController" isotope-container="" class="isotope">
+                <div class="isotope-item" isotope-item="" ng-repeat="obj in openExplorers" ng-include="'/Templates/objectExplorer.html'">
+                </div>
             </div>
-        </div>
 
-    </div>
+        </div>
 
 </body>
 </html>

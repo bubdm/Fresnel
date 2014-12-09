@@ -1,6 +1,7 @@
 ﻿using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
-using Envivo.Fresnel.UiCore.ClassHierarchy;
+using Envivo.Fresnel.UiCore.Classes;
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,40 +14,32 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class GetClassHierarchyCommand
     {
         private AssemblyReaderMap _AssemblyReaderMap;
-        private NamespaceHierarchyBuilder _NamespaceHierarchyBuilder;
-        private ClassHierarchyItemBuilder _ClassHierarchyItemBuilder;
+        private NamespacesBuilder _NamespacesBuilder;
 
         public GetClassHierarchyCommand
             (
             AssemblyReaderMap assemblyReaderMap,
-            NamespaceHierarchyBuilder namespaceHierarchyBuilder,
-            ClassHierarchyItemBuilder classHierarchyItemBuilder
+            NamespacesBuilder namespacesBuilder
             )
         {
             _AssemblyReaderMap = assemblyReaderMap;
-            _NamespaceHierarchyBuilder = namespaceHierarchyBuilder;
-            _ClassHierarchyItemBuilder = classHierarchyItemBuilder;
+            _NamespacesBuilder = namespacesBuilder;
         }
 
-        public IEnumerable<ClassHierarchyItem> Invoke()
+        public IEnumerable<Namespace> Invoke()
         {
             var assemblyReader = _AssemblyReaderMap.Values.First(a => !a.IsFrameworkAssembly);
-            var hierarchyNodes = _NamespaceHierarchyBuilder.BuildListFor(assemblyReader.Assembly);
-
-            // Exclude any namespace nodes that don't have actual classes:
-            var itemsToExclude = hierarchyNodes.Where(n => n.IsNamespace &&
-                                                            n.Children.Count() == 1 &&
-                                                            n.Children.First().IsNamespace);
-
-            hierarchyNodes = hierarchyNodes.Except(itemsToExclude);
-
-            var results = hierarchyNodes.Select(h => _ClassHierarchyItemBuilder.BuildFor(h));
+            var results = _NamespacesBuilder.BuildFor(assemblyReader);
             return results;
         }
 
-        public IEnumerable<HierarchyNode> Invoke(Assembly domainAssembly)
+        public IEnumerable<Namespace> Invoke(Assembly domainAssembly)
         {
-            var results = _NamespaceHierarchyBuilder.BuildListFor(domainAssembly);
+            var assemblyReader = _AssemblyReaderMap.TryGetValueOrNull(domainAssembly);
+            if (assemblyReader == null)
+                return null;
+
+            var results = _NamespacesBuilder.BuildFor(assemblyReader);
             return results;
         }
 

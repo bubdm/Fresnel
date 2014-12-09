@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Envivo.Fresnel.UiCore.ClassHierarchy
+namespace Envivo.Fresnel.UiCore.Classes
 {
-    public class ClassHierarchyItem : BaseViewModel
+    public class ClassItem : BaseViewModel
     {
         public string TypeName { get; set; }
 

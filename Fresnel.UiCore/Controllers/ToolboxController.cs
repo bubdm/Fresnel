@@ -7,7 +7,7 @@ using System.Web.Http;
 
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.UiCore.Commands;
-using Envivo.Fresnel.UiCore.ClassHierarchy;
+using Envivo.Fresnel.UiCore.Classes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.UiCore.Objects;
 
@@ -35,7 +35,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ClassHierarchyItem> GetClassHierarchy()
+        public IEnumerable<Namespace> GetClassHierarchy()
         {
             var results = _GetClassHierarchyCommand.Invoke();
             return results;

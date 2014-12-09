@@ -4,7 +4,7 @@ using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Proxies;
-using Envivo.Fresnel.UiCore.ClassHierarchy;
+using Envivo.Fresnel.UiCore.Classes;
 using Envivo.Fresnel.UiCore.Objects;
 using System;
 using System.Collections.Generic;
