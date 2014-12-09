@@ -9,27 +9,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Envivo.Fresnel.UiCore.Editing
+namespace Envivo.Fresnel.UiCore.TypeInfo
 {
-    public class BooleanIdentifier : IEditorTypeIdentifier
+    public class BooleanVmBuilder : ITypeInfoBuilder
     {
         public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
             return actualType == typeof(bool);
         }
 
-        public EditorType DetermineEditorType(BasePropertyObserver oProp, Type actualType)
+        public ITypeInfo BuildTypeInfoFor(BasePropertyObserver oProp, Type actualType)
         {
             var tClass = oProp.Template.InnerClass;
-            if (tClass.RealType.IsNullableType())
+            var attr = tClass.Attributes.Get<BooleanAttribute>();
+
+            var result = new BooleanVM()
             {
-                //editor = new NullableBooleanWidget(owner, observer);
-                return EditorType.Boolean;
-            }
-            else
-            {
-                return EditorType.Boolean;
-            }
+                IsNullable = tClass.RealType.IsNullableType(),
+                TrueValue = attr.TrueValue,
+                FalseValue = attr.FalseValue,
+            };
+
+            return result;
         }
     }
 }

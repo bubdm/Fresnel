@@ -9,12 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Envivo.Fresnel.UiCore.Editing
+namespace Envivo.Fresnel.UiCore.TypeInfo
 {
-    public interface IEditorTypeIdentifier
+    public interface ITypeInfoBuilder
     {
         bool CanHandle(BasePropertyObserver oProp, Type actualType);
 
-        EditorType DetermineEditorType(BasePropertyObserver oProp, Type actualType);
+        ITypeInfo BuildTypeInfoFor(BasePropertyObserver oProp, Type actualType);
     }
 }

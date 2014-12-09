@@ -4,10 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Envivo.Fresnel.UiCore.Objects.TypeInfo
+namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class StringVM : ITypeInfo
     {
+        public string Name
+        {
+            get { return "string"; }
+        }
+
         public int MinLength { get; set; }
 
         public int MaxLength { get; set; }

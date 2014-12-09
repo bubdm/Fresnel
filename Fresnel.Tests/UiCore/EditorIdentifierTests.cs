@@ -22,7 +22,7 @@ using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore;
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.UiCore.Editing;
+using Envivo.Fresnel.UiCore.TypeInfo;
 
 namespace Envivo.Fresnel.Tests.Proxies
 {
@@ -36,25 +36,25 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-            var identifier = container.Resolve<EditorTypeIdentifier>();
+            var identifier = container.Resolve<TypeInfoBuilder>();
 
             var textValues = new SampleModel.BasicTypes.TextValues();
             var oObject = (ObjectObserver)observerCache.GetObserver(textValues);
             
             // Act:
-            var char_ = identifier.DetermineEditorFor(oObject.Properties["NormalChar"]);
+            var charInfo = identifier.BuildTypeInfoFor(oObject.Properties["NormalChar"]);
 
-            var string_ = identifier.DetermineEditorFor(oObject.Properties["NormalText"]);
+            var stringInfo = identifier.BuildTypeInfoFor(oObject.Properties["NormalText"]);
 
-            var multiLineText = identifier.DetermineEditorFor(oObject.Properties["MultiLineText"]);
+            var multiLineInfo = identifier.BuildTypeInfoFor(oObject.Properties["MultiLineText"]);
 
-            var passwordText = identifier.DetermineEditorFor(oObject.Properties["PasswordText"]);
+            var passwordInfo = identifier.BuildTypeInfoFor(oObject.Properties["PasswordText"]);
 
             // Assert:
-            Assert.AreEqual(EditorType.Character, char_);
-            Assert.AreEqual(EditorType.String, string_);
-            Assert.AreEqual(EditorType.MultiLineText, multiLineText);
-            Assert.AreEqual(EditorType.Password, passwordText);
+            Assert.AreEqual(typeof(StringVM).Name , charInfo.Name);
+            Assert.AreEqual(typeof(StringVM).Name, stringInfo.Name);
+            Assert.AreEqual(typeof(StringVM).Name, multiLineInfo.Name);
+            Assert.AreEqual(typeof(StringVM).Name, passwordInfo.Name);
         }
 
     }

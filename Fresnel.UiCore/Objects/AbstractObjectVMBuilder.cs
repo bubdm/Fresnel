@@ -1,5 +1,4 @@
 ﻿using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.UiCore.Editing;
 using System;
 using System.Collections.Generic;
 using System.Linq;

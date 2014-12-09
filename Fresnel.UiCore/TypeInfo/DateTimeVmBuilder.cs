@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Envivo.Fresnel.UiCore.Editing
+namespace Envivo.Fresnel.UiCore.TypeInfo
 {
-    public class DateTimeIdentifier : IEditorTypeIdentifier
+    public class DateTimeVmBuilder : ITypeInfoBuilder
     {
         public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
@@ -19,9 +19,15 @@ namespace Envivo.Fresnel.UiCore.Editing
                    actualType == typeof(DateTimeOffset);
         }
 
-        public EditorType DetermineEditorType(BasePropertyObserver oProp, Type actualType)
+        public ITypeInfo BuildTypeInfoFor(BasePropertyObserver oProp, Type actualType)
         {
-            return EditorType.DateTime;
+            var attr = oProp.Template.Attributes.Get<DateTimeAttribute>();
+
+            var result = new DateTimeVM()
+            {
+                 CustomFormat = attr.CustomFormat,
+            };
+            return result;
         }
     }
 }

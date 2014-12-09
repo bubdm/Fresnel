@@ -26,6 +26,7 @@ namespace Envivo.Fresnel.Configuration
     [Serializable()]
     public enum EnumEditorControl
     {
+        CheckBoxes,
         DropDownList,
         RadioOptions,
         Slider,

@@ -904,11 +904,11 @@
     <Content Include="Scripts\ng-pageslide\angular-pageslide-directive.min.js" />
     <Content Include="Scripts\_app\Workbench.js" />
     <Content Include="Scripts\_app\Toolbox.js" />
+    <Content Include="Templates\Editors\emptyEditor.html" />
     <Content Include="Templates\Editors\booleanEditor.html" />
     <Content Include="Templates\Editors\dateTimeEditor.html" />
-    <Content Include="Templates\Editors\timeEditor.html" />
-    <Content Include="Templates\Editors\dateEditor.html" />
-    <Content Include="Templates\Editors\textEditor.html" />
+    <Content Include="Templates\Editors\enumEditor.html" />
+    <Content Include="Templates\Editors\numberEditor.html" />
     <Content Include="Templates\Editors\stringEditor.html" />
     <Content Include="Templates\propertyItem.html" />
     <Content Include="Templates\objectExplorer.html" />

@@ -1,5 +1,5 @@
 ﻿using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.UiCore.Editing;
+using Envivo.Fresnel.UiCore.TypeInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +10,14 @@ namespace Envivo.Fresnel.UiCore.Objects
 {
     public class PropertyVmBuilder
     {
-        private EditorTypeIdentifier _EditorTypeIdentifier;
+        private TypeInfoBuilder _TypeInfoBuilder;
 
         public PropertyVmBuilder
             (
-            EditorTypeIdentifier editorTypeIdentifier
+            TypeInfoBuilder typeInfoBuilder
             )
         {
-            _EditorTypeIdentifier = editorTypeIdentifier;
+            _TypeInfoBuilder = typeInfoBuilder;
         }
 
         public PropertyVM BuildFor(ObjectObserver oObject, BasePropertyObserver oProp)
@@ -29,7 +29,8 @@ namespace Envivo.Fresnel.UiCore.Objects
                 //ObjectID = oObject.ID, // No need to include this, as it just adds bloat:
                 Name = oProp.Template.FriendlyName,
                 Value = oProp.Template.GetProperty(oObject.RealObject),
-                EditorType = _EditorTypeIdentifier.DetermineEditorFor(oProp),
+                //EditorType = _EditorTypeIdentifier.BuildTypeInfoFor(oProp),
+                Info = _TypeInfoBuilder.BuildTypeInfoFor(oProp),
                 IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true,
                 IsVisible = !oProp.Template.IsFrameworkMember && oProp.Template.IsVisible,
                 IsEnabled = true,

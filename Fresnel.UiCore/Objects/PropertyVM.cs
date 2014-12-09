@@ -1,5 +1,4 @@
-﻿using Envivo.Fresnel.UiCore.Editing;
-using Envivo.Fresnel.UiCore.Objects.TypeInfo;
+﻿using Envivo.Fresnel.UiCore.TypeInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +21,6 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public bool IsExpandable { get; set; }
 
-        public EditorType EditorType { get; set; }
-
-        public ITypeInfo TypeInfo { get; set; }
+        public ITypeInfo Info { get; set; }
     }
 }
