@@ -15,7 +15,9 @@
         </div>
     </div>
 
-    <div ng-repeat='prop in obj.Properties' ng-include="'/Templates/propertyItem.html'">
+    <div class="propertyItemContainer">
+        <div ng-repeat='prop in obj.Properties' ng-include="'/Templates/propertyItem.html'">
+        </div>
     </div>
 
     <div class="row explorerFooter">

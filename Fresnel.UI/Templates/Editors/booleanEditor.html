@@ -1,1 +1,7 @@
-﻿<input type="text" ng-model="prop.Value" /> 
+﻿<label>
+    <input type="radio" name="{{obj.ID}}{{prop.Name}}" value="True" />{{prop.Info.TrueValue}}
+</label>
+
+<label>
+    <input type="radio" name="{{obj.ID}}{{prop.Name}}" value="False" />{{prop.Info.FalseValue}}
+</label>

@@ -8,25 +8,43 @@
 }
 
 .explorerPanel {
+    -moz-border-radius: 5px; /* For Firefox */
+    border-radius: 5px;
     float: left;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: lightsteelblue;
-    color: white;
     border: 1px solid blue;
     width: 417px;
     height: 400px;
     margin: 4px;
 }
 
-#explorerToolbar{
-    float: right;
+.explorerToolbar {
+    background-color: lightsteelblue;
+    color: black;
 }
 
-#explorerFooter{
-    float: right;
+.propertyItemContainer {
+    /*overflow-x: auto;
+    overflow-y: auto;*/
 }
 
-.editorWidget{
+.propertyItem {
+    background: -webkit-linear-gradient(whitesmoke, white); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(whitesmoke, white); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(whitesmoke, white); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(whitesmoke, white); /* Standard syntax */
+    color: black;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.editorWidget {
     width: 100%;
+}
+
+.explorerFooter {
+    
 }
