@@ -3,7 +3,6 @@
     </div>
     <div class="col-xs-4">
         <span>{{ prop.Name }}</span>
-        <a href="#" title="{{ prop.Info.Name }}"><i class="fa fa-info-circle"></i></a>
     </div>
 
     <div class="col-xs-5" ng-switch="prop.Info.Name">
@@ -25,11 +24,7 @@
         <div ng-switch-default>
             <div ng-include="'/Templates/Editors/emptyEditor.html'"></div>
         </div>
-        <!--<div ng-switch-when="datetime" ng-include="'/Templates/Editors/dateTimeEditor.html'"></div>
-        <div ng-switch-when="enum" ng-include="'/Templates/Editors/enumEditor.html'"></div>
-        <div ng-switch-when="number" ng-include="'/Templates/Editors/numberEditor.html'"></div>
-        <div ng-switch-when="string" ng-include="'/Templates/Editors/stringEditor.html'"></div>
-        <div ng-switch-default ng-include="'/Templates/Editors/emptyEditor.html'"></div>-->
+        <a href="#" title="{{ prop.Info.Name }}"><i class="fa fa-info-circle"></i></a>
     </div>
 
     <div class="col-xs-1">
