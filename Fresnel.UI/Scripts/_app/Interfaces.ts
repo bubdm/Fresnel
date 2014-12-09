@@ -20,6 +20,7 @@
 
         openExplorers: any[];
 
+        close(obj: IObjectVM);
     }
  
 

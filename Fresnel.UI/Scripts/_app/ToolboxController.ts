@@ -33,6 +33,7 @@
                         $rootScope.$broadcast("objectCreated", newObject);
                     });
             }
+
         }
 
     }

@@ -20,12 +20,23 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
+    angular.module("fresnelApp", ["pageslide-directive"]).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController);
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     var ExplorerController = (function () {
         function ExplorerController($scope, appService) {
             $scope.openExplorers = [];
             $scope.$on('objectCreated', function (event, obj) {
                 $scope.openExplorers.push(obj);
             });
+            $scope.close = function (obj) {
+                // TODO: Check for dirty status
+                var index = $scope.openExplorers.indexOf(obj);
+                if (index > -1) {
+                    $scope.openExplorers.splice(index, 1);
+                }
+            };
         }
         ExplorerController.$inject = ['$scope', 'appService'];
         return ExplorerController;
@@ -95,8 +106,4 @@ var FresnelApp;
         return ToolboxController;
     })();
     FresnelApp.ToolboxController = ToolboxController;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
-    angular.module("fresnelApp", ["pageslide-directive"]).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController);
 })(FresnelApp || (FresnelApp = {}));

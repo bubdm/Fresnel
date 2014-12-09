@@ -1,24 +1,26 @@
 ﻿
 <div id="objectExplorer" class="row">
-    <div class="row">
+    <div class="row explorerToolbar">
         <div class="col-xs-1">
         </div>
-        <div class="col-xs-11">
-            <h3>{{ obj.Name }}</h3>
+        <div class="col-xs-8">
+            <h4>{{ obj.Name }}</h4>
+        </div>
+        <div class="col-xs-3">
+            <button type="button" class="btn btn-default btn-xs" ng-click="minimise(obj)"><i class="fa fa-compress"></i></button>
+            <button type="button" class="btn btn-default btn-xs" ng-click="maximise(obj)"><i class="fa fa-expand"></i></button>
+            <button type="button" class="btn btn-default btn-xs" ng-click="close(obj)"><i class="fa fa-close"></i></button>
         </div>
     </div>
 
     <div ng-repeat='prop in obj.Properties' ng-include="'/Templates/propertyItem.html'">
-
-    <!--<div ng-repeat='prop in obj.Properties'>
-        <span>{{ prop.Name }}</span>
-    </div>-->
-
-    <div class="row">
-        <div class="col-xs-5">
-        </div>
-        <div class="col-xs-2">
-            <button type="button" class="btn btn-default" ng-disabled="obj.Create.IsEnabled" ng-click="save(obj.ID)" tooltip="prop.Tooltip"><i class="fa fa-save"> </i></button>
+        <div class="row">
+            <div class="col-xs-5">
+            </div>
+            iv
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-default" ng-disabled="obj.Create.IsEnabled" ng-click="save(obj)" tooltip="prop.Tooltip"><i class="fa fa-save"> </i></button>
+            </div>
         </div>
     </div>
 </div>
