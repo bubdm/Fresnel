@@ -3,6 +3,7 @@
 }
 
 .workbenchContainer {
+    background-color: Background;
     /*overflow-x: auto;*/
     /*overflow-y: visible;*/
 }
@@ -13,15 +14,15 @@
     float: left;
     overflow-x: hidden;
     overflow-y: auto;
-    border: 1px solid blue;
-    width: 417px;
+    border: 1px solid WindowFrame;
+    width: 426px;   /* 426px allows 3 horzontal panels on a 1366 screen */
     height: 400px;
     margin: 4px;
 }
 
 .explorerToolbar {
-    background-color: lightsteelblue;
-    color: black;
+    background-color: ActiveCaption;
+    color: WindowText;
 }
 
 .propertyItemContainer {
@@ -30,10 +31,10 @@
 }
 
 .propertyItem {
-    background: -webkit-linear-gradient(whitesmoke, white); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(whitesmoke, white); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(whitesmoke, white); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(whitesmoke, white); /* Standard syntax */
+    background: -webkit-linear-gradient(ThreeDHighlight, Window); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(ThreeDHighlight, Window); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(ThreeDHighlight, Window); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(ThreeDHighlight, Window); /* Standard syntax */
     color: black;
     padding-top: 2px;
     padding-bottom: 2px;
@@ -41,10 +42,14 @@
     margin-bottom: 2px;
 }
 
+.propertyDescription {
+    font-style: italic;
+    font-size: smaller;
+}
+
 .editorWidget {
     width: 100%;
 }
 
 .explorerFooter {
-    
 }

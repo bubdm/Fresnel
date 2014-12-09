@@ -36,13 +36,12 @@
             <i class="fa fa-external-link"> </i>
         </button>
     </div>
+</div>
 
-    <div class="row" ng-disabled="!prop.IsVisible">
-        <div class="col-xs-4">
-        </div>
-        <div class="col-xs-7">
-            <i>{{ prop.Description }}</i>
-        </div>
+<div class="row" ng-disabled="!prop.IsVisible">
+    <div class="col-xs-1">
     </div>
-
+    <div class="col-xs-10 propertyDescription">
+        {{ prop.Description }}
+    </div>
 </div>

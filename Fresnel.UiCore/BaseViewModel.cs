@@ -16,9 +16,12 @@ namespace Envivo.Fresnel.UiCore
 
         public string Description { get; set; }
 
-        public string Tooltip { get; set; }
-
         public string CssStyleName { get; set; }
 
+        public string Error { get; set; }
+
+        public string Warning { get; set; }
+
+        public string Tooltip { get; set; }
     }
 }

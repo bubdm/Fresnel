@@ -28,14 +28,22 @@ namespace Envivo.Fresnel.UiCore.Objects
             {
                 //ObjectID = oObject.ID, // No need to include this, as it just adds bloat:
                 Name = oProp.Template.FriendlyName,
-                Value = oProp.Template.GetProperty(oObject.RealObject),
-                //EditorType = _EditorTypeIdentifier.BuildTypeInfoFor(oProp),
+                Description = oProp.Template.XmlComments.Summary,
                 Info = _TypeInfoBuilder.BuildTypeInfoFor(oProp),
                 IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true,
                 IsVisible = !oProp.Template.IsFrameworkMember && oProp.Template.IsVisible,
                 IsEnabled = true,
                 IsExpandable = objectProp != null,
             };
+
+            try
+            {
+                propVM.Value = oProp.Template.GetProperty(oObject.RealObject);
+            }
+            catch (Exception ex)
+            {
+                propVM.Error = ex.Message;
+            }
 
             return propVM;
         }
