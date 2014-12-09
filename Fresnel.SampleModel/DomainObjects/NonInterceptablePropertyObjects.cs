@@ -8,12 +8,21 @@ using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class NonInterceptablePropertyObjects
     {
         private DetailObject _DetailObject = new DetailObject();
-        
+
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual long Version { get; set; }
 
         /// <summary>

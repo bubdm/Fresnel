@@ -1,6 +1,7 @@
 
 
 
+using System;
 namespace Envivo.Fresnel.Introspection.Templates
 {
 
@@ -10,6 +11,13 @@ namespace Envivo.Fresnel.Introspection.Templates
 
     public class EnumItemTemplate : BaseTemplate
     {
+        public EnumItemTemplate(EnumTemplate tParentEnum)
+        {
+            _XmlComments = new Lazy<XmlComments>(
+                        () => this.AssemblyReader.XmlDocReader.GetXmlCommentsFor(tParentEnum, this),
+                        System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+        }
+
         public object Value { get; internal set; }
 
         public override string ToString()

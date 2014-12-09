@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             var results = new Dictionary<string, EnumItemTemplate>();
             foreach (var enumField in enumFields)
             {
-                var enumItem = _EnumItemTemplateBuilder.BuildFor(enumField);
+                var enumItem = _EnumItemTemplateBuilder.BuildFor(tEnum, enumField);
                 results.Add(enumField.Name, enumItem);
             }
 

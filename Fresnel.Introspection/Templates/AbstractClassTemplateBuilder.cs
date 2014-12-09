@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Utils;
 using System;
 

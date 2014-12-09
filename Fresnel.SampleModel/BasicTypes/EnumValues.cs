@@ -66,6 +66,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         private IndividualOptions _EnumValue = IndividualOptions.None;
 
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
         /// <summary>

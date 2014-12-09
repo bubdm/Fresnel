@@ -16,10 +16,16 @@ namespace Envivo.Fresnel.SampleModel.Objects
     {
         private Collection<BiDirectionalExample> _Contents = new Collection<BiDirectionalExample>();
 
+        /// <summary>
+        /// 
+        /// </summary>
         public BiDirectionalExample()
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         [CollectionProperty(Relationship = ManyRelationship.OwnsMany)]
         public virtual ICollection<BiDirectionalExample> Contents
         {

@@ -38,6 +38,10 @@ namespace Envivo.Fresnel.Introspection.Templates
             _Parameters = new Lazy<ParameterTemplateMap>(
                                 () => _ParameterTemplateMapBuilder.BuildFor(this),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+
+            _XmlComments = new Lazy<XmlComments>(
+                                () => this.AssemblyReader.XmlDocReader.GetXmlCommentsFor(this),
+                                System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         internal override void FinaliseConstruction()

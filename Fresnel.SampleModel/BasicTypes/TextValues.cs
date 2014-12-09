@@ -14,6 +14,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     {
         private string _TextValue = string.Empty;
 
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
         /// <summary>

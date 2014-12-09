@@ -18,10 +18,16 @@ namespace Envivo.Fresnel.SampleModel
     {
         #region IProgressReporter Members
 
+        /// <summary>
+        /// 
+        /// </summary>
         public event ReportProgressEventHandler NotifyProgressUpdate;
 
         #endregion
 
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public Guid ID { get; set; }
 
         /// <summary>
@@ -80,7 +86,7 @@ namespace Envivo.Fresnel.SampleModel
         /// This method uses double-dispatch to call a Factory class
         /// </summary>
         /// <param name="pocoFactory"></param>
-        /// <param name="name"></param>
+        /// <param name="someRandomText"></param>
         /// <returns></returns>
         public virtual PocoObject MethodUsingDoubleDispatch(IFactory<PocoObject> pocoFactory, string someRandomText)
         {

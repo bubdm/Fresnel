@@ -12,7 +12,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     /// </summary>
     public class NumberValues
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
         public NumberValues()
         {
             this.DoubleNumber = double.NaN;
@@ -20,6 +22,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         private int _IntValue = 0;
 
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
         /// <summary>

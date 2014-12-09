@@ -14,7 +14,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     /// </summary>
     public class StructValues
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
         public StructValues()
         {
             this.ArrayOfNumbers = new int[] { 1, 2, 3, 5, 7, 11, 13 };
@@ -22,6 +24,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
             this.ArrayOfColours = new Color[] { Colors.Red, Colors.Yellow, Colors.Pink, Colors.Green, Colors.Purple, Colors.Orange, Colors.Blue };
         }
 
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
         //        /// <summary>
@@ -64,8 +69,14 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
             get { return this.Colour; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual int[] ArrayOfNumbers { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual Color[] ArrayOfColours { get; set; }
 
     }

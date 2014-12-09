@@ -7,9 +7,15 @@ using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Money : BaseValueObject
     {
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual string Name { get; set; }
 
         /// <summary>

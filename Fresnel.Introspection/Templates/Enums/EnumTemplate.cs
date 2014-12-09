@@ -24,6 +24,10 @@ namespace Envivo.Fresnel.Introspection.Templates
             _EnumItemTemplateMap = new Lazy<EnumItemTemplateMap>(
                                 () => _EnumItemTemplateMapBuilder.BuildFor(this),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+
+            _XmlComments = new Lazy<XmlComments>(
+                                () => this.AssemblyReader.XmlDocReader.GetXmlCommentsFor(this),
+                                System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         public bool IsBitwiseEnum { get; internal set; }

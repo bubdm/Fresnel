@@ -2,12 +2,14 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Newtonsoft.Json;
+using System;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
 
     public class BaseTemplate : ITemplate
     {
+        protected internal Lazy<XmlComments> _XmlComments;
 
         /// <summary>
         /// The AssemblyReader associated with this Template
@@ -38,24 +40,19 @@ namespace Envivo.Fresnel.Introspection.Templates
         [JsonIgnore]
         public AttributesMap Attributes { get; internal set; }
 
+        public XmlComments XmlComments
+        {
+            get { return _XmlComments.Value; }
+        }
+
         /// <summary>
         /// Determines if this Template is visible to the user
         /// </summary>
         public bool IsVisible { get; internal set; }
 
-        /// <summary>
-        /// The 'Summary' description extracted from the inline code comments
-        /// </summary>
-        public virtual string Summary { get; internal set; }
-
-        /// <summary>
-        /// The 'Remarks' extracted from the inline code comments
-        /// </summary>
-        public virtual string Remarks { get; internal set; }
-
         public override string ToString()
         {
-            return string.Concat(this.Name, " ", this.Summary);
+            return string.Concat(this.Name, " ", this.XmlComments.Summary);
         }
 
         internal virtual void FinaliseConstruction()

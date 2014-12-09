@@ -13,7 +13,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     /// </summary>
     public class NullableValues
     {
-
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
         /// <summary>

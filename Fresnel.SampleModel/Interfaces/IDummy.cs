@@ -7,6 +7,9 @@ using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.SampleModel
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IDummy
     {
 

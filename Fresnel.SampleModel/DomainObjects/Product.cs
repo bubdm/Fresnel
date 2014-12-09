@@ -16,10 +16,19 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public abstract class Product
     {
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual long Version { get; internal set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Product()
         {
             var categories = new Collection<Category>();

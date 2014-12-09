@@ -8,11 +8,20 @@ using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ValidationExample : IValidatable
     {
 
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual long Version { get; set; }
 
         /// <summary>
@@ -28,6 +37,10 @@ namespace Envivo.Fresnel.SampleModel.Objects
 
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public virtual bool IsValid()
         {
             _Errors.Clear();

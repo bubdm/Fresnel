@@ -36,6 +36,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
                 var propertyAttributes = _AttributesMapBuilder.BuildFor(prop, tClass.Configuration);
                 var tProp = _PropertyTemplateBuilder.BuildFor(tClass, prop, propertyAttributes);
+                tProp.AssemblyReader = tClass.AssemblyReader;
                 results.Add(tProp.Name, tProp);
             }
 

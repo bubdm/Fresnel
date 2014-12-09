@@ -14,12 +14,14 @@ namespace Envivo.Fresnel.Introspection.Assemblies
     /// <remarks>
     /// See the structure of the XML documentation for a better understanding.
     /// </remarks>
-    public class AssemblyDocsReader
+    public class XmlDocsReader
     {
         private readonly string XPATH_ROOT = "//members/member ";
 
         private XPathNavigator _XPathNavigator;
         private AssemblyReader _AssemblyReader;
+
+        private XmlComments _EmptyXmlComments = new XmlComments();
 
         public void InitialiseFrom(AssemblyReader assemblyReader)
         {
@@ -30,148 +32,133 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// <summary>
         /// Returns True if the XML comments file is available
         /// </summary>
-
-
         public bool IsHelpAvailable
         {
             get { return (_XPathNavigator != null); }
         }
 
-        public void ResolveDocumentationFor(ClassTemplate tClass)
+        public XmlComments GetXmlCommentsFor(ClassTemplate tClass)
         {
-            if (_XPathNavigator == null)
-                return;
+            if (this.IsHelpAvailable == false)
+                return _EmptyXmlComments;
 
-            this.ResolveDocumentationFor(tClass, true);
+            var xmlComments = this.GetXmlComments(tClass);
 
-            foreach (var tProperty in tClass.Properties.Values)
+            // If the summary is empty, we need to obtain the value from one of the classes up the inheritance chain:
+            var superType = tClass.RealType.BaseType;
+            while ((superType != null) && xmlComments.Summary.IsEmpty())
             {
-                this.ResolveDocumentationFor(tProperty, true);
-            }
-
-            foreach (var tMethod in tClass.Methods.Values)
-            {
-                this.ResolveDocumentationFor(tMethod, true);
-            }
-
-            foreach (var tStaticMethod in tClass.StaticMethods.Values)
-            {
-                this.ResolveDocumentationFor(tStaticMethod, true);
-            }
-        }
-
-        private void ResolveDocumentationFor(ClassTemplate tClass, bool searchHierarchy)
-        {
-            if (tClass.IsVisible == false)
-                return;
-
-            this.ResolveComments(tClass);
-
-            if (searchHierarchy)
-            {
-                // If the summary is empty, we need to obtain the value from one of the classes up the inheritance chain:
-                var superType = tClass.RealType.BaseType;
-                while ((superType != null) && tClass.Summary.IsEmpty())
+                try
                 {
                     // Base generic types don't return a FullName:
                     if (superType.FullName.IsEmpty())
-                        return;
+                        return _EmptyXmlComments;
 
                     // NB: If we can't find the super class, there's no point in continuing:
                     var tSuperClass = _AssemblyReader.GetTemplate(superType) as ClassTemplate;
                     if (tSuperClass == null)
-                        return;
+                        return _EmptyXmlComments;
 
-                    tClass.Summary = tSuperClass.Summary;
-                    tClass.Remarks = tSuperClass.Remarks;
-
+                    xmlComments = tSuperClass.XmlComments;
+                }
+                finally
+                {
                     superType = superType.BaseType;
                 }
             }
+
+            return xmlComments;
         }
 
-        private void ResolveDocumentationFor(PropertyTemplate tProperty, bool searchHierarchy)
+        public XmlComments GetXmlCommentsFor(PropertyTemplate tProperty)
         {
-            if (tProperty.IsVisible == false)
-                return;
+            if (this.IsHelpAvailable == false)
+                return _EmptyXmlComments;
 
-            this.ResolveComments(tProperty);
+            //if (tProperty.IsFrameworkMember)
+            //    return _EmptyXmlComments;
 
-            if (searchHierarchy)
+            var xmlComments = this.GetXmlComments(tProperty);
+
+            try
             {
-                try
+                // If the summary is empty, we need to obtain the value from one of the classes up the inheritance chain:
+                var superType = tProperty.OuterClass.RealType.BaseType;
+                while ((superType != null) && xmlComments.Summary.IsEmpty())
                 {
-                    // If the summary is empty, we need to obtain the value from one of the classes up the inheritance chain:
-                    var superType = tProperty.OuterClass.RealType.BaseType;
-                    while ((superType != null) && tProperty.Summary.IsEmpty())
+                    try
                     {
                         // Base generic types don't return a FullName:
                         if (superType.FullName.IsEmpty())
-                            return;
+                            return _EmptyXmlComments;
 
                         // NB: If we can't find the super class, there's no point in continuing:
                         var tSuperClass = _AssemblyReader.GetTemplate(superType) as ClassTemplate;
                         if (tSuperClass == null)
-                            return;
+                            return _EmptyXmlComments;
 
                         var tSuperProperty = tSuperClass.Properties.TryGetValueOrNull(tProperty.Name);
                         if (tSuperProperty == null)
-                            return;
+                            return _EmptyXmlComments;
 
-                        tProperty.Summary = tSuperProperty.Summary;
-                        tProperty.Remarks = tSuperProperty.Remarks;
-
+                        xmlComments = tSuperProperty.XmlComments;
+                    }
+                    finally
+                    {
                         superType = superType.BaseType;
                     }
                 }
-                finally
+            }
+            finally
+            {
+                if (xmlComments.Summary.IsEmpty() && tProperty.IsDomainObject)
                 {
-                    if (tProperty.Summary.IsEmpty() && tProperty.IsDomainObject)
+                    // Use the comments from the inner class:
+                    var tInnerClass = _AssemblyReader.GetTemplate(tProperty.PropertyType) as ClassTemplate;
+                    if (tInnerClass != null)
                     {
-                        // Use the comments from the inner class:
-                        var tInnerClass = _AssemblyReader.GetTemplate(tProperty.PropertyType) as ClassTemplate;
-                        if (tInnerClass != null)
-                        {
-                            tProperty.Summary = tInnerClass.Summary;
-                            tProperty.Remarks = tInnerClass.Remarks;
-                        }
+                        xmlComments = tInnerClass.XmlComments;
                     }
                 }
             }
+
+            return xmlComments;
         }
 
-        private void ResolveDocumentationFor(MethodTemplate tMethod, bool searchHierarchy)
+        public XmlComments GetXmlCommentsFor(MethodTemplate tMethod)
         {
+            if (this.IsHelpAvailable == false)
+                return _EmptyXmlComments;
+
             if (tMethod.IsVisible == false)
-                return;
+                return _EmptyXmlComments;
 
-            this.ResolveComments(tMethod);
-            foreach (var tParameter in tMethod.Parameters.Values)
-            {
-                this.ResolveComments(tParameter);
-            }
+            var xmlComments = this.GetXmlComments(tMethod);
 
-            if (searchHierarchy)
+            // If the summary is empty, we need to obtain the value from one of the Super classes:
+            var superType = tMethod.OuterClass.RealType.BaseType;
+            while ((superType != null) && xmlComments.Summary.IsEmpty())
             {
-                // If the summary is empty, we need to obtain the value from one of the Super classes:
-                var superType = tMethod.OuterClass.RealType.BaseType;
-                while ((superType != null) && tMethod.Summary.IsEmpty())
+                try
                 {
                     // NB: If we can't find the super class, there's no point in continuing:
                     var tSuperClass = _AssemblyReader.GetTemplate(superType) as ClassTemplate;
                     if (tSuperClass == null)
-                        return;
+                        return _EmptyXmlComments;
 
                     var tSuperMethod = tSuperClass.Methods.TryGetValueOrNull(tMethod.Name);
                     if (tSuperMethod == null)
-                        return;
+                        return _EmptyXmlComments;
 
-                    tMethod.Summary = tSuperMethod.Summary;
-                    tMethod.Remarks = tSuperMethod.Remarks;
-
+                    xmlComments = tSuperClass.XmlComments;
+                }
+                finally
+                {
                     superType = superType.BaseType;
                 }
             }
+
+            return xmlComments;
         }
 
         /// <summary>
@@ -179,10 +166,14 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// </summary>
         /// <param name="tClass"></param>
 
-        private void ResolveComments(ClassTemplate tClass)
+        private XmlComments GetXmlComments(ClassTemplate tClass)
         {
-            tClass.Summary = SearchForComment("TClass", "summary", string.Empty, string.Empty, tClass.RealType);
-            tClass.Remarks = SearchForComment("TClass", "remarks", string.Empty, string.Empty, tClass.RealType);
+            var result = new XmlComments()
+            {
+                Summary = SearchForComment("T", "summary", string.Empty, string.Empty, tClass.RealType),
+                Remarks = SearchForComment("T", "remarks", string.Empty, string.Empty, tClass.RealType),
+            };
+            return result;
         }
 
         /// <summary>
@@ -190,11 +181,15 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// </summary>
         /// <param name="tMethod"></param>
 
-        private void ResolveComments(MethodTemplate tMethod)
+        private XmlComments GetXmlComments(MethodTemplate tMethod)
         {
-            tMethod.Summary = SearchForComment("M", "summary", tMethod.MethodInfo.Name, string.Empty, tMethod.MethodInfo.ReflectedType);
-            tMethod.Remarks = SearchForComment("M", "remarks", tMethod.MethodInfo.Name, string.Empty, tMethod.MethodInfo.ReflectedType);
-            tMethod.CommentSummary = SearchForComment("M", "value", tMethod.MethodInfo.Name, string.Empty, tMethod.MethodInfo.ReflectedType);
+            var result = new XmlComments()
+            {
+                Summary = SearchForComment("M", "summary", tMethod.MethodInfo.Name, string.Empty, tMethod.MethodInfo.ReflectedType),
+                Remarks = SearchForComment("M", "remarks", tMethod.MethodInfo.Name, string.Empty, tMethod.MethodInfo.ReflectedType),
+                Value = SearchForComment("M", "value", tMethod.MethodInfo.Name, string.Empty, tMethod.MethodInfo.ReflectedType),
+            };
+            return result;
         }
 
         /// <summary>
@@ -202,11 +197,15 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// </summary>
         /// <param name="tProperty"></param>
 
-        private void ResolveComments(PropertyTemplate tProperty)
+        private XmlComments GetXmlComments(PropertyTemplate tProperty)
         {
-            tProperty.Summary = SearchForComment("P", "summary", tProperty.PropertyInfo.Name, string.Empty, tProperty.PropertyInfo.ReflectedType);
-            tProperty.Remarks = SearchForComment("P", "remarks", tProperty.PropertyInfo.Name, string.Empty, tProperty.PropertyInfo.ReflectedType);
-            tProperty.CommentSummary = SearchForComment("P", "value", tProperty.PropertyInfo.Name, string.Empty, tProperty.PropertyInfo.ReflectedType);
+            var result = new XmlComments()
+            {
+                Summary = SearchForComment("P", "summary", tProperty.PropertyInfo.Name, string.Empty, tProperty.PropertyInfo.ReflectedType),
+                Remarks = SearchForComment("P", "remarks", tProperty.PropertyInfo.Name, string.Empty, tProperty.PropertyInfo.ReflectedType),
+                Value = SearchForComment("P", "value", tProperty.PropertyInfo.Name, string.Empty, tProperty.PropertyInfo.ReflectedType),
+            };
+            return result;
         }
 
         /// <summary>
@@ -214,35 +213,47 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// </summary>
         /// <param name="tParameter"></param>
 
-        private void ResolveComments(ParameterTemplate tParameter)
+        private XmlComments GetXmlComments(ParameterTemplate tParameter)
         {
-            tParameter.Summary = SearchForComment("M", "value", tParameter.ParameterInfo.Member.Name, tParameter.Name, tParameter.ParameterInfo.Member.ReflectedType);
+            var result = new XmlComments()
+            {
+                Summary = SearchForComment("M", "value", tParameter.ParameterInfo.Member.Name, tParameter.Name, tParameter.ParameterInfo.Member.ReflectedType),
+            };
+            return result;
         }
 
-        internal void ResolveComments(EnumTemplate tEnum)
+        public XmlComments GetXmlCommentsFor(EnumTemplate tEnum)
         {
-            tEnum.Summary = SearchForComment("TClass", "summary", tEnum.FullName, string.Empty, tEnum.RealType);
-            tEnum.Remarks = SearchForComment("TClass", "remarks", tEnum.FullName, string.Empty, tEnum.RealType);
-
-            foreach (var tItem in tEnum.EnumItems.Values)
+            var result = new XmlComments()
             {
-                var declaringType = tEnum.RealType.DeclaringType;
-                string fieldName = string.Empty;
+                Summary = SearchForComment("T", "summary", tEnum.FullName, string.Empty, tEnum.RealType),
+                Remarks = SearchForComment("T", "remarks", tEnum.FullName, string.Empty, tEnum.RealType),
+            };
+            return result;
+        }
 
-                if (declaringType == null)
-                {
-                    // This deals with enums:
-                    fieldName = tItem.Name;
-                    declaringType = tEnum.RealType;
-                }
-                else
-                {
-                    fieldName = string.Concat(tEnum.Name, ".", tItem.Name);
-                }
+        public XmlComments GetXmlCommentsFor(EnumTemplate tEnum, EnumItemTemplate tEnumItem)
+        {
+            var declaringType = tEnum.RealType.DeclaringType;
+            string fieldName = string.Empty;
 
-                tItem.Summary = SearchForComment("F", "summary", fieldName, string.Empty, declaringType);
-                tItem.Remarks = SearchForComment("F", "remarks", fieldName, string.Empty, declaringType);
+            if (declaringType == null)
+            {
+                // This deals with enums:
+                fieldName = tEnumItem.Name;
+                declaringType = tEnum.RealType;
             }
+            else
+            {
+                fieldName = string.Concat(tEnum.Name, ".", tEnumItem.Name);
+            }
+
+            var result = new XmlComments()
+            {
+                Summary = SearchForComment("F", "summary", fieldName, string.Empty, declaringType),
+                Remarks = SearchForComment("F", "remarks", fieldName, string.Empty, declaringType),
+            };
+            return result;
         }
 
         /// <summary>
@@ -272,7 +283,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
                 string className = classType.FullName.Replace("+", ".");
                 xmlMemberName = string.Concat(searchType, ":", className);
             }
-            else if (searchType == "TClass")
+            else if (searchType == "T")
             {
                 xmlMemberName = string.Concat(searchType, ":", classType.FullName);
             }
@@ -282,7 +293,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             }
 
             // Get the value from the XML:
-            if (searchType == "TClass")
+            if (searchType == "T")
             {
                 comment = GetClassComment(xmlMemberName, commentType);
             }

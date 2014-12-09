@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Utils;
 using Newtonsoft.Json;
 using System;
@@ -94,6 +95,10 @@ namespace Envivo.Fresnel.Introspection.Templates
             _AuditProperty = new Lazy<PropertyTemplate>(
                                 () => _TrackingPropertiesIdentifier.DetermineAuditProperty(this, _ObjectInstanceAttr),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+
+            _XmlComments = new Lazy<XmlComments>(
+                                () => this.AssemblyReader.XmlDocReader.GetXmlCommentsFor(this),
+                                System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         internal override void FinaliseConstruction()
@@ -105,6 +110,8 @@ namespace Envivo.Fresnel.Introspection.Templates
             this.DetermineInterfaces();
 
             _ObjectInstanceAttr = this.Attributes.Get<ObjectInstanceAttribute>();
+
+            this.IsVisible = _ObjectInstanceAttr.IsVisible;
         }
 
         private void CreateNames()

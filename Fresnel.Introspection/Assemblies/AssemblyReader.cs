@@ -45,7 +45,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         public ConfigurationMap ConfigurationMap { get; internal set; }
 
-        public AssemblyDocsReader XmlDocReader { get; internal set; }
+        public XmlDocsReader XmlDocReader { get; internal set; }
 
         public bool IsFrameworkAssembly { get; internal set; }
 
@@ -98,12 +98,18 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
             if (tClass == null)
             {
-                var classConfiguration = this.ConfigurationMap.GetClassConfiguration(classType);
-                tClass = _AbstractClassTemplateBuilder.CreateTemplate(classType, classConfiguration);
-                ((BaseClassTemplate)tClass).AssemblyReader = this;
-                _TemplateMap.Add(classType, tClass);
+                tClass = CreateAndCacheTemplate(classType);
             }
 
+            return tClass;
+        }
+
+        private IClassTemplate CreateAndCacheTemplate(Type classType)
+        {
+            var classConfiguration = this.ConfigurationMap.GetClassConfiguration(classType);
+            var tClass = _AbstractClassTemplateBuilder.CreateTemplate(classType, classConfiguration);
+            ((BaseClassTemplate)tClass).AssemblyReader = this;
+            _TemplateMap.Add(classType, tClass);
             return tClass;
         }
 
@@ -146,9 +152,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
             foreach (var type in matches)
             {
-                var classConfig = this.ConfigurationMap.GetClassConfiguration(type);
-                var tClass = _AbstractClassTemplateBuilder.CreateTemplate(type, classConfig);
-                _TemplateMap.Add(type, tClass);
+                var tClass = this.CreateAndCacheTemplate(type);
             }
         }
 

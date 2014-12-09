@@ -36,7 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assemblies\NamespaceHierarchyBuilder.cs" />
-    <Compile Include="Assemblies\AssemblyDocsReader.cs" />
+    <Compile Include="Assemblies\XmlDocsReader.cs" />
     <Compile Include="Assemblies\AssemblyReaderMapBuilder.cs" />
     <Compile Include="AssertionSet.cs" />
     <Compile Include="Commands\GetBackingFieldCommand.cs" />
@@ -61,6 +61,7 @@
     <Compile Include="Assemblies\AssemblyReaderBuilder.cs" />
     <Compile Include="IRealTypeResolver.cs" />
     <Compile Include="RealTypeResolver.cs" />
+    <Compile Include="Templates\XmlComments.cs" />
     <Compile Include="Templates\Classes\ClassHierarchyBuilder.cs" />
     <Compile Include="Templates\Classes\NullTemplate.cs" />
     <Compile Include="Templates\Classes\NonReferenceTemplateBuilder.cs" />

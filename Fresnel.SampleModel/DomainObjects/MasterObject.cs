@@ -9,13 +9,22 @@ using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
+    /// <summary>
+    /// 
+    /// </summary>
     //[Permissions(User = "Vij", AllowedOperations = Allow.Read)]
     //[Permissions(Role = "User", AllowedOperations = Allow.Read)]
     //[Permissions(Role = "Administrator", AllowedOperations = Allow.All)]
     public class MasterObject
     {
-        public virtual  Guid ID { get; set; }
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
+        public virtual Guid ID { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public MasterObject()
         {
             var children = new Collection<DetailObject>();
@@ -56,10 +65,20 @@ namespace Envivo.Fresnel.SampleModel.Objects
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual string Name { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual Collection<DetailObject> Children { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return this.Name;

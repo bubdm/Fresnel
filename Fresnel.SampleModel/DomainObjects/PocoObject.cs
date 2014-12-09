@@ -19,10 +19,19 @@ namespace Envivo.Fresnel.SampleModel.Objects
         private ICollection<PocoObject> _ChildObjects = new Collection<PocoObject>();
         private DateTime _NormalDate = DateTime.UtcNow;
 
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual long Version { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual int RecordId { get; protected set; }
 
         /// <summary>
@@ -75,6 +84,9 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// </summary>
         public virtual Point Point { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual ICollection<PocoObject>ChildObjects
         {
             get { return _ChildObjects; }

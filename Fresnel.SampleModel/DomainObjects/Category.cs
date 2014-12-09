@@ -15,6 +15,9 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public class Category : BaseAggregateRoot
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public Category()
         {
             var products = new Collection<Product>();
@@ -54,8 +57,10 @@ namespace Envivo.Fresnel.SampleModel.Objects
 
         // Not sure why this property is declared here, as it hides the one in the base class:
         //        public IAudit Audit { get; protected set; }
-
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual Money Money { get; set; }
 
 
@@ -74,11 +79,19 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// </summary>
         public virtual string Description { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return this.Name;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override bool IsValid()
         {
             return true;

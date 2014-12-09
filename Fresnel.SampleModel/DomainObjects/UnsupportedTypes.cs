@@ -15,9 +15,15 @@ namespace Envivo.Fresnel.SampleModel.Objects
     {
 
         private Dictionary<string, PocoObject> _Map = new Dictionary<string, PocoObject>();
-        
+
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual Dictionary<string, PocoObject> Map
         {
             get { return _Map; }

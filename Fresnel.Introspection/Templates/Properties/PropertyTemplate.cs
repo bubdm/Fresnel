@@ -60,6 +60,10 @@ namespace Envivo.Fresnel.Introspection.Templates
             _RapidPropSet = new Lazy<RapidSet>(
                                 () => _DynamicMethodBuilder.BuildSetHandler(this.PropertyInfo),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+
+            _XmlComments = new Lazy<XmlComments>(
+                                () => this.AssemblyReader.XmlDocReader.GetXmlCommentsFor(this),
+                                System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         internal override void FinaliseConstruction()

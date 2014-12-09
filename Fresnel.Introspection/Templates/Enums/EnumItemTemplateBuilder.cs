@@ -13,9 +13,9 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         }
 
-        public EnumItemTemplate BuildFor(FieldInfo enumField)
+        public EnumItemTemplate BuildFor(EnumTemplate tEnum, FieldInfo enumField)
         {
-            var result = new EnumItemTemplate();
+            var result = new EnumItemTemplate(tEnum);
             result.Value = enumField.GetValue(enumField.DeclaringType);
 
             var enumName = result.Value.ToString();

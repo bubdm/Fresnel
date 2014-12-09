@@ -19,6 +19,9 @@ namespace Envivo.Fresnel.SampleModel.Objects
         [Number(MinValue = 0, MaxValue = 10000)]
         public virtual double Quantity { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual DateTime DeliveryDate { get; set; }
 
     }

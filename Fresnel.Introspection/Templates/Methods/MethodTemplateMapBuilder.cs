@@ -44,6 +44,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                 {
                     tMethod.Name += GetOverloadIndex(tMethod, results);
                 }
+                tMethod.AssemblyReader = tClass.AssemblyReader;
                 results.Add(tMethod.Name, tMethod);
             }
 

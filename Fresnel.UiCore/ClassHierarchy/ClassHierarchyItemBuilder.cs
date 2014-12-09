@@ -30,8 +30,8 @@ namespace Envivo.Fresnel.UiCore.ClassHierarchy
             {
                 Name = hierarchyNode.Name,
                 TypeName = tClass != null ? hierarchyNode.Type.FullName : "",
-                Description = tClass != null ? tClass.Summary : "",
-                Tooltip = tClass != null ? tClass.Remarks : "",
+                Description = tClass != null ? tClass.XmlComments.Summary : "",
+                Tooltip = tClass != null ? tClass.XmlComments.Remarks : "",
                 IsEnabled = hierarchyNode.IsClass,
                 IsVisible = hierarchyNode.Children.Any(),
             };

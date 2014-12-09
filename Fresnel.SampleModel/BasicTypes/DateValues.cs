@@ -15,6 +15,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         private DateTime _DateTime = DateTime.Now;
 
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
         /// <summary>

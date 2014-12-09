@@ -11,11 +11,9 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         string FriendlyName { get; }
 
-        string Remarks { get; }
-
-        string Summary { get; }
-
         AttributesMap Attributes { get; }
+
+        XmlComments XmlComments { get; }
 
         /// <summary>
         /// The AssemblyReader associated with this Template

@@ -15,6 +15,9 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
         private bool _Bool = false;
         private string _PropertyValue;
 
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
         /// <summary>
@@ -69,6 +72,10 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public virtual string ThrowAnException()
         {
             throw new ApplicationException("This is a forced exception");

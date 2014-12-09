@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.UiCore.Objects
                 ID = oCollection.ID,
                 Name = oCollection.Template.FriendlyName,
                 IsVisible = oCollection.Template.IsVisible,
-                Description = oCollection.Template.Summary,
+                Description = oCollection.Template.XmlComments.Summary,
                 Properties = this.CreateProperties(oCollection),
                 Items = this.CreateItems(oCollection)
             };
@@ -73,7 +73,7 @@ namespace Envivo.Fresnel.UiCore.Objects
                 ID = oObject.ID,
                 Name = oObject.Template.FriendlyName,
                 IsVisible = oObject.Template.IsVisible,
-                Description = oObject.Template.Summary,
+                Description = oObject.Template.XmlComments.Summary,
                 Properties = this.CreateProperties(oObject),
             };
 

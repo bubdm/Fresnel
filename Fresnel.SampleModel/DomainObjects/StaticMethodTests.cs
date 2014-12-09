@@ -22,6 +22,9 @@ namespace Envivo.Fresnel.SampleModel
         {
         }
 
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
         /// <summary>

@@ -40,7 +40,7 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             var textValues = new SampleModel.BasicTypes.TextValues();
             var oObject = (ObjectObserver)observerCache.GetObserver(textValues);
-            
+
             // Act:
             var charInfo = identifier.BuildTypeInfoFor(oObject.Properties["NormalChar"]);
 
@@ -51,10 +51,10 @@ namespace Envivo.Fresnel.Tests.Proxies
             var passwordInfo = identifier.BuildTypeInfoFor(oObject.Properties["PasswordText"]);
 
             // Assert:
-            Assert.AreEqual(typeof(StringVM).Name , charInfo.Name);
-            Assert.AreEqual(typeof(StringVM).Name, stringInfo.Name);
-            Assert.AreEqual(typeof(StringVM).Name, multiLineInfo.Name);
-            Assert.AreEqual(typeof(StringVM).Name, passwordInfo.Name);
+            Assert.AreEqual("string", charInfo.Name);
+            Assert.AreEqual("string", stringInfo.Name);
+            Assert.AreEqual("string", multiLineInfo.Name);
+            Assert.AreEqual("string", passwordInfo.Name);
         }
 
     }

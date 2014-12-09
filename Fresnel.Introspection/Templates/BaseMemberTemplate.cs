@@ -63,11 +63,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         }
 
         /// <summary>
-        /// The description of the member's Value (from the code comments)
-        /// </summary>
-        public string CommentSummary { get; set; }
-
-        /// <summary>
         /// The ClassTemplate that owns this Member
         /// </summary>
         [JsonIgnore]

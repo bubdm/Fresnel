@@ -7,9 +7,15 @@ using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class SecuredObject
     {
 
+        /// <summary>
+        /// The unique ID for this entity
+        /// </summary>
         public virtual Guid ID { get; set; }
 
         /// <summary>

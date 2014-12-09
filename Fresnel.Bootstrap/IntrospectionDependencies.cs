@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Configuration.AttributesMapBuilder),
                 typeof(Fresnel.Configuration.ConfigurationMapBuilder),
 
-                typeof(Fresnel.Introspection.Assemblies.AssemblyDocsReader),
+                typeof(Fresnel.Introspection.Assemblies.XmlDocsReader),
                 typeof(Fresnel.Introspection.Assemblies.AssemblyReaderBuilder),
                 typeof(Fresnel.Introspection.Assemblies.AssemblyReaderMapBuilder),
                 typeof(Fresnel.Introspection.Assemblies.NamespaceHierarchyBuilder),

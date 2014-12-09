@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             var reader = _AssemblyReaderFactory();
             reader.Assembly = domainAssembly;
             reader.ConfigurationMap = _ConfigurationMapBuilder.BuildFor(domainAssembly);
-            reader.XmlDocReader = new AssemblyDocsReader();
+            reader.XmlDocReader = new XmlDocsReader();
             reader.IsFrameworkAssembly = isSystemAssembly;
 
             this.Initialise(reader);
