@@ -42,6 +42,8 @@
     <Compile Include="Classes\NamespaceBuilder.cs" />
     <Compile Include="Classes\Namespace.cs" />
     <Compile Include="Commands\BaseCommandResult.cs" />
+    <Compile Include="Commands\GetPropertyResult.cs" />
+    <Compile Include="Commands\GetPropertyCommand.cs" />
     <Compile Include="Commands\CreateCommandResult.cs" />
     <Compile Include="Commands\CreateCommand.cs" />
     <Compile Include="Controllers\TestController.cs" />

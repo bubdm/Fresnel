@@ -18,13 +18,15 @@
 
     export interface IExplorerControllerScope extends ng.IScope {
 
-        openExplorers: any[];
+        visibleExplorers: any[];
 
         minimise(obj: IObjectVM);
 
         maximise(obj: IObjectVM);
 
         close(obj: IObjectVM);
+
+        openNewExplorer(prop: any);
     }
 
 

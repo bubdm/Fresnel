@@ -21,10 +21,10 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ExplorerController = (function () {
-        function ExplorerController($scope, appService) {
-            $scope.openExplorers = [];
+        function ExplorerController($scope, $http, appService) {
+            $scope.visibleExplorers = [];
             $scope.$on('objectCreated', function (event, obj) {
-                $scope.openExplorers.push(obj);
+                $scope.visibleExplorers.push(obj);
             });
             $scope.minimise = function (obj) {
                 obj.IsMaximised = false;
@@ -34,13 +34,28 @@ var FresnelApp;
             };
             $scope.close = function (obj) {
                 // TODO: Check for dirty status
-                var index = $scope.openExplorers.indexOf(obj);
+                var index = $scope.visibleExplorers.indexOf(obj);
                 if (index > -1) {
-                    $scope.openExplorers.splice(index, 1);
+                    $scope.visibleExplorers.splice(index, 1);
                 }
             };
+            $scope.openNewExplorer = function (prop) {
+                var uri = "api/Explorer/GetObjectProperty";
+                //var arg = "{ objectID : " + prop.ObjectID + ", propertyName : " + prop.PropertyName + " } ";
+                //var config = {
+                //    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                //};
+                $http.post(uri, prop).success(function (data, status) {
+                    var obj = data.ReturnValue;
+                    if (obj) {
+                        appService.identityMap.addItem(obj);
+                        // TODO: Insert the object just after it's parent?
+                        $scope.visibleExplorers.push(obj);
+                    }
+                });
+            };
         }
-        ExplorerController.$inject = ['$scope', 'appService'];
+        ExplorerController.$inject = ['$scope', '$http', 'appService'];
         return ExplorerController;
     })();
     FresnelApp.ExplorerController = ExplorerController;
@@ -57,6 +72,7 @@ var FresnelApp;
             return item;
         };
         IdentityMap.prototype.addItem = function (obj) {
+            this.removeItem(obj.ID);
             this.items.push({
                 key: obj.ID,
                 value: obj

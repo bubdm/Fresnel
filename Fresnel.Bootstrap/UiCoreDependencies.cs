@@ -25,6 +25,7 @@ namespace Envivo.Fresnel.Bootstrap
             return new Type[] { 
                 typeof(Fresnel.UiCore.Commands.GetClassHierarchyCommand),
                 typeof(Fresnel.UiCore.Commands.CreateCommand),
+                typeof(Fresnel.UiCore.Commands.GetPropertyCommand),
                 typeof(Fresnel.UiCore.Classes.ClassItemBuilder),
                 typeof(Fresnel.UiCore.Classes.NamespacesBuilder),
                 typeof(Fresnel.UiCore.TypeInfo.TypeInfoBuilder),

@@ -12,8 +12,10 @@
         }
 
         addItem(obj: IObjectVM) {
+            this.removeItem(obj.ID);
+
             this.items.push(
-                { 
+                {
                     key: obj.ID,
                     value: obj
                 });

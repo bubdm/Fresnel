@@ -2,16 +2,17 @@
 
     export class ExplorerController {
 
-        static $inject = ['$scope', 'appService'];
+        static $inject = ['$scope', '$http', 'appService'];
 
         constructor(
             $scope: IExplorerControllerScope,
+            $http: ng.IHttpService,
             appService: AppService) {
 
-            $scope.openExplorers = [];
+            $scope.visibleExplorers = [];
 
             $scope.$on('objectCreated', function (event, obj: IObjectVM) {
-                $scope.openExplorers.push(obj);
+                $scope.visibleExplorers.push(obj);
             });
 
             $scope.minimise = function (obj: IObjectVM) {
@@ -25,12 +26,31 @@
             $scope.close = function (obj: IObjectVM) {
                 // TODO: Check for dirty status
 
-                var index = $scope.openExplorers.indexOf(obj);
+                var index = $scope.visibleExplorers.indexOf(obj);
                 if (index > -1) {
-                    $scope.openExplorers.splice(index, 1);
+                    $scope.visibleExplorers.splice(index, 1);
 
                     // TODO: If the object is no longer in the UI, Let the server know that it can be GCed
                 }
+            }
+
+            $scope.openNewExplorer = function (prop: any) {
+                var uri = "api/Explorer/GetObjectProperty";
+                //var arg = "{ objectID : " + prop.ObjectID + ", propertyName : " + prop.PropertyName + " } ";
+
+                //var config = {
+                //    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                //};
+                $http.post(uri, prop)
+                    .success(function (data: any, status) {
+                        var obj = data.ReturnValue;
+                        if (obj) {
+                            appService.identityMap.addItem(obj);
+
+                            // TODO: Insert the object just after it's parent?
+                            $scope.visibleExplorers.push(obj);
+                        }
+                    });
             }
 
         }

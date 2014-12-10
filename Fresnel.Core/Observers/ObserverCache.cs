@@ -17,6 +17,7 @@ namespace Envivo.Fresnel.Core.Observers
     public class ObserverCache
     {
         private ConditionalWeakTable<object, ObjectObserver> _ObjectMap = new ConditionalWeakTable<object, ObjectObserver>();
+        private Dictionary<Guid, ObjectObserver> _ObjectIdMap = new Dictionary<Guid, ObjectObserver>();
         private Dictionary<object, NonReferenceObserver> _NonReferenceMap = new Dictionary<object, NonReferenceObserver>();
 
         private TemplateCache _TemplateCache;
@@ -43,6 +44,12 @@ namespace Envivo.Fresnel.Core.Observers
             _AbstractObserverBuilder = abstractObserverBuilder;
             _ObjectIdResolver = objectIdResolver;
             _NullObserver = nullObserver;
+        }
+
+        public BaseObjectObserver GetObserverById(Guid id)
+        {
+            var result = _ObjectIdMap.TryGetValueOrNull(id);
+            return result;
         }
 
         /// <summary>
@@ -111,6 +118,10 @@ namespace Envivo.Fresnel.Core.Observers
 
                 var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealType);
                 _ObjectMap.Add(obj, result);
+
+                var id = this.ReplaceInvalidKeyWithValidKey(result);
+                _ObjectIdMap.Add(id, result);
+
                 MergeObjectsWithSameId(obj, result);
                 return result;
             }
@@ -123,6 +134,33 @@ namespace Envivo.Fresnel.Core.Observers
             }
 
             return null;
+        }
+
+        private Guid ReplaceInvalidKeyWithValidKey(ObjectObserver oObject)
+        {
+            Guid id = Guid.Empty;
+            try
+            {
+                var obj = oObject.RealObject;
+                var tClass = oObject.Template;
+
+                id = _ObjectIdResolver.TryGetValue(obj, tClass, Guid.Empty);
+                if (id != Guid.Empty)
+                    return id;
+
+                // This is the ID that will represent the given object:
+                id = Guid.NewGuid();
+                if (tClass.IdProperty != null)
+                {
+                    tClass.IdProperty.SetField(obj, id);
+                }
+            }
+            finally
+            {
+                // Make sure the Observer is tied to the Object:
+                oObject.ID = id;
+            }
+            return id;
         }
 
         private void MergeObjectsWithSameId(object obj, ObjectObserver oObject)

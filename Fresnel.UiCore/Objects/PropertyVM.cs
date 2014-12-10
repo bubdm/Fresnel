@@ -11,6 +11,8 @@ namespace Envivo.Fresnel.UiCore.Objects
     {
         public Guid ObjectID { get; set; }
 
+        public string PropertyName { get; set; }
+
         public object Value { get; set; }
 
         public bool IsRequired { get; set; }
@@ -24,5 +26,6 @@ namespace Envivo.Fresnel.UiCore.Objects
         public bool IsExpandable { get; set; }
 
         public ITypeInfo Info { get; set; }
+
     }
 }

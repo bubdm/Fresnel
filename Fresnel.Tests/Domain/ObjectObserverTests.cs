@@ -16,6 +16,7 @@ using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Core.Observers;
 using System.Reflection;
 using System.Collections.Generic;
+using Envivo.Fresnel.DomainTypes;
 
 namespace Envivo.Fresnel.Tests.Domain
 {
@@ -71,6 +72,62 @@ namespace Envivo.Fresnel.Tests.Domain
 
             // Assert:
             Assert.IsNotNull(poco);
+        }
+
+        [Test()]
+        public void ShouldReplaceInvalidIdForTrackableObjects()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var obj = new SampleModel.Objects.PocoObject();
+            obj.ID = Guid.Empty;
+
+            var observerCache = container.Resolve<ObserverCache>();
+
+            // Act:
+            var observer = observerCache.GetObserver(obj);
+
+            // Assert:
+            Assert.AreNotEqual(Guid.Empty, obj.ID);
+            Assert.AreEqual(obj.ID, observer.ID);
+        }
+
+        [Test()]
+        public void ShouldLocateTrackableObjectsByID()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.Empty;
+
+            var observerCache = container.Resolve<ObserverCache>();
+
+            // Act:
+            var oObject = observerCache.GetObserver(poco);
+            var objFromCache = observerCache.GetObserverById(oObject.ID).RealObject;
+
+            // Assert:
+            Assert.AreEqual(poco, objFromCache);
+        }
+
+        [Test()]
+        public void ShouldLocateNonTrackableObjectsByID()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+
+            var pocoList = new List<SampleModel.Objects.PocoObject>();
+
+            var observerCache = container.Resolve<ObserverCache>();
+
+            // Act:
+            var oObject = observerCache.GetObserver(pocoList);
+            var objFromCache = observerCache.GetObserverById(oObject.ID).RealObject;
+
+            // Assert:
+            Assert.AreEqual(pocoList, objFromCache);
         }
 
         [Test()]

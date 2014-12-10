@@ -26,8 +26,9 @@ namespace Envivo.Fresnel.UiCore.Objects
 
             var propVM = new PropertyVM()
             {
-                //ObjectID = oObject.ID, // No need to include this, as it just adds bloat:
+                ObjectID = oObject.ID,
                 Name = oProp.Template.FriendlyName,
+                PropertyName = oProp.Template.Name,
                 Description = oProp.Template.XmlComments.Summary,
                 Info = _TypeInfoBuilder.BuildTypeInfoFor(oProp),
                 IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true,
