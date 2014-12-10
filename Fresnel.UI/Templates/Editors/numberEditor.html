@@ -1,1 +1,7 @@
-﻿<input type="number" min="{{prop.Info.MinValue}}" max="{{prop.Info.MaxValue}}" ng-model="prop.Value" /> 
+﻿<input type="number"
+       ng-model="prop.Value"
+       required="{{prop.Info.IsRequired}}"
+       min="{{prop.Info.MinValue}}"
+       max="{{prop.Info.MaxValue}}"
+       ngminlength="{{prop.Info.MinValue}}"
+       ngmaxlength="{{prop.Info.MaxValue}}" />

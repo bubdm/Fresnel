@@ -13,6 +13,8 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public object Value { get; set; }
 
+        public bool IsRequired { get; set; }
+
         public bool CanRead { get; set; }
 
         public bool CanWrite { get; set; }

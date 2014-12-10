@@ -7,9 +7,9 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Attributes for a Property
     /// </summary>
-    
+
     [Serializable()]
-    
+
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
     public class PropertyAttribute : MemberAttribute
     {
@@ -25,6 +25,8 @@ namespace Envivo.Fresnel.Configuration
             this.UseOptimisticLock = true;
         }
 
+        public bool IsRequired { get; set; }
+
         /// <summary>
         /// Determines if the Property can be modified only once (for initialisation purposes).
         /// This is similar to the "ReadOnly" variable declaration.
@@ -37,8 +39,8 @@ namespace Envivo.Fresnel.Configuration
         /// This is usually used to override the scope of the associated Property.
         /// </summary>
         /// <value></value>
-        
-        
+
+
         public bool CanRead { get; set; }
 
         /// <summary>
@@ -46,16 +48,16 @@ namespace Envivo.Fresnel.Configuration
         /// This is usually used to override the scope of the associated Property.
         /// </summary>
         /// <value></value>
-        
-        
-        public bool CanWrite{ get; set; }
+
+
+        public bool CanWrite { get; set; }
 
         /// <summary>
         /// Determines whether the property value can be saved to the underlying persistence store.
         /// Any property that isn't persisted should be declared with 'CanPersist=False'.
         /// </summary>
         /// <value></value>
-        
+
         public bool CanPersist { get; set; }
 
         /// <summary>
@@ -68,7 +70,7 @@ namespace Envivo.Fresnel.Configuration
         /// This will also mark the property as read-only.
         /// </summary>
         /// <value></value>
-        
+
         public bool IsGeneratedByPersistenceStore
         {
             get { return _IsGeneratedByPersistenceStore; }
