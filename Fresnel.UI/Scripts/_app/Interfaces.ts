@@ -27,6 +27,8 @@
         close(obj: IObjectVM);
 
         openNewExplorer(prop: any);
+
+        setupCollectionGrid(collectionVM, gridElementName);
     }
 
 

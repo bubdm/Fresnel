@@ -14,11 +14,12 @@
 
     <meta name="viewport" content="width=device-width" />
 
+    <script src="~/Scripts/jquery-2.1.1.js"></script>
     <script src="~/scripts/angular.js"></script>
+    <script src="~/Scripts/ng-dock.js"></script>
+
     <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
-
-    <script src="~/Scripts/ng-pageslide/angular-pageslide-directive.js"></script>
 
     <script src="~/Scripts/angular-isotope.js"></script>
     <link href="~/Content/isotope.css" rel="stylesheet" />
@@ -34,32 +35,38 @@
     <title>Index</title>
 </head>
 
-<body>
+<body dock-ref="" ng-controller="appController">
 
-    <div ng-controller="appController" class="container">
-        <span>{{appControlleridentityMap.items}}</span>
+    <div dock="'top'">
+        Header
+    </div>
 
-        <div ng-controller="toolboxController">
-            <a class="toolboxPanelOpener" pageslide ps-side="top" ps-speed="0.5" href="#toolboxPanel">Open</a>
-
-            <div id="toolboxPanel" >
-                <a ng-click="loadClassHierarchy()">Load</a>
-                <a id="toolboxPanel-close" href="#">Close</a>
-                <h2>Class library</h2>
-                <hr />
-                <div ng-repeat="namespace in classHierarchy" isotope-container="" class="isotope row">
-                    <h3>{{namespace.Name}}</h3>
-                    <div ng-repeat="item in namespace.Classes" ng-include="'/Templates/classItem.html'" class="col-xs-2">
-                    </div>
-                </div>
+    <div dock="'left'" id="toolboxPanel"  ng-controller="toolboxController">
+        <a ng-click="loadClassHierarchy()" href="#">Load</a>
+        <h3>Class library</h3>
+        <div ng-repeat="namespace in classHierarchy" class="">
+            <span>{{namespace.Name}}</span>
+            <div ng-repeat="item in namespace.Classes" ng-include="'/Templates/classItem.html'" class="">
             </div>
-
-            <div ng-controller="explorerController" isotope-container="" class="isotope">
-                <div class="isotope-item" isotope-item="" ng-repeat="obj in visibleExplorers" ng-include="'/Templates/objectExplorer.html'">
-                </div>
-            </div>
-
         </div>
+    </div>
+
+    <div dock="'fill'" isotope-container="" class="isotope" ng-controller="explorerController">
+        <div class="isotope-item" isotope-item="" ng-repeat="obj in visibleExplorers">
+            <div ng-switch="obj.IsCollection">
+                <div ng-switch-when="true">
+                    <div ng-include="'/Templates/collectionExplorer.html'"></div>
+                </div>
+                <div ng-switch-default>
+                    <div ng-include="'/Templates/objectExplorer.html'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div dock="'bottom'">
+        <p>Footer</p>
+    </div>
 
 </body>
 </html>

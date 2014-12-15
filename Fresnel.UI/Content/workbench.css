@@ -2,6 +2,7 @@
     width: 100%;
 }
 
+
 .workbenchContainer {
     background-color: Background;
     /*overflow-x: auto;*/
@@ -39,6 +40,9 @@
 }
 
 .propertyItem {
+    -moz-border-radius: 5px; /* For Firefox */
+    border-radius: 5px;
+    border: 1px solid WindowFrame;
     background: -webkit-linear-gradient(ThreeDHighlight, Window); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(ThreeDHighlight, Window); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(ThreeDHighlight, Window); /* For Firefox 3.6 to 15 */
@@ -60,4 +64,8 @@
 }
 
 .explorerFooter {
+}
+
+.fullWidth {
+    width: 100%;
 }

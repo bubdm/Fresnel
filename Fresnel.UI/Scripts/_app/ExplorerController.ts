@@ -36,11 +36,7 @@
 
             $scope.openNewExplorer = function (prop: any) {
                 var uri = "api/Explorer/GetObjectProperty";
-                //var arg = "{ objectID : " + prop.ObjectID + ", propertyName : " + prop.PropertyName + " } ";
 
-                //var config = {
-                //    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-                //};
                 $http.post(uri, prop)
                     .success(function (data: any, status) {
                         var obj = data.ReturnValue;

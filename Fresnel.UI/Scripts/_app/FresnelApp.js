@@ -41,10 +41,6 @@ var FresnelApp;
             };
             $scope.openNewExplorer = function (prop) {
                 var uri = "api/Explorer/GetObjectProperty";
-                //var arg = "{ objectID : " + prop.ObjectID + ", propertyName : " + prop.PropertyName + " } ";
-                //var config = {
-                //    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-                //};
                 $http.post(uri, prop).success(function (data, status) {
                     var obj = data.ReturnValue;
                     if (obj) {
@@ -127,5 +123,5 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    angular.module("fresnelApp", ["pageslide-directive"]).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController);
+    angular.module("fresnelApp", ['ngDock']).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController);
 })(FresnelApp || (FresnelApp = {}));
