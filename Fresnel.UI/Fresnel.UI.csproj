@@ -109,10 +109,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\AdminLTE.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\ionicons.min.css" />
     <Content Include="Content\isotope.css" />
     <Content Include="Content\workbench.css" />
     <Content Include="Content\toolbox.css" />
@@ -121,6 +123,36 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="image\ajax-loader.gif" />
+    <Content Include="image\ajax-loader1.gif" />
+    <Content Include="image\avatar.png" />
+    <Content Include="image\avatar04.png" />
+    <Content Include="image\avatar2.png" />
+    <Content Include="image\avatar3.png" />
+    <Content Include="image\avatar5.png" />
+    <Content Include="image\blur-background04.jpg" />
+    <Content Include="image\blur-background08.jpg" />
+    <Content Include="image\blur-background09.jpg" />
+    <Content Include="image\bootstrap-colorpicker\alpha-horizontal.png" />
+    <Content Include="image\bootstrap-colorpicker\alpha.png" />
+    <Content Include="image\bootstrap-colorpicker\hue-horizontal.png" />
+    <Content Include="image\bootstrap-colorpicker\hue.png" />
+    <Content Include="image\bootstrap-colorpicker\saturation.png" />
+    <Content Include="image\credit\american-express.png" />
+    <Content Include="image\credit\cirrus.png" />
+    <Content Include="image\credit\mastercard.png" />
+    <Content Include="image\credit\mestro.png" />
+    <Content Include="image\credit\paypal.png" />
+    <Content Include="image\credit\paypal2.png" />
+    <Content Include="image\credit\visa.png" />
+    <Content Include="image\icons.png" />
+    <Content Include="image\sprite-skin-flat.png" />
+    <Content Include="image\sprite-skin-nice.png" />
+    <Content Include="image\user-bg.png" />
+    <Content Include="image\user.jpg" />
+    <Content Include="image\user2.jpg" />
+    <Content Include="Scripts\AdminLTE\app.js" />
+    <Content Include="Scripts\AdminLTE\dashboard.js" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />
@@ -899,6 +931,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\isotope.pkgd.min.js" />
+    <Content Include="image\.DS_Store" />
+    <None Include="Licenses\AdminLTE.LICENSE" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -918,6 +952,7 @@
     <Content Include="Templates\propertyItem.html" />
     <Content Include="Templates\objectExplorer.html" />
     <Content Include="Templates\classItem.html" />
+    <Content Include="Views\empty.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

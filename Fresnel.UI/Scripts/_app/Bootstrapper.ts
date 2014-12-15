@@ -1,6 +1,6 @@
 ﻿module FresnelApp {
 
-    angular.module("fresnelApp", ['ngDock'])
+    angular.module("fresnelApp", [])
         .service("appService", FresnelApp.AppService)
         .controller("appController", FresnelApp.AppController)
         .controller("toolboxController", FresnelApp.ToolboxController)
