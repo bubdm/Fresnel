@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Introspection.Templates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,18 @@ namespace Envivo.Fresnel.UiCore.Objects
     public class AbstractObjectVMBuilder
     {
         private ObserverCache _ObserverCache;
+        private ClassHierarchyBuilder _ClassHierarchyBuilder;
         private PropertyVmBuilder _PropertyVmBuilder;
 
         public AbstractObjectVMBuilder
             (
             ObserverCache observerCache,
+            ClassHierarchyBuilder classHierarchyBuilder,
             PropertyVmBuilder propertyVmBuilder
             )
         {
             _ObserverCache = observerCache;
+            _ClassHierarchyBuilder = classHierarchyBuilder;
             _PropertyVmBuilder = propertyVmBuilder;
         }
 
@@ -41,29 +45,60 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         private ObjectVM BuildForCollection(CollectionObserver oCollection)
         {
+            // The View needs to know about ALL properties for all sub-classes of the Collection's element type:
+            var tElement = oCollection.Template.InnerClass;
+            var allKnownProperties = _ClassHierarchyBuilder.GetProperties(tElement);
+
             var result = new CollectionVM()
             {
                 ID = oCollection.ID,
                 Name = oCollection.Template.FriendlyName,
                 IsVisible = oCollection.Template.IsVisible,
+                ColumnHeaders = allKnownProperties.Select(p => p.FriendlyName),
                 Description = oCollection.Template.XmlComments.Summary,
                 Properties = this.CreateProperties(oCollection),
-                Items = this.CreateItems(oCollection)
+                Items = this.CreateItems(oCollection, allKnownProperties)
             };
 
             return result;
         }
 
-        private IEnumerable<ObjectVM> CreateItems(CollectionObserver oCollection)
+        private IEnumerable<ObjectVM> CreateItems(CollectionObserver oCollection, 
+                                                  IEnumerable<PropertyTemplate> allKnownProperties)
         {
             var items = new List<ObjectVM>();
             foreach (var obj in oCollection.GetContents())
             {
                 var oObject = (ObjectObserver)_ObserverCache.GetObserver(obj);
                 var objVM = this.BuildForObject(oObject);
+
+                this.InsertUnallocatedProperties(objVM, allKnownProperties);
+
                 items.Add(objVM);
             }
             return items;
+        }
+
+        private void InsertUnallocatedProperties(ObjectVM objVM, IEnumerable<PropertyTemplate> allKnownProperties)
+        {
+            var allocatedProperties = objVM.Properties.ToList();
+            var allocatedPropertyNames = objVM.Properties.Select(p => p.PropertyName);
+
+            var unallocatedProperties = allKnownProperties.Where(p => !allocatedPropertyNames.Contains(p.Name));
+            foreach (var tProp in unallocatedProperties)
+            {
+                var propVM = new PropertyVM()
+                {
+                    Name = tProp.FriendlyName,
+                    PropertyName = tProp.Name,
+                    IsRequired = false,
+                    IsEnabled = false,
+                    CanWrite = false,
+                };
+                allocatedProperties.Add(propVM);
+            }
+
+            objVM.Properties = allocatedProperties;
         }
 
         private ObjectVM BuildForObject(ObjectObserver oObject)
