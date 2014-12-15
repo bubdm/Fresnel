@@ -9,15 +9,15 @@
     float: right;
 }
 
-#classItem {
+.classItem {
     /*-moz-border-radius: 5px;*/ /* For Firefox */
     /*border-radius: 5px;*/
     /*border: 1px solid WindowFrame;*/
-    /*min-height: 120px;*/
+    min-height: 34px;
     width: 100%;
     /*min-height: 60px;*/
     /*margin: 2px;*/
-    /*padding: 4px;*/
+    padding-left: 20px;
 }
 
 #classNameArea {
