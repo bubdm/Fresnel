@@ -3,13 +3,18 @@
     export class ToolboxController {
         public classHierarchy: any;
 
-        static $inject = ['$rootScope', '$scope', '$http', 'appService']; 
+        static $inject = ['$rootScope', '$scope', '$http', 'appService'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: IToolboxControllerScope,
             $http: ng.IHttpService,
             appService: AppService) {
+
+            // This will run when the page loads:
+            angular.element(document).ready(function () {
+                $scope.loadClassHierarchy();
+            });
 
             $scope.loadClassHierarchy = function () {
                 var uri = "api/Toolbox/GetClassHierarchy";

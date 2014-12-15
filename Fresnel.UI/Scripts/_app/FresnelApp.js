@@ -20,6 +20,25 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
+    angular.module("fresnelApp", []).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective);
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    // Used to ensure the Toolbox allows interaction with the Class nodes
+    function ClassLibaryDirective() {
+        return {
+            link: function (scope, elem, attributes) {
+                scope.$watchCollection('classHierarchy', function (newVal, oldVal) {
+                    // Force the treeview to register any new nodes:
+                    $(".sidebar .treeview").tree();
+                });
+            }
+        };
+    }
+    FresnelApp.ClassLibaryDirective = ClassLibaryDirective;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     var ExplorerController = (function () {
         function ExplorerController($scope, $http, appService) {
             $scope.visibleExplorers = [];
@@ -98,6 +117,10 @@ var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
         function ToolboxController($rootScope, $scope, $http, appService) {
+            // This will run when the page loads:
+            angular.element(document).ready(function () {
+                $scope.loadClassHierarchy();
+            });
             $scope.loadClassHierarchy = function () {
                 var _this = this;
                 var uri = "api/Toolbox/GetClassHierarchy";
@@ -120,8 +143,4 @@ var FresnelApp;
         return ToolboxController;
     })();
     FresnelApp.ToolboxController = ToolboxController;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
-    angular.module("fresnelApp", []).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController);
 })(FresnelApp || (FresnelApp = {}));

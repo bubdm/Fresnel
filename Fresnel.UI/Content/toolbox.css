@@ -1,8 +1,8 @@
 #toolboxPanel {
-    width: 300px;
+    /*width: 300px;*/
     /*height: 500px;*/
-    overflow: scroll;
-    background: #eee;
+    /*overflow: scroll;*/
+    /*background: #eee;*/
 }
 
 #toolboxPanel-close {
@@ -10,9 +10,9 @@
 }
 
 #classItem {
-    -moz-border-radius: 5px; /* For Firefox */
-    border-radius: 5px;
-    border: 1px solid WindowFrame;
+    /*-moz-border-radius: 5px;*/ /* For Firefox */
+    /*border-radius: 5px;*/
+    /*border: 1px solid WindowFrame;*/
     /*min-height: 120px;*/
     width: 100%;
     /*min-height: 60px;*/

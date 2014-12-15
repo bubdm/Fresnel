@@ -33,6 +33,7 @@
 
     <script src="~/scripts/_app/FresnelApp.js?v=@version"></script>
     <script src="~/scripts/_app/Toolbox.js?v=@version"></script>
+    <script src="~/scripts/_app/main.js?v=@version"></script>
     <link href="~/Content/toolbox.css?v=@version" rel="stylesheet" />
     <link href="~/Content/workbench.css?v=@version" rel="stylesheet" />
 
@@ -299,6 +300,9 @@
             </div>
         </nav>
     </header>
+
+
+
     <div class="wrapper row-offcanvas row-offcanvas-left">
         <!-- Left side column. contains the logo and sidebar -->
         <aside class="left-side sidebar-offcanvas">
@@ -325,7 +329,22 @@
                 </form>
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
-                <ul class="sidebar-menu">
+                <ul class="sidebar-menu" ng-controller="toolboxController" class-library>
+                    <li id="toolboxPanel" class="active">
+                        <a href="#"><i class="fa fa-list"></i> <span>Library</span></a>
+                    </li>
+
+                    <li ng-repeat="namespace in classHierarchy" href="#" class="treeview active">
+                        <a href="#">
+                            <span>{{namespace.Name}} ({{namespace.Classes.length}})</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+
+                        <ul class="treeview-menu">
+                            <li ng-repeat="item in namespace.Classes"><a href="#">{{item.Name}}</a></li>
+                        </ul>
+                    </li>
+
                     <li class="active">
                         <a href="index.html">
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -431,29 +450,29 @@
             <section class="content"></section><!-- /.content -->
         </aside><!-- /.right-side -->
     </div><!-- ./wrapper -->
-
     @*<div id="toolboxPanel" ng-controller="toolboxController">
-        <a ng-click="loadClassHierarchy()" href="#">Load</a>
-        <h3>Class library</h3>
-        <div ng-repeat="namespace in classHierarchy" class="">
-            <span>{{namespace.Name}}</span>
-            <div ng-repeat="item in namespace.Classes" ng-include="'/Templates/classItem.html'" class="">
+            <a ng-click="loadClassHierarchy()" href="#">Load</a>
+            <h3>Class library</h3>
+            <div ng-repeat="namespace in classHierarchy" class="">
+                <span>{{namespace.Name}}</span>
+                <div ng-repeat="item in namespace.Classes" ng-include="'/Templates/classItem.html'" class="">
+                </div>
             </div>
         </div>
-    </div>
 
-    <div isotope-container="" class="isotope" ng-controller="explorerController">
-        <div class="isotope-item" isotope-item="" ng-repeat="obj in visibleExplorers">
-            <div ng-switch="obj.IsCollection">
-                <div ng-switch-when="true">
-                    <div ng-include="'/Templates/collectionExplorer.html'"></div>
-                </div>
-                <div ng-switch-default>
-                    <div ng-include="'/Templates/objectExplorer.html'"></div>
+        <div isotope-container="" class="isotope" ng-controller="explorerController">
+            <div class="isotope-item" isotope-item="" ng-repeat="obj in visibleExplorers">
+                <div ng-switch="obj.IsCollection">
+                    <div ng-switch-when="true">
+                        <div ng-include="'/Templates/collectionExplorer.html'"></div>
+                    </div>
+                    <div ng-switch-default>
+                        <div ng-include="'/Templates/objectExplorer.html'"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>*@
+        </div>*@
+
 
 </body>
 </html>

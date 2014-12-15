@@ -999,6 +999,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\typings\customExtensions.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
@@ -1012,6 +1013,7 @@
     <TypeScriptCompile Include="Scripts\_app\AppService.ts" />
     <TypeScriptCompile Include="Scripts\_app\ExplorerController.ts" />
     <TypeScriptCompile Include="Scripts\_app\IdentityMap.ts" />
+    <TypeScriptCompile Include="Scripts\_app\ClassLibraryDirective.ts" />
     <TypeScriptCompile Include="Scripts\_app\ToolboxController.ts" />
     <TypeScriptCompile Include="Scripts\_app\Interfaces.ts" />
     <TypeScriptCompile Include="Scripts\_app\Bootstrapper.ts" />
