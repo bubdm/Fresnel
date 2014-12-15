@@ -127,25 +127,26 @@ namespace Envivo.Fresnel.Introspection.Templates
             // Users shouldn't need to know about Abstract or Interfaces types, so let's fix that:
             if (this.RealType.IsAbstract || this.RealType.IsInterface)
             {
-                this.FriendlyName = this.CreateFriendlyNameForAbstractTypes();
+                this.FriendlyName = this.CreateFriendlyNameForAbstractTypes(this.FriendlyName);
             }
         }
 
-        private string CreateFriendlyNameForAbstractTypes()
+        private string CreateFriendlyNameForAbstractTypes(string friendlyName)
         {
-            var stringToReplace = _AbstractTypePrefixes.SingleOrDefault(p => this.FriendlyName.StartsWith(p));
+            var result = friendlyName;
+
+            var stringToReplace = _AbstractTypePrefixes.SingleOrDefault(p => friendlyName.StartsWith(p));
             if (stringToReplace.IsEmpty())
             {
-                stringToReplace = _AbstractTypeSuffixes.SingleOrDefault(p => this.FriendlyName.EndsWith(p));
+                stringToReplace = _AbstractTypeSuffixes.SingleOrDefault(p => friendlyName.EndsWith(p));
             }
 
             if (stringToReplace.IsNotEmpty())
             {
-                var result = string.Concat(this.FriendlyName.Replace(stringToReplace, string.Empty), " Types");
-                return result;
+                result = string.Concat(friendlyName.Replace(stringToReplace, string.Empty), " Types");
             }
 
-            return null;
+            return result;
         }
 
         private void DetermineInterfaces()
@@ -170,7 +171,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         [JsonIgnore]
         public PropertyTemplate VersionProperty { get { return _VersionProperty.Value; } }
-        
+
         /// <summary>
         /// Returns the Property used to retrieve the object's IAudit details
         /// </summary>
