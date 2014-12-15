@@ -47,7 +47,6 @@ namespace Envivo.Fresnel.UiCore.Classes
                     classItems.Add(item);
                 }
 
-                //var namespaceFriendlyName = group.Key.Replace(assemblyReader.Assembly.FullName, string.Empty);
                 var namespaceFriendlyName = group.Key.Split('.').Last();
 
                 var newNamespace = new Namespace()
