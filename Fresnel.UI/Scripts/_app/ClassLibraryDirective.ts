@@ -7,6 +7,9 @@
                 scope.$watchCollection('classHierarchy', function (newVal, oldVal) {
                     // Force the treeview to register any new nodes:
                     $(".sidebar .treeview").tree();
+
+                    // Force the tooltips to respond:
+                    $("[data-toggle='tooltip']").tooltip();
                 })
             }
 
