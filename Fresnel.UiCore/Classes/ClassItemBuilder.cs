@@ -35,7 +35,7 @@ namespace Envivo.Fresnel.UiCore.Classes
 
             var create = item.Create = new InteractionPoint();
             create.IsVisible = true;
-            create.IsEnabled = tClass.IsCreatable;
+            create.IsEnabled = tClass.HasDefaultConstructor;
             create.Tooltip = item.IsEnabled ? "Create a new " + tClass.FriendlyName : "This item is not creatable. Consider using a sub item instead.";
             create.CommandUri = item.IsEnabled ? "/Toolbox/Create" : "";
             create.CommandArg = item.IsEnabled ? tClass.FullName : "";
