@@ -58,6 +58,7 @@
     <Compile Include="Commands\RemoveFromCollectionCommand.cs" />
     <Compile Include="Commands\AddToCollectionCommand.cs" />
     <Compile Include="IEntityExtensions.cs" />
+    <Compile Include="Permissions\CanCreatePermission.cs" />
     <Compile Include="Proxies\IFresnelProxy.cs" />
     <Compile Include="Persistence\UnitOfWork.cs" />
     <Compile Include="Engine.cs" />

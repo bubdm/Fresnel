@@ -1,4 +1,5 @@
-﻿using Envivo.Fresnel.Introspection;
+﻿using Envivo.Fresnel.Core.Permissions;
+using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
@@ -12,13 +13,16 @@ namespace Envivo.Fresnel.UiCore.Classes
     public class ClassItemBuilder
     {
         private TemplateCache _TemplateCache;
+        private CanCreatePermission _CanCreatePermission;
 
         public ClassItemBuilder
             (
-            TemplateCache templateCache
+            TemplateCache templateCache,
+            CanCreatePermission canCreatePermission
             )
         {
             _TemplateCache = templateCache;
+            _CanCreatePermission = canCreatePermission;
         }
 
         public ClassItem BuildFor(ClassTemplate tClass)
@@ -33,10 +37,12 @@ namespace Envivo.Fresnel.UiCore.Classes
                 IsVisible = tClass.IsVisible,
             };
 
+            var createCheck = _CanCreatePermission.IsSatisfiedBy(tClass);
+
             var create = item.Create = new InteractionPoint();
             create.IsVisible = true;
-            create.IsEnabled = tClass.HasDefaultConstructor;
-            create.Tooltip = create.IsEnabled ? "Create a new " + tClass.FriendlyName : "This item is not creatable. Consider using a sub item instead.";
+            create.IsEnabled = createCheck.Passed;
+            create.Tooltip = create.IsEnabled ? "Create a new instance of " + tClass.FriendlyName : createCheck.FailureReason;
             create.CommandUri = create.IsEnabled ? "/Toolbox/Create" : "";
             create.CommandArg = create.IsEnabled ? tClass.FullName : "";
 
