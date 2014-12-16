@@ -1,4 +1,4 @@
-﻿<div class="propertyItem form-group form-horizontal" ng-show="prop.IsVisible">
+﻿<div class="form-group form-horizontal propertyItem" ng-show="prop.IsVisible">
     <div class="row ">
         <label class="col-md-4 control-label">
             {{ prop.Name }}
@@ -29,13 +29,13 @@
                     <i class="fa fa-ellipsis-h"></i>
                 </button>
             </div>
+
+            <span class="help-block propertyDescription">
+                {{ prop.Description }}
+            </span>
         </div>
     </div>
 
-    <div class="row col-md-offset-4 col-md-8">
-        <span class="help-block propertyDescription">
-            {{ prop.Description }}
-        </span>
-    </div>
+
 
 </div>
