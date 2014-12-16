@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         /// <summary>
         /// Any modifications to other Objects that occurred as part of the operation
         /// </summary>
-        public PropertyVM OtherModifications { get; set; }
+        public PropertyVM[] OtherModifications { get; set; }
         
     }
 

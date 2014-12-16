@@ -11,19 +11,7 @@
         </div>
     </div>
 
-    <!--<div class="collectionItems">
-        <div ng-repeat='item in obj.Items' ng-include="'/Templates/collectionItemRow.html'">
-        </div>
-    </div>-->
-
-    <div class="collectionItems">
-        <div id="collectionGrid" ng- ng-init="obj.Name='hi'" ng-repeat='item in obj.Items'>
-        </div>
+    <div id="collectionGrid" ui-grid="{ data: obj.Items }" ui-grid-auto-resize ui-grid-selection>
     </div>
 
-    <!--    <div id="collectionGrid" ng-init="alert('hi');" class="collectionItems"></div>-->
-
-    <div class="row pull-right">
-        <button type="button" class="btn btn-default" ng-disabled="obj.Create.IsEnabled" ng-click="save(obj)" tooltip="prop.Tooltip"><i class="fa fa-save"> Save</i></button>
-    </div>
 </div>

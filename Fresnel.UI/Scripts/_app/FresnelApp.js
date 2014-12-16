@@ -20,6 +20,42 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
+    function W2UIGridDirective() {
+        return {
+            link: function (scope, elem, attributes) {
+                var collection = scope['obj'];
+                // Initialise the grid:
+                angular.element(elem).w2grid({
+                    name: collection.ID,
+                    show: {
+                        toolbar: true,
+                        footer: true,
+                        lineNumbers: true,
+                        selectColumn: true,
+                    },
+                });
+                // Force the Grid to render the columns:
+                var headers = collection.ColumnHeaders;
+                var colWidth = (100 / headers.length) + "px";
+                //var grid = w2ui[collection.ID];
+                //for (var c = 0; c < headers.length; c++) {
+                //    grid.addColumn({ field: 'string', caption: headers[c], sortable: true, size: colWidth });
+                //}
+                //// Add the entries:
+                //var items = collection.Items;
+                //for (var r = 0; r < headers.length; r++) {
+                //    // NB: W2UI grid items MUST have a 'recid' that uniquely identifies it:
+                //    var item = items[r];
+                //    item.recid = item.HashCode;
+                //    grid.add(item);
+                //}
+            }
+        };
+    }
+    FresnelApp.W2UIGridDirective = W2UIGridDirective;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     // Taken from http://stackoverflow.com/a/25391043/80369
     function DisableAnchorDirective() {
         return {
@@ -53,6 +89,17 @@ var FresnelApp;
             $scope.$on('objectCreated', function (event, obj) {
                 $scope.visibleExplorers.push(obj);
             });
+            $scope.invoke = function (method) {
+                var uri = "api/Explorer/InvokeMethod";
+                $http.post(uri, method).success(function (data, status) {
+                    //var obj = data.ReturnValue;
+                    //if (obj) {
+                    //    appService.identityMap.addItem(obj);
+                    //    // TODO: Insert the object just after it's parent?
+                    //    $scope.visibleExplorers.push(obj);
+                    //}
+                });
+            };
             $scope.minimise = function (obj) {
                 obj.IsMaximised = false;
             };
@@ -171,5 +218,6 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    angular.module("fresnelApp", []).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective);
+    var requires = ['ui.grid', 'ui.grid.autoResize', 'ui.grid.selection'];
+    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective);
 })(FresnelApp || (FresnelApp = {}));

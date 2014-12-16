@@ -1,6 +1,8 @@
 ﻿module FresnelApp {
 
-    angular.module("fresnelApp", [])
+    var requires = ['ui.grid', 'ui.grid.autoResize', 'ui.grid.selection'];
+
+    angular.module("fresnelApp", requires)
         .service("appService", FresnelApp.AppService)
         .controller("appController", FresnelApp.AppController)
         .controller("toolboxController", FresnelApp.ToolboxController)

@@ -937,8 +937,11 @@
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\ng-dock.js" />
-    <Content Include="Scripts\w2ui\w2ui-1.4.2.min.css" />
-    <Content Include="Scripts\w2ui\w2ui-1.4.2.min.js" />
+    <Content Include="Scripts\ui-grid\ui-grid.css" />
+    <Content Include="Scripts\ui-grid\ui-grid.js" />
+    <Content Include="Scripts\ui-grid\ui-grid.min.css" />
+    <Content Include="Scripts\ui-grid\ui-grid.min.js" />
+    <Content Include="Scripts\ui-grid\ui-grid.svg" />
     <Content Include="Scripts\_app\main.js" />
     <Content Include="Scripts\_app\Workbench.js" />
     <Content Include="Scripts\_app\Toolbox.js" />
@@ -983,6 +986,9 @@
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
+    <Content Include="Scripts\ui-grid\ui-grid.eot" />
+    <Content Include="Scripts\ui-grid\ui-grid.ttf" />
+    <Content Include="Scripts\ui-grid\ui-grid.woff" />
     <None Include="Views\Home\index.cshtml" />
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
