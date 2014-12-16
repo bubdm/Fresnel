@@ -63,7 +63,7 @@ namespace Envivo.Fresnel.UiCore.Objects
             return result;
         }
 
-        private IEnumerable<ObjectVM> CreateItems(CollectionObserver oCollection, 
+        private IEnumerable<ObjectVM> CreateItems(CollectionObserver oCollection,
                                                   IEnumerable<PropertyTemplate> allKnownProperties)
         {
             var items = new List<ObjectVM>();
@@ -103,10 +103,16 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         private ObjectVM BuildForObject(ObjectObserver oObject)
         {
+            var title = oObject.RealObject.ToString() ?? oObject.Template.FriendlyName;
+            if (title == oObject.Template.FullName)
+            {
+                title = oObject.Template.FriendlyName;
+            }
+
             var result = new ObjectVM()
             {
                 ID = oObject.ID,
-                Name = oObject.Template.FriendlyName,
+                Name = title,
                 IsVisible = oObject.Template.IsVisible,
                 Description = oObject.Template.XmlComments.Summary,
                 Properties = this.CreateProperties(oObject),

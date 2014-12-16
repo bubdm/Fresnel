@@ -1,1 +1,2 @@
-﻿<input ng-model="prop.Value" /> 
+﻿<input type="text" class="form-control" ng-show="prop.Info.IsMultiLine != 'True'" ng-model="prop.Value" />
+<textarea ng-show="prop.Info.IsMultiLine === 'True'" class="form-control" rows="5" ng-model="prop.Value" />

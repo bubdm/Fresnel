@@ -53,7 +53,7 @@
     <header class="header">
         <a href="index.html" class="logo">
             <!-- Add the class icon to your logo image or logo icon to add the margining -->
-            AdminLTE
+            {{appName}} {{appVersion}}
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -330,7 +330,7 @@
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu" ng-controller="toolboxController" class-library>
-                    <li id="toolboxPanel" class="active">
+                    <li>
                         <a href=""><i class="fa fa-list"></i> <span>Library</span></a>
                     </li>
 
@@ -438,19 +438,25 @@
 
                     <li class="treeview">
                         <a href="#">
-                            <i class="fa fa-folder"></i> <span>Examples</span>
+                            <i class="fa fa-gear"></i> <span>Services</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="pages/examples/invoice.html"><i class="fa fa-angle-double-right"></i> Invoice</a></li>
-                            <li><a href="pages/examples/login.html"><i class="fa fa-angle-double-right"></i> Login</a></li>
-                            <li><a href="pages/examples/register.html"><i class="fa fa-angle-double-right"></i> Register</a></li>
-                            <li><a href="pages/examples/lockscreen.html"><i class="fa fa-angle-double-right"></i> Lockscreen</a></li>
-                            <li><a href="pages/examples/404.html"><i class="fa fa-angle-double-right"></i> 404 Error</a></li>
-                            <li><a href="pages/examples/500.html"><i class="fa fa-angle-double-right"></i> 500 Error</a></li>
-                            <li><a href="pages/examples/blank.html"><i class="fa fa-angle-double-right"></i> Blank Page</a></li>
+                            <li><a href=""><i class="fa fa-ban"></i> Nothing here yet</a></li>
                         </ul>
                     </li>
+
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-search"></i> <span>Searches</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href=""><i class="fa fa-ban"></i> Nothing here yet</a></li>
+                        </ul>
+                    </li>
+
+
                 </ul>
             </section>
             <!-- /.sidebar -->
@@ -470,7 +476,7 @@
                     </ol>
                 </section>*@
             <!-- Main content -->
-            <section class="content">
+            <section class="content workbenchContainer">
 
                 <div isotope-container="" class="isotope" ng-controller="explorerController">
                     <div class="isotope-item" isotope-item="" ng-repeat="obj in visibleExplorers">
@@ -488,29 +494,6 @@
             </section><!-- /.content -->
         </aside><!-- /.right-side -->
     </div><!-- ./wrapper -->
-    @*<div id="toolboxPanel" ng-controller="toolboxController">
-            <a ng-click="loadClassHierarchy()" href="#">Load</a>
-            <h3>Class library</h3>
-            <div ng-repeat="namespace in classHierarchy" class="">
-                <span>{{namespace.Name}}</span>
-                <div ng-repeat="item in namespace.Classes" ng-include="'/Templates/classItem.html'" class="">
-                </div>
-            </div>
-        </div>
-
-        <div isotope-container="" class="isotope" ng-controller="explorerController">
-            <div class="isotope-item" isotope-item="" ng-repeat="obj in visibleExplorers">
-                <div ng-switch="obj.IsCollection">
-                    <div ng-switch-when="true">
-                        <div ng-include="'/Templates/collectionExplorer.html'"></div>
-                    </div>
-                    <div ng-switch-default>
-                        <div ng-include="'/Templates/objectExplorer.html'"></div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-
 
 </body>
 </html>

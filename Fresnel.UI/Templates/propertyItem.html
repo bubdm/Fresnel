@@ -1,41 +1,41 @@
-﻿<div class="row propertyItem" ng-disabled="!prop.IsVisible">
-    <div class="col-xs-4">
-        <span>{{ prop.Name }}</span>
+﻿<div class="propertyItem form-group form-horizontal" ng-show="prop.IsVisible">
+    <div class="row ">
+        <label class="col-md-4 control-label">
+            {{ prop.Name }}
+        </label>
+
+        <div ng-switch="prop.Info.Name" class="col-md-8">
+            <div ng-switch-when="boolean">
+                <div ng-include="'/Templates/Editors/booleanEditor.html'"></div>
+            </div>
+            <div ng-switch-when="datetime">
+                <div ng-include="'/Templates/Editors/dateTimeEditor.html'"></div>
+            </div>
+            <div ng-switch-when="enum">
+                <div ng-include="'/Templates/Editors/enumEditor.html'"></div>
+            </div>
+            <div ng-switch-when="number">
+                <div ng-include="'/Templates/Editors/numberEditor.html'"></div>
+            </div>
+            <div ng-switch-when="string">
+                <div ng-include="'/Templates/Editors/stringEditor.html'"></div>
+            </div>
+            <div ng-switch-default>
+                <button type="button"
+                        class="form-control btn btn-default btn-xs"
+                        ng-show="prop.IsExpandable"
+                        ng-click="openNewExplorer(prop)"
+                        tooltip="prop.Tooltip">
+                    <i class="fa fa-ellipsis-h"></i>
+                </button>
+            </div>
+        </div>
     </div>
 
-    <div class="col-xs-8" ng-switch="prop.Info.Name">
-        <div ng-switch-when="boolean">
-            <div ng-include="'/Templates/Editors/booleanEditor.html'"></div>
-        </div>
-        <div ng-switch-when="datetime">
-            <div ng-include="'/Templates/Editors/dateTimeEditor.html'"></div>
-        </div>
-        <div ng-switch-when="enum">
-            <div ng-include="'/Templates/Editors/enumEditor.html'"></div>
-        </div>
-        <div ng-switch-when="number">
-            <div ng-include="'/Templates/Editors/numberEditor.html'"></div>
-        </div>
-        <div ng-switch-when="string">
-            <div ng-include="'/Templates/Editors/stringEditor.html'"></div>
-        </div>
-        <div ng-switch-default>
-            <button type="button"
-                    class="btn btn-default btn-xs"
-                    ng-show="prop.IsExpandable"
-                    ng-click="openNewExplorer(prop)"
-                    tooltip="prop.Tooltip">
-                <i class="fa fa-ellipsis-h"></i>
-            </button>
-        </div>
+    <div class="row col-md-offset-4 col-md-8">
+        <span class="help-block propertyDescription">
+            {{ prop.Description }}
+        </span>
     </div>
 
-</div>
-
-<div class="row" ng-disabled="!prop.IsVisible">
-    <div class="col-xs-4">
-    </div>
-    <div class="col-xs-8 propertyDescription">
-        {{ prop.Description }}
-    </div>
 </div>
