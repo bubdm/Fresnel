@@ -26,7 +26,7 @@ namespace Envivo.Fresnel.Introspection.Commands
                 return newInstance;
             }
 
-            throw new FresnelException(tClass.Name + " cannot be created");
+            throw new FresnelException(tClass.Name + " cannot be created (there is no default constructor");
         }
 
         /// <summary>

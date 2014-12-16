@@ -244,15 +244,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             get
             {
-                try
-                {
-                    return _RapidCtor.Value != null;
-                }
-                catch (Exception ex)
-                {
-                    // Not sure what to do here
-                }
-                return false;
+                var defaultCtor = _Constructors.Value.SingleOrDefault(c => !c.GetParameters().Any());
+                return defaultCtor != null;
             }
         }
 

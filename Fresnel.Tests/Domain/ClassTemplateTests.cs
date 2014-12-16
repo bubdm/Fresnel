@@ -186,46 +186,25 @@ namespace Envivo.Fresnel.Tests.Domain
         }
 
         [Test()]
-        public void ShouldParseXmlCommentsForClass()
+        public void ShouldNotCreateInstanceIfCtorUnavailable()
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-            var templateCache = container.Resolve<TemplateCache>();
 
-            var typeToInspect = typeof(SampleModel.BasicTypes.TextValues);
+            var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
+            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+            var createCommand = container.Resolve<CreateObjectCommand>();
 
-            // Act:
-            var tClass = (ClassTemplate)templateCache.GetTemplate(typeToInspect);
+            var typeToInspect = typeof(SampleModel.StaticMethodTests);
+            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
 
-            // Assert:
-            Assert.AreEqual("A set of Text(string) properties", tClass.XmlComments.Summary);
-
-            foreach (var tProp in tClass.Properties.Values)
-            {
-                Assert.IsNotEmpty(tProp.XmlComments.Summary);
-            }
-        }
-
-        [Test()]
-        public void ShouldParseXmlCommentsForMethods()
-        {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var templateCache = container.Resolve<TemplateCache>();
-
-            var typeToInspect = typeof(SampleModel.BasicTypes.TextValues);
-
-            // Act:
-            var tClass = (ClassTemplate)templateCache.GetTemplate(typeToInspect);
+            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributes);
 
             // Assert:
-            Assert.AreEqual("A set of Text(string) properties", tClass.XmlComments.Summary);
-
-            foreach (var tProp in tClass.Properties.Values)
-            {
-                Assert.IsNotEmpty(tProp.XmlComments.Summary);
-            }
+            Assert.Throws(typeof(FresnelException),
+                        () => createCommand.Invoke(classTemplate));
         }
+
     }
 }
 
