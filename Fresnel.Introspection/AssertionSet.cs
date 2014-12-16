@@ -70,7 +70,8 @@ namespace Envivo.Fresnel.Introspection
 
         public bool Passed
         {
-            get { return _Assertions.Any(a => a.Passed); }
+            // NB: Having zero Assertions is a PASS by default:
+            get { return _Assertions.Count == 0 || _Assertions.Any(a => a.Passed); }
         }
 
         public bool Failed
