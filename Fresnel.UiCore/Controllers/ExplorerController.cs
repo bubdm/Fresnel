@@ -11,13 +11,16 @@ namespace Envivo.Fresnel.UiCore.Controllers
     public class ExplorerController : ApiController
     {
         private GetPropertyCommand _GetPropertyCommand;
+        private InvokeMethodCommand _InvokeMethodCommand;
 
         public ExplorerController
             (
-            GetPropertyCommand getPropertyCommand
+            GetPropertyCommand getPropertyCommand,
+            InvokeMethodCommand invokeMethodCommand
             )
         {
             _GetPropertyCommand = getPropertyCommand;
+            _InvokeMethodCommand = invokeMethodCommand;
         }
 
         [HttpPost]
@@ -25,6 +28,14 @@ namespace Envivo.Fresnel.UiCore.Controllers
         {
             var prop = id;
             var results = _GetPropertyCommand.Invoke(prop.ObjectID, prop.PropertyName);
+            return results;
+        }
+
+        [HttpPost]
+        public GetPropertyResult InvokeMethod([FromBody]MethodVM id)
+        {
+            var method = id;
+            var results = _InvokeMethodCommand.Invoke(method.ObjectID, method.MethodName);
             return results;
         }
     }

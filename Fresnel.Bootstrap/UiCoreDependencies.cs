@@ -26,8 +26,11 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Commands.GetClassHierarchyCommand),
                 typeof(Fresnel.UiCore.Commands.CreateCommand),
                 typeof(Fresnel.UiCore.Commands.GetPropertyCommand),
+                typeof(Fresnel.UiCore.Commands.InvokeMethodCommand),
+
                 typeof(Fresnel.UiCore.Classes.ClassItemBuilder),
                 typeof(Fresnel.UiCore.Classes.NamespacesBuilder),
+
                 typeof(Fresnel.UiCore.TypeInfo.TypeInfoBuilder),
                 typeof(Fresnel.UiCore.TypeInfo.BooleanVmBuilder),
                 typeof(Fresnel.UiCore.TypeInfo.DateTimeVmBuilder),

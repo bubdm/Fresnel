@@ -15,6 +15,21 @@
                 $scope.visibleExplorers.push(obj);
             });
 
+            $scope.invoke = function (method: any) {
+                var uri = "api/Explorer/InvokeMethod";
+
+                $http.post(uri, method)
+                    .success(function (data: any, status) {
+                        //var obj = data.ReturnValue;
+                        //if (obj) {
+                        //    appService.identityMap.addItem(obj);
+
+                        //    // TODO: Insert the object just after it's parent?
+                        //    $scope.visibleExplorers.push(obj);
+                        //}
+                    });
+            }
+
             $scope.minimise = function (obj: IObjectVM) {
                 obj.IsMaximised = false;
             }
