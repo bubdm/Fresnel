@@ -342,13 +342,8 @@
 
                         <ul class="treeview-menu">
                             <li ng-repeat="item in namespace.Classes" class="active classItem">
-                                <div>
-                                    <a href="" ng-show="item.IsVisible" data-toggle="tooltip" title="{{item.Description}}">
-                                        <i class="fa fa-circle-o"></i>
-                                        {{item.Name}}
-                                    </a>
-
-                                    <div class="btn-group pull-right">
+                                <div class="">
+                                    <div class="btn-group">
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                             <span class="caret"></span>
                                             <span class="sr-only">Toggle Dropdown</span>
@@ -360,6 +355,11 @@
                                             <li><a href="#">Separated link</a></li>
                                         </ul>
                                     </div>
+
+                                    <a class="" href="" ng-show="item.IsVisible" data-toggle="tooltip" title="{{item.Description}}">
+                                        {{item.Name}}
+                                    </a>
+
                                 </div>
                             </li>
                         </ul>
