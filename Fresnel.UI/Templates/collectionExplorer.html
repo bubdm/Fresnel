@@ -1,12 +1,13 @@
-﻿<div id="collectionExplorer" ng-class="{'col-md-1': true, 'box': true, 'box-solid': true, 'box-primary': true, 'explorerPanel' : true, 'explorerPanelNormalSize' : !obj.IsMaximised, 'explorerPanelMaximised' : obj.IsMaximised}">
+﻿<div id="collectionExplorer" ng-class="{'container-fluid' : true, 'col-md-4': true, 'box': true, 'box-solid': true, 'box-primary': true, 'explorerPanel' : true, 'explorerPanelNormalSize' : !obj.IsMaximised, 'explorerPanelMaximised' : obj.IsMaximised}">
 
     <div class="box-header">
         <h3 class="box-title">{{ obj.Name }}</h3>
         <div class="box-tools pull-right">
-            <button class="btn btn-default btn-sm" ng-click="showInfo(obj)"><i class="fa fa-info-circle"></i></button>
-            <button class="btn btn-primary btn-xs" ng-show="obj.IsMaximised" ng-click="minimise(obj)"><i class="fa fa-compress"></i></button>
-            <button class="btn btn-primary btn-xs" ng-show="!obj.IsMaximised" ng-click=" maximise(obj)"><i class="fa fa-expand"></i></button>
-            <button class="btn btn-primary btn-xs" ng-click="close(obj)"><i class="fa fa-close"></i></button>
+            <button class="btn btn-primary btn-sm" ng-disabled="obj.Save.IsEnabled" ng-click="save(obj)" tooltip="prop.Tooltip"><i class="fa fa-save"></i></button>
+            <button class="btn btn-primary btn-sm" ng-click="showInfo(obj)"><i class="fa fa-info-circle"></i></button>
+            <button class="btn btn-primary btn-sm" ng-show="obj.IsMaximised" ng-click="minimise(obj)"><i class="fa fa-compress"></i></button>
+            <button class="btn btn-primary btn-sm" ng-show="!obj.IsMaximised" ng-click=" maximise(obj)"><i class="fa fa-expand"></i></button>
+            <button class="btn btn-primary btn-sm" ng-click="close(obj)"><i class="fa fa-close"></i></button>
         </div>
     </div>
 

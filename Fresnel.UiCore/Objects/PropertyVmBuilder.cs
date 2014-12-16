@@ -44,6 +44,8 @@ namespace Envivo.Fresnel.UiCore.Objects
                 IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true,
                 IsVisible = !oProp.Template.IsFrameworkMember && oProp.Template.IsVisible,
                 IsExpandable = objectProp != null,
+                CanRead = getCheck.Passed,
+                CanWrite = setCheck.Passed,
             };
 
             if (setCheck.Passed)
@@ -57,7 +59,6 @@ namespace Envivo.Fresnel.UiCore.Objects
 
             if (getCheck.Passed)
             {
-
                 try
                 {
                     propVM.Value = oProp.Template.GetProperty(oObject.RealObject);

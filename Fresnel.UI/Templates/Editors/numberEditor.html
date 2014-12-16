@@ -1,8 +1,9 @@
 ﻿<input class="form-control"
        type="number"
        ng-model="prop.Value"
+       ng-disabled="!prop.CanWrite"
        required="{{prop.Info.IsRequired}}"
        min="{{prop.Info.MinValue}}"
        max="{{prop.Info.MaxValue}}"
-       ngminlength="{{prop.Info.MinValue}}"
-       ngmaxlength="{{prop.Info.MaxValue}}" />
+       ngminlength="prop.Info.MinValue}}"
+       ngmaxlength="prop.Info.MaxValue}}" />
