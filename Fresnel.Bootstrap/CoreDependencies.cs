@@ -55,6 +55,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Core.Permissions.CanCreatePermission),
                 typeof(Fresnel.Core.Permissions.CanGetPropertyPermission),
                 typeof(Fresnel.Core.Permissions.CanSetPropertyPermission),
+                typeof(Fresnel.Core.Permissions.CanInvokeMethodPermission),
 
                 typeof(Fresnel.Core.ChangeTracking.DirtyObjectNotifier),
             };

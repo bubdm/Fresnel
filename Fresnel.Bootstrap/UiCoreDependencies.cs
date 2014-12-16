@@ -47,6 +47,7 @@ namespace Envivo.Fresnel.Bootstrap
 
                 typeof(Fresnel.UiCore.Objects.AbstractObjectVMBuilder),
                 typeof(Fresnel.UiCore.Objects.PropertyVmBuilder),
+                typeof(Fresnel.UiCore.Objects.MethodVmBuilder),
             };
         }
 

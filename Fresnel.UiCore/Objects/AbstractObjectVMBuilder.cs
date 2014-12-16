@@ -13,17 +13,20 @@ namespace Envivo.Fresnel.UiCore.Objects
         private ObserverCache _ObserverCache;
         private ClassHierarchyBuilder _ClassHierarchyBuilder;
         private PropertyVmBuilder _PropertyVmBuilder;
+        private MethodVmBuilder _MethodVmBuilder;
 
         public AbstractObjectVMBuilder
             (
             ObserverCache observerCache,
             ClassHierarchyBuilder classHierarchyBuilder,
-            PropertyVmBuilder propertyVmBuilder
+            PropertyVmBuilder propertyVmBuilder,
+            MethodVmBuilder methodVmBuilder
             )
         {
             _ObserverCache = observerCache;
             _ClassHierarchyBuilder = classHierarchyBuilder;
             _PropertyVmBuilder = propertyVmBuilder;
+            _MethodVmBuilder = methodVmBuilder;
         }
 
         public ObjectVM BuildFor(BaseObjectObserver observer)
@@ -116,6 +119,7 @@ namespace Envivo.Fresnel.UiCore.Objects
                 IsVisible = oObject.Template.IsVisible,
                 Description = oObject.Template.XmlComments.Summary,
                 Properties = this.CreateProperties(oObject),
+                Methods = this.CreateMethods(oObject),
             };
 
             return result;
@@ -130,6 +134,17 @@ namespace Envivo.Fresnel.UiCore.Objects
                 properties.Add(propVM);
             }
             return properties;
+        }
+
+        private IEnumerable<MethodVM> CreateMethods(ObjectObserver oObject)
+        {
+            var methods = new List<MethodVM>();
+            foreach (var oMethod in oObject.Methods.Values)
+            {
+                var methodVM = _MethodVmBuilder.BuildFor(oObject, oMethod);
+                methods.Add(methodVM);
+            }
+            return methods;
         }
 
     }
