@@ -410,13 +410,13 @@
                     </ol>
                 </section>*@
             <!-- Main content -->
-            <section class="content workbenchContainer">
+            <section class="content workbenchContainer isotope" isotope-container>
 
-                <div isotope-container="" class="isotope" ng-controller="explorerController">
-                    <div class="isotope-item" isotope-item="" ng-repeat="obj in visibleExplorers">
+                <div ng-controller="objectExplorerController">
+                    <div class="isotope-item" isotope-item ng-repeat="obj in visibleExplorers">
                         <div ng-switch="obj.IsCollection">
                             <div ng-switch-when="true">
-                                <div ng-include="'/Templates/collectionExplorer.html'"></div>
+                                <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'"></div>
                             </div>
                             <div ng-switch-default>
                                 <div ng-include="'/Templates/objectExplorer.html'"></div>

@@ -16,7 +16,9 @@
 
     }
 
-    export interface IExplorerControllerScope extends ng.IScope {
+    export interface IObjectExplorerControllerScope extends ng.IScope {
+
+        obj: IObjectVM;
 
         visibleExplorers: any[];
 
@@ -29,10 +31,19 @@
         invoke(method: IObjectVM);
 
         openNewExplorer(prop: any);
-
-        setupCollectionGrid(collectionVM, gridElementName);
     }
 
+    export interface ICollectionExplorerControllerScope extends IObjectExplorerControllerScope {
+
+        gridColumns: any[];
+
+        gridOptions: any;
+
+        addItem(obj: IObjectVM);
+
+        removeItem(obj: IObjectVM);
+
+    }
 
     export interface IObjectVM {
 

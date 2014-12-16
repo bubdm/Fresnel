@@ -20,39 +20,24 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    function W2UIGridDirective() {
-        return {
-            link: function (scope, elem, attributes) {
-                var collection = scope['obj'];
-                // Initialise the grid:
-                angular.element(elem).w2grid({
-                    name: collection.ID,
-                    show: {
-                        toolbar: true,
-                        footer: true,
-                        lineNumbers: true,
-                        selectColumn: true,
-                    },
-                });
-                // Force the Grid to render the columns:
-                var headers = collection.ColumnHeaders;
-                var colWidth = (100 / headers.length) + "px";
-                //var grid = w2ui[collection.ID];
-                //for (var c = 0; c < headers.length; c++) {
-                //    grid.addColumn({ field: 'string', caption: headers[c], sortable: true, size: colWidth });
-                //}
-                //// Add the entries:
-                //var items = collection.Items;
-                //for (var r = 0; r < headers.length; r++) {
-                //    // NB: W2UI grid items MUST have a 'recid' that uniquely identifies it:
-                //    var item = items[r];
-                //    item.recid = item.HashCode;
-                //    grid.add(item);
-                //}
+    var CollectionExplorerController = (function () {
+        function CollectionExplorerController($scope, $http, appService) {
+            $scope.gridColumns = [];
+            var collection = $scope.obj;
+            for (var i = 0; i < collection.ColumnHeaders.length; i++) {
+                var newColumn = { name: collection.ColumnHeaders[i] };
+                $scope.gridColumns[i] = newColumn;
             }
-        };
-    }
-    FresnelApp.W2UIGridDirective = W2UIGridDirective;
+            $scope.gridOptions = {
+                enableSorting: true,
+                columnDefs: $scope.gridColumns,
+                data: collection.Items
+            };
+        }
+        CollectionExplorerController.$inject = ['$scope', '$http', 'appService'];
+        return CollectionExplorerController;
+    })();
+    FresnelApp.CollectionExplorerController = CollectionExplorerController;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
@@ -83,8 +68,8 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    var ExplorerController = (function () {
-        function ExplorerController($scope, $http, appService) {
+    var ObjectExplorerController = (function () {
+        function ObjectExplorerController($scope, $http, appService) {
             $scope.visibleExplorers = [];
             $scope.$on('objectCreated', function (event, obj) {
                 $scope.visibleExplorers.push(obj);
@@ -125,10 +110,10 @@ var FresnelApp;
                 });
             };
         }
-        ExplorerController.$inject = ['$scope', '$http', 'appService'];
-        return ExplorerController;
+        ObjectExplorerController.$inject = ['$scope', '$http', 'appService'];
+        return ObjectExplorerController;
     })();
-    FresnelApp.ExplorerController = ExplorerController;
+    FresnelApp.ObjectExplorerController = ObjectExplorerController;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
@@ -219,5 +204,5 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var requires = ['ui.grid', 'ui.grid.autoResize', 'ui.grid.selection'];
-    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("explorerController", FresnelApp.ExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective);
+    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective);
 })(FresnelApp || (FresnelApp = {}));

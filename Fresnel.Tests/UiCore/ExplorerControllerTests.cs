@@ -54,6 +54,38 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsNotNull(getResult.ReturnValue);
         }
 
+        [Test()]
+        public void ShouldReturnCorrectHeadersForCollection()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
+            var templateCache = container.Resolve<TemplateCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+            poco.AddSomeChildObjects();
+            var pocoProxy = proxyCache.GetProxy(poco);
+
+            var propertyVM = new PropertyVM()
+            {
+                ObjectID = poco.ID,
+                PropertyName = "ChildObjects"
+            };
+
+            var tPoco = (ClassTemplate)templateCache.GetTemplate(poco.GetType());
+
+            // Act:
+            var getResult = controller.GetObjectProperty(propertyVM);
+
+            // Assert:
+            var collectionVM = (CollectionVM)getResult.ReturnValue;
+
+            // There should be a Header for each property in the collection's Element type:
+            Assert.GreaterOrEqual(collectionVM.ColumnHeaders.Count(), tPoco.Properties.Count());
+        }
+
     }
 
 }

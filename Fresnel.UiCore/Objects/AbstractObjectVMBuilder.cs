@@ -50,7 +50,9 @@ namespace Envivo.Fresnel.UiCore.Objects
         {
             // The View needs to know about ALL properties for all sub-classes of the Collection's element type:
             var tElement = oCollection.Template.InnerClass;
-            var allKnownProperties = _ClassHierarchyBuilder.GetProperties(tElement);
+            var allKnownProperties = _ClassHierarchyBuilder.GetProperties(tElement)
+                                        .Where(p => !p.IsFrameworkMember &&
+                                                     p.IsVisible);
 
             var result = new CollectionVM()
             {
@@ -75,7 +77,7 @@ namespace Envivo.Fresnel.UiCore.Objects
                 var oObject = (ObjectObserver)_ObserverCache.GetObserver(obj);
                 var objVM = this.BuildForObject(oObject);
 
-                this.InsertUnallocatedProperties(objVM, allKnownProperties);
+                //this.InsertUnallocatedProperties(objVM, allKnownProperties);
 
                 items.Add(objVM);
             }

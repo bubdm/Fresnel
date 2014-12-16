@@ -104,7 +104,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         private ClassTemplate DetermineInnerClass()
         {
-            var result = (ClassTemplate)_TemplateCache.GetTemplate(this.RealType);
+            var result = (ClassTemplate)_TemplateCache.GetTemplate(this.ElementType);
             return result;
         }
 

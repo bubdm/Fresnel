@@ -1,11 +1,11 @@
 ﻿module FresnelApp {
 
-    export class ExplorerController {
+    export class ObjectExplorerController {
 
         static $inject = ['$scope', '$http', 'appService'];
 
         constructor(
-            $scope: IExplorerControllerScope,
+            $scope: IObjectExplorerControllerScope,
             $http: ng.IHttpService,
             appService: AppService) {
 

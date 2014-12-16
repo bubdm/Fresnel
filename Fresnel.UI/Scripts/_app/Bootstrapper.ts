@@ -6,7 +6,8 @@
         .service("appService", FresnelApp.AppService)
         .controller("appController", FresnelApp.AppController)
         .controller("toolboxController", FresnelApp.ToolboxController)
-        .controller("explorerController", FresnelApp.ExplorerController)
+        .controller("objectExplorerController", FresnelApp.ObjectExplorerController)
+        .controller("collectionExplorerController", FresnelApp.CollectionExplorerController)
         .directive("classLibrary", FresnelApp.ClassLibaryDirective)
         .directive("aDisabled", FresnelApp.DisableAnchorDirective)
     ;
