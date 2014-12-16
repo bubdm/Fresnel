@@ -1032,10 +1032,6 @@
       <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>
       <Name>Fresnel.Introspection</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fresnel.SampleModel\Fresnel.SampleModel.csproj">
-      <Project>{77810a26-5586-42c5-b05a-4c06db029fd2}</Project>
-      <Name>Fresnel.SampleModel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fresnel.UiCore\Fresnel.UiCore.csproj">
       <Project>{81df9fcc-50e5-4d2e-b47b-4e61efd2fbf3}</Project>
       <Name>Fresnel.UiCore</Name>

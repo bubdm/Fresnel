@@ -12,6 +12,8 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using System.Diagnostics;
+using System.Configuration;
+using System.Reflection;
 
 namespace Envivo.Fresnel.UI
 {
@@ -28,9 +30,16 @@ namespace Envivo.Fresnel.UI
 
             ConfigureAutofac();
 
-            // TODO: Decouple this registration:
+            RegisterDomainAssembly();
+        }
+
+        private static void RegisterDomainAssembly()
+        {
+            var path = ConfigurationManager.AppSettings["DomainAssemblyFile"];
+            var domainAssembly = Assembly.LoadFile(path);
+
             var engine = DependencyResolver.Current.GetService<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(domainAssembly);
         }
 
         private static void ConfigureExternalControllers()
@@ -43,7 +52,7 @@ namespace Envivo.Fresnel.UI
 
         private static void ConfigureAutofac()
         {
-            var additionalDependencies = new Module[] { new UiDependencies() };
+            var additionalDependencies = new Autofac.Module[] { new UiDependencies() };
             var container = new ContainerFactory()
                                 .Build(additionalDependencies);
 
