@@ -127,8 +127,11 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         private IEnumerable<PropertyVM> CreateProperties(ObjectObserver oObject)
         {
+            var visibleProperties = oObject.Properties.Values.Where(p => !p.Template.IsFrameworkMember &&
+                                                                          p.Template.IsVisible);
+
             var properties = new List<PropertyVM>();
-            foreach (var oProp in oObject.Properties.Values)
+            foreach (var oProp in visibleProperties)
             {
                 var propVM = _PropertyVmBuilder.BuildFor(oObject, oProp);
                 properties.Add(propVM);
@@ -138,8 +141,11 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         private IEnumerable<MethodVM> CreateMethods(ObjectObserver oObject)
         {
+            var visibleMethods = oObject.Methods.Values.Where(m => !m.Template.IsFrameworkMember &&
+                                                                    m.Template.IsVisible);
+
             var methods = new List<MethodVM>();
-            foreach (var oMethod in oObject.Methods.Values)
+            foreach (var oMethod in visibleMethods)
             {
                 var methodVM = _MethodVmBuilder.BuildFor(oObject, oMethod);
                 methods.Add(methodVM);
