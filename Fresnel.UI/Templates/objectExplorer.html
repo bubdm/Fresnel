@@ -10,7 +10,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li ng-repeat='method in obj.Methods'>
-                        <a a-disabled="!method.IsEnabled" ng-click="invoke(method)" data-toggle="tooltip" title="{{method.Description}}">{{method.Name}}</a>
+                        <a href="" a-disabled="!method.IsEnabled" ng-click="invoke(method)" data-toggle="tooltip" title="{{method.Description}}">{{method.Name}}</a>
                     </li>
                 </ul>
             </div>
