@@ -2,9 +2,11 @@
     width: 100%;
 }
 
-.nopadding {
-   padding: 0 !important;
-   margin: 0 !important;
+a.disabled {
+    color: #AAAAAA;
+    cursor: not-allowed;
+    /*pointer-events: none;*/
+    /*text-decoration: none;*/
 }
 
 .workbenchContainer {
@@ -32,8 +34,8 @@
 }
 
 .propertyItems {
-    /*overflow-x: hidden;
-    overflow-y: auto;*/
+    /*overflow-x: auto;*/
+    /*overflow-y: auto;*/
 }
 
 .propertyItem {

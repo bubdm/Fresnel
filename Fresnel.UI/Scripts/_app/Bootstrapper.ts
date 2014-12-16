@@ -6,6 +6,7 @@
         .controller("toolboxController", FresnelApp.ToolboxController)
         .controller("explorerController", FresnelApp.ExplorerController)
         .directive("classLibrary", FresnelApp.ClassLibaryDirective)
+        .directive("aDisabled", FresnelApp.DisableAnchorDirective)
     ;
 
 }

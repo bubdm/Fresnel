@@ -36,14 +36,14 @@ namespace Envivo.Fresnel.UiCore.Classes
             var create = item.Create = new InteractionPoint();
             create.IsVisible = true;
             create.IsEnabled = tClass.HasDefaultConstructor;
-            create.Tooltip = item.IsEnabled ? "Create a new " + tClass.FriendlyName : "This item is not creatable. Consider using a sub item instead.";
-            create.CommandUri = item.IsEnabled ? "/Toolbox/Create" : "";
-            create.CommandArg = item.IsEnabled ? tClass.FullName : "";
+            create.Tooltip = create.IsEnabled ? "Create a new " + tClass.FriendlyName : "This item is not creatable. Consider using a sub item instead.";
+            create.CommandUri = create.IsEnabled ? "/Toolbox/Create" : "";
+            create.CommandArg = create.IsEnabled ? tClass.FullName : "";
 
             var search = item.Search = new InteractionPoint();
             search.IsVisible = true;
             search.IsEnabled = true;
-            search.Tooltip = item.IsEnabled ? "Search for existing instances of " + tClass.FriendlyName : "This item cannot be searched for";
+            search.Tooltip = search.IsEnabled ? "Search for existing instances of " + tClass.FriendlyName : "This item cannot be searched for";
 
             // TODO: Add other Interaction Points (Factory, Service, Static methods, etc)
 

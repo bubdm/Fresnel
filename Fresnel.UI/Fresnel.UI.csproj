@@ -1011,6 +1011,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\_app\AppController.ts" />
     <TypeScriptCompile Include="Scripts\_app\AppService.ts" />
+    <TypeScriptCompile Include="Scripts\_app\DisableAnchorDirective.ts" />
     <TypeScriptCompile Include="Scripts\_app\ExplorerController.ts" />
     <TypeScriptCompile Include="Scripts\_app\IdentityMap.ts" />
     <TypeScriptCompile Include="Scripts\_app\ClassLibraryDirective.ts" />
