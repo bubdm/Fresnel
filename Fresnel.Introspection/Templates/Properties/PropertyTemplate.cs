@@ -68,9 +68,9 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         internal override void FinaliseConstruction()
         {
-            base.FinaliseConstruction();
-
             _Attribute = this.Attributes.Get<PropertyAttribute>();
+
+            base.FinaliseConstruction();
         }
 
         private IClassTemplate DetermineInnerClass()
