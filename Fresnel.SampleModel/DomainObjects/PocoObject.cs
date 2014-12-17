@@ -16,6 +16,14 @@ namespace Envivo.Fresnel.SampleModel.Objects
     public class PocoObject
     {
 
+        public PocoObject()
+        {
+            this.NormalText = DateTime.Now.ToShortDateString();
+            this.NormalDate = DateTime.Now;
+            this.NormalBoolean = true;
+            this.RecordId = Environment.TickCount;
+        }
+
         private ICollection<PocoObject> _ChildObjects = new Collection<PocoObject>();
         private DateTime _NormalDate = DateTime.UtcNow;
 
