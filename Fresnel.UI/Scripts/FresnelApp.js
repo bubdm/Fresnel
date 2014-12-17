@@ -25,6 +25,7 @@ var FresnelApp;
             $scope.gridColumns = [];
             var collection = $scope.obj;
             for (var i = 0; i < collection.ColumnHeaders.length; i++) {
+                //fieldValueSelector = 
                 var newColumn = { name: collection.ColumnHeaders[i] };
                 $scope.gridColumns[i] = newColumn;
             }
@@ -174,10 +175,6 @@ var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
         function ToolboxController($rootScope, $scope, $http, appService) {
-            // This will run when the page loads:
-            angular.element(document).ready(function () {
-                $scope.loadClassHierarchy();
-            });
             $scope.loadClassHierarchy = function () {
                 var _this = this;
                 var uri = "api/Toolbox/GetClassHierarchy";
@@ -195,6 +192,10 @@ var FresnelApp;
                     $rootScope.$broadcast("objectCreated", newObject);
                 });
             };
+            // This will run when the page loads:
+            angular.element(document).ready(function () {
+                $scope.loadClassHierarchy();
+            });
         }
         ToolboxController.$inject = ['$rootScope', '$scope', '$http', 'appService'];
         return ToolboxController;

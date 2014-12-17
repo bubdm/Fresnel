@@ -942,9 +942,6 @@
     <Content Include="Scripts\ui-grid\ui-grid.min.css" />
     <Content Include="Scripts\ui-grid\ui-grid.min.js" />
     <Content Include="Scripts\ui-grid\ui-grid.svg" />
-    <Content Include="Scripts\_app\main.js" />
-    <Content Include="Scripts\_app\Workbench.js" />
-    <Content Include="Scripts\_app\Toolbox.js" />
     <Content Include="Templates\Editors\emptyEditor.html" />
     <Content Include="Templates\Editors\booleanEditor.html" />
     <Content Include="Templates\Editors\dateTimeEditor.html" />
@@ -1003,6 +1000,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="CustomTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\typings\customExtensions.d.ts" />
@@ -1015,16 +1013,16 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Scripts\_app\AppController.ts" />
-    <TypeScriptCompile Include="Scripts\_app\AppService.ts" />
-    <TypeScriptCompile Include="Scripts\_app\CollectionExplorerController.ts" />
-    <TypeScriptCompile Include="Scripts\_app\DisableAnchorDirective.ts" />
-    <TypeScriptCompile Include="Scripts\_app\ObjectExplorerController.ts" />
-    <TypeScriptCompile Include="Scripts\_app\IdentityMap.ts" />
-    <TypeScriptCompile Include="Scripts\_app\ClassLibraryDirective.ts" />
-    <TypeScriptCompile Include="Scripts\_app\ToolboxController.ts" />
-    <TypeScriptCompile Include="Scripts\_app\Interfaces.ts" />
-    <TypeScriptCompile Include="Scripts\_app\Bootstrapper.ts" />
+    <TypeScriptCompile Include="AngularApp\AppController.ts" />
+    <TypeScriptCompile Include="AngularApp\AppService.ts" />
+    <TypeScriptCompile Include="AngularApp\CollectionExplorerController.ts" />
+    <TypeScriptCompile Include="AngularApp\DisableAnchorDirective.ts" />
+    <TypeScriptCompile Include="AngularApp\ObjectExplorerController.ts" />
+    <TypeScriptCompile Include="AngularApp\IdentityMap.ts" />
+    <TypeScriptCompile Include="AngularApp\ClassLibraryDirective.ts" />
+    <TypeScriptCompile Include="AngularApp\ToolboxController.ts" />
+    <TypeScriptCompile Include="AngularApp\Interfaces.ts" />
+    <TypeScriptCompile Include="AngularApp\Bootstrapper.ts" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fresnel.Bootstrap\Fresnel.Bootstrap.csproj">
@@ -1050,7 +1048,7 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptOutFile>Scripts/_app/FresnelApp.js</TypeScriptOutFile>
+    <TypeScriptOutFile>Scripts/FresnelApp.js</TypeScriptOutFile>
     <TypeScriptSourceMap>False</TypeScriptSourceMap>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />

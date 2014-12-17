@@ -11,11 +11,6 @@
             $http: ng.IHttpService,
             appService: AppService) {
 
-            // This will run when the page loads:
-            angular.element(document).ready(function () {
-                $scope.loadClassHierarchy();
-            });
-
             $scope.loadClassHierarchy = function () {
                 var uri = "api/Toolbox/GetClassHierarchy";
                 $http.get(uri)
@@ -38,6 +33,11 @@
                         $rootScope.$broadcast("objectCreated", newObject);
                     });
             }
+
+            // This will run when the page loads:
+            angular.element(document).ready(function () {
+                $scope.loadClassHierarchy();
+            });
 
         }
 
