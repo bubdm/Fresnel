@@ -39,6 +39,12 @@ namespace Envivo.Fresnel.Proxies
             return this.GetProxy<T>(domainObject, true);
         }
 
+        public IFresnelProxy GetProxyById(Guid objectId)
+        {
+            var result = _ProxyMap.TryGetValueOrNull(objectId);
+            return result;
+        }
+
         /// <summary>
         /// Returns the proxy for the given Domain Object. A new proxy is created if it doesn't exist already.
         /// NB. Repeated calls with the same object will always return the same proxy

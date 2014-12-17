@@ -3,6 +3,7 @@ using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Proxies.ChangeTracking;
 using Envivo.Fresnel.Proxies.Interceptors;
 using Envivo.Fresnel.Utils;
 using System;
@@ -14,6 +15,7 @@ namespace Envivo.Fresnel.Proxies
 
     public class ProxyBuilder : Envivo.Fresnel.Core.Proxies.IProxyBuilder
     {
+        private SessionJournal _SessionJournal;
         private ObserverCache _ObserverCache;
 
         private PrimaryInterceptor _PrimaryInterceptor;
@@ -38,6 +40,7 @@ namespace Envivo.Fresnel.Proxies
         public ProxyBuilder
             (
             ObserverCache observerCache,
+            SessionJournal sessionJournal,
             PrimaryInterceptor primaryInterceptor,
             PropertyGetInterceptor propertyGetInterceptor,
             PropertySetInterceptor propertySetInterceptor,
@@ -53,6 +56,7 @@ namespace Envivo.Fresnel.Proxies
             )
         {
             _ObserverCache = observerCache;
+            _SessionJournal = sessionJournal;
 
             _PrimaryInterceptor = primaryInterceptor;
             _PropertyGetInterceptor = propertyGetInterceptor;
@@ -121,7 +125,11 @@ namespace Envivo.Fresnel.Proxies
             {
                 Selector = _InterceptorSelector,
             };
-            var proxyState = new ProxyState() { Meta = oObject };
+            var proxyState = new ProxyState()
+            {
+                Meta = oObject,
+                SessionJournal = _SessionJournal
+            };
             proxyGenerationOptions.AddMixinInstance(proxyState);
 
             var proxy = _ProxyGenerator
@@ -155,7 +163,11 @@ namespace Envivo.Fresnel.Proxies
             {
                 Selector = _InterceptorSelector,
             };
-            var proxyState = new ProxyState() { Meta = oCollection };
+            var proxyState = new ProxyState()
+            {
+                Meta = oCollection,
+                SessionJournal = _SessionJournal
+            };
             proxyGenerationOptions.AddMixinInstance(proxyState);
 
             var proxy = _ProxyGenerator

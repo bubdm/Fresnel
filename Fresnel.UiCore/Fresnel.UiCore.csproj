@@ -47,6 +47,7 @@
     <Compile Include="Commands\GetPropertyCommand.cs" />
     <Compile Include="Commands\CreateCommandResult.cs" />
     <Compile Include="Commands\CreateCommand.cs" />
+    <Compile Include="Commands\ModificationsBuilder.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Objects\MethodVmBuilder.cs" />
     <Compile Include="TypeInfo\ITypeInfoBuilder.cs" />

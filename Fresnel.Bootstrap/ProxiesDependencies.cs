@@ -20,6 +20,10 @@ namespace Envivo.Fresnel.Bootstrap
                     .InstancePerDependency()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
+            builder.RegisterTypes(this.GetPerSessionInstanceTypes())
+                    .InstancePerLifetimeScope()
+                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+
             this.RegisterIInterceptorSelectors(builder);
         }
 
@@ -27,8 +31,6 @@ namespace Envivo.Fresnel.Bootstrap
         {
             return new Type[] { 
                 typeof(Fresnel.Proxies.CanBeProxiedSpecification),
-                typeof(Fresnel.Proxies.ProxyBuilder),
-                typeof(Fresnel.Proxies.ProxyCache),
                 typeof(Fresnel.Proxies.FresnelTypeResolver),
 
                 typeof(Fresnel.Proxies.Interceptors.CollectionAddInterceptor),
@@ -70,6 +72,15 @@ namespace Envivo.Fresnel.Bootstrap
             return new Type[] { 
                 typeof(Fresnel.Proxies.Interceptors.NotifyCollectionChangedInterceptor),
                 typeof(Fresnel.Proxies.Interceptors.NotifyPropertyChangedInterceptor),
+            };
+        }
+
+        private Type[] GetPerSessionInstanceTypes()
+        {
+            return new Type[] { 
+                typeof(Fresnel.Proxies.ProxyCache),
+                typeof(Fresnel.Proxies.ProxyBuilder),
+                typeof(Fresnel.Proxies.ChangeTracking.SessionJournal),
             };
         }
 

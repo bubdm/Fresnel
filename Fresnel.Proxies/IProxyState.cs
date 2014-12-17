@@ -13,11 +13,9 @@ using System.ComponentModel;
 namespace Envivo.Fresnel.Proxies
 {
 
-    internal class ProxyState : IFresnelProxy, IProxyState
+    public interface IProxyState
     {
-        public ObjectObserver Meta { get; set; }
-
-        public SessionJournal SessionJournal { get; set; }
+        SessionJournal SessionJournal { get; }
     }
 
 }

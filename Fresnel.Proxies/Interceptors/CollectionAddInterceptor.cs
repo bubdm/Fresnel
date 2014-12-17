@@ -20,6 +20,7 @@ namespace Envivo.Fresnel.Proxies.Interceptors
         public void Intercept(IInvocation invocation)
         {
             Debug.WriteLine(this.GetType().Name);
+
             var oCollection = (CollectionObserver)((IFresnelProxy)invocation.Proxy).Meta;
 
             var item = this.ExtractItemToAddFrom(invocation);
@@ -37,8 +38,12 @@ namespace Envivo.Fresnel.Proxies.Interceptors
                     invocation.GetType().IsNonReference() == false)
                 {
                     // It's possible that the Add() method returns a different object:
-                    oAddedItem = (ObjectObserver)((IFresnelProxy)this.ProxyCache.GetProxy(invocation.ReturnValue)).Meta;
+                    var addedItemProxy = this.ProxyCache.GetProxy(invocation.ReturnValue);
+                    oAddedItem = (ObjectObserver)((IFresnelProxy)addedItemProxy).Meta;
                     //oAddedItem.IsReflectionEnabled = false;
+
+                    var proxyState = (IProxyState)invocation.Proxy;
+                    proxyState.SessionJournal.AddCollectionAdd(oCollection, oAddedItem);
                 }
 
                 this.PostInvoke(oCollection, oCollectionProp, oAddedItem);

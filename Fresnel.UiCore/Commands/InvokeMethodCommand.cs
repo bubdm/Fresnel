@@ -1,5 +1,6 @@
 ﻿using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
@@ -22,28 +23,34 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ProxyCache _ProxyCache;
         private AbstractObjectVMBuilder _ObjectVMBuilder;
         private Core.Commands.InvokeMethodCommand _InvokeMethodCommand;
+        private ModificationsBuilder _ModificationsBuilder;
 
         public InvokeMethodCommand
             (
             ObserverCache observerCache,
             Core.Commands.InvokeMethodCommand invokeMethodCommand,
             ProxyCache proxyCache,
-            AbstractObjectVMBuilder objectVMBuilder
+            AbstractObjectVMBuilder objectVMBuilder,
+            ModificationsBuilder modificationsBuilder
             )
         {
             _ObserverCache = observerCache;
             _InvokeMethodCommand = invokeMethodCommand;
             _ProxyCache = proxyCache;
             _ObjectVMBuilder = objectVMBuilder;
+            _ModificationsBuilder = modificationsBuilder;
         }
 
         public GetPropertyResult Invoke(Guid objectId, string methodName)
         {
             try
             {
+                var startedAt = Environment.TickCount;
+
                 ObjectVM result = null;
 
-                var oObject = _ObserverCache.GetObserverById(objectId) as ObjectObserver;
+                var proxy = _ProxyCache.GetProxyById(objectId);
+                var oObject = proxy.Meta as ObjectObserver;
 
                 if (oObject != null)
                 {
@@ -53,16 +60,17 @@ namespace Envivo.Fresnel.UiCore.Commands
                     if (returnValue != null)
                     {
                         // Make sure we cache the proxy for use later in the session:
-                        var proxy = _ProxyCache.GetProxy(returnValue.RealObject);
+                        _ProxyCache.GetProxy(returnValue.RealObject);
                         result = _ObjectVMBuilder.BuildFor(returnValue);
                     }
                 }
-                
+
                 return new GetPropertyResult()
                 {
                     Passed = true,
                     ReturnValue = result,
-                    // TODO: Add other modifications
+                    // TODO: Add other modifications:
+                    //OtherModifications = _ModificationsBuilder.BuildChangesSince(startedAt, proxy.SessionJournal)
                 };
             }
             catch (Exception ex)
