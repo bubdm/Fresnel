@@ -82,8 +82,10 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Assert:
             var collectionVM = (CollectionVM)getResult.ReturnValue;
 
-            // There should be a Header for each property in the collection's Element type:
-            Assert.GreaterOrEqual(collectionVM.ColumnHeaders.Count(), tPoco.Properties.Count());
+            // There should be a Header for each viewable property in the collection's Element type:
+            var visibleProperties = tPoco.Properties.Values.Where(p => !p.IsFrameworkMember && p.IsVisible);
+
+            Assert.GreaterOrEqual(collectionVM.ColumnHeaders.Count(), visibleProperties.Count());
         }
 
     }
