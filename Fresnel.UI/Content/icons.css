@@ -1,5 +1,18 @@
 /* See http://fortawesome.github.io/Font-Awesome/cheatsheet/ for codes */
 
+.classItemIcon {
+    position: relative;
+}
+
+    .classItemIcon:before {
+        position: relative;
+        font-family: FontAwesome;
+        font-size: large;
+        top: 2px;
+        left: 0px;
+    }
+
+
 .propertyItemIcon {
     position: relative;
 }

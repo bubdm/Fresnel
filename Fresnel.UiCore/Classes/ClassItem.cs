@@ -8,7 +8,9 @@ namespace Envivo.Fresnel.UiCore.Classes
 {
     public class ClassItem : BaseViewModel
     {
-        public string TypeName { get; set; }
+        public string Type { get; set; }
+
+        public string FullTypeName { get; set; }
 
         public InteractionPoint Create{ get; set; }
 

@@ -30,7 +30,8 @@ namespace Envivo.Fresnel.UiCore.Classes
             var item = new ClassItem()
             {
                 Name = tClass.FriendlyName,
-                TypeName = tClass.FullName,
+                Type = tClass.RealType.Name,
+                FullTypeName = tClass.FullName,
                 Description = tClass.XmlComments.Summary,
                 Tooltip = tClass.XmlComments.Remarks,
                 IsEnabled = true,

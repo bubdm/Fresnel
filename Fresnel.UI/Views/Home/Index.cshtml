@@ -345,6 +345,7 @@
                         <ul class="treeview-menu">
                             <li ng-repeat="item in namespace.Classes" class="active classItem">
                                 <div class="">
+
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                             <span class="caret"></span>
@@ -352,12 +353,12 @@
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
                                             <li>
-                                                <a href="" a-disabled="!item.Search.IsEnabled" ng-click="search(item.TypeName)" data-toggle="tooltip" title="{{item.Search.Tooltip}}">
+                                                <a href="" a-disabled="!item.Search.IsEnabled" ng-click="search(item.FullTypeName)" data-toggle="tooltip" title="{{item.Search.Tooltip}}">
                                                     <i class="fa fa-search"></i>Search
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="" a-disabled="!item.Create.IsEnabled" ng-click="create(item.TypeName)" data-toggle="tooltip" title="{{item.Create.Tooltip}}">
+                                                <a href="" a-disabled="!item.Create.IsEnabled" ng-click="create(item.FullTypeName)" data-toggle="tooltip" title="{{item.Create.Tooltip}}">
                                                     <i class="fa fa-plus-circle"></i>Create
                                                 </a>
                                             </li>
@@ -367,7 +368,9 @@
                                     </div>
 
                                     <a class="" href="" ng-show="item.IsVisible" data-toggle="tooltip" title="{{item.Description}}">
-                                        {{item.Name}}
+                                        <span class="classItemIcon {{item.Type}}Icon">
+                                            {{item.Name}}
+                                        </span>
                                     </a>
 
                                 </div>
