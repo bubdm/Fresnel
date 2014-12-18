@@ -50,6 +50,10 @@
     <Compile Include="CoreDependencies.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DomainIoC\DomainDependencyResolver.cs" />
+    <Compile Include="DomainIoC\DomainObjectFactory.cs" />
+    <Compile Include="DomainIoC\DomainDependencyRegistrar.cs" />
+    <Compile Include="DomainIoC\DomainClassRegistrar.cs" />
     <Compile Include="IntrospectionDependencies.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -88,6 +92,7 @@
       <Name>Fresnel.Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

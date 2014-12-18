@@ -35,6 +35,10 @@
     <Reference Include="PresentationCore" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainObjects\DependencyAwareObject.cs" />
+    <Compile Include="Factories\CategoryFactory.cs" />
+    <Compile Include="Factories\MasterObjectFactory.cs" />
+    <Compile Include="Factories\PocoObjectFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Miscellaneous\ExceptionTests.cs" />
     <Compile Include="BasicTypes\BooleanValues.cs" />

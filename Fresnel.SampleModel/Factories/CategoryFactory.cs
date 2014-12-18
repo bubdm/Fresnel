@@ -1,9 +1,9 @@
+using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.SampleModel.Objects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;using Envivo.DomainTypes;
-using Envivo.TrueView.Domain.Attributes;
-using Envivo.Sample.Model.Objects;
+using System.Text;
 
 namespace Envivo.Sample.Model.Factories
 {

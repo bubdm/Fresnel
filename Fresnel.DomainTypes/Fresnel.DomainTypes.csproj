@@ -44,8 +44,6 @@
     <Compile Include="Interfaces\IAssertion.cs" />
     <Compile Include="Interfaces\IAudit.cs" />
     <Compile Include="Interfaces\ICollectionChangeEventArgs.cs" />
-    <Compile Include="Interfaces\IDependencyAware.cs" />
-    <Compile Include="Interfaces\IDependencyContainer.cs" />
     <Compile Include="Interfaces\IDomainEvent.cs" />
     <Compile Include="Interfaces\IDomainObject.cs" />
     <Compile Include="Interfaces\IDomainService.cs" />

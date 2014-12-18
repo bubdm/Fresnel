@@ -42,6 +42,11 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Introspection.Commands.RemoveFromCollectionCommand),
                 typeof(Fresnel.Introspection.Commands.InvokeMethodCommand),
 
+                typeof(Fresnel.Introspection.IoC.FactoryLocator),
+                typeof(Fresnel.Introspection.IoC.RepositoryLocator),
+                typeof(Fresnel.Introspection.IoC.DomainServiceLocator),
+                typeof(Fresnel.Introspection.IoC.QuerySpecificationLocator),
+
                 typeof(Fresnel.Introspection.Templates.AbstractClassTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.BackingFieldIdentifier),
                 typeof(Fresnel.Introspection.Templates.ClassHierarchyBuilder),

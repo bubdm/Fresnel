@@ -18,10 +18,10 @@ namespace Envivo.Fresnel.Core.Permissions
         {
             var assertions = new AssertionSet();
 
-            if (!tClass.HasDefaultConstructor)
-            {
-                assertions.AddFailure(tClass.Name + " doesn't have a default constructor");
-            }
+            //if (!tClass.HasDefaultConstructor)
+            //{
+            //    assertions.AddFailure(tClass.Name + " doesn't have a default constructor");
+            //}
 
             if (tClass.RealType.IsInterface)
             {

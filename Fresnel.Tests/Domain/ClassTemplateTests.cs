@@ -205,6 +205,26 @@ namespace Envivo.Fresnel.Tests.Domain
                         () => createCommand.Invoke(classTemplate));
         }
 
+        [Test()]
+        public void ShouldInjectDependenciesIntoCtor()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+
+            var createCommand = container.Resolve<CreateObjectCommand>();
+
+            var typeToCreate = typeof(SampleModel.Objects.DependencyAwareObject);
+            var tClass = (ClassTemplate)templateCache.GetTemplate(typeToCreate);
+
+            // Act:
+            var newInstance = (SampleModel.Objects.DependencyAwareObject)createCommand.Invoke(tClass);
+
+            // Assert:
+            Assert.IsNotNull(newInstance);
+            Assert.IsNotNull(newInstance.PocoObject);
+        }
+
     }
 }
 

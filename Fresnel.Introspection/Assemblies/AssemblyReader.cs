@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
 using System;
@@ -18,6 +19,10 @@ namespace Envivo.Fresnel.Introspection.Assemblies
     /// </remarks>
     public class AssemblyReader : IDisposable
     {
+
+        private IDomainClassRegistrar _DomainClassRegistrar;
+        private IDomainDependencyRegistrar _DomainDependencyRegistrar;
+
         private Dictionary<Type, IClassTemplate> _TemplateMap = new Dictionary<Type, IClassTemplate>();
         private XmlDocument _ClassStructureXml = new XmlDocument();
 
@@ -32,9 +37,14 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         public AssemblyReader
         (
+            IDomainClassRegistrar domainClassRegistrar,
+            IDomainDependencyRegistrar domainDependencyRegistrar,
             AbstractClassTemplateBuilder abstractClassTemplateBuilder
         )
         {
+            _DomainClassRegistrar = domainClassRegistrar;
+            _DomainDependencyRegistrar = domainDependencyRegistrar;
+
             _AbstractClassTemplateBuilder = abstractClassTemplateBuilder;
         }
 
@@ -142,15 +152,31 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         {
             var publicTypes = this.Assembly.GetExportedTypes();
 
-            // These are the kinds of Types that we're interested in:
-            var matches = publicTypes.Where(type =>
-                                            type.IsTrackable() ||
-                                            type.IsFactory() ||
-                                            type.IsRepository() ||
-                                            type.IsDomainService() ||
-                                            type.IsEnum);
+            InitialiseDomainClasses(publicTypes);
+            InitialiseDomainDependencies(publicTypes);
+        }
 
-            foreach (var type in matches)
+        private void InitialiseDomainDependencies(Type[] publicTypes)
+        {
+            var dependencyTypes = publicTypes
+                                    .Where(t => t.IsFactory() ||
+                                                t.IsRepository() ||
+                                                t.IsDomainService())
+                                    .ToArray();
+
+            _DomainDependencyRegistrar.RegisterTypes(dependencyTypes);
+        }
+
+        private void InitialiseDomainClasses(Type[] publicTypes)
+        {
+
+            var domainClasses = publicTypes
+                                    .Where(t => t.IsTrackable())
+                                    .ToArray();
+
+            _DomainClassRegistrar.RegisterTypes(domainClasses);
+
+            foreach (var type in domainClasses)
             {
                 var tClass = this.CreateAndCacheTemplate(type);
             }

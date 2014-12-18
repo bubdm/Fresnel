@@ -2,6 +2,7 @@
 using Autofac.Features.ResolveAnything;
 using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.Proxies;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,19 @@ namespace Envivo.Fresnel.Bootstrap
 
             var result = builder.Build();
 
+            // This allows us to access the Container elsewhere in the code (necessary for adding late registrations):
+            this.RegisterContainer(result);
+
             this.SetupContainer(result);
 
             return result;
+        }
+
+        private void RegisterContainer(IContainer existingContainer)
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterInstance(existingContainer).SingleInstance();
+            builder.Update(existingContainer);
         }
 
         private void SetupContainer(IContainer container)
@@ -65,6 +76,11 @@ namespace Envivo.Fresnel.Bootstrap
             builder.RegisterModule<CoreDependencies>();
             builder.RegisterModule<ProxiesDependencies>();
             builder.RegisterModule<UiCoreDependencies>();
+
+            builder.RegisterType<DomainIoC.DomainClassRegistrar>().As<IDomainClassRegistrar>().SingleInstance();
+            builder.RegisterType<DomainIoC.DomainObjectFactory>().As<IDomainObjectFactory>().SingleInstance();
+            builder.RegisterType<DomainIoC.DomainDependencyRegistrar>().As<IDomainDependencyRegistrar>().SingleInstance();
+            builder.RegisterType<DomainIoC.DomainDependencyResolver>().As<IDomainDependencyResolver>().SingleInstance();  
 
             builder.RegisterType<Proxies.ProxyBuilder>().As<IProxyBuilder>().SingleInstance();
         }

@@ -237,17 +237,17 @@ namespace Envivo.Fresnel.Introspection.Templates
             get { return _Constructors.Value; }
         }
 
-        /// <summary>
-        /// Determines if an Object can be instantiated with zero arguments
-        /// </summary>
-        public bool HasDefaultConstructor
-        {
-            get
-            {
-                var defaultCtor = _Constructors.Value.SingleOrDefault(c => !c.GetParameters().Any());
-                return defaultCtor != null;
-            }
-        }
+        ///// <summary>
+        ///// Determines if an Object can be instantiated with zero arguments
+        ///// </summary>
+        //public bool HasDefaultConstructor
+        //{
+        //    get
+        //    {
+        //        var defaultCtor = _Constructors.Value.SingleOrDefault(c => !c.GetParameters().Any());
+        //        return defaultCtor != null;
+        //    }
+        //}
 
         /// <summary>
         /// The collection of Fields within the Object
@@ -291,7 +291,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             {
                 return _ObjectInstanceAttr.IsCreatable &&
                         !this.RealType.IsAbstract &&
-                        this.HasDefaultConstructor;
+                        _Constructors.Value.Any();
             }
         }
 
@@ -299,30 +299,26 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns TRUE if the class has a constructor that accepts the given argument
         /// </summary>
         /// <param name="constructorArgType"></param>
-
         public bool CanBeCreatedWith(Type constructorArgType)
         {
             if (constructorArgType == null)
             {
-                // We're only interested in the default constructor:
-                return this.HasDefaultConstructor;
+                return this.IsCreatable;
             }
-            else
+
+            // Find a matching ctor:
+            foreach (var ctor in _Constructors.Value)
             {
-                // Find a matching ctor:
-                foreach (var ctor in _Constructors.Value)
+                var parameters = ctor.GetParameters();
+
+                if (parameters.Count(p => constructorArgType.IsDerivedFrom(p.ParameterType)) == 1)
                 {
-                    var parameters = ctor.GetParameters();
-
-                    if ((parameters.Length == 1) && constructorArgType.IsDerivedFrom(parameters[0].ParameterType))
-                    {
-                        // We've found a match:
-                        return true;
-                    }
+                    // We've found a match:
+                    return true;
                 }
-
-                return false;
             }
+
+            return false;
         }
 
         public object CreateInstance()
