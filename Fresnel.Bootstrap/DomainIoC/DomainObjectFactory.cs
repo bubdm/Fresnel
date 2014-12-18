@@ -27,7 +27,7 @@ namespace Envivo.Fresnel.Bootstrap.DomainIoC
             if (!_ComponentContext.IsRegistered(classType))
                 return null;
 
-            var ctorParams = args.Select(a => new NamedParameter("", args[0]));
+            var ctorParams = args.Select(a => new TypedParameter(a.GetType(), a));
 
             var result = _ComponentContext.Resolve(classType, ctorParams);
             return result;

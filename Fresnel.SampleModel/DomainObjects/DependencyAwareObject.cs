@@ -10,19 +10,16 @@ using Envivo.Fresnel.DomainTypes.Interfaces;
 namespace Envivo.Fresnel.SampleModel.Objects
 {
     /// <summary>
-    /// 
+    /// This object has dependencies automatically injected into it
     /// </summary>
     public class DependencyAwareObject
     {
-        private IFactory<PocoObject> _PocoFactory;
-
-        public DependencyAwareObject(IFactory<PocoObject> pocoFactory)
+        public DependencyAwareObject(IFactory<PocoObject> pocoFactory, string name)
         {
-            _PocoFactory = pocoFactory;
-
-            this.PocoObject = _PocoFactory.Create();
+            this.PocoObject = pocoFactory.Create();
+            this.Name = name;
         }
-    
+
         /// <summary>
         /// The unique ID for this entity
         /// </summary>

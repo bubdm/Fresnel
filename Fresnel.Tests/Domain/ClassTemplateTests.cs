@@ -218,11 +218,12 @@ namespace Envivo.Fresnel.Tests.Domain
             var tClass = (ClassTemplate)templateCache.GetTemplate(typeToCreate);
 
             // Act:
-            var newInstance = (SampleModel.Objects.DependencyAwareObject)createCommand.Invoke(tClass);
+            var newInstance = (SampleModel.Objects.DependencyAwareObject)createCommand.Invoke(tClass, "test");
 
             // Assert:
             Assert.IsNotNull(newInstance);
             Assert.IsNotNull(newInstance.PocoObject);
+            Assert.AreEqual("test", newInstance.Name);
         }
 
     }
