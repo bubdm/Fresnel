@@ -20,11 +20,27 @@ namespace Envivo.Fresnel.Bootstrap
         /// <returns></returns>
         public IContainer Build()
         {
+            return this.Build(new Module[] { });
+        }
+
+        /// <summary>
+        /// Returns an AutoFac IoC container
+        /// </summary>
+        /// <param name="dependencyModules"></param>
+        /// <returns></returns>
+        public IContainer Build(IEnumerable<Module> dependencyModules)
+        {
             var builder = new ContainerBuilder();
             this.RegisterMandatoryModules(builder);
 
             // THIS SEEMS TO BE VERY SLOW, HENCE IT IS DISABLED:
             //builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
+
+            // Now bolt in the Consumer's dependencies:
+            foreach (var module in dependencyModules)
+            {
+                builder.RegisterModule(module);
+            }
 
             var result = builder.Build();
 
@@ -51,25 +67,6 @@ namespace Envivo.Fresnel.Bootstrap
             realTypeResolver.Register(fresnelTypeResolver);
         }
 
-        /// <summary>
-        /// Returns an AutoFac IoC container
-        /// </summary>
-        /// <param name="dependencyModules"></param>
-        /// <returns></returns>
-        public IContainer Build(IEnumerable<Module> dependencyModules)
-        {
-            var builder = new ContainerBuilder();
-            this.RegisterMandatoryModules(builder);
-
-            // Now bolt in the Consumer's dependencies:
-            foreach (var module in dependencyModules)
-            {
-                builder.RegisterModule(module);
-            }
-
-            return builder.Build();
-        }
-
         private void RegisterMandatoryModules(ContainerBuilder builder)
         {
             builder.RegisterModule<IntrospectionDependencies>();
@@ -80,7 +77,7 @@ namespace Envivo.Fresnel.Bootstrap
             builder.RegisterType<DomainIoC.DomainClassRegistrar>().As<IDomainClassRegistrar>().SingleInstance();
             builder.RegisterType<DomainIoC.DomainObjectFactory>().As<IDomainObjectFactory>().SingleInstance();
             builder.RegisterType<DomainIoC.DomainDependencyRegistrar>().As<IDomainDependencyRegistrar>().SingleInstance();
-            builder.RegisterType<DomainIoC.DomainDependencyResolver>().As<IDomainDependencyResolver>().SingleInstance();  
+            builder.RegisterType<DomainIoC.DomainDependencyResolver>().As<IDomainDependencyResolver>().SingleInstance();
 
             builder.RegisterType<Proxies.ProxyBuilder>().As<IProxyBuilder>().SingleInstance();
         }
