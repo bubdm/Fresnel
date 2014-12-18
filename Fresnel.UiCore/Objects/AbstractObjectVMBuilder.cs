@@ -66,6 +66,7 @@ namespace Envivo.Fresnel.UiCore.Objects
                 ID = oCollection.ID,
                 Name = oCollection.Template.FriendlyName,
                 Type = oCollection.Template.RealType.Name,
+                ElementType = oCollection.Template.InnerClass.RealType.Name,
                 IsVisible = oCollection.Template.IsVisible,
                 ColumnHeaders = columnHeaders,
                 Description = oCollection.Template.XmlComments.Summary,

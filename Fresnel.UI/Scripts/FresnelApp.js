@@ -110,6 +110,7 @@ var FresnelApp;
                         appService.identityMap.addItem(obj);
                         // TODO: Insert the object just after it's parent?
                         attachMembers(obj);
+                        obj.OuterProperty = prop;
                         $scope.visibleExplorers.push(obj);
                     }
                 });

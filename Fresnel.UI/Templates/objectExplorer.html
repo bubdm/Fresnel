@@ -3,7 +3,7 @@
     <div class="box-header">
         <span class="explorerItemIcon {{obj.Type}}Icon"> </span>
         <h3 class="box-title">
-            {{ obj.Name }}
+            {{ obj.OuterProperty.Name ? obj.OuterProperty.Name : obj.Name }}
         </h3>
         <div class="box-tools pull-right">
             <div class="btn-group">
