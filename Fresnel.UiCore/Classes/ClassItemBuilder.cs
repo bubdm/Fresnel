@@ -48,7 +48,7 @@ namespace Envivo.Fresnel.UiCore.Classes
 
             var search = item.Search = new InteractionPoint();
             search.IsVisible = true;
-            search.IsEnabled = true;
+            search.IsEnabled = tClass.IsPersistable;
             search.Tooltip = search.IsEnabled ? "Search for existing instances of " + tClass.FriendlyName : "This item cannot be searched for";
 
             // TODO: Add other Interaction Points (Factory, Service, Static methods, etc)
