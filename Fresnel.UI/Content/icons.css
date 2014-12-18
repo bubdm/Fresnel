@@ -1,0 +1,51 @@
+/* See http://fortawesome.github.io/Font-Awesome/cheatsheet/ for codes */
+
+.BooleanIcon {
+    position: relative;
+}
+
+    .BooleanIcon:before {
+        position: absolute;
+        font-family: FontAwesome;
+        top: 8px;
+        left: 24px;
+        content: "\f204";   /* fa-toggle-off  */ 
+    }
+
+
+.StringIcon {
+    position: relative;
+}
+
+    .StringIcon:before {
+        position: absolute;
+        font-family: FontAwesome;
+        top: 8px;
+        left: 24px;
+        content: "\f040";   /* fa-pencil */ 
+    }
+
+.EnumIcon {
+    position: relative;
+}
+
+    .EnumIcon:before {
+        position: absolute;
+        font-family: FontAwesome;
+        top: 8px;
+        left: 24px;
+        content: "\f0ca";   /* fa-list-ul */ 
+    }
+
+    
+.DateTimeIcon {
+    position: relative;
+}
+
+    .DateTimeIcon:before {
+        position: absolute;
+        font-family: FontAwesome;
+        top: 8px;
+        left: 24px;
+        content: "\f073";   /* fa-calendar */
+    }

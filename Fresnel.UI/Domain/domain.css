@@ -1,0 +1,12 @@
+
+.PocoObjectIcon {
+    position: relative;
+}
+
+    .PocoObjectIcon:before {
+        position: absolute;
+        font-family: FontAwesome;
+        top: 0;
+        left: -5px;
+        content: "\f118";
+    }

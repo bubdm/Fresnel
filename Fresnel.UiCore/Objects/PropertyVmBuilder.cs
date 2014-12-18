@@ -1,5 +1,6 @@
 ﻿using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Permissions;
+using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.UiCore.TypeInfo;
 using System;
 using System.Collections.Generic;
@@ -14,17 +15,20 @@ namespace Envivo.Fresnel.UiCore.Objects
         private TypeInfoBuilder _TypeInfoBuilder;
         private CanGetPropertyPermission _CanGetPropertyPermission;
         private CanSetPropertyPermission _CanSetPropertyPermission;
+        private RealTypeResolver _RealTypeResolver;
 
         public PropertyVmBuilder
             (
             TypeInfoBuilder typeInfoBuilder,
             CanGetPropertyPermission canGetPropertyPermission,
-            CanSetPropertyPermission canSetPropertyPermission
+            CanSetPropertyPermission canSetPropertyPermission,
+            RealTypeResolver realTypeResolver
             )
         {
             _TypeInfoBuilder = typeInfoBuilder;
             _CanGetPropertyPermission = canGetPropertyPermission;
             _CanSetPropertyPermission = canSetPropertyPermission;
+            _RealTypeResolver = realTypeResolver;
         }
 
         public PropertyVM BuildFor(ObjectObserver oObject, BasePropertyObserver oProp)
@@ -61,7 +65,11 @@ namespace Envivo.Fresnel.UiCore.Objects
             {
                 try
                 {
+                    // TODO: Use the GetPropertyCommand, in case the property should be hidden:
                     propVM.Value = oProp.Template.GetProperty(oObject.RealObject);
+
+                    var valueType = oProp.Template.InnerClass.RealType;
+                    propVM.ValueType = valueType.IsEnum ? "Enum" : valueType.Name;
                 }
                 catch (Exception ex)
                 {

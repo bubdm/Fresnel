@@ -1,10 +1,12 @@
 ﻿<div class="form-group form-horizontal propertyItem" ng-show="prop.IsVisible">
     <div class="row ">
+        <div class="col-md-1 control-label {{prop.ValueType}}Icon">
+        </div>
         <label class="col-md-4 control-label">
             {{ prop.Name }}
         </label>
 
-        <div ng-switch="prop.Info.Name" class="col-md-8">
+        <div ng-switch="prop.Info.Name" class="col-md-7">
             <div ng-switch-when="boolean">
                 <div ng-include="'/Templates/Editors/booleanEditor.html'"></div>
             </div>

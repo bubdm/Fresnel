@@ -30,13 +30,14 @@
 
     <link href="~/Content/AdminLTE.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/AdminLTE/app.js"></script>
-
     <link href="~/Scripts/ui-grid/ui-grid.css" rel="stylesheet" />
     <script src="~/Scripts/ui-grid/ui-grid.js"></script>
 
     <script src="~/Scripts/FresnelApp.js"></script>
     <link href="~/Content/toolbox.css" rel="stylesheet" />
     <link href="~/Content/workbench.css" rel="stylesheet" />
+    <link href="~/Content/icons.css" rel="stylesheet" />
+    <link href="~/Domain/domain.css" rel="stylesheet" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -350,8 +351,16 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="" a-disabled="!item.Search.IsEnabled" ng-click="search(item.TypeName)" data-toggle="tooltip" title="{{item.Search.Tooltip}}"> Search</a></li>
-                                            <li><a href="" a-disabled="!item.Create.IsEnabled" ng-click="create(item.TypeName)" data-toggle="tooltip" title="{{item.Create.Tooltip}}"> Create</a></li>
+                                            <li>
+                                                <a href="" a-disabled="!item.Search.IsEnabled" ng-click="search(item.TypeName)" data-toggle="tooltip" title="{{item.Search.Tooltip}}">
+                                                    <span class="fa fa-search"> Search</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="" a-disabled="!item.Create.IsEnabled" ng-click="create(item.TypeName)" data-toggle="tooltip" title="{{item.Create.Tooltip}}">
+                                                    <span class="fa fa-plus-circle"> Create</span>
+                                                </a>
+                                            </li>
                                             <li class="divider"></li>
                                             <li><a href="#">Separated link</a></li>
                                         </ul>
