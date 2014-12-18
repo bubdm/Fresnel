@@ -14,8 +14,10 @@
             var collection: any = $scope.obj;
 
             for (var i = 0; i < collection.ColumnHeaders.length; i++) {
-                //fieldValueSelector = 
-                var newColumn = { name: collection.ColumnHeaders[i] };
+                var newColumn = {
+                    name: collection.ColumnHeaders[i].Name,
+                    field: collection.ColumnHeaders[i].PropertyName + ".Value"
+                };
                 $scope.gridColumns[i] = newColumn;
             }
 

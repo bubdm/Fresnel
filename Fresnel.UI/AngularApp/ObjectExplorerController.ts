@@ -12,6 +12,7 @@
             $scope.visibleExplorers = [];
 
             $scope.$on('objectCreated', function (event, obj: IObjectVM) {
+                attachMembers(obj);
                 $scope.visibleExplorers.push(obj);
             });
 
@@ -59,12 +60,34 @@
                             appService.identityMap.addItem(obj);
 
                             // TODO: Insert the object just after it's parent?
+                            attachMembers(obj);
                             $scope.visibleExplorers.push(obj);
                         }
                     });
             }
 
+            function attachMembers(obj: IObjectVM) {
+                if (obj.IsCollection) {
+                    for (var i = 0; i < obj.Items.length; i++) {
+                        attachMembers(obj.Items[i]);
+                    }
+                }
+
+                if (obj.Properties) {
+                    for (var i = 0; i < obj.Properties.length; i++) {
+                        var prop = obj.Properties[i];
+                        obj[prop.PropertyName] = prop;
+                    }
+                }
+
+                if (obj.Methods) {
+                    for (var i = 0; i < obj.Methods.length; i++) {
+                        var method = obj.Methods[i];
+                        obj[method.MethodName] = method;
+                    }
+                }
+            }
+
         }
     }
-
 }

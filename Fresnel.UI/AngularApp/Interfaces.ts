@@ -49,6 +49,14 @@
 
         ID: string;
 
+        IsCollection: boolean;
+
+        Items: IObjectVM[];
+
+        Properties: any[];
+
+        Methods: any[];
+
         IsMaximised: boolean;
     }
 }

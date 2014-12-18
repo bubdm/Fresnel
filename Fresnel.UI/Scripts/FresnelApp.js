@@ -25,8 +25,10 @@ var FresnelApp;
             $scope.gridColumns = [];
             var collection = $scope.obj;
             for (var i = 0; i < collection.ColumnHeaders.length; i++) {
-                //fieldValueSelector = 
-                var newColumn = { name: collection.ColumnHeaders[i] };
+                var newColumn = {
+                    name: collection.ColumnHeaders[i].Name,
+                    field: collection.ColumnHeaders[i].PropertyName + ".Value"
+                };
                 $scope.gridColumns[i] = newColumn;
             }
             $scope.gridOptions = {
@@ -73,6 +75,7 @@ var FresnelApp;
         function ObjectExplorerController($scope, $http, appService) {
             $scope.visibleExplorers = [];
             $scope.$on('objectCreated', function (event, obj) {
+                attachMembers(obj);
                 $scope.visibleExplorers.push(obj);
             });
             $scope.invoke = function (method) {
@@ -106,10 +109,30 @@ var FresnelApp;
                     if (obj) {
                         appService.identityMap.addItem(obj);
                         // TODO: Insert the object just after it's parent?
+                        attachMembers(obj);
                         $scope.visibleExplorers.push(obj);
                     }
                 });
             };
+            function attachMembers(obj) {
+                if (obj.IsCollection) {
+                    for (var i = 0; i < obj.Items.length; i++) {
+                        attachMembers(obj.Items[i]);
+                    }
+                }
+                if (obj.Properties) {
+                    for (var i = 0; i < obj.Properties.length; i++) {
+                        var prop = obj.Properties[i];
+                        obj[prop.PropertyName] = prop;
+                    }
+                }
+                if (obj.Methods) {
+                    for (var i = 0; i < obj.Methods.length; i++) {
+                        var method = obj.Methods[i];
+                        obj[method.MethodName] = method;
+                    }
+                }
+            }
         }
         ObjectExplorerController.$inject = ['$scope', '$http', 'appService'];
         return ObjectExplorerController;

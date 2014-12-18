@@ -49,6 +49,7 @@
     <Compile Include="Commands\CreateCommand.cs" />
     <Compile Include="Commands\ModificationsBuilder.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Objects\ColumnHeaderVM.cs" />
     <Compile Include="Objects\MethodVmBuilder.cs" />
     <Compile Include="TypeInfo\ITypeInfoBuilder.cs" />
     <Compile Include="TypeInfo\BooleanVmBuilder.cs" />
