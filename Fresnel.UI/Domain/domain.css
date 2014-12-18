@@ -1,12 +1,8 @@
+/* 
+    See http://fortawesome.github.io/Font-Awesome/cheatsheet/ for codes 
+    If your class is called "MyProduct", you would create a style called "MyProductIcon"
+*/
 
-.PocoObjectIcon {
-    position: relative;
+.PocoObjectIcon:before {
+    content: "\f118";
 }
-
-    .PocoObjectIcon:before {
-        position: absolute;
-        font-family: FontAwesome;
-        top: 0;
-        left: -5px;
-        content: "\f118";
-    }

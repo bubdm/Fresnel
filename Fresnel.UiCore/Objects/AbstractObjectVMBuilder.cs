@@ -65,6 +65,7 @@ namespace Envivo.Fresnel.UiCore.Objects
             {
                 ID = oCollection.ID,
                 Name = oCollection.Template.FriendlyName,
+                Type = oCollection.Template.RealType.Name,
                 IsVisible = oCollection.Template.IsVisible,
                 ColumnHeaders = columnHeaders,
                 Description = oCollection.Template.XmlComments.Summary,
@@ -125,6 +126,7 @@ namespace Envivo.Fresnel.UiCore.Objects
             {
                 ID = oObject.ID,
                 Name = title,
+                Type = oObject.Template.RealType.Name,
                 IsVisible = oObject.Template.IsVisible,
                 Description = oObject.Template.XmlComments.Summary,
                 Properties = this.CreateProperties(oObject),

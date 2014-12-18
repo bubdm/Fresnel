@@ -12,6 +12,8 @@ namespace Envivo.Fresnel.UiCore.Objects
     {
         public Guid ID { get; set; }
 
+        public string Type { get; set; }
+
         public IEnumerable<PropertyVM> Properties { get; set; }
 
         public IEnumerable<MethodVM> Methods { get; set; }

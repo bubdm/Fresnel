@@ -1,51 +1,42 @@
 /* See http://fortawesome.github.io/Font-Awesome/cheatsheet/ for codes */
 
-.BooleanIcon {
+.propertyItemIcon {
     position: relative;
 }
 
-    .BooleanIcon:before {
+    .propertyItemIcon:before {
         position: absolute;
         font-family: FontAwesome;
         top: 8px;
         left: 24px;
-        content: "\f204";   /* fa-toggle-off  */ 
     }
 
 
-.StringIcon {
+.explorerItemIcon {
     position: relative;
 }
 
-    .StringIcon:before {
+    .explorerItemIcon:before {
         position: absolute;
         font-family: FontAwesome;
-        top: 8px;
-        left: 24px;
-        content: "\f040";   /* fa-pencil */ 
+        font-size: large;
+        top: 10px;
+        left: 7px;
     }
 
-.EnumIcon {
-    position: relative;
+
+.BooleanIcon:before {
+    content: "\f204"; /* fa-toggle-off  */
 }
 
-    .EnumIcon:before {
-        position: absolute;
-        font-family: FontAwesome;
-        top: 8px;
-        left: 24px;
-        content: "\f0ca";   /* fa-list-ul */ 
-    }
-
-    
-.DateTimeIcon {
-    position: relative;
+.StringIcon:before {
+    content: "\f040"; /* fa-pencil */
 }
 
-    .DateTimeIcon:before {
-        position: absolute;
-        font-family: FontAwesome;
-        top: 8px;
-        left: 24px;
-        content: "\f073";   /* fa-calendar */
-    }
+.EnumIcon:before {
+    content: "\f0ca"; /* fa-list-ul */
+}
+
+.DateTimeIcon:before {
+    content: "\f073"; /* fa-calendar */
+}
