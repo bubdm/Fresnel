@@ -95,8 +95,7 @@ namespace Envivo.Fresnel.UiCore.Objects
                 {
                     // TODO: Use the GetPropertyCommand, in case the property should be hidden:
                     var realValue = oProp.Template.GetProperty(oProp.OuterObject.RealObject);
-
-                    propVM.Value = vmBuilder.GetFormattedValue(oProp, realValue);
+                    propVM.Value = realValue;
                 }
                 catch (Exception ex)
                 {

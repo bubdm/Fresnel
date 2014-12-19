@@ -24,10 +24,5 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             targetVM.CanWrite = false;
         }
 
-        public string GetFormattedValue(BasePropertyObserver oProp, object realPropertyValue)
-        {
-            return realPropertyValue.ToStringOrNull();
-        }
-
     }
 }

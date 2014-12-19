@@ -36,27 +36,5 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             };
         }
 
-        public string GetFormattedValue(BasePropertyObserver oProp, object realPropertyValue)
-        {
-            if (realPropertyValue == null)
-                return null;
-
-            var dateTime = (DateTime)realPropertyValue;
-
-
-            var attr = oProp.Template.Attributes.Get<DateTimeAttribute>();
-            switch (attr.PreferredInputControl)
-            {
-                case InputControlTypes.Date:
-                    return dateTime.ToString("yyyy-MM-dd");
-
-                case InputControlTypes.Time:
-                    return dateTime.ToString("T");
-
-                default:
-                    return dateTime.ToString("s");
-            }
-
-        }
     }
 }

@@ -16,12 +16,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
     {
         bool CanHandle(BasePropertyObserver oProp, Type actualType);
 
-        //object FormatValue(BasePropertyObserver oProp, object propertyValue);
-
-        //ITypeInfo BuildTypeInfoFor(BasePropertyObserver oProp, Type actualType);
-
         void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType);
 
-        string GetFormattedValue(BasePropertyObserver oProp, object realPropertyValue);
     }
 }
