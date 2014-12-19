@@ -945,6 +945,7 @@
     <Content Include="Scripts\ui-grid\ui-grid.min.js" />
     <Content Include="Scripts\ui-grid\ui-grid.svg" />
     <Content Include="Templates\Editors\dateEditor.html" />
+    <Content Include="Templates\Editors\richTextEditor.html" />
     <Content Include="Templates\Editors\timeEditor.html" />
     <Content Include="Templates\Editors\passwordEditor.html" />
     <Content Include="Templates\Editors\textAreaEditor.html" />
@@ -1009,6 +1010,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="AngularApp\ObjectExplorerDirective.ts" />
     <TypeScriptCompile Include="Scripts\typings\customExtensions.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />

@@ -9,6 +9,7 @@
         .controller("objectExplorerController", FresnelApp.ObjectExplorerController)
         .controller("collectionExplorerController", FresnelApp.CollectionExplorerController)
         .directive("classLibrary", FresnelApp.ClassLibaryDirective)
+        .directive("objectExplorer", FresnelApp.ObjectExplorerDirective)
         .directive("aDisabled", FresnelApp.DisableAnchorDirective)
         .config(["$httpProvider", function ($httpProvider) {
             $httpProvider.defaults.transformResponse.push(function (responseData) {

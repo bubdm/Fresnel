@@ -4,4 +4,5 @@ interface JQuery { tree: any; }
 
 interface JQuery { tooltip: any; }
 
+interface JQuery { wysihtml5: any; }
 

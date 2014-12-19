@@ -1,5 +1,20 @@
 var FresnelApp;
 (function (FresnelApp) {
+    // Used to ensure the Toolbox allows interaction with the Class nodes
+    function ObjectExplorerDirective() {
+        return {
+            link: function (scope, elem, attributes) {
+                scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
+                    //bootstrap WYSIHTML5 - text editor
+                    $(".textarea").wysihtml5();
+                });
+            }
+        };
+    }
+    FresnelApp.ObjectExplorerDirective = ObjectExplorerDirective;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     var AppController = (function () {
         function AppController($scope, appService) {
             appService.identityMap = new FresnelApp.IdentityMap();
@@ -229,7 +244,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var requires = ['ui.grid', 'ui.grid.autoResize', 'ui.grid.selection'];
-    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
+    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);
             return responseData;
