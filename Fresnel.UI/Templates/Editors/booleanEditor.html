@@ -1,7 +1,19 @@
 ﻿<label class="radio-inline">
-    <input type="radio" name="{{obj.ID}}{{prop.Name}}" value="True" ng-disabled="!prop.CanWrite" />{{prop.Info.TrueValue}}
+    <input type="radio"
+           name="{{obj.ID}}{{prop.Name}}"
+           value="true"
+           ng-model="prop.Value"
+           
+           ng-disabled="!prop.CanWrite" />
+    {{prop.Info.TrueValue}}
 </label>
 
 <label class="radio-inline">
-    <input type="radio" name="{{obj.ID}}{{prop.Name}}" value="False" ng-disabled="!prop.CanWrite" />{{prop.Info.FalseValue}}
+    <input type="radio"
+           name="{{obj.ID}}{{prop.Name}}"
+           value="false"
+           ng-model="prop.Value"
+           
+           ng-disabled="!prop.CanWrite" />
+    {{prop.Info.FalseValue}}
 </label>
