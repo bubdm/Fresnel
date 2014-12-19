@@ -33,6 +33,8 @@ namespace Envivo.Fresnel.Introspection.Templates
                 result.FriendlyName = string.Empty;
             }
 
+            result.AssemblyReader = tEnum.AssemblyReader;
+
             return result;
         }
 
