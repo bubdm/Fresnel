@@ -944,6 +944,7 @@
     <Content Include="Scripts\ui-grid\ui-grid.min.css" />
     <Content Include="Scripts\ui-grid\ui-grid.min.js" />
     <Content Include="Scripts\ui-grid\ui-grid.svg" />
+    <Content Include="Templates\toolbox.html" />
     <Content Include="Templates\Editors\emptyEditor.html" />
     <Content Include="Templates\Editors\booleanEditor.html" />
     <Content Include="Templates\Editors\dateTimeEditor.html" />

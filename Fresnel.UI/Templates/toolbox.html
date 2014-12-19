@@ -1,0 +1,72 @@
+﻿<!--NB: The 'sidebar-menu' class must be applied here, and not on the parent container -->
+<ul class="sidebar-menu" ng-controller="toolboxController" class-library>
+
+    <li>
+        <a href=""><i class="fa fa-list"></i> <span>Library</span></a>
+    </li>
+
+    <li ng-repeat="namespace in classHierarchy" href="" class="treeview">
+        <a href="#">
+            <span>{{namespace.Name}} ({{namespace.Classes.length}})</span>
+            <i class="fa fa-angle-left pull-right"></i>
+        </a>
+
+        <ul class="treeview-menu">
+            <li ng-repeat="item in namespace.Classes" class="active classItem">
+                <div class="">
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="" a-disabled="!item.Search.IsEnabled" ng-click="search(item.FullTypeName)" data-toggle="tooltip" title="{{item.Search.Tooltip}}">
+                                    <i class="fa fa-search"></i>Search
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" a-disabled="!item.Create.IsEnabled" ng-click="create(item.FullTypeName)" data-toggle="tooltip" title="{{item.Create.Tooltip}}">
+                                    <i class="fa fa-plus-circle"></i>Create
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </div>
+
+                    <a class="" href="" ng-show="item.IsVisible" data-toggle="tooltip" title="{{item.Description}}">
+                        <span class="classItemIcon {{item.Type}}Icon">
+                            {{item.Name}}
+                        </span>
+                    </a>
+
+                </div>
+            </li>
+        </ul>
+
+    </li>
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-gear"></i> <span>Services</span>
+            <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href=""><i class="fa fa-ban"></i> Nothing here yet</a></li>
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-search"></i> <span>Searches</span>
+            <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href=""><i class="fa fa-ban"></i> Nothing here yet</a></li>
+        </ul>
+    </li>
+
+</ul>
