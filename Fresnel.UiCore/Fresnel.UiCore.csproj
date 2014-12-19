@@ -51,6 +51,7 @@
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Objects\ColumnHeaderVM.cs" />
     <Compile Include="Objects\MethodVmBuilder.cs" />
+    <Compile Include="TypeInfo\EnumItemVM.cs" />
     <Compile Include="TypeInfo\IPropertyVmBuilder.cs" />
     <Compile Include="TypeInfo\BooleanVmBuilder.cs" />
     <Compile Include="TypeInfo\EnumVmBuilder.cs" />

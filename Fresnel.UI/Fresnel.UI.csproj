@@ -945,6 +945,7 @@
     <Content Include="Scripts\ui-grid\ui-grid.min.js" />
     <Content Include="Scripts\ui-grid\ui-grid.svg" />
     <Content Include="Templates\Editors\dateEditor.html" />
+    <Content Include="Templates\Editors\enumCheckboxEditor.html" />
     <Content Include="Templates\Editors\richTextEditor.html" />
     <Content Include="Templates\Editors\timeEditor.html" />
     <Content Include="Templates\Editors\passwordEditor.html" />

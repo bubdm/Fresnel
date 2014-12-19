@@ -27,10 +27,25 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             targetVM.Info = new EnumVM()
             {
                 Name = "enum",
+                IsBitwiseEnum = tEnum.IsBitwiseEnum,
+                Items = this.CreateEnumItems(tEnum),
                 PreferredControl = attr.PreferredInputControl != InputControlTypes.None ?
                                    attr.PreferredInputControl :
                                    InputControlTypes.Radio
             };
+        }
+
+        private IEnumerable<EnumItemVM> CreateEnumItems(EnumTemplate tEnum)
+        {
+            var results = tEnum.EnumItems.Values.Select(e => new EnumItemVM()
+            {
+                Name = e.FriendlyName,
+                EnumName = e.Name,
+                Description = e.XmlComments.Summary,
+                Value = e.Value,
+            });
+
+            return results;
         }
 
     }

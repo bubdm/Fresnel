@@ -1,0 +1,7 @@
+﻿<!--<input class="form-control" ng-model="prop.Value" ng-disabled="!prop.CanWrite" />-->
+
+<label class="" ng-repeat="enumItem in prop.Info.Items">
+    <input type="checkbox"
+           name="enumItem"
+           value="{{enumItem.Value}}"> {{enumItem.Name}}
+</label>

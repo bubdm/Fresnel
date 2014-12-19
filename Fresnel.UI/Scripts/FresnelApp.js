@@ -5,8 +5,8 @@ var FresnelApp;
         return {
             link: function (scope, elem, attributes) {
                 scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
-                    //bootstrap WYSIHTML5 - text editor
-                    $(".textarea").wysihtml5();
+                    ////bootstrap WYSIHTML5 - text editor
+                    //$(".textarea").wysihtml5();
                 });
             }
         };

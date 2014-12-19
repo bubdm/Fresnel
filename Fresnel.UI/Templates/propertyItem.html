@@ -45,13 +45,13 @@
             <div ng-switch-when="enum">
                 <div ng-switch="prop.Info.PreferredControl">
                     <div ng-switch-when="Checkbox">
-                        <div ng-include="''"></div>
+                        <div ng-include="'/Templates/Editors/enumCheckboxEditor.html'"></div>
                     </div>
                     <div ng-switch-when="Radio">
-                        <div ng-include="''"></div>
+                        <div ng-include="'/Templates/Editors/enumCheckboxEditor.html'"></div>
                     </div>
                     <div ng-switch-when="Select">
-                        <div ng-include="''"></div>
+                        <div ng-include="'/Templates/Editors/enumCheckboxEditor.html'"></div>
                     </div>
                     <div ng-switch-default>
                         <div ng-include="'/Templates/Editors/enumEditor.html'"></div>
