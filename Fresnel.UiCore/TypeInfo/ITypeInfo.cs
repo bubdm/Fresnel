@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Envivo.Fresnel.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public interface ITypeInfo
     {
-        string Name { get; }
+        InputControlTypes PreferredControl { get; set; }
     }
 }

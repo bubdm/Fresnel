@@ -1,17 +1,4 @@
-﻿<input type="date" 
-       class="form-control" 
-       ng-show="prop.Info.IsDateOnly"
-       ng-model="prop.Value" 
+﻿<input type="datetime-local"
+       class="form-control"
+       ng-model="prop.Value"
        ng-disabled="!prop.CanWrite" /> 
-
-<!--<input type="time"
-       class="form-control"
-       ng-show="prop.Info.IsTimeOnly"
-       ng-model="prop.Value"
-       ng-disabled="!prop.CanWrite" />--> 
-
-<!--<input type="datetime-local"
-       class="form-control"
-       ng-show="!prop.Info.IsDateOnly && !prop.Info.IsTimeOnly"
-       ng-model="prop.Value"
-       ng-disabled="!prop.CanWrite" />--> 

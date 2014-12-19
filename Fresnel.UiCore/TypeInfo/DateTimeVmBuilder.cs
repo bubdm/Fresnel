@@ -28,9 +28,11 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 
             targetVM.Info = new DateTimeVM()
             {
+                Name = "datetime",
                 CustomFormat = attr.CustomFormat,
-                IsDateOnly = attr.IsDateOnly,
-                IsTimeOnly = attr.IsTimeOnly,
+                PreferredControl = attr.PreferredInputControl != InputControlTypes.None ? 
+                                   attr.PreferredInputControl :
+                                   InputControlTypes.DateTimeLocal
             };
         }
 
@@ -43,17 +45,18 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 
 
             var attr = oProp.Template.Attributes.Get<DateTimeAttribute>();
-            if (attr.IsDateOnly)
+            switch (attr.PreferredInputControl)
             {
-                return string.Empty;
-                return dateTime.ToString("yyyy-MM-dd");
+                case InputControlTypes.Date:
+                    return dateTime.ToString("yyyy-MM-dd");
+
+                case InputControlTypes.Time:
+                    return dateTime.ToString("T");
+
+                default:
+                    return dateTime.ToString("s");
             }
-            if (attr.IsTimeOnly)
-            {
-                return dateTime.ToString("T");
-            }
-            return string.Empty;
-            return dateTime.ToString("s");
+
         }
     }
 }

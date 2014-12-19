@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Envivo.Fresnel.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,14 +9,9 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class DateTimeVM : ITypeInfo
     {
-        public string Name
-        {
-            get { return "datetime"; }
-        }
+        public string Name { get; set; }
 
-        public bool IsTimeOnly { get; set; }
-
-        public bool IsDateOnly { get; set; }
+        public InputControlTypes PreferredControl { get; set; }
 
         public string CustomFormat { get; set; }
 

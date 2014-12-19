@@ -9,15 +9,9 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class EnumVM : ITypeInfo
     {
-        public string Name
-        {
-            get { return "enum"; }
-        }
+        public string Name { get; set; }
 
-        /// <summary>
-        /// The preferred control for viewing and editing the enum value
-        /// </summary>
-        public EnumEditorControl PreferredUiControl { get; set; }
+        public InputControlTypes PreferredControl { get; set; }
 
     }
 }

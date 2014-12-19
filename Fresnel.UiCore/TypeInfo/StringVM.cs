@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Envivo.Fresnel.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,18 +9,13 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class StringVM : ITypeInfo
     {
-        public string Name
-        {
-            get { return "string"; }
-        }
+        public string Name { get; set; }
+
+        public InputControlTypes PreferredControl { get; set; }
 
         public int MinLength { get; set; }
 
         public int MaxLength { get; set; }
-
-        public bool IsMultiLine { get; set; }
-
-        public bool IsPassword { get; set; }
 
         public string EditMask { get; set; }
 

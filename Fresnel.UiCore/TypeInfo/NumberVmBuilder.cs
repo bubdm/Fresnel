@@ -28,14 +28,19 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 
         public void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType)
         {
-            var numberAttr = oProp.Template.Attributes.Get<NumberAttribute>();
+            var attr = oProp.Template.Attributes.Get<NumberAttribute>();
 
             targetVM.Info = new NumberVM()
             {
-                MinValue = numberAttr.MinValue,
-                MaxValue = numberAttr.MaxValue,
-                DecimalPlaces = numberAttr.DecimalPlaces,
-                CurrencySymbol = ""
+                Name = "number",
+                MinValue = attr.MinValue,
+                MaxValue = attr.MaxValue,
+                DecimalPlaces = attr.DecimalPlaces,
+                CurrencySymbol = "",
+                PreferredControl = attr.IsCurrency ? InputControlTypes.Currency :
+                                   attr.PreferredInputControl != InputControlTypes.None ?
+                                   attr.PreferredInputControl :
+                                   InputControlTypes.Number
             };
         }
 

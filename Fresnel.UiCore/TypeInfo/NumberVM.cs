@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Envivo.Fresnel.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,9 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class NumberVM : ITypeInfo
     {
-        public string Name
-        {
-            get { return "number"; }
-        }
+        public string Name { get; set; }
+
+        public InputControlTypes PreferredControl { get; set; }
 
         public int MinValue { get; set; }
 

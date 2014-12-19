@@ -26,9 +26,13 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 
             targetVM.Info = new BooleanVM()
             {
+                Name = "boolean",
                 IsNullable = tClass.RealType.IsNullableType(),
                 TrueValue = attr.TrueValue,
                 FalseValue = attr.FalseValue,
+                PreferredControl = attr.PreferredInputControl != InputControlTypes.None ?
+                                   attr.PreferredInputControl :
+                                   InputControlTypes.Radio
             };
         }
 

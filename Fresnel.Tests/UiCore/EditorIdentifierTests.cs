@@ -52,10 +52,10 @@ namespace Envivo.Fresnel.Tests.Proxies
             var passwordVM = vmBuilder.BuildFor(oObject.Properties["PasswordText"]);
 
             // Assert:
-            Assert.AreEqual("string", charVM.Info.Name);
-            Assert.AreEqual("string", stringVM.Info.Name);
-            Assert.AreEqual("string", multiLineVM.Info.Name);
-            Assert.AreEqual("string", passwordVM.Info.Name);
+            Assert.AreEqual(InputControlTypes.Text, charVM.Info.PreferredControl);
+            Assert.AreEqual(InputControlTypes.Text, stringVM.Info.PreferredControl);
+            Assert.AreEqual(InputControlTypes.TextArea, multiLineVM.Info.PreferredControl);
+            Assert.AreEqual(InputControlTypes.Password, passwordVM.Info.PreferredControl);
         }
 
     }

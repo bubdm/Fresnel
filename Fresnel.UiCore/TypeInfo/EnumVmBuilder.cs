@@ -18,19 +18,19 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
         {
             return actualType.IsEnum;
         }
-        
+
         public void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType)
         {
             var tEnum = (EnumTemplate)oProp.Template.InnerClass;
-            var enumAttr = oProp.Template.Attributes.Get<EnumAttribute>();
+            var attr = oProp.Template.Attributes.Get<EnumAttribute>();
 
             targetVM.Info = new EnumVM()
             {
-                PreferredUiControl = enumAttr.PreferredUiControl
+                Name = "enum",
+                PreferredControl = attr.PreferredInputControl != InputControlTypes.None ?
+                                   attr.PreferredInputControl :
+                                   InputControlTypes.Radio
             };
-
-            // This allows the correct icon to be displayed in the UI:
-            targetVM.ValueType = "Enum";
         }
 
         public string GetFormattedValue(BasePropertyObserver oProp, object realPropertyValue)

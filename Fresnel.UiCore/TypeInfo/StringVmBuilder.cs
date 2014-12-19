@@ -21,20 +21,21 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
                    actualType == typeof(string);
         }
 
-        
+
         public void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType)
         {
             var tClass = oProp.Template.InnerClass;
-            var fileAttr = oProp.Template.Attributes.Get<FilePathAttribute>();
-            var textAttr = oProp.Template.Attributes.Get<TextAttribute>();
+            var attr = oProp.Template.Attributes.Get<TextAttribute>();
 
             targetVM.Info = new StringVM()
             {
-                MinLength = textAttr.MinLength,
-                MaxLength = actualType == typeof(char) ? 1 : textAttr.MaxLength,
-                IsMultiLine = textAttr.IsMultiLine,
-                IsPassword = textAttr.IsPassword,
-                EditMask = textAttr.EditMask
+                Name = "string",
+                MinLength = attr.MinLength,
+                MaxLength = actualType == typeof(char) ? 1 : attr.MaxLength,
+                EditMask = attr.EditMask,
+                PreferredControl = attr.PreferredInputControl != InputControlTypes.None ? 
+                                   attr.PreferredInputControl :
+                                   InputControlTypes.Text
             };
         }
 

@@ -18,7 +18,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
         {
             return false;
         }
-        
+
         public void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType)
         {
             targetVM.CanWrite = false;

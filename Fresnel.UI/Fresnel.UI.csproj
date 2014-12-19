@@ -944,9 +944,13 @@
     <Content Include="Scripts\ui-grid\ui-grid.min.css" />
     <Content Include="Scripts\ui-grid\ui-grid.min.js" />
     <Content Include="Scripts\ui-grid\ui-grid.svg" />
+    <Content Include="Templates\Editors\dateEditor.html" />
+    <Content Include="Templates\Editors\timeEditor.html" />
+    <Content Include="Templates\Editors\passwordEditor.html" />
+    <Content Include="Templates\Editors\textAreaEditor.html" />
     <Content Include="Templates\toolbox.html" />
     <Content Include="Templates\Editors\emptyEditor.html" />
-    <Content Include="Templates\Editors\booleanEditor.html" />
+    <Content Include="Templates\Editors\booleanRadioEditor.html" />
     <Content Include="Templates\Editors\dateTimeEditor.html" />
     <Content Include="Templates\Editors\enumEditor.html" />
     <Content Include="Templates\Editors\numberEditor.html" />
