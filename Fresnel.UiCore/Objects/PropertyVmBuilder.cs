@@ -36,7 +36,7 @@ namespace Envivo.Fresnel.UiCore.Objects
             var objectProp = oProp as ObjectPropertyObserver;
 
             var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(oProp);
-            var setCheck = _CanGetPropertyPermission.IsSatisfiedBy(oProp);
+            var setCheck = _CanSetPropertyPermission.IsSatisfiedBy(oProp);
 
             var propVM = new PropertyVM()
             {
