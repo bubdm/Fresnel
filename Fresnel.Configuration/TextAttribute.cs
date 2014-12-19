@@ -68,7 +68,7 @@ namespace Envivo.Fresnel.Configuration
         public bool IsPassword { get; set; }
 
         /// <summary>
-        /// Provides the mask to use when editing this value in the UI
+        /// Provides the RegExp mask to use when editing this value in the UI
         /// </summary>
         /// <value></value>
         

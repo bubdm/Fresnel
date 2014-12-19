@@ -63,7 +63,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         }
 
         /// <summary>
-        /// This is a multi-line Text. Use CTRL-ENTER to method new lines.
+        /// This is a multi-line Text. Use SHIFT-ENTER to move to the next line.
         /// </summary>
         [Text(IsMultiLine = true)]
         public virtual string MultiLineText
@@ -73,7 +73,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         }
 
         /// <summary>
-        /// This is a Rich Text Text. Use CTRL-ENTER to method new lines.
+        /// This is a Rich Text Text. Use SHIFT-ENTER to move to the next line.
         /// </summary>
         [Text(IsRichText = true)]
         public virtual string RichTextText
@@ -113,9 +113,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         }
 
         /// <summary>
-        /// This will force the string to be shown using a pre-defined format
+        /// This will force the string to only allow numbers
         /// </summary>
-        [Text(EditMask = "(###)##-##-####")]
+        [Text(MaxLength = 10, EditMask = @"[0-9]*")]
         public virtual string EditMaskText
         {
             get { return _TextValue; }
