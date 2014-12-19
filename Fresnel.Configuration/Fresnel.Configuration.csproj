@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InputControlTypeEnums.cs" />
     <Compile Include="AssemblyConfiguration.cs" />
     <Compile Include="BaseAttribute.cs" />
     <Compile Include="BooleanAttribute.cs" />

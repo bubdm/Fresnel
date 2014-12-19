@@ -106,7 +106,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This enum should be shown as a Slider
         /// </summary>
-        [Enum(Category = "Enum presentation", PreferredUiControl = EnumEditorControl.Slider)]
+        [Enum(Category = "Enum presentation", PreferredInputControl = InputControlTypes.Range)]
         public virtual IndividualOptions EnumSlider
         {
             get { return _EnumValue; }
@@ -116,7 +116,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This enum should be shown as a set of Radio Options
         /// </summary>
-        [Enum(Category = "Enum presentation", PreferredUiControl = EnumEditorControl.RadioOptions)]
+        [Enum(Category = "Enum presentation", PreferredInputControl = InputControlTypes.Radio)]
         public virtual IndividualOptions EnumRadioOptions
         {
             get { return _EnumValue; }

@@ -65,7 +65,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a multi-line Text. Use SHIFT-ENTER to move to the next line.
         /// </summary>
-        [Text(IsMultiLine = true)]
+        [Text(PreferredInputControl = InputControlTypes.TextArea)]
         public virtual string MultiLineText
         {
             get { return _TextValue; }
@@ -75,7 +75,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Rich Text Text. Use SHIFT-ENTER to move to the next line.
         /// </summary>
-        [Text(IsRichText = true)]
+        [Text(PreferredInputControl = InputControlTypes.RichTextArea)]
         public virtual string RichTextText
         {
             get { return _TextValue; }
@@ -85,7 +85,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a password string, and should be shown using asterisks
         /// </summary>
-        [Text(IsPassword = true)]
+        [Text(PreferredInputControl = InputControlTypes.Password)]
         public virtual string PasswordText
         {
             get { return _TextValue; }

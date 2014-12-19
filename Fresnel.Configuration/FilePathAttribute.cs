@@ -20,16 +20,16 @@ namespace Envivo.Fresnel.Configuration
         {
             base.MaxLength = 260;
             this.IsImage = false;
-            this.DialogType = FileDialogType.None;
+            //this.DialogType = FileDialogType.None;
         }
 
-        /// <summary>
-        /// Determines what type of Dialog box should be used for this path
-        /// </summary>
-        /// <value></value>
+        ///// <summary>
+        ///// Determines what type of Dialog box should be used for this path
+        ///// </summary>
+        ///// <value></value>
         
         
-        public FileDialogType DialogType { get; set; }
+        //public FileDialogType DialogType { get; set; }
 
         /// <summary>
         /// Determines if the file is an image. The image format may be one of the following: BMP, JPG, GIF, PNG, TIF, WMF, and EMF.
@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.Configuration
                 if (_IsImage)
                 {
                     this.Filter = "Image Files|*.BMP;*.JPG;*.GIF;*.PNG;*.TIF;*.WMF;*.EMF|All files|*.*";
-                    this.DialogType = FileDialogType.OpenFile;
+                    //this.DialogType = FileDialogType.OpenFile;
                 }
             }
         }

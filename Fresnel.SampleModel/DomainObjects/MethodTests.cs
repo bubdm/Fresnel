@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.SampleModel
         /// It should appear with a 'disabled' icon.
         /// </summary>
         /// <param name="dateTime"></param>
-        public void MethodWithOneParameter([DateTime(IsDateOnly = true)] DateTime dateTime)
+        public void MethodWithOneParameter([DateTime(PreferredInputControl  = InputControlTypes.Date)] DateTime dateTime)
         {
             Trace.TraceInformation(MethodBase.GetCurrentMethod().Name);
         }

@@ -18,13 +18,13 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual  Guid ID { get; set; }
+        public virtual Guid ID { get; set; }
 
         /// <summary>
         /// This is a path to an existing file.
         /// You can drag a Windows file onto this location.
         /// </summary>
-        [FilePath(DialogType = FileDialogType.None)]
+        [FilePath(PreferredInputControl = InputControlTypes.File)]
         public virtual string NormalFilePath
         {
             get { return _PathValue; }
@@ -36,7 +36,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// Clicking the hover button will open an "Open File" dialog at the correct folder.
         /// You can drag a Windows file onto this location.
         /// </summary>
-        [FilePath(DialogType = FileDialogType.OpenFile)]
+        [FilePath(PreferredInputControl = InputControlTypes.File)]
         public virtual string OpenFilePath
         {
             get { return _PathValue; }
@@ -48,7 +48,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// Clicking the hover button will open an "Save File" dialog the correct folder.
         /// You can drag a Windows file onto this location.
         /// </summary>
-        [FilePath(DialogType = FileDialogType.SaveFile)]
+        [FilePath(PreferredInputControl = InputControlTypes.File)]
         public virtual string SaveFilePath
         {
             get { return _PathValue; }
@@ -60,7 +60,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// Clicking the hover button will open an "Open Folder" dialog at the correct folder.
         /// You can drag a Windows folder onto this location.
         /// </summary>
-        [FilePath(DialogType = FileDialogType.FolderBrowser)]
+        [FilePath(PreferredInputControl = InputControlTypes.File)]
         public virtual string FolderPath
         {
             get { return _PathValue; }
@@ -73,7 +73,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// Clicking the hover button will open an "Open Folder" dialog at the correct folder.
         /// You can drag a Windows image file onto this location.
         /// </summary>
-        [FilePath(DialogType = FileDialogType.OpenFile, IsImage = true)]
+        [FilePath(PreferredInputControl = InputControlTypes.File, IsImage = true)]
         public virtual string ImageFilePath
         {
             get { return _PathValue; }
@@ -86,7 +86,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// The file dialog will show a 'DOC' filter and 'All files' filter
         /// You can drag a Windows image file onto this location.
         /// </summary>
-        [FilePath(DialogType = FileDialogType.OpenFile, Filter = "DOC files|*.doc|All files (*.*)|*.*")]
+        [FilePath(PreferredInputControl = InputControlTypes.File, Filter = "DOC files|*.doc|All files (*.*)|*.*")]
         public virtual string FilePathWithFilter
         {
             get { return _PathValue; }

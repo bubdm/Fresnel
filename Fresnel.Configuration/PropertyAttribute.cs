@@ -85,6 +85,13 @@ namespace Envivo.Fresnel.Configuration
         /// Determines if optimistic locking is use on the parent Object when this property is modified
         /// </summary>
         public bool UseOptimisticLock { get; set; }
+
+
+        /// <summary>
+        /// The preferred control for viewing and editing the enum value
+        /// </summary>
+        public InputControlTypes PreferredInputControl { get; set; }
+
     }
 
 }
