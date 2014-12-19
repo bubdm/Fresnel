@@ -12,29 +12,22 @@ using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore.TypeInfo
 {
-    public class BooleanVmBuilder : IPropertyVmBuilder
+    public class UnknownVmBuilder : IPropertyVmBuilder
     {
         public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
-            return actualType == typeof(bool);
+            return false;
         }
-
+        
         public void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType)
         {
-            var tClass = oProp.Template.InnerClass;
-            var attr = oProp.Template.Attributes.Get<BooleanAttribute>();
-
-            targetVM.Info = new BooleanVM()
-            {
-                IsNullable = tClass.RealType.IsNullableType(),
-                TrueValue = attr.TrueValue,
-                FalseValue = attr.FalseValue,
-            };
+            targetVM.CanWrite = false;
         }
 
         public string GetFormattedValue(BasePropertyObserver oProp, object realPropertyValue)
         {
             return realPropertyValue.ToStringOrNull();
         }
+
     }
 }

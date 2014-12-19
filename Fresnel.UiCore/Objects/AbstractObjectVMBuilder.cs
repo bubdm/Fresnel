@@ -12,14 +12,14 @@ namespace Envivo.Fresnel.UiCore.Objects
     {
         private ObserverCache _ObserverCache;
         private ClassHierarchyBuilder _ClassHierarchyBuilder;
-        private PropertyVmBuilder _PropertyVmBuilder;
+        private AbstractPropertyVmBuilder _PropertyVmBuilder;
         private MethodVmBuilder _MethodVmBuilder;
 
         public AbstractObjectVMBuilder
             (
             ObserverCache observerCache,
             ClassHierarchyBuilder classHierarchyBuilder,
-            PropertyVmBuilder propertyVmBuilder,
+            AbstractPropertyVmBuilder propertyVmBuilder,
             MethodVmBuilder methodVmBuilder
             )
         {
@@ -145,7 +145,7 @@ namespace Envivo.Fresnel.UiCore.Objects
             var properties = new List<PropertyVM>();
             foreach (var oProp in visibleProperties)
             {
-                var propVM = _PropertyVmBuilder.BuildFor(oObject, oProp);
+                var propVM = _PropertyVmBuilder.BuildFor(oProp);
                 properties.Add(propVM);
             }
             return properties;

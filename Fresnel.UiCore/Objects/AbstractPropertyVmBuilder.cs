@@ -1,7 +1,9 @@
 ﻿using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Permissions;
 using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.TypeInfo;
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,47 +12,73 @@ using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore.Objects
 {
-    public class PropertyVmBuilder
+    public class AbstractPropertyVmBuilder
     {
-        private TypeInfoBuilder _TypeInfoBuilder;
+        private List<IPropertyVmBuilder> _Builders;
+        private UnknownVmBuilder _UnknownVmBuilder;
+
         private CanGetPropertyPermission _CanGetPropertyPermission;
         private CanSetPropertyPermission _CanSetPropertyPermission;
         private RealTypeResolver _RealTypeResolver;
 
-        public PropertyVmBuilder
+        public AbstractPropertyVmBuilder
             (
-            TypeInfoBuilder typeInfoBuilder,
+            BooleanVmBuilder booleanVmBuilder,
+            DateTimeVmBuilder dateTimeVmBuilder,
+            EnumVmBuilder enumVmBuilder,
+            NumberVmBuilder numberVmBuilder,
+            StringVmBuilder textVmBuilder,
+            ObjectSelectionVmBuilder objectSelectionVmBuilder,
+            UnknownVmBuilder unknownVmBuilder,
+
             CanGetPropertyPermission canGetPropertyPermission,
             CanSetPropertyPermission canSetPropertyPermission,
             RealTypeResolver realTypeResolver
             )
         {
-            _TypeInfoBuilder = typeInfoBuilder;
+            _Builders = new List<IPropertyVmBuilder>()
+            {
+                booleanVmBuilder ,
+                dateTimeVmBuilder,
+                enumVmBuilder,
+                numberVmBuilder,
+                textVmBuilder,
+                objectSelectionVmBuilder,
+            };
+            _UnknownVmBuilder = unknownVmBuilder;
+
             _CanGetPropertyPermission = canGetPropertyPermission;
             _CanSetPropertyPermission = canSetPropertyPermission;
             _RealTypeResolver = realTypeResolver;
         }
 
-        public PropertyVM BuildFor(ObjectObserver oObject, BasePropertyObserver oProp)
+        public PropertyVM BuildFor(BasePropertyObserver oProp)
         {
             var objectProp = oProp as ObjectPropertyObserver;
 
-            var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(oProp);
+            var valueType = oProp.Template.InnerClass.RealType;
+            var actualType = valueType.IsNullableType() ?
+                               valueType.GetGenericArguments()[0] :
+                               valueType;
+
             var setCheck = _CanSetPropertyPermission.IsSatisfiedBy(oProp);
+            var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(oProp);
 
             var propVM = new PropertyVM()
             {
-                ObjectID = oObject.ID,
+                ObjectID = oProp.OuterObject.ID,
                 Name = oProp.Template.FriendlyName,
                 PropertyName = oProp.Template.Name,
                 Description = oProp.Template.XmlComments.Summary,
-                Info = _TypeInfoBuilder.BuildTypeInfoFor(oProp),
                 IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true,
                 IsVisible = !oProp.Template.IsFrameworkMember && oProp.Template.IsVisible,
                 IsExpandable = objectProp != null,
                 CanRead = getCheck.Passed,
                 CanWrite = setCheck.Passed,
             };
+
+            var vmBuilder = _Builders.SingleOrDefault(s => s.CanHandle(oProp, actualType)) ?? _UnknownVmBuilder;
+            vmBuilder.Populate(propVM, oProp, actualType);
 
             if (setCheck.Passed)
             {
@@ -66,10 +94,9 @@ namespace Envivo.Fresnel.UiCore.Objects
                 try
                 {
                     // TODO: Use the GetPropertyCommand, in case the property should be hidden:
-                    propVM.Value = oProp.Template.GetProperty(oObject.RealObject);
+                    var realValue = oProp.Template.GetProperty(oProp.OuterObject.RealObject);
 
-                    var valueType = oProp.Template.InnerClass.RealType;
-                    propVM.ValueType = valueType.IsEnum ? "Enum" : valueType.Name;
+                    propVM.Value = vmBuilder.GetFormattedValue(oProp, realValue);
                 }
                 catch (Exception ex)
                 {
@@ -83,6 +110,7 @@ namespace Envivo.Fresnel.UiCore.Objects
 
             return propVM;
         }
+
 
     }
 }

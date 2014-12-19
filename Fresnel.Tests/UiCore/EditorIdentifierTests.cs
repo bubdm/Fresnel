@@ -23,6 +23,7 @@ using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.UiCore.TypeInfo;
+using Envivo.Fresnel.UiCore.Objects;
 
 namespace Envivo.Fresnel.Tests.Proxies
 {
@@ -36,25 +37,25 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-            var identifier = container.Resolve<TypeInfoBuilder>();
+            var vmBuilder = container.Resolve<AbstractPropertyVmBuilder>();
 
             var textValues = new SampleModel.BasicTypes.TextValues();
             var oObject = (ObjectObserver)observerCache.GetObserver(textValues);
 
             // Act:
-            var charInfo = identifier.BuildTypeInfoFor(oObject.Properties["NormalChar"]);
+            var charVM = vmBuilder.BuildFor(oObject.Properties["NormalChar"]);
 
-            var stringInfo = identifier.BuildTypeInfoFor(oObject.Properties["NormalText"]);
+            var stringVM = vmBuilder.BuildFor(oObject.Properties["NormalText"]);
 
-            var multiLineInfo = identifier.BuildTypeInfoFor(oObject.Properties["MultiLineText"]);
+            var multiLineVM = vmBuilder.BuildFor(oObject.Properties["MultiLineText"]);
 
-            var passwordInfo = identifier.BuildTypeInfoFor(oObject.Properties["PasswordText"]);
+            var passwordVM = vmBuilder.BuildFor(oObject.Properties["PasswordText"]);
 
             // Assert:
-            Assert.AreEqual("string", charInfo.Name);
-            Assert.AreEqual("string", stringInfo.Name);
-            Assert.AreEqual("string", multiLineInfo.Name);
-            Assert.AreEqual("string", passwordInfo.Name);
+            Assert.AreEqual("string", charVM.Info.Name);
+            Assert.AreEqual("string", stringVM.Info.Name);
+            Assert.AreEqual("string", multiLineVM.Info.Name);
+            Assert.AreEqual("string", passwordVM.Info.Name);
         }
 
     }

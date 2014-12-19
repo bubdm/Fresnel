@@ -2,6 +2,7 @@
 using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.UiCore.Objects;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore.TypeInfo
 {
-    public class NumberVmBuilder : ITypeInfoBuilder
+    public class NumberVmBuilder : IPropertyVmBuilder
     {
         public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
@@ -24,18 +25,24 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
                    actualType == typeof(byte);
         }
 
-        public ITypeInfo BuildTypeInfoFor(BasePropertyObserver oProp, Type actualType)
+
+        public void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType)
         {
             var numberAttr = oProp.Template.Attributes.Get<NumberAttribute>();
 
-            var result = new NumberVM()
+            targetVM.Info = new NumberVM()
             {
                 MinValue = numberAttr.MinValue,
                 MaxValue = numberAttr.MaxValue,
                 DecimalPlaces = numberAttr.DecimalPlaces,
                 CurrencySymbol = ""
             };
-            return result;
         }
+
+        public string GetFormattedValue(BasePropertyObserver oProp, object realPropertyValue)
+        {
+            return realPropertyValue.ToStringOrNull();
+        }
+
     }
 }

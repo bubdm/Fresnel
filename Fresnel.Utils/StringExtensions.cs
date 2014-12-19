@@ -236,6 +236,15 @@ namespace Envivo.Fresnel.Utils
         {
             return value.StartsWith("{\\rtf", StringComparison.OrdinalIgnoreCase);
         }
+
+        public static string ToStringOrNull(this object value)
+        {
+            if (value == null)
+                return null;
+
+            return value.ToString();
+        }
+
     }
 
 }
