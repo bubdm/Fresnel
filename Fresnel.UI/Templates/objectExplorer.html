@@ -6,7 +6,7 @@
             {{ obj.OuterProperty.Name ? obj.OuterProperty.Name : obj.Name }}
         </h3>
         <div class="box-tools pull-right">
-            <div class="btn-group">
+            <div class="btn-group" ng-show="obj.Methods.length > 0">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Actions</span>
