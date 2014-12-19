@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
         public ITypeInfo BuildTypeInfoFor(BasePropertyObserver oProp, Type actualType)
         {
             var tClass = oProp.Template.InnerClass;
-            var attr = tClass.Attributes.Get<BooleanAttribute>();
+            var attr = oProp.Template.Attributes.Get<BooleanAttribute>();
 
             var result = new BooleanVM()
             {
