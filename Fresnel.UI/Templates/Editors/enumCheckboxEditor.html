@@ -1,7 +1,11 @@
-﻿<!--<input class="form-control" ng-model="prop.Value" ng-disabled="!prop.CanWrite" />-->
-
-<label class="" ng-repeat="enumItem in prop.Info.Items">
-    <input type="checkbox"
-           name="enumItem"
-           value="{{enumItem.Value}}"> {{enumItem.Name}}
-</label>
+﻿<div ng-repeat="enumItem in prop.Info.Items" class="row">
+    <label class="col-md-5">
+        <input type="checkbox"
+               name="enumItem"
+               ng-disabled="!prop.CanWrite"
+               ng-checked="enumItem.IsChecked"
+               ng-model="prop.Value"
+               value="{{enumItem.Value}}"> {{enumItem.Name}}
+    </label>
+    <span class="col-md-7 help-block propertyDescription">{{enumItem.Description}} </span>
+</div>

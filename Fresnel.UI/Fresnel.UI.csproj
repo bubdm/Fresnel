@@ -945,6 +945,8 @@
     <Content Include="Scripts\ui-grid\ui-grid.min.js" />
     <Content Include="Scripts\ui-grid\ui-grid.svg" />
     <Content Include="Templates\Editors\dateEditor.html" />
+    <Content Include="Templates\Editors\enumSelectEditor.html" />
+    <Content Include="Templates\Editors\enumRadioEditor.html" />
     <Content Include="Templates\Editors\enumCheckboxEditor.html" />
     <Content Include="Templates\Editors\richTextEditor.html" />
     <Content Include="Templates\Editors\timeEditor.html" />
@@ -954,7 +956,7 @@
     <Content Include="Templates\Editors\emptyEditor.html" />
     <Content Include="Templates\Editors\booleanRadioEditor.html" />
     <Content Include="Templates\Editors\dateTimeEditor.html" />
-    <Content Include="Templates\Editors\enumEditor.html" />
+    <Content Include="Templates\Editors\enumRangeEditor.html" />
     <Content Include="Templates\Editors\numberEditor.html" />
     <Content Include="Templates\Editors\stringEditor.html" />
     <Content Include="Templates\collectionExplorer.html" />

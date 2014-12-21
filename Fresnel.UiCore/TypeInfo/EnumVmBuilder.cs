@@ -1,6 +1,7 @@
 ﻿using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Objects;
 using Envivo.Fresnel.Utils;
@@ -14,6 +15,16 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class EnumVmBuilder : IPropertyVmBuilder
     {
+        private IDomainDependencyResolver _DomainDependencyResolver;
+
+        public EnumVmBuilder
+            (
+            IDomainDependencyResolver domainDependencyResolver
+            )
+        {
+            _DomainDependencyResolver = domainDependencyResolver;
+        }
+
         public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
             return actualType.IsEnum;
@@ -29,21 +40,25 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
                 Name = "enum",
                 IsBitwiseEnum = tEnum.IsBitwiseEnum,
                 Items = this.CreateEnumItems(tEnum),
-                PreferredControl = attr.PreferredInputControl != InputControlTypes.None ?
+                PreferredControl = tEnum.IsBitwiseEnum ? InputControlTypes.Radio :
+                                   attr.PreferredInputControl != InputControlTypes.None ?
                                    attr.PreferredInputControl :
-                                   InputControlTypes.Radio
+                                   InputControlTypes.Select
             };
         }
 
         private IEnumerable<EnumItemVM> CreateEnumItems(EnumTemplate tEnum)
         {
+            // TODO: Set each item's IsChecked property based on the Property's value
+
             var results = tEnum.EnumItems.Values.Select(e => new EnumItemVM()
             {
                 Name = e.FriendlyName,
                 EnumName = e.Name,
                 Description = e.XmlComments.Summary,
                 Value = e.Value,
-            });
+            })
+            .ToArray();
 
             return results;
         }

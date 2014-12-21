@@ -1,0 +1,13 @@
+﻿<div ng-repeat="enumItem in prop.Info.Items" class="row">
+    <label class="col-md-5">
+        <input type="radio"
+               class=""
+               name="{{prop.Name}}.{{enumItem.Name}}"
+               value="{{enumItem.Name}}"
+               ng-disabled="!prop.CanWrite"
+               ng-checked="enumItem.IsChecked"
+               ng-model="prop.Value" />
+        {{enumItem.Name}}
+    </label>
+    <div class="col-md-7 help-block propertyDescription">{{enumItem.Description}} </div>
+</div>

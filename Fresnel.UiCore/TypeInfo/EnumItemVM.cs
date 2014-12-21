@@ -13,5 +13,6 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 
         public object Value { get; set; }
 
+        public bool IsChecked { get; set; }
     }
 }
