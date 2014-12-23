@@ -46,7 +46,6 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Types.ObjectSelectionVmBuilder),
                 typeof(Fresnel.UiCore.Types.UnknownVmBuilder),
 
-                typeof(Fresnel.UiCore.Controllers.SessionController),
                 typeof(Fresnel.UiCore.SessionVmBuilder),
             };
         }
@@ -56,6 +55,7 @@ namespace Envivo.Fresnel.Bootstrap
             return new Type[] { 
                 typeof(Fresnel.UiCore.Controllers.ToolboxController),
                 typeof(Fresnel.UiCore.Controllers.ExplorerController),
+                typeof(Fresnel.UiCore.Controllers.SessionController),
                 typeof(Fresnel.UiCore.Controllers.TestController),
 
                 typeof(Fresnel.UiCore.Objects.AbstractObjectVMBuilder),

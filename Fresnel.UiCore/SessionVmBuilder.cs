@@ -14,6 +14,8 @@ namespace Envivo.Fresnel.UiCore
         private IClock _Clock;
         private Engine _Engine;
 
+        private Lazy<SessionVM> _SessionVM;
+
         public SessionVmBuilder
             (
             Engine engine,
@@ -22,6 +24,10 @@ namespace Envivo.Fresnel.UiCore
         {
             _Engine = engine;
             _Clock = clock;
+
+            _SessionVM = new Lazy<SessionVM>(
+                                () => this.Build(),
+                                System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         public SessionVM Build()

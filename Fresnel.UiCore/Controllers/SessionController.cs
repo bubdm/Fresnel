@@ -12,24 +12,18 @@ namespace Envivo.Fresnel.UiCore.Controllers
     {
         private SessionVmBuilder _SessionVmBuilder;
 
-        private Lazy<SessionVM> _SessionVM;
-
         public SessionController
             (
             SessionVmBuilder sessionVmBuilder
             )
         {
             _SessionVmBuilder = sessionVmBuilder;
-
-            _SessionVM = new Lazy<SessionVM>(
-                                () => _SessionVmBuilder.Build(), 
-                                System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         [HttpGet]
         public SessionVM GetSession()
         {
-            return _SessionVM.Value;
+            return _SessionVmBuilder.Build();
         }
 
     }
