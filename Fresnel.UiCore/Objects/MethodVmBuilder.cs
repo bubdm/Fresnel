@@ -1,6 +1,6 @@
 ﻿using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Permissions;
-using Envivo.Fresnel.UiCore.TypeInfo;
+using Envivo.Fresnel.UiCore.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;

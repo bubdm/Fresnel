@@ -5,15 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Envivo.Fresnel.UiCore.TypeInfo
+namespace Envivo.Fresnel.UiCore.Types
 {
-    public class DateTimeVM : ITypeInfo
+    public class BooleanVM : ITypeInfo
     {
         public string Name { get; set; }
 
         public InputControlTypes PreferredControl { get; set; }
 
-        public string CustomFormat { get; set; }
+        public bool IsNullable { get; set; }
+
+        public string TrueValue { get; set; }
+
+        public string FalseValue { get; set; }
 
     }
 }

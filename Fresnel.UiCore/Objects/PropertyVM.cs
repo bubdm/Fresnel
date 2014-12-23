@@ -1,4 +1,4 @@
-﻿using Envivo.Fresnel.UiCore.TypeInfo;
+﻿using Envivo.Fresnel.UiCore.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;

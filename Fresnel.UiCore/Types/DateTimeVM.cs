@@ -5,19 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Envivo.Fresnel.UiCore.TypeInfo
+namespace Envivo.Fresnel.UiCore.Types
 {
-    public class StringVM : ITypeInfo
+    public class DateTimeVM : ITypeInfo
     {
         public string Name { get; set; }
 
         public InputControlTypes PreferredControl { get; set; }
 
-        public int MinLength { get; set; }
-
-        public int MaxLength { get; set; }
-
-        public string EditMask { get; set; }
+        public string CustomFormat { get; set; }
 
     }
 }

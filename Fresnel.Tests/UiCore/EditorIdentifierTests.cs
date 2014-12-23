@@ -22,7 +22,7 @@ using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore;
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.UiCore.TypeInfo;
+using Envivo.Fresnel.UiCore.Types;
 using Envivo.Fresnel.UiCore.Objects;
 
 namespace Envivo.Fresnel.Tests.Proxies

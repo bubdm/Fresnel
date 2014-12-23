@@ -10,32 +10,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Envivo.Fresnel.UiCore.TypeInfo
+namespace Envivo.Fresnel.UiCore.Types
 {
-    public class StringVmBuilder : IPropertyVmBuilder
+    public class DateTimeVmBuilder : IPropertyVmBuilder
     {
+        private readonly DateTime _epoch = new DateTime(1970, 1, 1);
+
         public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
-            var tClass = oProp.Template.InnerClass;
-            return actualType == typeof(char) ||
-                   actualType == typeof(string);
+            return actualType == typeof(DateTime) ||
+                   actualType == typeof(DateTimeOffset);
         }
-
 
         public void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType)
         {
-            var tClass = oProp.Template.InnerClass;
-            var attr = oProp.Template.Attributes.Get<TextAttribute>();
+            var attr = oProp.Template.Attributes.Get<DateTimeAttribute>();
 
-            targetVM.Info = new StringVM()
+            targetVM.Info = new DateTimeVM()
             {
-                Name = "string",
-                MinLength = attr.MinLength,
-                MaxLength = actualType == typeof(char) ? 1 : attr.MaxLength,
-                EditMask = attr.EditMask,
+                Name = "datetime",
+                CustomFormat = attr.CustomFormat,
                 PreferredControl = attr.PreferredInputControl != InputControlTypes.None ? 
                                    attr.PreferredInputControl :
-                                   InputControlTypes.Text
+                                   InputControlTypes.DateTimeLocal
             };
         }
 

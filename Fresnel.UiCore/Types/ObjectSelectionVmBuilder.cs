@@ -10,18 +10,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Envivo.Fresnel.UiCore.TypeInfo
+namespace Envivo.Fresnel.UiCore.Types
 {
-    public class UnknownVmBuilder : IPropertyVmBuilder
+    public class ObjectSelectionVmBuilder : IPropertyVmBuilder
     {
         public bool CanHandle(BasePropertyObserver oProp, Type actualType)
         {
-            return false;
+            var tClass = oProp.Template.InnerClass;
+            return tClass is ClassTemplate;
         }
 
         public void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType)
         {
-            targetVM.CanWrite = false;
+            
         }
 
     }

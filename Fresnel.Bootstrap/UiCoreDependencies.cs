@@ -32,13 +32,13 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Classes.ClassItemBuilder),
                 typeof(Fresnel.UiCore.Classes.NamespacesBuilder),
 
-                typeof(Fresnel.UiCore.TypeInfo.BooleanVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.DateTimeVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.EnumVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.NumberVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.StringVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.ObjectSelectionVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.UnknownVmBuilder),
+                typeof(Fresnel.UiCore.Types.BooleanVmBuilder),
+                typeof(Fresnel.UiCore.Types.DateTimeVmBuilder),
+                typeof(Fresnel.UiCore.Types.EnumVmBuilder),
+                typeof(Fresnel.UiCore.Types.NumberVmBuilder),
+                typeof(Fresnel.UiCore.Types.StringVmBuilder),
+                typeof(Fresnel.UiCore.Types.ObjectSelectionVmBuilder),
+                typeof(Fresnel.UiCore.Types.UnknownVmBuilder),
             };
         }
 

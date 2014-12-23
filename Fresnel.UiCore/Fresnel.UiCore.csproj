@@ -51,16 +51,16 @@
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Objects\ColumnHeaderVM.cs" />
     <Compile Include="Objects\MethodVmBuilder.cs" />
-    <Compile Include="TypeInfo\EnumItemVM.cs" />
-    <Compile Include="TypeInfo\IPropertyVmBuilder.cs" />
-    <Compile Include="TypeInfo\BooleanVmBuilder.cs" />
-    <Compile Include="TypeInfo\EnumVmBuilder.cs" />
-    <Compile Include="TypeInfo\ObjectSelectionVmBuilder.cs" />
-    <Compile Include="TypeInfo\NumberVmBuilder.cs" />
-    <Compile Include="TypeInfo\DateTimeVmBuilder.cs" />
-    <Compile Include="TypeInfo\NullVM.cs" />
-    <Compile Include="TypeInfo\UnknownVmBuilder.cs" />
-    <Compile Include="TypeInfo\StringVmBuilder.cs" />
+    <Compile Include="Types\EnumItemVM.cs" />
+    <Compile Include="Types\IPropertyVmBuilder.cs" />
+    <Compile Include="Types\BooleanVmBuilder.cs" />
+    <Compile Include="Types\EnumVmBuilder.cs" />
+    <Compile Include="Types\ObjectSelectionVmBuilder.cs" />
+    <Compile Include="Types\NumberVmBuilder.cs" />
+    <Compile Include="Types\DateTimeVmBuilder.cs" />
+    <Compile Include="Types\NullVM.cs" />
+    <Compile Include="Types\UnknownVmBuilder.cs" />
+    <Compile Include="Types\StringVmBuilder.cs" />
     <Compile Include="InteractionPoint.cs" />
     <Compile Include="Classes\ClassItem.cs" />
     <Compile Include="Classes\ClassItemBuilder.cs" />
@@ -78,16 +78,16 @@
     <Compile Include="Objects\MethodVM.cs" />
     <Compile Include="Objects\PropertyVM.cs" />
     <Compile Include="Objects\ObjectVM.cs" />
-    <Compile Include="TypeInfo\DateTimeVM.cs" />
-    <Compile Include="TypeInfo\EnumVM.cs" />
-    <Compile Include="TypeInfo\NumberVM.cs" />
-    <Compile Include="TypeInfo\StringVM.cs" />
-    <Compile Include="TypeInfo\BooleanVM.cs" />
-    <Compile Include="TypeInfo\ITypeInfo.cs" />
+    <Compile Include="Types\DateTimeVM.cs" />
+    <Compile Include="Types\EnumVM.cs" />
+    <Compile Include="Types\NumberVM.cs" />
+    <Compile Include="Types\StringVM.cs" />
+    <Compile Include="Types\BooleanVM.cs" />
+    <Compile Include="Types\ITypeInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Editing\" />
+    <Folder Include="Messages\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fresnel.Configuration\Fresnel.Configuration.csproj">
