@@ -4,6 +4,8 @@
 
         identityMap: IdentityMap;
 
+        session: any;
+
         loadSession();
     }
 

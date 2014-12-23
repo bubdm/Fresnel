@@ -16,8 +16,10 @@
             $scope.loadSession = function () {
                 var uri = "api/Session/GetSession";
                 $http.get(uri)
-                    .success(
-                    (data, status) => this.session = data);
+                    .success(function (data, status) {
+                        $scope.session = data;
+                        appService.session = $scope.session;
+                    });
             }
 
             // This will run when the page loads:

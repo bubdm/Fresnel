@@ -115,9 +115,11 @@ var FresnelApp;
             appService.identityMap = new FresnelApp.IdentityMap();
             $scope.identityMap = appService.identityMap;
             $scope.loadSession = function () {
-                var _this = this;
                 var uri = "api/Session/GetSession";
-                $http.get(uri).success(function (data, status) { return _this.session = data; });
+                $http.get(uri).success(function (data, status) {
+                    $scope.session = data;
+                    appService.session = $scope.session;
+                });
             };
             // This will run when the page loads:
             angular.element(document).ready(function () {
