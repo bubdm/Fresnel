@@ -5,7 +5,9 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Proxies;
 using Envivo.Fresnel.UiCore.Classes;
+using Envivo.Fresnel.UiCore.Messages;
 using Envivo.Fresnel.UiCore.Objects;
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,19 +23,22 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ProxyCache _ProxyCache;
         private CreateObjectCommand _CreateObjectCommand;
         private AbstractObjectVMBuilder _ObjectVMBuilder;
+        private IClock _Clock;
 
         public CreateCommand
             (
             TemplateCache templateCache,
             ProxyCache proxyCache,
             CreateObjectCommand createObjectCommand,
-            AbstractObjectVMBuilder objectVMBuilder
+            AbstractObjectVMBuilder objectVMBuilder,
+            IClock clock
             )
         {
             _TemplateCache = templateCache;
             _ProxyCache = proxyCache;
             _CreateObjectCommand = createObjectCommand;
             _ObjectVMBuilder = objectVMBuilder;
+            _Clock = clock;
         }
 
         public CreateCommandResult Invoke(string fullyQualifiedName)
@@ -59,10 +64,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
+                var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
+
                 return new CreateCommandResult()
                 {
                     Failed = true,
-                    ErrorMessages = new string[] { ex.Message }
+                    ErrorMessages = new ErrorVM[] { errorVM }
                 };
             }
         }

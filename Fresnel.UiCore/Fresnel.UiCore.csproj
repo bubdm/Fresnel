@@ -39,6 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\SessionController.cs" />
+    <Compile Include="Messages\WarningVM.cs" />
+    <Compile Include="Messages\ErrorVM.cs" />
+    <Compile Include="Messages\MessageVM.cs" />
+    <Compile Include="SessionVmBuilder.cs" />
+    <Compile Include="SessionVM.cs" />
     <Compile Include="Classes\NamespaceBuilder.cs" />
     <Compile Include="Classes\Namespace.cs" />
     <Compile Include="Commands\BaseCommandResult.cs" />
@@ -86,9 +92,7 @@
     <Compile Include="Types\ITypeInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Messages\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Fresnel.Configuration\Fresnel.Configuration.csproj">
       <Project>{b3122093-8ebb-423b-a4ed-951752690288}</Project>

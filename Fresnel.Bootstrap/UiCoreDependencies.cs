@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,17 @@ namespace Envivo.Fresnel.Bootstrap
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterTypes(this.GetSingleInstanceTypes())
-                .SingleInstance()
-                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+                    .SingleInstance()
+                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
             builder.RegisterTypes(this.GetPerDependencyInstanceTypes())
                     .InstancePerDependency()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+
+            builder.RegisterType<SystemClock>().As<IClock>()
+                    .SingleInstance()
+                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+
         }
 
         private Type[] GetSingleInstanceTypes()
@@ -39,6 +45,9 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Types.StringVmBuilder),
                 typeof(Fresnel.UiCore.Types.ObjectSelectionVmBuilder),
                 typeof(Fresnel.UiCore.Types.UnknownVmBuilder),
+
+                typeof(Fresnel.UiCore.Controllers.SessionController),
+                typeof(Fresnel.UiCore.SessionVmBuilder),
             };
         }
 

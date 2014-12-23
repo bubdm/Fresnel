@@ -1013,7 +1013,12 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="AngularApp\ObjectExplorerDirective.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\CollectionExplorerController.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\ObjectExplorerController.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\ObjectExplorerDirective.ts" />
+    <TypeScriptCompile Include="AngularApp\Session\AppController.ts" />
+    <TypeScriptCompile Include="AngularApp\Session\AppService.ts" />
+    <TypeScriptCompile Include="AngularApp\ClassLibrary\ToolboxController.ts" />
     <TypeScriptCompile Include="Scripts\typings\customExtensions.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
@@ -1024,14 +1029,9 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="AngularApp\AppController.ts" />
-    <TypeScriptCompile Include="AngularApp\AppService.ts" />
-    <TypeScriptCompile Include="AngularApp\CollectionExplorerController.ts" />
     <TypeScriptCompile Include="AngularApp\DisableAnchorDirective.ts" />
-    <TypeScriptCompile Include="AngularApp\ObjectExplorerController.ts" />
-    <TypeScriptCompile Include="AngularApp\IdentityMap.ts" />
-    <TypeScriptCompile Include="AngularApp\ClassLibraryDirective.ts" />
-    <TypeScriptCompile Include="AngularApp\ToolboxController.ts" />
+    <TypeScriptCompile Include="AngularApp\Session\IdentityMap.ts" />
+    <TypeScriptCompile Include="AngularApp\ClassLibrary\ClassLibraryDirective.ts" />
     <TypeScriptCompile Include="AngularApp\Interfaces.ts" />
     <TypeScriptCompile Include="AngularApp\Bootstrapper.ts" />
   </ItemGroup>

@@ -6,7 +6,9 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Proxies;
 using Envivo.Fresnel.UiCore.Classes;
+using Envivo.Fresnel.UiCore.Messages;
 using Envivo.Fresnel.UiCore.Objects;
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +24,22 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ProxyCache _ProxyCache;
         private AbstractObjectVMBuilder _ObjectVMBuilder;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
+        private IClock _Clock;
 
         public GetPropertyCommand
             (
             ObserverCache observerCache,
             Core.Commands.GetPropertyCommand getPropertyCommand,
             ProxyCache proxyCache,
-            AbstractObjectVMBuilder objectVMBuilder
-            )
+            AbstractObjectVMBuilder objectVMBuilder,
+            IClock clock
+        )
         {
             _ObserverCache = observerCache;
             _GetPropertyCommand = getPropertyCommand;
             _ProxyCache = proxyCache;
             _ObjectVMBuilder = objectVMBuilder;
+            _Clock = clock;
         }
 
         public GetPropertyResult Invoke(Guid objectId, string propertyName)
@@ -57,7 +62,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                         result = _ObjectVMBuilder.BuildFor(returnValue);
                     }
                 }
-                
+
                 return new GetPropertyResult()
                 {
                     Passed = true,
@@ -66,10 +71,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
+                var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
+
                 return new GetPropertyResult()
                 {
                     Failed = true,
-                    ErrorMessages = new string[] { ex.Message }
+                    ErrorMessages = new ErrorVM[] { errorVM }
                 };
             }
         }

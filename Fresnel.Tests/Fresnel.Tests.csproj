@@ -50,6 +50,7 @@
     <Compile Include="Proxies\ProxyTests.cs" />
     <Compile Include="UiCore\EditorIdentifierTests.cs" />
     <Compile Include="UiCore\ExplorerControllerTests.cs" />
+    <Compile Include="UiCore\SessionControllerTests.cs" />
     <Compile Include="UiCore\ToolboxControllerTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

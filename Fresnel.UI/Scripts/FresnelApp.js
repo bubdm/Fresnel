@@ -1,40 +1,5 @@
 var FresnelApp;
 (function (FresnelApp) {
-    // Used to ensure the Toolbox allows interaction with the Class nodes
-    function ObjectExplorerDirective() {
-        return {
-            link: function (scope, elem, attributes) {
-                scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
-                    ////bootstrap WYSIHTML5 - text editor
-                    //$(".textarea").wysihtml5();
-                });
-            }
-        };
-    }
-    FresnelApp.ObjectExplorerDirective = ObjectExplorerDirective;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
-    var AppController = (function () {
-        function AppController($scope, appService) {
-            appService.identityMap = new FresnelApp.IdentityMap();
-            $scope.identityMap = appService.identityMap;
-        }
-        return AppController;
-    })();
-    FresnelApp.AppController = AppController;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
-    var AppService = (function () {
-        function AppService() {
-        }
-        return AppService;
-    })();
-    FresnelApp.AppService = AppService;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
     var CollectionExplorerController = (function () {
         function CollectionExplorerController($scope, $http, appService) {
             $scope.gridColumns = [];
@@ -56,33 +21,6 @@ var FresnelApp;
         return CollectionExplorerController;
     })();
     FresnelApp.CollectionExplorerController = CollectionExplorerController;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
-    // Taken from http://stackoverflow.com/a/25391043/80369
-    function DisableAnchorDirective() {
-        return {
-            compile: function (tElement, tAttrs, transclude) {
-                //Disable ngClick
-                tAttrs["ngClick"] = ("ng-click", "!(" + tAttrs["aDisabled"] + ") && (" + tAttrs["ngClick"] + ")");
-                //Toggle "disabled" to class when aDisabled becomes true
-                return function (scope, iElement, iAttrs) {
-                    scope.$watch(iAttrs["aDisabled"], function (newValue) {
-                        if (newValue !== undefined) {
-                            iElement.toggleClass("disabled", newValue);
-                        }
-                    });
-                    //Disable href on click
-                    iElement.on("click", function (e) {
-                        if (scope.$eval(iAttrs["aDisabled"])) {
-                            e.preventDefault();
-                        }
-                    });
-                };
-            }
-        };
-    }
-    FresnelApp.DisableAnchorDirective = DisableAnchorDirective;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
@@ -157,6 +95,109 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
+    // Used to ensure the Toolbox allows interaction with the Class nodes
+    function ObjectExplorerDirective() {
+        return {
+            link: function (scope, elem, attributes) {
+                scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
+                    ////bootstrap WYSIHTML5 - text editor
+                    //$(".textarea").wysihtml5();
+                });
+            }
+        };
+    }
+    FresnelApp.ObjectExplorerDirective = ObjectExplorerDirective;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var AppController = (function () {
+        function AppController($scope, $http, appService) {
+            appService.identityMap = new FresnelApp.IdentityMap();
+            $scope.identityMap = appService.identityMap;
+            $scope.loadSession = function () {
+                var _this = this;
+                var uri = "api/Session/GetSession";
+                $http.get(uri).success(function (data, status) { return _this.session = data; });
+            };
+            // This will run when the page loads:
+            angular.element(document).ready(function () {
+                $scope.loadSession();
+            });
+        }
+        AppController.$inject = ['$scope', '$http', 'appService'];
+        return AppController;
+    })();
+    FresnelApp.AppController = AppController;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var AppService = (function () {
+        function AppService() {
+        }
+        return AppService;
+    })();
+    FresnelApp.AppService = AppService;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var ToolboxController = (function () {
+        function ToolboxController($rootScope, $scope, $http, appService) {
+            $scope.loadClassHierarchy = function () {
+                var _this = this;
+                var uri = "api/Toolbox/GetClassHierarchy";
+                $http.get(uri).success(function (data, status) { return _this.classHierarchy = data; });
+            };
+            $scope.create = function (fullyQualifiedName) {
+                var uri = "api/Toolbox/Create";
+                var arg = "=" + fullyQualifiedName;
+                var config = {
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                };
+                $http.post(uri, arg, config).success(function (data, status) {
+                    var newObject = data.NewObject;
+                    appService.identityMap.addItem(newObject);
+                    $rootScope.$broadcast("objectCreated", newObject);
+                });
+            };
+            // This will run when the page loads:
+            angular.element(document).ready(function () {
+                $scope.loadClassHierarchy();
+            });
+        }
+        ToolboxController.$inject = ['$rootScope', '$scope', '$http', 'appService'];
+        return ToolboxController;
+    })();
+    FresnelApp.ToolboxController = ToolboxController;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    // Taken from http://stackoverflow.com/a/25391043/80369
+    function DisableAnchorDirective() {
+        return {
+            compile: function (tElement, tAttrs, transclude) {
+                //Disable ngClick
+                tAttrs["ngClick"] = ("ng-click", "!(" + tAttrs["aDisabled"] + ") && (" + tAttrs["ngClick"] + ")");
+                //Toggle "disabled" to class when aDisabled becomes true
+                return function (scope, iElement, iAttrs) {
+                    scope.$watch(iAttrs["aDisabled"], function (newValue) {
+                        if (newValue !== undefined) {
+                            iElement.toggleClass("disabled", newValue);
+                        }
+                    });
+                    //Disable href on click
+                    iElement.on("click", function (e) {
+                        if (scope.$eval(iAttrs["aDisabled"])) {
+                            e.preventDefault();
+                        }
+                    });
+                };
+            }
+        };
+    }
+    FresnelApp.DisableAnchorDirective = DisableAnchorDirective;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     var IdentityMap = (function () {
         function IdentityMap() {
             this.hash = [];
@@ -209,37 +250,6 @@ var FresnelApp;
         };
     }
     FresnelApp.ClassLibaryDirective = ClassLibaryDirective;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
-    var ToolboxController = (function () {
-        function ToolboxController($rootScope, $scope, $http, appService) {
-            $scope.loadClassHierarchy = function () {
-                var _this = this;
-                var uri = "api/Toolbox/GetClassHierarchy";
-                $http.get(uri).success(function (data, status) { return _this.classHierarchy = data; });
-            };
-            $scope.create = function (fullyQualifiedName) {
-                var uri = "api/Toolbox/Create";
-                var arg = "=" + fullyQualifiedName;
-                var config = {
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-                };
-                $http.post(uri, arg, config).success(function (data, status) {
-                    var newObject = data.NewObject;
-                    appService.identityMap.addItem(newObject);
-                    $rootScope.$broadcast("objectCreated", newObject);
-                });
-            };
-            // This will run when the page loads:
-            angular.element(document).ready(function () {
-                $scope.loadClassHierarchy();
-            });
-        }
-        ToolboxController.$inject = ['$rootScope', '$scope', '$http', 'appService'];
-        return ToolboxController;
-    })();
-    FresnelApp.ToolboxController = ToolboxController;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {

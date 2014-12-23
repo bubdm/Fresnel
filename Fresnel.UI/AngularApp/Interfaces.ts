@@ -4,6 +4,7 @@
 
         identityMap: IdentityMap;
 
+        loadSession();
     }
 
     export interface IToolboxControllerScope extends ng.IScope {

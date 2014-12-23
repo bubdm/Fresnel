@@ -7,7 +7,9 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Proxies;
 using Envivo.Fresnel.UiCore.Classes;
+using Envivo.Fresnel.UiCore.Messages;
 using Envivo.Fresnel.UiCore.Objects;
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private AbstractObjectVMBuilder _ObjectVMBuilder;
         private Core.Commands.InvokeMethodCommand _InvokeMethodCommand;
         private ModificationsBuilder _ModificationsBuilder;
+        private IClock _Clock;
 
         public InvokeMethodCommand
             (
@@ -31,8 +34,9 @@ namespace Envivo.Fresnel.UiCore.Commands
             Core.Commands.InvokeMethodCommand invokeMethodCommand,
             ProxyCache proxyCache,
             AbstractObjectVMBuilder objectVMBuilder,
-            ModificationsBuilder modificationsBuilder
-            )
+            ModificationsBuilder modificationsBuilder,
+            IClock clock
+        )
         {
             _ObserverCache = observerCache;
             _InvokeMethodCommand = invokeMethodCommand;
@@ -75,10 +79,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
+                var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
+
                 return new GetPropertyResult()
                 {
                     Failed = true,
-                    ErrorMessages = new string[] { ex.Message }
+                    ErrorMessages = new ErrorVM[] { errorVM }
                 };
             }
         }
