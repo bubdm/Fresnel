@@ -952,6 +952,7 @@
     <Content Include="Templates\Editors\timeEditor.html" />
     <Content Include="Templates\Editors\passwordEditor.html" />
     <Content Include="Templates\Editors\textAreaEditor.html" />
+    <Content Include="Templates\mainHeader.html" />
     <Content Include="Templates\toolbox.html" />
     <Content Include="Templates\Editors\emptyEditor.html" />
     <Content Include="Templates\Editors\booleanRadioEditor.html" />
