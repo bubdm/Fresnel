@@ -1,6 +1,7 @@
 using Castle.DynamicProxy;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Proxies;
+using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,18 @@ namespace Envivo.Fresnel.Proxies.Interceptors
 
     public class CollectionAddInterceptorsSelector : IInterceptorsSelector
     {
-        private readonly string[] _CollectionAddMethods = new string[] { "Add", "InsertItem" };
+        private readonly string[] _CollectionAddMethods;
+
+        public CollectionAddInterceptorsSelector()
+        {
+            List<object> dummyList = null;
+
+            _CollectionAddMethods = new string[]
+            {
+                LambdaExtensions.NameOf(() => dummyList.Add(null)),
+                LambdaExtensions.NameOf(() => dummyList.Insert(0, null)),
+            };
+        }
 
         public bool CanHandle(MethodInfo method)
         {

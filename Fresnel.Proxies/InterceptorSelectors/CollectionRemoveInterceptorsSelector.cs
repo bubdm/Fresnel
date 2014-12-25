@@ -13,7 +13,18 @@ namespace Envivo.Fresnel.Proxies.Interceptors
 
     public class CollectionRemoveInterceptorsSelector : IInterceptorsSelector
     {
-        private readonly string[] _CollectionRemoveMethods = new string[] { "Remove", "RemoveItem", "RemoveAt" };
+        private readonly string[] _CollectionRemoveMethods;
+
+        public CollectionRemoveInterceptorsSelector()
+        {
+            List<object> dummyList = null;
+
+            _CollectionRemoveMethods = new string[]
+            {
+                LambdaExtensions.NameOf(() => dummyList.Remove(null)),
+                LambdaExtensions.NameOf(() => dummyList.RemoveAt(0)),
+            };
+        }
 
         public bool CanHandle(MethodInfo method)
         {
