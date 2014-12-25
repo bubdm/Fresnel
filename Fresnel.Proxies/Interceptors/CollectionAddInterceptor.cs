@@ -41,10 +41,10 @@ namespace Envivo.Fresnel.Proxies.Interceptors
                     var addedItemProxy = this.ProxyCache.GetProxy(invocation.ReturnValue);
                     oAddedItem = (ObjectObserver)((IFresnelProxy)addedItemProxy).Meta;
                     //oAddedItem.IsReflectionEnabled = false;
-
-                    var proxyState = (IProxyState)invocation.Proxy;
-                    proxyState.SessionJournal.AddCollectionAdd(oCollection, oAddedItem);
                 }
+
+                var proxyState = (IProxyState)invocation.Proxy;
+                proxyState.SessionJournal.AddCollectionAdd(oCollection, oAddedItem);
 
                 this.PostInvoke(oCollection, oCollectionProp, oAddedItem);
             }
@@ -57,16 +57,8 @@ namespace Envivo.Fresnel.Proxies.Interceptors
 
         private object ExtractItemToAddFrom(IInvocation invocation)
         {
-            if (invocation.Method.Name == "Add" && invocation.Arguments.Length == 1)
-            {
-                return invocation.Arguments[0];
-            }
-            else if (invocation.Method.Name == "InsertItem" && invocation.Arguments.Length == 2)
-            {
-                return invocation.Arguments[1];
-            }
-
-            return null;
+            var item = invocation.Arguments.Last();
+            return item;
         }
 
         private BasePropertyObserver DetermineOuterProperty(CollectionObserver oCollection)
