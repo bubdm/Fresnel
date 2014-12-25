@@ -59,6 +59,9 @@ namespace Envivo.Fresnel.Proxies
             if (domainObject == null)
                 throw new ArgumentNullException("domainObject");
 
+            if (domainObject is IFresnelProxy)
+                return domainObject;
+
             var check = _CanBeProxiedSpecification.IsSatisfiedBy(domainObject);
             if (check.Failed)
             {
