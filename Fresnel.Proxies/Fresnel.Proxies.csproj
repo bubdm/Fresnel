@@ -52,7 +52,6 @@
     <Compile Include="InterceptorSelectors\NotifyCollectionChangedInterceptorsSelector.cs" />
     <Compile Include="InterceptorSelectors\NotifyPropertyChangedInterceptorsSelector.cs" />
     <Compile Include="InterceptorSelectors\MethodInvokeInterceptorsSelector.cs" />
-    <Compile Include="InterceptorSelectors\ProxyMetaInterceptorsSelector.cs" />
     <Compile Include="InterceptorSelectors\PropertyGetInterceptorsSelector.cs" />
     <Compile Include="InterceptorSelectors\PropertySetInterceptorsSelector.cs" />
     <Compile Include="InterceptorSelectors\IgnoreMethodInterceptorsSelector.cs" />
@@ -66,7 +65,6 @@
     <Compile Include="Interceptors\MethodInvokeInterceptor.cs" />
     <Compile Include="Interceptors\NotifyCollectionChangedInterceptor.cs" />
     <Compile Include="Interceptors\NotifyPropertyChangedInterceptor.cs" />
-    <Compile Include="Interceptors\ProxyMetaInterceptor.cs" />
     <Compile Include="Interceptors\PrimaryInterceptor.cs" />
     <Compile Include="Interceptors\PropertyGetInterceptor.cs" />
     <Compile Include="Interceptors\PropertySetInterceptor.cs" />

@@ -22,7 +22,6 @@ namespace Envivo.Fresnel.Proxies.Interceptors
         public InterceptorSelector
             (
             IgnoreMethodInterceptorsSelector ignoreMethodInterceptorsSelector,
-            ProxyMetaInterceptorsSelector proxyMetaInterceptorsSelector,
             NotifyPropertyChangedInterceptorsSelector notifyPropertyChangedInterceptorsSelector,
             NotifyCollectionChangedInterceptorsSelector notifyCollectionChangedInterceptorsSelector,
             MethodInvokeInterceptorsSelector methodInvokeInterceptorsSelector,
@@ -36,7 +35,6 @@ namespace Envivo.Fresnel.Proxies.Interceptors
             _InterceptorsSelectors = new List<IInterceptorsSelector>()
             {
                 ignoreMethodInterceptorsSelector,
-                proxyMetaInterceptorsSelector,
                 notifyPropertyChangedInterceptorsSelector,
                 notifyCollectionChangedInterceptorsSelector,
                 methodInvokeInterceptorsSelector,
