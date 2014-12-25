@@ -24,14 +24,11 @@ namespace Envivo.Fresnel.Core.Observers
         private AbstractObserverBuilder _AbstractObserverBuilder;
         private ObjectIdResolver _ObjectIdResolver;
 
-        private NullObserver _NullObserver;
-
         public ObserverCache
         (
             TemplateCache templateCache,
             AbstractObserverBuilder abstractObserverBuilder,
-            ObjectIdResolver objectIdResolver,
-            NullObserver nullObserver
+            ObjectIdResolver objectIdResolver
         )
         {
             if (templateCache == null)
@@ -43,7 +40,6 @@ namespace Envivo.Fresnel.Core.Observers
             _TemplateCache = templateCache;
             _AbstractObserverBuilder = abstractObserverBuilder;
             _ObjectIdResolver = objectIdResolver;
-            _NullObserver = nullObserver;
         }
 
         public BaseObjectObserver GetObserverById(Guid id)
@@ -72,9 +68,6 @@ namespace Envivo.Fresnel.Core.Observers
         /// <param name="objectType">The Type of the Object to be observed</param>
         public BaseObjectObserver GetObserver(object obj, Type objectType)
         {
-            if (obj == null)
-                return _NullObserver;
-
             var result = this.GetCachedObserver(obj, objectType);
             if (result == null)
             {
@@ -90,6 +83,9 @@ namespace Envivo.Fresnel.Core.Observers
 
         private BaseObjectObserver GetCachedObserver(object obj, Type objectType)
         {
+            if (obj == null)
+                return null;
+
             var template = _TemplateCache.GetTemplate(objectType);
             var tClass = template as ClassTemplate;
             if (tClass != null)
@@ -106,9 +102,6 @@ namespace Envivo.Fresnel.Core.Observers
 
         private BaseObjectObserver CreateAndCacheObserver(object obj, Type objectType)
         {
-            if (obj == null)
-                return _NullObserver;
-
             var template = _TemplateCache.GetTemplate(objectType);
             var tClass = template as ClassTemplate;
 

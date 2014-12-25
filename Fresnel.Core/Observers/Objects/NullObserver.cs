@@ -1,6 +1,7 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection.Templates;
 using Newtonsoft.Json;
+using System;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -11,16 +12,20 @@ namespace Envivo.Fresnel.Core.Observers
     public class NullObserver : BaseObjectObserver
     {
 
-        public NullObserver()
-            : base(null, typeof(NullObserver), new NullTemplate())
+        public NullObserver
+            (
+            Type objectType,
+            ClassTemplate tClass
+            )
+            : base(null, objectType, tClass)
         {
 
         }
 
         [JsonIgnore]
-        public new NullTemplate Template
+        public ClassTemplate Template
         {
-            get { return (NullTemplate)base.Template; }
+            get { return (ClassTemplate)base.Template; }
         }
 
     }

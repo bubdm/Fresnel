@@ -50,7 +50,6 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Core.Observers.ParameterObserverMapBuilder),
                 typeof(Fresnel.Core.Observers.PropertyObserverBuilder),
                 typeof(Fresnel.Core.Observers.PropertyObserverMapBuilder),
-                typeof(Fresnel.Core.Observers.NullObserver),
 
                 typeof(Fresnel.Core.Permissions.CanCreatePermission),
                 typeof(Fresnel.Core.Permissions.CanGetPropertyPermission),
@@ -70,6 +69,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Core.Observers.NonReferenceObserver),
                 typeof(Fresnel.Core.Observers.ObjectObserver),
                 typeof(Fresnel.Core.Observers.ObjectPropertyObserver),
+                typeof(Fresnel.Core.Observers.NullObserver),
                 typeof(Fresnel.Core.Observers.ParameterObserver),
 
                 typeof(Fresnel.Core.ChangeTracking.AbstractChangeTrackerBuilder),
