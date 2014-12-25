@@ -37,9 +37,9 @@ namespace Envivo.Fresnel.Proxies.Interceptors
                 ignoreMethodInterceptorsSelector,
                 notifyPropertyChangedInterceptorsSelector,
                 notifyCollectionChangedInterceptorsSelector,
-                methodInvokeInterceptorsSelector,
                 collectionAddInterceptorsSelector,
                 collectionRemoveInterceptorsSelector,
+                methodInvokeInterceptorsSelector,
                 propertyGetnterceptorsSelector,
                 propertySetnterceptorsSelector
             
