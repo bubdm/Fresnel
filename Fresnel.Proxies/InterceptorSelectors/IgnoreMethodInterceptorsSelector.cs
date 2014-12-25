@@ -39,7 +39,11 @@ namespace Envivo.Fresnel.Proxies.Interceptors
 
         public bool CanHandle(MethodInfo method)
         {
-            return _NamesToIgnore.Contains(method.Name);
+            var methodName = method.IsSpecialName ?
+                                method.Name.Remove(0, 4) :
+                                method.Name;
+
+            return _NamesToIgnore.Contains(methodName);
         }
 
         public IEnumerable<IInterceptor> GetInterceptors(IEnumerable<IInterceptor> allInterceptors)
