@@ -6,6 +6,7 @@ using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Proxies;
+using Envivo.Fresnel.UiCore.Changes;
 using Envivo.Fresnel.UiCore.Classes;
 using Envivo.Fresnel.UiCore.Messages;
 using Envivo.Fresnel.UiCore.Objects;
@@ -59,7 +60,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 if (oObject != null)
                 {
                     var oMethod = oObject.Methods[methodName];
-                    var returnValue = _InvokeMethodCommand.Invoke(oMethod) as ObjectObserver;
+                    var returnValue = _InvokeMethodCommand.Invoke(oMethod, proxy) as ObjectObserver;
 
                     if (returnValue != null)
                     {
@@ -69,12 +70,13 @@ namespace Envivo.Fresnel.UiCore.Commands
                     }
                 }
 
+                var proxyState = (IProxyState)proxy;
+
                 return new GetPropertyResult()
                 {
                     Passed = true,
                     ReturnValue = result,
-                    // TODO: Add other modifications:
-                    //OtherModifications = _ModificationsBuilder.BuildChangesSince(startedAt, proxy.SessionJournal)
+                    Modifications = _ModificationsBuilder.BuildFrom(proxyState.SessionJournal, startedAt)
                 };
             }
             catch (Exception ex)
