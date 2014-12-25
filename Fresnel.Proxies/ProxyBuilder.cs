@@ -7,6 +7,7 @@ using Envivo.Fresnel.Proxies.ChangeTracking;
 using Envivo.Fresnel.Proxies.Interceptors;
 using Envivo.Fresnel.Utils;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
@@ -24,7 +25,6 @@ namespace Envivo.Fresnel.Proxies
         private MethodInvokeInterceptor _MethodInvokeInterceptor;
         private CollectionAddInterceptor _CollectionAddInterceptor;
         private CollectionRemoveInterceptor _CollectionRemoveInterceptor;
-        private ProxyMetaInterceptor _ProxyMetaInterceptor;
         private FinalTargetInterceptor _FinalTargetInterceptor;
 
         private InterceptorSelector _InterceptorSelector;
@@ -48,7 +48,6 @@ namespace Envivo.Fresnel.Proxies
             CollectionAddInterceptor collectionAddInterceptor,
             CollectionRemoveInterceptor collectionRemoveInterceptor,
             FinalTargetInterceptor finalTargetInterceptor,
-            ProxyMetaInterceptor proxyMetaInterceptor,
             InterceptorSelector interceptorSelector,
 
             Func<NotifyPropertyChangedInterceptor> notifyPropertyChangedInterceptorFactory,
@@ -65,7 +64,6 @@ namespace Envivo.Fresnel.Proxies
             _CollectionAddInterceptor = collectionAddInterceptor;
             _CollectionRemoveInterceptor = collectionRemoveInterceptor;
             _FinalTargetInterceptor = finalTargetInterceptor;
-            _ProxyMetaInterceptor = proxyMetaInterceptor;
             _InterceptorSelector = interceptorSelector;
 
             _NotifyPropertyChangedInterceptorFactory = notifyPropertyChangedInterceptorFactory;
@@ -132,19 +130,23 @@ namespace Envivo.Fresnel.Proxies
             };
             proxyGenerationOptions.AddMixinInstance(proxyState);
 
+            var interceptors = new IInterceptor[]
+            {
+                _PrimaryInterceptor,
+                _PropertyGetInterceptor,
+                _PropertySetInterceptor,
+                _MethodInvokeInterceptor,
+                notifyPropertyChangedInterceptor,
+                _FinalTargetInterceptor
+            };
+
             var proxy = _ProxyGenerator
                             .CreateClassProxyWithTarget(
                             tClass.RealType,
                             _ObjectProxyInterfaceList,
                             obj,
                             proxyGenerationOptions,
-                            _ProxyMetaInterceptor,
-                            _PrimaryInterceptor,
-                            _PropertyGetInterceptor,
-                            _PropertySetInterceptor,
-                            _MethodInvokeInterceptor,
-                            notifyPropertyChangedInterceptor,
-                            _FinalTargetInterceptor
+                            interceptors
                             );
 
             return (IFresnelProxy)proxy;
@@ -169,6 +171,19 @@ namespace Envivo.Fresnel.Proxies
                 SessionJournal = _SessionJournal
             };
             proxyGenerationOptions.AddMixinInstance(proxyState);
+            
+            var interceptors = new IInterceptor[]
+            {
+                _PrimaryInterceptor,
+                _PropertyGetInterceptor,
+                _PropertySetInterceptor,
+                _CollectionAddInterceptor,
+                _CollectionRemoveInterceptor,
+                _MethodInvokeInterceptor,
+                notifyPropertyChangedInterceptor,
+                notifyCollectionChangedInterceptor,
+                _FinalTargetInterceptor
+            };
 
             var proxy = _ProxyGenerator
                             .CreateClassProxyWithTarget(
@@ -176,16 +191,7 @@ namespace Envivo.Fresnel.Proxies
                             _CollectionProxyInterfaceList,
                             collection,
                             proxyGenerationOptions,
-                            _ProxyMetaInterceptor,
-                            _PrimaryInterceptor,
-                            _PropertyGetInterceptor,
-                            _PropertySetInterceptor,
-                            _CollectionAddInterceptor,
-                            _CollectionRemoveInterceptor,
-                            _MethodInvokeInterceptor,
-                            notifyPropertyChangedInterceptor,
-                            notifyCollectionChangedInterceptor,
-                            _FinalTargetInterceptor
+                            interceptors
                             );
 
             return (IFresnelProxy)proxy;
