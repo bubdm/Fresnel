@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Proxies.Interceptors
 
         public void Intercept(IInvocation invocation)
         {
-            Debug.WriteLine(this.GetType().Name);
+            Debug.WriteLine(this.GetType().Name + " " + invocation.Method.Name);
 
             invocation.Proceed();
         }

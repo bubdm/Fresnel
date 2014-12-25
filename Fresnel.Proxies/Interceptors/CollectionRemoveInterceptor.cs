@@ -21,7 +21,8 @@ namespace Envivo.Fresnel.Proxies.Interceptors
 
         public void Intercept(IInvocation invocation)
         {
-            Debug.WriteLine(this.GetType().Name);
+            Debug.WriteLine(this.GetType().Name + " " + invocation.Method.Name);
+
             var oCollection = (CollectionObserver)((IFresnelProxy)invocation.Proxy).Meta;
 
             var item = this.ExtractItemToRemoveFrom(invocation);

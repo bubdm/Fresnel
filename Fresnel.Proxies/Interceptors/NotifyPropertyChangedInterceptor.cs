@@ -18,7 +18,7 @@ namespace Envivo.Fresnel.Proxies.Interceptors
 
         public void Intercept(IInvocation invocation)
         {
-            Debug.WriteLine(this.GetType().Name);
+            Debug.WriteLine(this.GetType().Name + " " + invocation.Method.Name);
 
             if (invocation.Method.IsSpecialName && invocation.Method.Name.StartsWith("set_"))
             {
