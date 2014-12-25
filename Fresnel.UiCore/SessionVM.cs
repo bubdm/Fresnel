@@ -17,7 +17,6 @@ namespace Envivo.Fresnel.UiCore
             this.ErrorMessages = new List<ErrorVM>();
         }
 
-
         public string UserName { get; set; }
 
         public DateTime LogonTime { get; set; }

@@ -26,11 +26,16 @@ namespace Envivo.Fresnel.UiCore
             _Clock = clock;
 
             _SessionVM = new Lazy<SessionVM>(
-                                () => this.Build(),
+                                () => this.CreateSession(),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         public SessionVM Build()
+        {
+            return _SessionVM.Value;
+        }
+
+        private SessionVM CreateSession()
         {
             var result = new SessionVM()
             {
