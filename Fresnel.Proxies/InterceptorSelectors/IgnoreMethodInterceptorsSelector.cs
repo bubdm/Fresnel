@@ -13,13 +13,33 @@ namespace Envivo.Fresnel.Proxies.Interceptors
 
     public class IgnoreMethodInterceptorsSelector : IInterceptorsSelector
     {
-        private readonly string[] _ObjectMemberNames = new string[] { "Equals", "ToString", "GetType", "GetHashCode", "Dispose", "Finalize", "Error" };
-
+        private readonly string[] _NamesToIgnore;
         private IInterceptor[] _EmptyInterceptors = new IInterceptor[0];
+
+        public IgnoreMethodInterceptorsSelector()
+        {
+            object obj = null;
+            IDisposable disposable = null;
+            IFresnelProxy fresnelProxy = null;
+            IProxyState proxyState = null;
+
+            _NamesToIgnore = new string[]
+            {
+                LambdaExtensions.NameOf(() => obj.Equals(null)),
+                LambdaExtensions.NameOf(() => obj.ToString()),
+                LambdaExtensions.NameOf(() => obj.GetType()),
+                LambdaExtensions.NameOf(() => obj.GetHashCode()),
+                LambdaExtensions.NameOf(() => obj.ToString()),
+
+                LambdaExtensions.NameOf(() => disposable.Dispose()),
+                LambdaExtensions.NameOf(() => fresnelProxy.Meta),
+                LambdaExtensions.NameOf(() => proxyState.SessionJournal),
+            };
+        }
 
         public bool CanHandle(MethodInfo method)
         {
-            return _ObjectMemberNames.Contains(method.Name);
+            return _NamesToIgnore.Contains(method.Name);
         }
 
         public IEnumerable<IInterceptor> GetInterceptors(IEnumerable<IInterceptor> allInterceptors)
