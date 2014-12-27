@@ -47,6 +47,7 @@
     <Compile Include="Domain\MethodTemplateTests.cs" />
     <Compile Include="Domain\PropertyTemplateTests.cs" />
     <Compile Include="Domain\CollectionTemplateTests.cs" />
+    <Compile Include="Proxies\ProxyChangeTrackingTests.cs" />
     <Compile Include="Proxies\ProxyTests.cs" />
     <Compile Include="UiCore\EditorIdentifierTests.cs" />
     <Compile Include="UiCore\ExplorerControllerTests.cs" />

@@ -21,6 +21,7 @@ namespace Envivo.Fresnel.Proxies.Interceptors
 
             var propertyName = invocation.Method.Name.Remove(0, 4);
             var oProperty = oObject.Properties.TryGetValueOrNull(propertyName) as ObjectPropertyObserver;
+
             if (oProperty != null)
             {
                 this.PreInvoke(oProperty);
@@ -95,6 +96,15 @@ namespace Envivo.Fresnel.Proxies.Interceptors
         {
             if (invocation.ReturnValue == null)
                 return;
+
+            if (invocation.ReturnValue is IFresnelProxy)
+                return;
+
+            if (invocation.ReturnValue is IPropertyProxy)
+            {
+                var originalPropertyValue = ((IProxyTargetAccessor)invocation.ReturnValue).DynProxyGetTarget();
+                invocation.ReturnValue = originalPropertyValue;
+            }
 
             // Make sure we're returning a proxy (so that it can be intercepted further):
             var returnValueProxy = (IFresnelProxy)this.ProxyCache.GetProxy(invocation.ReturnValue);

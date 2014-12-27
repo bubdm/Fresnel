@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Envivo.Fresnel.Core.Observers;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace Envivo.Fresnel.Proxies.ChangeTracking
 {
+    [DebuggerDisplay("ObjectID: {Collection.ID} / ElementID: {Element.ID}")]
     public class CollectionAdd : BaseChange
     {
-        public Guid CollectionID { get; set; }
+        public CollectionObserver Collection { get; set; }
 
-        public Guid ElementID { get; set; }
+        public ObjectObserver Element { get; set; }
     }
 }

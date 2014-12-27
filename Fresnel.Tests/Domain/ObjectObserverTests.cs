@@ -54,6 +54,8 @@ namespace Envivo.Fresnel.Tests.Domain
 
             // Assert:
             Assert.IsInstanceOf<NullObserver>(observer);
+            Assert.IsNull(observer.RealObject);
+            Assert.AreEqual(typeof(SampleModel.Objects.PocoObject), observer.Template.RealType);
         }
 
         [Test()]

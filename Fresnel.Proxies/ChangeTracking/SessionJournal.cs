@@ -19,24 +19,24 @@ namespace Envivo.Fresnel.Proxies.ChangeTracking
             this.MethodInvocations = new List<MethodInvocation>();
         }
 
-        internal List<BaseChange> AllChanges { get; private set; }
+        public IList<BaseChange> AllChanges { get; private set; }
 
-        internal List<ObjectCreation> ObjectCreations { get; private set; }
+        public IList<ObjectCreation> ObjectCreations { get; private set; }
 
-        internal List<PropertyChange> PropertyChanges { get; private set; }
+        public IList<PropertyChange> PropertyChanges { get; private set; }
 
-        internal List<CollectionAdd> CollectionAdditions { get; private set; }
+        public IList<CollectionAdd> CollectionAdditions { get; private set; }
 
-        internal List<CollectionRemove> CollectionRemovals { get; private set; }
+        public IList<CollectionRemove> CollectionRemovals { get; private set; }
 
-        internal List<MethodInvocation> MethodInvocations { get; private set; }
+        public IList<MethodInvocation> MethodInvocations { get; private set; }
 
         internal void AddObjectCreation(ObjectObserver oObject)
         {
             var latestChange = new ObjectCreation()
             {
                 Sequence = Environment.TickCount,
-                ObjectID = oObject.ID,
+                Object = oObject
             };
 
             this.AllChanges.Add(latestChange);
@@ -48,8 +48,7 @@ namespace Envivo.Fresnel.Proxies.ChangeTracking
             var latestChange = new PropertyChange()
             {
                 Sequence = Environment.TickCount,
-                ObjectID = oProperty.OuterObject.ID,
-                PropertyName = oProperty.Template.Name
+                Property = oProperty
             };
 
             this.AllChanges.Add(latestChange);
@@ -61,8 +60,8 @@ namespace Envivo.Fresnel.Proxies.ChangeTracking
             var latestChange = new CollectionAdd()
             {
                 Sequence = Environment.TickCount,
-                CollectionID = oCollection.ID,
-                ElementID = oAddedItem.ID
+                Collection = oCollection,
+                Element = oAddedItem
             };
 
             this.AllChanges.Add(latestChange);
@@ -74,44 +73,43 @@ namespace Envivo.Fresnel.Proxies.ChangeTracking
             var latestChange = new CollectionRemove()
             {
                 Sequence = Environment.TickCount,
-                CollectionID = oCollection.ID,
-                ElementID = oRemovedItem.ID
+                Collection = oCollection,
+                Element = oRemovedItem
             };
 
             this.CollectionRemovals.Add(latestChange);
         }
 
-        internal void AddMethodInvocations(ObjectObserver oObject, string methodName)
+        internal void AddMethodInvocations(ObjectObserver oObject, MethodObserver oMethod)
         {
             var latestChange = new MethodInvocation()
             {
                 Sequence = Environment.TickCount,
-                ObjectID = oObject.ID,
-                MethodName = methodName,
+                Method = oMethod
             };
 
             this.AllChanges.Add(latestChange);
             this.MethodInvocations.Add(latestChange);
         }
 
-        internal IEnumerable<BaseChange> GetChangesSince(long startSequence)
-        {
-            var startIndex = 0;
-            var isStartIndexFound = false;
-            while (!isStartIndexFound)
-            {
-                isStartIndexFound = this.AllChanges[startIndex].Sequence >= startSequence;
-                if (isStartIndexFound)
-                {
-                    var rangeCount = this.AllChanges.Count - startIndex;
-                    var results = this.AllChanges.GetRange(startIndex, rangeCount);
-                    return results;
-                }
-                startIndex++;
-            }
+        //internal IEnumerable<BaseChange> GetChangesSince(long startSequence)
+        //{
+        //    var startIndex = 0;
+        //    var isStartIndexFound = false;
+        //    while (!isStartIndexFound)
+        //    {
+        //        isStartIndexFound = this.AllChanges[startIndex].Sequence >= startSequence;
+        //        if (isStartIndexFound)
+        //        {
+        //            var rangeCount = this.AllChanges.Count - startIndex;
+        //            var results = this.AllChanges.GetRange(startIndex, rangeCount);
+        //            return results;
+        //        }
+        //        startIndex++;
+        //    }
 
-            return new BaseChange[] { };
-        }
+        //    return new BaseChange[] { };
+        //}
 
     }
 }

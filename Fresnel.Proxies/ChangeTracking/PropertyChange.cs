@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Envivo.Fresnel.Core.Observers;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace Envivo.Fresnel.Proxies.ChangeTracking
 {
+    [DebuggerDisplay("{Property.Template.Name}")]
     public class PropertyChange : BaseChange
     {
-        public Guid ObjectID { get; set; }
-
-        public string PropertyName { get; set; }
+        public BasePropertyObserver Property { get; set; }
+    
     }
 }

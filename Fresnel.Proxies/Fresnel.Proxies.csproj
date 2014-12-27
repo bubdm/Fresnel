@@ -66,10 +66,13 @@
     <Compile Include="Interceptors\NotifyCollectionChangedInterceptor.cs" />
     <Compile Include="Interceptors\NotifyPropertyChangedInterceptor.cs" />
     <Compile Include="Interceptors\PrimaryInterceptor.cs" />
+    <Compile Include="Interceptors\PropertyProxyInjectorInterceptor.cs" />
     <Compile Include="Interceptors\PropertyGetInterceptor.cs" />
     <Compile Include="Interceptors\PropertySetInterceptor.cs" />
     <Compile Include="CanBeProxiedSpecification.cs" />
+    <Compile Include="IPropertyProxy.cs" />
     <Compile Include="IProxyState.cs" />
+    <Compile Include="PropertyProxyBuilder.cs" />
     <Compile Include="ProxyState.cs" />
     <Compile Include="ProxyBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
