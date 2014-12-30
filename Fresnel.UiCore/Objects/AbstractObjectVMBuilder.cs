@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Envivo.Fresnel.UiCore.Objects
 {
     public class AbstractObjectVMBuilder
     {
+        private RealTypeResolver _RealTypeResolver;
         private ObserverCache _ObserverCache;
         private ClassHierarchyBuilder _ClassHierarchyBuilder;
         private AbstractPropertyVmBuilder _PropertyVmBuilder;
@@ -17,12 +19,14 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public AbstractObjectVMBuilder
             (
+            RealTypeResolver realTypeResolver,
             ObserverCache observerCache,
             ClassHierarchyBuilder classHierarchyBuilder,
             AbstractPropertyVmBuilder propertyVmBuilder,
             MethodVmBuilder methodVmBuilder
             )
         {
+            _RealTypeResolver = realTypeResolver;
             _ObserverCache = observerCache;
             _ClassHierarchyBuilder = classHierarchyBuilder;
             _PropertyVmBuilder = propertyVmBuilder;
@@ -83,7 +87,9 @@ namespace Envivo.Fresnel.UiCore.Objects
             var items = new List<ObjectVM>();
             foreach (var obj in oCollection.GetContents())
             {
-                var oObject = (ObjectObserver)_ObserverCache.GetObserver(obj);
+                var objType = _RealTypeResolver.GetRealType(obj);
+
+                var oObject = (ObjectObserver)_ObserverCache.GetObserver(obj, objType);
                 var objVM = this.BuildForObject(oObject);
 
                 //this.InsertUnallocatedProperties(objVM, allKnownProperties);
