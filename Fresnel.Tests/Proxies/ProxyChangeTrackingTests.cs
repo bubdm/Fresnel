@@ -86,6 +86,9 @@ namespace Envivo.Fresnel.Tests.Proxies
             var state = pocoProxy as IProxyState;
             Assert.AreEqual(3, state.ChangeLog.CollectionAdditions.Count);
             Assert.AreEqual(2, state.ChangeLog.PropertyChanges.Count);
+
+            // This includes the POCO we started with:
+            Assert.AreEqual(4, state.ChangeLog.ObjectCreations.Count);
         }
     }
 

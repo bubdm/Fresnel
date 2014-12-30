@@ -147,6 +147,8 @@ namespace Envivo.Fresnel.Proxies
                             CreateInterceptorsForObject()
                             );
 
+            proxyState.ChangeLog.AddObjectCreation(oObject);
+
             return (IFresnelProxy)proxy;
         }
 
