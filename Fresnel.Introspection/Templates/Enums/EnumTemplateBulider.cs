@@ -26,7 +26,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var result = _EnumTemplateFactory();
 
-            result.RealType = _RealTypeResolver.GetRealType(enumType);
+            //result.RealType = _RealTypeResolver.GetRealType(enumType);
+            result.RealType = enumType;
             result.Name = result.RealType.Name;
             result.FriendlyName = result.RealType.Name.CreateFriendlyName();
             result.FullName = result.RealType.FullName;

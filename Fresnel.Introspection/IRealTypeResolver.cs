@@ -5,6 +5,6 @@ namespace Envivo.Fresnel.Introspection
 {
     public interface IRealTypeResolver
     {
-        Type GetRealType(Type proxyType);
+        Type GetRealType(object proxy);
     }
 }

@@ -49,31 +49,27 @@ namespace Envivo.Fresnel.Introspection.Commands
 
         private object CreateClone(ClassTemplate tClass, object source)
         {
-            var result = tClass.CreateInstance();
+            var clone = tClass.CreateInstance();
 
             foreach (var tProp in tClass.Properties.Values)
             {
-                // Two (or more) Domain Objects must not share the same list (they can share the list's elements):
-                if (tProp.IsCollection)
-                    continue;
+                // Use the backing fields when possible, 
+                // to prevent proxies from triggering lazy-loads unnecessarily:
+                var value = tProp.BackingField != null ?
+                            tProp.GetField(source):
+                            tProp.GetProperty(source);
 
-                var value = tProp.GetField(source) ?? tProp.GetProperty(source);
-
-                // Some properties might be value objects, in which case they should be cloned as well:
-                var cloneable = value as ICloneable;
-                if (cloneable != null)
+                if (tProp.BackingField != null)
                 {
-                    value = cloneable.Clone();
+                    tProp.SetField(clone, value);
                 }
-
-                // Don't attempt copying values if the target doesn't allow it:
-                if (tProp.BackingField != null || tProp.PropertyInfo.CanWrite)
+                else
                 {
-                    tProp.SetField(result, value);
+                    tProp.SetProperty(clone, value);
                 }
             }
 
-            return result;
+            return clone;
         }
 
     }

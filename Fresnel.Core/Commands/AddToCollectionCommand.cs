@@ -54,7 +54,7 @@ namespace Envivo.Fresnel.Core.Commands
             }
             else
             {
-                var resultType = _RealTypeResolver.GetRealType(result.GetType());
+                var resultType = _RealTypeResolver.GetRealType(result);
                 oAddedItem = _ObserverCache.GetObserver(result, resultType);
             }
 

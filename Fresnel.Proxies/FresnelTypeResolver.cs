@@ -11,14 +11,16 @@ namespace Envivo.Fresnel.Proxies
 
     public class FresnelTypeResolver : IRealTypeResolver
     {
-        public Type GetRealType(Type proxyType)
+        public Type GetRealType(object proxy)
         {
-            var superType = proxyType;
-            while (superType.Assembly.IsDynamic)
+            var castleProxy = proxy as IProxyTargetAccessor;
+
+            if (castleProxy != null)
             {
-                superType = superType.BaseType;
+                return castleProxy.DynProxyGetTarget().GetType();
             }
-            return superType;
+
+            return null;
         }
     }
 }

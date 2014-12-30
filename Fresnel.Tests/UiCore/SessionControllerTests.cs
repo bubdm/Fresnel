@@ -21,6 +21,7 @@ using System.ComponentModel;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Objects;
+using System.Threading;
 
 namespace Envivo.Fresnel.Tests.Proxies
 {
@@ -42,6 +43,8 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // Act:
             var session1 = controller.GetSession();
+            Thread.Sleep(100);
+
             var session2 = controller.GetSession();
 
             // Assert:

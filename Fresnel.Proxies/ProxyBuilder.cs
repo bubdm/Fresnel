@@ -2,6 +2,7 @@ using Castle.DynamicProxy;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.Commands;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Proxies.ChangeTracking;
 using Envivo.Fresnel.Proxies.Interceptors;
@@ -223,19 +224,19 @@ namespace Envivo.Fresnel.Proxies
                     continue;
 
                 var tCollection = tProp.InnerClass as CollectionTemplate;
-                if (tCollection != null &&
-                    tCollection.InnerClass.RealType.IsNonReference())
-                    continue;
-
                 var tClass = tProp.InnerClass as ClassTemplate;
-                if (tClass == null)
+
+                var innerClass = tCollection != null ?
+                                    tCollection.InnerClass :
+                                    tClass;
+
+                if (innerClass == null)
                     continue;
 
-                var propertyProxy = _PropertyProxyBuilder.BuildFor(oProp);
+                var propertyProxy = _PropertyProxyBuilder.BuildFor(targetObject, oProp);
 
                 tProp.SetField(targetObject, propertyProxy);
             }
-
         }
 
     }

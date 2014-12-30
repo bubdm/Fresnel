@@ -22,14 +22,16 @@ namespace Envivo.Fresnel.Introspection
             _Resolvers.Add(resolver);
         }
 
-        public Type GetRealType(Type proxyType)
+        public Type GetRealType(object proxy)
         {
-            if (proxyType == null)
+            if (proxy == null)
                 return null;
+
+            var proxyType = proxy.GetType();
 
             foreach (var resolver in _Resolvers)
             {
-                var realType = resolver.GetRealType(proxyType);
+                var realType = resolver.GetRealType(proxy);
                 if (realType != null && realType != proxyType)
                 {
                     return realType;

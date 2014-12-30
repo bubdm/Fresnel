@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.Core.Commands
             if (value == null)
                 return null;
 
-            var valueType = _RealTypeResolver.GetRealType(value.GetType());
+            var valueType = _RealTypeResolver.GetRealType(value);
             var oValue = _ObserverCache.GetObserver(value, valueType);
 
             // Make the object aware that it is associated with this property:

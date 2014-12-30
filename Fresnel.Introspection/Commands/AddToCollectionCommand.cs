@@ -25,10 +25,10 @@ namespace Envivo.Fresnel.Introspection.Commands
         /// <param name="item"></param>
         public object Invoke(object collection, object item)
         {
-            var realCollectionType = _RealTypeResolver.GetRealType(collection.GetType());
+            var realCollectionType = _RealTypeResolver.GetRealType(collection);
             var tCollection = (CollectionTemplate)_TemplateCache.GetTemplate(realCollectionType);
 
-            var realItemType = _RealTypeResolver.GetRealType(item.GetType());
+            var realItemType = _RealTypeResolver.GetRealType(item);
             var tItem = (ClassTemplate)_TemplateCache.GetTemplate(realItemType);
 
             var result = this.Invoke(tCollection, collection, tItem, item);
@@ -47,7 +47,7 @@ namespace Envivo.Fresnel.Introspection.Commands
 
             var tCollection = (CollectionTemplate)tCollectionProperty.InnerClass;
 
-            var realItemType = _RealTypeResolver.GetRealType(item.GetType());
+            var realItemType = _RealTypeResolver.GetRealType(item);
             var tItem = (ClassTemplate)_TemplateCache.GetTemplate(realItemType);
 
             var result = this.Invoke(tCollection, collection, tItem, item);

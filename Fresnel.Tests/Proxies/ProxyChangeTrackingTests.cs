@@ -79,10 +79,13 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Act:
             // This should intercept the actions used within the method:
             pocoProxy.AddSomeChildObjects();
+            pocoProxy.ChildObjects.First().NormalText = "1234";
+            pocoProxy.ChildObjects.First().NormalDate = DateTime.Now;
 
             // Assert:
             var state = pocoProxy as IProxyState;
             Assert.AreEqual(3, state.SessionJournal.CollectionAdditions.Count);
+            Assert.AreEqual(2, state.SessionJournal.PropertyChanges.Count);
         }
     }
 

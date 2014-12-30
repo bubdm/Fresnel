@@ -1,5 +1,6 @@
 ﻿using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
@@ -20,22 +21,22 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class GetPropertyCommand
     {
-        private ObserverCache _ObserverCache;
+        //private ObserverCache _ObserverCache;
         private ProxyCache _ProxyCache;
         private AbstractObjectVMBuilder _ObjectVMBuilder;
-        private Core.Commands.GetPropertyCommand _GetPropertyCommand;
+        private Introspection.Commands.GetPropertyCommand _GetPropertyCommand;
         private IClock _Clock;
 
         public GetPropertyCommand
             (
-            ObserverCache observerCache,
-            Core.Commands.GetPropertyCommand getPropertyCommand,
+            //ObserverCache observerCache,
+            Introspection.Commands.GetPropertyCommand getPropertyCommand,
             ProxyCache proxyCache,
             AbstractObjectVMBuilder objectVMBuilder,
             IClock clock
         )
         {
-            _ObserverCache = observerCache;
+            //_ObserverCache = observerCache;
             _GetPropertyCommand = getPropertyCommand;
             _ProxyCache = proxyCache;
             _ObjectVMBuilder = objectVMBuilder;
@@ -48,18 +49,20 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 ObjectVM result = null;
 
-                var oObject = _ObserverCache.GetObserverById(objectId) as ObjectObserver;
+                var proxy = _ProxyCache.GetProxyById(objectId);
+                var oObject = ((IFresnelProxy)proxy).Meta;
 
                 if (oObject != null)
                 {
                     var oProp = oObject.Properties[propertyName];
-                    var returnValue = _GetPropertyCommand.Invoke(oProp) as ObjectObserver;
+                    var returnValue = _GetPropertyCommand.Invoke(proxy, propertyName);
 
                     if (returnValue != null)
                     {
                         // Make sure we cache the proxy for use later in the session:
-                        var proxy = _ProxyCache.GetProxy(returnValue.RealObject);
-                        result = _ObjectVMBuilder.BuildFor(returnValue);
+                        var returnValueProxy = _ProxyCache.GetProxy(returnValue);
+                        var oReturnValue = ((IFresnelProxy)returnValueProxy).Meta;
+                        result = _ObjectVMBuilder.BuildFor(oReturnValue);
                     }
                 }
 

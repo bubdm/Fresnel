@@ -17,18 +17,18 @@ namespace Envivo.Fresnel.Proxies
     public class PropertyProxyBuilder
     {
         private ProxyGenerator _ProxyGenerator;
-        private Func<BasePropertyObserver, PropertyProxyInjectorInterceptor> _PropertyProxyInjectorInterceptorFactory;
+        private PropertyProxyInjectorInterceptor _PropertyProxyInjectorInterceptor;
 
         private Type[] _ObjectProxyInterfaceList;
 
         public PropertyProxyBuilder
             (
             ProxyGenerator proxyGenerator,
-            Func<BasePropertyObserver, PropertyProxyInjectorInterceptor> propertyProxyInjectorInterceptorFactory
+            PropertyProxyInjectorInterceptor propertyProxyInjectorInterceptor
             )
         {
             _ProxyGenerator = proxyGenerator;
-            _PropertyProxyInjectorInterceptorFactory = propertyProxyInjectorInterceptorFactory;
+            _PropertyProxyInjectorInterceptor = propertyProxyInjectorInterceptor;
 
             _ObjectProxyInterfaceList = new Type[] 
             {
@@ -38,17 +38,26 @@ namespace Envivo.Fresnel.Proxies
 
         public ProxyCache ProxyCache { get; set; }
 
-        public object BuildFor(BasePropertyObserver oProp)
+
+        public object BuildFor(object targetObject, BasePropertyObserver oProp)
         {
             var tProp = oProp.Template;
 
-            var interceptor = _PropertyProxyInjectorInterceptorFactory(oProp);
+            // Try to use the field whenever possible, to prevent properties from triggering a lazy-load:
+            var propertyValue = tProp.GetField(targetObject) ?? tProp.GetProperty(targetObject);
 
-            var propertyValue = tProp.GetField(oProp.OuterObject.RealObject);
+            var proxyState = new PropertyProxyState()
+            {
+                PropertyTemplate = oProp.Template,
+                OuterObject = targetObject,
+                OriginalPropertyValue = propertyValue
+            };
+            var proxyGenerationOptions = new ProxyGenerationOptions();
+            proxyGenerationOptions.AddMixinInstance(proxyState);
 
             var proxy = tProp.PropertyType.IsInterface ?
-                            _ProxyGenerator.CreateInterfaceProxyWithTarget(tProp.PropertyType, _ObjectProxyInterfaceList, propertyValue, interceptor) :
-                            _ProxyGenerator.CreateClassProxyWithTarget(tProp.PropertyType, _ObjectProxyInterfaceList, propertyValue, interceptor);
+                            _ProxyGenerator.CreateInterfaceProxyWithTarget(tProp.PropertyType, _ObjectProxyInterfaceList, propertyValue, proxyGenerationOptions, _PropertyProxyInjectorInterceptor) :
+                            _ProxyGenerator.CreateClassProxyWithTarget(tProp.PropertyType, _ObjectProxyInterfaceList, propertyValue, proxyGenerationOptions, _PropertyProxyInjectorInterceptor);
 
             return proxy;
         }

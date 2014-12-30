@@ -53,7 +53,7 @@ namespace Envivo.Fresnel.Core.Commands
                 if (result == null)
                     return null;
 
-                var resultType = _RealTypeResolver.GetRealType(result.GetType());
+                var resultType = _RealTypeResolver.GetRealType(result);
                 var oResult = _ObserverCache.GetObserver(result, resultType);
 
                 return oResult;

@@ -451,7 +451,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var typeResolver = container.Resolve<FresnelTypeResolver>();
 
             // Act:
-            var realType = typeResolver.GetRealType(pocoProxy.GetType());
+            var realType = typeResolver.GetRealType(pocoProxy);
 
             // Assert:
             Assert.AreEqual(poco.GetType(), realType);

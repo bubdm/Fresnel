@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Introspection.Commands
 
         public object Invoke(object obj, string methodName, IEnumerable<object> args)
         {
-            var realType = _RealTypeResolver.GetRealType(obj.GetType());
+            var realType = _RealTypeResolver.GetRealType(obj);
             var tClass = (ClassTemplate)_TemplateCache.GetTemplate(realType);
             var tMethod = tClass.Methods[methodName];
             var result = this.Invoke(obj, tMethod, args);

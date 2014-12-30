@@ -42,8 +42,11 @@ namespace Envivo.Fresnel.Introspection
         /// </remarks>
         public IClassTemplate GetTemplate(Type objectType)
         {
-            // We may have been given a proxy type, so make sure we know the real type:
-            var realType = _RealTypeResolver.GetRealType(objectType);
+            var realType = objectType;
+            if (objectType.Assembly.IsDynamic)
+            {
+                throw new FresnelException("Unable to parse dynamically created Types. Make sure the caller is passing in the real type.");
+            }
 
             var assemblyReader = _AssemblyReaders[realType.Assembly];
             return assemblyReader.GetTemplate(realType);

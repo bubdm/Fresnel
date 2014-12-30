@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.Introspection.Commands
 
         public void Invoke(object obj, string propertyName, object value)
         {
-            var realType = _RealTypeResolver.GetRealType(obj.GetType());
+            var realType = _RealTypeResolver.GetRealType(obj);
             var tClass = (ClassTemplate)_TemplateCache.GetTemplate(realType);
             this.Invoke(tClass, obj, propertyName, value);
         }

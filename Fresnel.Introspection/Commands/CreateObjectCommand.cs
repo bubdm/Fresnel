@@ -48,7 +48,7 @@ namespace Envivo.Fresnel.Introspection.Commands
 
             if (result == null && constructorArg != null)
             {
-                var realType = _RealTypeResolver.GetRealType(constructorArg.GetType());
+                var realType = _RealTypeResolver.GetRealType(constructorArg);
 
                 if (tClass.CanBeCreatedWith(realType))
                 {

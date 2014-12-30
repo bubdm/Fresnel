@@ -73,6 +73,7 @@
     <Compile Include="IPropertyProxy.cs" />
     <Compile Include="IProxyState.cs" />
     <Compile Include="PropertyProxyBuilder.cs" />
+    <Compile Include="PropertyProxyState.cs" />
     <Compile Include="ProxyState.cs" />
     <Compile Include="ProxyBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

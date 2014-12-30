@@ -47,7 +47,7 @@ namespace Envivo.Fresnel.Proxies
             if (obj == null)
                 return Assertion.Fail("Object is null");
 
-            var type = _RealTypeResolver.GetRealType(obj.GetType());
+            var type = _RealTypeResolver.GetRealType(obj);
 
             //-----
 

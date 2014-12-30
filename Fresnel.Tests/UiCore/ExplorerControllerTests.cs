@@ -40,14 +40,14 @@ namespace Envivo.Fresnel.Tests.Proxies
             poco.ID = Guid.NewGuid();
             var pocoProxy = proxyCache.GetProxy(poco);
 
-            var propertyVM = new PropertyVM()
+            // Act:
+            var request = new PropertyGetRequest()
             {
-                 ObjectID = poco.ID,
-                 PropertyName = "ChildObjects"
+                ObjectID = poco.ID,
+                PropertyName = "ChildObjects"
             };
 
-            // Act:
-            var getResult = controller.GetObjectProperty(propertyVM);
+            var getResult = controller.GetObjectProperty(request);
 
             // Assert:
             Assert.IsTrue(getResult.Passed);
@@ -68,7 +68,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             poco.AddSomeChildObjects();
             var pocoProxy = proxyCache.GetProxy(poco);
 
-            var propertyVM = new PropertyVM()
+            var request = new PropertyGetRequest()
             {
                 ObjectID = poco.ID,
                 PropertyName = "ChildObjects"
@@ -77,7 +77,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var tPoco = (ClassTemplate)templateCache.GetTemplate(poco.GetType());
 
             // Act:
-            var getResult = controller.GetObjectProperty(propertyVM);
+            var getResult = controller.GetObjectProperty(request);
 
             // Assert:
             var collectionVM = (CollectionVM)getResult.ReturnValue;
@@ -86,6 +86,32 @@ namespace Envivo.Fresnel.Tests.Proxies
             var visibleProperties = tPoco.Properties.Values.Where(p => !p.IsFrameworkMember && p.IsVisible);
 
             Assert.GreaterOrEqual(collectionVM.ColumnHeaders.Count(), visibleProperties.Count());
+        }
+
+        [Test()]
+        public void ShouldReturnCollectionAdditions()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
+            var templateCache = container.Resolve<TemplateCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+            var pocoProxy = proxyCache.GetProxy(poco);
+
+            var request = new InvokeMethodRequest()
+            {
+                ObjectID = poco.ID,
+                MethodName = "AddSomeChildObjects",
+            };
+
+            // Act:          
+            var invokeResult = controller.InvokeMethod(request);
+
+            // Assert:
+            Assert.AreEqual(3, invokeResult.Modifications.CollectionAdditions.Count());
         }
 
     }

@@ -13,13 +13,14 @@ using System.ComponentModel;
 namespace Envivo.Fresnel.Proxies
 {
 
-    public interface IPropertyProxy
+    internal class PropertyProxyState : IPropertyProxy
     {
-        PropertyTemplate PropertyTemplate { get; set; }
+        public PropertyTemplate PropertyTemplate { get; set; }
 
-        object OuterObject { get; set; }
+        public object OuterObject { get; set; }
 
-        object OriginalPropertyValue { get; set; }
+        public object OriginalPropertyValue { get; set; }
+
     }
 
 }
