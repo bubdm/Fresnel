@@ -39,10 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Changes\CollectionElementVM.cs" />
+    <Compile Include="Commands\InvokeMethodResult.cs" />
+    <Compile Include="Controllers\InvokeMethodRequest.cs" />
+    <Compile Include="Controllers\PropertyGetRequest.cs" />
+    <Compile Include="Controllers\PropertySetRequest.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Messages\WarningVM.cs" />
     <Compile Include="Messages\ErrorVM.cs" />
     <Compile Include="Messages\MessageVM.cs" />
+    <Compile Include="Changes\PropertyChangeVM.cs" />
     <Compile Include="SessionVmBuilder.cs" />
     <Compile Include="SessionVM.cs" />
     <Compile Include="Classes\NamespaceBuilder.cs" />
@@ -53,7 +59,7 @@
     <Compile Include="Commands\GetPropertyCommand.cs" />
     <Compile Include="Commands\CreateCommandResult.cs" />
     <Compile Include="Commands\CreateCommand.cs" />
-    <Compile Include="Commands\ModificationsBuilder.cs" />
+    <Compile Include="Changes\ModificationsBuilder.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Objects\ColumnHeaderVM.cs" />
     <Compile Include="Objects\MethodVmBuilder.cs" />
@@ -73,8 +79,7 @@
     <Compile Include="Commands\GetClassHierarchyCommand.cs" />
     <Compile Include="Controllers\ExplorerController.cs" />
     <Compile Include="Controllers\ToolboxController.cs" />
-    <Compile Include="IdentityMapMerger.cs" />
-    <Compile Include="IdentityMapDelta.cs" />
+    <Compile Include="Changes\Modifications.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="IdentityMap.cs" />
     <Compile Include="Objects\AbstractPropertyVmBuilder.cs" />

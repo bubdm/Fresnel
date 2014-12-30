@@ -2,6 +2,7 @@
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Proxies;
+using Envivo.Fresnel.UiCore.Changes;
 using Envivo.Fresnel.UiCore.Classes;
 using Envivo.Fresnel.UiCore.Messages;
 using Envivo.Fresnel.UiCore.Objects;
@@ -31,7 +32,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         /// <summary>
         /// Any modifications to other Objects that occurred as part of the operation
         /// </summary>
-        public PropertyVM[] OtherModifications { get; set; }
+        public Modifications Modifications { get; set; }
 
     }
 
