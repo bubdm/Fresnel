@@ -68,10 +68,32 @@ namespace Envivo.Fresnel.Core.Observers
         /// <param name="objectType">The Type of the Object to be observed</param>
         public BaseObjectObserver GetObserver(object obj, Type objectType)
         {
-            var result = this.GetCachedObserver(obj, objectType);
+            var template = _TemplateCache.GetTemplate(objectType);
+            var tClass = template as ClassTemplate;
+            var tNonRefClass = template as NonReferenceTemplate;
+
+            // If the object has an ID, use it.  Otherwise, use a new ID to cache the observer:
+            var id = Guid.NewGuid();
+            if (tClass != null)
+            {
+                // NB: The object might actually return Guid.Empty, hence the check below:
+                id = _ObjectIdResolver.TryGetValue(obj, tClass, Guid.Empty);
+            }
+            if (id == Guid.Empty)
+            {
+                id = Guid.NewGuid();
+            }
+
+            var result = tClass != null ?
+                        this.GetCachedObserver(id, obj, tClass) :
+                        this.GetCachedObserver(id, obj, tNonRefClass);
+
+
             if (result == null)
             {
-                result = CreateAndCacheObserver(obj, objectType);
+                result = tClass != null ?
+                        this.CreateAndCacheObserver(id, obj, tClass) :
+                        this.CreateAndCacheObserver(id, obj, tNonRefClass);
             }
             else
             {
@@ -81,68 +103,78 @@ namespace Envivo.Fresnel.Core.Observers
             return result;
         }
 
-        private BaseObjectObserver GetCachedObserver(object obj, Type objectType)
+        private BaseObjectObserver GetCachedObserver(Guid objectId, object obj, ClassTemplate tClass)
         {
+            BaseObjectObserver result = null;
+
             if (obj == null)
                 return null;
 
-            var template = _TemplateCache.GetTemplate(objectType);
-            var tClass = template as ClassTemplate;
-            if (tClass != null)
+            if (tClass == null)
+                return null;
+
+            if (objectId != Guid.Empty)
             {
-                ObjectObserver match = null;
-                _ObjectMap.TryGetValue(obj, out match);
-                return match;
+                result = _ObjectIdMap.TryGetValueOrNull(objectId);
             }
             else
             {
-                return _NonReferenceMap.TryGetValueOrNull(obj);
+                ObjectObserver match = null;
+                _ObjectMap.TryGetValue(obj, out match);
+                result = match;
             }
+            return result;
         }
 
-        private BaseObjectObserver CreateAndCacheObserver(object obj, Type objectType)
+        private BaseObjectObserver GetCachedObserver(Guid objectId, object obj, NonReferenceTemplate tNonRefClass)
         {
-            var template = _TemplateCache.GetTemplate(objectType);
-            var tClass = template as ClassTemplate;
+            BaseObjectObserver result = null;
 
-            if (tClass != null)
-            {
-                Debug.WriteLine(string.Concat("Creating Observer for ", tClass.Name, " with hash code ", obj.GetHashCode()));
+            if (obj == null)
+                return null;
 
-                var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealType);
-                _ObjectMap.Add(obj, result);
+            if (tNonRefClass == null)
+                return null;
 
-                var id = this.ReplaceInvalidKeyWithValidKey(result);
-                _ObjectIdMap.Add(id, result);
+            result = _NonReferenceMap.TryGetValueOrNull(obj);
+            return result;
+        }
 
-                MergeObjectsWithSameId(obj, result);
-                return result;
-            }
-
+        private BaseObjectObserver CreateAndCacheObserver(Guid objectId, object obj, ClassTemplate tClass)
+        {
             if (tClass == null)
-            {
-                var result = (NonReferenceObserver)_AbstractObserverBuilder.BuildFor(obj, template.RealType);
-                _NonReferenceMap.Add(obj, result);
-                return result;
-            }
+                return null;
 
-            return null;
+            Debug.WriteLine(string.Concat("Creating Observer for ", tClass.Name, " with hash code ", obj.GetHashCode()));
+
+            var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, tClass.RealType);
+            _ObjectMap.Add(obj, result);
+
+            ReplaceInvalidKeyWithValidKey(result, objectId);
+
+            _ObjectIdMap.Add(objectId, result);
+
+            MergeObjectsWithSameId(obj, result);
+            return result;
         }
 
-        private Guid ReplaceInvalidKeyWithValidKey(ObjectObserver oObject)
+        private BaseObjectObserver CreateAndCacheObserver(Guid objectId, object obj, NonReferenceTemplate tNonRefClass)
         {
-            Guid id = Guid.Empty;
+            if (tNonRefClass == null)
+                return null;
+
+            var result = (NonReferenceObserver)_AbstractObserverBuilder.BuildFor(obj, tNonRefClass.RealType);
+            _NonReferenceMap.Add(obj, result);
+            return result;
+        }
+
+        private void ReplaceInvalidKeyWithValidKey(ObjectObserver oObject, Guid id)
+        {
             try
             {
                 var obj = oObject.RealObject;
                 var tClass = oObject.Template;
 
-                id = _ObjectIdResolver.TryGetValue(obj, tClass, Guid.Empty);
-                if (id != Guid.Empty)
-                    return id;
-
-                // This is the ID that will represent the given object:
-                id = Guid.NewGuid();
                 if (tClass.IdProperty != null)
                 {
                     tClass.IdProperty.SetField(obj, id);
@@ -153,7 +185,6 @@ namespace Envivo.Fresnel.Core.Observers
                 // Make sure the Observer is tied to the Object:
                 oObject.ID = id;
             }
-            return id;
         }
 
         private void MergeObjectsWithSameId(object obj, ObjectObserver oObject)
