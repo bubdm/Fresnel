@@ -21,13 +21,7 @@
 
                 $http.post(uri, method)
                     .success(function (data: any, status) {
-                        //var obj = data.ReturnValue;
-                        //if (obj) {
-                        //    appService.identityMap.addItem(obj);
-
-                        //    // TODO: Insert the object just after it's parent?
-                        //    $scope.visibleExplorers.push(obj);
-                        //}
+                        appService.identityMap.merge(data.Modifications);
                     });
             }
 
