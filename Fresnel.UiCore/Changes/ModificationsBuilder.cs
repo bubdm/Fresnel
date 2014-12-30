@@ -15,10 +15,10 @@ namespace Envivo.Fresnel.UiCore.Changes
 
         public Modifications BuildFrom(SessionJournal sessionJournal, long startedAt)
         {
-            var newObjects = sessionJournal.ObjectCreations.TakeWhile(o => o.Sequence >= startedAt);
-            var propertyChanges = sessionJournal.PropertyChanges.TakeWhile(p => p.Sequence >= startedAt);
-            var collectionAdds = sessionJournal.CollectionAdditions.TakeWhile(p => p.Sequence >= startedAt);
-            var collectionRemoves = sessionJournal.CollectionRemovals.TakeWhile(p => p.Sequence >= startedAt);
+            var newObjects = sessionJournal.ObjectCreations.SkipWhile(o => o.Sequence < startedAt);
+            var propertyChanges = sessionJournal.PropertyChanges.SkipWhile(p => p.Sequence < startedAt);
+            var collectionAdds = sessionJournal.CollectionAdditions.SkipWhile(p => p.Sequence < startedAt);
+            var collectionRemoves = sessionJournal.CollectionRemovals.SkipWhile(p => p.Sequence < startedAt);
 
             var result = new Modifications()
             {
