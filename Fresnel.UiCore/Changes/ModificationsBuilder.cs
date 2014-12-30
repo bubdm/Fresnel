@@ -13,9 +13,19 @@ namespace Envivo.Fresnel.UiCore.Changes
         private AbstractObjectVMBuilder _AbstractObjectVMBuilder;
         private AbstractPropertyVmBuilder _AbstractPropertyVmBuilder;
 
+        public ModificationsBuilder
+            (
+            AbstractObjectVMBuilder abstractObjectVMBuilder,
+            AbstractPropertyVmBuilder abstractPropertyVmBuilder
+            )
+        {
+            _AbstractObjectVMBuilder = abstractObjectVMBuilder;
+            _AbstractPropertyVmBuilder = abstractPropertyVmBuilder;
+        }
+
         public Modifications BuildFrom(ChangeLog changeLog, long startedAt)
         {
-            var newObjects = changeLog.ObjectCreations.SkipWhile(o => o.Sequence < startedAt).ToArray();
+            var newObjects = changeLog.NewObjects.SkipWhile(o => o.Sequence < startedAt).ToArray();
             var propertyChanges = changeLog.PropertyChanges.SkipWhile(p => p.Sequence < startedAt).ToArray();
             var collectionAdds = changeLog.CollectionAdditions.SkipWhile(p => p.Sequence < startedAt).ToArray();
             var collectionRemoves = changeLog.CollectionRemovals.SkipWhile(p => p.Sequence < startedAt).ToArray();
