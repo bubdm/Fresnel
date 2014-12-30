@@ -21,6 +21,30 @@
                 });
 
             this.hash[obj.ID] = obj;
+
+            this.attachMembers(obj);
+        }
+
+        attachMembers(obj: IObjectVM) {
+            if (obj.IsCollection) {
+                for (var i = 0; i < obj.Items.length; i++) {
+                    this.attachMembers(obj.Items[i]);
+                }
+            }
+
+            if (obj.Properties) {
+                for (var i = 0; i < obj.Properties.length; i++) {
+                    var prop = obj.Properties[i];
+                    obj[prop.PropertyName] = prop;
+                }
+            }
+
+            if (obj.Methods) {
+                for (var i = 0; i < obj.Methods.length; i++) {
+                    var method = obj.Methods[i];
+                    obj[method.MethodName] = method;
+                }
+            }
         }
 
         removeItem(key: string) {

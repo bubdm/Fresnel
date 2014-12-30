@@ -28,7 +28,6 @@ var FresnelApp;
         function ObjectExplorerController($scope, $http, appService) {
             $scope.visibleExplorers = [];
             $scope.$on('objectCreated', function (event, obj) {
-                attachMembers(obj);
                 $scope.visibleExplorers.push(obj);
             });
             $scope.invoke = function (method) {
@@ -57,31 +56,11 @@ var FresnelApp;
                     if (obj) {
                         appService.identityMap.addItem(obj);
                         // TODO: Insert the object just after it's parent?
-                        attachMembers(obj);
                         obj.OuterProperty = prop;
                         $scope.visibleExplorers.push(obj);
                     }
                 });
             };
-            function attachMembers(obj) {
-                if (obj.IsCollection) {
-                    for (var i = 0; i < obj.Items.length; i++) {
-                        attachMembers(obj.Items[i]);
-                    }
-                }
-                if (obj.Properties) {
-                    for (var i = 0; i < obj.Properties.length; i++) {
-                        var prop = obj.Properties[i];
-                        obj[prop.PropertyName] = prop;
-                    }
-                }
-                if (obj.Methods) {
-                    for (var i = 0; i < obj.Methods.length; i++) {
-                        var method = obj.Methods[i];
-                        obj[method.MethodName] = method;
-                    }
-                }
-            }
         }
         ObjectExplorerController.$inject = ['$scope', '$http', 'appService'];
         return ObjectExplorerController;
@@ -211,6 +190,26 @@ var FresnelApp;
                 value: obj
             });
             this.hash[obj.ID] = obj;
+            this.attachMembers(obj);
+        };
+        IdentityMap.prototype.attachMembers = function (obj) {
+            if (obj.IsCollection) {
+                for (var i = 0; i < obj.Items.length; i++) {
+                    this.attachMembers(obj.Items[i]);
+                }
+            }
+            if (obj.Properties) {
+                for (var i = 0; i < obj.Properties.length; i++) {
+                    var prop = obj.Properties[i];
+                    obj[prop.PropertyName] = prop;
+                }
+            }
+            if (obj.Methods) {
+                for (var i = 0; i < obj.Methods.length; i++) {
+                    var method = obj.Methods[i];
+                    obj[method.MethodName] = method;
+                }
+            }
         };
         IdentityMap.prototype.removeItem = function (key) {
             var index = this.items.indexOf(key);

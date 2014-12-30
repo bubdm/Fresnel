@@ -4,6 +4,7 @@
         <span class="explorerItemIcon fa fa-folder-open-o"> </span>
         <h3 class="box-title">
             {{ obj.OuterProperty.Name ? obj.OuterProperty.Name : obj.Name }}
+            ({{ obj.Items.length }})
         </h3>
         <div class="box-tools pull-right">
             <button class="btn btn-primary btn-sm" ng-disabled="obj.Save.IsEnabled" ng-click="save(obj)" tooltip="prop.Tooltip"><i class="fa fa-save"></i></button>
