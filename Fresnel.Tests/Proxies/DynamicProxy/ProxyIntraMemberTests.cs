@@ -18,7 +18,7 @@ using System.Diagnostics;
 
 namespace Envivo.Fresnel.Tests.Proxies.DynamicProxy
 {
-    [TestFixture, Ignore("Disabled as only used for experimenting with DynamicProxy")]
+    //[TestFixture, Ignore("Disabled as only used for experimenting with DynamicProxy")]
     public class ProxyIntraMemberTests
     {
 
