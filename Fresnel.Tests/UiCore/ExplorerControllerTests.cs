@@ -21,6 +21,7 @@ using System.ComponentModel;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Objects;
+using Envivo.Fresnel.UiCore.Commands;
 
 namespace Envivo.Fresnel.Tests.Proxies
 {
@@ -41,7 +42,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var pocoProxy = proxyCache.GetProxy(poco);
 
             // Act:
-            var request = new PropertyGetRequest()
+            var request = new GetPropertyRequest()
             {
                 ObjectID = poco.ID,
                 PropertyName = "ChildObjects"
@@ -69,7 +70,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var pocoProxy = proxyCache.GetProxy(poco);
 
             // Act:
-            var request = new PropertyGetRequest()
+            var request = new GetPropertyRequest()
             {
                 ObjectID = poco.ID,
                 PropertyName = "ChildObjects"
@@ -129,7 +130,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             pocoProxy.AddSomeChildObjects();
 
             // Act:          
-            var request = new PropertyGetRequest()
+            var request = new GetPropertyRequest()
             {
                 ObjectID = poco.ID,
                 PropertyName = "ChildObjects"
@@ -147,6 +148,32 @@ namespace Envivo.Fresnel.Tests.Proxies
         }
 
 
+        [Test()]
+        public void ShouldReturnPropertyModifications()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
+            var templateCache = container.Resolve<TemplateCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+            var pocoProxy = proxyCache.GetProxy(poco);
+
+            // Act:          
+            var request = new SetPropertyRequest()
+            {
+                ObjectID = poco.ID,
+                PropertyName = "NormalText",
+                NonReferenceValue = "1234"
+            };
+
+            var setResult = controller.SetObjectProperty(request);
+
+            // Assert:
+            Assert.AreEqual(1, setResult.Modifications.PropertyChanges.Count());
+        }
     }
 
 }

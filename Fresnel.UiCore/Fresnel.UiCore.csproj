@@ -40,10 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Changes\CollectionElementVM.cs" />
+    <Compile Include="Commands\SetPropertyResult.cs" />
+    <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Commands\InvokeMethodResult.cs" />
-    <Compile Include="Controllers\InvokeMethodRequest.cs" />
-    <Compile Include="Controllers\PropertyGetRequest.cs" />
-    <Compile Include="Controllers\PropertySetRequest.cs" />
+    <Compile Include="Commands\InvokeMethodRequest.cs" />
+    <Compile Include="Commands\GetPropertyRequest.cs" />
+    <Compile Include="Commands\SetPropertyRequest.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Messages\WarningVM.cs" />
     <Compile Include="Messages\ErrorVM.cs" />

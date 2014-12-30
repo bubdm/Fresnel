@@ -21,63 +21,61 @@ using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
-    public class InvokeMethodCommand
+    public class SetPropertyCommand
     {
-        private ObserverCache _ObserverCache;
         private ProxyCache _ProxyCache;
         private AbstractObjectVMBuilder _ObjectVMBuilder;
-        private Core.Commands.InvokeMethodCommand _InvokeMethodCommand;
+        private Introspection.Commands.SetPropertyCommand _SetPropertyCommand;
         private ModificationsBuilder _ModificationsBuilder;
         private IClock _Clock;
 
-        public InvokeMethodCommand
+        public SetPropertyCommand
             (
-            ObserverCache observerCache,
-            Core.Commands.InvokeMethodCommand invokeMethodCommand,
+            Introspection.Commands.SetPropertyCommand setPropertyCommand,
             ProxyCache proxyCache,
             AbstractObjectVMBuilder objectVMBuilder,
             ModificationsBuilder modificationsBuilder,
             IClock clock
         )
         {
-            _ObserverCache = observerCache;
-            _InvokeMethodCommand = invokeMethodCommand;
+            _SetPropertyCommand = setPropertyCommand;
             _ProxyCache = proxyCache;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
             _Clock = clock;
         }
 
-        public GetPropertyResult Invoke(InvokeMethodRequest request)
+        public SetPropertyResult Invoke(SetPropertyRequest request)
         {
             try
             {
                 var startedAt = Environment.TickCount;
 
-                ObjectVM result = null;
-
                 var proxy = _ProxyCache.GetProxyById(request.ObjectID);
-                var oObject = proxy.Meta as ObjectObserver;
+                var oObject = ((IFresnelProxy)proxy).Meta;
 
                 if (oObject != null)
                 {
-                    var oMethod = oObject.Methods[request.MethodName];
-                    var returnValue = _InvokeMethodCommand.Invoke(oMethod, proxy) as ObjectObserver;
+                    var oProp = oObject.Properties[request.PropertyName];
 
-                    if (returnValue != null)
+                    object newValue = null;
+                    if (request.ReferenceValueId != Guid.Empty)
                     {
-                        // Make sure we cache the proxy for use later in the session:
-                        _ProxyCache.GetProxy(returnValue.RealObject);
-                        result = _ObjectVMBuilder.BuildFor(returnValue);
+                        newValue = _ProxyCache.GetProxyById(request.ReferenceValueId);
                     }
+                    else
+                    {
+                        newValue = request.NonReferenceValue;
+                    }
+
+                    _SetPropertyCommand.Invoke(proxy, request.PropertyName, newValue);
                 }
 
                 var proxyState = (IProxyState)proxy;
 
-                return new GetPropertyResult()
+                return new SetPropertyResult()
                 {
                     Passed = true,
-                    ReturnValue = result,
                     Modifications = _ModificationsBuilder.BuildFrom(proxyState.ChangeLog, startedAt)
                 };
             }
@@ -85,7 +83,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
 
-                return new GetPropertyResult()
+                return new SetPropertyResult()
                 {
                     Failed = true,
                     ErrorMessages = new ErrorVM[] { errorVM }

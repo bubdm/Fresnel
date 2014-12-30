@@ -7,6 +7,7 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Proxies;
 using Envivo.Fresnel.UiCore.Classes;
+using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Messages;
 using Envivo.Fresnel.UiCore.Objects;
 using Envivo.Fresnel.Utils;
@@ -21,7 +22,6 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class GetPropertyCommand
     {
-        //private ObserverCache _ObserverCache;
         private ProxyCache _ProxyCache;
         private AbstractObjectVMBuilder _ObjectVMBuilder;
         private Introspection.Commands.GetPropertyCommand _GetPropertyCommand;
@@ -29,33 +29,31 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         public GetPropertyCommand
             (
-            //ObserverCache observerCache,
             Introspection.Commands.GetPropertyCommand getPropertyCommand,
             ProxyCache proxyCache,
             AbstractObjectVMBuilder objectVMBuilder,
             IClock clock
         )
         {
-            //_ObserverCache = observerCache;
             _GetPropertyCommand = getPropertyCommand;
             _ProxyCache = proxyCache;
             _ObjectVMBuilder = objectVMBuilder;
             _Clock = clock;
         }
 
-        public GetPropertyResult Invoke(Guid objectId, string propertyName)
+        public GetPropertyResult Invoke(GetPropertyRequest request)
         {
             try
             {
                 ObjectVM result = null;
 
-                var proxy = _ProxyCache.GetProxyById(objectId);
+                var proxy = _ProxyCache.GetProxyById(request.ObjectID);
                 var oObject = ((IFresnelProxy)proxy).Meta;
 
                 if (oObject != null)
                 {
-                    var oProp = oObject.Properties[propertyName];
-                    var returnValue = _GetPropertyCommand.Invoke(proxy, propertyName);
+                    var oProp = oObject.Properties[request.PropertyName];
+                    var returnValue = _GetPropertyCommand.Invoke(proxy, request.PropertyName);
 
                     if (returnValue != null)
                     {
