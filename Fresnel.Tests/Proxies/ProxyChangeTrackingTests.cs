@@ -88,7 +88,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(2, state.ChangeLog.PropertyChanges.Count);
 
             // This includes the POCO we started with:
-            Assert.AreEqual(4, state.ChangeLog.ObjectCreations.Count);
+            Assert.AreEqual(4, state.ChangeLog.NewObjects.Count);
         }
     }
 

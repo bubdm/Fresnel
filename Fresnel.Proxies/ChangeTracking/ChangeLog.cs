@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.Proxies.ChangeTracking
         public ChangeLog()
         {
             this.AllChanges = new List<BaseChange>();
-            this.ObjectCreations = new List<ObjectCreation>();
+            this.NewObjects = new List<ObjectCreation>();
             this.PropertyChanges = new List<PropertyChange>();
             this.CollectionAdditions = new List<CollectionAdd>();
             this.CollectionRemovals = new List<CollectionRemove>();
@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Proxies.ChangeTracking
 
         public IList<BaseChange> AllChanges { get; private set; }
 
-        public IList<ObjectCreation> ObjectCreations { get; private set; }
+        public IList<ObjectCreation> NewObjects { get; private set; }
 
         public IList<PropertyChange> PropertyChanges { get; private set; }
 
@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.Proxies.ChangeTracking
 
         public IList<MethodInvocation> MethodInvocations { get; private set; }
 
-        internal void AddObjectCreation(ObjectObserver oObject)
+        internal void AddNewObject(ObjectObserver oObject)
         {
             var latestChange = new ObjectCreation()
             {
@@ -40,7 +40,7 @@ namespace Envivo.Fresnel.Proxies.ChangeTracking
             };
 
             this.AllChanges.Add(latestChange);
-            this.ObjectCreations.Add(latestChange);
+            this.NewObjects.Add(latestChange);
         }
 
         internal void AddPropertyChange(BasePropertyObserver oProperty)
