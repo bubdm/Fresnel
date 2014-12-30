@@ -17,7 +17,7 @@ namespace Envivo.Fresnel.Proxies
 
     public class ProxyBuilder : Envivo.Fresnel.Core.Proxies.IProxyBuilder
     {
-        private SessionJournal _SessionJournal;
+        private ChangeLog _ChangeLog;
         private ObserverCache _ObserverCache;
         private ProxyGenerator _ProxyGenerator;
         private PropertyProxyBuilder _PropertyProxyBuilder;
@@ -41,7 +41,7 @@ namespace Envivo.Fresnel.Proxies
         public ProxyBuilder
             (
             ObserverCache observerCache,
-            SessionJournal sessionJournal,
+            ChangeLog changeLog,
             ProxyGenerator proxyGenerator,
             PropertyProxyBuilder propertyProxyBuilder,
 
@@ -59,7 +59,7 @@ namespace Envivo.Fresnel.Proxies
             )
         {
             _ObserverCache = observerCache;
-            _SessionJournal = sessionJournal;
+            _ChangeLog = changeLog;
             _ProxyGenerator = proxyGenerator;
             _PropertyProxyBuilder = propertyProxyBuilder;
 
@@ -129,7 +129,7 @@ namespace Envivo.Fresnel.Proxies
             var proxyState = new ProxyState()
             {
                 Meta = oObject,
-                SessionJournal = _SessionJournal
+                ChangeLog = _ChangeLog
             };
 
             var proxyGenerationOptions = new ProxyGenerationOptions()
@@ -174,7 +174,7 @@ namespace Envivo.Fresnel.Proxies
             var proxyState = new ProxyState()
             {
                 Meta = oCollection,
-                SessionJournal = _SessionJournal
+                ChangeLog = _ChangeLog
             };
 
             var proxyGenerationOptions = new ProxyGenerationOptions()

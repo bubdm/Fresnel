@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.Proxies.Interceptors
 
                 LambdaExtensions.NameOf(() => disposable.Dispose()),
                 LambdaExtensions.NameOf(() => fresnelProxy.Meta),
-                LambdaExtensions.NameOf(() => proxyState.SessionJournal),
+                LambdaExtensions.NameOf(() => proxyState.ChangeLog),
             };
         }
 

@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.Proxies.Interceptors
                 }
 
                 var proxyState = (IProxyState)invocation.Proxy;
-                proxyState.SessionJournal.AddCollectionAdd(oCollection, oAddedItem);
+                proxyState.ChangeLog.AddCollectionAdd(oCollection, oAddedItem);
 
                 this.PostInvoke(oCollection, oCollectionProp, oAddedItem);
             }

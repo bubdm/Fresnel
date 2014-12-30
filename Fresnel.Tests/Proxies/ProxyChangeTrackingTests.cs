@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Assert:
             var state = pocoProxy as IProxyState;
             // NB: This also includes properties modified in the object's ctor:
-            Assert.Greater(state.SessionJournal.PropertyChanges.Count, 0);
+            Assert.Greater(state.ChangeLog.PropertyChanges.Count, 0);
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // Assert:
             var state = pocoProxy as IProxyState;
-            Assert.AreEqual(2, state.SessionJournal.CollectionAdditions.Count);
+            Assert.AreEqual(2, state.ChangeLog.CollectionAdditions.Count);
         }
 
         [Test]
@@ -84,8 +84,8 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // Assert:
             var state = pocoProxy as IProxyState;
-            Assert.AreEqual(3, state.SessionJournal.CollectionAdditions.Count);
-            Assert.AreEqual(2, state.SessionJournal.PropertyChanges.Count);
+            Assert.AreEqual(3, state.ChangeLog.CollectionAdditions.Count);
+            Assert.AreEqual(2, state.ChangeLog.PropertyChanges.Count);
         }
     }
 

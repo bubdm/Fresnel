@@ -17,7 +17,7 @@ namespace Envivo.Fresnel.Proxies
     {
         public ObjectObserver Meta { get; set; }
 
-        public SessionJournal SessionJournal { get; set; }
+        public ChangeLog ChangeLog { get; set; }
     }
 
 }

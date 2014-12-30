@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Proxies
 
     public interface IProxyState
     {
-        SessionJournal SessionJournal { get; }
+        ChangeLog ChangeLog { get; }
     }
 
 }

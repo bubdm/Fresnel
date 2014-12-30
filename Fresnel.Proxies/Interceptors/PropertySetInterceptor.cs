@@ -39,7 +39,7 @@ namespace Envivo.Fresnel.Proxies.Interceptors
                 invocation.Proceed();
 
                 var proxyState = (IProxyState)invocation.Proxy;
-                proxyState.SessionJournal.AddPropertyChange(oProperty);
+                proxyState.ChangeLog.AddPropertyChange(oProperty);
 
                 this.PostInvoke(oProperty, oValue, originalValue);
             }

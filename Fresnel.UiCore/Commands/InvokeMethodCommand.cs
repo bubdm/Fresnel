@@ -76,7 +76,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     Passed = true,
                     ReturnValue = result,
-                    Modifications = _ModificationsBuilder.BuildFrom(proxyState.SessionJournal, startedAt)
+                    Modifications = _ModificationsBuilder.BuildFrom(proxyState.ChangeLog, startedAt)
                 };
             }
             catch (Exception ex)

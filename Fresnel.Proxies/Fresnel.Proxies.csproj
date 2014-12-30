@@ -48,7 +48,7 @@
     <Compile Include="ChangeTracking\MethodInvocation.cs" />
     <Compile Include="ChangeTracking\ObjectCreation.cs" />
     <Compile Include="ChangeTracking\PropertyChange.cs" />
-    <Compile Include="ChangeTracking\SessionJournal.cs" />
+    <Compile Include="ChangeTracking\ChangeLog.cs" />
     <Compile Include="InterceptorSelectors\NotifyCollectionChangedInterceptorsSelector.cs" />
     <Compile Include="InterceptorSelectors\NotifyPropertyChangedInterceptorsSelector.cs" />
     <Compile Include="InterceptorSelectors\MethodInvokeInterceptorsSelector.cs" />

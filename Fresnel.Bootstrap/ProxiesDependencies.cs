@@ -69,7 +69,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Proxies.ProxyCache),
                 typeof(Fresnel.Proxies.ProxyBuilder),
                 typeof(Fresnel.Proxies.PropertyProxyBuilder),
-                typeof(Fresnel.Proxies.ChangeTracking.SessionJournal),
+                typeof(Fresnel.Proxies.ChangeTracking.ChangeLog),
             };
         }
 

@@ -13,19 +13,19 @@ namespace Envivo.Fresnel.UiCore.Changes
         private AbstractObjectVMBuilder _AbstractObjectVMBuilder;
         private AbstractPropertyVmBuilder _AbstractPropertyVmBuilder;
 
-        public Modifications BuildFrom(SessionJournal sessionJournal, long startedAt)
+        public Modifications BuildFrom(ChangeLog changeLog, long startedAt)
         {
-            var newObjects = sessionJournal.ObjectCreations.SkipWhile(o => o.Sequence < startedAt);
-            var propertyChanges = sessionJournal.PropertyChanges.SkipWhile(p => p.Sequence < startedAt);
-            var collectionAdds = sessionJournal.CollectionAdditions.SkipWhile(p => p.Sequence < startedAt);
-            var collectionRemoves = sessionJournal.CollectionRemovals.SkipWhile(p => p.Sequence < startedAt);
+            var newObjects = changeLog.ObjectCreations.SkipWhile(o => o.Sequence < startedAt).ToArray();
+            var propertyChanges = changeLog.PropertyChanges.SkipWhile(p => p.Sequence < startedAt).ToArray();
+            var collectionAdds = changeLog.CollectionAdditions.SkipWhile(p => p.Sequence < startedAt).ToArray();
+            var collectionRemoves = changeLog.CollectionRemovals.SkipWhile(p => p.Sequence < startedAt).ToArray();
 
             var result = new Modifications()
             {
-                NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)).ToArray(),
-                PropertyChanges = propertyChanges.Select(p => CreatePropertyChange(p.Property)).ToArray(),
-                CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c.Collection, c.Element)).ToArray(),
-                CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c.Collection, c.Element)).ToArray(),
+                NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)),
+                PropertyChanges = propertyChanges.Select(p => CreatePropertyChange(p.Property)),
+                CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c.Collection, c.Element)),
+                CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c.Collection, c.Element)),
             };
 
             return result;

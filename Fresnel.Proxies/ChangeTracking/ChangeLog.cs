@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Proxies.ChangeTracking
 {
-    public class SessionJournal
+    public class ChangeLog
     {
-        public SessionJournal()
+        public ChangeLog()
         {
             this.AllChanges = new List<BaseChange>();
             this.ObjectCreations = new List<ObjectCreation>();
