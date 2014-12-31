@@ -39,7 +39,7 @@ namespace Envivo.Fresnel.Proxies.Interceptors
                 invocation.Proceed();
 
                 var proxyState = (IProxyState)invocation.Proxy;
-                proxyState.ChangeLog.AddPropertyChange(oProperty);
+                proxyState.ChangeLog.AddPropertyChange(oProperty, oValue);
 
                 this.PostInvoke(oProperty, oValue, originalValue);
             }
@@ -59,10 +59,6 @@ namespace Envivo.Fresnel.Proxies.Interceptors
         private BaseObjectObserver GetValueObserver(object newValue)
         {
             if (newValue == null)
-                return null;
-
-            var type = newValue.GetType();
-            if (type.IsNonReference())
                 return null;
 
             var result = _ObserverCache.GetObserver(newValue);

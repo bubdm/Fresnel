@@ -43,12 +43,13 @@ namespace Envivo.Fresnel.Proxies.ChangeTracking
             this.NewObjects.Add(latestChange);
         }
 
-        internal void AddPropertyChange(BasePropertyObserver oProperty)
+        internal void AddPropertyChange(BasePropertyObserver oProperty, BaseObjectObserver oValue)
         {
             var latestChange = new PropertyChange()
             {
                 Sequence = Environment.TickCount,
-                Property = oProperty
+                Property = oProperty,
+                Value = oValue
             };
 
             this.AllChanges.Add(latestChange);

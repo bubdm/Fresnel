@@ -100,11 +100,9 @@ namespace Envivo.Fresnel.Proxies.Interceptors
             if (invocation.ReturnValue is IFresnelProxy)
                 return;
 
-            var propertyProxy = invocation.ReturnValue as IPropertyProxy;
-            if (propertyProxy != null)
-            {
-                invocation.ReturnValue = propertyProxy.OriginalPropertyValue;
-            }
+            if (oProperty.Template.IsNonReference)
+                // We don't need to replace non-reference values with proxies:
+                return;
 
             // Make sure we're returning a proxy (so that it can be intercepted further):
             var returnValueProxy = (IFresnelProxy)this.ProxyCache.GetProxy(invocation.ReturnValue);

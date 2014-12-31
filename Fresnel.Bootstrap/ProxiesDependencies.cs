@@ -48,7 +48,6 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Proxies.Interceptors.NotifyCollectionChangedInterceptorsSelector),
                 typeof(Fresnel.Proxies.Interceptors.PropertyGetInterceptorsSelector),
                 typeof(Fresnel.Proxies.Interceptors.PropertySetInterceptorsSelector),
-                typeof(Fresnel.Proxies.Interceptors.PropertyProxyInjectorInterceptor),
                 typeof(Fresnel.Proxies.Interceptors.NotifyPropertyChangedInterceptorsSelector),
 
                 typeof(Fresnel.Proxies.Interceptors.InterceptorSelector),
@@ -68,7 +67,6 @@ namespace Envivo.Fresnel.Bootstrap
             return new Type[] { 
                 typeof(Fresnel.Proxies.ProxyCache),
                 typeof(Fresnel.Proxies.ProxyBuilder),
-                typeof(Fresnel.Proxies.PropertyProxyBuilder),
                 typeof(Fresnel.Proxies.ChangeTracking.ChangeLog),
             };
         }

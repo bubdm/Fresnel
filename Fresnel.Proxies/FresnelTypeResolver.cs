@@ -13,12 +13,21 @@ namespace Envivo.Fresnel.Proxies
     {
         public Type GetRealType(object proxy)
         {
-            var castleProxy = proxy as IProxyTargetAccessor;
+            var type = proxy.GetType();
 
+            var castleProxy = proxy as IProxyTargetAccessor;
             if (castleProxy != null)
             {
-                return castleProxy.DynProxyGetTarget().GetType();
+                type = castleProxy.DynProxyGetTarget().GetType();
             }
+
+            while (type.Assembly.IsDynamic)
+            {
+                type = type.BaseType;
+            }
+
+            if (type != typeof(object))
+                return type;
 
             return null;
         }

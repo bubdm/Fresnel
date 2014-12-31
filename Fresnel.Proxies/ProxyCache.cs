@@ -62,9 +62,6 @@ namespace Envivo.Fresnel.Proxies
             if (domainObject is IFresnelProxy)
                 return domainObject;
 
-            if (domainObject is IPropertyProxy)
-                return domainObject;
-
             var check = _CanBeProxiedSpecification.IsSatisfiedBy(domainObject);
             if (check.Failed)
             {

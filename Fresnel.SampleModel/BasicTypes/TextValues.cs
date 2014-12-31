@@ -12,8 +12,6 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     /// </summary>
     public class TextValues
     {
-        private string _TextValue = string.Empty;
-
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
@@ -27,19 +25,15 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a normal Text
         /// </summary>
-        public virtual string NormalText
-        {
-            get { return _TextValue; }
-            set { _TextValue = value; }
-        }
+        public virtual string NormalText { get; set; }
 
         /// <summary>
         /// This is a Text with a public virtual Getter, but a hidden Setter.
         /// </summary>
         public virtual string ReadOnlyText
         {
-            get { return _TextValue; }
-            internal set { _TextValue = value; }
+            get { return this.NormalText; }
+            internal set { this.NormalText = value;}
         }
 
         /// <summary>
@@ -48,8 +42,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// </summary>
         public virtual string WriteOnlyText
         {
-            internal get { return _TextValue; }
-            set { _TextValue = value; }
+            internal get { return this.NormalText; }
+            set { this.NormalText = value;}
         }
 
         /// <summary>
@@ -58,8 +52,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         [Text(IsVisible = false)]
         public virtual string HiddenText
         {
-            get { return _TextValue; }
-            set { _TextValue = value; }
+            get { return this.NormalText; }
+            set { this.NormalText = value;}
         }
 
         /// <summary>
@@ -68,8 +62,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         [Text(PreferredInputControl = InputControlTypes.TextArea)]
         public virtual string MultiLineText
         {
-            get { return _TextValue; }
-            set { _TextValue = value; }
+            get { return this.NormalText; }
+            set { this.NormalText = value;}
         }
 
         /// <summary>
@@ -78,8 +72,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         [Text(PreferredInputControl = InputControlTypes.RichTextArea)]
         public virtual string RichTextText
         {
-            get { return _TextValue; }
-            set { _TextValue = value; }
+            get { return this.NormalText; }
+            set { this.NormalText = value;}
         }
 
         /// <summary>
@@ -88,8 +82,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         [Text(PreferredInputControl = InputControlTypes.Password)]
         public virtual string PasswordText
         {
-            get { return _TextValue; }
-            set { _TextValue = value; }
+            get { return this.NormalText; }
+            set { this.NormalText = value;}
         }
 
         /// <summary>
@@ -98,8 +92,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         [Text(MaxLength = 16)]
         public virtual string TextWithMaximumSize
         {
-            get { return _TextValue; }
-            set { _TextValue = value; }
+            get { return this.NormalText; }
+            set { this.NormalText = value;}
         }
 
         /// <summary>
@@ -108,8 +102,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         [Text(MinLength = 8, MaxLength = 16)]
         internal virtual string TextWithSize
         {
-            get { return _TextValue; }
-            set { _TextValue = value; }
+            get { return this.NormalText; }
+            set { this.NormalText = value;}
         }
 
         /// <summary>
@@ -118,8 +112,18 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         [Text(MaxLength = 10, EditMask = @"[0-9]*")]
         public virtual string EditMaskText
         {
-            get { return _TextValue; }
-            set { _TextValue = value; }
+            get { return this.NormalText; }
+            set { this.NormalText = value;}
+        }
+
+        private TextValues _Myself;
+
+        /// <summary>
+        /// This returns a reference to this object
+        /// </summary>
+        public virtual TextValues Myself
+        {
+            get { return this; }
         }
 
     }

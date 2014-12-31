@@ -90,6 +90,48 @@ namespace Envivo.Fresnel.Tests.Proxies
             // This includes the POCO we started with:
             Assert.AreEqual(4, state.ChangeLog.NewObjects.Count);
         }
+
+
+        [Test]
+        public void ShouldDetectIntraPropertyCalls()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
+
+            var poco = new SampleModel.BasicTypes.TextValues();
+            var pocoProxy = proxyCache.GetProxy(poco);
+
+            // Act:
+            // This chains onto another property:
+            pocoProxy.TextWithMaximumSize = "1234";
+
+            // Assert:
+            var state = pocoProxy as IProxyState;
+            Assert.AreEqual(2, state.ChangeLog.PropertyChanges.Count);
+        }
+
+        [Test]
+        public void ShouldDetectChainedModifications()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var proxyCache = container.Resolve<ProxyCache>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            var pocoProxy = proxyCache.GetProxy(poco);
+
+            // Act:
+            // This chains onto another property:
+            pocoProxy.ChildObjects.Add(new SampleModel.Objects.PocoObject());
+            pocoProxy.ChildObjects.First().ChildObjects.Add(new SampleModel.Objects.PocoObject());
+            pocoProxy.ChildObjects.First().ChildObjects.First().NormalDate = DateTime.Now;
+
+            // Assert:
+            var state = pocoProxy as IProxyState;
+            Assert.AreEqual(2, state.ChangeLog.CollectionAdditions.Count);
+            Assert.AreEqual(1, state.ChangeLog.PropertyChanges.Count);
+        }
     }
 
 }

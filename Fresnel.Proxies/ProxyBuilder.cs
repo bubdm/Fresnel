@@ -20,7 +20,6 @@ namespace Envivo.Fresnel.Proxies
         private ChangeLog _ChangeLog;
         private ObserverCache _ObserverCache;
         private ProxyGenerator _ProxyGenerator;
-        private PropertyProxyBuilder _PropertyProxyBuilder;
 
         private PrimaryInterceptor _PrimaryInterceptor;
         private PropertyGetInterceptor _PropertyGetInterceptor;
@@ -43,7 +42,6 @@ namespace Envivo.Fresnel.Proxies
             ObserverCache observerCache,
             ChangeLog changeLog,
             ProxyGenerator proxyGenerator,
-            PropertyProxyBuilder propertyProxyBuilder,
 
             PrimaryInterceptor primaryInterceptor,
             PropertyGetInterceptor propertyGetInterceptor,
@@ -61,7 +59,6 @@ namespace Envivo.Fresnel.Proxies
             _ObserverCache = observerCache;
             _ChangeLog = changeLog;
             _ProxyGenerator = proxyGenerator;
-            _PropertyProxyBuilder = propertyProxyBuilder;
 
             _PrimaryInterceptor = primaryInterceptor;
             _PropertyGetInterceptor = propertyGetInterceptor;
@@ -100,10 +97,6 @@ namespace Envivo.Fresnel.Proxies
             var oObject = observer as ObjectObserver;
             var oCollection = observer as CollectionObserver;
 
-            // It's best to change the property values before we create the overall proxy:
-            // This is to prevent Property interceptions kicking in unnecessarily: 
-            this.InjectObjectPropertyProxies(obj, oObject);
-
             var result = oCollection != null ?
                             this.CreateCollectionProxy(obj, oCollection) :
                             this.CreateObjectProxy(obj, oObject);
@@ -139,13 +132,14 @@ namespace Envivo.Fresnel.Proxies
             proxyGenerationOptions.AddMixinInstance(proxyState);
 
             var proxy = _ProxyGenerator
-                            .CreateClassProxyWithTarget(
+                            .CreateClassProxy(
                             tClass.RealType,
                             _ObjectProxyInterfaceList,
-                            obj,
                             proxyGenerationOptions,
                             CreateInterceptorsForObject()
                             );
+
+            this.InjectValuesIntoProxy(oObject, proxy);
 
             proxyState.ChangeLog.AddNewObject(oObject);
 
@@ -186,13 +180,14 @@ namespace Envivo.Fresnel.Proxies
             proxyGenerationOptions.AddMixinInstance(proxyState);
 
             var proxy = _ProxyGenerator
-                            .CreateClassProxyWithTarget(
+                            .CreateClassProxy(
                             tCollection.RealType,
                             _CollectionProxyInterfaceList,
-                            collection,
                             proxyGenerationOptions,
                             CreateInterceptorsForCollection()
                             );
+
+            this.InjectValuesIntoProxy(oCollection, proxy);
 
             return (IFresnelProxy)proxy;
         }
@@ -213,31 +208,17 @@ namespace Envivo.Fresnel.Proxies
                 _FinalTargetInterceptor
             };
 
-
             return interceptors;
         }
 
-        private void InjectObjectPropertyProxies(object targetObject, ObjectObserver oObject)
+        private void InjectValuesIntoProxy(ObjectObserver oObject, object targetProxy)
         {
-            foreach (var oProp in oObject.Properties.Values)
+            var source = oObject.RealObject;
+
+            foreach (var field in oObject.Template.Fields.Values)
             {
-                var tProp = oProp.Template;
-                if (tProp.IsNonReference)
-                    continue;
-
-                var tCollection = tProp.InnerClass as CollectionTemplate;
-                var tClass = tProp.InnerClass as ClassTemplate;
-
-                var innerClass = tCollection != null ?
-                                    tCollection.InnerClass :
-                                    tClass;
-
-                if (innerClass == null)
-                    continue;
-
-                var propertyProxy = _PropertyProxyBuilder.BuildFor(targetObject, oProp);
-
-                tProp.SetField(targetObject, propertyProxy);
+                var value = field.GetValue(source);
+                field.SetValue(targetProxy, value);
             }
         }
 

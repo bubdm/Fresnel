@@ -252,8 +252,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// The collection of Fields within the Object
         /// </summary>
-        [JsonIgnore]
-        internal FieldInfoMap Fields
+        public FieldInfoMap Fields
         {
             get { return _Fields.Value; }
         }

@@ -11,6 +11,7 @@ namespace Envivo.Fresnel.Proxies.ChangeTracking
     public class PropertyChange : BaseChange
     {
         public BasePropertyObserver Property { get; set; }
-    
+
+        public BaseObjectObserver Value { get; set; }
     }
 }
