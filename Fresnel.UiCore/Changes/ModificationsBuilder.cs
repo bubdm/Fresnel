@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.UiCore.Changes
             var result = new Modifications()
             {
                 NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)),
-                PropertyChanges = propertyChanges.Select(p => CreatePropertyChange(p.Property)),
+                PropertyChanges = propertyChanges.Select(p => CreatePropertyChange(p)),
                 CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c.Collection, c.Element)),
                 CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c.Collection, c.Element)),
             };
@@ -41,14 +41,25 @@ namespace Envivo.Fresnel.UiCore.Changes
             return result;
         }
 
-        private PropertyChangeVM CreatePropertyChange(BasePropertyObserver oProperty)
+        private PropertyChangeVM CreatePropertyChange(PropertyChange change)
         {
+            var oProperty = change.Property;
+
             var result = new PropertyChangeVM()
             {
                 ObjectId = oProperty.OuterObject.ID,
                 PropertyName = oProperty.Template.Name,
-
             };
+
+            if (oProperty.Template.IsNonReference)
+            {
+                result.NonReferenceValue = change.Value.RealObject;
+            }
+            else
+            {
+                result.ReferenceValueId = change.Value.ID;
+            }
+
             return result;
         }
 
