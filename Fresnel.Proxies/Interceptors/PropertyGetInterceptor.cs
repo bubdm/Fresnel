@@ -19,8 +19,7 @@ namespace Envivo.Fresnel.Proxies.Interceptors
 
             var oObject = ((IFresnelProxy)invocation.Proxy).Meta;
 
-            var propertyName = invocation.Method.Name.Remove(0, 4);
-            var oProperty = oObject.Properties.TryGetValueOrNull(propertyName) as ObjectPropertyObserver;
+            var oProperty = this.GetPropertyObserver(oObject, invocation.Method.Name);
 
             if (oProperty != null)
             {
@@ -38,6 +37,12 @@ namespace Envivo.Fresnel.Proxies.Interceptors
                 // In case we don't recognise the operation:
                 invocation.Proceed();
             }
+        }
+
+        private ObjectPropertyObserver GetPropertyObserver(ObjectObserver oObject, string methodName)
+        {
+            var result = oObject.Properties.TryGetValueOrNull(methodName.Remove(0, 4)) as ObjectPropertyObserver;
+            return result;
         }
 
         private void PreInvoke(BasePropertyObserver oProperty)
