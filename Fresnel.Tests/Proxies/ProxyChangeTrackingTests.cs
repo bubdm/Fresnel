@@ -123,14 +123,19 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // Act:
             // This chains onto another property:
+            var dateValue = DateTime.Now;
+            pocoProxy.NormalDate = dateValue;
             pocoProxy.ChildObjects.Add(new SampleModel.Objects.PocoObject());
             pocoProxy.ChildObjects.First().ChildObjects.Add(new SampleModel.Objects.PocoObject());
-            pocoProxy.ChildObjects.First().ChildObjects.First().NormalDate = DateTime.Now;
+            pocoProxy.ChildObjects.First().ChildObjects.First().NormalDate = dateValue;
 
             // Assert:
             var state = pocoProxy as IProxyState;
             Assert.AreEqual(2, state.ChangeLog.CollectionAdditions.Count);
-            Assert.AreEqual(1, state.ChangeLog.PropertyChanges.Count);
+            Assert.AreEqual(2, state.ChangeLog.PropertyChanges.Count);
+
+            Assert.AreEqual(poco.ChildObjects.Count(), pocoProxy.ChildObjects.Count());
+            Assert.AreEqual(dateValue, poco.NormalDate);
         }
     }
 
