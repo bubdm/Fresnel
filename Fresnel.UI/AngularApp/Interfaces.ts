@@ -33,6 +33,8 @@
 
         invoke(method: IObjectVM);
 
+        setProperty(prop: any);
+
         openNewExplorer(prop: any);
     }
 

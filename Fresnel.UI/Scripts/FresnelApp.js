@@ -36,6 +36,17 @@ var FresnelApp;
                     appService.identityMap.merge(data.Modifications);
                 });
             };
+            $scope.setProperty = function (prop) {
+                var uri = "api/Explorer/SetProperty";
+                var request = {
+                    ObjectId: prop.ObjectID,
+                    PropertyName: prop.PropertyName,
+                    NonReferenceValue: prop.Value
+                };
+                $http.post(uri, request).success(function (data, status) {
+                    appService.identityMap.merge(data.Modifications);
+                });
+            };
             $scope.minimise = function (obj) {
                 obj.IsMaximised = false;
             };

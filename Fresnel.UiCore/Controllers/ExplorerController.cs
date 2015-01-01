@@ -35,7 +35,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public SetPropertyResult SetObjectProperty([FromBody]SetPropertyRequest id)
+        public SetPropertyResult SetProperty([FromBody]SetPropertyRequest id)
         {
             var request = id;
             var results = _SetPropertyCommand.Invoke(request);

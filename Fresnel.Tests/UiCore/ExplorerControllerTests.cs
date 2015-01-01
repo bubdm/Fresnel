@@ -169,7 +169,7 @@ namespace Envivo.Fresnel.Tests.Proxies
                 NonReferenceValue = "1234"
             };
 
-            var setResult = controller.SetObjectProperty(request);
+            var setResult = controller.SetProperty(request);
 
             // Assert:
             Assert.AreEqual(1, setResult.Modifications.PropertyChanges.Count());
