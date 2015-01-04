@@ -28,55 +28,55 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
         public IList<CollectionRemove> CollectionRemovals { get; private set; }
 
-        internal void AddNewObject(ObjectObserver oObject)
-        {
-            var latestChange = new ObjectCreation()
-            {
-                Sequence = Environment.TickCount,
-                Object = oObject
-            };
+        //internal void AddNewObject(ObjectObserver oObject)
+        //{
+        //    var latestChange = new ObjectCreation()
+        //    {
+        //        Sequence = Environment.TickCount,
+        //        Object = oObject
+        //    };
 
-            this.AllChanges.Add(latestChange);
-            this.NewObjects.Add(latestChange);
-        }
+        //    this.AllChanges.Add(latestChange);
+        //    this.NewObjects.Add(latestChange);
+        //}
 
-        internal void AddPropertyChange(BasePropertyObserver oProperty, BaseObjectObserver oValue)
-        {
-            var latestChange = new PropertyChange()
-            {
-                Sequence = Environment.TickCount,
-                Property = oProperty,
-                NewValue = oValue
-            };
+        //internal void AddPropertyChange(BasePropertyObserver oProperty, BaseObjectObserver oValue)
+        //{
+        //    var latestChange = new PropertyChange()
+        //    {
+        //        Sequence = Environment.TickCount,
+        //        Property = oProperty,
+        //        NewValue = oValue
+        //    };
 
-            this.AllChanges.Add(latestChange);
-            this.PropertyChanges.Add(latestChange);
-        }
+        //    this.AllChanges.Add(latestChange);
+        //    this.PropertyChanges.Add(latestChange);
+        //}
 
-        internal void AddCollectionAdd(CollectionObserver oCollection, ObjectObserver oAddedItem)
-        {
-            var latestChange = new CollectionAdd()
-            {
-                Sequence = Environment.TickCount,
-                Collection = oCollection,
-                Element = oAddedItem
-            };
+        //internal void AddCollectionAdd(CollectionObserver oCollection, ObjectObserver oAddedItem)
+        //{
+        //    var latestChange = new CollectionAdd()
+        //    {
+        //        Sequence = Environment.TickCount,
+        //        Collection = oCollection,
+        //        Element = oAddedItem
+        //    };
 
-            this.AllChanges.Add(latestChange);
-            this.CollectionAdditions.Add(latestChange);
-        }
+        //    this.AllChanges.Add(latestChange);
+        //    this.CollectionAdditions.Add(latestChange);
+        //}
 
-        internal void AddCollectionRemove(CollectionObserver oCollection, ObjectObserver oRemovedItem)
-        {
-            var latestChange = new CollectionRemove()
-            {
-                Sequence = Environment.TickCount,
-                Collection = oCollection,
-                Element = oRemovedItem
-            };
+        //internal void AddCollectionRemove(CollectionObserver oCollection, ObjectObserver oRemovedItem)
+        //{
+        //    var latestChange = new CollectionRemove()
+        //    {
+        //        Sequence = Environment.TickCount,
+        //        Collection = oCollection,
+        //        Element = oRemovedItem
+        //    };
 
-            this.CollectionRemovals.Add(latestChange);
-        }
+        //    this.CollectionRemovals.Add(latestChange);
+        //}
 
         //internal IEnumerable<BaseChange> GetChangesSince(long startSequence)
         //{

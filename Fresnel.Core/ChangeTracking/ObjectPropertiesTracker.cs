@@ -29,10 +29,10 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             {
                 foreach (var oProp in _oObject.Properties.Values)
                 {
-                    _PropertyTrackerMap[oProp] = new PropertyChangeTracker(oProp);
+                    var tracker = new PropertyChangeTracker(oProp);
+                    _PropertyTrackerMap[oProp] = tracker;
+                    tracker.DetermineInitialState();
                 }
-
-                this.Reset();
             }
         }
 
@@ -49,11 +49,12 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 foreach (var tracker in _PropertyTrackerMap.Values)
                 {
                     tracker.DetectChanges();
-                    if (tracker.HasChanges)
-                    {
-                        return Assertion.Pass();
-                    }
                 }
+            }
+
+            if (_PropertyTrackerMap.Values.Any(t => t.HasChanges))
+            {
+                return Assertion.Pass();
             }
 
             return Assertion.Fail("No changes detected");

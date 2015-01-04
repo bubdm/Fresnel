@@ -208,7 +208,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             var setResult = controller.SetProperty(request);
 
             // Assert:
-            Assert.AreEqual(2, setResult.Modifications.PropertyChanges.Count());
+            // All of the text properties are bound to the same value:
+            Assert.AreEqual(7, setResult.Modifications.PropertyChanges.Count());
         }
 
     }

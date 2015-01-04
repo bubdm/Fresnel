@@ -31,6 +31,12 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             return string.Concat(this.GetType().Name, ":", _oProperty.Template.Name);
         }
 
+        internal void DetermineInitialState()
+        {
+            var value = _oProperty.Template.GetProperty(_oProperty.OuterObject.RealObject);
+            this.PreviousValue = this.LatestValue = value;
+        }
+
         internal IEnumerable<PropertyChange> Changes
         {
             get { return _Changes; }
@@ -57,7 +63,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             }
 
             var veryLatestValue = _oProperty.Template.GetProperty(_oProperty.OuterObject.RealObject);
-            if (object.Equals(this.PreviousValue, veryLatestValue))
+            if (object.Equals(this.LatestValue, veryLatestValue))
             {
                 return Assertion.Fail("No changes detected");
             }
@@ -67,7 +73,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 Sequence = SequentialIdGenerator.Next,
                 Property = _oProperty,
                 OriginalValue = this.LatestValue,
-                NewValue = LatestValue
+                NewValue = veryLatestValue
             };
             _Changes.Add(latestChange);
 
