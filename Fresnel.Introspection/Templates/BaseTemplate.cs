@@ -52,7 +52,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public override string ToString()
         {
-            return string.Concat(this.Name, " ", this.XmlComments.Summary);
+            return string.Concat(this.GetType().Name, ":", this.Name);
         }
 
         internal virtual void FinaliseConstruction()

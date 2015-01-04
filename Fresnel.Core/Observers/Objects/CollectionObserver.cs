@@ -43,7 +43,6 @@ namespace Envivo.Fresnel.Core.Observers
         public new CollectionTracker ChangeTracker
         {
             get { return (CollectionTracker)base.ChangeTracker; }
-            internal set { base.ChangeTracker = value; }
         }
 
         /// <summary>

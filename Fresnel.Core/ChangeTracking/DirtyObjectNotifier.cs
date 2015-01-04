@@ -80,6 +80,8 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             oDirtyObject.ChangeTracker.IsDirty = true;
 
+            oDirtyObject.ChangeTracker.MarkPropertyChange(oProperty);
+
             var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oDirtyObject, int.MaxValue);
             foreach (var outerObject in outerObjects)
             {

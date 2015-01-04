@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
     {
         private OuterObjectsIdentifier _OuterObjectsIdentifier;
         private ObjectObserver _oObject;
-        //private ObjectSnapshotTracker _ObjectSnapshotTracker;
+        private ObjectPropertiesTracker _ObjectPropertiesTracker;
         //private EventBoundChangeTracker _EventChangeTracker;
 
         private Dictionary<Guid, ObjectObserver> _oDirtyObjectGraph = new Dictionary<Guid, ObjectObserver>();
@@ -41,8 +41,8 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             if (tClass.RealType.IsNonReference())
                 return;
 
-            //_ObjectSnapshotTracker = new ObjectSnapshotTracker(_oObject.InnerObject);
-            //_ObjectSnapshotTracker.DetermineInitialState();
+            _ObjectPropertiesTracker = new ObjectPropertiesTracker(_oObject);
+            _ObjectPropertiesTracker.DetermineInitialState();
         }
 
         /// <summary>
@@ -84,16 +84,16 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
         public virtual void DetectChanges()
         {
-            // Optimisation: Don't bother taking a snapshot if the value is already dirty:
-            if (this.IsDirty)
-                return;
+            //// Optimisation: Don't bother taking a snapshot if the value is already dirty:
+            //if (this.IsDirty)
+            //    return;
 
-            //if (_ObjectSnapshotTracker != null &&
-            //    _ObjectSnapshotTracker.DetectChanges().Passed)
-            //{
-            //    // NB: Use the property setter, so that the dirty status is cascaded:
-            //    this.HasChanges = true;
-            //}
+            if (_ObjectPropertiesTracker != null &&
+                _ObjectPropertiesTracker.DetectChanges().Passed)
+            {
+                // NB: Use the property setter, so that the dirty status is cascaded:
+                _HasLocalChanges = true;
+            }
 
             //if (_CollectionSnapshotTracker != null &&
             //    _CollectionSnapshotTracker.DetectChanges().Passed)
@@ -103,21 +103,21 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             //}
         }
 
-        internal void DetectChangesSince(DateTime timeStampUtc)
-        {
-            var oObject = _oObject as ObjectObserver;
-            if (oObject == null)
-                return;
+        //internal void DetectChangesSince(DateTime timeStampUtc)
+        //{
+        //    var oObject = _oObject as ObjectObserver;
+        //    if (oObject == null)
+        //        return;
 
-            // TODO: Re-enable this:
-            //foreach (var oProp in oObject.Properties.Values)
-            //{
-            //    if (oProp.LastUpdatedAtUtc > timeStampUtc)
-            //    {
-            //        oProp.InnerObserver.ChangeTracker.DetectChanges();
-            //    }
-            //}
-        }
+        //    // TODO: Re-enable this:
+        //    //foreach (var oProp in oObject.Properties.Values)
+        //    //{
+        //    //    if (oProp.LastUpdatedAtUtc > timeStampUtc)
+        //    //    {
+        //    //        oProp.InnerObserver.ChangeTracker.DetectChanges();
+        //    //    }
+        //    //}
+        //}
 
         /// <summary>
         /// Determines if the associated Object is marked for insertion
@@ -197,7 +197,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         internal void ResetDirtyFlags()
         {
             this.IsTransient = false;
-            this.IsDirty = false;
+            _HasLocalChanges = false;
 
             _oNewParents.Clear();
             _oPreviousParents.Clear();
@@ -220,6 +220,17 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             get { return this.IsDirty == false; }
         }
 
+        internal void MarkPropertyChange(BasePropertyObserver oProperty)
+        {
+            _ObjectPropertiesTracker.DetectChanges(oProperty);
+        }
+
+        public IEnumerable<PropertyChange> GetPropertyChangesSince(long startedAt)
+        {
+            var results = _ObjectPropertiesTracker.GetChangesSince(startedAt);
+            return results;
+        }
+
         public virtual void Dispose()
         {
             _oObject = null;
@@ -227,12 +238,13 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             _oDirtyObjectGraph.ClearSafely();
             _oDirtyObjectGraph = null;
 
-            //_ObjectSnapshotTracker.DisposeSafely();
-            //_ObjectSnapshotTracker = null;
+            _ObjectPropertiesTracker.DisposeSafely();
+            _ObjectPropertiesTracker = null;
 
             //_EventChangeTracker.DisposeSafely();
             //_EventChangeTracker = null;
         }
+
 
     }
 }

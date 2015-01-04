@@ -24,7 +24,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             _CollectionTrackerFactory = collectionTrackerFactory;
         }
 
-        public IChangeTracker BuildForObject(ObjectObserver oObject)
+        public IChangeTracker BuildFor(ObjectObserver oObject)
         {
             var oCollection = oObject as CollectionObserver;
 

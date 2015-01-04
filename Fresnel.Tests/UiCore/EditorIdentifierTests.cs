@@ -15,8 +15,8 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using System.Reflection;
 using System.Collections.Generic;
-using Envivo.Fresnel.Core.Proxies;
-using Envivo.Fresnel.Proxies;
+
+
 using System.ComponentModel;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.UiCore.Controllers;

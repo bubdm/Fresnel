@@ -43,10 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeTracking\BaseChange.cs" />
+    <Compile Include="ChangeTracking\ChangeLog.cs" />
+    <Compile Include="ChangeTracking\CollectionAdd.cs" />
+    <Compile Include="ChangeTracking\CollectionRemove.cs" />
     <Compile Include="ChangeTracking\DirtyObjectNotifier.cs" />
     <Compile Include="ChangeTracking\AbstractChangeTrackerBuilder.cs" />
     <Compile Include="ChangeTracking\IChangeTracker.cs" />
+    <Compile Include="ChangeTracking\MethodInvocation.cs" />
+    <Compile Include="ChangeTracking\ObjectCreation.cs" />
+    <Compile Include="ChangeTracking\ObjectPropertiesTracker.cs" />
     <Compile Include="ChangeTracking\ObjectTracker.cs" />
+    <Compile Include="ChangeTracking\PropertyChange.cs" />
+    <Compile Include="ChangeTracking\PropertyChangeTracker.cs" />
     <Compile Include="Commands\CloneObjectCommand.cs" />
     <Compile Include="Commands\CreateObjectCommand.cs" />
     <Compile Include="Commands\ClearCollectionCommand.cs" />
@@ -57,15 +66,14 @@
     <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Commands\RemoveFromCollectionCommand.cs" />
     <Compile Include="Commands\AddToCollectionCommand.cs" />
+    <Compile Include="SequentialIdGenerator.cs" />
     <Compile Include="IEntityExtensions.cs" />
     <Compile Include="Permissions\CanInvokeMethodPermission.cs" />
     <Compile Include="Permissions\CanSetPropertyPermission.cs" />
     <Compile Include="Permissions\CanGetPropertyPermission.cs" />
     <Compile Include="Permissions\CanCreatePermission.cs" />
-    <Compile Include="Proxies\IFresnelProxy.cs" />
     <Compile Include="Persistence\UnitOfWork.cs" />
     <Compile Include="Engine.cs" />
-    <Compile Include="Proxies\IProxyBuilder.cs" />
     <Compile Include="UserSession.cs" />
     <Compile Include="ChangeTracking\CollectionTracker.cs" />
     <Compile Include="Observers\Methods\MethodObserverMapBuilder.cs" />

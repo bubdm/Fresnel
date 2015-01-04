@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
-using Envivo.Fresnel.Core.Proxies;
+
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.IoC;
-using Envivo.Fresnel.Proxies;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,25 +61,19 @@ namespace Envivo.Fresnel.Bootstrap
 
         private void SetupContainer(IContainer container)
         {
-            var realTypeResolver = container.Resolve<RealTypeResolver>();
-            var fresnelTypeResolver = container.Resolve<FresnelTypeResolver>();
-
-            realTypeResolver.Register(fresnelTypeResolver);
+            
         }
 
         private void RegisterMandatoryModules(ContainerBuilder builder)
         {
             builder.RegisterModule<IntrospectionDependencies>();
             builder.RegisterModule<CoreDependencies>();
-            builder.RegisterModule<ProxiesDependencies>();
             builder.RegisterModule<UiCoreDependencies>();
 
             builder.RegisterType<DomainIoC.DomainClassRegistrar>().As<IDomainClassRegistrar>().SingleInstance();
             builder.RegisterType<DomainIoC.DomainObjectFactory>().As<IDomainObjectFactory>().SingleInstance();
             builder.RegisterType<DomainIoC.DomainDependencyRegistrar>().As<IDomainDependencyRegistrar>().SingleInstance();
             builder.RegisterType<DomainIoC.DomainDependencyResolver>().As<IDomainDependencyResolver>().SingleInstance();
-
-            builder.RegisterType<Proxies.ProxyBuilder>().As<IProxyBuilder>().SingleInstance();
         }
 
     }

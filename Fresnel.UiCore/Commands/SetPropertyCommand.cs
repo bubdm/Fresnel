@@ -1,11 +1,10 @@
-﻿using Envivo.Fresnel.Core.Commands;
+﻿using Envivo.Fresnel.Core;
+using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
-using Envivo.Fresnel.Proxies;
 using Envivo.Fresnel.UiCore.Changes;
 using Envivo.Fresnel.UiCore.Classes;
 using Envivo.Fresnel.UiCore.Controllers;
@@ -23,23 +22,23 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class SetPropertyCommand
     {
-        private ProxyCache _ProxyCache;
+        private ObserverCache _ObserverCache;
         private AbstractObjectVMBuilder _ObjectVMBuilder;
-        private Introspection.Commands.SetPropertyCommand _SetPropertyCommand;
+        private Core.Commands.SetPropertyCommand _SetPropertyCommand;
         private ModificationsBuilder _ModificationsBuilder;
         private IClock _Clock;
 
         public SetPropertyCommand
             (
-            Introspection.Commands.SetPropertyCommand setPropertyCommand,
-            ProxyCache proxyCache,
+            Core.Commands.SetPropertyCommand setPropertyCommand,
+            ObserverCache observerCache,
             AbstractObjectVMBuilder objectVMBuilder,
             ModificationsBuilder modificationsBuilder,
             IClock clock
         )
         {
             _SetPropertyCommand = setPropertyCommand;
-            _ProxyCache = proxyCache;
+            _ObserverCache = observerCache;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
             _Clock = clock;
@@ -49,34 +48,31 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             try
             {
-                var startedAt = Environment.TickCount;
+                var startedAt = SequentialIdGenerator.Next;
 
-                var proxy = _ProxyCache.GetProxyById(request.ObjectID);
-                var oObject = ((IFresnelProxy)proxy).Meta;
+                var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
 
                 if (oObject != null)
                 {
                     var oProp = oObject.Properties[request.PropertyName];
 
-                    object newValue = null;
+                    BaseObjectObserver oValue = null;
                     if (request.ReferenceValueId != Guid.Empty)
                     {
-                        newValue = _ProxyCache.GetProxyById(request.ReferenceValueId);
+                        oValue = _ObserverCache.GetObserverById(request.ReferenceValueId);
                     }
                     else
                     {
-                        newValue = request.NonReferenceValue;
+                        oValue = _ObserverCache.GetObserver(request.NonReferenceValue, oProp.Template.PropertyType);
                     }
 
-                    _SetPropertyCommand.Invoke(proxy, request.PropertyName, newValue);
+                    _SetPropertyCommand.Invoke(oProp, oValue);
                 }
-
-                var proxyState = (IProxyState)proxy;
 
                 return new SetPropertyResult()
                 {
                     Passed = true,
-                    Modifications = _ModificationsBuilder.BuildFrom(proxyState.ChangeLog, startedAt)
+                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt)
                 };
             }
             catch (Exception ex)

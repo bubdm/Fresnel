@@ -1,11 +1,10 @@
-﻿using Envivo.Fresnel.Core.Commands;
+﻿using Envivo.Fresnel.Core;
+using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Core.Proxies;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
-using Envivo.Fresnel.Proxies;
 using Envivo.Fresnel.UiCore.Changes;
 using Envivo.Fresnel.UiCore.Classes;
 using Envivo.Fresnel.UiCore.Controllers;
@@ -24,7 +23,6 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class InvokeMethodCommand
     {
         private ObserverCache _ObserverCache;
-        private ProxyCache _ProxyCache;
         private AbstractObjectVMBuilder _ObjectVMBuilder;
         private Core.Commands.InvokeMethodCommand _InvokeMethodCommand;
         private ModificationsBuilder _ModificationsBuilder;
@@ -34,7 +32,6 @@ namespace Envivo.Fresnel.UiCore.Commands
             (
             ObserverCache observerCache,
             Core.Commands.InvokeMethodCommand invokeMethodCommand,
-            ProxyCache proxyCache,
             AbstractObjectVMBuilder objectVMBuilder,
             ModificationsBuilder modificationsBuilder,
             IClock clock
@@ -42,7 +39,6 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             _ObserverCache = observerCache;
             _InvokeMethodCommand = invokeMethodCommand;
-            _ProxyCache = proxyCache;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
             _Clock = clock;
@@ -52,33 +48,28 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             try
             {
-                var startedAt = Environment.TickCount;
+                var startedAt = SequentialIdGenerator.Next;
 
                 ObjectVM result = null;
 
-                var proxy = _ProxyCache.GetProxyById(request.ObjectID);
-                var oObject = proxy.Meta as ObjectObserver;
+                var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
 
                 if (oObject != null)
                 {
                     var oMethod = oObject.Methods[request.MethodName];
-                    var returnValue = _InvokeMethodCommand.Invoke(oMethod, proxy) as ObjectObserver;
+                    var returnValue = _InvokeMethodCommand.Invoke(oMethod, oObject.RealObject) as ObjectObserver;
 
                     if (returnValue != null)
                     {
-                        // Make sure we cache the proxy for use later in the session:
-                        _ProxyCache.GetProxy(returnValue.RealObject);
                         result = _ObjectVMBuilder.BuildFor(returnValue);
                     }
                 }
-
-                var proxyState = (IProxyState)proxy;
 
                 return new GetPropertyResult()
                 {
                     Passed = true,
                     ReturnValue = result,
-                    Modifications = _ModificationsBuilder.BuildFrom(proxyState.ChangeLog, startedAt)
+                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt)
                 };
             }
             catch (Exception ex)

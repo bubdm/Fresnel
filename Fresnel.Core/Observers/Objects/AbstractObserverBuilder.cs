@@ -84,7 +84,6 @@ namespace Envivo.Fresnel.Core.Observers
         private CollectionObserver CreateCollectionObserver(object collection, Type collectionType, CollectionTemplate tCollection)
         {
             var result = _CollectionObserverFactory(collection, collectionType, tCollection);
-            result.ChangeTracker = _CollectionTrackerFactory(result);
 
             // Ensure the CollectionObserver is aware of it's contents:
             //if (result.RealObject != null)
@@ -98,7 +97,6 @@ namespace Envivo.Fresnel.Core.Observers
         private ObjectObserver CreateObjectObserver(object obj, Type objectType, ClassTemplate tClass)
         {
             var result = _ObjectObserverFactory(obj, objectType, tClass);
-            result.ChangeTracker = _ObjectTrackerFactory(result);
             return result;
         }
 

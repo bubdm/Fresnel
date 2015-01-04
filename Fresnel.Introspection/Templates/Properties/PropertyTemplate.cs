@@ -195,6 +195,14 @@ namespace Envivo.Fresnel.Introspection.Templates
         }
 
         /// <summary>
+        /// Determines if the Property is an auto-property (ie. doesn't contain any logic)
+        /// </summary>
+        public bool IsAutoProperty
+        {
+            get { return _BackingField.Value.Name.EndsWith(BackingFieldIdentifier.AutoPropertyFieldSuffix); }
+        }
+
+        /// <summary>
         /// Determines if the value of the Property is a Reference object
         /// </summary>
         public bool IsReferenceType { get; internal set; }

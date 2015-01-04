@@ -208,6 +208,20 @@ namespace Envivo.Fresnel.Core.Observers
             //    _ObjectMerger.MergeValues(obj, oParent.RealObject);
             //}
         }
+
+        public IEnumerable<ObjectObserver> GetAllObservers()
+        {
+            return _ObjectIdMap.Values;
+        }
+
+        public void ScanForChanges()
+        {
+            foreach (var oObject in this.GetAllObservers())
+            {
+                oObject.ChangeTracker.DetectChanges();
+            }
+        }
+
     }
 
 }

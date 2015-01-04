@@ -39,6 +39,11 @@ namespace Envivo.Fresnel.Core.Observers
         {
             get { return string.Concat("[", this.ID.ToString().ToUpper(), " ", this.Template.FullName, "]"); }
         }
+        
+        public override string ToString()
+        {
+            return string.Concat(this.GetType().Name, ":", this.Template.Name);
+        }
 
         /// <summary>
         /// The object (or value) that is being observed

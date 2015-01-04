@@ -15,13 +15,14 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using System.Reflection;
 using System.Collections.Generic;
-using Envivo.Fresnel.Core.Proxies;
-using Envivo.Fresnel.Proxies;
+
+
 using System.ComponentModel;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Objects;
 using Envivo.Fresnel.UiCore.Commands;
+using Envivo.Fresnel.Core.Observers;
 
 namespace Envivo.Fresnel.Tests.Proxies
 {
@@ -34,12 +35,12 @@ namespace Envivo.Fresnel.Tests.Proxies
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-            var proxyCache = container.Resolve<ProxyCache>();
+            var observerCache = container.Resolve<ObserverCache>();
             var controller = container.Resolve<ExplorerController>();
 
             var poco = new SampleModel.Objects.PocoObject();
             poco.ID = Guid.NewGuid();
-            var pocoProxy = proxyCache.GetProxy(poco);
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
 
             // Act:
             var request = new GetPropertyRequest()
@@ -60,14 +61,14 @@ namespace Envivo.Fresnel.Tests.Proxies
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-            var proxyCache = container.Resolve<ProxyCache>();
+            var observerCache = container.Resolve<ObserverCache>();
             var templateCache = container.Resolve<TemplateCache>();
             var controller = container.Resolve<ExplorerController>();
 
             var poco = new SampleModel.Objects.PocoObject();
             poco.ID = Guid.NewGuid();
             poco.AddSomeChildObjects();
-            var pocoProxy = proxyCache.GetProxy(poco);
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
 
             // Act:
             var request = new GetPropertyRequest()
@@ -94,13 +95,13 @@ namespace Envivo.Fresnel.Tests.Proxies
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-            var proxyCache = container.Resolve<ProxyCache>();
+            var observerCache = container.Resolve<ObserverCache>();
             var templateCache = container.Resolve<TemplateCache>();
             var controller = container.Resolve<ExplorerController>();
 
             var poco = new SampleModel.Objects.PocoObject();
             poco.ID = Guid.NewGuid();
-            var pocoProxy = proxyCache.GetProxy(poco);
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
 
             // Act:          
             var request = new InvokeMethodRequest()
@@ -120,14 +121,15 @@ namespace Envivo.Fresnel.Tests.Proxies
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-            var proxyCache = container.Resolve<ProxyCache>();
+            var observerCache = container.Resolve<ObserverCache>();
             var templateCache = container.Resolve<TemplateCache>();
             var controller = container.Resolve<ExplorerController>();
 
             var poco = new SampleModel.Objects.PocoObject();
             poco.ID = Guid.NewGuid();
-            var pocoProxy = proxyCache.GetProxy(poco);
-            pocoProxy.AddSomeChildObjects();
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
+
+            poco.AddSomeChildObjects();
 
             // Act:          
             var request = new GetPropertyRequest()
@@ -153,13 +155,13 @@ namespace Envivo.Fresnel.Tests.Proxies
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-            var proxyCache = container.Resolve<ProxyCache>();
+            var observerCache = container.Resolve<ObserverCache>();
             var templateCache = container.Resolve<TemplateCache>();
             var controller = container.Resolve<ExplorerController>();
 
             var poco = new SampleModel.Objects.PocoObject();
             poco.ID = Guid.NewGuid();
-            var pocoProxy = proxyCache.GetProxy(poco);
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
 
             // Act:          
             var request = new SetPropertyRequest()

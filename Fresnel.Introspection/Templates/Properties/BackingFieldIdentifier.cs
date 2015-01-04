@@ -9,6 +9,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
     public class BackingFieldIdentifier
     {
+        internal const string AutoPropertyFieldSuffix = "k__BackingField";
 
         /// <summary>
         /// Assigns the backing fields for the properties using pseudo-fuzzy matching
@@ -59,7 +60,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             // Auto-property backing fields have the format "<prop_name>k__BackingField".
             // E.g. the auto-property "StartDate" would use the field "<StartDate>k__BackingField"
-            var autoPropFieldName = string.Concat("<", tProperty.Name, ">k__BackingField");
+            var autoPropFieldName = string.Concat("<", tProperty.Name, ">", AutoPropertyFieldSuffix);
             return field.Name.IsSameAs(autoPropFieldName);
         }
 

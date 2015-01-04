@@ -9,23 +9,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.DomainTypes.Interfaces;
-using Envivo.Fresnel.Core.Proxies;
+
 
 namespace Envivo.Fresnel.Core
 {
     public class UserSession
     {
         private CreateObjectCommand _CreateObjectCommand;
-        private IProxyBuilder _ProxyBuilder;
 
         public UserSession
             (
-            CreateObjectCommand createObjectCommand,
-            IProxyBuilder proxyBuilder
+            CreateObjectCommand createObjectCommand
             )
         {
             _CreateObjectCommand = createObjectCommand;
-            _ProxyBuilder = proxyBuilder;
 
             this.IdentityMap = new IdentityMap();
             this.UnitOfWork = new UnitOfWork();
@@ -46,10 +43,7 @@ namespace Envivo.Fresnel.Core
             var oObject = _CreateObjectCommand.Invoke(typeof(T), null);
 
             var newInstance = (T)oObject.RealObject;
-
-            var proxy = _ProxyBuilder.BuildFor(newInstance, oObject);
-
-            return (T)proxy;
+            return newInstance;
         }
 
         /// <summary>

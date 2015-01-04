@@ -47,7 +47,7 @@ namespace Envivo.Fresnel.Core.Observers
             _ChangeTrackerBuilder = changeTrackerBuilder;
 
             _ObjectTracker = new Lazy<ObjectTracker>(
-                                () => (ObjectTracker)_ChangeTrackerBuilder.BuildForObject(this),
+                                () => (ObjectTracker)_ChangeTrackerBuilder.BuildFor(this),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _Properties = new Lazy<PropertyObserverMap>(
@@ -68,6 +68,8 @@ namespace Envivo.Fresnel.Core.Observers
             base.FinaliseConstruction();
 
             this.CheckIfPropertiesShouldLazyLoad();
+
+            this.ChangeTracker.ResetDirtyFlags();
         }
 
         [JsonIgnore]
@@ -76,7 +78,10 @@ namespace Envivo.Fresnel.Core.Observers
             get { return (ClassTemplate)base.Template; }
         }
 
-        public ObjectTracker ChangeTracker { get; internal set; }
+        public ObjectTracker ChangeTracker
+        {
+            get { return _ObjectTracker.Value; }
+        }
 
         /// <summary>
         /// A set of all visible Properties for the proxied Object

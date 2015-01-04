@@ -1,0 +1,108 @@
+
+using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.DomainTypes.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+
+
+namespace Envivo.Fresnel.Core.ChangeTracking
+{
+
+    public class ObjectPropertiesTracker : IDisposable
+    {
+        private ObjectObserver _oObject;
+        private Dictionary<BasePropertyObserver, PropertyChangeTracker> _PropertyTrackerMap;
+
+        public ObjectPropertiesTracker(ObjectObserver oObject)
+        {
+            _oObject = oObject;
+        }
+
+        public void DetermineInitialState()
+        {
+            _PropertyTrackerMap = new Dictionary<BasePropertyObserver, PropertyChangeTracker>();
+
+            if (_oObject != null)
+            {
+                foreach (var oProp in _oObject.Properties.Values)
+                {
+                    // We're only interested in properties that can be updated:
+                    var isPropertyUpdatable = oProp.Template.CanWrite ||
+                                              oProp.Template.CanAdd;
+
+                    if (isPropertyUpdatable)
+                    {
+                        _PropertyTrackerMap[oProp] = new PropertyChangeTracker(oProp);
+                    }
+                }
+
+                this.Reset();
+            }
+        }
+
+        public void DetectChanges(BasePropertyObserver oProperty)
+        {
+            var tracker = _PropertyTrackerMap[oProperty];
+            tracker.DetectChanges();
+        }
+
+        public IAssertion DetectChanges()
+        {
+            if (_PropertyTrackerMap.Count > 0)
+            {
+                foreach (var tracker in _PropertyTrackerMap.Values)
+                {
+                    tracker.DetectChanges();
+                    if (tracker.HasChanges)
+                    {
+                        return Assertion.Pass();
+                    }
+                }
+            }
+
+            return Assertion.Fail("No changes detected");
+        }
+
+        public void Reset()
+        {
+            if (_PropertyTrackerMap.Count == 0)
+                return;
+
+            foreach (var tracker in _PropertyTrackerMap.Values)
+            {
+                tracker.Reset();
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_PropertyTrackerMap.Count > 0)
+            {
+                foreach (var tracker in _PropertyTrackerMap.Values)
+                {
+                    tracker.Dispose();
+                }
+                _PropertyTrackerMap.Clear();
+            }
+
+            _PropertyTrackerMap = null;
+            _oObject = null;
+        }
+
+
+        public IEnumerable<PropertyChange> GetChangesSince(long startedAt)
+        {
+            var results = _PropertyTrackerMap
+                            .Values
+                            .SelectMany(t => t.Changes)
+                            .Where(c => c.Sequence > startedAt)
+                            .ToArray();
+
+            return results;
+        }
+
+    }
+}

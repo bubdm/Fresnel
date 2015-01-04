@@ -1,7 +1,7 @@
 ﻿using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
-using Envivo.Fresnel.Proxies;
+
 using Envivo.Fresnel.UiCore.Classes;
 using Envivo.Fresnel.UiCore.Objects;
 using System;

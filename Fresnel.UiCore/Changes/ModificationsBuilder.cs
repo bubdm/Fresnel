@@ -1,5 +1,6 @@
-﻿using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Proxies.ChangeTracking;
+﻿using Envivo.Fresnel.Core.ChangeTracking;
+using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Objects;
 using System;
 using System.Collections.Generic;
@@ -12,38 +13,41 @@ namespace Envivo.Fresnel.UiCore.Changes
     {
         private AbstractObjectVMBuilder _AbstractObjectVMBuilder;
         private AbstractPropertyVmBuilder _AbstractPropertyVmBuilder;
+        private ObjectIdResolver _ObjectIdResolver;
 
         public ModificationsBuilder
             (
             AbstractObjectVMBuilder abstractObjectVMBuilder,
-            AbstractPropertyVmBuilder abstractPropertyVmBuilder
+            AbstractPropertyVmBuilder abstractPropertyVmBuilder,
+            ObjectIdResolver objectIdResolver
             )
         {
             _AbstractObjectVMBuilder = abstractObjectVMBuilder;
             _AbstractPropertyVmBuilder = abstractPropertyVmBuilder;
+            _ObjectIdResolver = objectIdResolver;
         }
 
-        public Modifications BuildFrom(ChangeLog changeLog, long startedAt)
+        public Modifications BuildFrom(IEnumerable<ObjectObserver> observers, long startedAt)
         {
-            var newObjects = changeLog.NewObjects.SkipWhile(o => o.Sequence < startedAt).ToArray();
-            var propertyChanges = changeLog.PropertyChanges.SkipWhile(p => p.Sequence < startedAt).ToArray();
-            var collectionAdds = changeLog.CollectionAdditions.SkipWhile(p => p.Sequence < startedAt).ToArray();
-            var collectionRemoves = changeLog.CollectionRemovals.SkipWhile(p => p.Sequence < startedAt).ToArray();
+            //var newObjects = changeLog.NewObjects.SkipWhile(o => o.Sequence < startedAt).ToArray();
+            var propertyChanges = observers.SelectMany(o => o.ChangeTracker.GetPropertyChangesSince(startedAt)).ToArray();
+            //var collectionAdds = changeLog.CollectionAdditions.SkipWhile(p => p.Sequence < startedAt).ToArray();
+            //var collectionRemoves = changeLog.CollectionRemovals.SkipWhile(p => p.Sequence < startedAt).ToArray();
 
             var result = new Modifications()
             {
-                NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)),
-                PropertyChanges = propertyChanges.Select(p => CreatePropertyChange(p)),
-                CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c.Collection, c.Element)),
-                CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c.Collection, c.Element)),
+                //NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)),
+                PropertyChanges = propertyChanges.Select(c => CreatePropertyChange(c)),
+                //CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c.Collection, c.Element)),
+                //CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c.Collection, c.Element)),
             };
 
             return result;
         }
 
-        private PropertyChangeVM CreatePropertyChange(PropertyChange change)
+        private PropertyChangeVM CreatePropertyChange(PropertyChange propertyChange)
         {
-            var oProperty = change.Property;
+            var oProperty = propertyChange.Property;
 
             var result = new PropertyChangeVM()
             {
@@ -53,11 +57,11 @@ namespace Envivo.Fresnel.UiCore.Changes
 
             if (oProperty.Template.IsNonReference)
             {
-                result.NonReferenceValue = change.Value.RealObject;
+                result.NonReferenceValue = propertyChange.NewValue;
             }
             else
             {
-                result.ReferenceValueId = change.Value.ID;
+                result.ReferenceValueId = _ObjectIdResolver.GetId(propertyChange.NewValue, (ClassTemplate)oProperty.Template.InnerClass);
             }
 
             return result;

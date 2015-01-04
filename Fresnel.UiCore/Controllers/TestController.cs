@@ -11,9 +11,9 @@ using Envivo.Fresnel.UiCore.Classes;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Proxies;
+
 using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Core.Proxies;
+
 
 namespace Envivo.Fresnel.UiCore.Controllers
 {
@@ -21,18 +21,15 @@ namespace Envivo.Fresnel.UiCore.Controllers
     {
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
-        private ProxyCache _ProxyCache;
 
         public TestController
             (
             TemplateCache templateCache,
-            ObserverCache observerCache,
-            ProxyCache proxyCache
+            ObserverCache observerCache
             )
         {
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
-            _ProxyCache = proxyCache;
         }
 
         [HttpGet]
@@ -54,14 +51,6 @@ namespace Envivo.Fresnel.UiCore.Controllers
             var instance = new ObjectInstanceAttribute();
             var observer = _ObserverCache.GetObserver(instance);
             return observer;
-        }
-
-        [HttpGet]
-        public IFresnelProxy GetProxy()
-        {
-            var instance = new ObjectInstanceAttribute();
-            var proxy = (IFresnelProxy)_ProxyCache.GetProxy(instance);
-            return proxy;
         }
 
     }
