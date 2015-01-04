@@ -66,6 +66,8 @@ namespace Envivo.Fresnel.Core.Commands
                     oValue.AssociateWith(oObjectProperty);
                 }
             }
+
+            _ObserverCache.ScanForChanges();
         }
 
     }

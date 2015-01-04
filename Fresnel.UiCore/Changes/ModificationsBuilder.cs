@@ -13,33 +13,47 @@ namespace Envivo.Fresnel.UiCore.Changes
     {
         private AbstractObjectVMBuilder _AbstractObjectVMBuilder;
         private AbstractPropertyVmBuilder _AbstractPropertyVmBuilder;
-        private ObjectIdResolver _ObjectIdResolver;
+        private ObserverCache _ObserverCache;
 
         public ModificationsBuilder
             (
             AbstractObjectVMBuilder abstractObjectVMBuilder,
             AbstractPropertyVmBuilder abstractPropertyVmBuilder,
-            ObjectIdResolver objectIdResolver
+            ObserverCache observerCache
             )
         {
             _AbstractObjectVMBuilder = abstractObjectVMBuilder;
             _AbstractPropertyVmBuilder = abstractPropertyVmBuilder;
-            _ObjectIdResolver = objectIdResolver;
+            _ObserverCache = observerCache;
         }
 
         public Modifications BuildFrom(IEnumerable<ObjectObserver> observers, long startedAt)
         {
-            //var newObjects = changeLog.NewObjects.SkipWhile(o => o.Sequence < startedAt).ToArray();
-            var propertyChanges = observers.SelectMany(o => o.ChangeTracker.GetPropertyChangesSince(startedAt)).ToArray();
-            //var collectionAdds = changeLog.CollectionAdditions.SkipWhile(p => p.Sequence < startedAt).ToArray();
-            //var collectionRemoves = changeLog.CollectionRemovals.SkipWhile(p => p.Sequence < startedAt).ToArray();
+            var newObjects = observers
+                                    .Select(o => o.ChangeTracker.GetObjectCreation())
+                                    .Where(c => c.Sequence >= startedAt)
+                                    .ToArray();
+
+            var propertyChanges = observers
+                                    .SelectMany(o => o.ChangeTracker.GetPropertyChangesSince(startedAt))
+                                    .ToArray();
+
+            var collectionAdds = observers
+                                    .OfType<CollectionObserver>()
+                                    .SelectMany(c => c.ChangeTracker.GetCollectionAdditionsSince(startedAt))
+                                    .ToArray();
+
+            var collectionRemoves = observers
+                                    .OfType<CollectionObserver>()
+                                    .SelectMany(c => c.ChangeTracker.GetCollectionRemovalsSince(startedAt))
+                                    .ToArray();
 
             var result = new Modifications()
             {
-                //NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)),
+                NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)),
                 PropertyChanges = propertyChanges.Select(c => CreatePropertyChange(c)),
-                //CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c.Collection, c.Element)),
-                //CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c.Collection, c.Element)),
+                CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c)),
+                CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c)),
             };
 
             return result;
@@ -61,17 +75,31 @@ namespace Envivo.Fresnel.UiCore.Changes
             }
             else
             {
-                result.ReferenceValueId = _ObjectIdResolver.GetId(propertyChange.NewValue, (ClassTemplate)oProperty.Template.InnerClass);
+                result.ReferenceValueId = _ObserverCache.GetObserver(propertyChange.NewValue, oProperty.Template.PropertyType).ID;
             }
 
             return result;
         }
 
-        private CollectionElementVM CreateCollectionElement(CollectionObserver oCollection, ObjectObserver oElement)
+        private CollectionElementVM CreateCollectionElement(CollectionAdd collectionAdd)
         {
+            var oElement = _ObserverCache.GetObserver(collectionAdd.Element, collectionAdd.Collection.Template.InnerClass.RealType);
+
             var result = new CollectionElementVM()
             {
-                CollectionId = oCollection.ID,
+                CollectionId = collectionAdd.Collection.ID,
+                ElementId = oElement.ID,
+            };
+            return result;
+        }
+
+        private CollectionElementVM CreateCollectionElement(CollectionRemove collectionRemove)
+        {
+            var oElement = _ObserverCache.GetObserver(collectionRemove.Element, collectionRemove.Collection.Template.InnerClass.RealType);
+
+            var result = new CollectionElementVM()
+            {
+                CollectionId = collectionRemove.Collection.ID,
                 ElementId = oElement.ID,
             };
             return result;

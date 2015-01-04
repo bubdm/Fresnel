@@ -103,14 +103,22 @@ namespace Envivo.Fresnel.Tests.Proxies
             poco.ID = Guid.NewGuid();
             var oObject = observerCache.GetObserver(poco) as ObjectObserver;
 
+            // This ensures the Collection can be tracked:
+            var getRequest = new GetPropertyRequest()
+            {
+                ObjectID = poco.ID,
+                PropertyName = "ChildObjects"
+            };
+            var getResult = controller.GetObjectProperty(getRequest);
+
             // Act:          
-            var request = new InvokeMethodRequest()
+            var invokeRequest = new InvokeMethodRequest()
             {
                 ObjectID = poco.ID,
                 MethodName = "AddSomeChildObjects",
             };
 
-            var invokeResult = controller.InvokeMethod(request);
+            var invokeResult = controller.InvokeMethod(invokeRequest);
 
             // Assert:
             Assert.AreEqual(3, invokeResult.Modifications.CollectionAdditions.Count());
@@ -149,7 +157,6 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreNotEqual(0, collectionVM.Items.Count());
         }
 
-
         [Test()]
         public void ShouldReturnPropertyModifications()
         {
@@ -176,6 +183,34 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Assert:
             Assert.AreEqual(1, setResult.Modifications.PropertyChanges.Count());
         }
+
+        [Test]
+        public void ShouldDetectIntraPropertyCalls()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var templateCache = container.Resolve<TemplateCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var poco = new SampleModel.BasicTypes.TextValues();
+            poco.ID = Guid.NewGuid();
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
+
+            // Act:          
+            var request = new SetPropertyRequest()
+            {
+                ObjectID = poco.ID,
+                PropertyName = "TextWithMaximumSize",
+                NonReferenceValue = "1234"
+            };
+
+            var setResult = controller.SetProperty(request);
+
+            // Assert:
+            Assert.AreEqual(2, setResult.Modifications.PropertyChanges.Count());
+        }
+
     }
 
 }

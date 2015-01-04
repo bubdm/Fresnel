@@ -80,13 +80,13 @@ namespace Envivo.Fresnel.Core.Observers
         }
 
 
-        /// <summary>
-        /// Returns TRUE if this Observer was created before the given time point (i.e. DateTime.UtcNow)
-        /// </summary>
-        internal bool WasCreatedBefore(DateTimeOffset timePoint)
-        {
-            return _CreatedAt < timePoint;
-        }
+        ///// <summary>
+        ///// Returns TRUE if this Observer was created before the given time point (i.e. DateTime.UtcNow)
+        ///// </summary>
+        //internal bool WasCreatedBefore(DateTimeOffset timePoint)
+        //{
+        //    return _CreatedAt < timePoint;
+        //}
 
         internal virtual void FinaliseConstruction()
         {

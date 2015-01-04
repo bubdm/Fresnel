@@ -16,7 +16,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             this.PropertyChanges = new List<PropertyChange>();
             this.CollectionAdditions = new List<CollectionAdd>();
             this.CollectionRemovals = new List<CollectionRemove>();
-            this.MethodInvocations = new List<MethodInvocation>();
         }
 
         public IList<BaseChange> AllChanges { get; private set; }
@@ -28,8 +27,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         public IList<CollectionAdd> CollectionAdditions { get; private set; }
 
         public IList<CollectionRemove> CollectionRemovals { get; private set; }
-
-        public IList<MethodInvocation> MethodInvocations { get; private set; }
 
         internal void AddNewObject(ObjectObserver oObject)
         {
@@ -79,18 +76,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             };
 
             this.CollectionRemovals.Add(latestChange);
-        }
-
-        internal void AddMethodInvocations(ObjectObserver oObject, MethodObserver oMethod)
-        {
-            var latestChange = new MethodInvocation()
-            {
-                Sequence = Environment.TickCount,
-                Method = oMethod
-            };
-
-            this.AllChanges.Add(latestChange);
-            this.MethodInvocations.Add(latestChange);
         }
 
         //internal IEnumerable<BaseChange> GetChangesSince(long startSequence)

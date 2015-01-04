@@ -52,11 +52,31 @@ namespace Envivo.Fresnel.UiCore.Commands
                 if (oObject != null)
                 {
                     var oProp = oObject.Properties[request.PropertyName];
+                    var oObjectProp = oProp as ObjectPropertyObserver;
                     var returnValue = _GetPropertyCommand.Invoke(oObject.RealObject, request.PropertyName);
 
                     if (returnValue != null)
                     {
                         var oReturnValue = _ObserverCache.GetObserver(returnValue);
+
+                        if (oObjectProp != null)
+                        {
+                            oObjectProp.IsLazyLoaded = true;
+                            oReturnValue.AssociateWith(oObjectProp);
+                        }
+
+                        // Make sure the contents are trackable too:
+                        if (oObjectProp.Template.IsCollection)
+                        {
+                            var oCollection = (CollectionObserver)oReturnValue;
+                            var contents = oCollection.GetContents();
+                            foreach (var item in contents)
+                            {
+                                var oItem = _ObserverCache.GetObserver(item, item.GetType());
+                                oItem.AssociateWith(oCollection);
+                            }
+                        }
+
                         result = _ObjectVMBuilder.BuildFor(oReturnValue);
                     }
                 }

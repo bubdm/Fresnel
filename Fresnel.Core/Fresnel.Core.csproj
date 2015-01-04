@@ -44,13 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChangeTracking\BaseChange.cs" />
+    <Compile Include="ChangeTracking\ChangeLogBuilder.cs" />
     <Compile Include="ChangeTracking\ChangeLog.cs" />
     <Compile Include="ChangeTracking\CollectionAdd.cs" />
     <Compile Include="ChangeTracking\CollectionRemove.cs" />
+    <Compile Include="ChangeTracking\CollectionItemsTracker.cs" />
     <Compile Include="ChangeTracking\DirtyObjectNotifier.cs" />
     <Compile Include="ChangeTracking\AbstractChangeTrackerBuilder.cs" />
     <Compile Include="ChangeTracking\IChangeTracker.cs" />
-    <Compile Include="ChangeTracking\MethodInvocation.cs" />
     <Compile Include="ChangeTracking\ObjectCreation.cs" />
     <Compile Include="ChangeTracking\ObjectPropertiesTracker.cs" />
     <Compile Include="ChangeTracking\ObjectTracker.cs" />

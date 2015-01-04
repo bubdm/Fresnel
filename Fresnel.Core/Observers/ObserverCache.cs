@@ -214,8 +214,33 @@ namespace Envivo.Fresnel.Core.Observers
             return _ObjectIdMap.Values;
         }
 
+        //public void ScanForChanges()
+        //{
+        //    foreach (var oObject in this.GetAllObservers())
+        //    {
+        //        oObject.ChangeTracker.DetectChanges();
+        //    }
+        //}
+
         public void ScanForChanges()
         {
+            // Ensure all Collection contents have Observers:
+            var knownObservers = this.GetAllObservers().ToArray();
+            foreach (var oObject in knownObservers)
+            {
+                var outerObjectProperties = oObject.OuterProperties.OfType<ObjectPropertyObserver>();
+                var collectionProperties = outerObjectProperties.Where(p => p.Template.IsCollection);
+                if (collectionProperties.Any(p => p.IsLazyLoaded))
+                {
+                    var contents = ((CollectionObserver)oObject).GetContents();
+                    foreach (var item in contents)
+                    {
+                        var oItem = this.GetObserver(item, item.GetType());
+                    }
+                }
+            }
+
+            // Now we can scan:
             foreach (var oObject in this.GetAllObservers())
             {
                 oObject.ChangeTracker.DetectChanges();

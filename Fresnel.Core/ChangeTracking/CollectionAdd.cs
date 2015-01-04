@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
     {
         public CollectionObserver Collection { get; set; }
 
-        public ObjectObserver Element { get; set; }
+        public object Element { get; set; }
         
         public override void Dispose()
         {

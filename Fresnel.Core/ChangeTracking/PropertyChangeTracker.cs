@@ -56,8 +56,8 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 return Assertion.Fail("Property hasn't been lazy-loaded");
             }
 
-            var latestValue = _oProperty.Template.GetProperty(_oProperty.OuterObject.RealObject);
-            if (object.Equals(this.PreviousValue, latestValue))
+            var veryLatestValue = _oProperty.Template.GetProperty(_oProperty.OuterObject.RealObject);
+            if (object.Equals(this.PreviousValue, veryLatestValue))
             {
                 return Assertion.Fail("No changes detected");
             }
@@ -72,7 +72,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             _Changes.Add(latestChange);
 
             this.PreviousValue = this.LatestValue;
-            this.LatestValue = latestValue;
+            this.LatestValue = veryLatestValue;
             return Assertion.Pass();
         }
 

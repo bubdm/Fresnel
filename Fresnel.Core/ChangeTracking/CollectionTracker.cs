@@ -4,17 +4,19 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
     /// <summary>
-    /// Tracks changes made to an ObjectObserverBase
+    /// Tracks changes made to a Collection
     /// </summary>
     public class CollectionTracker : ObjectTracker
     {
-        private Dictionary<Guid, ObjectObserver> _DirtyChildren = new Dictionary<Guid, ObjectObserver>();
+        private List<CollectionAdd> _AddedItems = new List<CollectionAdd>();
+        private List<CollectionRemove> _RemovedItems = new List<CollectionRemove>();
 
-        //private CollectionSnapshotTracker _CollectionSnapshotTracker;
+        private CollectionItemsTracker _CollectionItemsTracker;
 
         public CollectionTracker
             (
@@ -25,43 +27,57 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         {
         }
 
-        //internal override void FinaliseConstruction()
-        //{
-        //    base.FinaliseConstruction();
-
-        //    // TODO: Re-enable this:
-        //    //_CollectionSnapshotTracker = new CollectionSnapshotTracker(_oObject.InnerCollection);
-        //    //_CollectionSnapshotTracker.DetermineInitialState();
-
-        //    //if (this.IsNewInstance)
-        //    //{
-        //    //    foreach (var oObj in _oObject.InnerCollection.GetInnerObjects())
-        //    //    {
-        //    //        oObj.ChangeTracker.DetermineInitialState();
-        //    //    }
-        //    //}
-        //}
-
-        [JsonIgnore]
-        public IEnumerable<ObjectObserver> DirtyChildren
+        internal override void FinaliseConstruction()
         {
-            get { return _DirtyChildren.Values; }
+            base.FinaliseConstruction();
+
+            _CollectionItemsTracker = new CollectionItemsTracker((CollectionObserver)_oObject);
+            _CollectionItemsTracker.DetermineInitialState();
+        }
+
+        public IEnumerable<CollectionAdd> AddedItems
+        {
+            get { return _AddedItems; }
+        }
+
+        public IEnumerable<CollectionRemove> RemovedItems
+        {
+            get { return _RemovedItems; }
         }
 
         internal void MarkAsAdded(ObjectObserver oAddedItem)
         {
-            _DirtyChildren[oAddedItem.ID] = oAddedItem;
+            var latestChange = new CollectionAdd
+            {
+                Sequence = SequentialIdGenerator.Next,
+                Collection = (CollectionObserver)_oObject,
+                Element = oAddedItem,
+            };
+
+            _AddedItems.Add(latestChange);
         }
 
         internal void MarkAsRemoved(ObjectObserver oRemovedItem)
         {
             if (oRemovedItem.ChangeTracker.IsTransient)
             {
-                _DirtyChildren.Remove(oRemovedItem.ID);
+                // If the transient item was previously added, the database doesn't need to know about it:
+                var previouslyAddedItem = _AddedItems.SingleOrDefault(e => e.Element == oRemovedItem);
+                if (previouslyAddedItem != null)
+                {
+                    _AddedItems.Remove(previouslyAddedItem);
+                }
             }
             else
             {
-                _DirtyChildren[oRemovedItem.ID] = oRemovedItem;
+                var latestChange = new CollectionRemove
+                {
+                    Sequence = SequentialIdGenerator.Next,
+                    Collection = (CollectionObserver)_oObject,
+                    Element = oRemovedItem,
+                };
+
+                _RemovedItems.Add(latestChange);
             }
         }
 
@@ -69,7 +85,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         {
             get
             {
-                if (_DirtyChildren.Any())
+                if (_AddedItems.Any() || _RemovedItems.Any())
                     return true;
 
                 return base.IsDirty;
@@ -82,30 +98,46 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
         public override void DetectChanges()
         {
-            // Optimisation: Don't bother taking a snapshot if the value is already dirty:
-            if (this.IsDirty)
-                return;
-
             base.DetectChanges();
 
-            // TODO: Re-enable this:
+            if (_CollectionItemsTracker != null &&
+                _CollectionItemsTracker.DetectChanges().Passed)
+            {
+                // What to do here?
 
-            //if (_CollectionSnapshotTracker != null &&
-            //    _CollectionSnapshotTracker.DetectChanges().Passed)
-            //{
-            //    // NB: Use the property setter, so that the dirty status is cascaded:
-            //    this.HasChanges = true;
-            //}
+                //// NB: Use the property setter, so that the dirty status is cascaded:
+                //this.IsDirty = true;
+            }
+        }
+
+        public IEnumerable<CollectionAdd> GetCollectionAdditionsSince(long startedAt)
+        {
+            var results = _CollectionItemsTracker.Additions
+                            .Where(a => a.Sequence > startedAt) // Skip/Take might be quicker
+                            .ToArray();
+
+            return results;
+        }
+
+        public IEnumerable<CollectionRemove> GetCollectionRemovalsSince(long startedAt)
+        {
+            var results = _CollectionItemsTracker.Removals
+                            .Where(a => a.Sequence > startedAt) // Skip/Take might be quicker
+                            .ToArray();
+
+            return results;
         }
 
         public override void Dispose()
         {
-            _DirtyChildren.Clear();
-            _DirtyChildren = null;
+            _AddedItems.ClearSafely();
+            _AddedItems = null;
 
-            // TODO: Re-enable this:
-            //_CollectionSnapshotTracker.DisposeSafely();
-            //_CollectionSnapshotTracker = null;
+            _RemovedItems.ClearSafely();
+            _RemovedItems = null;
+
+            _CollectionItemsTracker.DisposeSafely();
+            _CollectionItemsTracker = null;
 
             base.Dispose();
         }

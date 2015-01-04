@@ -29,14 +29,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             {
                 foreach (var oProp in _oObject.Properties.Values)
                 {
-                    // We're only interested in properties that can be updated:
-                    var isPropertyUpdatable = oProp.Template.CanWrite ||
-                                              oProp.Template.CanAdd;
-
-                    if (isPropertyUpdatable)
-                    {
-                        _PropertyTrackerMap[oProp] = new PropertyChangeTracker(oProp);
-                    }
+                    _PropertyTrackerMap[oProp] = new PropertyChangeTracker(oProp);
                 }
 
                 this.Reset();
@@ -98,7 +91,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             var results = _PropertyTrackerMap
                             .Values
                             .SelectMany(t => t.Changes)
-                            .Where(c => c.Sequence > startedAt)
+                            .Where(c => c.Sequence > startedAt) // Skip/Take might be quicker
                             .ToArray();
 
             return results;

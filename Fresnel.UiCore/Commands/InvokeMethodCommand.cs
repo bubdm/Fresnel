@@ -63,6 +63,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                     {
                         result = _ObjectVMBuilder.BuildFor(returnValue);
                     }
+
+                    _ObserverCache.ScanForChanges();
                 }
 
                 return new GetPropertyResult()

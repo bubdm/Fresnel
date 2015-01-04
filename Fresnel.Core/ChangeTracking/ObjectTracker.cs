@@ -14,9 +14,9 @@ namespace Envivo.Fresnel.Core.ChangeTracking
     public class ObjectTracker : IChangeTracker
     {
         private OuterObjectsIdentifier _OuterObjectsIdentifier;
-        private ObjectObserver _oObject;
+        protected ObjectObserver _oObject;
         private ObjectPropertiesTracker _ObjectPropertiesTracker;
-        //private EventBoundChangeTracker _EventChangeTracker;
+        private ObjectCreation _ObjectCreation;
 
         private Dictionary<Guid, ObjectObserver> _oDirtyObjectGraph = new Dictionary<Guid, ObjectObserver>();
         private Dictionary<Guid, ObjectObserver> _oPreviousParents = new Dictionary<Guid, ObjectObserver>();
@@ -43,6 +43,12 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             _ObjectPropertiesTracker = new ObjectPropertiesTracker(_oObject);
             _ObjectPropertiesTracker.DetermineInitialState();
+
+            _ObjectCreation = new ObjectCreation()
+            {
+                 Object = _oObject,
+                 Sequence  = SequentialIdGenerator.Next
+            };
         }
 
         /// <summary>
@@ -84,41 +90,13 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
         public virtual void DetectChanges()
         {
-            //// Optimisation: Don't bother taking a snapshot if the value is already dirty:
-            //if (this.IsDirty)
-            //    return;
-
             if (_ObjectPropertiesTracker != null &&
                 _ObjectPropertiesTracker.DetectChanges().Passed)
             {
-                // NB: Use the property setter, so that the dirty status is cascaded:
                 _HasLocalChanges = true;
             }
-
-            //if (_CollectionSnapshotTracker != null &&
-            //    _CollectionSnapshotTracker.DetectChanges().Passed)
-            //{
-            //    // NB: Use the property setter, so that the dirty status is cascaded:
-            //    this.HasChanges = true;
-            //}
         }
-
-        //internal void DetectChangesSince(DateTime timeStampUtc)
-        //{
-        //    var oObject = _oObject as ObjectObserver;
-        //    if (oObject == null)
-        //        return;
-
-        //    // TODO: Re-enable this:
-        //    //foreach (var oProp in oObject.Properties.Values)
-        //    //{
-        //    //    if (oProp.LastUpdatedAtUtc > timeStampUtc)
-        //    //    {
-        //    //        oProp.InnerObserver.ChangeTracker.DetectChanges();
-        //    //    }
-        //    //}
-        //}
-
+        
         /// <summary>
         /// Determines if the associated Object is marked for insertion
         /// </summary>
@@ -225,6 +203,11 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             _ObjectPropertiesTracker.DetectChanges(oProperty);
         }
 
+        public ObjectCreation GetObjectCreation()
+        {
+            return _ObjectCreation;
+        }
+
         public IEnumerable<PropertyChange> GetPropertyChangesSince(long startedAt)
         {
             var results = _ObjectPropertiesTracker.GetChangesSince(startedAt);
@@ -240,9 +223,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             _ObjectPropertiesTracker.DisposeSafely();
             _ObjectPropertiesTracker = null;
-
-            //_EventChangeTracker.DisposeSafely();
-            //_EventChangeTracker = null;
         }
 
 
