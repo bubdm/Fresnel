@@ -2,6 +2,8 @@
        type="number"
        ng-model="prop.Value"
        ng-change="setProperty(prop)"
+       ng-model-options="{ updateOn: 'blur' }"
+       ng-keyup="cancel($event)"
        ng-disabled="!prop.CanWrite"
        required="{{prop.Info.IsRequired}}"
        min="{{prop.Info.MinValue}}"
