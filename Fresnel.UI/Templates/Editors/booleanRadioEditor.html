@@ -1,19 +1,16 @@
-﻿<label class="radio-inline" >
-    <input type="radio"
-           name="{{obj.ID}}{{prop.Name}}"
-           value="false"
-           ng-checked="prop.Value == true"
-           ng-click="setProperty(prop)"
-           ng-disabled="!prop.CanWrite" />
-    {{prop.Info.FalseValue}}
-</label>
-
-<label class="radio-inline">
-    <input type="radio"
-           name="{{obj.ID}}{{prop.Name}}"
-           value="true"
-           ng-checked="prop.Value == false"
-           ng-click="setProperty(prop)"
-           ng-disabled="!prop.CanWrite" />
-    {{prop.Info.TrueValue}}
-</label>
+﻿<div class="btn-group " data-toggle="buttons">
+    <label class="btn btn-default" ng-disabled="!prop.CanWrite" ng-class="{'btn-primary':prop.Value==false}" ng-click="prop.Value=false;setProperty(prop);">
+        <input type="radio"
+               name="{{obj.ID}}{{prop.Name}}"
+               ng-model="prop.Value"
+               ng-value="false" />
+        {{prop.Info.FalseValue}}
+    </label>
+    <label class="btn btn-default" ng-disabled="!prop.CanWrite" ng-class="{'btn-primary':prop.Value==true}" ng-click="prop.Value=true;setProperty(prop);">
+        <input type="radio"
+               name="{{obj.ID}}{{prop.Name}}"
+               ng-model="prop.Value"
+               ng-value="true" />
+        {{prop.Info.TrueValue}}
+    </label>
+</div>
