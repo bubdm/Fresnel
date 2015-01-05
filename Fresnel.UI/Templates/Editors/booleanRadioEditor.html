@@ -1,19 +1,19 @@
-﻿<label class="radio-inline">
+﻿<label class="radio-inline" >
     <input type="radio"
            name="{{obj.ID}}{{prop.Name}}"
-           value="true"
-           ng-model="prop.Value"
-           
+           value="false"
+           ng-checked="prop.Value == true"
+           ng-click="setProperty(prop)"
            ng-disabled="!prop.CanWrite" />
-    {{prop.Info.TrueValue}}
+    {{prop.Info.FalseValue}}
 </label>
 
 <label class="radio-inline">
     <input type="radio"
            name="{{obj.ID}}{{prop.Name}}"
-           value="false"
-           ng-model="prop.Value"
-           
+           value="true"
+           ng-checked="prop.Value == false"
+           ng-click="setProperty(prop)"
            ng-disabled="!prop.CanWrite" />
-    {{prop.Info.FalseValue}}
+    {{prop.Info.TrueValue}}
 </label>
