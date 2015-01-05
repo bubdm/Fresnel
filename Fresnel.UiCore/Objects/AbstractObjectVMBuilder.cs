@@ -111,7 +111,7 @@ namespace Envivo.Fresnel.UiCore.Objects
                 {
                     Name = tProp.FriendlyName,
                     PropertyName = tProp.Name,
-                    IsRequired = false,
+                    IsRequired = tProp.IsNonReference && !tProp.IsNullableType,
                     IsEnabled = false,
                     CanWrite = false,
                 };

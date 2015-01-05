@@ -54,9 +54,10 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public PropertyVM BuildFor(BasePropertyObserver oProp)
         {
+            var tProp = oProp.Template;
             var objectProp = oProp as ObjectPropertyObserver;
 
-            var valueType = oProp.Template.InnerClass.RealType;
+            var valueType = tProp.InnerClass.RealType;
             var actualType = valueType.IsNullableType() ?
                                valueType.GetGenericArguments()[0] :
                                valueType;
@@ -67,11 +68,12 @@ namespace Envivo.Fresnel.UiCore.Objects
             var propVM = new PropertyVM()
             {
                 ObjectID = oProp.OuterObject.ID,
-                Name = oProp.Template.FriendlyName,
-                PropertyName = oProp.Template.Name,
-                Description = oProp.Template.XmlComments.Summary,
+                Name = tProp.FriendlyName,
+                PropertyName = tProp.Name,
+                Description = tProp.XmlComments.Summary,
+                IsRequired = tProp.IsNonReference && !tProp.IsNullableType,
                 IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true,
-                IsVisible = !oProp.Template.IsFrameworkMember && oProp.Template.IsVisible,
+                IsVisible = !tProp.IsFrameworkMember && tProp.IsVisible,
                 IsExpandable = objectProp != null,
                 CanRead = getCheck.Passed,
                 CanWrite = setCheck.Passed,
