@@ -63,7 +63,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                     }
                     else
                     {
-                        oValue = _ObserverCache.GetObserver(request.NonReferenceValue, oProp.Template.PropertyType);
+                        var value = Convert.ChangeType(request.NonReferenceValue, oProp.Template.PropertyType);
+                        oValue = _ObserverCache.GetObserver(value, oProp.Template.PropertyType);
                     }
 
                     _SetPropertyCommand.Invoke(oProp, oValue);

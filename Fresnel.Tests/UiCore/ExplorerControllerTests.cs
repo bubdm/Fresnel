@@ -156,6 +156,34 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             Assert.AreNotEqual(0, collectionVM.Items.Count());
         }
+        
+        [Test()]
+        public void ShouldSetNonReferenceProperties()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var templateCache = container.Resolve<TemplateCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var poco = new SampleModel.BasicTypes.MultiType();
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
+
+            // Act:     
+            var requests = new List<SetPropertyRequest>()
+            {
+                new SetPropertyRequest() { ObjectID = oObject.ID, PropertyName = "A_Char", NonReferenceValue = "X" },
+                new SetPropertyRequest() { ObjectID = oObject.ID, PropertyName = "A_Double", NonReferenceValue = "123.45" },
+                new SetPropertyRequest() { ObjectID = oObject.ID, PropertyName = "An_Int", NonReferenceValue = "1234" },
+                new SetPropertyRequest() { ObjectID = oObject.ID, PropertyName = "A_String", NonReferenceValue = "ABC123" },
+            };
+
+            foreach (var request in requests)
+            {
+                var setResult = controller.SetProperty(request);
+                Assert.AreEqual(1, setResult.Modifications.PropertyChanges.Count());
+            }
+        }
 
         [Test()]
         public void ShouldReturnPropertyModifications()
