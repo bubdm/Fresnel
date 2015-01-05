@@ -94,6 +94,11 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 oValue = _ObserverCache.GetObserverById(request.ReferenceValueId);
             }
+            else if (oProp.Template.PropertyType.IsEnum)
+            {
+                var value = Enum.Parse(oProp.Template.PropertyType, request.NonReferenceValue.ToString(), true);
+                oValue = _ObserverCache.GetObserver(value, oProp.Template.PropertyType);
+            }
             else
             {
                 var value = request.NonReferenceValue != null ?
