@@ -81,7 +81,7 @@
                         newPropertyValue = propertyChange.NonReferenceValue;
                     }
 
-                    existingItem[propertyChange.PropertyName] = newPropertyValue;
+                    existingItem[propertyChange.PropertyName].Value = newPropertyValue;
                 }
             }
 

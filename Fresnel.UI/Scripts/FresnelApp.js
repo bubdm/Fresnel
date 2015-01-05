@@ -251,7 +251,7 @@ var FresnelApp;
                     else {
                         newPropertyValue = propertyChange.NonReferenceValue;
                     }
-                    existingItem[propertyChange.PropertyName] = newPropertyValue;
+                    existingItem[propertyChange.PropertyName].Value = newPropertyValue;
                 }
             }
             for (var i = 0; i < modifications.CollectionAdditions.length; i++) {
