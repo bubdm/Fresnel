@@ -34,7 +34,7 @@ namespace Envivo.Fresnel.Core.Observers
             }
 
             var msg = string.Concat("Unable to determine ID for ", tClass.FriendlyName);
-            throw new FresnelException(msg);
+            throw new CoreException(msg);
         }
 
         public Guid TryGetValue(object obj, ClassTemplate tClass, Guid defaultValue)

@@ -45,7 +45,7 @@ namespace Envivo.Fresnel.Introspection
             var realType = objectType;
             if (objectType.Assembly.IsDynamic)
             {
-                throw new FresnelException("Unable to parse dynamically created Types. Make sure the caller is passing in the real type.");
+                throw new IntrospectionException("Unable to parse dynamically created Types. Make sure the caller is passing in the real type.");
             }
 
             var assemblyReader = _AssemblyReaders[realType.Assembly];

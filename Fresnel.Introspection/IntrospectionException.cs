@@ -8,24 +8,24 @@ using System.Runtime.Serialization;
 
 namespace Envivo.Fresnel.Introspection
 {
-    public class FresnelException : ApplicationException
+    public class IntrospectionException : ApplicationException
     {
-        public FresnelException()
+        public IntrospectionException()
             : base()
         {
         }
 
-        public FresnelException(string message)
+        public IntrospectionException(string message)
             : base(message)
         {
         }
 
-        public FresnelException(string message, Exception innerException)
+        public IntrospectionException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
-        public FresnelException(SerializationInfo info, StreamingContext context)
+        public IntrospectionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }

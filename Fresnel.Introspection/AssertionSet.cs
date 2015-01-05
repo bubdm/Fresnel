@@ -120,7 +120,7 @@ namespace Envivo.Fresnel.Introspection
                     return exceptions[0];
                 default:
                     var messages = string.Join(Environment.NewLine, exceptions.Select(e => e.Message));
-                    var ex = new FresnelException(messages);
+                    var ex = new IntrospectionException(messages);
                     return ex;
             }
         }

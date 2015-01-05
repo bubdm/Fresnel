@@ -101,7 +101,7 @@
     <Compile Include="TemplateCache.cs" />
     <Compile Include="Templates\Properties\BackingFieldIdentifier.cs" />
     <Compile Include="TypeExtensions.cs" />
-    <Compile Include="FresnelException.cs" />
+    <Compile Include="IntrospectionException.cs" />
     <Compile Include="Templates\IsObjectAuditableSpecification.cs" />
     <Compile Include="Templates\IsObjectTrackableSpecification.cs" />
     <Compile Include="Templates\IsObjectValidatableSpecification.cs" />

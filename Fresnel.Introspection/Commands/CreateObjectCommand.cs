@@ -40,7 +40,7 @@ namespace Envivo.Fresnel.Introspection.Commands
         {
             if (!tClass.IsCreatable)
             {
-                throw new FresnelException(tClass.Name + " cannot be created");
+                throw new IntrospectionException(tClass.Name + " cannot be created");
             }
 
             // Try using the IoC container:
@@ -65,7 +65,7 @@ namespace Envivo.Fresnel.Introspection.Commands
 
             if (result == null)
             {
-                throw new FresnelException("Cannot find a way to create " + tClass.FriendlyName);
+                throw new IntrospectionException("Cannot find a way to create " + tClass.FriendlyName);
             }
 
             return result;
