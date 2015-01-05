@@ -48,19 +48,19 @@ namespace Envivo.Fresnel.UiCore.Commands
                 ObjectVM result = null;
 
                 var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
+                if (oObject == null)
+                    throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
-                if (oObject != null)
+                var oProp = oObject.Properties[request.PropertyName];
+                var oObjectProp = oProp as ObjectPropertyObserver;
+                var oReturnValue = _GetPropertyCommand.Invoke(oProp);
+
+                if (oReturnValue != null)
                 {
-                    var oProp = oObject.Properties[request.PropertyName];
-                    var oObjectProp = oProp as ObjectPropertyObserver;
-                    var oReturnValue = _GetPropertyCommand.Invoke(oProp);
-
-                    if (oReturnValue != null)
-                    {
-                        result = _ObjectVMBuilder.BuildFor(oReturnValue);
-                    }
+                    result = _ObjectVMBuilder.BuildFor(oReturnValue);
                 }
 
+                // Done:
                 return new GetPropertyResult()
                 {
                     Passed = true,
@@ -74,7 +74,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 return new GetPropertyResult()
                 {
                     Failed = true,
-                    ErrorMessages = new ErrorVM[] { errorVM }
+                    Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })
                 };
             }
         }

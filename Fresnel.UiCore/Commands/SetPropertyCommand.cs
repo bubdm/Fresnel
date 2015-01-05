@@ -51,31 +51,28 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var startedAt = SequentialIdGenerator.Next;
 
                 var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
+                if (oObject == null)
+                    throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
-                if (oObject != null)
+                var oProp = oObject.Properties[request.PropertyName];
+                var oValue = GetValueObserver(request, oProp);
+
+                var previousValue = oProp.PreviousValue;
+                _SetPropertyCommand.Invoke(oProp, oValue);
+
+                _ObserverCache.ScanForChanges();
+
+                // Done:
+                var infoVM = new MessageVM()
                 {
-                    var oProp = oObject.Properties[request.PropertyName];
-
-                    BaseObjectObserver oValue = null;
-                    if (request.ReferenceValueId != Guid.Empty)
-                    {
-                        oValue = _ObserverCache.GetObserverById(request.ReferenceValueId);
-                    }
-                    else
-                    {
-                        var value = Convert.ChangeType(request.NonReferenceValue, oProp.Template.PropertyType);
-                        oValue = _ObserverCache.GetObserver(value, oProp.Template.PropertyType);
-                    }
-
-                    _SetPropertyCommand.Invoke(oProp, oValue);
-
-                    _ObserverCache.ScanForChanges();
-                }
-
+                    OccurredAt = _Clock.Now,
+                    Text = string.Concat(oProp.Template.FriendlyName, " changed from ", previousValue, " to ", request.NonReferenceValue)
+                };
                 return new SetPropertyResult()
                 {
                     Passed = true,
-                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt)
+                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
+                    Messages = new MessageSetVM(new MessageVM[] { infoVM }, null, null)
                 };
             }
             catch (Exception ex)
@@ -85,11 +82,27 @@ namespace Envivo.Fresnel.UiCore.Commands
                 return new SetPropertyResult()
                 {
                     Failed = true,
-                    ErrorMessages = new ErrorVM[] { errorVM }
+                    Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })
                 };
             }
         }
 
+        private BaseObjectObserver GetValueObserver(SetPropertyRequest request, BasePropertyObserver oProp)
+        {
+            BaseObjectObserver oValue = null;
+            if (request.ReferenceValueId != Guid.Empty)
+            {
+                oValue = _ObserverCache.GetObserverById(request.ReferenceValueId);
+            }
+            else
+            {
+                var value = request.NonReferenceValue != null ?
+                                Convert.ChangeType(request.NonReferenceValue, oProp.Template.PropertyType) :
+                                null;
+                oValue = _ObserverCache.GetObserver(value, oProp.Template.PropertyType);
+            }
+            return oValue;
+        }
 
     }
 }

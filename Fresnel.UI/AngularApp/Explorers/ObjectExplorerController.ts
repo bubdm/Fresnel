@@ -36,6 +36,7 @@
                 $http.post(uri, request)
                     .success(function (data: any, status) {
                         appService.identityMap.merge(data.Modifications);
+                        appService.mergeMessages(data.Messages);
                     });
             }
 

@@ -56,6 +56,9 @@
         }
 
         merge(modifications: any) {
+            if (modifications == null)
+                return;
+
             for (var i = 0; i < modifications.NewObjects.length; i++) {
                 var item: IObjectVM = modifications.NewObjects[i];
                 var existingItem = this.getItem(item.ID);

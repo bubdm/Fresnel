@@ -45,6 +45,7 @@ var FresnelApp;
                 };
                 $http.post(uri, request).success(function (data, status) {
                     appService.identityMap.merge(data.Modifications);
+                    appService.mergeMessages(data.Messages);
                 });
             };
             $scope.minimise = function (obj) {
@@ -121,6 +122,19 @@ var FresnelApp;
     var AppService = (function () {
         function AppService() {
         }
+        AppService.prototype.mergeMessages = function (messageSet) {
+            this.mergeMessageArray(messageSet.Infos, this.session.Messages.Infos);
+            this.mergeMessageArray(messageSet.Warnings, this.session.Messages.Warnings);
+            this.mergeMessageArray(messageSet.Errors, this.session.Messages.Errors);
+        };
+        AppService.prototype.mergeMessageArray = function (sourceArray, targetArray) {
+            if (sourceArray) {
+                for (var i = 0; i < sourceArray.length; i++) {
+                    var message = sourceArray[i];
+                    targetArray.push(message);
+                }
+            }
+        };
         return AppService;
     })();
     FresnelApp.AppService = AppService;
@@ -155,6 +169,15 @@ var FresnelApp;
         return ToolboxController;
     })();
     FresnelApp.ToolboxController = ToolboxController;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var Session = (function () {
+        function Session() {
+        }
+        return Session;
+    })();
+    FresnelApp.Session = Session;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
@@ -230,6 +253,8 @@ var FresnelApp;
             }
         };
         IdentityMap.prototype.merge = function (modifications) {
+            if (modifications == null)
+                return;
             for (var i = 0; i < modifications.NewObjects.length; i++) {
                 var item = modifications.NewObjects[i];
                 var existingItem = this.getItem(item.ID);

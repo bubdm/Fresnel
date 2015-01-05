@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public GetPropertyResult InvokeMethod([FromBody]InvokeMethodRequest id)
+        public InvokeMethodResult InvokeMethod([FromBody]InvokeMethodRequest id)
         {
             var request = id;
             var results = _InvokeMethodCommand.Invoke(request);

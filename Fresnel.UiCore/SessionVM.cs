@@ -12,20 +12,16 @@ namespace Envivo.Fresnel.UiCore
     {
         public SessionVM()
         {
-            this.InfoMessages = new List<MessageVM>();
-            this.WarningMessages = new List<MessageVM>();
-            this.ErrorMessages = new List<ErrorVM>();
+            this.Messages = new MessageSetVM(new MessageVM[0],
+                                             new MessageVM[0],
+                                             new ErrorVM[0]);
         }
 
         public string UserName { get; set; }
 
         public DateTime LogonTime { get; set; }
 
-        public IEnumerable<MessageVM> InfoMessages { get; set; }
-
-        public IEnumerable<MessageVM> WarningMessages { get; set; }
-
-        public IEnumerable<ErrorVM> ErrorMessages { get; set; }
+        public MessageSetVM Messages { get; set; }
 
     }
 }

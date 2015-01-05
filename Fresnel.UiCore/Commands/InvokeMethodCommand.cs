@@ -44,44 +44,48 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public GetPropertyResult Invoke(InvokeMethodRequest request)
+        public InvokeMethodResult Invoke(InvokeMethodRequest request)
         {
             try
             {
                 var startedAt = SequentialIdGenerator.Next;
 
-                ObjectVM result = null;
-
                 var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
+                if (oObject == null)
+                    throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
-                if (oObject != null)
+                var oMethod = oObject.Methods[request.MethodName];
+                var returnValue = _InvokeMethodCommand.Invoke(oMethod, oObject.RealObject) as ObjectObserver;
+
+                ObjectVM result = null;
+                if (returnValue != null)
                 {
-                    var oMethod = oObject.Methods[request.MethodName];
-                    var returnValue = _InvokeMethodCommand.Invoke(oMethod, oObject.RealObject) as ObjectObserver;
-
-                    if (returnValue != null)
-                    {
-                        result = _ObjectVMBuilder.BuildFor(returnValue);
-                    }
-
-                    _ObserverCache.ScanForChanges();
+                    result = _ObjectVMBuilder.BuildFor(returnValue);
                 }
 
-                return new GetPropertyResult()
+                _ObserverCache.ScanForChanges();
+
+                // Done:
+                var infoVM = new MessageVM()
+                {
+                    OccurredAt = _Clock.Now,
+                    Text = string.Concat("Completed ", oMethod.Template.FriendlyName, ".")
+                };
+                return new InvokeMethodResult()
                 {
                     Passed = true,
-                    ReturnValue = result,
-                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt)
+                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
+                    Messages = new MessageSetVM(new MessageVM[] { infoVM }, null, null),
                 };
             }
             catch (Exception ex)
             {
                 var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
 
-                return new GetPropertyResult()
+                return new InvokeMethodResult()
                 {
                     Failed = true,
-                    ErrorMessages = new ErrorVM[] { errorVM }
+                    Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })
                 };
             }
         }

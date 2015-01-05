@@ -23,12 +23,8 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         public bool Failed { get; set; }
 
-        public MessageVM[] InfoMessages { get; set; }
-
-        public MessageVM[] WarningMessages { get; set; }
-
-        public ErrorVM[] ErrorMessages { get; set; }
-
+        public MessageSetVM Messages { get; set; }
+        
         /// <summary>
         /// Any modifications to other Objects that occurred as part of the operation
         /// </summary>

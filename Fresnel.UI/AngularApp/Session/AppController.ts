@@ -16,7 +16,7 @@
             $scope.loadSession = function () {
                 var uri = "api/Session/GetSession";
                 $http.get(uri)
-                    .success(function (data, status) {
+                    .success(function (data : Session, status) {
                         $scope.session = data;
                         appService.session = $scope.session;
                     });
@@ -26,6 +26,9 @@
             angular.element(document).ready(function () {
                 $scope.loadSession();
             });
+
+
+
 
         }
     }

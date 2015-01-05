@@ -66,7 +66,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 return new CreateCommandResult()
                 {
                     Failed = true,
-                    ErrorMessages = new ErrorVM[] { errorVM }
+                    Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })
                 };
             }
         }
