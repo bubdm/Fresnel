@@ -44,7 +44,5 @@ namespace Envivo.Fresnel.Core.Observers
                 this.IsLazyLoadPending = false;
             }
         }
-
-        public object PreviousValue { get; set; }
     }
 }
