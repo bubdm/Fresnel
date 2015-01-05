@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Core.Observers
         public NullObserver
             (
             Type objectType,
-            ClassTemplate tClass
+            BaseClassTemplate tClass
             )
             : base(null, objectType, tClass)
         {
