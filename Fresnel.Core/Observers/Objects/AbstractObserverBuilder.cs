@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Core.Observers
         private Func<object, Type, ClassTemplate, ObjectObserver> _ObjectObserverFactory;
         private Func<object, Type, NonReferenceTemplate, NonReferenceObserver> _NonReferenceObserverFactory;
         private Func<object, Type, EnumTemplate, EnumObserver> _EnumObserverFactory;
-        private Func<Type, ClassTemplate, NullObserver> _NullObserverFactory;
+        private Func<Type, BaseClassTemplate, NullObserver> _NullObserverFactory;
 
         public AbstractObserverBuilder
         (
@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.Core.Observers
             Func<object, Type, ClassTemplate, ObjectObserver> objectObserverFactory,
             Func<object, Type, NonReferenceTemplate, NonReferenceObserver> nonReferenceObserverFactory,
             Func<object, Type, EnumTemplate, EnumObserver> enumObserverFactory,
-            Func<Type, ClassTemplate, NullObserver> nullObserverFactory
+            Func<Type, BaseClassTemplate, NullObserver> nullObserverFactory
         )
         {
             _TemplateCache = templateCache;
@@ -62,7 +62,7 @@ namespace Envivo.Fresnel.Core.Observers
 
             if (obj == null)
             {
-                result = this.CreateNullObserver(template.RealType, (ClassTemplate)template);
+                result = this.CreateNullObserver(template.RealType, (BaseClassTemplate)template);
             }
             else if (template is CollectionTemplate)
             {
@@ -117,7 +117,7 @@ namespace Envivo.Fresnel.Core.Observers
             return result;
         }
 
-        private NullObserver CreateNullObserver(Type objectType, ClassTemplate tClass)
+        private NullObserver CreateNullObserver(Type objectType, BaseClassTemplate tClass)
         {
             var result = _NullObserverFactory(objectType, tClass);
             return result;

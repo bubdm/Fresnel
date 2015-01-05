@@ -165,8 +165,13 @@ namespace Envivo.Fresnel.Core.Observers
             if (tNonRefClass == null)
                 return null;
 
-            var result = (NonReferenceObserver)_AbstractObserverBuilder.BuildFor(obj, tNonRefClass.RealType);
-            _NonReferenceMap.Add(obj, result);
+            var result = _AbstractObserverBuilder.BuildFor(obj, tNonRefClass.RealType);
+
+            if (obj != null)
+            {
+                _NonReferenceMap.Add(obj, (NonReferenceObserver)result);
+            }
+
             return result;
         }
 
