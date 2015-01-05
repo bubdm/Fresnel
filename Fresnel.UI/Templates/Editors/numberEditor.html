@@ -1,6 +1,7 @@
 ﻿<input class="form-control"
        type="number"
        ng-model="prop.Value"
+       ng-change="setProperty(prop)"
        ng-disabled="!prop.CanWrite"
        required="{{prop.Info.IsRequired}}"
        min="{{prop.Info.MinValue}}"

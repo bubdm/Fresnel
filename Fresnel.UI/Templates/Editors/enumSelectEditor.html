@@ -4,6 +4,7 @@
             ng-disabled="!prop.CanWrite"
             ng-checked="enumItem.IsChecked"
             ng-model="prop.Value"
+            ng-change="setProperty(prop)"
             title="{{enumItem.Description}}"
             value="{{enumItem.Value}}">
         {{enumItem.Name}}

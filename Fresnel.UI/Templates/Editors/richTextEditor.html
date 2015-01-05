@@ -1,6 +1,7 @@
 ﻿<textarea id="richTextArea" class="form-control"
           rows="4"
           ng-model="prop.Value"
+          ng-change="setProperty(prop)"
           ng-disabled="!prop.CanWrite"
           minlength="{{prop.Info.MinLength}}"
           maxlength="{{prop.Info.MaxLength}}"
