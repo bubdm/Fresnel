@@ -1,5 +1,4 @@
-﻿
-<input type="text"
+﻿<input type="text"
        class="form-control"
        ng-show="!prop.Info.IsMultiLine && !prop.Info.IsPassword"
        ng-model="prop.Value"
@@ -8,24 +7,3 @@
        minlength="{{prop.Info.MinLength}}"
        maxlength="{{prop.Info.MaxLength}}"
        pattern="{{prop.Info.EditMask}}" />
-
-<!--<input type="password"
-       class="form-control"
-       ng-show="prop.Info.IsPassword"
-       ng-model="prop.Value"
-       ng-change="setProperty()"
-       ng-disabled="!prop.CanWrite"
-       minlength="{{prop.Info.MinLength}}"
-       maxlength="{{prop.Info.MaxLength}}"
-       title="{{prop.ToolTip}}"
-       pattern="{{prop.Info.EditMask}}" />
-
-<textarea class="form-control"
-          rows="4"
-          ng-show="prop.Info.IsMultiLine"
-          ng-model="prop.Value"
-          ng-change="setProperty()"
-          ng-disabled="!prop.CanWrite"
-          minlength="{{prop.Info.MinLength}}"
-          maxlength="{{prop.Info.MaxLength}}"
-          title="{{prop.ToolTip}}" />-->
