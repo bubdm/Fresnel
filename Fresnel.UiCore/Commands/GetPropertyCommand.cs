@@ -24,12 +24,12 @@ namespace Envivo.Fresnel.UiCore.Commands
     {
         private ObserverCache _ObserverCache;
         private AbstractObjectVMBuilder _ObjectVMBuilder;
-        private Introspection.Commands.GetPropertyCommand _GetPropertyCommand;
+        private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private IClock _Clock;
 
         public GetPropertyCommand
             (
-            Introspection.Commands.GetPropertyCommand getPropertyCommand,
+            Core.Commands.GetPropertyCommand getPropertyCommand,
             ObserverCache observerCache,
             AbstractObjectVMBuilder objectVMBuilder,
             IClock clock
@@ -53,30 +53,10 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     var oProp = oObject.Properties[request.PropertyName];
                     var oObjectProp = oProp as ObjectPropertyObserver;
-                    var returnValue = _GetPropertyCommand.Invoke(oObject.RealObject, request.PropertyName);
+                    var oReturnValue = _GetPropertyCommand.Invoke(oProp);
 
-                    if (returnValue != null)
+                    if (oReturnValue != null)
                     {
-                        var oReturnValue = _ObserverCache.GetObserver(returnValue);
-
-                        if (oObjectProp != null)
-                        {
-                            oObjectProp.IsLazyLoaded = true;
-                            oReturnValue.AssociateWith(oObjectProp);
-                        }
-
-                        // Make sure the contents are trackable too:
-                        if (oObjectProp.Template.IsCollection)
-                        {
-                            var oCollection = (CollectionObserver)oReturnValue;
-                            var contents = oCollection.GetContents();
-                            foreach (var item in contents)
-                            {
-                                var oItem = _ObserverCache.GetObserver(item, item.GetType());
-                                oItem.AssociateWith(oCollection);
-                            }
-                        }
-
                         result = _ObjectVMBuilder.BuildFor(oReturnValue);
                     }
                 }

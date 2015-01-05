@@ -45,5 +45,6 @@ namespace Envivo.Fresnel.Core.Observers
             }
         }
 
+        public object PreviousValue { get; set; }
     }
 }

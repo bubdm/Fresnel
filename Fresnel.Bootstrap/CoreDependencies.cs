@@ -32,21 +32,11 @@ namespace Envivo.Fresnel.Bootstrap
 
                 typeof(Fresnel.Core.OuterObjectsIdentifier),
 
-                typeof(Fresnel.Core.Commands.AddToCollectionCommand),
-                typeof(Fresnel.Core.Commands.ClearCollectionCommand),
-                typeof(Fresnel.Core.Commands.CloneObjectCommand),
-                typeof(Fresnel.Core.Commands.CreateObjectCommand),
-                typeof(Fresnel.Core.Commands.GetCollectionItemsCommand),
-                typeof(Fresnel.Core.Commands.GetPropertyCommand),
-                typeof(Fresnel.Core.Commands.InvokeMethodCommand),
-                typeof(Fresnel.Core.Commands.RemoveFromCollectionCommand),
-                typeof(Fresnel.Core.Commands.SetParameterCommand),
-                typeof(Fresnel.Core.Commands.SetPropertyCommand),
-
                 typeof(Fresnel.Core.Observers.AbstractObserverBuilder),
                 typeof(Fresnel.Core.Observers.MethodObserverBuilder),
                 typeof(Fresnel.Core.Observers.MethodObserverMapBuilder),
                 typeof(Fresnel.Core.Observers.ObjectIdResolver),
+                typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
                 typeof(Fresnel.Core.Observers.ParameterObserverMapBuilder),
                 typeof(Fresnel.Core.Observers.PropertyObserverBuilder),
                 typeof(Fresnel.Core.Observers.PropertyObserverMapBuilder),
@@ -81,7 +71,20 @@ namespace Envivo.Fresnel.Bootstrap
         private Type[] GetPerSessionInstanceTypes()
         {
             return new Type[] { 
+                // These depend on the ObserverCache, hence the need for them being Per Session:
+                typeof(Fresnel.Core.Commands.AddToCollectionCommand),
+                typeof(Fresnel.Core.Commands.ClearCollectionCommand),
+                typeof(Fresnel.Core.Commands.CloneObjectCommand),
+                typeof(Fresnel.Core.Commands.CreateObjectCommand),
+                typeof(Fresnel.Core.Commands.GetCollectionItemsCommand),
+                typeof(Fresnel.Core.Commands.GetPropertyCommand),
+                typeof(Fresnel.Core.Commands.InvokeMethodCommand),
+                typeof(Fresnel.Core.Commands.RemoveFromCollectionCommand),
+                typeof(Fresnel.Core.Commands.SetParameterCommand),
+                typeof(Fresnel.Core.Commands.SetPropertyCommand),
+
                 typeof(Fresnel.Core.Observers.ObserverCache),
+                typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
                 typeof(Fresnel.Core.Persistence.UnitOfWork),
                 typeof(Fresnel.Core.IdentityMap),
                 typeof(Fresnel.Core.UserSession),

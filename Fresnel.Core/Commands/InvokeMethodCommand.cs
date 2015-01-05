@@ -14,18 +14,21 @@ namespace Envivo.Fresnel.Core.Commands
     {
         private DirtyObjectNotifier _DirtyObjectNotifier;
         private ObserverCache _ObserverCache;
+        private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private Fresnel.Introspection.Commands.InvokeMethodCommand _InvokeCommand;
         private RealTypeResolver _RealTypeResolver;
 
         public InvokeMethodCommand
             (
             ObserverCache observerCache,
+            ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier,
             Fresnel.Introspection.Commands.InvokeMethodCommand invokeCommand,
             RealTypeResolver realTypeResolver
             )
         {
             _ObserverCache = observerCache;
+            _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _InvokeCommand = invokeCommand;
             _RealTypeResolver = realTypeResolver;
@@ -55,6 +58,9 @@ namespace Envivo.Fresnel.Core.Commands
 
                 var resultType = _RealTypeResolver.GetRealType(result);
                 var oResult = _ObserverCache.GetObserver(result, resultType);
+
+                // Make sure we know of any changes in the object graph:
+                _ObserverCacheSynchroniser.SyncAll();
 
                 return oResult;
             }

@@ -14,18 +14,21 @@ namespace Envivo.Fresnel.Core.Commands
     {
         private DirtyObjectNotifier _DirtyObjectNotifier;
         private ObserverCache _ObserverCache;
+        private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private Fresnel.Introspection.Commands.RemoveFromCollectionCommand _RemoveCommand;
         private RealTypeResolver _RealTypeResolver;
 
         public RemoveFromCollectionCommand
             (
             ObserverCache observerCache,
+            ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier,
             Fresnel.Introspection.Commands.RemoveFromCollectionCommand removeCommand,
             RealTypeResolver realTypeResolver
             )
         {
             _ObserverCache = observerCache;
+            _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _RemoveCommand = removeCommand;
             _RealTypeResolver = realTypeResolver;
@@ -49,10 +52,11 @@ namespace Envivo.Fresnel.Core.Commands
 
             if (passed)
             {
-                // Make the item is no longer associated with the Collection:
-                oItemToRemove.DisassociateFrom(oCollection);
-
                 _DirtyObjectNotifier.ObjectWasRemovedFromCollection(oItemToRemove, oCollection);
+
+                // Make sure we know of any changes in the object graph:
+                //oItemToRemove.DisassociateFrom(oCollection);
+                _ObserverCacheSynchroniser.SyncAll();
             }
 
             //    var postSnapshot = new CollectionChangeSnapshot(this);

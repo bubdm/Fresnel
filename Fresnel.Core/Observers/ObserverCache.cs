@@ -73,7 +73,7 @@ namespace Envivo.Fresnel.Core.Observers
             var tNonRefClass = template as NonReferenceTemplate;
 
             // If the object has an ID, use it.  Otherwise, use a new ID to cache the observer:
-            var id = Guid.NewGuid();
+            Guid id = Guid.Empty;
             if (tClass != null)
             {
                 // NB: The object might actually return Guid.Empty, hence the check below:
@@ -97,7 +97,7 @@ namespace Envivo.Fresnel.Core.Observers
             }
             else
             {
-                Debug.WriteLine(string.Concat("Found Observer for ", result.Template.Name, " with ID ", result.ID));
+                //Debug.WriteLine(string.Concat("Found Observer for ", result.Template.Name, " with ID ", result.ID));
             }
 
             return result;
@@ -117,12 +117,14 @@ namespace Envivo.Fresnel.Core.Observers
             {
                 result = _ObjectIdMap.TryGetValueOrNull(objectId);
             }
-            else
+
+            if (result == null)
             {
                 ObjectObserver match = null;
                 _ObjectMap.TryGetValue(obj, out match);
                 result = match;
             }
+
             return result;
         }
 
@@ -145,9 +147,9 @@ namespace Envivo.Fresnel.Core.Observers
             if (tClass == null)
                 return null;
 
-            Debug.WriteLine(string.Concat("Creating Observer for ", tClass.Name, " with hash code ", obj.GetHashCode()));
+            //Debug.WriteLine(string.Concat("Creating Observer for ", tClass.Name, " with hash code ", obj.GetHashCode()));
 
-            var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, tClass.RealType);
+            var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, tClass);
             _ObjectMap.Add(obj, result);
 
             ReplaceInvalidKeyWithValidKey(result, objectId);
@@ -214,33 +216,8 @@ namespace Envivo.Fresnel.Core.Observers
             return _ObjectIdMap.Values;
         }
 
-        //public void ScanForChanges()
-        //{
-        //    foreach (var oObject in this.GetAllObservers())
-        //    {
-        //        oObject.ChangeTracker.DetectChanges();
-        //    }
-        //}
-
         public void ScanForChanges()
         {
-            // Ensure all Collection contents have Observers:
-            var knownObservers = this.GetAllObservers().ToArray();
-            foreach (var oObject in knownObservers)
-            {
-                var outerObjectProperties = oObject.OuterProperties.OfType<ObjectPropertyObserver>();
-                var collectionProperties = outerObjectProperties.Where(p => p.Template.IsCollection);
-                if (collectionProperties.Any(p => p.IsLazyLoaded))
-                {
-                    var contents = ((CollectionObserver)oObject).GetContents();
-                    foreach (var item in contents)
-                    {
-                        var oItem = this.GetObserver(item, item.GetType());
-                    }
-                }
-            }
-
-            // Now we can scan:
             foreach (var oObject in this.GetAllObservers())
             {
                 oObject.ChangeTracker.DetectChanges();

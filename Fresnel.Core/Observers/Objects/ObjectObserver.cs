@@ -17,7 +17,6 @@ namespace Envivo.Fresnel.Core.Observers
     {
         private Lazy<PropertyObserverMap> _Properties;
         private Lazy<MethodObserverMap> _Methods;
-        //private Lazy<MethodObserverMap> _StaticMethods;
         private Lazy<ObjectTracker> _ObjectTracker;
 
         private PropertyObserverMapBuilder _PropertyObserverMapBuilder;
@@ -58,9 +57,6 @@ namespace Envivo.Fresnel.Core.Observers
                               () => _MethodObserverMapBuilder.BuildFor(this),
                               System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
-            //_StaticMethods = new Lazy<MethodObserverMap>(
-            //                  () => _MethodObserverMapBuilder.BuildStaticMethodsFor(this),
-            //                  System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         internal override void FinaliseConstruction()
@@ -68,8 +64,6 @@ namespace Envivo.Fresnel.Core.Observers
             base.FinaliseConstruction();
 
             this.CheckIfPropertiesShouldLazyLoad();
-
-            this.ChangeTracker.ResetDirtyFlags();
         }
 
         [JsonIgnore]
@@ -102,16 +96,6 @@ namespace Envivo.Fresnel.Core.Observers
         {
             get { return _Methods.Value; }
         }
-
-        ///// <summary>
-        ///// A set of all visible Static Methods
-        ///// </summary>
-        ///// <value>A generic Dictionary of MethodObservers</value>
-
-        //public MethodObserverMap StaticMethods
-        //{
-        //    get { return _StaticMethods.Value; }
-        //}
 
         /// <summary>
         /// Returns the Member Observer for the given member name
@@ -300,90 +284,6 @@ namespace Envivo.Fresnel.Core.Observers
             }
         }
 
-        ///// <summary>
-        ///// Returns the Validator for the associated Object
-        ///// </summary>
-        //internal ObjectValidator Validator
-        //{
-        //    get
-        //    {
-        //        if (_ObjectValidator == null)
-        //        {
-        //            lock (s_LockObject)
-        //            {
-        //                if (_ObjectValidator == null)
-        //                {
-        //                    _ObjectValidator = new ObjectValidator(this);
-        //                }
-        //            }
-        //        }
-        //        return _ObjectValidator;
-        //    }
-        //}
-
-        //public ObjectObserver Clone()
-        //{
-        //    var clone = this.Template.Clone(this.RealObject, false);
-        //    clone.SetId(DomainTypes.Utils.GuidFactory.NewSequentialGuid());
-        //    clone.SetAudit(null);
-
-        //    var oClone = this.Session.GetObjectObserver(clone);
-
-        //    // Make sure the clone can be edited before the user saves it:
-        //    oClone.ChangeTracker.IsNewInstance = true;
-
-        //    return oClone;
-        //}
-
-        /// <summary>
-        /// Determines whether the Observer needs to be persisted.
-        /// </summary>
-
-
-        ///// <remarks> NB. This will perform a brute-force check, which is slightly slower. Use ChangeTracker.IsDirty for performance.</remarks>
-        //public override bool IsDirty
-        //{
-        //    get
-        //    {
-        //        // We might have connected objects that were modified by consumer code, so check the entire graph:
-        //        var graphIterator = new ObjectGraphIterator();
-        //        foreach (var oObj in graphIterator.GetObjects(this, ObjectGraphIterator.TraversingOptions.Basic))
-        //        {
-        //            oObj.ChangeTracker.DetectChanges();
-        //        }
-
-        //        return this.ChangeTracker.IsDirty;
-        //    }
-        //    // TODO: Do we need to add a setter, so that NotifyPropertyChange events can be raised?
-        //    //       If so, the ChangeTracker must force this value to change
-        //}
-
-        ///// <summary>
-        ///// Determines if this Observer can be disposed
-        ///// </summary>
-
-        //internal IAssertion IsReadyToDispose()
-        //{
-        //    if (_UI != null && _UI.CanDispose == false)
-        //    {
-        //        var message = string.Concat(this.DebugID, " cannot be disposed because it's in use");
-        //        return Assertion.Fail(message);
-        //    }
-
-        //    //-----
-        //    var oOuterObjects = this.GetOuterObjects(99);
-        //    foreach (var oOuterObject in oOuterObjects)
-        //    {
-        //        if (oOuterObject._UI != null && oOuterObject._UI.CanDispose == false)
-        //        {
-        //            string message = string.Concat(this.DebugID, " cannot be disposed because ", oOuterObject.DebugID, " is in use");
-        //            return Assertion.Fail(message);
-        //        }
-        //    }
-
-        //    return Assertion.Pass();
-        //}
-
         public override void Dispose()
         {
             if (_Methods.IsValueCreated)
@@ -397,15 +297,6 @@ namespace Envivo.Fresnel.Core.Observers
                 _Properties.Value.ClearSafely();
             }
             _Properties = null;
-
-            //if (_StaticMethods.IsValueCreated)
-            //{
-            //    _StaticMethods.Value.ClearSafely();
-            //}
-            //_StaticMethods = null;
-
-            //_ObjectValidator.DisposeSafely();
-            //_ObjectValidator = null;
 
             base.Dispose();
         }

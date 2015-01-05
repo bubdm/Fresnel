@@ -85,7 +85,7 @@ namespace Envivo.Fresnel.UiCore.Objects
                                                   IEnumerable<PropertyTemplate> allKnownProperties)
         {
             var items = new List<ObjectVM>();
-            foreach (var obj in oCollection.GetContents())
+            foreach (var obj in oCollection.GetItems())
             {
                 var objType = _RealTypeResolver.GetRealType(obj);
 

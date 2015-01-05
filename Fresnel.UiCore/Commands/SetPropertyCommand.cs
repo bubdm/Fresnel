@@ -67,6 +67,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                     }
 
                     _SetPropertyCommand.Invoke(oProp, oValue);
+
+                    _ObserverCache.ScanForChanges();
                 }
 
                 return new SetPropertyResult()

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Envivo.Fresnel.Utils;
@@ -67,61 +68,21 @@ namespace Envivo.Fresnel.Core.Observers
             }
         }
 
-        //public CollectionTemplate CollectionTemplate
-        //{
-        //    get { return (CollectionTemplate)base.Template; }
-        //}
-
         /// <summary>
-        /// Returns an Enumerator of the underlying Collection
+        /// Returns an enumerable of the underlying Collection objects (not observers)
         /// </summary>
-        public IEnumerable GetContents()
+        public IEnumerable<object> GetItems()
         {
-            return this.RealObject as IEnumerable;
+            var items = this.RealObject as IEnumerable;
+            return items.Cast<object>();
         }
 
-        ///// <summary>
-        ///// Returns a pseudo checksum for all items in the Collection
-        ///// </summary>
-
-        //internal ulong CalculateChecksum()
-        //{
-        //    ulong result = 0;
-        //    foreach (var item in this.GetContents())
-        //    {
-        //        // Use XOR and shift to create a pseudo-unique value:
-        //        result ^= (ulong)item.GetHashCode();
-        //        result = result << 1;
-        //    }
-
-        //    return result;
-        //}
-
-        public IEnumerable<ObjectObserver> PreviousContents { get; internal set; }
-
-        //private void UpdatePersistenceForRemovedItem(ObjectObserver oRemovedItem)
-        //{
-        //    if (oRemovedItem.IsPersistable == false)
-        //        return;
-
-        //    oRemovedItem.ChangeTracker.IsMarkedForRemoval = true;
-
-        //    if (oRemovedItem.ChangeTracker.IsNewInstance)
-        //    {
-        //        // This prevents unsaved instances remaining linked to this collection:
-        //        this.ChangeTracker.RemoveFromDirtyObjectGraph(oRemovedItem);
-        //        this.ChangeTracker.DirtyChildren.Remove(oRemovedItem);
-        //    }
-        //    else
-        //    {
-        //        oRemovedItem.ChangeTracker.MarkForRemovalFrom(this);
-        //    }
-        //}
+        public IEnumerable<object> PreviousItems { get; internal set; }
 
         public override void Dispose()
         {
             base.Dispose();
-            this.PreviousContents = null;
+            this.PreviousItems = null;
         }
 
     }

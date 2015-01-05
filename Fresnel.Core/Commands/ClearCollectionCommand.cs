@@ -13,15 +13,18 @@ namespace Envivo.Fresnel.Core.Commands
     public class ClearCollectionCommand
     {
         private GetCollectionItemsCommand _GetCollectionItemsCommand;
+        private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private DirtyObjectNotifier _DirtyObjectNotifier;
 
         public ClearCollectionCommand
             (
             GetCollectionItemsCommand getCollectionItemsCommand,
+            ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier
             )
         {
             _GetCollectionItemsCommand = getCollectionItemsCommand;
+            _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
         }
 
@@ -41,6 +44,9 @@ namespace Envivo.Fresnel.Core.Commands
                     _DirtyObjectNotifier.ObjectWasRemovedFromCollection(oRemovedItem, oCollection);
                 }
             }
+
+            // Make sure we know of any changes in the object graph:
+            _ObserverCacheSynchroniser.SyncAll();
         }
 
     }

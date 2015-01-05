@@ -48,7 +48,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
         internal IAssertion DetectChanges()
         {
-            var veryLatestItems = _oCollection.GetContents().Cast<object>();
+            var veryLatestItems = _oCollection.GetItems().Cast<object>();
 
             var addedItems = veryLatestItems.Except(this.LatestItems).ToArray();
             var removedItems = this.LatestItems.Except(veryLatestItems).ToArray();
@@ -82,7 +82,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             _Additions.Clear();
             _Removals.Clear();
 
-            var items = _oCollection.GetContents();
+            var items = _oCollection.GetItems();
             this.PreviousItems = this.LatestItems = items.Cast<object>();
         }
 

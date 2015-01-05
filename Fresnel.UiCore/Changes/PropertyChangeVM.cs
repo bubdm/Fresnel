@@ -13,6 +13,6 @@ namespace Envivo.Fresnel.UiCore.Changes
 
         public object NonReferenceValue { get; set; }
 
-        public Guid ReferenceValueId { get; set; }
+        public Guid? ReferenceValueId { get; set; }
     }
 }

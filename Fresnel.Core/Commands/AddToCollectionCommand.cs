@@ -14,18 +14,21 @@ namespace Envivo.Fresnel.Core.Commands
     {
         private DirtyObjectNotifier _DirtyObjectNotifier;
         private ObserverCache _ObserverCache;
+        private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private Fresnel.Introspection.Commands.AddToCollectionCommand _AddCommand;
         private RealTypeResolver _RealTypeResolver;
 
         public AddToCollectionCommand
             (
             ObserverCache observerCache,
+            ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier,
             Fresnel.Introspection.Commands.AddToCollectionCommand addCommand,
             RealTypeResolver realTypeResolver
             )
         {
             _ObserverCache = observerCache;
+            _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _AddCommand = addCommand;
             _RealTypeResolver = realTypeResolver;
@@ -61,8 +64,9 @@ namespace Envivo.Fresnel.Core.Commands
             var oResult = oAddedItem as ObjectObserver;
             if (oResult != null)
             {
-                // Make the item aware that it is associated with this Collection:
-                oResult.AssociateWith(oCollection);
+                // Make sure we know of any changes in the object graph:
+                //oResult.AssociateWith(oCollection);
+                _ObserverCacheSynchroniser.SyncAll();
 
                 _DirtyObjectNotifier.ObjectWasAddedToCollection(oResult, oCollection);
             }

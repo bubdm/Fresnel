@@ -23,7 +23,7 @@ namespace Envivo.Fresnel.Core.Commands
         {
             var results = new List<ObjectObserver>();
 
-            var items = oCollection.GetContents();
+            var items = oCollection.GetItems();
 
             foreach (var item in items)
             {

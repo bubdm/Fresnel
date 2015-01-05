@@ -15,6 +15,7 @@ namespace Envivo.Fresnel.Core.Commands
         private Introspection.Commands.CreateObjectCommand _CreateObjectCommand;
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
+        private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private DirtyObjectNotifier _DirtyObjectNotifier;
 
         public CreateObjectCommand
@@ -22,12 +23,14 @@ namespace Envivo.Fresnel.Core.Commands
             Introspection.Commands.CreateObjectCommand createObjectCommand,
             TemplateCache templateCache,
             ObserverCache observerCache,
+            ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier
         )
         {
             _CreateObjectCommand = createObjectCommand;
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
+            _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
         }
 
@@ -43,6 +46,9 @@ namespace Envivo.Fresnel.Core.Commands
 
             // Make sure the instance can be edited before the user saves it:
             _DirtyObjectNotifier.ObjectWasCreated(oNewObject);
+
+            // Make sure we know of any changes in the object graph:
+            _ObserverCacheSynchroniser.SyncAll();
 
             return oNewObject;
         }

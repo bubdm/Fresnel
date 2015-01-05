@@ -173,6 +173,43 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsFalse(oCollection.ChangeTracker.IsDirty);
             Assert.IsFalse(oObject.ChangeTracker.HasDirtyObjectGraph);
         }
+
+
+        [Test()]
+        public void ShouldDetectChangesToLargeObjectGraph()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var getCommand = container.Resolve<GetPropertyCommand>();
+            var setCommand = container.Resolve<SetPropertyCommand>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+
+            var oObject = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
+            var oProp = oObject.Properties["ChildObjects"];
+
+            var iterations = 10000;
+
+            // Act:
+            for (var i = 0; i < iterations; i++)
+            {
+                poco.ChildObjects.Add(new SampleModel.Objects.PocoObject());
+            }
+
+            var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
+
+            // Act:
+            var oTextProp = oObject.Properties["NormalText"];
+            var oValue = observerCache.GetObserver("1234", typeof(string));
+            setCommand.Invoke(oTextProp, oValue);
+
+            // Assert:
+            oCollection = (CollectionObserver)getCommand.Invoke(oProp);
+            Assert.AreEqual(iterations, oCollection.GetItems().Cast<object>().Count());
+        }
+
     }
 
 

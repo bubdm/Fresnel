@@ -16,6 +16,7 @@ namespace Envivo.Fresnel.Core.Commands
         private Introspection.Commands.CloneObjectCommand _CloneObjectCommand;
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
+        private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private DirtyObjectNotifier _DirtyObjectNotifier;
 
         public CloneObjectCommand
@@ -23,12 +24,14 @@ namespace Envivo.Fresnel.Core.Commands
             Introspection.Commands.CloneObjectCommand cloneObjectCommand,
             TemplateCache templateCache,
             ObserverCache observerCache,
+            ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier
         )
         {
             _CloneObjectCommand = cloneObjectCommand;
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
+            _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
         }
 
@@ -46,6 +49,9 @@ namespace Envivo.Fresnel.Core.Commands
 
             // Make sure the clone can be edited before the user saves it:
             _DirtyObjectNotifier.ObjectWasCreated(oClone);
+
+            // Make sure we know of any changes in the object graph:
+            _ObserverCacheSynchroniser.SyncAll();
 
             return oClone;
         }

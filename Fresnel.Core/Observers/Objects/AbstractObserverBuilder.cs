@@ -46,34 +46,39 @@ namespace Envivo.Fresnel.Core.Observers
             _NullObserverFactory = nullObserverFactory;
         }
 
+        public BaseObjectObserver BuildFor(object obj, Type objectType)
+        {
+            var template = _TemplateCache.GetTemplate(objectType);
+            var result = this.BuildFor(obj, template);
+            return result;
+        }
+
         /// <summary>
         /// Returns a newly created Observer, based on the Type of the given Object
         /// </summary>
-        public BaseObjectObserver BuildFor(object obj, Type objectType)
+        public BaseObjectObserver BuildFor(object obj, IClassTemplate template)
         {
             BaseObjectObserver result = null;
 
-            var template = _TemplateCache.GetTemplate(objectType);
-
             if (obj == null)
             {
-                result = this.CreateNullObserver(objectType, (ClassTemplate)template);
+                result = this.CreateNullObserver(template.RealType, (ClassTemplate)template);
             }
             else if (template is CollectionTemplate)
             {
-                result = this.CreateCollectionObserver(obj, objectType, (CollectionTemplate)template);
+                result = this.CreateCollectionObserver(obj, template.RealType, (CollectionTemplate)template);
             }
             else if (template is ClassTemplate)
             {
-                result = this.CreateObjectObserver(obj, objectType, (ClassTemplate)template);
+                result = this.CreateObjectObserver(obj, template.RealType, (ClassTemplate)template);
             }
             else if (template is NonReferenceTemplate)
             {
-                result = this.CreateNonReferenceObserver(obj, objectType, (NonReferenceTemplate)template);
+                result = this.CreateNonReferenceObserver(obj, template.RealType, (NonReferenceTemplate)template);
             }
             else if (template is EnumObserver)
             {
-                result = this.CreateEnumObserver(obj, objectType, (EnumTemplate)template);
+                result = this.CreateEnumObserver(obj, template.RealType, (EnumTemplate)template);
             }
 
             result.FinaliseConstruction();
