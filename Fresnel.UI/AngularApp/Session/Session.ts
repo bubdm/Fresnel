@@ -3,9 +3,9 @@
 
     export class Session {
 
-        Messages;
+        TestValue: number;
 
-
+        Messages: any;
     }
 
 

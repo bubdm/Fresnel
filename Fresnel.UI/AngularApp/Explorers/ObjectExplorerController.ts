@@ -2,11 +2,13 @@
 
     export class ObjectExplorerController {
 
-        static $inject = ['$scope', '$http', 'appService'];
+        static $inject = ['$rootScope', '$scope', '$http', '$timeout', 'appService'];
 
         constructor(
+            $rootScope: ng.IRootScopeService,
             $scope: IObjectExplorerControllerScope,
             $http: ng.IHttpService,
+            $timeout: ng.ITimeoutService,
             appService: AppService) {
 
             $scope.visibleExplorers = [];
@@ -35,8 +37,11 @@
 
                 $http.post(uri, request)
                     .success(function (data: any, status) {
-                        appService.identityMap.merge(data.Modifications);
-                        appService.mergeMessages(data.Messages);
+                        $timeout(function () {
+                            appService.identityMap.merge(data.Modifications);
+
+                            $rootScope.$broadcast("messagesReceived", data.Messages);
+                        })
                     });
             }
 

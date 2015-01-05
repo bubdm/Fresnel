@@ -25,7 +25,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ObjectExplorerController = (function () {
-        function ObjectExplorerController($scope, $http, appService) {
+        function ObjectExplorerController($rootScope, $scope, $http, $timeout, appService) {
             $scope.visibleExplorers = [];
             $scope.$on('objectCreated', function (event, obj) {
                 $scope.visibleExplorers.push(obj);
@@ -44,8 +44,10 @@ var FresnelApp;
                     NonReferenceValue: prop.Value
                 };
                 $http.post(uri, request).success(function (data, status) {
-                    appService.identityMap.merge(data.Modifications);
-                    appService.mergeMessages(data.Messages);
+                    $timeout(function () {
+                        appService.identityMap.merge(data.Modifications);
+                        $rootScope.$broadcast("messagesReceived", data.Messages);
+                    });
                 });
             };
             $scope.minimise = function (obj) {
@@ -74,7 +76,7 @@ var FresnelApp;
                 });
             };
         }
-        ObjectExplorerController.$inject = ['$scope', '$http', 'appService'];
+        ObjectExplorerController.$inject = ['$rootScope', '$scope', '$http', '$timeout', 'appService'];
         return ObjectExplorerController;
     })();
     FresnelApp.ObjectExplorerController = ObjectExplorerController;
@@ -104,9 +106,12 @@ var FresnelApp;
                 var uri = "api/Session/GetSession";
                 $http.get(uri).success(function (data, status) {
                     $scope.session = data;
-                    appService.session = $scope.session;
                 });
             };
+            $scope.$on('messagesReceived', function (event, messageSet) {
+                $scope.session.TestValue++;
+                appService.mergeMessages(messageSet, $scope.session);
+            });
             // This will run when the page loads:
             angular.element(document).ready(function () {
                 $scope.loadSession();
@@ -122,10 +127,10 @@ var FresnelApp;
     var AppService = (function () {
         function AppService() {
         }
-        AppService.prototype.mergeMessages = function (messageSet) {
-            this.mergeMessageArray(messageSet.Infos, this.session.Messages.Infos);
-            this.mergeMessageArray(messageSet.Warnings, this.session.Messages.Warnings);
-            this.mergeMessageArray(messageSet.Errors, this.session.Messages.Errors);
+        AppService.prototype.mergeMessages = function (messageSet, target) {
+            this.mergeMessageArray(messageSet.Infos, target.Messages.Infos);
+            this.mergeMessageArray(messageSet.Warnings, target.Messages.Warnings);
+            this.mergeMessageArray(messageSet.Errors, target.Messages.Errors);
         };
         AppService.prototype.mergeMessageArray = function (sourceArray, targetArray) {
             if (sourceArray) {

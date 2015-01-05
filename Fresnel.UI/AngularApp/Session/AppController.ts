@@ -18,19 +18,21 @@
                 $http.get(uri)
                     .success(function (data : Session, status) {
                         $scope.session = data;
-                        appService.session = $scope.session;
                     });
             }
+
+            $scope.$on('messagesReceived', function (event, messageSet: any) {
+                $scope.session.TestValue++;
+                appService.mergeMessages(messageSet, $scope.session);
+            });
 
             // This will run when the page loads:
             angular.element(document).ready(function () {
                 $scope.loadSession();
             });
 
-
-
-
         }
+
     }
 
 }

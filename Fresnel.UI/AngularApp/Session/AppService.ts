@@ -4,12 +4,10 @@
 
         identityMap: IdentityMap;
 
-        session: Session;
-
-        mergeMessages(messageSet: any) {
-            this.mergeMessageArray(messageSet.Infos, this.session.Messages.Infos);
-            this.mergeMessageArray(messageSet.Warnings, this.session.Messages.Warnings);
-            this.mergeMessageArray(messageSet.Errors, this.session.Messages.Errors);
+        mergeMessages(messageSet: any, target: Session) {
+            this.mergeMessageArray(messageSet.Infos, target.Messages.Infos);
+            this.mergeMessageArray(messageSet.Warnings, target.Messages.Warnings);
+            this.mergeMessageArray(messageSet.Errors, target.Messages.Errors);
         }
 
         private mergeMessageArray(sourceArray: any[], targetArray: any[]) {
