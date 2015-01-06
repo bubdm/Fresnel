@@ -199,7 +199,11 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         public bool IsAutoProperty
         {
-            get { return _BackingField.Value.Name.EndsWith(BackingFieldIdentifier.AutoPropertyFieldSuffix); }
+            get
+            {
+                return _BackingField.Value != null &&
+                       _BackingField.Value.Name.EndsWith(BackingFieldIdentifier.AutoPropertyFieldSuffix);
+            }
         }
 
         /// <summary>

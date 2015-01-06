@@ -60,7 +60,15 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var previousValue = oProp.PreviousValue;
                 _SetPropertyCommand.Invoke(oProp, oValue);
 
-                _ObserverCache.ScanForChanges();
+                if (oProp.Template.IsAutoProperty)
+                {
+                    // The property setter doesn't have any logic, so there shouldn't be any other changes in the object graph
+                }
+                else
+                {
+                    // Other objects may have changed due to the property's setter logic:
+                    _ObserverCache.ScanForChanges();
+                }
 
                 // Done:
                 var infoVM = new MessageVM()
