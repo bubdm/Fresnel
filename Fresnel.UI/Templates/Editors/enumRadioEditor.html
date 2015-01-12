@@ -1,5 +1,5 @@
 ﻿<div ng-repeat="enumItem in prop.Info.Items" class="row">
-    <label class="col-md-5">
+    <label class="col-sm-5">
         <input type="radio"
                class=""
                name="{{prop.Name}}.{{enumItem.Name}}"
@@ -10,5 +10,5 @@
                ng-change="setProperty(prop)" />
         {{enumItem.Name}}
     </label>
-    <div class="col-md-7 help-block propertyDescription">{{enumItem.Description}} </div>
+    <div class="col-sm-7 help-block propertyDescription">{{enumItem.Description}} </div>
 </div>

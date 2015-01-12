@@ -1,4 +1,6 @@
-﻿<select class="form-control" ng-model="prop.Value" ng-change="setProperty(prop)">
+﻿<select class="form-control input-sm"
+        ng-model="prop.Value"
+        ng-change="setProperty(prop)">
     <option ng-repeat="enumItem in prop.Info.Items"
             name="enumItem"
             ng-disabled="!prop.CanWrite"

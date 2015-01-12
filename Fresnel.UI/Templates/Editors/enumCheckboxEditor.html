@@ -1,5 +1,5 @@
 ﻿<div ng-repeat="enumItem in prop.Info.Items" class="row">
-    <label class="col-md-5">
+    <label class="col-sm-5">
         <input type="checkbox"
                name="enumItem"
                ng-disabled="!prop.CanWrite"
@@ -8,5 +8,5 @@
                ng-change="setProperty(prop)"
                value="{{enumItem.Value}}"> {{enumItem.Name}}
     </label>
-    <span class="col-md-7 help-block propertyDescription">{{enumItem.Description}} </span>
+    <span class="col-sm-7 help-block propertyDescription">{{enumItem.Description}} </span>
 </div>
