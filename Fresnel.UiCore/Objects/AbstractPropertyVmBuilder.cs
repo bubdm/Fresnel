@@ -88,7 +88,7 @@ namespace Envivo.Fresnel.UiCore.Objects
             }
             else
             {
-                propVM.Error = setCheck.FailureReason;
+                propVM.Warning = setCheck.FailureReason;
             }
 
             if (getCheck.Passed)
