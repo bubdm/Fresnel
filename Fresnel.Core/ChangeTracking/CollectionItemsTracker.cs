@@ -26,19 +26,25 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             this.LatestItems = new List<object>();
         }
 
+        /// <summary>
+        /// All additions made to the collection during the session
+        /// </summary>
         internal IEnumerable<CollectionAdd> Additions
         {
             get { return _Additions; }
         }
 
+        /// <summary>
+        /// All removals made to the collection during the session
+        /// </summary>
         internal IEnumerable<CollectionRemove> Removals
         {
             get { return _Removals; }
         }
 
-        internal IEnumerable<object> PreviousItems { get; private set; }
+        private IEnumerable<object> PreviousItems { get; set; }
 
-        internal IEnumerable<object> LatestItems { get; private set; }
+        private IEnumerable<object> LatestItems { get; set; }
 
         internal void DetermineInitialState()
         {
@@ -54,7 +60,8 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             var removedItems = this.LatestItems.Except(veryLatestItems).ToArray();
 
             this.PreviousItems = this.LatestItems;
-            this.LatestItems = veryLatestItems;
+            // NB: Use array to ensure we have a *copy* of the contents:
+            this.LatestItems = veryLatestItems.ToArray();
 
             if (!addedItems.Any() && !removedItems.Any())
             {

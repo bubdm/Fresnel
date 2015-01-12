@@ -118,10 +118,18 @@ namespace Envivo.Fresnel.Tests.Proxies
                 MethodName = "AddSomeChildObjects",
             };
 
-            var invokeResult = controller.InvokeMethod(invokeRequest);
+            var invokeResult1 = controller.InvokeMethod(invokeRequest);
+
+            var invokeResult2 = controller.InvokeMethod(invokeRequest);
+
+            var invokeResult3 = controller.InvokeMethod(invokeRequest);
+
 
             // Assert:
-            Assert.AreEqual(3, invokeResult.Modifications.CollectionAdditions.Count());
+            // Each call performs 3 new additions:
+            Assert.AreEqual(3, invokeResult1.Modifications.CollectionAdditions.Count());
+            Assert.AreEqual(3, invokeResult2.Modifications.CollectionAdditions.Count());
+            Assert.AreEqual(3, invokeResult3.Modifications.CollectionAdditions.Count());
         }
 
         [Test()]
