@@ -107,6 +107,12 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var value = Enum.Parse(oProp.Template.PropertyType, request.NonReferenceValue.ToString(), true);
                 oValue = _ObserverCache.GetObserver(value, oProp.Template.PropertyType);
             }
+            else if (oProp.Template.IsNonReference &&
+                     !oProp.Template.IsNullableType &&
+                     request.NonReferenceValue == null)
+            {
+                throw new UiCoreException("The given value is not allowed");
+            }
             else
             {
                 var value = request.NonReferenceValue != null ?
