@@ -73,6 +73,7 @@
                 if (index > -1) {
                     $scope.visibleExplorers.splice(index, 1);
 
+                    explorerService.remove(explorer);
                     // TODO: If the object is no longer in the UI, Let the server know that it can be GCed
                 }
             }
@@ -87,7 +88,7 @@
                             if (obj) {
                                 var existingObj = appService.identityMap.getObject(obj.ID);
                                 if (existingObj == null) {
-                                    appService.identityMap.addObject(existingObj);
+                                    appService.identityMap.addObject(obj);
                                 }
 
                                 obj.OuterProperty = prop;
