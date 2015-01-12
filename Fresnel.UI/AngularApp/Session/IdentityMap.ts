@@ -5,7 +5,6 @@ module FresnelApp {
     export class IdentityMap {
 
         private objects: any[] = [];
-        public explorers: any[] = [];
 
         getObject(key: string) {
             var item = this.objects[key];
@@ -13,63 +12,12 @@ module FresnelApp {
         }
 
         addObject(obj: IObjectVM) {
-            // We're wrapping the Domain Object in an Explorer:
-            var newExplorer = this.createExplorer(obj);
             this.remove(obj.ID);
-
             this.objects[obj.ID] = obj;
-
-            this.explorers[obj.ID] = newExplorer;
-            this.attachMembers(newExplorer);
-
-            if (obj.IsCollection) {
-                for (var i = 0; i < obj.Items.length; i++) {
-                    var item = obj.Items[i];
-                    var itemExplorer = this.getExplorer(item.ID);
-                    if (itemExplorer == null) {
-                        itemExplorer = this.createExplorer(item);
-                    }
-                    this.attachMembers(itemExplorer);
-                }
-            }
         }
 
-        createExplorer(obj: IObjectVM) : Explorer {
-            var explorer = new Explorer();
-            explorer.__meta = obj;
-            return explorer;
-        }
-
-        getExplorer(key: string) {
-            var result = this.explorers[key];
-            return result;
-        }
-
-        attachMembers(explorer: Explorer) {
-            var obj = explorer.__meta;
-
-            if (obj.Properties) {
-                for (var i = 0; i < obj.Properties.length; i++) {
-                    var prop = obj.Properties[i];
-                    explorer[prop.PropertyName] = prop;
-                }
-            }
-
-            if (obj.Methods) {
-                for (var i = 0; i < obj.Methods.length; i++) {
-                    var method = obj.Methods[i];
-                    explorer[method.MethodName] = method;
-                }
-            }
-        }
-
-        remove(key: string) {
-            var index = this.explorers.indexOf(key);
-            if (index > -1) {
-                this.explorers.splice(index, 1);
-            }
-
-            index = this.objects.indexOf(key);
+        remove(objID: string) {
+            var index = this.objects.indexOf(objID);
             if (index > -1) {
                 this.objects.splice(index, 1);
             }
@@ -137,10 +85,9 @@ module FresnelApp {
         }
 
         mergeObjects(newItem: IObjectVM, existingItem: IObjectVM) {
-            for (var prop in newItem) {
-                if (existingItem.hasOwnProperty(prop)) {
-                    existingItem[prop] = newItem[prop];
-                }
+            for (var i = 0; i < existingItem.Properties.length; i++) {
+                // NB: Don't replace the prop object, otherwise the bindings will break:
+                existingItem.Properties[i].Value = newItem.Properties[i].Value;
             }
         }
 

@@ -1,5 +1,47 @@
 var FresnelApp;
 (function (FresnelApp) {
+    var ExplorerService = (function () {
+        function ExplorerService() {
+            this.explorers = [];
+        }
+        ExplorerService.prototype.addExplorer = function (obj) {
+            var explorer = new FresnelApp.Explorer();
+            explorer.__meta = obj;
+            this.attachMembers(explorer);
+            this.explorers[obj.ID] = explorer;
+            return explorer;
+        };
+        ExplorerService.prototype.getExplorer = function (objID) {
+            var result = this.explorers[objID];
+            return result;
+        };
+        ExplorerService.prototype.remove = function (objID) {
+            var index = this.explorers.indexOf(objID);
+            if (index > -1) {
+                this.explorers.splice(index, 1);
+            }
+        };
+        ExplorerService.prototype.attachMembers = function (explorer) {
+            var obj = explorer.__meta;
+            if (obj.Properties) {
+                for (var i = 0; i < obj.Properties.length; i++) {
+                    var prop = obj.Properties[i];
+                    explorer[prop.PropertyName] = prop;
+                }
+            }
+            if (obj.Methods) {
+                for (var i = 0; i < obj.Methods.length; i++) {
+                    var method = obj.Methods[i];
+                    explorer[method.MethodName] = method;
+                }
+            }
+        };
+        return ExplorerService;
+    })();
+    FresnelApp.ExplorerService = ExplorerService;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     var CollectionExplorerController = (function () {
         function CollectionExplorerController($scope, $http, appService) {
             $scope.gridColumns = [];
@@ -7,7 +49,7 @@ var FresnelApp;
             for (var i = 0; i < collection.ColumnHeaders.length; i++) {
                 var newColumn = {
                     name: collection.ColumnHeaders[i].Name,
-                    field: collection.ColumnHeaders[i].PropertyName + ".Value"
+                    field: 'Properties[' + i + "].Value"
                 };
                 $scope.gridColumns[i] = newColumn;
             }
@@ -25,15 +67,19 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ObjectExplorerController = (function () {
-        function ObjectExplorerController($rootScope, $scope, $http, $timeout, appService) {
+        function ObjectExplorerController($rootScope, $scope, $http, $timeout, appService, explorerService) {
             $scope.visibleExplorers = [];
             $scope.$on('objectCreated', function (event, obj) {
-                var explorer = appService.identityMap.getExplorer(obj.ID);
-                $scope.visibleExplorers.push(explorer);
+                var explorer = explorerService.getExplorer(obj.ID);
+                if (explorer == null) {
+                    explorer = explorerService.addExplorer(obj);
+                    $scope.visibleExplorers.push(explorer);
+                }
             });
             $scope.invoke = function (method) {
                 var uri = "api/Explorer/InvokeMethod";
                 $http.post(uri, method).success(function (data, status) {
+                    method.Error = data.Passed ? "" : data.Messages.Errors[0].Text;
                     appService.identityMap.merge(data.Modifications);
                     $rootScope.$broadcast("messagesReceived", data.Messages);
                 });
@@ -47,6 +93,7 @@ var FresnelApp;
                 };
                 $http.post(uri, request).success(function (data, status) {
                     $timeout(function () {
+                        prop.Error = data.Passed ? "" : data.Messages.Errors[0].Text;
                         appService.identityMap.merge(data.Modifications);
                         $rootScope.$broadcast("messagesReceived", data.Messages);
                     });
@@ -68,18 +115,26 @@ var FresnelApp;
             $scope.openNewExplorer = function (prop) {
                 var uri = "api/Explorer/GetObjectProperty";
                 $http.post(uri, prop).success(function (data, status) {
-                    var obj = data.ReturnValue;
-                    if (obj) {
-                        appService.identityMap.addObject(obj);
-                        // TODO: Insert the object just after it's parent?
-                        obj.OuterProperty = prop;
-                        var explorer = appService.identityMap.getExplorer(obj.ID);
-                        $scope.visibleExplorers.push(explorer);
-                    }
+                    $timeout(function () {
+                        var obj = data.ReturnValue;
+                        if (obj) {
+                            var existingObj = appService.identityMap.getObject(obj.ID);
+                            if (existingObj == null) {
+                                appService.identityMap.addObject(existingObj);
+                            }
+                            obj.OuterProperty = prop;
+                            // TODO: Insert the object just after it's parent?
+                            var explorer = explorerService.getExplorer(obj.ID);
+                            if (explorer == null) {
+                                explorer = explorerService.addExplorer(obj);
+                                $scope.visibleExplorers.push(explorer);
+                            }
+                        }
+                    });
                 });
             };
         }
-        ObjectExplorerController.$inject = ['$rootScope', '$scope', '$http', '$timeout', 'appService'];
+        ObjectExplorerController.$inject = ['$rootScope', '$scope', '$http', '$timeout', 'appService', 'explorerService'];
         return ObjectExplorerController;
     })();
     FresnelApp.ObjectExplorerController = ObjectExplorerController;
@@ -229,60 +284,17 @@ var FresnelApp;
     var IdentityMap = (function () {
         function IdentityMap() {
             this.objects = [];
-            this.explorers = [];
         }
         IdentityMap.prototype.getObject = function (key) {
             var item = this.objects[key];
             return item;
         };
         IdentityMap.prototype.addObject = function (obj) {
-            // We're wrapping the Domain Object in an Explorer:
-            var newExplorer = this.createExplorer(obj);
             this.remove(obj.ID);
             this.objects[obj.ID] = obj;
-            this.explorers[obj.ID] = newExplorer;
-            this.attachMembers(newExplorer);
-            if (obj.IsCollection) {
-                for (var i = 0; i < obj.Items.length; i++) {
-                    var item = obj.Items[i];
-                    var itemExplorer = this.getExplorer(item.ID);
-                    if (itemExplorer == null) {
-                        itemExplorer = this.createExplorer(item);
-                    }
-                    this.attachMembers(itemExplorer);
-                }
-            }
         };
-        IdentityMap.prototype.createExplorer = function (obj) {
-            var explorer = new FresnelApp.Explorer();
-            explorer.__meta = obj;
-            return explorer;
-        };
-        IdentityMap.prototype.getExplorer = function (key) {
-            var result = this.explorers[key];
-            return result;
-        };
-        IdentityMap.prototype.attachMembers = function (explorer) {
-            var obj = explorer.__meta;
-            if (obj.Properties) {
-                for (var i = 0; i < obj.Properties.length; i++) {
-                    var prop = obj.Properties[i];
-                    explorer[prop.PropertyName] = prop;
-                }
-            }
-            if (obj.Methods) {
-                for (var i = 0; i < obj.Methods.length; i++) {
-                    var method = obj.Methods[i];
-                    explorer[method.MethodName] = method;
-                }
-            }
-        };
-        IdentityMap.prototype.remove = function (key) {
-            var index = this.explorers.indexOf(key);
-            if (index > -1) {
-                this.explorers.splice(index, 1);
-            }
-            index = this.objects.indexOf(key);
+        IdentityMap.prototype.remove = function (objID) {
+            var index = this.objects.indexOf(objID);
             if (index > -1) {
                 this.objects.splice(index, 1);
             }
@@ -321,7 +333,7 @@ var FresnelApp;
                     }
                     var prop = $.grep(existingItem.Properties, function (e) {
                         return e.PropertyName == propertyChange.PropertyName;
-                    }, false);
+                    }, false)[0];
                     prop.Value = newPropertyValue;
                 }
             }
@@ -338,10 +350,9 @@ var FresnelApp;
             }
         };
         IdentityMap.prototype.mergeObjects = function (newItem, existingItem) {
-            for (var prop in newItem) {
-                if (existingItem.hasOwnProperty(prop)) {
-                    existingItem[prop] = newItem[prop];
-                }
+            for (var i = 0; i < existingItem.Properties.length; i++) {
+                // NB: Don't replace the prop object, otherwise the bindings will break:
+                existingItem.Properties[i].Value = newItem.Properties[i].Value;
             }
         };
         return IdentityMap;
@@ -368,7 +379,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var requires = ['ui.grid', 'ui.grid.autoResize', 'ui.grid.selection'];
-    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
+    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);
             return responseData;

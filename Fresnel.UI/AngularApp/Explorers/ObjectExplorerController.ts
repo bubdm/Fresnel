@@ -2,20 +2,24 @@
 
     export class ObjectExplorerController {
 
-        static $inject = ['$rootScope', '$scope', '$http', '$timeout', 'appService'];
+        static $inject = ['$rootScope', '$scope', '$http', '$timeout', 'appService', 'explorerService'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: IObjectExplorerControllerScope,
             $http: ng.IHttpService,
             $timeout: ng.ITimeoutService,
-            appService: AppService) {
+            appService: AppService,
+            explorerService: ExplorerService) {
 
             $scope.visibleExplorers = [];
 
             $scope.$on('objectCreated', function (event, obj: IObjectVM) {
-                var explorer = appService.identityMap.getExplorer(obj.ID);
-                $scope.visibleExplorers.push(explorer);
+                var explorer = explorerService.getExplorer(obj.ID);
+                if (explorer == null) {
+                    explorer = explorerService.addExplorer(obj);
+                    $scope.visibleExplorers.push(explorer);
+                }
             });
 
             $scope.invoke = function (method: any) {
@@ -78,19 +82,28 @@
 
                 $http.post(uri, prop)
                     .success(function (data: any, status) {
-                        var obj = data.ReturnValue;
-                        if (obj) {
-                            appService.identityMap.addObject(obj);
+                        $timeout(function () {
+                            var obj = data.ReturnValue;
+                            if (obj) {
+                                var existingObj = appService.identityMap.getObject(obj.ID);
+                                if (existingObj == null) {
+                                    appService.identityMap.addObject(existingObj);
+                                }
 
-                            // TODO: Insert the object just after it's parent?
-                            obj.OuterProperty = prop;
+                                obj.OuterProperty = prop;
 
-                            var explorer = appService.identityMap.getExplorer(obj.ID);
-                            $scope.visibleExplorers.push(explorer);
-                        }
+                                // TODO: Insert the object just after it's parent?
+                                var explorer = explorerService.getExplorer(obj.ID);
+                                if (explorer == null) {
+                                    explorer = explorerService.addExplorer(obj);
+                                    $scope.visibleExplorers.push(explorer);
+                                }
+                            }
+                        })
                     });
             }
 
         }
+
     }
 }
