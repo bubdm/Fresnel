@@ -13,26 +13,16 @@ a.disabled {
     width: 100%;
 }
 
+.explorerToolbar {
+    background-color: ActiveCaption;
+    color: WindowText;
+}
+
 .explorerPanel {
     padding: 0px !important;
     margin: 4px !important;
     overflow-x: hidden;
     overflow-y: auto;
-}
-
-.explorerPanelNormalSize {
-    width: 430px; /* This allows 3 horzontal panels on a 1366 screen */
-    height: 400px;
-}
-
-.explorerPanelMaximised {
-    width: 1200px;
-    height: 400px;
-}
-
-.explorerToolbar {
-    background-color: ActiveCaption;
-    color: WindowText;
 }
 
 .propertyItems {
@@ -65,4 +55,48 @@ a.disabled {
 
 .fullWidth {
     width: 100%;
+}
+
+@media screen and (min-width: 927px) {
+
+    .explorerPanelNormalSize {
+        width: 440px; /* This allows 2 horzontal panels (no sidebar)*/
+    }
+
+    .explorerPanelMaximised {
+        width: 900px;
+    }
+}
+
+@media screen and (min-width: 1023px) {
+
+    .explorerPanelNormalSize {
+        width: 500px; /* This allows 1 horzontal panel (with sidebar) */
+    }
+
+    .explorerPanelMaximised {
+        width: 760px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+
+    .explorerPanelNormalSize {
+        width: 490px; /* This allows 2 horzontal panels (with sidebar)*/
+    }
+
+    .explorerPanelMaximised {
+        width: 980px;
+    }
+}
+
+@media screen and (min-width: 1903) {
+
+    .explorerPanelNormalSize {
+        width: 540px; /* This allows 3 horzontal panels (with sidebar)*/
+    }
+
+    .explorerPanelMaximised {
+        width: 1100px;
+    }
 }
