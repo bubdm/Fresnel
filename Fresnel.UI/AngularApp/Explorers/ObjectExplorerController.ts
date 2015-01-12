@@ -23,6 +23,10 @@
 
                 $http.post(uri, method)
                     .success(function (data: any, status) {
+                        method.Error = data.Passed ?
+                        "" :
+                        data.Messages.Errors[0].Text;
+
                         appService.identityMap.merge(data.Modifications);
                         $rootScope.$broadcast("messagesReceived", data.Messages);
                     });
@@ -40,6 +44,10 @@
                 $http.post(uri, request)
                     .success(function (data: any, status) {
                         $timeout(function () {
+                            prop.Error = data.Passed ?
+                            "" :
+                            data.Messages.Errors[0].Text;
+
                             appService.identityMap.merge(data.Modifications);
                             $rootScope.$broadcast("messagesReceived", data.Messages);
                         })
