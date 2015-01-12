@@ -3,7 +3,7 @@ var FresnelApp;
     var CollectionExplorerController = (function () {
         function CollectionExplorerController($scope, $http, appService) {
             $scope.gridColumns = [];
-            var collection = $scope.obj;
+            var collection = $scope.explorer.__meta;
             for (var i = 0; i < collection.ColumnHeaders.length; i++) {
                 var newColumn = {
                     name: collection.ColumnHeaders[i].Name,
@@ -28,12 +28,14 @@ var FresnelApp;
         function ObjectExplorerController($rootScope, $scope, $http, $timeout, appService) {
             $scope.visibleExplorers = [];
             $scope.$on('objectCreated', function (event, obj) {
-                $scope.visibleExplorers.push(obj);
+                var explorer = appService.identityMap.getExplorer(obj.ID);
+                $scope.visibleExplorers.push(explorer);
             });
             $scope.invoke = function (method) {
                 var uri = "api/Explorer/InvokeMethod";
                 $http.post(uri, method).success(function (data, status) {
                     appService.identityMap.merge(data.Modifications);
+                    $rootScope.$broadcast("messagesReceived", data.Messages);
                 });
             };
             $scope.setProperty = function (prop) {
@@ -50,15 +52,15 @@ var FresnelApp;
                     });
                 });
             };
-            $scope.minimise = function (obj) {
-                obj.IsMaximised = false;
+            $scope.minimise = function (explorer) {
+                explorer.IsMaximised = false;
             };
-            $scope.maximise = function (obj) {
-                obj.IsMaximised = true;
+            $scope.maximise = function (explorer) {
+                explorer.IsMaximised = true;
             };
-            $scope.close = function (obj) {
+            $scope.close = function (explorer) {
                 // TODO: Check for dirty status
-                var index = $scope.visibleExplorers.indexOf(obj);
+                var index = $scope.visibleExplorers.indexOf(explorer);
                 if (index > -1) {
                     $scope.visibleExplorers.splice(index, 1);
                 }
@@ -68,10 +70,11 @@ var FresnelApp;
                 $http.post(uri, prop).success(function (data, status) {
                     var obj = data.ReturnValue;
                     if (obj) {
-                        appService.identityMap.addItem(obj);
+                        appService.identityMap.addObject(obj);
                         // TODO: Insert the object just after it's parent?
                         obj.OuterProperty = prop;
-                        $scope.visibleExplorers.push(obj);
+                        var explorer = appService.identityMap.getExplorer(obj.ID);
+                        $scope.visibleExplorers.push(explorer);
                     }
                 });
             };
@@ -95,6 +98,15 @@ var FresnelApp;
         };
     }
     FresnelApp.ObjectExplorerDirective = ObjectExplorerDirective;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var Explorer = (function () {
+        function Explorer() {
+        }
+        return Explorer;
+    })();
+    FresnelApp.Explorer = Explorer;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
@@ -161,7 +173,7 @@ var FresnelApp;
                 };
                 $http.post(uri, arg, config).success(function (data, status) {
                     var newObject = data.NewObject;
-                    appService.identityMap.addItem(newObject);
+                    appService.identityMap.addObject(newObject);
                     $rootScope.$broadcast("objectCreated", newObject);
                 });
             };
@@ -211,50 +223,68 @@ var FresnelApp;
     }
     FresnelApp.DisableAnchorDirective = DisableAnchorDirective;
 })(FresnelApp || (FresnelApp = {}));
+/// <reference path="../../scripts/typings/jquery/jquery.d.ts" />
 var FresnelApp;
 (function (FresnelApp) {
     var IdentityMap = (function () {
         function IdentityMap() {
-            this.hash = [];
-            this.items = [];
+            this.objects = [];
+            this.explorers = [];
         }
-        IdentityMap.prototype.getItem = function (key) {
-            var item = this.hash[key];
+        IdentityMap.prototype.getObject = function (key) {
+            var item = this.objects[key];
             return item;
         };
-        IdentityMap.prototype.addItem = function (obj) {
-            this.removeItem(obj.ID);
-            this.items.push({
-                key: obj.ID,
-                value: obj
-            });
-            this.hash[obj.ID] = obj;
-            this.attachMembers(obj);
-        };
-        IdentityMap.prototype.attachMembers = function (obj) {
+        IdentityMap.prototype.addObject = function (obj) {
+            // We're wrapping the Domain Object in an Explorer:
+            var newExplorer = this.createExplorer(obj);
+            this.remove(obj.ID);
+            this.objects[obj.ID] = obj;
+            this.explorers[obj.ID] = newExplorer;
+            this.attachMembers(newExplorer);
             if (obj.IsCollection) {
                 for (var i = 0; i < obj.Items.length; i++) {
-                    this.attachMembers(obj.Items[i]);
+                    var item = obj.Items[i];
+                    var itemExplorer = this.getExplorer(item.ID);
+                    if (itemExplorer == null) {
+                        itemExplorer = this.createExplorer(item);
+                    }
+                    this.attachMembers(itemExplorer);
                 }
             }
+        };
+        IdentityMap.prototype.createExplorer = function (obj) {
+            var explorer = new FresnelApp.Explorer();
+            explorer.__meta = obj;
+            return explorer;
+        };
+        IdentityMap.prototype.getExplorer = function (key) {
+            var result = this.explorers[key];
+            return result;
+        };
+        IdentityMap.prototype.attachMembers = function (explorer) {
+            var obj = explorer.__meta;
             if (obj.Properties) {
                 for (var i = 0; i < obj.Properties.length; i++) {
                     var prop = obj.Properties[i];
-                    obj[prop.PropertyName] = prop;
+                    explorer[prop.PropertyName] = prop;
                 }
             }
             if (obj.Methods) {
                 for (var i = 0; i < obj.Methods.length; i++) {
                     var method = obj.Methods[i];
-                    obj[method.MethodName] = method;
+                    explorer[method.MethodName] = method;
                 }
             }
         };
-        IdentityMap.prototype.removeItem = function (key) {
-            var index = this.items.indexOf(key);
+        IdentityMap.prototype.remove = function (key) {
+            var index = this.explorers.indexOf(key);
             if (index > -1) {
-                this.items.splice(index, 1);
-                delete this.hash[key];
+                this.explorers.splice(index, 1);
+            }
+            index = this.objects.indexOf(key);
+            if (index > -1) {
+                this.objects.splice(index, 1);
             }
         };
         IdentityMap.prototype.merge = function (modifications) {
@@ -262,40 +292,43 @@ var FresnelApp;
                 return;
             for (var i = 0; i < modifications.NewObjects.length; i++) {
                 var item = modifications.NewObjects[i];
-                var existingItem = this.getItem(item.ID);
+                var existingItem = this.getObject(item.ID);
                 if (existingItem == null) {
-                    this.addItem(item);
+                    this.addObject(item);
                 }
                 else {
                     this.mergeObjects(item, existingItem);
                 }
             }
-            for (var i = 0; i < modifications.PropertyChanges.length; i++) {
-                var propertyChange = modifications.PropertyChanges[i];
-                var existingItem = this.getItem(propertyChange.ObjectId);
-                if (existingItem != null) {
-                    var newPropertyValue = null;
-                    if (propertyChange.ReferenceValueId != null) {
-                        newPropertyValue = this.getItem(propertyChange.ReferenceValueId);
-                    }
-                    else {
-                        newPropertyValue = propertyChange.NonReferenceValue;
-                    }
-                    existingItem[propertyChange.PropertyName].Value = newPropertyValue;
-                }
-            }
             for (var i = 0; i < modifications.CollectionAdditions.length; i++) {
                 var addition = modifications.CollectionAdditions[i];
-                var collectionVM = this.getItem(addition.CollectionId);
-                var elementVM = this.getItem(addition.ElementId);
+                var collectionVM = this.getObject(addition.CollectionId);
+                var elementVM = this.getObject(addition.ElementId);
                 if (collectionVM != null) {
                     collectionVM.Items.push(elementVM);
                 }
             }
+            for (var i = 0; i < modifications.PropertyChanges.length; i++) {
+                var propertyChange = modifications.PropertyChanges[i];
+                var existingItem = this.getObject(propertyChange.ObjectId);
+                if (existingItem != null) {
+                    var newPropertyValue = null;
+                    if (propertyChange.ReferenceValueId != null) {
+                        newPropertyValue = this.getObject(propertyChange.ReferenceValueId);
+                    }
+                    else {
+                        newPropertyValue = propertyChange.NonReferenceValue;
+                    }
+                    var prop = $.grep(existingItem.Properties, function (e) {
+                        return e.PropertyName == propertyChange.PropertyName;
+                    }, false);
+                    prop.Value = newPropertyValue;
+                }
+            }
             for (var i = 0; i < modifications.CollectionRemovals.length; i++) {
                 var removal = modifications.CollectionRemovals[i];
-                var collectionVM = this.getItem(removal.CollectionId);
-                var elementVM = this.getItem(removal.ElementId);
+                var collectionVM = this.getObject(removal.CollectionId);
+                var elementVM = this.getObject(removal.ElementId);
                 if (collectionVM != null) {
                     var index = collectionVM.items.indexOf(elementVM);
                     if (index > -1) {
@@ -314,12 +347,6 @@ var FresnelApp;
         return IdentityMap;
     })();
     FresnelApp.IdentityMap = IdentityMap;
-    var IdentityMapDelta = (function () {
-        function IdentityMapDelta() {
-        }
-        return IdentityMapDelta;
-    })();
-    FresnelApp.IdentityMapDelta = IdentityMapDelta;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {

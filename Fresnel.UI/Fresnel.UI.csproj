@@ -953,6 +953,7 @@
     <Content Include="Templates\Editors\passwordEditor.html" />
     <Content Include="Templates\Editors\textAreaEditor.html" />
     <Content Include="Templates\mainHeader.html" />
+    <Content Include="Templates\explorerToolbar.html" />
     <Content Include="Templates\toolbox.html" />
     <Content Include="Templates\Editors\emptyEditor.html" />
     <Content Include="Templates\Editors\booleanRadioEditor.html" />
@@ -1017,6 +1018,7 @@
     <TypeScriptCompile Include="AngularApp\Explorers\CollectionExplorerController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ObjectExplorerController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ObjectExplorerDirective.ts" />
+    <TypeScriptCompile Include="AngularApp\Classes.ts" />
     <TypeScriptCompile Include="AngularApp\Session\AppController.ts" />
     <TypeScriptCompile Include="AngularApp\Session\AppService.ts" />
     <TypeScriptCompile Include="AngularApp\ClassLibrary\ToolboxController.ts" />

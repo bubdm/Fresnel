@@ -11,7 +11,7 @@
 
             $scope.gridColumns = [];
 
-            var collection: any = $scope.obj;
+            var collection: any = $scope.explorer.__meta;
 
             for (var i = 0; i < collection.ColumnHeaders.length; i++) {
                 var newColumn = {

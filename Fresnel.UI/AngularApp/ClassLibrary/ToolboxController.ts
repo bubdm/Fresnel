@@ -29,7 +29,7 @@
                     .success(function (data: any, status) {
                         var newObject = data.NewObject;
 
-                        appService.identityMap.addItem(newObject);
+                        appService.identityMap.addObject(newObject);
                         $rootScope.$broadcast("objectCreated", newObject);
                     });
             }

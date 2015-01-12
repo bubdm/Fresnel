@@ -1,57 +1,77 @@
-﻿module FresnelApp {
+﻿/// <reference path="../../scripts/typings/jquery/jquery.d.ts" />
+module FresnelApp {
 
 
     export class IdentityMap {
 
-        private hash: any[] = [];
-        public items: any[] = [];
+        private objects: any[] = [];
+        public explorers: any[] = [];
 
-        getItem(key: string) {
-            var item = this.hash[key];
+        getObject(key: string) {
+            var item = this.objects[key];
             return item;
         }
 
-        addItem(obj: IObjectVM) {
-            this.removeItem(obj.ID);
+        addObject(obj: IObjectVM) {
+            // We're wrapping the Domain Object in an Explorer:
+            var newExplorer = this.createExplorer(obj);
+            this.remove(obj.ID);
 
-            this.items.push(
-                {
-                    key: obj.ID,
-                    value: obj
-                });
+            this.objects[obj.ID] = obj;
 
-            this.hash[obj.ID] = obj;
+            this.explorers[obj.ID] = newExplorer;
+            this.attachMembers(newExplorer);
 
-            this.attachMembers(obj);
-        }
-
-        attachMembers(obj: IObjectVM) {
             if (obj.IsCollection) {
                 for (var i = 0; i < obj.Items.length; i++) {
-                    this.attachMembers(obj.Items[i]);
+                    var item = obj.Items[i];
+                    var itemExplorer = this.getExplorer(item.ID);
+                    if (itemExplorer == null) {
+                        itemExplorer = this.createExplorer(item);
+                    }
+                    this.attachMembers(itemExplorer);
                 }
             }
+        }
+
+        createExplorer(obj: IObjectVM) : Explorer {
+            var explorer = new Explorer();
+            explorer.__meta = obj;
+            return explorer;
+        }
+
+        getExplorer(key: string) {
+            var result = this.explorers[key];
+            return result;
+        }
+
+        attachMembers(explorer: Explorer) {
+            var obj = explorer.__meta;
 
             if (obj.Properties) {
                 for (var i = 0; i < obj.Properties.length; i++) {
                     var prop = obj.Properties[i];
-                    obj[prop.PropertyName] = prop;
+                    explorer[prop.PropertyName] = prop;
                 }
             }
 
             if (obj.Methods) {
                 for (var i = 0; i < obj.Methods.length; i++) {
                     var method = obj.Methods[i];
-                    obj[method.MethodName] = method;
+                    explorer[method.MethodName] = method;
                 }
             }
         }
 
-        removeItem(key: string) {
-            var index = this.items.indexOf(key);
+        remove(key: string) {
+            var index = this.explorers.indexOf(key);
             if (index > -1) {
-                this.items.splice(index, 1);
-                delete this.hash[key];
+                this.explorers.splice(index, 1);
+            }
+
+            index = this.objects.indexOf(key);
+            if (index > -1) {
+                this.objects.splice(index, 1);
             }
         }
 
@@ -59,48 +79,54 @@
             if (modifications == null)
                 return;
 
+            // 1: Add new objects:
             for (var i = 0; i < modifications.NewObjects.length; i++) {
                 var item: IObjectVM = modifications.NewObjects[i];
-                var existingItem = this.getItem(item.ID);
+                var existingItem = this.getObject(item.ID);
                 if (existingItem == null) {
-                    this.addItem(item);
+                    this.addObject(item);
                 }
                 else {
                     this.mergeObjects(item, existingItem);
                 }
             }
 
-            for (var i = 0; i < modifications.PropertyChanges.length; i++) {
-                var propertyChange = modifications.PropertyChanges[i];
-
-                var existingItem = this.getItem(propertyChange.ObjectId);
-                if (existingItem != null) {
-                    var newPropertyValue = null;
-
-                    if (propertyChange.ReferenceValueId != null) {
-                        newPropertyValue = this.getItem(propertyChange.ReferenceValueId);
-                    }
-                    else {
-                        newPropertyValue = propertyChange.NonReferenceValue;
-                    }
-
-                    existingItem[propertyChange.PropertyName].Value = newPropertyValue;
-                }
-            }
-
             for (var i = 0; i < modifications.CollectionAdditions.length; i++) {
                 var addition = modifications.CollectionAdditions[i];
-                var collectionVM = this.getItem(addition.CollectionId);
-                var elementVM = this.getItem(addition.ElementId);
+                var collectionVM = this.getObject(addition.CollectionId);
+                var elementVM = this.getObject(addition.ElementId);
                 if (collectionVM != null) {
                     collectionVM.Items.push(elementVM);
                 }
             }
 
+            // 2: Apply modifications:
+            for (var i = 0; i < modifications.PropertyChanges.length; i++) {
+                var propertyChange = modifications.PropertyChanges[i];
+
+                var existingItem = this.getObject(propertyChange.ObjectId);
+                if (existingItem != null) {
+                    var newPropertyValue = null;
+
+                    if (propertyChange.ReferenceValueId != null) {
+                        newPropertyValue = this.getObject(propertyChange.ReferenceValueId);
+                    }
+                    else {
+                        newPropertyValue = propertyChange.NonReferenceValue;
+                    }
+
+                    var prop: any = $.grep(existingItem.Properties, function (e: any) {
+                        return e.PropertyName == propertyChange.PropertyName;
+                    }, false);
+                    prop.Value = newPropertyValue;
+                }
+            }
+
+            // 3: Perform removals:
             for (var i = 0; i < modifications.CollectionRemovals.length; i++) {
                 var removal = modifications.CollectionRemovals[i];
-                var collectionVM = this.getItem(removal.CollectionId);
-                var elementVM = this.getItem(removal.ElementId);
+                var collectionVM = this.getObject(removal.CollectionId);
+                var elementVM = this.getObject(removal.ElementId);
                 if (collectionVM != null) {
                     var index = collectionVM.items.indexOf(elementVM);
                     if (index > -1) {
@@ -118,15 +144,6 @@
             }
         }
 
-    }
-
-    export class IdentityMapDelta {
-
-        public newItems;
-
-        public modifiedItems;
-
-        public deletedItems;
     }
 
 }

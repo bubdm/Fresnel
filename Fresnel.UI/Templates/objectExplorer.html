@@ -1,36 +1,19 @@
-﻿<div id="objectExplorer" object-explorer ng-class="{'container-fluid' : true, 'col-md-4': true, 'box': true, 'box-solid': true, 'box-primary': true, 'explorerPanel' : true, 'explorerPanelNormalSize' : !obj.IsMaximised, 'explorerPanelMaximised' : obj.IsMaximised}">
+﻿<div id="objectExplorer" object-explorer ng-class="{'container-fluid' : true, 'col-md-4': true, 'box': true, 'box-solid': true, 'box-primary': true, 'explorerPanel' : true, 'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
 
     <div class="box-header">
-        <span class="explorerItemIcon {{obj.Type}}Icon"> </span>
+        <span class="explorerItemIcon {{explorer.__meta.Type}}Icon"> </span>
         <h3 class="box-title">
-            {{ obj.OuterProperty.Name ? obj.OuterProperty.Name : obj.Name }}
+            {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
         </h3>
-        <div class="box-tools pull-right">
-            <div class="btn-group" ng-show="obj.Methods.length > 0">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Actions</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat='method in obj.Methods'>
-                        <a href="" a-disabled="!method.IsEnabled" ng-click="invoke(method)" data-toggle="tooltip" title="{{method.Description}}">{{method.Name}}</a>
-                    </li>
-                </ul>
-            </div>
 
-            <button class="btn btn-primary btn-sm" ng-disabled="obj.Save.IsEnabled" ng-click="save(obj)" tooltip="prop.Tooltip"><i class="fa fa-save"></i></button>
-            <button class="btn btn-primary btn-sm" ng-click="showInfo(obj)"><i class="fa fa-info-circle"></i></button>
-            <button class="btn btn-primary btn-sm" ng-show="obj.IsMaximised" ng-click="minimise(obj)"><i class="fa fa-compress"></i></button>
-            <button class="btn btn-primary btn-sm" ng-show="!obj.IsMaximised" ng-click=" maximise(obj)"><i class="fa fa-expand"></i></button>
-            <button class="btn btn-primary btn-sm" ng-click="close(obj)"><i class="fa fa-close"></i></button>
-        </div>
+        <div ng-include="'/Templates/explorerToolbar.html'"></div>
     </div>
 
     <p>
         <ng-form role="form" class="">
             <div class="box-body">
                 <div class="propertyItems">
-                    <div ng-repeat='prop in obj.Properties' ng-include="'/Templates/propertyItem.html'">
+                    <div ng-repeat='prop in explorer.__meta.Properties' ng-include="'/Templates/propertyItem.html'">
                     </div>
                 </div>
             </div>

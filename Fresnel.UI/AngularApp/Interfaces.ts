@@ -21,15 +21,15 @@
 
     export interface IObjectExplorerControllerScope extends ng.IScope {
 
-        obj: IObjectVM;
+        explorer: Explorer;
 
-        visibleExplorers: any[];
+        visibleExplorers: Explorer[];
 
-        minimise(obj: IObjectVM);
+        minimise(explorer: Explorer);
 
-        maximise(obj: IObjectVM);
+        maximise(explorer: Explorer);
 
-        close(obj: IObjectVM);
+        close(explorer: Explorer);
 
         invoke(method: IObjectVM);
 

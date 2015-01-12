@@ -18,7 +18,5 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public IEnumerable<MethodVM> Methods { get; set; }
 
-        public bool IsMaximised { get; set; }
-
     }
 }

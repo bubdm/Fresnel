@@ -70,15 +70,13 @@
         </nav>
     </header>
 
-
-
     <div class="wrapper row-offcanvas row-offcanvas-left">
         <!-- Left side column. contains the logo and sidebar -->
         <aside class="left-side sidebar-offcanvas">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar toolboxPanel">
                 <!-- Sidebar user panel -->
-                <div class="user-panel" ng-controller="appController">
+                <div class="user-panel">
                     <div class="pull-left image">
                         <img src="image/avatar3.png" class="img-circle" alt="User Image" />
                     </div>
@@ -121,8 +119,8 @@
             <section class="content workbenchContainer isotope" isotope-container>
 
                 <div ng-controller="objectExplorerController">
-                    <div class="isotope-item" isotope-item ng-repeat="obj in visibleExplorers">
-                        <div ng-switch="obj.IsCollection">
+                    <div class="isotope-item" isotope-item ng-repeat="explorer in visibleExplorers">
+                        <div ng-switch="explorer.__meta.IsCollection">
                             <div ng-switch-when="true">
                                 <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'"></div>
                             </div>
