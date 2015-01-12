@@ -117,7 +117,7 @@ module FresnelApp {
 
                     var prop: any = $.grep(existingItem.Properties, function (e: any) {
                         return e.PropertyName == propertyChange.PropertyName;
-                    }, false);
+                    }, false)[0];
                     prop.Value = newPropertyValue;
                 }
             }
