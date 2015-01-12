@@ -1,16 +1,16 @@
-﻿<div id="collectionExplorer" ng-class="{'container-fluid' : true, 'col-md-4': true, 'box': true, 'box-solid': true, 'box-primary': true, 'explorerPanel' : true, 'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
+﻿<div id="collectionExplorer_{{explorer.__meta.ID}}" ng-class="{'container-fluid' : true, 'col-md-4': true, 'box': true, 'box-solid': true, 'box-primary': true, 'explorerPanel' : true, 'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
 
     <div class="box-header">
         <span class="explorerItemIcon fa fa-folder-open-o"> </span>
         <h3 class="box-title">
             {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
-            <span ng-show="explorer.__meta.IsCollection">({{ explorer.__meta.Items.length }})</span> 
+            <span ng-show="explorer.__meta.IsCollection">({{ explorer.__meta.Items.length }})</span>
         </h3>
 
         <div ng-include="'/Templates/explorerToolbar.html'"></div>
     </div>
 
-    <div id="collectionGrid" ui-grid="gridOptions" ui-grid-auto-resize ui-grid-selection>
+    <div id="collectionGrid_{{explorer.__meta.ID}}" ui-grid="gridOptions" ui-grid-auto-resize ui-grid-selection>
     </div>
 
 </div>
