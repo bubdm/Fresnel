@@ -4,23 +4,20 @@ module FresnelApp {
 
     export class IdentityMap {
 
-        private objects: any[] = [];
+        private objectMap: any[] = [];
 
         getObject(key: string) {
-            var item = this.objects[key];
+            var item = this.objectMap[key];
             return item;
         }
 
         addObject(obj: IObjectVM) {
             this.remove(obj.ID);
-            this.objects[obj.ID] = obj;
+            this.objectMap[obj.ID] = obj;
         }
 
         remove(objID: string) {
-            var index = this.objects.indexOf(objID);
-            if (index > -1) {
-                this.objects.splice(index, 1);
-            }
+            delete this.objectMap[objID];
         }
 
         merge(modifications: any) {
