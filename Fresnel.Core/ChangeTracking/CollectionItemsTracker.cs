@@ -53,6 +53,9 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             var addedItems = veryLatestItems.Except(this.LatestItems).ToArray();
             var removedItems = this.LatestItems.Except(veryLatestItems).ToArray();
 
+            this.PreviousItems = this.LatestItems;
+            this.LatestItems = veryLatestItems;
+
             if (!addedItems.Any() && !removedItems.Any())
             {
                 return Assertion.Fail("The collection has not changed");
