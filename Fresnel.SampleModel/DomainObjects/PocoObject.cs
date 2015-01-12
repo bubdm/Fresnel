@@ -95,7 +95,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// 
         /// </summary>
-        public virtual ICollection<PocoObject>ChildObjects
+        public virtual ICollection<PocoObject> ChildObjects
         {
             get { return _ChildObjects; }
             protected set { _ChildObjects = value; }
@@ -107,9 +107,10 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// </summary>
         public virtual void AddSomeChildObjects()
         {
-            this.ChildObjects.Add(new PocoObject());
-            this.ChildObjects.Add(new PocoObject());
-            this.ChildObjects.Add(new PocoObject());
+            var stamp = Environment.TickCount;
+            this.ChildObjects.Add(new PocoObject() { RecordId = stamp });
+            this.ChildObjects.Add(new PocoObject() { RecordId = stamp + 1 });
+            this.ChildObjects.Add(new PocoObject() { RecordId = stamp + 2 });
         }
 
         /// <summary>
@@ -119,9 +120,11 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public static PocoObject CreateLargeObject()
         {
             var result = new PocoObject();
+
+            var stamp = Environment.TickCount;
             for (var i = 1; i <= 500; i++)
             {
-                result.ChildObjects.Add(new PocoObject() { RecordId = i });
+                result.ChildObjects.Add(new PocoObject() { RecordId = stamp + i });
             }
             return result;
         }
