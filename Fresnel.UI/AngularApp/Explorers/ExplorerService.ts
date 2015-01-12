@@ -18,11 +18,9 @@
             return result;
         }
 
-        remove(objID: string) {
-            var index = this.explorers.indexOf(objID);
-            if (index > -1) {
-                this.explorers.splice(index, 1);
-            }
+        remove(explorer: Explorer) {
+            var objID = explorer.__meta.ID;
+            delete this.explorers[objID];
         }
 
         attachMembers(explorer: Explorer) {
