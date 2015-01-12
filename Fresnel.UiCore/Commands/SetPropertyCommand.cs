@@ -101,17 +101,32 @@ namespace Envivo.Fresnel.UiCore.Commands
                 oValue = _ObserverCache.GetObserver(value, oProp.Template.PropertyType);
             }
             else if (oProp.Template.IsNonReference &&
-                     !oProp.Template.IsNullableType &&
+                     oProp.Template.IsNullableType &&
                      request.NonReferenceValue == null)
+            {
+                var targetType = oProp.Template.PropertyType.GetInnerType();
+                oValue = _ObserverCache.GetObserver(request.NonReferenceValue, targetType);
+            }
+            else if (oProp.Template.IsNonReference &&
+                 request.NonReferenceValue == null)
             {
                 throw new UiCoreException("The given value is not allowed");
             }
+            else if (oProp.Template.IsNonReference &&
+                     oProp.Template.IsNullableType &&
+                     request.NonReferenceValue != null)
+            {
+                var targetType = oProp.Template.PropertyType.GetInnerType();
+                var value = Convert.ChangeType(request.NonReferenceValue, targetType);
+                oValue = _ObserverCache.GetObserver(value, targetType);
+            }
             else
             {
+                var targetType = oProp.Template.PropertyType;
                 var value = request.NonReferenceValue != null ?
-                                Convert.ChangeType(request.NonReferenceValue, oProp.Template.PropertyType) :
+                                Convert.ChangeType(request.NonReferenceValue, targetType) :
                                 null;
-                oValue = _ObserverCache.GetObserver(value, oProp.Template.PropertyType);
+                oValue = _ObserverCache.GetObserver(value, targetType);
             }
             return oValue;
         }
