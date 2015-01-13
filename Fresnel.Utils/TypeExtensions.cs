@@ -279,6 +279,16 @@ namespace Envivo.Fresnel.Utils
             }
         }
 
+        public static bool IsTypeOf<T>(this Type type)
+        {
+            return type == typeof(T);
+        }
+
+        public static bool IsNotTypeOf<T>(this Type type)
+        {
+            return type != typeof(T);
+        }
+
     }
 
 }

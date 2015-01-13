@@ -44,7 +44,9 @@
 
         gridOptions: any;
 
-        addItem(obj: IObjectVM);
+        addNewItem(itemType: string);
+
+        addExistingItem(obj: IObjectVM);
 
         removeItem(obj: IObjectVM);
 

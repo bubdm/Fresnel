@@ -102,6 +102,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             else if (oProp.Template.IsNonReference &&
                      oProp.Template.IsNullableType &&
+                     oProp.Template.PropertyType.IsNotTypeOf<string>() &&
                      request.NonReferenceValue == null)
             {
                 var targetType = oProp.Template.PropertyType.GetInnerType();
@@ -114,6 +115,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             else if (oProp.Template.IsNonReference &&
                      oProp.Template.IsNullableType &&
+                     oProp.Template.PropertyType.IsNotTypeOf<string>() &&
                      request.NonReferenceValue != null)
             {
                 var targetType = oProp.Template.PropertyType.GetInnerType();
