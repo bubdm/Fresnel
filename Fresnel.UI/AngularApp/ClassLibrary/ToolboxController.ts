@@ -3,35 +3,28 @@
     export class ToolboxController {
         public classHierarchy: any;
 
-        static $inject = ['$rootScope', '$scope', '$http', 'appService'];
+        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: IToolboxControllerScope,
-            $http: ng.IHttpService,
+            fresnelService: IFresnelService,
             appService: AppService) {
 
             $scope.loadClassHierarchy = function () {
-                var uri = "api/Toolbox/GetClassHierarchy";
-                $http.get(uri)
-                    .success(
-                    (data, status) => this.classHierarchy = data);
+                var promise = fresnelService.getClassHierarchy();
+                promise.then((promiseResult) => {
+                    this.classHierarchy = promiseResult.data;
+                });
             }
 
             $scope.create = function (fullyQualifiedName: string) {
-                var uri = "api/Toolbox/Create";
-                var arg = "=" + fullyQualifiedName;
-
-                var config = {
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-                };
-                $http.post(uri, arg, config)
-                    .success(function (data: any, status) {
-                        var newObject = data.NewObject;
-
-                        appService.identityMap.addObject(newObject);
-                        $rootScope.$broadcast("objectCreated", newObject);
-                    });
+                var promise = fresnelService.createObject(fullyQualifiedName);
+                promise.then((promiseResult) => {
+                    var newObject = promiseResult.data.NewObject;
+                    appService.identityMap.addObject(newObject);
+                    $rootScope.$broadcast("objectCreated", newObject);
+                });
             }
 
             // This will run when the page loads:

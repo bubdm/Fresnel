@@ -52,6 +52,14 @@
 
     }
 
+    export interface IFresnelService {
+
+        getClassHierarchy(): ng.IPromise<any>;
+
+        createObject(fullyQualifiedName: string): ng.IPromise<any>;
+
+    }
+
     export interface IObjectVM {
 
         ID: string;

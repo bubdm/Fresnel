@@ -5,6 +5,7 @@
     angular.module("fresnelApp", requires)
         .service("appService", FresnelApp.AppService)
         .service("explorerService", FresnelApp.ExplorerService)
+        .service("fresnelService", FresnelApp.FresnelService)
         .controller("appController", FresnelApp.AppController)
         .controller("toolboxController", FresnelApp.ToolboxController)
         .controller("objectExplorerController", FresnelApp.ObjectExplorerController)

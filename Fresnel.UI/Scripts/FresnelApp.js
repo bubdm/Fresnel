@@ -1,7 +1,7 @@
 var FresnelApp;
 (function (FresnelApp) {
     var requires = ['ui.grid', 'ui.grid.autoResize', 'ui.grid.selection'];
-    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
+    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);
             return responseData;
@@ -62,20 +62,18 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
-        function ToolboxController($rootScope, $scope, $http, appService) {
+        function ToolboxController($rootScope, $scope, fresnelService, appService) {
             $scope.loadClassHierarchy = function () {
                 var _this = this;
-                var uri = "api/Toolbox/GetClassHierarchy";
-                $http.get(uri).success(function (data, status) { return _this.classHierarchy = data; });
+                var promise = fresnelService.getClassHierarchy();
+                promise.then(function (promiseResult) {
+                    _this.classHierarchy = promiseResult.data;
+                });
             };
             $scope.create = function (fullyQualifiedName) {
-                var uri = "api/Toolbox/Create";
-                var arg = "=" + fullyQualifiedName;
-                var config = {
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-                };
-                $http.post(uri, arg, config).success(function (data, status) {
-                    var newObject = data.NewObject;
+                var promise = fresnelService.createObject(fullyQualifiedName);
+                promise.then(function (promiseResult) {
+                    var newObject = promiseResult.data.NewObject;
                     appService.identityMap.addObject(newObject);
                     $rootScope.$broadcast("objectCreated", newObject);
                 });
@@ -85,7 +83,7 @@ var FresnelApp;
                 $scope.loadClassHierarchy();
             });
         }
-        ToolboxController.$inject = ['$rootScope', '$scope', '$http', 'appService'];
+        ToolboxController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService'];
         return ToolboxController;
     })();
     FresnelApp.ToolboxController = ToolboxController;
@@ -286,6 +284,29 @@ var FresnelApp;
         };
     }
     FresnelApp.ObjectExplorerDirective = ObjectExplorerDirective;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var FresnelService = (function () {
+        function FresnelService($http) {
+            this.http = $http;
+        }
+        FresnelService.prototype.getClassHierarchy = function () {
+            var uri = "api/Toolbox/GetClassHierarchy";
+            return this.http.get(uri);
+        };
+        FresnelService.prototype.createObject = function (fullyQualifiedName) {
+            var uri = "api/Toolbox/Create";
+            var arg = "=" + fullyQualifiedName;
+            var config = {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+            };
+            return this.http.post(uri, arg, config);
+        };
+        FresnelService.$inject = ['$http'];
+        return FresnelService;
+    })();
+    FresnelApp.FresnelService = FresnelService;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
