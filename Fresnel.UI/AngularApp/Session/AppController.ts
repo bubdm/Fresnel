@@ -2,11 +2,11 @@
 
     export class AppController {
 
-        static $inject = ['$scope', '$http', 'appService'];
+        static $inject = ['$scope', 'fresnelService', 'appService'];
 
         constructor(
             $scope: IAppControllerScope,
-            $http: ng.IHttpService,
+            fresnelService: IFresnelService,
             appService: AppService) {
 
             appService.identityMap = new IdentityMap();
@@ -14,11 +14,12 @@
             $scope.identityMap = appService.identityMap;
 
             $scope.loadSession = function () {
-                var uri = "api/Session/GetSession";
-                $http.get(uri)
-                    .success(function (data : Session, status) {
-                        $scope.session = data;
-                    });
+                var promise = fresnelService.getSession();
+
+                promise.then((promiseResult) => {
+                    var session = promiseResult.data;
+                    $scope.session = session;
+                });
             }
 
             $scope.$on('messagesReceived', function (event, messageSet: any) {

@@ -54,6 +54,8 @@
 
     export interface IFresnelService {
 
+        getSession(): ng.IPromise<any>;
+
         getClassHierarchy(): ng.IPromise<any>;
 
         createObject(fullyQualifiedName: string): ng.IPromise<any>;

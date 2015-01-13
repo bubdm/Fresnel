@@ -10,6 +10,11 @@
             this.http = $http;
         }
 
+        getSession(): ng.IPromise<any> {
+            var uri = "api/Session/GetSession";
+            return this.http.get(uri);
+        }
+
         getClassHierarchy(): ng.IPromise<any> {
             var uri = "api/Toolbox/GetClassHierarchy";
             return this.http.get(uri);
