@@ -2,12 +2,12 @@
 
     export class CollectionExplorerController {
 
-        static $inject = ['$rootScope', '$scope', '$http', 'appService'];
+        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: ICollectionExplorerControllerScope,
-            $http: ng.IHttpService,
+            fresnelService: IFresnelService,
             appService: AppService) {
 
             $scope.gridColumns = [];
@@ -29,23 +29,18 @@
             };
 
             $scope.addNewItem = function (itemType: string) {
-                // TODO: This is copied from ToolboxController, and needs refactoring:
-                var uri = "api/Toolbox/Create";
-                var arg = "=" + itemType;
+                var promise = fresnelService.createObject(itemType);
 
-                var config = {
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-                };
-                $http.post(uri, arg, config)
-                    .success(function (data: any, status) {
-                        var newObject = data.NewObject;
+                promise.then((promiseResult) => {
+                    var newObject = promiseResult.data.NewObject;
 
-                        appService.identityMap.addObject(newObject);
-                        collection.Items.push(newObject);
+                    appService.identityMap.addObject(newObject);
+                    collection.Items.push(newObject);
 
-                        // This will cause the new object to appear in a new Explorer:
-                        //$rootScope.$broadcast("objectCreated", newObject);
-                    });
+                    // This will cause the new object to appear in a new Explorer:
+                    //$rootScope.$broadcast("objectCreated", newObject);             
+                });
+
             };
 
         }

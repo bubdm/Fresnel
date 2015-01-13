@@ -13,6 +13,7 @@
 
             $scope.loadClassHierarchy = function () {
                 var promise = fresnelService.getClassHierarchy();
+
                 promise.then((promiseResult) => {
                     this.classHierarchy = promiseResult.data;
                 });
@@ -20,6 +21,7 @@
 
             $scope.create = function (fullyQualifiedName: string) {
                 var promise = fresnelService.createObject(fullyQualifiedName);
+
                 promise.then((promiseResult) => {
                     var newObject = promiseResult.data.NewObject;
                     appService.identityMap.addObject(newObject);
