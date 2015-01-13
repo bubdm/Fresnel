@@ -20,8 +20,8 @@
     <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
 
-    <script src="~/Scripts/angular-isotope.js"></script>
-    <link href="~/Content/isotope.css" rel="stylesheet" />
+    <script src="~/Scripts/angular-gridster/angular-gridster.min.js"></script>
+    <link href="~/Scripts/angular-gridster/angular-gridster.min.css" rel="stylesheet" />
 
     <script src="~/Scripts/bootstrap.min.js"></script>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
@@ -116,10 +116,10 @@
                     </ol>
                 </section>*@
             <!-- Main content -->
-            <section class="content workbenchContainer isotope" isotope-container>
+            <section class="content workbenchContainer">
 
-                <div ng-controller="objectExplorerController">
-                    <div class="isotope-item" isotope-item ng-repeat="explorer in visibleExplorers">
+                <div ng-controller="objectExplorerController" gridster>
+                    <div gridster-item ng-repeat="explorer in visibleExplorers">
                         <div ng-switch="explorer.__meta.IsCollection">
                             <div ng-switch-when="true">
                                 <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'"></div>
@@ -129,6 +129,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
 
             </section><!-- /.content -->
