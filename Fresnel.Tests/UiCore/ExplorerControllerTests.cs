@@ -87,7 +87,7 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             var visibleProperties = tPoco.Properties.Values.Where(p => !p.IsFrameworkMember && p.IsVisible);
 
-            Assert.GreaterOrEqual(collectionVM.ColumnHeaders.Count(), visibleProperties.Count());
+            Assert.GreaterOrEqual(collectionVM.ElementProperties.Count(), visibleProperties.Count());
         }
 
         [Test()]

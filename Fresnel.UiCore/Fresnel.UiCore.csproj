@@ -65,7 +65,6 @@
     <Compile Include="Commands\CreateCommand.cs" />
     <Compile Include="Changes\ModificationsBuilder.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Objects\ColumnHeaderVM.cs" />
     <Compile Include="Objects\MethodVmBuilder.cs" />
     <Compile Include="Types\EnumItemVM.cs" />
     <Compile Include="Types\IPropertyVmBuilder.cs" />

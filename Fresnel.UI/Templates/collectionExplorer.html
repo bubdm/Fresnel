@@ -2,15 +2,15 @@
 
     <div class="box-header">
         <span class="explorerItemIcon fa fa-folder-open-o"> </span>
-        <h3 class="box-title">
+        <span class="box-title">
             {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
             <span ng-show="explorer.__meta.IsCollection">({{ explorer.__meta.Items.length }})</span>
-        </h3>
+        </span>
 
         <div ng-include="'/Templates/explorerToolbar.html'"></div>
     </div>
 
-    <div id="collectionGrid_{{explorer.__meta.ID}}" ui-grid="gridOptions" ui-grid-auto-resize ui-grid-selection>
+    <div id="collectionGrid_{{explorer.__meta.ID}}" ui-grid="gridOptions" ui-grid-auto-resize ui-grid-selection ui-grid-edit>
     </div>
 
     <div class="box-tools">

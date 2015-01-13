@@ -58,12 +58,9 @@ namespace Envivo.Fresnel.UiCore.Objects
                                         .Where(p => !p.IsFrameworkMember &&
                                                      p.IsVisible);
 
-            var columnHeaders = allKnownProperties.Select(p =>
-                new ColumnHeaderVM()
-                {
-                    Name = p.FriendlyName,
-                    PropertyName = p.Name
-                }).ToList();
+            var elementProperties = allKnownProperties.Select(p =>
+                _PropertyVmBuilder.BuildFor(p))
+                .ToList();
 
             var result = new CollectionVM()
             {
@@ -72,7 +69,7 @@ namespace Envivo.Fresnel.UiCore.Objects
                 Type = oCollection.Template.RealType.Name,
                 ElementType = oCollection.Template.InnerClass.RealType.FullName,
                 IsVisible = oCollection.Template.IsVisible,
-                ColumnHeaders = columnHeaders,
+                ElementProperties = elementProperties,
                 Description = oCollection.Template.XmlComments.Summary,
                 Properties = this.CreateProperties(oCollection),
                 Items = this.CreateItems(oCollection, allKnownProperties)

@@ -52,35 +52,43 @@ namespace Envivo.Fresnel.UiCore.Objects
             _RealTypeResolver = realTypeResolver;
         }
 
-        public PropertyVM BuildFor(BasePropertyObserver oProp)
+        public PropertyVM BuildFor(PropertyTemplate tProp)
         {
-            var tProp = oProp.Template;
-            var objectProp = oProp as ObjectPropertyObserver;
-
             var valueType = tProp.InnerClass.RealType;
             var actualType = valueType.IsNullableType() ?
                                valueType.GetGenericArguments()[0] :
                                valueType;
 
-            var setCheck = _CanSetPropertyPermission.IsSatisfiedBy(oProp);
-            var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(oProp);
-
             var propVM = new PropertyVM()
             {
-                ObjectID = oProp.OuterObject.ID,
                 Name = tProp.FriendlyName,
                 PropertyName = tProp.Name,
                 Description = tProp.XmlComments.Summary,
                 IsRequired = tProp.IsNonReference && !tProp.IsNullableType,
-                IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true,
                 IsVisible = !tProp.IsFrameworkMember && tProp.IsVisible,
-                IsExpandable = objectProp != null,
-                CanRead = getCheck.Passed,
-                CanWrite = setCheck.Passed,
+                JavascriptType = this.ConvertToJavascriptType(actualType),
             };
 
-            var vmBuilder = _Builders.SingleOrDefault(s => s.CanHandle(oProp, actualType)) ?? _UnknownVmBuilder;
-            vmBuilder.Populate(propVM, oProp, actualType);
+            var vmBuilder = _Builders.SingleOrDefault(s => s.CanHandle(tProp, actualType)) ?? _UnknownVmBuilder;
+            vmBuilder.Populate(propVM, tProp, actualType);
+
+            return propVM;
+        }
+
+        public PropertyVM BuildFor(BasePropertyObserver oProp)
+        {
+            var tProp = oProp.Template;
+            var objectProp = oProp as ObjectPropertyObserver;
+
+            var setCheck = _CanSetPropertyPermission.IsSatisfiedBy(oProp);
+            var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(oProp);
+
+            var propVM = this.BuildFor(tProp);
+            propVM.ObjectID = oProp.OuterObject.ID;
+            propVM.IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true;
+            propVM.IsExpandable = objectProp != null;
+            propVM.CanRead = getCheck.Passed;
+            propVM.CanWrite = setCheck.Passed;
 
             if (setCheck.Passed)
             {
@@ -112,6 +120,35 @@ namespace Envivo.Fresnel.UiCore.Objects
             return propVM;
         }
 
+        private string ConvertToJavascriptType(Type type)
+        {
+            switch (type.Name.ToLower())
+            {
+                case "boolean":
+                    return "Boolean";
 
+                case "datetime":
+                case "datetimeoffset":
+                    return "Date";
+
+                case "decimal":
+                case "double":
+                case "single":
+                case "int32":
+                case "uint32":
+                case "int64":
+                case "uint64":
+                case "int16":
+                case "uint16":
+                    return "number";
+
+                case "string":
+                case "char":
+                    return "string";
+
+                default:
+                    return "Object";
+            }
+        }
     }
 }

@@ -14,10 +14,12 @@
 
             var collection: any = $scope.explorer.__meta;
 
-            for (var i = 0; i < collection.ColumnHeaders.length; i++) {
+            for (var i = 0; i < collection.ElementProperties.length; i++) {
+                var prop = collection.ElementProperties[i];
                 var newColumn = {
-                    name: collection.ColumnHeaders[i].Name,
-                    field: 'Properties[' + i + "].Value"
+                    name: prop.Name,
+                    field: 'Properties[' + i + "].Value",
+                    type: prop.JavascriptType
                 };
                 $scope.gridColumns[i] = newColumn;
             }

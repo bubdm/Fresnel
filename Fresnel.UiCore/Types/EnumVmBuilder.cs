@@ -25,15 +25,15 @@ namespace Envivo.Fresnel.UiCore.Types
             _DomainDependencyResolver = domainDependencyResolver;
         }
 
-        public bool CanHandle(BasePropertyObserver oProp, Type actualType)
+        public bool CanHandle(PropertyTemplate tProp, Type actualType)
         {
             return actualType.IsEnum;
         }
 
-        public void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType)
+        public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
         {
-            var tEnum = (EnumTemplate)oProp.Template.InnerClass;
-            var attr = oProp.Template.Attributes.Get<EnumAttribute>();
+            var tEnum = (EnumTemplate)tProp.InnerClass;
+            var attr = tProp.Attributes.Get<EnumAttribute>();
 
             targetVM.Info = new EnumVM()
             {

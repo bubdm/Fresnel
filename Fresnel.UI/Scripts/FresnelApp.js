@@ -6,6 +6,8 @@ var FresnelApp;
         }
         ExplorerService.prototype.addExplorer = function (obj) {
             var explorer = new FresnelApp.Explorer();
+            explorer.ColWidth = 2;
+            explorer.RowHeight = 2;
             explorer.__meta = obj;
             this.attachMembers(explorer);
             this.explorers[obj.ID] = explorer;
@@ -44,10 +46,12 @@ var FresnelApp;
         function CollectionExplorerController($rootScope, $scope, fresnelService, appService) {
             $scope.gridColumns = [];
             var collection = $scope.explorer.__meta;
-            for (var i = 0; i < collection.ColumnHeaders.length; i++) {
+            for (var i = 0; i < collection.ElementProperties.length; i++) {
+                var prop = collection.ElementProperties[i];
                 var newColumn = {
-                    name: collection.ColumnHeaders[i].Name,
-                    field: 'Properties[' + i + "].Value"
+                    name: prop.Name,
+                    field: 'Properties[' + i + "].Value",
+                    type: prop.JavascriptType
                 };
                 $scope.gridColumns[i] = newColumn;
             }
@@ -421,7 +425,7 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    var requires = ['ui.grid', 'ui.grid.autoResize', 'ui.grid.selection'];
+    var requires = ['ui.grid', 'ui.grid.autoResize', 'ui.grid.selection', 'ui.grid.edit'];
     angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);

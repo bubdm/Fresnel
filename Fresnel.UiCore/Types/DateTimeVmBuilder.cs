@@ -16,15 +16,15 @@ namespace Envivo.Fresnel.UiCore.Types
     {
         private readonly DateTime _epoch = new DateTime(1970, 1, 1);
 
-        public bool CanHandle(BasePropertyObserver oProp, Type actualType)
+        public bool CanHandle(PropertyTemplate tProp, Type actualType)
         {
             return actualType == typeof(DateTime) ||
                    actualType == typeof(DateTimeOffset);
         }
 
-        public void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType)
+        public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
         {
-            var attr = oProp.Template.Attributes.Get<DateTimeAttribute>();
+            var attr = tProp.Attributes.Get<DateTimeAttribute>();
 
             targetVM.Info = new DateTimeVM()
             {

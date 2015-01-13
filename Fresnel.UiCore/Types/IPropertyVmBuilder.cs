@@ -14,9 +14,9 @@ namespace Envivo.Fresnel.UiCore.Types
 {
     public interface IPropertyVmBuilder
     {
-        bool CanHandle(BasePropertyObserver oProp, Type actualType);
+        bool CanHandle(PropertyTemplate tProp, Type actualType);
 
-        void Populate(PropertyVM targetVM, BasePropertyObserver oProp, Type actualType);
+        void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType);
 
     }
 }

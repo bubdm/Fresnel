@@ -2,9 +2,9 @@
 
     <div class="box-header">
         <span class="explorerItemIcon {{explorer.__meta.Type}}Icon"> </span>
-        <h3 class="box-title">
+        <span class="box-title">
             {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
-        </h3>
+        </span>
 
         <div ng-include="'/Templates/explorerToolbar.html'"></div>
     </div>

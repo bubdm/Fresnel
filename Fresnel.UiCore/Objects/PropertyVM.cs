@@ -17,6 +17,8 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public string ValueType { get; set; }
 
+        public string JavascriptType { get; set; }
+
         public bool IsRequired { get; set; }
 
         public bool CanRead { get; set; }
