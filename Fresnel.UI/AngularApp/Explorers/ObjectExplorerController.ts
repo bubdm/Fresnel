@@ -2,13 +2,12 @@
 
     export class ObjectExplorerController {
 
-        static $inject = ['$rootScope', '$scope', '$http', '$timeout', 'appService', 'explorerService'];
+        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: IObjectExplorerControllerScope,
-            $http: ng.IHttpService,
-            $timeout: ng.ITimeoutService,
+            fresnelService: IFresnelService,
             appService: AppService,
             explorerService: ExplorerService) {
 
@@ -23,39 +22,32 @@
             });
 
             $scope.invoke = function (method: any) {
-                var uri = "api/Explorer/InvokeMethod";
+                var promise = fresnelService.invokeMethod(method);
 
-                $http.post(uri, method)
-                    .success(function (data: any, status) {
-                        method.Error = data.Passed ?
-                        "" :
-                        data.Messages.Errors[0].Text;
+                promise.then((promiseResult) => {
+                    var result = promiseResult.data;
+                    method.Error = result.Passed ? "" : result.Messages.Errors[0].Text;
 
-                        appService.identityMap.merge(data.Modifications);
-                        $rootScope.$broadcast("messagesReceived", data.Messages);
-                    });
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                });
             }
 
             $scope.setProperty = function (prop: any) {
-                var uri = "api/Explorer/SetProperty";
-
                 var request = {
                     ObjectId: prop.ObjectID,
                     PropertyName: prop.PropertyName,
                     NonReferenceValue: prop.Value
                 };
+                var promise = fresnelService.setProperty(request);
 
-                $http.post(uri, request)
-                    .success(function (data: any, status) {
-                        $timeout(function () {
-                            prop.Error = data.Passed ?
-                            "" :
-                            data.Messages.Errors[0].Text;
+                promise.then((promiseResult) => {
+                    var result = promiseResult.data;
+                    prop.Error = result.Passed ? "" : result.Messages.Errors[0].Text;
 
-                            appService.identityMap.merge(data.Modifications);
-                            $rootScope.$broadcast("messagesReceived", data.Messages);
-                        })
-                    });
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                });
             }
 
             $scope.minimise = function (explorer: Explorer) {
@@ -79,29 +71,29 @@
             }
 
             $scope.openNewExplorer = function (prop: any) {
-                var uri = "api/Explorer/GetObjectProperty";
+                var promise = fresnelService.getProperty(prop);
 
-                $http.post(uri, prop)
-                    .success(function (data: any, status) {
-                        $timeout(function () {
-                            var obj = data.ReturnValue;
-                            if (obj) {
-                                var existingObj = appService.identityMap.getObject(obj.ID);
-                                if (existingObj == null) {
-                                    appService.identityMap.addObject(obj);
-                                }
+                promise.then((promiseResult) => {
+                    var result = promiseResult.data;
 
-                                obj.OuterProperty = prop;
+                    var obj = result.ReturnValue;
+                    if (obj) {
+                        var existingObj = appService.identityMap.getObject(obj.ID);
+                        if (existingObj == null) {
+                            appService.identityMap.addObject(obj);
+                        }
 
-                                // TODO: Insert the object just after it's parent?
-                                var explorer = explorerService.getExplorer(obj.ID);
-                                if (explorer == null) {
-                                    explorer = explorerService.addExplorer(obj);
-                                    $scope.visibleExplorers.push(explorer);
-                                }
-                            }
-                        })
-                    });
+                        obj.OuterProperty = prop;
+
+                        // TODO: Insert the object just after it's parent?
+                        var explorer = explorerService.getExplorer(obj.ID);
+                        if (explorer == null) {
+                            explorer = explorerService.addExplorer(obj);
+                            $scope.visibleExplorers.push(explorer);
+                        }
+                    }
+                });
+
             }
 
         }

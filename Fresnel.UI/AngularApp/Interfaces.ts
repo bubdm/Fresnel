@@ -58,6 +58,11 @@
 
         createObject(fullyQualifiedName: string): ng.IPromise<any>;
 
+        getProperty(request: any): ng.IPromise<any>;
+
+        setProperty(request: any): ng.IPromise<any>;
+
+        invokeMethod(request: any): ng.IPromise<any>;
     }
 
     export interface IObjectVM {

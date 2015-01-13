@@ -25,6 +25,21 @@
             return this.http.post(uri, arg, config);
         }
 
+        getProperty(request: any): ng.IPromise<any> {
+            var uri = "api/Explorer/GetObjectProperty";
+            return this.http.post(uri, request);
+        }
+
+        setProperty(request: any): ng.IPromise<any> {
+            var uri = "api/Explorer/SetProperty";
+            return this.http.post(uri, request);
+        }
+
+        invokeMethod(request: any): ng.IPromise<any> {
+            var uri = "api/Explorer/InvokeMethod";
+            return this.http.post(uri, request);
+        }
+
     }
 
 }
