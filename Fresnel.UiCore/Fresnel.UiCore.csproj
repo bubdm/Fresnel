@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Changes\CollectionElementVM.cs" />
+    <Compile Include="Commands\GetObjectCommand.cs" />
+    <Compile Include="Commands\GetObjectRequest.cs" />
     <Compile Include="Commands\SetPropertyResult.cs" />
     <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Commands\InvokeMethodResult.cs" />

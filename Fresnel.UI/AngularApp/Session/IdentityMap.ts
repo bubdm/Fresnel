@@ -81,10 +81,10 @@ module FresnelApp {
             }
         }
 
-        mergeObjects(newItem: IObjectVM, existingItem: IObjectVM) {
-            for (var i = 0; i < existingItem.Properties.length; i++) {
+        mergeObjects(newObj: IObjectVM, existingObj: IObjectVM) {
+            for (var i = 0; i < existingObj.Properties.length; i++) {
                 // NB: Don't replace the prop object, otherwise the bindings will break:
-                existingItem.Properties[i].Value = newItem.Properties[i].Value;
+                existingObj.Properties[i].Value = newObj.Properties[i].Value;
             }
         }
 

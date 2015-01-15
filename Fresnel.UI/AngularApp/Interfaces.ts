@@ -31,6 +31,8 @@
 
         close(explorer: Explorer);
 
+        refresh(explorer: Explorer);
+
         invoke(method: IObjectVM);
 
         setProperty(prop: any);
@@ -61,6 +63,8 @@
         getClassHierarchy(): ng.IPromise<any>;
 
         createObject(fullyQualifiedName: string): ng.IPromise<any>;
+
+        getObject(request: any): ng.IPromise<any>;
 
         getProperty(request: any): ng.IPromise<any>;
 

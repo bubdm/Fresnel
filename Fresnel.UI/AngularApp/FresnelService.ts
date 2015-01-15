@@ -30,6 +30,11 @@
             return this.http.post(uri, arg, config);
         }
 
+        getObject(request: any): ng.IPromise<any> {
+            var uri = "api/Explorer/GetObject";
+            return this.http.post(uri, request);
+        }
+        
         getProperty(request: any): ng.IPromise<any> {
             var uri = "api/Explorer/GetObjectProperty";
             return this.http.post(uri, request);

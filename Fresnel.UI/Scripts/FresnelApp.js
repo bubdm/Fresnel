@@ -159,6 +159,17 @@ var FresnelApp;
                 prop.Value = prop.Value ^ enumValue;
                 $scope.setProperty(prop);
             };
+            $scope.refresh = function (explorer) {
+                var request = {
+                    ObjectId: explorer.__meta.ID,
+                };
+                var promise = fresnelService.getObject(request);
+                promise.then(function (promiseResult) {
+                    var obj = promiseResult.data;
+                    var existingObj = appService.identityMap.getObject(obj.ID);
+                    appService.identityMap.mergeObjects(obj, existingObj);
+                });
+            };
             $scope.minimise = function (explorer) {
                 explorer.IsMaximised = false;
             };
@@ -244,6 +255,10 @@ var FresnelApp;
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
             };
             return this.http.post(uri, arg, config);
+        };
+        FresnelService.prototype.getObject = function (request) {
+            var uri = "api/Explorer/GetObject";
+            return this.http.post(uri, request);
         };
         FresnelService.prototype.getProperty = function (request) {
             var uri = "api/Explorer/GetObjectProperty";
@@ -444,10 +459,10 @@ var FresnelApp;
                 }
             }
         };
-        IdentityMap.prototype.mergeObjects = function (newItem, existingItem) {
-            for (var i = 0; i < existingItem.Properties.length; i++) {
+        IdentityMap.prototype.mergeObjects = function (newObj, existingObj) {
+            for (var i = 0; i < existingObj.Properties.length; i++) {
                 // NB: Don't replace the prop object, otherwise the bindings will break:
-                existingItem.Properties[i].Value = newItem.Properties[i].Value;
+                existingObj.Properties[i].Value = newObj.Properties[i].Value;
             }
         };
         return IdentityMap;

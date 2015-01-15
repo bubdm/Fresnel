@@ -56,6 +56,20 @@
                 $scope.setProperty(prop);
             }
 
+            $scope.refresh = function (explorer: Explorer) {
+                var request = {
+                    ObjectId: explorer.__meta.ID,
+                };
+                var promise = fresnelService.getObject(request);
+
+                promise.then((promiseResult) => {
+                    var obj = promiseResult.data;
+                    var existingObj = appService.identityMap.getObject(obj.ID);
+
+                    appService.identityMap.mergeObjects(obj, existingObj);
+                });
+            }
+
             $scope.minimise = function (explorer: Explorer) {
                 explorer.IsMaximised = false;
             }
