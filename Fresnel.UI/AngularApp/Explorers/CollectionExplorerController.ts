@@ -16,16 +16,22 @@
 
             for (var i = 0; i < collection.ElementProperties.length; i++) {
                 var prop = collection.ElementProperties[i];
+
+                var template = this.getEditorTemplate(prop);
+
                 var newColumn = {
                     name: prop.Name,
                     field: 'Properties[' + i + "].Value",
-                    type: prop.JavascriptType
+                    width: 150
+                    //editableCellTemplate: template
+
                 };
                 $scope.gridColumns[i] = newColumn;
             }
 
             $scope.gridOptions = {
                 enableSorting: true,
+                enableColumnResizing: true,
                 columnDefs: $scope.gridColumns,
                 data: collection.Items
             };
@@ -46,6 +52,54 @@
             };
 
         }
-    }
 
+        getEditorTemplate(prop) {
+            if (prop.Info == null)
+                return;
+
+            switch (prop.Info.Name) {
+                case "boolean":
+                    switch (prop.Info.PreferredControl) {
+                        default:
+                            return '/Templates/Editors/booleanRadioEditor.html';
+                    }
+
+                case "datetime":
+                    switch (prop.Info.PreferredControl) {
+                        case "Date":
+                            return '/Templates/Editors/dateEditor.html';
+                        case "Time":
+                            return '/Templates/Editors/timeEditor.html';
+                        default:
+                            return '/Templates/Editors/dateTimeEditor.html';
+                    }
+
+                case "enum":
+                    switch (prop.Info.PreferredControl) {
+                        case "Checkbox":
+                            return '/Templates/Editors/enumCheckboxEditor.html';
+                        case "Radio":
+                            return '/Templates/Editors/enumRadioEditor.html';
+                        default:
+                            return '/Templates/Editors/enumSelectEditor.html';
+                    }
+
+                case "string":
+                    switch (prop.Info.PreferredControl) {
+                        case "Password":
+                            return '/Templates/Editors/passwordEditor.html';
+                        case "TextArea":
+                            return '/Templates/Editors/textAreaEditor.html';
+                        case "RichTextArea":
+                            return '/Templates/Editors/richTextEditor.html';
+                        default:
+                            return '/Templates/Editors/stringEditor.html';
+                    }
+
+                default:
+                    return '';
+            }
+        }
+
+    }
 }

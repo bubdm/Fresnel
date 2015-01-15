@@ -48,15 +48,17 @@ var FresnelApp;
             var collection = $scope.explorer.__meta;
             for (var i = 0; i < collection.ElementProperties.length; i++) {
                 var prop = collection.ElementProperties[i];
+                var template = this.getEditorTemplate(prop);
                 var newColumn = {
                     name: prop.Name,
                     field: 'Properties[' + i + "].Value",
-                    type: prop.JavascriptType
+                    width: 150
                 };
                 $scope.gridColumns[i] = newColumn;
             }
             $scope.gridOptions = {
                 enableSorting: true,
+                enableColumnResizing: true,
                 columnDefs: $scope.gridColumns,
                 data: collection.Items
             };
@@ -71,6 +73,48 @@ var FresnelApp;
                 });
             };
         }
+        CollectionExplorerController.prototype.getEditorTemplate = function (prop) {
+            if (prop.Info == null)
+                return;
+            switch (prop.Info.Name) {
+                case "boolean":
+                    switch (prop.Info.PreferredControl) {
+                        default:
+                            return '/Templates/Editors/booleanRadioEditor.html';
+                    }
+                case "datetime":
+                    switch (prop.Info.PreferredControl) {
+                        case "Date":
+                            return '/Templates/Editors/dateEditor.html';
+                        case "Time":
+                            return '/Templates/Editors/timeEditor.html';
+                        default:
+                            return '/Templates/Editors/dateTimeEditor.html';
+                    }
+                case "enum":
+                    switch (prop.Info.PreferredControl) {
+                        case "Checkbox":
+                            return '/Templates/Editors/enumCheckboxEditor.html';
+                        case "Radio":
+                            return '/Templates/Editors/enumRadioEditor.html';
+                        default:
+                            return '/Templates/Editors/enumSelectEditor.html';
+                    }
+                case "string":
+                    switch (prop.Info.PreferredControl) {
+                        case "Password":
+                            return '/Templates/Editors/passwordEditor.html';
+                        case "TextArea":
+                            return '/Templates/Editors/textAreaEditor.html';
+                        case "RichTextArea":
+                            return '/Templates/Editors/richTextEditor.html';
+                        default:
+                            return '/Templates/Editors/stringEditor.html';
+                    }
+                default:
+                    return '';
+            }
+        };
         CollectionExplorerController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService'];
         return CollectionExplorerController;
     })();
@@ -425,7 +469,7 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    var requires = ['ui.grid', 'ui.grid.autoResize', 'ui.grid.selection', 'ui.grid.edit'];
+    var requires = ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.edit'];
     angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);

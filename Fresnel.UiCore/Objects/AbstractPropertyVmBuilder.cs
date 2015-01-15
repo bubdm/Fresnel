@@ -66,7 +66,6 @@ namespace Envivo.Fresnel.UiCore.Objects
                 Description = tProp.XmlComments.Summary,
                 IsRequired = tProp.IsNonReference && !tProp.IsNullableType,
                 IsVisible = !tProp.IsFrameworkMember && tProp.IsVisible,
-                JavascriptType = this.ConvertToJavascriptType(actualType),
             };
 
             var vmBuilder = _Builders.SingleOrDefault(s => s.CanHandle(tProp, actualType)) ?? _UnknownVmBuilder;
@@ -120,35 +119,35 @@ namespace Envivo.Fresnel.UiCore.Objects
             return propVM;
         }
 
-        private string ConvertToJavascriptType(Type type)
-        {
-            switch (type.Name.ToLower())
-            {
-                case "boolean":
-                    return "Boolean";
+        //private string ConvertToJavascriptType(Type type)
+        //{
+        //    switch (type.Name.ToLower())
+        //    {
+        //        case "boolean":
+        //            return "boolean";
 
-                case "datetime":
-                case "datetimeoffset":
-                    return "Date";
+        //        case "datetime":
+        //        case "datetimeoffset":
+        //            return "date";
 
-                case "decimal":
-                case "double":
-                case "single":
-                case "int32":
-                case "uint32":
-                case "int64":
-                case "uint64":
-                case "int16":
-                case "uint16":
-                    return "number";
+        //        case "decimal":
+        //        case "double":
+        //        case "single":
+        //        case "int32":
+        //        case "uint32":
+        //        case "int64":
+        //        case "uint64":
+        //        case "int16":
+        //        case "uint16":
+        //            return "number";
 
-                case "string":
-                case "char":
-                    return "string";
+        //        case "string":
+        //        case "char":
+        //            return "string";
 
-                default:
-                    return "Object";
-            }
-        }
+        //        default:
+        //            return "object";
+        //    }
+        //}
     }
 }

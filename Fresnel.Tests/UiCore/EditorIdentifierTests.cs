@@ -58,6 +58,30 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(InputControlTypes.Password, passwordVM.Info.PreferredControl);
         }
 
+
+        [Test()]
+        public void ShouldIdentifyPropertyTypesForCollection()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var vmBuilder = container.Resolve<AbstractObjectVMBuilder>();
+
+            var col = new Collection<SampleModel.Objects.PocoObject>();
+            var oColl = (ObjectObserver)observerCache.GetObserver(col);
+
+            // Act:
+            var collVM = (CollectionVM)vmBuilder.BuildFor(oColl);
+
+            // Assert:
+            foreach (var prop in collVM.ElementProperties)
+            {
+                if (prop.Info != null)
+                {
+                    Assert.AreNotEqual(InputControlTypes.None, prop.Info.PreferredControl);
+                }
+            }
+        }
     }
 
 }
