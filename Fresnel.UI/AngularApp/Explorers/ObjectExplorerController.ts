@@ -90,7 +90,16 @@
                     $scope.visibleExplorers.splice(index, 1);
 
                     explorerService.remove(explorer);
-                    // TODO: If the object is no longer in the UI, Let the server know that it can be GCed
+                    if ($scope.visibleExplorers.length == 0) {
+                        var promise = fresnelService.cleanupSession();
+
+                        promise.then((promiseResult) => {
+                            var result = promiseResult.data;
+                            $rootScope.$broadcast("messagesReceived", result.Messages);
+                        });
+
+                        fresnelService.cleanupSession();
+                    }
                 }
             }
 

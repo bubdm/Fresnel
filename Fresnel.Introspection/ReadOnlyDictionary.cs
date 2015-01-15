@@ -9,7 +9,7 @@ namespace Envivo.Fresnel.Introspection
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
-    public class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+    public class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IDisposable
     {
         private readonly IDictionary<TKey, TValue> _Items;
 
@@ -32,12 +32,6 @@ namespace Envivo.Fresnel.Introspection
         {
             _Items.Add(key, value);
         }
-
-        protected void ClearItems()
-        {
-            _Items.Clear();
-        }
-
 
         #region IDictionary<TKey,TValue> Members
 
@@ -142,5 +136,9 @@ namespace Envivo.Fresnel.Introspection
 
         #endregion
 
+        public void Dispose()
+        {
+            _Items.Clear();
+        }
     }
 }

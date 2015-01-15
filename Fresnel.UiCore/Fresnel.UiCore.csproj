@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Changes\CollectionElementVM.cs" />
+    <Compile Include="Commands\CleanupSessionResult.cs" />
+    <Compile Include="Commands\CleanupSessionCommand.cs" />
     <Compile Include="Commands\GetObjectCommand.cs" />
     <Compile Include="Commands\GetObjectRequest.cs" />
     <Compile Include="Commands\SetPropertyResult.cs" />

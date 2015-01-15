@@ -288,13 +288,13 @@ namespace Envivo.Fresnel.Core.Observers
         {
             if (_Methods.IsValueCreated)
             {
-                _Methods.Value.ClearSafely();
+                _Methods.Value.Dispose();
             }
             _Methods = null;
 
             if (_Properties.IsValueCreated)
             {
-                _Properties.Value.ClearSafely();
+                _Properties.Value.Dispose();
             }
             _Properties = null;
 

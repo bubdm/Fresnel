@@ -71,6 +71,8 @@
         setProperty(request: any): ng.IPromise<any>;
 
         invokeMethod(request: any): ng.IPromise<any>;
+
+        cleanupSession(): ng.IPromise<any>;
     }
 
     export interface IObjectVM {

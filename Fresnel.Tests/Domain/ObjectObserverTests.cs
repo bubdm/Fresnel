@@ -246,6 +246,30 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(observer);
         }
 
+
+        [Test()]
+        public void ShouldCleanupCache()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+
+            for (var i = 0; i < 5; i++)
+            {
+                var newObject = new SampleModel.Objects.PocoObject();
+                newObject.ID = Guid.NewGuid();
+                newObject.AddSomeChildObjects();
+                var observer = observerCache.GetObserver(newObject);
+            }
+
+            // Act:
+            observerCache.CleanUp();
+
+            // Assert:
+            Assert.AreEqual(0, observerCache.GetAllObservers().Count());
+        }
+
+
     }
 }
 

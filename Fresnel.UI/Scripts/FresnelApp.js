@@ -185,6 +185,14 @@ var FresnelApp;
                 if (index > -1) {
                     $scope.visibleExplorers.splice(index, 1);
                     explorerService.remove(explorer);
+                    if ($scope.visibleExplorers.length == 0) {
+                        var promise = fresnelService.cleanupSession();
+                        promise.then(function (promiseResult) {
+                            var result = promiseResult.data;
+                            $rootScope.$broadcast("messagesReceived", result.Messages);
+                        });
+                        fresnelService.cleanupSession();
+                    }
                 }
             };
             $scope.openNewExplorer = function (prop) {
@@ -274,6 +282,10 @@ var FresnelApp;
         FresnelService.prototype.invokeMethod = function (request) {
             var uri = "api/Explorer/InvokeMethod";
             return this.http.post(uri, request);
+        };
+        FresnelService.prototype.cleanupSession = function () {
+            var uri = "api/Session/CleanUp";
+            return this.http.get(uri);
         };
         FresnelService.$inject = ['$http'];
         return FresnelService;

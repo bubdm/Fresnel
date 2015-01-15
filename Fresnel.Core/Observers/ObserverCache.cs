@@ -229,6 +229,23 @@ namespace Envivo.Fresnel.Core.Observers
             }
         }
 
+
+        public void CleanUp()
+        {
+            foreach (var oObject in _ObjectIdMap.Values)
+            {
+                _ObjectMap.Remove(oObject.RealObject);
+                oObject.DisposeSafely();
+            }
+            _ObjectIdMap.Clear();
+
+            foreach (var oNonRefObject in _NonReferenceMap.Values)
+            {
+                oNonRefObject.DisposeSafely();
+            }
+
+            _NonReferenceMap.Clear();
+        }
     }
 
 }

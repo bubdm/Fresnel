@@ -34,7 +34,7 @@
             var uri = "api/Explorer/GetObject";
             return this.http.post(uri, request);
         }
-        
+
         getProperty(request: any): ng.IPromise<any> {
             var uri = "api/Explorer/GetObjectProperty";
             return this.http.post(uri, request);
@@ -48,6 +48,11 @@
         invokeMethod(request: any): ng.IPromise<any> {
             var uri = "api/Explorer/InvokeMethod";
             return this.http.post(uri, request);
+        }
+
+        cleanupSession(): ng.IPromise<any> {
+            var uri = "api/Session/CleanUp";
+            return this.http.get(uri);
         }
 
     }
