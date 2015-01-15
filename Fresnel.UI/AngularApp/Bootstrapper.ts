@@ -1,6 +1,8 @@
 ﻿module FresnelApp {
 
-    var requires = ['blockUI', 'ui.grid', 'ui.grid.resizeColumns', 'ui.grid.edit'];
+    var requires = ['blockUI',
+                    'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate',
+                    'ui.grid', 'ui.grid.resizeColumns', 'ui.grid.edit'];
 
     angular.module("fresnelApp", requires)
         .service("appService", FresnelApp.AppService)

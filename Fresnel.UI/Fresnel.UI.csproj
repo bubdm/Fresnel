@@ -166,6 +166,10 @@
     <Content Include="Scripts\angular-csp.css" />
     <Content Include="Scripts\angular-gridster\angular-gridster.min.css" />
     <Content Include="Scripts\angular-gridster\angular-gridster.min.js" />
+    <Content Include="Scripts\angular-inform\angular-inform.css" />
+    <Content Include="Scripts\angular-inform\angular-inform.js" />
+    <Content Include="Scripts\angular-inform\angular-inform.min.css" />
+    <Content Include="Scripts\angular-inform\angular-inform.min.js" />
     <Content Include="Scripts\angular-loader.js" />
     <Content Include="Scripts\angular-loader.min.js" />
     <Content Include="Scripts\angular-messages.js" />
@@ -937,6 +941,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="image\.DS_Store" />
     <None Include="Licenses\AdminLTE.LICENSE" />
+    <Content Include="Scripts\angular-inform\angular-inform.css.map" />
+    <Content Include="Scripts\angular-inform\angular-inform.js.map" />
+    <Content Include="Scripts\angular-inform\angular-inform.min.js.map" />
+    <Content Include="Scripts\angular-inform\README.md" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
