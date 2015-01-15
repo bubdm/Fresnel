@@ -21,6 +21,7 @@ a.disabled {
 .explorerPanel {
     padding: 0px !important;
     margin: 4px !important;
+    min-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
 }

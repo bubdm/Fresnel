@@ -17,6 +17,8 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class InvokeMethodResult : BaseCommandResult
     {
 
+        public ObjectVM ResultObject { get; set; }
+
     }
 
 }

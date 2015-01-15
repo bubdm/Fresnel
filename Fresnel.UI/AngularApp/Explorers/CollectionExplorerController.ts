@@ -46,7 +46,7 @@
                     collection.Items.push(newObject);
 
                     // This will cause the new object to appear in a new Explorer:
-                    //$rootScope.$broadcast("objectCreated", newObject);             
+                    //$rootScope.$broadcast("showObject", newObject);             
                 });
 
             };

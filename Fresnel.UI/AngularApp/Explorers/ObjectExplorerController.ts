@@ -13,7 +13,7 @@
 
             $scope.visibleExplorers = [];
 
-            $scope.$on('objectCreated', function (event, obj: IObjectVM) {
+            $scope.$on('showObject', function (event, obj: IObjectVM) {
                 var explorer = explorerService.getExplorer(obj.ID);
                 if (explorer == null) {
                     explorer = explorerService.addExplorer(obj);
@@ -30,6 +30,10 @@
 
                     appService.identityMap.merge(result.Modifications);
                     $rootScope.$broadcast("messagesReceived", result.Messages);
+
+                    if (result.ResultObject) {
+                        $rootScope.$broadcast("showObject", result.ResultObject);
+                    }
                 });
             }
 

@@ -69,7 +69,7 @@ var FresnelApp;
                     appService.identityMap.addObject(newObject);
                     collection.Items.push(newObject);
                     // This will cause the new object to appear in a new Explorer:
-                    //$rootScope.$broadcast("objectCreated", newObject);             
+                    //$rootScope.$broadcast("showObject", newObject);             
                 });
             };
         }
@@ -125,7 +125,7 @@ var FresnelApp;
     var ObjectExplorerController = (function () {
         function ObjectExplorerController($rootScope, $scope, fresnelService, appService, explorerService) {
             $scope.visibleExplorers = [];
-            $scope.$on('objectCreated', function (event, obj) {
+            $scope.$on('showObject', function (event, obj) {
                 var explorer = explorerService.getExplorer(obj.ID);
                 if (explorer == null) {
                     explorer = explorerService.addExplorer(obj);
@@ -139,6 +139,9 @@ var FresnelApp;
                     method.Error = result.Passed ? "" : result.Messages.Errors[0].Text;
                     appService.identityMap.merge(result.Modifications);
                     $rootScope.$broadcast("messagesReceived", result.Messages);
+                    if (result.ResultObject) {
+                        $rootScope.$broadcast("showObject", result.ResultObject);
+                    }
                 });
             };
             $scope.setProperty = function (prop) {
@@ -342,7 +345,7 @@ var FresnelApp;
                 promise.then(function (promiseResult) {
                     var newObject = promiseResult.data.NewObject;
                     appService.identityMap.addObject(newObject);
-                    $rootScope.$broadcast("objectCreated", newObject);
+                    $rootScope.$broadcast("showObject", newObject);
                 });
             };
             // This will run when the page loads:

@@ -25,7 +25,7 @@
                 promise.then((promiseResult) => {
                     var newObject = promiseResult.data.NewObject;
                     appService.identityMap.addObject(newObject);
-                    $rootScope.$broadcast("objectCreated", newObject);
+                    $rootScope.$broadcast("showObject", newObject);
                 });
             }
 

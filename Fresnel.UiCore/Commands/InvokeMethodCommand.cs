@@ -55,27 +55,40 @@ namespace Envivo.Fresnel.UiCore.Commands
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
                 var oMethod = oObject.Methods[request.MethodName];
-                var returnValue = _InvokeMethodCommand.Invoke(oMethod, oObject.RealObject) as ObjectObserver;
+                var oMethodResult = _InvokeMethodCommand.Invoke(oMethod, oObject.RealObject);
+                var oResultObject = oMethodResult as ObjectObserver;
 
-                ObjectVM result = null;
-                if (returnValue != null)
-                {
-                    result = _ObjectVMBuilder.BuildFor(returnValue);
-                }
+                var resultVM = oResultObject != null ?
+                                _ObjectVMBuilder.BuildFor(oResultObject) :
+                                null;
 
                 _ObserverCache.ScanForChanges();
 
                 // Done:
+                var messages = new List<MessageVM>();
                 var infoVM = new MessageVM()
                 {
                     OccurredAt = _Clock.Now,
                     Text = string.Concat("Completed ", oMethod.Template.FriendlyName, ".")
                 };
+                messages.Add(infoVM);
+
+                if (oMethodResult.RealObject != null)
+                {
+                    var resultMessageVM = new MessageVM()
+                    {
+                        OccurredAt = _Clock.Now,
+                        Text = string.Concat("Result: ", oMethodResult.RealObject)
+                    };
+                    messages.Add(resultMessageVM);
+                }
+
                 return new InvokeMethodResult()
                 {
                     Passed = true,
+                    ResultObject = resultVM,
                     Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
-                    Messages = new MessageSetVM(new MessageVM[] { infoVM }, null, null),
+                    Messages = new MessageSetVM(messages.ToArray(), null, null),
                 };
             }
             catch (Exception ex)

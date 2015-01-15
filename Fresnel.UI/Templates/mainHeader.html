@@ -8,18 +8,17 @@
                 <span class="label label-info">{{session.Messages.Infos.length}} </span>
             </a>
             <ul class="dropdown-menu">
-                <li class="header">You have {{session.Messages.Infos.length}} notifications</li>
                 <li>
                     <!-- inner menu: contains the actual data -->
                     <ul class="menu">
                         <li ng-repeat="message in session.Messages.Infos | orderBy:'OccuredAt':reverse">
                             <a href="">
-                                <i class="fa fa-info-circle"></i>{{message.OccurredAt | date:'HH:mm:ss' }}: {{message.Text}}
+                                {{message.OccurredAt | date:'HH:mm:ss' }}: {{message.Text}}
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="footer"><a href="#">View all</a></li>
+                <li class="footer"><a href="#">Select all</a></li>
             </ul>
         </li>
 
@@ -36,12 +35,12 @@
                     <ul class="menu">
                         <li ng-repeat="message in session.Messages.Warnings | orderBy:'OccuredAt':reverse">
                             <a href="">
-                                <i class="fa fa-exclamation-triangle"></i>{{message.OccurredAt | date:'HH:mm:ss' }}: {{message.Text}}
+                                {{message.OccurredAt | date:'HH:mm:ss' }}: {{message.Text}}
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="footer"><a href="#">View all</a></li>
+                <li class="footer"><a href="#">Select all</a></li>
             </ul>
         </li>
 
@@ -52,18 +51,17 @@
                 <span class="label label-danger">{{session.Messages.Errors.length}} </span>
             </a>
             <ul class="dropdown-menu">
-                <li class="header">You have {{session.Messages.Errors.length}} errors</li>
                 <li>
                     <!-- inner menu: contains the actual data -->
                     <ul class="menu">
                         <li ng-repeat="message in session.Messages.Errors | orderBy:'OccuredAt':reverse">
                             <a href="">
-                                <i class="fa fa-exclamation-circle"></i>{{message.OccurredAt | date:'HH:mm:ss' }}: {{message.Text}}
+                                {{message.OccurredAt | date:'HH:mm:ss' }}: {{message.Text}}
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="footer"><a href="#">View all</a></li>
+                <li class="footer"><a href="#">Select all</a></li>
             </ul>
         </li>
 
