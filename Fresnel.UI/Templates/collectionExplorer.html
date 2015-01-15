@@ -1,21 +1,24 @@
-﻿<div id="collectionExplorer_{{explorer.__meta.ID}}" ng-class="{'container-fluid' : true, 'col-md-4': true, 'box': true, 'box-solid': true, 'box-primary': true, 'explorerPanel' : true, 'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
+﻿<div block-ui block-ui-pattern="/^.*{{explorer.__meta.ID}}.*$/" class="">
+    <div id="collectionExplorer_{{explorer.__meta.ID}}" object-explorer block-ui ng-class="{'container-fluid' : true, 'col-md-4': true, 'box': true, 'box-solid': true, 'box-primary': true, 'explorerPanel' : true, 'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
 
-    <div class="box-header">
-        <span class="explorerItemIcon fa fa-folder-open-o"> </span>
-        <span class="box-title">
-            {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
-            <span ng-show="explorer.__meta.IsCollection">({{ explorer.__meta.Items.length }})</span>
-        </span>
+        <div class="box-header">
+            <span class="explorerItemIcon fa fa-folder-open-o"> </span>
+            <span class="box-title">
+                {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
+                <span ng-show="explorer.__meta.IsCollection">({{ explorer.__meta.Items.length }})</span>
+            </span>
 
-        <div ng-include="'/Templates/explorerToolbar.html'"></div>
+            <div ng-include="'/Templates/explorerToolbar.html'"></div>
+        </div>
+
+        <div id="collectionGrid_{{explorer.__meta.ID}}" ui-grid="gridOptions" ui-grid-edit ui-grid-selection ui-grid-auto-resize>
+        </div>
+
+        <div class="box-tools">
+            <button class=" btn btn-sm" ng-click="addNewItem(explorer.__meta.ElementType)" title="Add a new item to this list">
+                <i class="fa fa-plus"></i> Add...
+            </button>
+        </div>
     </div>
 
-    <div id="collectionGrid_{{explorer.__meta.ID}}" ui-grid="gridOptions" ui-grid-edit ui-grid-selection ui-grid-auto-resize >
-    </div>
-
-    <div class="box-tools">
-        <button class=" btn btn-sm" ng-click="addNewItem(explorer.__meta.ElementType)" title="Add a new item to this list">
-            <i class="fa fa-plus"></i> Add...
-        </button>
-    </div>
 </div>

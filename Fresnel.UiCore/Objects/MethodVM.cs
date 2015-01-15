@@ -10,6 +10,8 @@ namespace Envivo.Fresnel.UiCore.Objects
     {
         public Guid ObjectID { get; set; }
 
+        public bool IsAsync { get; set; }
+
         public IEnumerable<ParameterVM> Parameters { get; set; }
 
         public string MethodName { get; set; }

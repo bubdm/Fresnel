@@ -100,7 +100,7 @@ namespace Envivo.Fresnel.SampleModel
         /// The execution happens on a separate thread.
         /// This button has a custom icon.
         /// </summary>
-        [Method(IsThreadSafe = true)]
+        [Method(IsAsynchronous = true)]
         public virtual void LongRunningAsyncMethod()
         {
             var runFor = TimeSpan.FromSeconds(10);
@@ -118,7 +118,7 @@ namespace Envivo.Fresnel.SampleModel
         /// The execution happens on the same thread (the UI is blocked until the method finishes).
         /// </summary>
         /// <returns></returns>
-        [Method(IsThreadSafe = false)]
+        [Method(IsAsynchronous = false)]
         public virtual string LongRunningSyncMethod()
         {
             var runFor = TimeSpan.FromSeconds(10);

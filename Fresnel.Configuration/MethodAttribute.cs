@@ -12,10 +12,14 @@ namespace Envivo.Fresnel.Configuration
     [AttributeUsage(AttributeTargets.Method)]
     public class MethodAttribute : MemberAttribute
     {
+
         /// <summary>
-        /// Determines if the method must run on the remote server (if available)
+        /// Determines whether access to this member can be executed on a separate thread,
+        /// Set this attibute to FALSE if the member accesses a resource that is not thread safe.
         /// </summary>
-        public bool IsRunOnServer { get; set; }
+        /// <value></value>
+        public bool IsAsynchronous { get; set; }
+
 
         /// <summary>
         /// Determines if the method can be executed if unsaved objects are still being used

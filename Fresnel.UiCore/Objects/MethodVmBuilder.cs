@@ -1,4 +1,5 @@
-﻿using Envivo.Fresnel.Core.Observers;
+﻿using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Permissions;
 using Envivo.Fresnel.UiCore.Types;
 using System;
@@ -31,6 +32,7 @@ namespace Envivo.Fresnel.UiCore.Objects
                 Name = oMethod.Template.FriendlyName,
                 MethodName = oMethod.Template.Name,
                 Description = oMethod.Template.XmlComments.Summary,
+                IsAsync = oMethod.Template.Attributes.Get<MethodAttribute>().IsAsynchronous,
                 IsVisible = !oMethod.Template.IsFrameworkMember && oMethod.Template.IsVisible,
             };
 

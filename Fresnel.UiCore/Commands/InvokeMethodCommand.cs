@@ -73,7 +73,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 };
                 messages.Add(infoVM);
 
-                if (oMethodResult.RealObject != null)
+                if (oMethodResult != null && oMethodResult.RealObject != null)
                 {
                     var resultMessageVM = new MessageVM()
                     {
