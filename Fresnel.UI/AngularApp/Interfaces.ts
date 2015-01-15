@@ -35,6 +35,8 @@
 
         setProperty(prop: any);
 
+        setBitwiseEnumProperty(prop: any, enumValue: number);
+
         openNewExplorer(prop: any);
     }
 

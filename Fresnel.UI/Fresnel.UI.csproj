@@ -945,6 +945,7 @@
     <Content Include="Scripts\ui-grid\ui-grid.min.js" />
     <Content Include="Scripts\ui-grid\ui-grid.svg" />
     <Content Include="Templates\Editors\dateEditor.html" />
+    <Content Include="Templates\Editors\enumBitwiseCheckboxEditor.html" />
     <Content Include="Templates\Editors\enumSelectEditor.html" />
     <Content Include="Templates\Editors\enumRadioEditor.html" />
     <Content Include="Templates\Editors\enumCheckboxEditor.html" />

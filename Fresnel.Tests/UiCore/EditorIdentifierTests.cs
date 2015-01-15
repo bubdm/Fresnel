@@ -60,6 +60,36 @@ namespace Envivo.Fresnel.Tests.Proxies
 
 
         [Test()]
+        public void ShouldIdentifyEnumPropertyTypes()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var vmBuilder = container.Resolve<AbstractPropertyVmBuilder>();
+
+            var obj = new SampleModel.BasicTypes.EnumValues();
+            var oObject = (ObjectObserver)observerCache.GetObserver(obj);
+
+            // Act:
+            var enumVM = vmBuilder.BuildFor(oObject.Properties["EnumValue"]);
+
+            var bitwiseEnumVM = vmBuilder.BuildFor(oObject.Properties["EnumSwitches"]);
+
+            // Assert:
+            Assert.IsFalse(((EnumVM)enumVM.Info).IsBitwiseEnum);
+            foreach (var enumItemVM in ((EnumVM)enumVM.Info).Items)
+            {
+                Assert.AreNotEqual(enumItemVM.Name, enumItemVM.Value);
+            }
+
+            Assert.IsTrue(((EnumVM)bitwiseEnumVM.Info).IsBitwiseEnum);
+            foreach (var enumItemVM in ((EnumVM)bitwiseEnumVM.Info).Items)
+            {
+                Assert.AreNotEqual(enumItemVM.Name, enumItemVM.Value);
+            }
+        }
+
+        [Test()]
         public void ShouldIdentifyPropertyTypesForCollection()
         {
             // Arrange:

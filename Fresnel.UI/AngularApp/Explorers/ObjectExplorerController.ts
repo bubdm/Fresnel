@@ -50,6 +50,12 @@
                 });
             }
 
+
+            $scope.setBitwiseEnumProperty = function (prop: any, enumValue: number) {
+                prop.Value = prop.Value ^ enumValue;
+                $scope.setProperty(prop);
+            }
+
             $scope.minimise = function (explorer: Explorer) {
                 explorer.IsMaximised = false;
             }

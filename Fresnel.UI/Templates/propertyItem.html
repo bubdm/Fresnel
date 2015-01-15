@@ -45,7 +45,12 @@
             <div ng-switch-when="enum">
                 <div ng-switch="prop.Info.PreferredControl">
                     <div ng-switch-when="Checkbox">
-                        <div ng-include="'/Templates/Editors/enumCheckboxEditor.html'"></div>
+                        <div ng-if="prop.Info.IsBitwiseEnum">
+                            <div ng-include="'/Templates/Editors/enumBitwiseCheckboxEditor.html'"></div>
+                        </div>
+                        <div ng-if="!prop.Info.IsBitwiseEnum">
+                            <div ng-include="'/Templates/Editors/enumCheckboxEditor.html'"></div>
+                        </div>
                     </div>
                     <div ng-switch-when="Radio">
                         <div ng-include="'/Templates/Editors/enumRadioEditor.html'"></div>
@@ -103,7 +108,5 @@
             </span>
         </div>
     </div>
-
-
 
 </div>

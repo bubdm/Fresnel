@@ -20,6 +20,8 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public object Value { get; internal set; }
 
+        public int NumericValue { get; internal set; }
+
         public override string ToString()
         {
             return this.FriendlyName;

@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.UiCore.Types
     {
         public string EnumName { get; set; }
 
-        public object Value { get; set; }
+        public int Value { get; set; }
 
         public bool IsChecked { get; set; }
     }

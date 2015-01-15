@@ -72,6 +72,12 @@ namespace Envivo.Fresnel.UiCore.Changes
             if (oProperty.Template.IsNonReference)
             {
                 result.NonReferenceValue = propertyChange.NewValue;
+
+                // HACK:
+                if (oProperty.Template.PropertyType.IsEnum)
+                {
+                    result.NonReferenceValue = (int)result.NonReferenceValue;
+                }
             }
             else
             {

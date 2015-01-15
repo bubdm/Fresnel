@@ -1,0 +1,12 @@
+﻿<div ng-repeat="enumItem in prop.Info.Items" class="row">
+    <label class="col-sm-5">
+        <input type="checkbox"
+               name="enumItem"
+               ng-disabled="!prop.CanWrite"
+               ng-checked="enumItem.IsChecked"
+               ng-model="enumItem.IsChecked"
+               ng-change="setBitwiseEnumProperty(prop, enumItem.Value)"
+               value="{{enumItem.Value}}"> {{enumItem.Name}}
+    </label>
+    <span class="col-sm-7 help-block propertyDescription">{{enumItem.Description}} </span>
+</div>

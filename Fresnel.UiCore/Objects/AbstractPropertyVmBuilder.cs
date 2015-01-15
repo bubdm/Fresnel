@@ -105,6 +105,12 @@ namespace Envivo.Fresnel.UiCore.Objects
                     // TODO: Use the GetPropertyCommand, in case the property should be hidden:
                     var realValue = oProp.Template.GetProperty(oProp.OuterObject.RealObject);
                     propVM.Value = realValue;
+
+                    // Hack:
+                    if (oProp.Template.PropertyType.IsEnum)
+                    {
+                        propVM.Value = (int)propVM.Value;
+                    }
                 }
                 catch (Exception ex)
                 {

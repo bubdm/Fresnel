@@ -155,6 +155,10 @@ var FresnelApp;
                     $rootScope.$broadcast("messagesReceived", result.Messages);
                 });
             };
+            $scope.setBitwiseEnumProperty = function (prop, enumValue) {
+                prop.Value = prop.Value ^ enumValue;
+                $scope.setProperty(prop);
+            };
             $scope.minimise = function (explorer) {
                 explorer.IsMaximised = false;
             };

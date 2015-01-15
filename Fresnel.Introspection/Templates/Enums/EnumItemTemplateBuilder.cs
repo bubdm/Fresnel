@@ -17,6 +17,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var result = new EnumItemTemplate(tEnum);
             result.Value = enumField.GetValue(enumField.DeclaringType);
+            result.NumericValue = (int)result.Value;
 
             var enumName = result.Value.ToString();
             result.Name = enumName;

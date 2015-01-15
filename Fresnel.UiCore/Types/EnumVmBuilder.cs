@@ -56,7 +56,7 @@ namespace Envivo.Fresnel.UiCore.Types
                 Name = e.FriendlyName,
                 EnumName = e.Name,
                 Description = e.XmlComments.Summary,
-                Value = e.Value,
+                Value = e.NumericValue,
             })
             .ToArray();
 
