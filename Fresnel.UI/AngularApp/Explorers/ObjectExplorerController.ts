@@ -26,7 +26,7 @@
 
                 promise.then((promiseResult) => {
                     var result = promiseResult.data;
-                    method.Error = result.Passed ? "" : result.Messages.Errors[0].Text;
+                    method.Error = result.Passed ? "" : result.Messages[0].Text;
 
                     appService.identityMap.merge(result.Modifications);
                     $rootScope.$broadcast("messagesReceived", result.Messages);
@@ -47,7 +47,7 @@
 
                 promise.then((promiseResult) => {
                     var result = promiseResult.data;
-                    prop.Error = result.Passed ? "" : result.Messages.Errors[0].Text;
+                    prop.Error = result.Passed ? "" : result.Messages[0].Text;
 
                     appService.identityMap.merge(result.Modifications);
                     $rootScope.$broadcast("messagesReceived", result.Messages);

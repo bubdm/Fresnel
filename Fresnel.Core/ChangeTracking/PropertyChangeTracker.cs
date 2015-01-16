@@ -33,8 +33,15 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
         internal void DetermineInitialState()
         {
-            var value = _oProperty.Template.GetProperty(_oProperty.OuterObject.RealObject);
-            this.PreviousValue = this.LatestValue = value;
+            try
+            {
+                var value = _oProperty.Template.GetProperty(_oProperty.OuterObject.RealObject);
+                this.PreviousValue = this.LatestValue = value;
+            }
+            catch(Exception ex)
+            {
+                this.PreviousValue = this.LatestValue = null;
+            }
         }
 
         internal IEnumerable<PropertyChange> Changes
