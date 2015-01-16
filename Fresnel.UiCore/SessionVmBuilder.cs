@@ -46,17 +46,17 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private MessageSetVM CreateInfoMessages()
+        private IEnumerable<MessageVM> CreateInfoMessages()
         {
-            var result = new MessageSetVM();
+            var results = new List<MessageVM>();
 
-            result.Infos.Add(new MessageVM() { OccurredAt = _Clock.Now, Text = "Welcome to Fresnel" });
+            results.Add(new MessageVM() { OccurredAt = _Clock.Now, Text = "Welcome to Fresnel" });
 
             // TODO: Add system & memory info
 
-            result.Infos.Add(new MessageVM() { OccurredAt = _Clock.Now, Text = Environment.UserName + " logged on" });
+            results.Add(new MessageVM() { OccurredAt = _Clock.Now, Text = Environment.UserName + " logged on" });
 
-            return result;
+            return results;
         }
     }
 }

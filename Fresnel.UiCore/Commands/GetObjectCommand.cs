@@ -59,12 +59,18 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
-                var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
+                var errorVM = new MessageVM()
+                {
+                    IsError = true,
+                    OccurredAt = _Clock.Now,
+                    Text = ex.Message,
+                    Detail = ex.ToString(),
+                };
 
                 return new GetPropertyResponse()
                 {
                     Failed = true,
-                    Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })
+                    Messages = new MessageVM[] { errorVM }
                 };
             }
         }

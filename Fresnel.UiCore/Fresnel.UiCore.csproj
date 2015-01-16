@@ -52,10 +52,7 @@
     <Compile Include="Commands\SetPropertyRequest.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="UiCoreException.cs" />
-    <Compile Include="Messages\MessageSetVM.cs" />
-    <Compile Include="Messages\WarningVM.cs" />
-    <Compile Include="Messages\ErrorVM.cs" />
-    <Compile Include="Messages\MessageVM.cs" />
+    <Compile Include="MessageVM.cs" />
     <Compile Include="Changes\PropertyChangeVM.cs" />
     <Compile Include="SessionVmBuilder.cs" />
     <Compile Include="SessionVM.cs" />

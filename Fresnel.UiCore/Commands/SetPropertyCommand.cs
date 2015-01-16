@@ -66,24 +66,33 @@ namespace Envivo.Fresnel.UiCore.Commands
                 // Done:
                 var infoVM = new MessageVM()
                 {
+                    IsSuccess = true,
                     OccurredAt = _Clock.Now,
-                    Text = string.Concat(oProp.Template.FriendlyName, " changed from ", previousValue, " to ", request.NonReferenceValue)
+                    Text = request.NonReferenceValue != null ?
+                           string.Concat(oProp.Template.FriendlyName, " changed to ", request.NonReferenceValue) :
+                           string.Concat(oProp.Template.FriendlyName, " was cleared"),
                 };
                 return new SetPropertyResponse()
                 {
                     Passed = true,
                     Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
-                    Messages = new MessageSetVM(new MessageVM[] { infoVM }, null, null)
+                    Messages = new MessageVM[] { infoVM }
                 };
             }
             catch (Exception ex)
             {
-                var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
+                var errorVM = new MessageVM()
+                {
+                    IsError = true,
+                    OccurredAt = _Clock.Now,
+                    Text = ex.Message,
+                    Detail = ex.ToString(),
+                };
 
                 return new SetPropertyResponse()
                 {
                     Failed = true,
-                    Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })
+                    Messages = new MessageVM[] { errorVM }
                 };
             }
         }

@@ -23,24 +23,23 @@
                 });
             }
 
-            $scope.$on('messagesReceived', function (event, messageSet: any) {
+            $scope.$on('messagesReceived', function (event, messages: any) {
                 $scope.session.TestValue++;
-                appService.mergeMessages(messageSet, $scope.session);
+                appService.mergeMessages(messages, $scope.session);
 
+                for (var i = 0; i < messages.length; i++) {
+                    var message = messages[i];
+                    var messageType =
+                        message.IsSuccess ? 'success' :
+                        message.IsInfo ? 'info' :
+                        message.IsWarning ? 'warning' :
+                        message.IsError ? 'danger' :
+                        'default';
 
-                for (var i = 0; i < messageSet.Infos.length; i++) {
-                    var message = messageSet.Infos[i];
-                    inform.add(message.Text, { type: 'success' });
-                }
+                    // Don't let the message automatically fade away:
+                    var messageTtl = message.RequiresAcknowledgement ? 0 : 5000;
 
-                for (var i = 0; i < messageSet.Warnings.length; i++) {
-                    var message = messageSet.Warnings[i];
-                    inform.add(message.Text, { type: 'warning' });
-                }
-
-                for (var i = 0; i < messageSet.Errors.length; i++) {
-                    var message = messageSet.Errors[i];
-                    inform.add(message.Text, { type: 'danger' });
+                    inform.add(message.Text, { ttl: messageTtl, type: messageType });
                 }
             });
 

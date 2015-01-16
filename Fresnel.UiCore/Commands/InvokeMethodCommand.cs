@@ -68,6 +68,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var messages = new List<MessageVM>();
                 var infoVM = new MessageVM()
                 {
+                    IsSuccess = true,
                     OccurredAt = _Clock.Now,
                     Text = string.Concat("Completed ", oMethod.Template.FriendlyName, ".")
                 };
@@ -77,6 +78,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     var resultMessageVM = new MessageVM()
                     {
+                        IsInfo = true,
                         OccurredAt = _Clock.Now,
                         Text = string.Concat("Result: ", oMethodResult.RealObject)
                     };
@@ -88,17 +90,23 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Passed = true,
                     ResultObject = resultVM,
                     Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
-                    Messages = new MessageSetVM(messages.ToArray(), null, null),
+                    Messages = messages.ToArray(),
                 };
             }
             catch (Exception ex)
             {
-                var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
+                var errorVM = new MessageVM()
+                {
+                    IsError = true,
+                    OccurredAt = _Clock.Now,
+                    Text = ex.Message,
+                    Detail = ex.ToString(),
+                };
 
                 return new InvokeMethodResponse()
                 {
                     Failed = true,
-                    Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })
+                    Messages = new MessageVM[] { errorVM }
                 };
             }
         }

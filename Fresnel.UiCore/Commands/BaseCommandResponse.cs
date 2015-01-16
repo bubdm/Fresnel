@@ -23,8 +23,8 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         public bool Failed { get; set; }
 
-        public MessageSetVM Messages { get; set; }
-        
+        public IEnumerable<MessageVM> Messages { get; set; }
+
         /// <summary>
         /// Any modifications to other Objects that occurred as part of the operation
         /// </summary>

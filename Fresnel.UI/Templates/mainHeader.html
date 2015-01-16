@@ -5,56 +5,13 @@
         <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-info-circle"></i>
-                <span class="label label-info">{{session.Messages.Infos.length}} </span>
+                <span class="label label-info">{{session.Messages.length}} </span>
             </a>
             <ul class="dropdown-menu">
                 <li>
                     <!-- inner menu: contains the actual data -->
                     <ul class="menu">
-                        <li ng-repeat="message in session.Messages.Infos | orderBy:'OccuredAt':reverse">
-                            <a href="">
-                                {{message.OccurredAt | date:'HH:mm:ss' }}: {{message.Text}}
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="footer"><a href="#">Select all</a></li>
-            </ul>
-        </li>
-
-        <!-- Notifications: style can be found in dropdown.less -->
-        <li class="dropdown notifications-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-exclamation-triangle"></i>
-                <span class="label label-warning">{{session.Messages.Warnings.length}} </span>
-            </a>
-            <ul class="dropdown-menu">
-                <li class="header">You have {{session.Messages.Warnings.length}} warnings</li>
-                <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu">
-                        <li ng-repeat="message in session.Messages.Warnings | orderBy:'OccuredAt':reverse">
-                            <a href="">
-                                {{message.OccurredAt | date:'HH:mm:ss' }}: {{message.Text}}
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="footer"><a href="#">Select all</a></li>
-            </ul>
-        </li>
-
-        <!-- Notifications: style can be found in dropdown.less -->
-        <li class="dropdown notifications-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-exclamation-circle"></i>
-                <span class="label label-danger">{{session.Messages.Errors.length}} </span>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu">
-                        <li ng-repeat="message in session.Messages.Errors | orderBy:'OccuredAt':reverse">
+                        <li ng-repeat="message in session.Messages | orderBy:'OccuredAt':reverse">
                             <a href="">
                                 {{message.OccurredAt | date:'HH:mm:ss' }}: {{message.Text}}
                             </a>
