@@ -41,7 +41,6 @@
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="ExecutionTimer.cs" />
-    <Compile Include="TypeKind.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="MemoryHelper.cs" />
     <Compile Include="StringExtensions.cs" />

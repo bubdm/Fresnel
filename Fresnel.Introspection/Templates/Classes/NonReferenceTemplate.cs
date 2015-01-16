@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Utils;
+using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -11,10 +12,8 @@ namespace Envivo.Fresnel.Introspection.Templates
     {
         public NonReferenceTemplate()
         {
-            this.KindOf = TypeKind.Unidentified;
-        }
 
-        public TypeKind KindOf { get; internal set; }
+        }
 
     }
 }
