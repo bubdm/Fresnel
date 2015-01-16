@@ -168,7 +168,7 @@ var FresnelApp;
                 };
                 var promise = fresnelService.getObject(request);
                 promise.then(function (promiseResult) {
-                    var obj = promiseResult.data;
+                    var obj = promiseResult.data.ReturnValue;
                     var existingObj = appService.identityMap.getObject(obj.ID);
                     appService.identityMap.mergeObjects(obj, existingObj);
                 });
