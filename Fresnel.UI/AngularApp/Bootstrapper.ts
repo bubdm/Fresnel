@@ -22,7 +22,7 @@
             })
         }])
         .config( function (blockUIConfig) {
-            blockUIConfig.message = 'Working... please wait';
+            blockUIConfig.message = 'Please wait...';
             blockUIConfig.delay = 250;
             blockUIConfig.resetOnException = true;
         });
