@@ -129,6 +129,17 @@
 
             }
 
+            $scope.gridsterOptions = {
+                columns: 10,
+                resizable: {
+                    enabled: true,
+                    handles: ['se']
+                },
+                draggable: {
+                    enabled: true
+                }
+            };
+
         }
 
     }

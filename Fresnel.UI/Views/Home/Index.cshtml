@@ -129,7 +129,7 @@
             <!-- Main content -->
             <section class="content workbenchContainer">
 
-                <div ng-controller="objectExplorerController" gridster>
+                <div ng-controller="objectExplorerController" gridster="gridsterOptions">
                     <div gridster-item ng-repeat="explorer in visibleExplorers">
                         <div ng-switch="explorer.__meta.IsCollection">
                             <div ng-switch-when="true">

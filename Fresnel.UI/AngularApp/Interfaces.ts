@@ -40,6 +40,8 @@
         setBitwiseEnumProperty(prop: any, enumValue: number);
 
         openNewExplorer(prop: any);
+
+        gridsterOptions: any;
     }
 
     export interface ICollectionExplorerControllerScope extends IObjectExplorerControllerScope {
