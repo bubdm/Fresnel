@@ -65,17 +65,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                 _ObserverCache.ScanForChanges();
 
                 // Done:
-                var friendlyValue = request.NonReferenceValue.ToString();
-                var propertyType = oProp.Template.PropertyType;
-                if (propertyType.IsEnum)
-                {
-                    var enumValue = ((EnumTemplate)oProp.Template.InnerClass).IsBitwiseEnum ?
-                                    Enum.ToObject(propertyType, request.NonReferenceValue) :
-                                    Enum.ToObject(propertyType, Convert.ToInt64(request.NonReferenceValue));
-
-                    friendlyValue = Enum.Format(propertyType, enumValue, "G");
-                }
-
+                var friendlyValue = oProp.Template.InnerClass.GetFriendlyName(request.NonReferenceValue);
+                
                 var infoVM = new MessageVM()
                 {
                     IsSuccess = true,

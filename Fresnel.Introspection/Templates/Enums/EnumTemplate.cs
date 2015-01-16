@@ -37,5 +37,14 @@ namespace Envivo.Fresnel.Introspection.Templates
             get { return _EnumItemTemplateMap.Value; }
         }
 
+        public override string GetFriendlyName(object value)
+        {
+            var enumValue = this.IsBitwiseEnum ?
+                            Enum.ToObject(this.RealType, value) :
+                            Enum.ToObject(this.RealType, Convert.ToInt64(value));
+
+            var result = Enum.Format(this.RealType, enumValue, "G");
+            return result;
+        }
     }
 }
