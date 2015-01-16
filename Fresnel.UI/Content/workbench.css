@@ -72,18 +72,18 @@ a.disabled {
 @media screen and (min-width: 1023px) {
 
     .explorerPanelNormalSize {
-        width: 500px; /* This allows 1 horzontal panel (with sidebar) */
+        width: 430px; /* This allows 2 horzontal panels (with sidebar) */
     }
 
     .explorerPanelMaximised {
-        width: 760px;
+        width: 870px;
     }
 }
 
 @media screen and (min-width: 1200px) {
 
     .explorerPanelNormalSize {
-        width: 490px; /* This allows 2 horzontal panels (with sidebar)*/
+        width: 485px; /* This allows 3 horzontal panels (with sidebar)*/
     }
 
     .explorerPanelMaximised {
