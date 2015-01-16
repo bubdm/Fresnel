@@ -70,7 +70,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     IsSuccess = true,
                     OccurredAt = _Clock.Now,
-                    Text = string.Concat("Completed ", oMethod.Template.FriendlyName, ".")
+                    Text = string.Concat("'", oMethod.Template.FriendlyName, "' completed.")
                 };
                 messages.Add(infoVM);
 
@@ -99,8 +99,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     IsError = true,
                     OccurredAt = _Clock.Now,
-                    Text = ex.Message,
-                    Detail = ex.ToString(),
+                    Text = string.Concat("'", request.MethodName, "' failed: ", ex.Message),
+                    Detail = ex.StackTrace,
                 };
 
                 return new InvokeMethodResponse()
