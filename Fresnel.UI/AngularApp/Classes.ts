@@ -5,6 +5,8 @@
 
         IsMaximised: boolean;
 
+        CustomTemplateUrl: string;
+
         ColWidth: number;
         RowHeight: number;
 

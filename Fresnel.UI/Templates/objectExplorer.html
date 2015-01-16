@@ -10,7 +10,13 @@
             <div ng-include="'/Templates/explorerToolbar.html'"></div>
         </div>
 
-        <p>
+        <div ng-if="explorer.CustomTemplateUrl != null">
+            <!-- Custom Template should be used here: -->
+            <div ng-include="explorer.CustomTemplateUrl"></div>
+        </div>
+
+        <div ng-if="explorer.CustomTemplateUrl == null">
+            <!-- Default view -->
             <ng-form role="form" class="">
                 <div class="box-body">
                     <div class="propertyItems">
@@ -19,7 +25,7 @@
                     </div>
                 </div>
             </ng-form>
-        </p>
+        </div>
 
     </div>
 </div>

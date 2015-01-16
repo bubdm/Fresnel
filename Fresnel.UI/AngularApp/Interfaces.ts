@@ -90,5 +90,7 @@
         Methods: any[];
 
         IsMaximised: boolean;
+
+        Type: string;
     }
 }

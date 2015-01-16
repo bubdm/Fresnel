@@ -2,18 +2,44 @@
 
     export class ExplorerService {
 
+        private templateCache: ng.ITemplateCacheService;
         private explorers: any[] = [];
+
+        static $inject = ['$templateCache'];
+
+        constructor(
+            $templateCache: ng.ITemplateCacheService
+            ) {
+            this.templateCache = $templateCache;
+        }
 
         addExplorer(obj: IObjectVM): Explorer {
             var explorer = new Explorer();
             explorer.ColWidth = 2;
             explorer.RowHeight = 2;
             explorer.__meta = obj;
+            this.CheckForCustomTemplate(explorer);
 
             this.attachMembers(explorer);
 
             this.explorers[obj.ID] = explorer;
             return explorer;
+        }
+
+        CheckForCustomTemplate(explorer: Explorer) {
+            var templateUrl = "/Customisations/" + explorer.__meta.Type + ".html";
+
+            // We're using XMLHttpRequest so that failures don't propogate to angular-inform:
+            var request = new XMLHttpRequest();
+            request.open('HEAD', templateUrl, false);
+            request.send();
+            if (request.status == 200) {
+                explorer.CustomTemplateUrl = templateUrl;
+            }
+            else {
+                // This ensures that newer templates are picked up next time:
+                this.templateCache.remove(templateUrl);
+            }
         }
 
         getExplorer(objID: string): Explorer {

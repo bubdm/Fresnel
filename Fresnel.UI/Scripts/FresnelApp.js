@@ -1,17 +1,33 @@
 var FresnelApp;
 (function (FresnelApp) {
     var ExplorerService = (function () {
-        function ExplorerService() {
+        function ExplorerService($templateCache) {
             this.explorers = [];
+            this.templateCache = $templateCache;
         }
         ExplorerService.prototype.addExplorer = function (obj) {
             var explorer = new FresnelApp.Explorer();
             explorer.ColWidth = 2;
             explorer.RowHeight = 2;
             explorer.__meta = obj;
+            this.CheckForCustomTemplate(explorer);
             this.attachMembers(explorer);
             this.explorers[obj.ID] = explorer;
             return explorer;
+        };
+        ExplorerService.prototype.CheckForCustomTemplate = function (explorer) {
+            var templateUrl = "/Customisations/" + explorer.__meta.Type + ".html";
+            // We're using XMLHttpRequest so that failures don't propogate to angular-inform:
+            var request = new XMLHttpRequest();
+            request.open('HEAD', templateUrl, false);
+            request.send();
+            if (request.status == 200) {
+                explorer.CustomTemplateUrl = templateUrl;
+            }
+            else {
+                // This ensures that newer templates are picked up next time:
+                this.templateCache.remove(templateUrl);
+            }
         };
         ExplorerService.prototype.getExplorer = function (objID) {
             var result = this.explorers[objID];
@@ -36,6 +52,7 @@ var FresnelApp;
                 }
             }
         };
+        ExplorerService.$inject = ['$templateCache'];
         return ExplorerService;
     })();
     FresnelApp.ExplorerService = ExplorerService;
