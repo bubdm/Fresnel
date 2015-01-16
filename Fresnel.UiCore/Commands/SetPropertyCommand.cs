@@ -5,6 +5,7 @@ using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
+using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Changes;
 using Envivo.Fresnel.UiCore.Classes;
 using Envivo.Fresnel.UiCore.Controllers;
@@ -64,12 +65,23 @@ namespace Envivo.Fresnel.UiCore.Commands
                 _ObserverCache.ScanForChanges();
 
                 // Done:
+                var friendlyValue = request.NonReferenceValue.ToString();
+                var propertyType = oProp.Template.PropertyType;
+                if (propertyType.IsEnum)
+                {
+                    var enumValue = ((EnumTemplate)oProp.Template.InnerClass).IsBitwiseEnum ?
+                                    Enum.ToObject(propertyType, request.NonReferenceValue) :
+                                    Enum.ToObject(propertyType, Convert.ToInt64(request.NonReferenceValue));
+
+                    friendlyValue = Enum.Format(propertyType, enumValue, "G");
+                }
+
                 var infoVM = new MessageVM()
                 {
                     IsSuccess = true,
                     OccurredAt = _Clock.Now,
                     Text = request.NonReferenceValue != null ?
-                           string.Concat(oProp.Template.FriendlyName, " changed to ", request.NonReferenceValue) :
+                           string.Concat(oProp.Template.FriendlyName, " changed to ", friendlyValue) :
                            string.Concat(oProp.Template.FriendlyName, " was cleared"),
                 };
                 return new SetPropertyResponse()
