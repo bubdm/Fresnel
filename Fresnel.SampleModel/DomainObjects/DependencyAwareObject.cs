@@ -14,6 +14,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public class DependencyAwareObject
     {
+        public DependencyAwareObject(IFactory<PocoObject> pocoFactory)
+        {
+            this.PocoObject = pocoFactory.Create();
+            this.Name = "This name is provided by default";
+        }
+
         public DependencyAwareObject(IFactory<PocoObject> pocoFactory, string name)
         {
             this.PocoObject = pocoFactory.Create();

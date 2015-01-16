@@ -41,10 +41,10 @@ namespace Envivo.Fresnel.Tests.Proxies
             var controller = container.Resolve<ToolboxController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.Objects.DependencyAwareObject).Assembly);
 
             // Act:
-            var createOperation = controller.Create("Envivo.Fresnel.SampleModel.Objects.PocoObject");
+            var createOperation = controller.Create("Envivo.Fresnel.SampleModel.Objects.DependencyAwareObject");
 
             // Assert:
             Assert.IsTrue(createOperation.Passed);
