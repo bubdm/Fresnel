@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public CleanupSessionResult Invoke()
+        public CleanupSessionResponse Invoke()
         {
             try
             {
@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     OccurredAt = _Clock.Now,
                     Text = string.Concat("Your session is now clear")
                 };
-                return new CleanupSessionResult()
+                return new CleanupSessionResponse()
                 {
                     Passed = true,
                     Messages = new MessageSetVM(new MessageVM[] { infoVM }, null, null)
@@ -53,7 +53,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
 
-                return new CleanupSessionResult()
+                return new CleanupSessionResponse()
                 {
                     Failed = true,
                     Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })

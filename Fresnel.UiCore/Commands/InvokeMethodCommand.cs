@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public InvokeMethodResult Invoke(InvokeMethodRequest request)
+        public InvokeMethodResponse Invoke(InvokeMethodRequest request)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     messages.Add(resultMessageVM);
                 }
 
-                return new InvokeMethodResult()
+                return new InvokeMethodResponse()
                 {
                     Passed = true,
                     ResultObject = resultVM,
@@ -95,7 +95,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
 
-                return new InvokeMethodResult()
+                return new InvokeMethodResponse()
                 {
                     Failed = true,
                     Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })

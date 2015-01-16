@@ -215,6 +215,16 @@ var FresnelApp;
                     }
                 });
             };
+            $scope.gridsterOptions = {
+                columns: 10,
+                resizable: {
+                    enabled: true,
+                    handles: ['se']
+                },
+                draggable: {
+                    enabled: true
+                }
+            };
         }
         ObjectExplorerController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService'];
         return ObjectExplorerController;
@@ -522,7 +532,7 @@ var FresnelApp;
             return responseData;
         });
     }]).config(function (blockUIConfig) {
-        blockUIConfig.message = 'Working... please wait';
+        blockUIConfig.message = 'Please wait...';
         blockUIConfig.delay = 250;
         blockUIConfig.resetOnException = true;
     });

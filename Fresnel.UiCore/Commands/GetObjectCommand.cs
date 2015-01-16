@@ -38,7 +38,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public GetPropertyResult Invoke(GetObjectRequest request)
+        public GetPropertyResponse Invoke(GetObjectRequest request)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 result = _ObjectVMBuilder.BuildFor(oObject);
 
                 // Done:
-                return new GetPropertyResult()
+                return new GetPropertyResponse()
                 {
                     Passed = true,
                     ReturnValue = result
@@ -61,7 +61,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
 
-                return new GetPropertyResult()
+                return new GetPropertyResponse()
                 {
                     Failed = true,
                     Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })

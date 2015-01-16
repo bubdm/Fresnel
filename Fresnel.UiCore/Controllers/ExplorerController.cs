@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
         
         [HttpPost]
-        public GetPropertyResult GetObject([FromBody]GetObjectRequest id)
+        public GetPropertyResponse GetObject([FromBody]GetObjectRequest id)
         {
             var request = id;
             var results = _GetObjectCommand.Invoke(request);
@@ -38,7 +38,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
         
         [HttpPost]
-        public GetPropertyResult GetObjectProperty([FromBody]GetPropertyRequest id)
+        public GetPropertyResponse GetObjectProperty([FromBody]GetPropertyRequest id)
         {
             var request = id;
             var results = _GetPropertyCommand.Invoke(request);
@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public SetPropertyResult SetProperty([FromBody]SetPropertyRequest id)
+        public SetPropertyResponse SetProperty([FromBody]SetPropertyRequest id)
         {
             var request = id;
             var results = _SetPropertyCommand.Invoke(request);
@@ -54,7 +54,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public InvokeMethodResult InvokeMethod([FromBody]InvokeMethodRequest id)
+        public InvokeMethodResponse InvokeMethod([FromBody]InvokeMethodRequest id)
         {
             var request = id;
             var results = _InvokeMethodCommand.Invoke(request);

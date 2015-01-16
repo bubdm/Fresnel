@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpGet]
-        public CleanupSessionResult CleanUp()
+        public CleanupSessionResponse CleanUp()
         {
             var result = _CleanupSessionCommand.Invoke();
             return result;

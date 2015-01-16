@@ -41,7 +41,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public CreateCommandResult Invoke(string fullyQualifiedName)
+        public CreateCommandResponse Invoke(string fullyQualifiedName)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
                 var vm = _ObjectVMBuilder.BuildFor(oObject);
 
-                return new CreateCommandResult()
+                return new CreateCommandResponse()
                 {
                     Passed = true,
                     NewObject = vm
@@ -63,7 +63,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
 
-                return new CreateCommandResult()
+                return new CreateCommandResponse()
                 {
                     Failed = true,
                     Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })

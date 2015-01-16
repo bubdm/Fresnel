@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Envivo.Fresnel.UiCore.Commands
 {
 
-    public class CreateCommandResult : BaseCommandResult
+    public class CreateCommandResponse : BaseCommandResponse
     {
 
         public ObjectVM NewObject { get; set; }

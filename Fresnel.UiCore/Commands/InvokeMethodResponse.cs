@@ -14,10 +14,10 @@ using System.Threading.Tasks;
 namespace Envivo.Fresnel.UiCore.Commands
 {
 
-    public class GetPropertyResult : BaseCommandResult
+    public class InvokeMethodResponse : BaseCommandResponse
     {
 
-        public ObjectVM ReturnValue { get; set; }
+        public ObjectVM ResultObject { get; set; }
 
     }
 

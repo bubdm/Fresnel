@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public SetPropertyResult Invoke(SetPropertyRequest request)
+        public SetPropertyResponse Invoke(SetPropertyRequest request)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     OccurredAt = _Clock.Now,
                     Text = string.Concat(oProp.Template.FriendlyName, " changed from ", previousValue, " to ", request.NonReferenceValue)
                 };
-                return new SetPropertyResult()
+                return new SetPropertyResponse()
                 {
                     Passed = true,
                     Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
@@ -80,7 +80,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var errorVM = new ErrorVM(ex) { OccurredAt = _Clock.Now };
 
-                return new SetPropertyResult()
+                return new SetPropertyResponse()
                 {
                     Failed = true,
                     Messages = new MessageSetVM(null, null, new ErrorVM[] { errorVM })

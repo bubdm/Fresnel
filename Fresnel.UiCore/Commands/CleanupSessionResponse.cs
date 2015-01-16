@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Envivo.Fresnel.UiCore.Commands
 {
 
-    public class CleanupSessionResult : BaseCommandResult
+    public class CleanupSessionResponse : BaseCommandResponse
     {
 
     }

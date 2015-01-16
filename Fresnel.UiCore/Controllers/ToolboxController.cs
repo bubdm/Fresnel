@@ -42,7 +42,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public CreateCommandResult Create([FromBody]string id)
+        public CreateCommandResponse Create([FromBody]string id)
         {
             var fullyQualifiedName = id;
             var result = _CreateCommand.Invoke(fullyQualifiedName);

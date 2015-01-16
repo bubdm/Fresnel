@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Envivo.Fresnel.UiCore.Commands
 {
 
-    public abstract class BaseCommandResult
+    public abstract class BaseCommandResponse
     {
 
         public bool Passed { get; set; }

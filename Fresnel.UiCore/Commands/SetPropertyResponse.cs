@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Envivo.Fresnel.UiCore.Commands
 {
 
-    public class SetPropertyResult : BaseCommandResult
+    public class SetPropertyResponse : BaseCommandResponse
     {
 
     }
