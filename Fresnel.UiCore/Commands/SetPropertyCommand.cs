@@ -1,4 +1,5 @@
-﻿using Envivo.Fresnel.Core;
+﻿using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.Core;
 using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes;
@@ -65,8 +66,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                 _ObserverCache.ScanForChanges();
 
                 // Done:
-                var friendlyValue = oProp.Template.InnerClass.GetFriendlyName(request.NonReferenceValue);
-                
+                var friendlyValue = this.CreateFriendlyValueName(oProp, request.NonReferenceValue);
+
                 var infoVM = new MessageVM()
                 {
                     IsSuccess = true,
@@ -143,6 +144,30 @@ namespace Envivo.Fresnel.UiCore.Commands
                 oValue = _ObserverCache.GetObserver(value, targetType);
             }
             return oValue;
+        }
+
+        private string CreateFriendlyValueName(BasePropertyObserver oProp, object value)
+        {
+            var propertyType = oProp.Template.PropertyType;
+
+            if (value is bool)
+            {
+                var attr = oProp.Template.Attributes.Get<BooleanAttribute>();
+                var result = (bool)value ? attr.TrueValue : attr.FalseValue;
+                return result;
+            }
+
+            if (propertyType.IsEnum)
+            {
+                var enumValue = ((EnumTemplate)oProp.Template.InnerClass).IsBitwiseEnum ?
+                                Enum.ToObject(propertyType, value) :
+                                Enum.ToObject(propertyType, Convert.ToInt64(value));
+
+                var result = Enum.Format(propertyType, enumValue, "G");
+                return result;
+            }
+
+            return value == null ? null : value.ToString();
         }
 
     }

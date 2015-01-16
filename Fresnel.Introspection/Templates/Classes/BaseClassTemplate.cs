@@ -29,10 +29,5 @@ namespace Envivo.Fresnel.Introspection.Templates
             return this.FullName;
         }
 
-        public virtual string GetFriendlyName(object value)
-        {
-            return value == null ? null : value.ToString();
-        }
-
     }
 }
