@@ -5,7 +5,7 @@
                name="{{prop.Name}}.{{enumItem.Name}}"
                value="{{enumItem.Name}}"
                ng-disabled="!prop.CanWrite"
-               ng-checked="enumItem.IsChecked"
+               ng-checked="prop.Value == enumItem.Value"
                ng-model="prop.Value"
                ng-change="setProperty(prop)" />
         {{enumItem.Name}}
