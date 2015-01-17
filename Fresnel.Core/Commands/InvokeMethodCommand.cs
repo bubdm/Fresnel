@@ -58,14 +58,13 @@ namespace Envivo.Fresnel.Core.Commands
 
                 var resultType = _RealTypeResolver.GetRealType(result);
                 var oResult = _ObserverCache.GetObserver(result, resultType);
-
-                // Make sure we know of any changes in the object graph:
-                _ObserverCacheSynchroniser.SyncAll();
-
                 return oResult;
             }
             finally
             {
+                // Make sure we know of any changes in the object graph:
+                _ObserverCacheSynchroniser.SyncAll();
+
                 // Reset the parameters so that the method doesn't accidentally get invoked twice in succession:
                 oMethod.Parameters.Reset();
             }
