@@ -1,41 +1,46 @@
-﻿<div id="collectionExplorer_{{explorer.__meta.ID}}" object-explorer block-ui class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
+﻿<ng-form name="explorerForm" role="form" class="">
 
-    <div class="box-header">
-        <span class="explorerItemIcon fa fa-folder-open-o"> </span>
-        <span class="box-title">
-            {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
-            <span ng-show="explorer.__meta.IsCollection">({{ explorer.__meta.Items.length }})</span>
-        </span>
+    <div id="collectionExplorer_{{explorer.__meta.ID}}" object-explorer block-ui class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
 
-        <div ng-include="'/Templates/explorerToolbar.html'"></div>
+        <div class="box-header">
+            <span class="explorerItemIcon fa fa-folder-open-o"> </span>
+            <span class="box-title">
+                {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
+                <span ng-show="explorer.__meta.IsCollection">({{ explorer.__meta.Items.length }})</span>
+            </span>
+
+            <div ng-include="'/Templates/explorerToolbar.html'"></div>
+        </div>
+
+        <div ng-if="explorer.CustomTemplateUrl != null">
+            <!-- Custom Template should be used here: -->
+            <div ng-include="explorer.CustomTemplateUrl"></div>
+        </div>
+
+        <div ng-if="explorer.CustomTemplateUrl == null" class="collectionExplorerPanelBody">
+            <!-- NB: Use st-safe-src to ensure collection is watched -->
+            <table id="collectionGrid_{{explorer.__meta.ID}}" st-table="explorer.__meta.DisplayItems" st-safe-src="explorer.__meta.Items" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th ng-repeat="prop in explorer.__meta.ElementProperties">{{prop.Name}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in explorer.__meta.Items track by $index">
+                        <td><span class="{{item.Type}}Icon"> </span></td>
+                        <td ng-repeat="prop in explorer.__meta.ElementProperties">{{item.Properties[prop.Index].Value}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="box-tools">
+            <button class=" btn btn-sm" ng-click="addNewItem(explorer.__meta.ElementType)" title="Add a new item to this list">
+                <i class="fa fa-plus"></i> Add...
+            </button>
+        </div>
+
     </div>
 
-    <div ng-if="explorer.CustomTemplateUrl != null">
-        <!-- Custom Template should be used here: -->
-        <div ng-include="explorer.CustomTemplateUrl"></div>
-    </div>
-
-    <div ng-if="explorer.CustomTemplateUrl == null" class="collectionExplorerPanelBody">
-        <!-- NB: Use st-safe-src to ensure collection is watched -->
-        <table id="collectionGrid_{{explorer.__meta.ID}}" st-table="explorer.__meta.DisplayItems" st-safe-src="explorer.__meta.Items" class="table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th ng-repeat="prop in explorer.__meta.ElementProperties">{{prop.Name}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in explorer.__meta.Items track by $index">
-                    <td><span class="{{item.Type}}Icon"> </span></td>
-                    <td ng-repeat="prop in explorer.__meta.ElementProperties">{{item.Properties[prop.Index].Value}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="box-tools">
-        <button class=" btn btn-sm" ng-click="addNewItem(explorer.__meta.ElementType)" title="Add a new item to this list">
-            <i class="fa fa-plus"></i> Add...
-        </button>
-    </div>
-</div>
+</ng-form>

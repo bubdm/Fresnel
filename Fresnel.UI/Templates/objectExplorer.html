@@ -1,29 +1,31 @@
-﻿<div id="objectExplorer_{{explorer.__meta.ID}}" object-explorer block-ui class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
+﻿<ng-form name="explorerForm" role="form" class="">
 
-    <div class="box-header">
-        <span class="explorerItemIcon {{explorer.__meta.Type}}Icon"> </span>
-        <span class="box-title">
-            {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
-        </span>
+    <div id="objectExplorer_{{explorer.__meta.ID}}" object-explorer block-ui class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
 
-        <div ng-include="'/Templates/explorerToolbar.html'"></div>
-    </div>
+        <div class="box-header">
+            <span class="explorerItemIcon {{explorer.__meta.Type}}Icon"> </span>
+            <span class="box-title">
+                {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
+            </span>
 
-    <div ng-if="explorer.CustomTemplateUrl != null">
-        <!-- Custom Template should be used here: -->
-        <div ng-include="explorer.CustomTemplateUrl"></div>
-    </div>
+            <div ng-include="'/Templates/explorerToolbar.html'"></div>
+        </div>
 
-    <div ng-if="explorer.CustomTemplateUrl == null" class="objectExplorerPanelBody">
-        <!-- Default view -->
-        <ng-form role="form" class="">
+        <div ng-if="explorer.CustomTemplateUrl != null">
+            <!-- Custom Template should be used here: -->
+            <div ng-include="explorer.CustomTemplateUrl"></div>
+        </div>
+
+        <div ng-if="explorer.CustomTemplateUrl == null" class="objectExplorerPanelBody">
+            <!-- Default view -->
             <div class="box-body">
                 <div class="propertyItems">
                     <div ng-repeat='prop in explorer.__meta.Properties' ng-include="'/Templates/propertyItem.html'">
                     </div>
                 </div>
             </div>
-        </ng-form>
+        </div>
+
     </div>
 
-</div>
+</ng-form>
