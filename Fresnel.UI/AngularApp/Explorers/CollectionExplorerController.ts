@@ -10,31 +10,10 @@
             fresnelService: IFresnelService,
             appService: AppService) {
 
-            $scope.gridColumns = [];
-
             var collection: any = $scope.explorer.__meta;
-
-            for (var i = 0; i < collection.ElementProperties.length; i++) {
-                var prop = collection.ElementProperties[i];
-
-                var template = this.getEditorTemplate(prop);
-
-                var newColumn = {
-                    name: prop.Name,
-                    field: 'Properties[' + i + "].Value",
-                    width: 150
-                    //editableCellTemplate: template
-
-                };
-                $scope.gridColumns[i] = newColumn;
-            }
-
-            $scope.gridOptions = {
-                enableSorting: true,
-                enableColumnResizing: true,
-                columnDefs: $scope.gridColumns,
-                data: collection.Items
-            };
+            
+            // This allows Smart-Table to handle the st-safe-src properly:
+            collection.DisplayedItems = [].concat(collection.Items);
 
             $scope.addNewItem = function (itemType: string) {
                 var promise = fresnelService.createObject(itemType);

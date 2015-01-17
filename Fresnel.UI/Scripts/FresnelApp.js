@@ -61,24 +61,9 @@ var FresnelApp;
 (function (FresnelApp) {
     var CollectionExplorerController = (function () {
         function CollectionExplorerController($rootScope, $scope, fresnelService, appService) {
-            $scope.gridColumns = [];
             var collection = $scope.explorer.__meta;
-            for (var i = 0; i < collection.ElementProperties.length; i++) {
-                var prop = collection.ElementProperties[i];
-                var template = this.getEditorTemplate(prop);
-                var newColumn = {
-                    name: prop.Name,
-                    field: 'Properties[' + i + "].Value",
-                    width: 150
-                };
-                $scope.gridColumns[i] = newColumn;
-            }
-            $scope.gridOptions = {
-                enableSorting: true,
-                enableColumnResizing: true,
-                columnDefs: $scope.gridColumns,
-                data: collection.Items
-            };
+            // This allows Smart-Table to handle the st-safe-src properly:
+            collection.DisplayedItems = [].concat(collection.Items);
             $scope.addNewItem = function (itemType) {
                 var promise = fresnelService.createObject(itemType);
                 promise.then(function (promiseResult) {
@@ -529,7 +514,7 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    var requires = ['blockUI', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'ui.grid', 'ui.grid.resizeColumns', 'ui.grid.edit'];
+    var requires = ['blockUI', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table'];
     angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);

@@ -11,7 +11,25 @@
             <div ng-include="'/Templates/explorerToolbar.html'"></div>
         </div>
 
-        <div id="collectionGrid_{{explorer.__meta.ID}}" ui-grid="gridOptions" ui-grid-edit ui-grid-selection ui-grid-auto-resize>
+        <div ng-if="explorer.CustomTemplateUrl != null">
+            <!-- Custom Template should be used here: -->
+            <div ng-include="explorer.CustomTemplateUrl"></div>
+        </div>
+
+        <div ng-if="explorer.CustomTemplateUrl == null">
+            <!-- NB: Use st-safe-src to ensure collection is watched -->
+            <table id="collectionGrid_{{explorer.__meta.ID}}" st-table="explorer.__meta.DisplayItems" st-safe-src="explorer.__meta.Items" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th ng-repeat="prop in explorer.__meta.ElementProperties">{{prop.Name}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in explorer.__meta.Items track by $index">
+                        <td ng-repeat="prop in explorer.__meta.ElementProperties">{{item.Properties[prop.Index].Value}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <div class="box-tools">
@@ -19,6 +37,7 @@
                 <i class="fa fa-plus"></i> Add...
             </button>
         </div>
+
     </div>
 
 </div>

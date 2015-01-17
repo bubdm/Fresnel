@@ -58,9 +58,13 @@ namespace Envivo.Fresnel.UiCore.Objects
                                         .Where(p => !p.IsFrameworkMember &&
                                                      p.IsVisible);
 
-            var elementProperties = allKnownProperties.Select(p =>
-                _PropertyVmBuilder.BuildFor(p))
-                .ToList();
+            var elementProperties = new List<PropertyVM>();
+            foreach (var prop in allKnownProperties)
+            {
+                var propVM = _PropertyVmBuilder.BuildFor(prop);
+                propVM.Index = elementProperties.Count;
+                elementProperties.Add(propVM);
+            }
 
             var result = new CollectionVM()
             {
@@ -96,27 +100,28 @@ namespace Envivo.Fresnel.UiCore.Objects
             return items;
         }
 
-        private void InsertUnallocatedProperties(ObjectVM objVM, IEnumerable<PropertyTemplate> allKnownProperties)
-        {
-            var allocatedProperties = objVM.Properties.ToList();
-            var allocatedPropertyNames = objVM.Properties.Select(p => p.PropertyName);
+        //private void InsertUnallocatedProperties(ObjectVM objVM, IEnumerable<PropertyTemplate> allKnownProperties)
+        //{
+        //    var allocatedProperties = objVM.Properties.ToList();
+        //    var allocatedPropertyNames = objVM.Properties.Select(p => p.PropertyName);
 
-            var unallocatedProperties = allKnownProperties.Where(p => !allocatedPropertyNames.Contains(p.Name));
-            foreach (var tProp in unallocatedProperties)
-            {
-                var propVM = new PropertyVM()
-                {
-                    Name = tProp.FriendlyName,
-                    PropertyName = tProp.Name,
-                    IsRequired = tProp.IsNonReference && !tProp.IsNullableType,
-                    IsEnabled = false,
-                    CanWrite = false,
-                };
-                allocatedProperties.Add(propVM);
-            }
+        //    var unallocatedProperties = allKnownProperties.Where(p => !allocatedPropertyNames.Contains(p.Name));
+        //    foreach (var tProp in unallocatedProperties)
+        //    {
+        //        var propVM = new PropertyVM()
+        //        {
+        //            Name = tProp.FriendlyName,
+        //            Index = allocatedProperties.Count,
+        //            PropertyName = tProp.Name,
+        //            IsRequired = tProp.IsNonReference && !tProp.IsNullableType,
+        //            IsEnabled = false,
+        //            CanWrite = false,
+        //        };
+        //        allocatedProperties.Add(propVM);
+        //    }
 
-            objVM.Properties = allocatedProperties;
-        }
+        //    objVM.Properties = allocatedProperties;
+        //}
 
         private ObjectVM BuildForObject(ObjectObserver oObject)
         {
@@ -149,6 +154,7 @@ namespace Envivo.Fresnel.UiCore.Objects
             foreach (var oProp in visibleProperties)
             {
                 var propVM = _PropertyVmBuilder.BuildFor(oProp);
+                propVM.Index = properties.Count;
                 properties.Add(propVM);
             }
             return properties;
@@ -163,6 +169,7 @@ namespace Envivo.Fresnel.UiCore.Objects
             foreach (var oMethod in visibleMethods)
             {
                 var methodVM = _MethodVmBuilder.BuildFor(oObject, oMethod);
+                methodVM.Index = methods.Count;
                 methods.Add(methodVM);
             }
             return methods;

@@ -2,7 +2,7 @@
 
     var requires = ['blockUI',
                     'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate',
-                    'ui.grid', 'ui.grid.resizeColumns', 'ui.grid.edit'];
+                    'smart-table'];
 
     angular.module("fresnelApp", requires)
         .service("appService", FresnelApp.AppService)
