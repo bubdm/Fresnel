@@ -22,7 +22,17 @@ a.disabled {
     padding: 0px !important;
     margin: 4px !important;
     min-height: 300px;
+    /*overflow-x: hidden;
+    overflow-y: auto;*/
+}
+
+.objectExplorerPanelBody {
     overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.collectionExplorerPanelBody {
+    overflow-x: auto;
     overflow-y: auto;
 }
 

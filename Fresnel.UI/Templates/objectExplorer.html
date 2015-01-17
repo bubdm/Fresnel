@@ -1,5 +1,5 @@
-﻿<div block-ui block-ui-pattern="/^.*{{explorer.__meta.ID}}.*$/" class="">
-    <div id="objectExplorer_{{explorer.__meta.ID}}" object-explorer ng-class="{'container-fluid' : true, 'col-sm-4': true, 'box': true, 'box-solid': true, 'box-primary': true, 'explorerPanel' : true, 'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
+﻿<!--<div block-ui block-ui-pattern="/^.*{{explorer.__meta.ID}}.*$/">-->
+    <div id="objectExplorer_{{explorer.__meta.ID}}" object-explorer class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
 
         <div class="box-header">
             <span class="explorerItemIcon {{explorer.__meta.Type}}Icon"> </span>
@@ -15,7 +15,7 @@
             <div ng-include="explorer.CustomTemplateUrl"></div>
         </div>
 
-        <div ng-if="explorer.CustomTemplateUrl == null">
+        <div ng-if="explorer.CustomTemplateUrl == null" class="objectExplorerPanelBody">
             <!-- Default view -->
             <ng-form role="form" class="">
                 <div class="box-body">
@@ -28,4 +28,4 @@
         </div>
 
     </div>
-</div>
+<!--</div>-->

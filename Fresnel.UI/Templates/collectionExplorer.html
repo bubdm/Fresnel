@@ -1,5 +1,5 @@
-﻿<div block-ui block-ui-pattern="/^.*{{explorer.__meta.ID}}.*$/" class="">
-    <div id="collectionExplorer_{{explorer.__meta.ID}}" object-explorer block-ui ng-class="{'container-fluid' : true, 'col-md-4': true, 'box': true, 'box-solid': true, 'box-primary': true, 'explorerPanel' : true, 'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
+﻿<!--<div block-ui block-ui-pattern="/^.*{{explorer.__meta.ID}}.*$/" class="container-fluid, col-sm-4, box, box-solid, box-primary, explorerPanel">-->
+    <div id="collectionExplorer_{{explorer.__meta.ID}}" object-explorer class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
 
         <div class="box-header">
             <span class="explorerItemIcon fa fa-folder-open-o"> </span>
@@ -16,16 +16,18 @@
             <div ng-include="explorer.CustomTemplateUrl"></div>
         </div>
 
-        <div ng-if="explorer.CustomTemplateUrl == null">
+        <div ng-if="explorer.CustomTemplateUrl == null" class="collectionExplorerPanelBody">
             <!-- NB: Use st-safe-src to ensure collection is watched -->
             <table id="collectionGrid_{{explorer.__meta.ID}}" st-table="explorer.__meta.DisplayItems" st-safe-src="explorer.__meta.Items" class="table table-striped">
                 <thead>
                     <tr>
+                        <th></th>
                         <th ng-repeat="prop in explorer.__meta.ElementProperties">{{prop.Name}}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in explorer.__meta.Items track by $index">
+                        <td><span class="{{item.Type}}Icon"> </span></td>
                         <td ng-repeat="prop in explorer.__meta.ElementProperties">{{item.Properties[prop.Index].Value}}</td>
                     </tr>
                 </tbody>
@@ -37,7 +39,6 @@
                 <i class="fa fa-plus"></i> Add...
             </button>
         </div>
-
     </div>
 
-</div>
+<!--</div>-->
