@@ -85,7 +85,9 @@ namespace Envivo.Fresnel.UiCore.Objects
             var propVM = this.BuildFor(tProp);
             propVM.ObjectID = oProp.OuterObject.ID;
             propVM.IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true;
-            propVM.IsExpandable = objectProp != null;
+            propVM.IsNonReference = oProp.Template.IsNonReference;
+            propVM.IsCollection = oProp.Template.IsCollection;
+            propVM.IsObject = !propVM.IsNonReference && !propVM.IsCollection;
             propVM.CanRead = getCheck.Passed;
             propVM.CanWrite = setCheck.Passed;
 

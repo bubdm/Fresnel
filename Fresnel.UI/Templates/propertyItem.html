@@ -90,13 +90,14 @@
             </div>
 
             <div ng-switch-default>
-                <button type="button"
-                        class="btn btn-default"
-                        ng-show="prop.IsExpandable"
-                        ng-click="openNewExplorer(prop)"
-                        tooltip="Open contents in a new panel">
-                    <i class="fa fa-ellipsis-h"></i>
-                </button>
+                <div ng-switch="prop.IsCollection">
+                    <div ng-switch-when="true">
+                        <div ng-include="'/Templates/Editors/collectionInteractions.html'"></div>
+                    </div>
+                    <div ng-switch-when="false">
+                        <div ng-include="'/Templates/Editors/objectInteractions.html'"></div>
+                    </div>
+                </div>
             </div>
 
             <div ng-show="prop.Error" class="alert-danger">

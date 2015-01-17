@@ -1,0 +1,25 @@
+﻿<div class="btn-group ">
+    <button type="button"
+            class="btn btn-default"
+            ng-show="prop.IsCollection"
+            ng-click="openNewExplorer(prop)"
+            tooltip="Open contents in a new panel">
+        <i class="fa fa-ellipsis-h"></i>
+    </button>
+
+    <button type="button"
+            class="btn btn-default"
+            ng-show="!prop.Value"
+            ng-click="addNewItem(prop)"
+            tooltip="Add a new item">
+        <i class="fa fa-plus"></i>
+    </button>
+
+    <button type="button"
+            class="btn btn-default"
+            ng-click="addItem(prop)"
+            tooltip="Add another item">
+        <i class="fa fa-link"></i>
+    </button>
+
+</div>

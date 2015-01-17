@@ -1,0 +1,32 @@
+﻿<div class="btn-group ">
+    <button type="button"
+            class="btn btn-default"
+            ng-show="prop.IsObject"
+            ng-click="openNewExplorer(prop)"
+            tooltip="Open contents in a new panel">
+        <i class="fa fa-ellipsis-h"></i>
+    </button>
+
+    <button type="button"
+            class="btn btn-default"
+            ng-show="!prop.Value"
+            ng-click="createAndLink(prop)"
+            tooltip="Add a new item">
+        <i class="fa fa-plus"></i>
+    </button>
+
+    <button type="button"
+            class="btn btn-default"
+            ng-click="link(prop)"
+            tooltip="Link to another item">
+        <i class="fa fa-link"></i>
+    </button>
+
+    <button type="button"
+            class="btn btn-default"
+            ng-show="prop.Value"
+            ng-click="unlink(prop)"
+            tooltip="Unlink this item">
+        <i class="fa fa-unlink"></i>
+    </button>
+</div>

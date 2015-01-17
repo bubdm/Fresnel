@@ -27,7 +27,11 @@ namespace Envivo.Fresnel.UiCore.Objects
 
         public bool IsLoaded { get; set; }
 
-        public bool IsExpandable { get; set; }
+        public bool IsObject { get; set; }
+
+        public bool IsCollection { get; set; }
+
+        public bool IsNonReference { get; set; }
 
         public ITypeInfo Info { get; set; }
 

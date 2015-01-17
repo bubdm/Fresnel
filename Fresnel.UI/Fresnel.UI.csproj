@@ -960,6 +960,8 @@
     <Content Include="Scripts\smart-table\smart-table.min.js" />
     <Content Include="Templates\Editors\dateEditor.html" />
     <Content Include="Templates\Editors\enumBitwiseCheckboxEditor.html" />
+    <Content Include="Templates\Editors\collectionInteractions.html" />
+    <Content Include="Templates\Editors\objectInteractions.html" />
     <Content Include="Templates\Editors\enumSelectEditor.html" />
     <Content Include="Templates\Editors\enumRadioEditor.html" />
     <Content Include="Templates\Editors\enumCheckboxEditor.html" />
