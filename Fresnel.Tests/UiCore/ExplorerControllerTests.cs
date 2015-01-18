@@ -133,6 +133,40 @@ namespace Envivo.Fresnel.Tests.Proxies
         }
 
         [Test()]
+        public void ShouldReturnNewlyCreatedObservers()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var templateCache = container.Resolve<TemplateCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
+
+            // This ensures the Collection can be tracked:
+            var getRequest = new GetPropertyRequest()
+            {
+                ObjectID = poco.ID,
+                PropertyName = "ChildObjects"
+            };
+            var getResult = controller.GetObjectProperty(getRequest);
+
+            // Act:          
+            var invokeRequest = new InvokeMethodRequest()
+            {
+                ObjectID = poco.ID,
+                MethodName = "AddSomeChildObjects",
+            };
+
+            var invokeResult = controller.InvokeMethod(invokeRequest);
+
+            // Assert:
+            Assert.AreEqual(3, invokeResult.Modifications.NewObjects.Count());
+        }
+
+        [Test()]
         public void ShouldReturnPopulatedCollectionProperty()
         {
             // Arrange:
