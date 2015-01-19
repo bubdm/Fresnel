@@ -1,9 +1,4 @@
-﻿//  Author:
-//       Vijay Patel
-//
-// Copyright (c) 2014 Vijay Patel
-//
-using System;
+﻿using System;
 using System.Runtime.Serialization;
 
 namespace Envivo.Fresnel.Configuration

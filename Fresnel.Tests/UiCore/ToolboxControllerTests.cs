@@ -1,9 +1,4 @@
-﻿//  Author:
-//       Vijay Patel
-//
-// Copyright (c) 2014 Vijay Patel
-//
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Autofac;
 using System.Linq;
 using Envivo.Fresnel.Bootstrap;

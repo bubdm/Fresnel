@@ -1,9 +1,4 @@
-﻿//  Author:
-//       Vijay Patel
-//
-// Copyright (c) 2014 Vijay Patel
-//
-using Autofac;
+﻿using Autofac;
 using NUnit.Framework;
 using System;
 using System.Linq;

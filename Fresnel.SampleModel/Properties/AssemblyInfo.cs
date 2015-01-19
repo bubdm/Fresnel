@@ -1,9 +1,4 @@
-﻿//  Author:
-//       Vijay Patel
-//
-// Copyright (c) 2014 Vijay Patel
-//
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 
 // Information about this assembly is defined by the following attributes.
