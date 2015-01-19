@@ -3,14 +3,11 @@ using Envivo.Fresnel.Introspection.Templates;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     public class ObjectPropertyObserver : BasePropertyObserver
     {
-
         public ObjectPropertyObserver(ObjectObserver oParent, PropertyTemplate tProperty)
             : base(oParent, tProperty)
         {
-            
         }
 
         /// <summary>

@@ -3,9 +3,8 @@ using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Utils;
 using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
@@ -106,6 +105,5 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             _oCollection = null;
         }
-
     }
 }

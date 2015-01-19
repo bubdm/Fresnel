@@ -1,14 +1,7 @@
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Introspection.Templates;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
-
     /// <summary>
     /// Notifies all objects up the tree when modifieds are made to objects & properties
     /// </summary>
@@ -147,6 +140,5 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 }
             }
         }
-
     }
 }

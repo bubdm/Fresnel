@@ -1,11 +1,5 @@
 ﻿using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Introspection.Templates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Core.Commands
 {
@@ -42,7 +36,7 @@ namespace Envivo.Fresnel.Core.Commands
             //    this.ErrorMessage = check.FailureReason;
             //    return;
             //}
-            
+
             var oOuterObject = oProperty.OuterObject;
 
             _SetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name, oValue.RealObject);
@@ -61,6 +55,5 @@ namespace Envivo.Fresnel.Core.Commands
                 _ObserverCacheSynchroniser.SyncAll();
             }
         }
-
     }
 }

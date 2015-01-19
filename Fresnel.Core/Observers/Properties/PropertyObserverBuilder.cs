@@ -1,15 +1,10 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection.Templates;
-using System;
-using System.Collections.Generic;
-
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     public class PropertyObserverBuilder
     {
-
         public BasePropertyObserver BuildFor(ObjectObserver oParent, PropertyTemplate tProp)
         {
             if (tProp.IsVisible == false)
@@ -47,7 +42,5 @@ namespace Envivo.Fresnel.Core.Observers
             var oProperty = new NonReferencePropertyObserver(oParent, tProperty);
             return oProperty;
         }
-
     }
-
 }

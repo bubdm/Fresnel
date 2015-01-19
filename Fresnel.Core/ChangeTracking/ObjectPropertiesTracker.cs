@@ -1,16 +1,12 @@
-
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
-
     public class ObjectPropertiesTracker : IDisposable
     {
         private ObjectObserver _oObject;
@@ -86,7 +82,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             _oObject = null;
         }
 
-
         public IEnumerable<PropertyChange> GetChangesSince(long startedAt)
         {
             var results = _PropertyTrackerMap
@@ -97,6 +92,5 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             return results;
         }
-
     }
 }

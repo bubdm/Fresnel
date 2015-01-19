@@ -1,13 +1,10 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Reflection;
-using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     public class PropertyObserverMap : ReadOnlyDictionary<string, BasePropertyObserver>
     {
         private IEnumerable<ObjectPropertyObserver> _ForObjects;
@@ -52,7 +49,5 @@ namespace Envivo.Fresnel.Core.Observers
                 oProp.ResetLazyLoadStatus(isOuterClassPersistable);
             }
         }
-
     }
-
 }

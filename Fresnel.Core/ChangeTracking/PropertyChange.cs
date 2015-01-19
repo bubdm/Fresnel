@@ -1,10 +1,7 @@
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.DomainTypes.Interfaces;
-using System;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
-
     /// <summary>
     /// A snapshot of a Property at a point in time
     /// </summary>
@@ -22,6 +19,5 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             this.OriginalValue = null;
             this.NewValue = null;
         }
-
     }
 }

@@ -1,9 +1,4 @@
-﻿using Envivo.Fresnel.Core.Observers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
@@ -96,6 +91,5 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
         //    return new BaseChange[] { };
         //}
-
     }
 }

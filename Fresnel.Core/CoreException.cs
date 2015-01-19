@@ -24,7 +24,5 @@ namespace Envivo.Fresnel.Core
             : base(info, context)
         {
         }
-
     }
 }
-

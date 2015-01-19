@@ -1,16 +1,12 @@
 using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.DomainTypes.Interfaces;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// Returns Observers for .NET objects & values
     /// </summary>
@@ -87,7 +83,6 @@ namespace Envivo.Fresnel.Core.Observers
             var result = tClass != null ?
                         this.GetCachedObserver(id, obj, tClass) :
                         this.GetCachedObserver(id, obj, tNonRefClass);
-
 
             if (result == null)
             {
@@ -204,7 +199,7 @@ namespace Envivo.Fresnel.Core.Observers
             System.Diagnostics.Debug.WriteLine("ReferenceEquals failed for " + oObject.DebugID);
 
             //// We should update the cached Object from the given instance.
-            //// Note that we don't just replace the Object, as that would break 
+            //// Note that we don't just replace the Object, as that would break
             //// existing references to other Domain Objects in the graph:
             //if (oParent.IsCollection)
             //{
@@ -229,7 +224,6 @@ namespace Envivo.Fresnel.Core.Observers
             }
         }
 
-
         public void CleanUp()
         {
             foreach (var oObject in _ObjectIdMap.Values)
@@ -247,5 +241,4 @@ namespace Envivo.Fresnel.Core.Observers
             _NonReferenceMap.Clear();
         }
     }
-
 }

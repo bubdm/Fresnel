@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
@@ -11,7 +8,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
         public virtual void Dispose()
         {
-
         }
     }
 }

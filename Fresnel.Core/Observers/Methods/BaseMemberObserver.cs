@@ -1,16 +1,13 @@
 using Envivo.Fresnel.Introspection.Templates;
 using System;
 
-
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// The base class for all 'Member' Observers
     /// </summary>
     public abstract class BaseMemberObserver : BaseObserver
     {
-
         /// <summary>
         ///
         /// </summary>
@@ -32,16 +29,17 @@ namespace Envivo.Fresnel.Core.Observers
 
         internal override string DebugID
         {
-            get {
+            get
+            {
                 var tClass = this.OuterObject.Template;
 
-                return string.Concat("[", 
-                                this.OuterObject.ID.ToString().ToUpper(), 
+                return string.Concat("[",
+                                this.OuterObject.ID.ToString().ToUpper(),
                                 " ",
-                                tClass.FullName, 
-                                ",", 
+                                tClass.FullName,
+                                ",",
                                 this.Template.Name,
-                                "]"); 
+                                "]");
             }
         }
 
@@ -112,6 +110,5 @@ namespace Envivo.Fresnel.Core.Observers
         //        return _oNull;
         //    }
         //}
-
     }
 }

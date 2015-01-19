@@ -4,10 +4,8 @@ using System;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     public class MethodObserverBuilder
     {
-
         private Func<ObjectObserver, MethodTemplate, MethodObserver> _MethodObserverFactory;
 
         public MethodObserverBuilder
@@ -35,7 +33,5 @@ namespace Envivo.Fresnel.Core.Observers
 
             return oMethod;
         }
-
     }
-
 }

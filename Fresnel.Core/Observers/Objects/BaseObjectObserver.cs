@@ -1,14 +1,12 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.Core.ChangeTracking;
+using Envivo.Fresnel.Utils;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// The base class for all Object Observers.
     /// </summary>
@@ -26,7 +24,6 @@ namespace Envivo.Fresnel.Core.Observers
         )
             : base(obj, objectType, sourceTemplate)
         {
-
             _OuterCollections = new Lazy<List<CollectionObserver>>(
                                     () => new List<CollectionObserver>(),
                                     System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
@@ -188,6 +185,5 @@ namespace Envivo.Fresnel.Core.Observers
 
             base.Dispose();
         }
-
     }
 }

@@ -1,12 +1,9 @@
-using System;
-
-using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
 using Newtonsoft.Json;
+using System;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// The base class for all Observer classes
     /// </summary>
@@ -39,7 +36,7 @@ namespace Envivo.Fresnel.Core.Observers
         {
             get { return string.Concat("[", this.ID.ToString().ToUpper(), " ", this.Template.FullName, "]"); }
         }
-        
+
         public override string ToString()
         {
             return string.Concat(this.GetType().Name, ":", this.Template.Name);
@@ -79,7 +76,6 @@ namespace Envivo.Fresnel.Core.Observers
             return this.InnerObserver as T;
         }
 
-
         ///// <summary>
         ///// Returns TRUE if this Observer was created before the given time point (i.e. DateTime.UtcNow)
         ///// </summary>
@@ -98,6 +94,5 @@ namespace Envivo.Fresnel.Core.Observers
             this.InnerObserver = null;
             this.Template = null;
         }
-
     }
 }

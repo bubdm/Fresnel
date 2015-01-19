@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.Core
 {
-    public static class IEntityExtensions 
+    public static class IEntityExtensions
     {
- 
         public static bool IsEqualTo(this IEntity a, IEntity b)
         {
             if (object.ReferenceEquals(a, b))
@@ -30,7 +26,5 @@ namespace Envivo.Fresnel.Core
 
             return false;
         }
-
-
     }
 }

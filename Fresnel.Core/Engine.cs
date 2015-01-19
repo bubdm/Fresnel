@@ -1,15 +1,6 @@
-﻿using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Core.Persistence;
-using Envivo.Fresnel.Core.Commands;
-using Envivo.Fresnel.Introspection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.DomainTypes.Interfaces;
+﻿using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
+using System;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Core
@@ -58,6 +49,5 @@ namespace Envivo.Fresnel.Core
             var result = _UserSessionFactory();
             return result;
         }
-
     }
 }

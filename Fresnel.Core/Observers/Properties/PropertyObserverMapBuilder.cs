@@ -1,14 +1,8 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Configuration;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     public class PropertyObserverMapBuilder
     {
         private PropertyObserverBuilder _PropertyObserverBuilder;
@@ -31,7 +25,6 @@ namespace Envivo.Fresnel.Core.Observers
 
             var results = new Dictionary<string, BasePropertyObserver>();
 
-
             foreach (var tProp in tClass.Properties.Values)
             {
                 if (tProp.IsVisible == false)
@@ -46,6 +39,5 @@ namespace Envivo.Fresnel.Core.Observers
 
             return new PropertyObserverMap(results);
         }
-
     }
 }

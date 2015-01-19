@@ -1,19 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection.Templates;
 using Newtonsoft.Json;
+using System;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// An observer for an Enumeration value
     /// </summary>
     public class EnumObserver : NonReferenceObserver
     {
-
         public EnumObserver(object enumValue, Type enumType, EnumTemplate tEnum)
             : base(enumValue, enumType, tEnum)
         {
@@ -29,13 +24,10 @@ namespace Envivo.Fresnel.Core.Observers
         ///// The underlying Template used to create this Observer
         ///// </summary>
 
-
-
         //public EnumTemplate EnumTemplate
         //{
         //    get { return (EnumTemplate)base.Template; }
         //}
-
 
         ///// <summary>
         /////
@@ -43,7 +35,7 @@ namespace Envivo.Fresnel.Core.Observers
         ///// <param name="showStatus"></param>
         ///// <param name="showName"></param>
         ///// <param name="showSummary"></param>
-        
+
         ///// <remarks>This method must be as optimal as possible, as it will be called many times in rapid succession</remarks>
         //public override string ToString(bool showStatus, bool showName, bool showSummary)
         //{
@@ -76,7 +68,7 @@ namespace Envivo.Fresnel.Core.Observers
         ///// The format is dependent on the Attribute declarations applied to the Object and it's members.
         ///// </summary>
         ///// <returns>The formatted value as a String</returns>
-        
+
         //internal string GetFormattedValue()
         //{
         //    if (this.RealObject == null)
@@ -130,7 +122,5 @@ namespace Envivo.Fresnel.Core.Observers
         //    selectedEnumItems.CopyTo(result);
         //    return string.Format("[{0}]", string.Join(",", result));
         //}
-
     }
-
 }

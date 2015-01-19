@@ -1,12 +1,6 @@
-﻿using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Introspection.Templates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Envivo.Fresnel.Core.ChangeTracking;
+using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Core.ChangeTracking;
 
 namespace Envivo.Fresnel.Core.Commands
 {
@@ -48,6 +42,5 @@ namespace Envivo.Fresnel.Core.Commands
             // Make sure we know of any changes in the object graph:
             _ObserverCacheSynchroniser.SyncAll();
         }
-
     }
 }

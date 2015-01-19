@@ -1,9 +1,8 @@
-using System;
 using Envivo.Fresnel.Introspection.Templates;
+using System;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// An Observer for a Method belonging to the Object
     /// </summary>
@@ -44,7 +43,6 @@ namespace Envivo.Fresnel.Core.Observers
         /// </summary>
         public ParameterObserverMap Parameters { get { return _ParameterObservers.Value; } }
 
-
         ///// <summary>
         ///// Sets the parameters with the given values.  The number of items MUST match the number of parameters
         ///// </summary>
@@ -82,6 +80,5 @@ namespace Envivo.Fresnel.Core.Observers
         //    this.Parameters = null;
         //    base.Dispose();
         //}
-
     }
 }

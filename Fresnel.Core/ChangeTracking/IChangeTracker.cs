@@ -1,9 +1,9 @@
-﻿using System;
-namespace Envivo.Fresnel.Core.ChangeTracking
+﻿namespace Envivo.Fresnel.Core.ChangeTracking
 {
     public interface IChangeTracker
     {
         bool IsDirty { get; set; }
+
         bool IsTransient { get; set; }
     }
 }

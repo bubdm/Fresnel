@@ -1,10 +1,7 @@
-
-
 using Envivo.Fresnel.Introspection.Templates;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     public class NonReferencePropertyObserver : BasePropertyObserver
     {
         /// <summary>
@@ -16,7 +13,5 @@ namespace Envivo.Fresnel.Core.Observers
             : base(oParent, tProperty)
         {
         }
-
     }
-
 }

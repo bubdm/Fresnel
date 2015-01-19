@@ -1,16 +1,10 @@
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Introspection.Templates;
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
     public class AbstractChangeTrackerBuilder
     {
-
         private Func<ObjectObserver, ObjectTracker> _ObjectTrackerFactory;
         private Func<CollectionObserver, CollectionTracker> _CollectionTrackerFactory;
 

@@ -1,18 +1,14 @@
 using Envivo.Fresnel.Introspection.Templates;
 using Newtonsoft.Json;
 using System;
-using System.Text;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// An Observer for a Non-Reference value (e.g. primitives, structs, and non-reference types)
     /// </summary>
     public class NonReferenceObserver : BaseObjectObserver
     {
-
-
         public NonReferenceObserver(object nonRefValue, Type nonRefType, NonReferenceTemplate tNonRef)
             : base(nonRefValue, nonRefType, tNonRef)
         {
@@ -28,7 +24,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// <summary>
         /// The underlying Template used to create this Observer
         /// </summary>
-        
+
         //public  NonReferenceTemplate NonReferenceTemplate
         //{
         //    get { return (NonReferenceTemplate)base.Template; }
@@ -72,7 +68,7 @@ namespace Envivo.Fresnel.Core.Observers
         ///// <param name="showStatus"></param>
         ///// <param name="showName"></param>
         ///// <param name="showSummary"></param>
-        
+
         ///// <remarks>This method must be as optimal as possible, as it will be called many times in rapid succession</remarks>
         //public override string ToString(bool showStatus, bool showName, bool showSummary)
         //{
@@ -105,7 +101,7 @@ namespace Envivo.Fresnel.Core.Observers
         ///// The format is dependent on the Attribute declarations applied to the Object and it's members.
         ///// </summary>
         ///// <returns>The Formatted value as a String</returns>
-        
+
         //internal string GetFormattedValue()
         //{
         //    if (this.RealObject == null)
@@ -208,7 +204,5 @@ namespace Envivo.Fresnel.Core.Observers
             //_StringAttribute = null;
             base.Dispose();
         }
-
     }
-
 }

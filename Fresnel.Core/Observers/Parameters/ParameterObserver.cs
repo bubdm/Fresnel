@@ -1,19 +1,14 @@
-
 using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.Utils;
 using Newtonsoft.Json;
-
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// An Observer for a Parameter belonging to a Member
     /// </summary>
 
     public class ParameterObserver : BaseMemberObserver
     {
-
         /// <summary>
         ///
         /// </summary>
@@ -143,6 +138,5 @@ namespace Envivo.Fresnel.Core.Observers
             this.Value = null;
             base.Dispose();
         }
-
     }
 }

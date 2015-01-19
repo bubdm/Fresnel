@@ -4,7 +4,6 @@ using System;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// An Observer for a Property belonging to a Object
     /// </summary>
@@ -34,6 +33,5 @@ namespace Envivo.Fresnel.Core.Observers
         {
             base.Dispose();
         }
-
     }
 }

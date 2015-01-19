@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Utils;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Core
 {
@@ -12,7 +10,6 @@ namespace Envivo.Fresnel.Core
     /// </summary>
     public class OuterObjectsIdentifier
     {
-
         /// <summary>
         /// Returns a list of all Outer objects
         /// </summary>
@@ -60,7 +57,5 @@ namespace Envivo.Fresnel.Core
                 GetOuterObjectsFor(oPropertyOwner, foundObjects, remainingLevelsToScan);
             }
         }
-
-
     }
 }

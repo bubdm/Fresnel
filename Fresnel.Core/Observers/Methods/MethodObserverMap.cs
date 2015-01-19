@@ -1,17 +1,12 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Reflection;
-using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Templates;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     public class MethodObserverMap : ReadOnlyDictionary<string, MethodObserver>
     {
-
         public MethodObserverMap(IDictionary<string, MethodObserver> items)
             : base(items)
         {
@@ -56,7 +51,7 @@ namespace Envivo.Fresnel.Core.Observers
         ///// Returns the MethodObserver with the given name, and that accepts the given arguments.
         ///// </summary>
         ///// <param name="argumentTypes">The types of the parameters that the method accepts</param>
-        
+
         //internal MethodObserver FindMethod(string methodName, params Type[] argumentTypes)
         //{
         //    if (this.Count == 0)
@@ -75,5 +70,4 @@ namespace Envivo.Fresnel.Core.Observers
         //    return oMatch;
         //}
     }
-
 }

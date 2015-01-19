@@ -1,12 +1,6 @@
 ﻿using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Templates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Core.Commands
 {
@@ -36,7 +30,7 @@ namespace Envivo.Fresnel.Core.Commands
 
         public bool Invoke(CollectionObserver oCollection, ObjectObserver oItemToRemove)
         {
-            // TODO: Check permissions 
+            // TODO: Check permissions
 
             //var preSnapshot = new CollectionChangeSnapshot(this);
 
@@ -74,6 +68,5 @@ namespace Envivo.Fresnel.Core.Commands
 
             return passed;
         }
-
     }
 }

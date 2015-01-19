@@ -1,15 +1,12 @@
-using System;
-using System.Text;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection.Templates;
-using System.Collections.Generic;
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.ChangeTracking;
+using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Utils;
 using Newtonsoft.Json;
+using System;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// An Observer for a Domain Object (excluding Non-Reference values and Collections)
     /// </summary>
@@ -56,7 +53,6 @@ namespace Envivo.Fresnel.Core.Observers
             _Methods = new Lazy<MethodObserverMap>(
                               () => _MethodObserverMapBuilder.BuildFor(this),
                               System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
-
         }
 
         internal override void FinaliseConstruction()
@@ -159,7 +155,6 @@ namespace Envivo.Fresnel.Core.Observers
 
             return false;
         }
-
 
         /// <summary>
         /// Determines if the associated Object is new, and allows reading of all properties
@@ -300,6 +295,5 @@ namespace Envivo.Fresnel.Core.Observers
 
             base.Dispose();
         }
-
     }
 }

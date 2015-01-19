@@ -4,9 +4,6 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Core.Commands
 {
@@ -52,7 +49,7 @@ namespace Envivo.Fresnel.Core.Commands
 
             return oNewObject;
         }
-        
+
         private void SetDefaultId(ClassTemplate tClass, object newInstance)
         {
             if (newInstance == null)

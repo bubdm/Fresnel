@@ -8,11 +8,9 @@ using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
-
     /// <summary>
     /// Keeps track of changes made to a property
     /// </summary>
@@ -127,6 +125,5 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             _oProperty = null;
         }
-
     }
 }

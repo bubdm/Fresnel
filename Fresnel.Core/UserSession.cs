@@ -1,15 +1,7 @@
-﻿using Envivo.Fresnel.Core.Observers;
+﻿using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Persistence;
-using Envivo.Fresnel.Core.Commands;
-using Envivo.Fresnel.Introspection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.DomainTypes.Interfaces;
-
+using System;
 
 namespace Envivo.Fresnel.Core
 {
@@ -38,7 +30,7 @@ namespace Envivo.Fresnel.Core
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public T New<T>()
-            where T: class
+            where T : class
         {
             var oObject = _CreateObjectCommand.Invoke(typeof(T), null);
 
@@ -65,8 +57,8 @@ namespace Envivo.Fresnel.Core
         ///// <returns></returns>
         //public IEnumerable<T> LoadQuery(Query query)
         //{
-         //// Defer to a LoadQueryCommand
-         //   throw new NotImplementedException();
+        //// Defer to a LoadQueryCommand
+        //   throw new NotImplementedException();
         //}
 
         public IAssertion Save(params object[] objects)
@@ -74,6 +66,5 @@ namespace Envivo.Fresnel.Core
             // Defer to a SaveCommand
             throw new NotImplementedException();
         }
-
     }
 }

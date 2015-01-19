@@ -1,10 +1,8 @@
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Introspection.Templates;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Diagnostics;
 using Envivo.Fresnel.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
@@ -46,8 +44,8 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             _ObjectCreation = new ObjectCreation()
             {
-                 Object = _oObject,
-                 Sequence  = SequentialIdGenerator.Next
+                Object = _oObject,
+                Sequence = SequentialIdGenerator.Next
             };
         }
 
@@ -96,7 +94,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 _HasLocalChanges = true;
             }
         }
-        
+
         /// <summary>
         /// Determines if the associated Object is marked for insertion
         /// </summary>
@@ -224,7 +222,5 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             _ObjectPropertiesTracker.DisposeSafely();
             _ObjectPropertiesTracker = null;
         }
-
-
     }
 }

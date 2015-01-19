@@ -1,13 +1,9 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
+using System;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     public class MethodObserverMapBuilder
     {
         private Func<ObjectObserver, MethodTemplate, MethodObserver> _MethodObserverFactory;
@@ -51,6 +47,5 @@ namespace Envivo.Fresnel.Core.Observers
 
             return new MethodObserverMap(results);
         }
-
     }
 }

@@ -1,13 +1,9 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
+using System;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     public class ParameterObserverMapBuilder
     {
         private Func<MethodObserver, ParameterTemplate, ParameterObserver> _ParameterObserverFactory;
@@ -49,6 +45,5 @@ namespace Envivo.Fresnel.Core.Observers
 
             return string.Join(",", parameterNames);
         }
-
     }
 }

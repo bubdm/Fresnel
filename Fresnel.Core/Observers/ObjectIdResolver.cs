@@ -1,20 +1,14 @@
-using Envivo.Fresnel.Introspection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.Introspection.Templates;
+using System;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// Returns Observers for .NET objects & values
     /// </summary>
     public class ObjectIdResolver
     {
-       
         public Guid GetId(object obj, ClassTemplate tClass)
         {
             if (obj == null)
@@ -69,5 +63,4 @@ namespace Envivo.Fresnel.Core.Observers
             return result;
         }
     }
-
 }

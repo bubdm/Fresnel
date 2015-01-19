@@ -1,6 +1,6 @@
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Core
 {
@@ -21,6 +21,5 @@ namespace Envivo.Fresnel.Core
         {
             return _InverseMap.TryGetValueOrDefault(value, Guid.Empty);
         }
-
     }
 }

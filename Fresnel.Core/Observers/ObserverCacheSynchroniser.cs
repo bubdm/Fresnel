@@ -1,16 +1,8 @@
 using Envivo.Fresnel.Introspection;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.DomainTypes.Interfaces;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// Synchronises all known Observers with the underlying domain object graph
     /// </summary>
@@ -30,7 +22,7 @@ namespace Envivo.Fresnel.Core.Observers
 
         public void SyncAll()
         {
-            // We may have accessed a Collection property, but haven't 
+            // We may have accessed a Collection property, but haven't
             var knownObservers = ObserverCache.GetAllObservers().ToArray();
             foreach (var oObject in knownObservers)
             {
@@ -138,8 +130,5 @@ namespace Envivo.Fresnel.Core.Observers
                 this.Sync(oCollection);
             }
         }
-
-
     }
-
 }

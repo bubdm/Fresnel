@@ -1,17 +1,15 @@
+using Envivo.Fresnel.Core.ChangeTracking;
+using Envivo.Fresnel.Introspection.Templates;
+using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.Core.ChangeTracking;
-using Newtonsoft.Json;
+using System.Linq;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
-    /// An Observer for a Domain Object Collection 
+    /// An Observer for a Domain Object Collection
     /// </summary>
     public class CollectionObserver : ObjectObserver
     {
@@ -32,7 +30,6 @@ namespace Envivo.Fresnel.Core.Observers
         )
             : base(collection, collectionType, tCollection, propertyObserverMapBuilder, methodObserverMapBuilder, changeTrackerBuilder)
         {
-
         }
 
         [JsonIgnore]
@@ -84,6 +81,5 @@ namespace Envivo.Fresnel.Core.Observers
             base.Dispose();
             this.PreviousItems = null;
         }
-
     }
 }

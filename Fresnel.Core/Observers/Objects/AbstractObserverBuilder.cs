@@ -3,10 +3,8 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
 
-
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// Creates and returns Observers for Domain Objects, Collections, Enums, and object Members
     /// </summary>
@@ -122,7 +120,5 @@ namespace Envivo.Fresnel.Core.Observers
             var result = _NullObserverFactory(objectType, tClass);
             return result;
         }
-
     }
-
 }

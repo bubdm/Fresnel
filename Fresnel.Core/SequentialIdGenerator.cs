@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
-
 namespace Envivo.Fresnel.Core
 {
     public static class SequentialIdGenerator
@@ -12,6 +8,5 @@ namespace Envivo.Fresnel.Core
         {
             get { return ++_ID; }
         }
-
     }
 }

@@ -1,20 +1,17 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
 using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Envivo.Fresnel.Core.Observers
 {
-
     /// <summary>
     /// Represents a collection of Parameters for a Method i.e. the methods Signature
     /// </summary>
 
     public class ParameterObserverMap : ReadOnlyDictionary<string, ParameterObserver>
     {
-
         public ParameterObserverMap(IDictionary<string, ParameterObserver> items, string signatureKey)
             : base(items)
         {
@@ -81,6 +78,5 @@ namespace Envivo.Fresnel.Core.Observers
                 }
             }
         }
-
     }
 }

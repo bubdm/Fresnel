@@ -1,20 +1,12 @@
-﻿using Envivo.Fresnel.DomainTypes.Interfaces;
-using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.Configuration;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.Introspection;
 
 namespace Envivo.Fresnel.Core.Permissions
 {
     public class CanSetPropertyPermission : ISpecification<BasePropertyObserver>
     {
-
         public IAssertion IsSatisfiedBy(BasePropertyObserver oProperty)
         {
             var assertions = new AssertionSet();
