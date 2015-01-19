@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
 using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Configuration;
-using System.Diagnostics;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
@@ -16,7 +11,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
     public class Category : BaseAggregateRoot
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Category()
         {
@@ -29,12 +24,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
             this.Products = products;
         }
 
-        void Products_Adding(object sender, ICollectionChangeEventArgs<Product> e)
+        private void Products_Adding(object sender, ICollectionChangeEventArgs<Product> e)
         {
             e.IsCancelled = (this.Products.Contains(e.Item));
         }
 
-        void products_Removing(object sender, ICollectionChangeEventArgs<Product> e)
+        private void products_Removing(object sender, ICollectionChangeEventArgs<Product> e)
         {
             if (this.Products.Contains(e.Item) == false)
             {
@@ -42,7 +37,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
             }
         }
 
-        void products_Added(object sender, ICollectionChangeEventArgs<Product> e)
+        private void products_Added(object sender, ICollectionChangeEventArgs<Product> e)
         {
             if (e.Item.Categories.Contains(this) == false)
             {
@@ -50,19 +45,18 @@ namespace Envivo.Fresnel.SampleModel.Objects
             }
         }
 
-        void products_Removed(object sender, ICollectionChangeEventArgs<Product> e)
+        private void products_Removed(object sender, ICollectionChangeEventArgs<Product> e)
         {
             e.Item.Categories.Remove(this);
         }
 
         // Not sure why this property is declared here, as it hides the one in the base class:
         //        public IAudit Audit { get; protected set; }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual Money Money { get; set; }
-
 
         /// <summary>
         /// The Products that belong to this Category
@@ -80,7 +74,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public virtual string Description { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()
@@ -89,7 +83,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override bool IsValid()

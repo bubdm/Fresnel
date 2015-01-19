@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
 using Envivo.Fresnel.Configuration;
-using System.Diagnostics;
 using Envivo.Fresnel.DomainTypes;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
@@ -17,14 +13,14 @@ namespace Envivo.Fresnel.SampleModel.Objects
         private Collection<BiDirectionalExample> _Contents = new Collection<BiDirectionalExample>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public BiDirectionalExample()
         {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [CollectionProperty(Relationship = ManyRelationship.OwnsMany)]
         public virtual ICollection<BiDirectionalExample> Contents
@@ -42,6 +38,5 @@ namespace Envivo.Fresnel.SampleModel.Objects
 
             item.Contents.Add(this);
         }
-
     }
 }

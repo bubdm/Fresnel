@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.SampleModel.Objects;
+using System;
 using System.Diagnostics;
 using System.Reflection;
-using Envivo.Fresnel.SampleModel.Objects;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.SampleModel
 {
@@ -19,11 +16,11 @@ namespace Envivo.Fresnel.SampleModel
         #region IProgressReporter Members
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public event ReportProgressEventHandler NotifyProgressUpdate;
 
-        #endregion
+        #endregion IProgressReporter Members
 
         /// <summary>
         /// The unique ID for this entity
@@ -44,7 +41,7 @@ namespace Envivo.Fresnel.SampleModel
         /// It should appear with a 'disabled' icon.
         /// </summary>
         /// <param name="dateTime"></param>
-        public void MethodWithOneParameter([DateTime(PreferredInputControl  = InputControlTypes.Date)] DateTime dateTime)
+        public void MethodWithOneParameter([DateTime(PreferredInputControl = InputControlTypes.Date)] DateTime dateTime)
         {
             Trace.TraceInformation(MethodBase.GetCurrentMethod().Name);
         }
@@ -162,6 +159,5 @@ namespace Envivo.Fresnel.SampleModel
 
             return "Done!!";
         }
-
     }
 }

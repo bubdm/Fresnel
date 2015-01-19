@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.Configuration;
+using System;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -13,7 +9,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     public class NumberValues
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public NumberValues()
         {
@@ -87,7 +83,6 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         [Number(IsCurrency = true)]
         public virtual double DoubleNumber { get; set; }
 
-
         /// <summary>
         /// This is a Float number shown to 5 decimal places
         /// </summary>
@@ -108,6 +103,5 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
             get { return _IntValue; }
             set { _IntValue = value; }
         }
-
     }
 }

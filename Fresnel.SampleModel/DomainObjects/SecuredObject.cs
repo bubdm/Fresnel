@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Envivo.Fresnel.SampleModel.BasicTypes;
-using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.Configuration;
+using System;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class SecuredObject
     {
-
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
@@ -35,6 +30,5 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// </summary>
         [Permissions(AllowedOperations = Allow.Read | Allow.Write, User = "Vij")]
         public virtual string TextValue { get; set; }
-
     }
 }

@@ -1,26 +1,21 @@
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.SampleModel.BasicTypes;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class ValidationExample : IValidatable
     {
-
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
         public virtual Guid ID { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual long Version { get; set; }
 
@@ -34,11 +29,10 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// </summary>
         public virtual int Age { get; set; }
 
-
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public virtual bool IsValid()
@@ -87,6 +81,5 @@ namespace Envivo.Fresnel.SampleModel.Objects
                 return error;
             }
         }
-
     }
 }

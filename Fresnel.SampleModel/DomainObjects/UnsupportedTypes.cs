@@ -1,10 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.SampleModel.BasicTypes;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
@@ -13,7 +8,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public class UnsupportedTypes
     {
-
         private Dictionary<string, PocoObject> _Map = new Dictionary<string, PocoObject>();
 
         /// <summary>
@@ -22,13 +16,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public virtual Guid ID { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual Dictionary<string, PocoObject> Map
         {
             get { return _Map; }
             protected set { _Map = value; }
         }
-
     }
 }

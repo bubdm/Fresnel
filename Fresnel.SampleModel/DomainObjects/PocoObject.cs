@@ -1,10 +1,8 @@
+using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.SampleModel.BasicTypes;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.SampleModel.BasicTypes;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Configuration;
 using System.Windows;
 
 namespace Envivo.Fresnel.SampleModel.Objects
@@ -15,7 +13,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public class PocoObject
     {
-
         public PocoObject()
         {
             //this.NormalText = DateTime.Now.ToShortDateString();
@@ -33,12 +30,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public virtual Guid ID { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual long Version { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual int RecordId { get; protected set; }
 
@@ -47,7 +44,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// </summary>
         [Property(Category = "Sort 1")]
         public virtual bool NormalBoolean { get; set; }
-
 
         /// <summary>
         /// This is a Rich Text field, and should appear as a large editor
@@ -93,7 +89,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public virtual Point Point { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual ICollection<PocoObject> ChildObjects
         {
@@ -129,7 +125,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
             return result;
         }
 
-
         /// <summary>
         /// This static method will appear on the Class item in the Library.
         /// All Objects that are created will be automatically persisted.
@@ -144,6 +139,5 @@ namespace Envivo.Fresnel.SampleModel.Objects
 
             return result;
         }
-
     }
 }

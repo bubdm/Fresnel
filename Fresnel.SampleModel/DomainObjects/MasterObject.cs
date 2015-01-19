@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
 using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Configuration;
-using System.Diagnostics;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using System;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     //[Permissions(User = "Vij", AllowedOperations = Allow.Read)]
     //[Permissions(Role = "User", AllowedOperations = Allow.Read)]
@@ -23,7 +18,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public virtual Guid ID { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public MasterObject()
         {
@@ -36,12 +31,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
             this.Children = children;
         }
 
-        void children_Adding(object sender, ICollectionChangeEventArgs<DetailObject> e)
+        private void children_Adding(object sender, ICollectionChangeEventArgs<DetailObject> e)
         {
             e.IsCancelled = (this.Children.Contains(e.Item));
         }
 
-        void children_Added(object sender, ICollectionChangeEventArgs<DetailObject> e)
+        private void children_Added(object sender, ICollectionChangeEventArgs<DetailObject> e)
         {
             if (e.Item.Parent != this)
             {
@@ -49,7 +44,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
             }
         }
 
-        void children_Removing(object sender, ICollectionChangeEventArgs<DetailObject> e)
+        private void children_Removing(object sender, ICollectionChangeEventArgs<DetailObject> e)
         {
             if (this.Children.Contains(e.Item) == false)
             {
@@ -57,7 +52,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
             }
         }
 
-        void children_Removed(object sender, ICollectionChangeEventArgs<DetailObject> e)
+        private void children_Removed(object sender, ICollectionChangeEventArgs<DetailObject> e)
         {
             if (e.Item.Parent != null)
             {
@@ -66,23 +61,22 @@ namespace Envivo.Fresnel.SampleModel.Objects
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual string Name { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual Collection<DetailObject> Children { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
             return this.Name;
         }
-
     }
 }

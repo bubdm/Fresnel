@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.SampleModel.BasicTypes;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class NonInterceptablePropertyObjects
     {
@@ -21,7 +15,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public virtual Guid ID { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual long Version { get; set; }
 
@@ -33,6 +27,5 @@ namespace Envivo.Fresnel.SampleModel.Objects
             get { return _DetailObject; }
             set { _DetailObject = value; }
         }
-
     }
 }

@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.Configuration;
+using System;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
@@ -12,7 +8,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public class SubProductB : Product
     {
-
         /// <summary>
         /// This property should only be available on SubProductB
         /// </summary>
@@ -20,9 +15,8 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public virtual double Quantity { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual DateTime DeliveryDate { get; set; }
-
     }
 }

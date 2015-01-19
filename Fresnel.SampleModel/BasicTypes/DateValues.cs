@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.Configuration;
+using System;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -12,7 +8,6 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     /// </summary>
     public class DateValues
     {
-
         private DateTime _DateTime = DateTime.Now;
 
         /// <summary>
@@ -83,7 +78,5 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
             get { return _Timespan; }
             set { _Timespan = value; }
         }
-
-
     }
 }

@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Configuration;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -23,7 +18,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can also to 'Cut' this value using the clipboard commands.
         /// </summary>
         public virtual bool? NullableBool { get; set; }
-        
+
         /// <summary>
         /// It should be possible to clear this value.
         /// You can also 'Cut' this value using the clipboard commands.
@@ -35,7 +30,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can also to 'Cut' this value using the clipboard commands.
         /// </summary>
         public virtual double? NullableDouble { get; set; }
-        
+
         /// <summary>
         /// It should be possible to clear this value.
         /// You can also 'Cut' this value using the clipboard commands.
@@ -53,7 +48,5 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can also 'Cut' this value using the clipboard commands.
         /// </summary>
         public virtual string NullableString { get; set; }
-
-
     }
 }

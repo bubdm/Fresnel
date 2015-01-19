@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.Configuration;
+using System;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -33,7 +29,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         public virtual string ReadOnlyText
         {
             get { return this.NormalText; }
-            internal set { this.NormalText = value;}
+            internal set { this.NormalText = value; }
         }
 
         /// <summary>
@@ -43,7 +39,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         public virtual string WriteOnlyText
         {
             internal get { return this.NormalText; }
-            set { this.NormalText = value;}
+            set { this.NormalText = value; }
         }
 
         /// <summary>
@@ -53,7 +49,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         public virtual string HiddenText
         {
             get { return this.NormalText; }
-            set { this.NormalText = value;}
+            set { this.NormalText = value; }
         }
 
         /// <summary>
@@ -63,7 +59,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         public virtual string MultiLineText
         {
             get { return this.NormalText; }
-            set { this.NormalText = value;}
+            set { this.NormalText = value; }
         }
 
         /// <summary>
@@ -73,7 +69,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         public virtual string RichTextText
         {
             get { return this.NormalText; }
-            set { this.NormalText = value;}
+            set { this.NormalText = value; }
         }
 
         /// <summary>
@@ -83,7 +79,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         public virtual string PasswordText
         {
             get { return this.NormalText; }
-            set { this.NormalText = value;}
+            set { this.NormalText = value; }
         }
 
         /// <summary>
@@ -93,7 +89,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         public virtual string TextWithMaximumSize
         {
             get { return this.NormalText; }
-            set { this.NormalText = value;}
+            set { this.NormalText = value; }
         }
 
         /// <summary>
@@ -103,7 +99,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         internal virtual string TextWithSize
         {
             get { return this.NormalText; }
-            set { this.NormalText = value;}
+            set { this.NormalText = value; }
         }
 
         /// <summary>
@@ -113,7 +109,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         public virtual string EditMaskText
         {
             get { return this.NormalText; }
-            set { this.NormalText = value;}
+            set { this.NormalText = value; }
         }
 
         private TextValues _Myself;
@@ -125,6 +121,5 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         {
             get { return this; }
         }
-
     }
 }

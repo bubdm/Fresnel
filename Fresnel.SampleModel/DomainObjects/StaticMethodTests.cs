@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.SampleModel.Objects;
+using System;
 using System.Diagnostics;
 using System.Reflection;
-using Envivo.Fresnel.SampleModel.Objects;
 
 namespace Envivo.Fresnel.SampleModel
 {
@@ -17,7 +13,6 @@ namespace Envivo.Fresnel.SampleModel
     [ObjectInstance(IsPersistable = false)]
     public class StaticMethodTests
     {
-
         private StaticMethodTests()
         {
         }
@@ -115,6 +110,5 @@ namespace Envivo.Fresnel.SampleModel
 
             return MethodBase.GetCurrentMethod().Name;
         }
-
     }
 }

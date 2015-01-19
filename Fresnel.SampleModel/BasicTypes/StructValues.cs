@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Configuration;
 using System.Windows;
 using System.Windows.Media;
 
@@ -15,7 +10,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     public class StructValues
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public StructValues()
         {
@@ -70,14 +65,13 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual int[] ArrayOfNumbers { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual Color[] ArrayOfColours { get; set; }
-
     }
 }

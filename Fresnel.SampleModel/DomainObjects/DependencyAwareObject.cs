@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Configuration;
-using System.Diagnostics;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using System;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
@@ -32,7 +26,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public virtual Guid ID { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual string Name { get; set; }
 
@@ -42,13 +36,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public virtual PocoObject PocoObject { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
             return this.Name;
         }
-
     }
 }

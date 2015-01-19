@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using System.Diagnostics;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.Objects;
 
@@ -10,7 +5,6 @@ namespace Envivo.Sample.Model.Factories
 {
     public class MasterObjectFactory : IFactory<MasterObject>
     {
-
         public MasterObject Create()
         {
             return new MasterObject();
@@ -59,6 +53,5 @@ namespace Envivo.Sample.Model.Factories
 
             return result;
         }
-
     }
 }

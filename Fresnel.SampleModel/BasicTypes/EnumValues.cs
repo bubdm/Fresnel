@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.Configuration;
+using System;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -35,7 +31,6 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     /// </summary>
     public class EnumValues
     {
-
         /// <summary>
         /// This is a simple list of options.
         /// This enum is defined inside another class.
@@ -63,7 +58,6 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
             Blue = 30
         }
 
-
         private IndividualOptions _EnumValue = IndividualOptions.None;
 
         /// <summary>
@@ -90,7 +84,6 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
             get { return _EnumSwitches; }
             set { _EnumSwitches = value; }
         }
-
 
         /// <summary>
         /// This enum should be shown as a drop-down list.
@@ -122,7 +115,5 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
             get { return _EnumValue; }
             set { _EnumValue = value; }
         }
-
-
     }
 }

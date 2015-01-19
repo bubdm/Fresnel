@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.Configuration;
+using System;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -12,7 +8,6 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
     /// </summary>
     public class FilePathValues
     {
-
         private string _PathValue = string.Empty;
 
         /// <summary>
@@ -92,6 +87,5 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
             get { return _PathValue; }
             set { _PathValue = value; }
         }
-
     }
 }

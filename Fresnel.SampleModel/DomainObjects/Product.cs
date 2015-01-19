@@ -1,11 +1,8 @@
+using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.Configuration;
-using System.Diagnostics;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
@@ -22,12 +19,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public virtual Guid ID { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual long Version { get; internal set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Product()
         {
@@ -41,12 +38,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
             this.Categories = categories;
         }
 
-        void categories_Adding(object sender, ICollectionChangeEventArgs<Category> e)
+        private void categories_Adding(object sender, ICollectionChangeEventArgs<Category> e)
         {
             e.IsCancelled = (this.Categories.Contains(e.Item));
         }
 
-        void categories_Added(object sender, ICollectionChangeEventArgs<Category> e)
+        private void categories_Added(object sender, ICollectionChangeEventArgs<Category> e)
         {
             if (this.Categories.Contains(e.Item) == false)
             {
@@ -54,7 +51,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
             }
         }
 
-        void categories_Removing(object sender, ICollectionChangeEventArgs<Category> e)
+        private void categories_Removing(object sender, ICollectionChangeEventArgs<Category> e)
         {
             if (this.Categories.Contains(e.Item) == false)
             {
@@ -62,7 +59,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
             }
         }
 
-        void categories_Removed(object sender, ICollectionChangeEventArgs<Category> e)
+        private void categories_Removed(object sender, ICollectionChangeEventArgs<Category> e)
         {
             e.Item.Products.Remove(this);
         }
