@@ -1,16 +1,16 @@
 ﻿<div class="btn-group " data-toggle="buttons">
     <!-- The ng-click is a bit hacky, and should be refactored into a directive -->
-    <label class="btn btn-default" ng-disabled="!prop.Set.IsEnabled" ng-class="{'btn-primary':prop.Value==false}" ng-click="explorerForm.$dirty=true;prop.Value=false;setProperty(prop);">
+    <label class="btn btn-default" ng-disabled="!prop.State.Set.IsEnabled" ng-class="{'btn-primary':prop.State.Value==false}" ng-click="explorerForm.$dirty=true;prop.State.Value=false;setProperty(prop);">
         <input type="radio"
                name="{{obj.ID}}{{prop.Name}}"
-               ng-model="prop.Value"
+               ng-model="prop.State.Value"
                ng-value="false" />
         {{prop.Info.FalseValue}}
     </label>
-    <label class="btn btn-default" ng-disabled="!prop.Set.IsEnabled" ng-class="{'btn-primary':prop.Value==true}" ng-click="explorerForm.$dirty=true;prop.Value=true;setProperty(prop);">
+    <label class="btn btn-default" ng-disabled="!prop.State.Set.IsEnabled" ng-class="{'btn-primary':prop.State.Value==true}" ng-click="explorerForm.$dirty=true;prop.State.Value=true;setProperty(prop);">
         <input type="radio"
                name="{{obj.ID}}{{prop.Name}}"
-               ng-model="prop.Value"
+               ng-model="prop.State.Value"
                ng-value="true" />
         {{prop.Info.TrueValue}}
     </label>

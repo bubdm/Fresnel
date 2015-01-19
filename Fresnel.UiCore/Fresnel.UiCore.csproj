@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PropertyStateVmBuilder.cs" />
     <Compile Include="Changes\CollectionElementVM.cs" />
     <Compile Include="Commands\CleanupSessionResponse.cs" />
     <Compile Include="Commands\CleanupSessionCommand.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Commands\GetPropertyRequest.cs" />
     <Compile Include="Commands\SetPropertyRequest.cs" />
     <Compile Include="Controllers\SessionController.cs" />
+    <Compile Include="Model\PropertyStateVM.cs" />
     <Compile Include="UiCoreException.cs" />
     <Compile Include="MessageVM.cs" />
     <Compile Include="Changes\PropertyChangeVM.cs" />

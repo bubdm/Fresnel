@@ -9,18 +9,18 @@ namespace Envivo.Fresnel.UiCore.Changes
     public class ModificationsBuilder
     {
         private AbstractObjectVMBuilder _AbstractObjectVMBuilder;
-        private AbstractPropertyVmBuilder _AbstractPropertyVmBuilder;
+        private PropertyStateVmBuilder _PropertyStateVmBuilder;
         private ObserverCache _ObserverCache;
 
         public ModificationsBuilder
             (
             AbstractObjectVMBuilder abstractObjectVMBuilder,
-            AbstractPropertyVmBuilder abstractPropertyVmBuilder,
+            PropertyStateVmBuilder _propertyStateVmBuilder,
             ObserverCache observerCache
             )
         {
             _AbstractObjectVMBuilder = abstractObjectVMBuilder;
-            _AbstractPropertyVmBuilder = abstractPropertyVmBuilder;
+            _PropertyStateVmBuilder = _propertyStateVmBuilder;
             _ObserverCache = observerCache;
         }
 
@@ -80,6 +80,8 @@ namespace Envivo.Fresnel.UiCore.Changes
             {
                 result.ReferenceValueId = _ObserverCache.GetObserver(propertyChange.NewValue, oProperty.Template.PropertyType).ID;
             }
+
+            result.State = _PropertyStateVmBuilder.BuildFor(oProperty);
 
             return result;
         }

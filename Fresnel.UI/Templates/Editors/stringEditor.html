@@ -1,11 +1,11 @@
 ﻿<input type="text"
        class="form-control input-sm"
        ng-show="!prop.Info.IsMultiLine && !prop.Info.IsPassword"
-       ng-model="prop.Value"
+       ng-model="prop.State.Value"
        ng-change="setProperty(prop)"
        ng-model-options="{ updateOn: 'blur' }"
        ng-keyup="cancel($event)"
-       ng-disabled="!prop.Set.IsEnabled"
+       ng-disabled="!prop.State.Set.IsEnabled"
        minlength="{{prop.Info.MinLength}}"
        maxlength="{{prop.Info.MaxLength}}"
        pattern="{{prop.Info.EditMask}}" />

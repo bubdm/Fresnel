@@ -150,7 +150,7 @@ var FresnelApp;
                 var request = {
                     ObjectId: prop.ObjectID,
                     PropertyName: prop.PropertyName,
-                    NonReferenceValue: prop.Value
+                    NonReferenceValue: prop.State.Value
                 };
                 var promise = fresnelService.setProperty(request);
                 promise.then(function (promiseResult) {
@@ -161,7 +161,7 @@ var FresnelApp;
                 });
             };
             $scope.setBitwiseEnumProperty = function (prop, enumValue) {
-                prop.Value = prop.Value ^ enumValue;
+                prop.State.Value = prop.State.Value ^ enumValue;
                 $scope.setProperty(prop);
             };
             $scope.refresh = function (explorer) {
@@ -172,7 +172,7 @@ var FresnelApp;
                 promise.then(function (promiseResult) {
                     var obj = promiseResult.data.ReturnValue;
                     var existingObj = appService.identityMap.getObject(obj.ID);
-                    appService.identityMap.mergeObjects(obj, existingObj);
+                    angular.extend(existingObj, obj);
                 });
             };
             $scope.minimise = function (explorer) {
@@ -445,7 +445,8 @@ var FresnelApp;
                     this.addObject(item);
                 }
                 else {
-                    this.mergeObjects(item, existingItem);
+                    // Merge the objects:
+                    angular.extend(existingItem, item);
                 }
             }
             for (var i = 0; i < modifications.CollectionAdditions.length; i++) {
@@ -459,19 +460,21 @@ var FresnelApp;
             for (var i = 0; i < modifications.PropertyChanges.length; i++) {
                 var propertyChange = modifications.PropertyChanges[i];
                 var existingItem = this.getObject(propertyChange.ObjectId);
-                if (existingItem != null) {
-                    var newPropertyValue = null;
-                    if (propertyChange.ReferenceValueId != null) {
-                        newPropertyValue = this.getObject(propertyChange.ReferenceValueId);
-                    }
-                    else {
-                        newPropertyValue = propertyChange.NonReferenceValue;
-                    }
-                    var prop = $.grep(existingItem.Properties, function (e) {
-                        return e.PropertyName == propertyChange.PropertyName;
-                    }, false)[0];
-                    prop.Value = newPropertyValue;
+                if (existingItem == null) {
+                    continue;
                 }
+                var newPropertyValue = null;
+                if (propertyChange.ReferenceValueId != null) {
+                    newPropertyValue = this.getObject(propertyChange.ReferenceValueId);
+                }
+                else {
+                    newPropertyValue = propertyChange.NonReferenceValue;
+                }
+                var prop = $.grep(existingItem.Properties, function (e) {
+                    return e.PropertyName == propertyChange.PropertyName;
+                }, false)[0];
+                angular.extend(prop.State, propertyChange.State);
+                prop.State.Value = newPropertyValue;
             }
             for (var i = 0; i < modifications.CollectionRemovals.length; i++) {
                 var removal = modifications.CollectionRemovals[i];
@@ -483,12 +486,6 @@ var FresnelApp;
                         collectionVM.items.splice(index, 1);
                     }
                 }
-            }
-        };
-        IdentityMap.prototype.mergeObjects = function (newObj, existingObj) {
-            for (var i = 0; i < existingObj.Properties.length; i++) {
-                // NB: Don't replace the prop object, otherwise the bindings will break:
-                existingObj.Properties[i].Value = newObj.Properties[i].Value;
             }
         };
         return IdentityMap;

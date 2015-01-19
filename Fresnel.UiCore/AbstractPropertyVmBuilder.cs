@@ -16,9 +16,7 @@ namespace Envivo.Fresnel.UiCore
         private List<IPropertyVmBuilder> _Builders;
         private UnknownVmBuilder _UnknownVmBuilder;
 
-        private CanGetPropertyPermission _CanGetPropertyPermission;
-        private CanSetPropertyPermission _CanSetPropertyPermission;
-        private RealTypeResolver _RealTypeResolver;
+        private PropertyStateVmBuilder _PropertyStateVmBuilder;
 
         public AbstractPropertyVmBuilder
             (
@@ -30,9 +28,7 @@ namespace Envivo.Fresnel.UiCore
             ObjectSelectionVmBuilder objectSelectionVmBuilder,
             UnknownVmBuilder unknownVmBuilder,
 
-            CanGetPropertyPermission canGetPropertyPermission,
-            CanSetPropertyPermission canSetPropertyPermission,
-            RealTypeResolver realTypeResolver
+            PropertyStateVmBuilder propertyStateVmBuilder
             )
         {
             _Builders = new List<IPropertyVmBuilder>()
@@ -46,9 +42,7 @@ namespace Envivo.Fresnel.UiCore
             };
             _UnknownVmBuilder = unknownVmBuilder;
 
-            _CanGetPropertyPermission = canGetPropertyPermission;
-            _CanSetPropertyPermission = canSetPropertyPermission;
-            _RealTypeResolver = realTypeResolver;
+            _PropertyStateVmBuilder = propertyStateVmBuilder;
         }
 
         public PropertyVM BuildFor(PropertyTemplate tProp)
@@ -78,7 +72,6 @@ namespace Envivo.Fresnel.UiCore
             var tProp = oProp.Template;
             var objectProp = oProp as ObjectPropertyObserver;
 
-
             var propVM = this.BuildFor(tProp);
             propVM.ObjectID = oProp.OuterObject.ID;
             propVM.IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true;
@@ -86,86 +79,9 @@ namespace Envivo.Fresnel.UiCore
             propVM.IsCollection = oProp.Template.IsCollection;
             propVM.IsObject = !propVM.IsNonReference && !propVM.IsCollection;
 
-            propVM.Get = this.CreateGet(oProp);
-            propVM.Set = this.CreateSet(oProp);
-
-            propVM.IsEnabled = propVM.Get.IsEnabled;
-            if (propVM.IsEnabled)
-            {
-                try
-                {
-                    // TODO: Use the GetPropertyCommand, in case the property should be hidden:
-                    var realValue = oProp.Template.GetProperty(oProp.OuterObject.RealObject);
-                    propVM.Value = realValue;
-
-                    // Hack:
-                    if (oProp.Template.PropertyType.IsEnum)
-                    {
-                        propVM.Value = (int)propVM.Value;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    propVM.Get.Error = ex.Message;
-                }
-            }
-
-            propVM.Clear = this.CreateClear(oProp, propVM.Value);
-
-            if (oProp.Template.IsCollection)
-            {
-                propVM.Add = this.CreateAdd(oProp, propVM.Value);
-            }
+            propVM.State = _PropertyStateVmBuilder.BuildFor(oProp);
 
             return propVM;
-        }
-
-        private InteractionPoint CreateGet(BasePropertyObserver oProp)
-        {
-            var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(oProp);
-
-            var result = new InteractionPoint()
-            {
-                IsEnabled = getCheck.Passed,
-                Error = getCheck.FailureReason,
-            };
-            return result;
-        }
-
-        private InteractionPoint CreateSet(BasePropertyObserver oProp)
-        {
-            var setCheck = _CanSetPropertyPermission.IsSatisfiedBy(oProp);
-
-            var result = new InteractionPoint()
-            {
-                IsEnabled = setCheck.Passed,
-                Error = setCheck.FailureReason,
-            };
-            return result;
-        }
-
-        private InteractionPoint CreateClear(BasePropertyObserver oProp, object propertyValue)
-        {
-            var tProp = oProp.Template;
-            var result = new InteractionPoint()
-            {
-                IsEnabled =  tProp.CanWrite &&
-                             propertyValue != null && 
-                             (!tProp.IsNonReference || tProp.IsNullableType),
-            };
-            return result;
-        }
-
-        private InteractionPoint CreateAdd(BasePropertyObserver oProp, object propertyValue)
-        {
-            var tProp = oProp.Template;
-            var result = new InteractionPoint()
-            {
-                IsEnabled = tProp.CanAdd &&
-                            propertyValue != null && 
-                            tProp.IsCollection
-            };
-            return result;
         }
         
         //private string ConvertToJavascriptType(Type type)

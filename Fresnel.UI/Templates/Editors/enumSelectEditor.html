@@ -1,9 +1,9 @@
 ﻿<select class="form-control input-sm"
-        ng-model="prop.Value"
+        ng-model="prop.State.Value"
         ng-change="setProperty(prop)">
     <option ng-repeat="enumItem in prop.Info.Items"
             name="enumItem"
-            ng-disabled="!prop.Set.IsEnabled"
+            ng-disabled="!prop.State.Set.IsEnabled"
             ng-checked="enumItem.IsChecked"
             ng-model="enumItem.Value"
             title="{{enumItem.Description}}"

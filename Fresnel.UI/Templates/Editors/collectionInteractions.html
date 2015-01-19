@@ -9,7 +9,7 @@
 
     <button type="button"
             class="btn btn-default"
-            ng-show="!prop.Value"
+            ng-show="prop.IsCollection && prop.State.Create.IsEnabled"
             ng-click="addNewItem(prop)"
             tooltip="Add a new item">
         <i class="fa fa-plus"></i>
@@ -17,6 +17,7 @@
 
     <button type="button"
             class="btn btn-default"
+            ng-show="prop.IsCollection && prop.State.Add.IsEnabled"
             ng-click="addItem(prop)"
             tooltip="Add another item">
         <i class="fa fa-link"></i>

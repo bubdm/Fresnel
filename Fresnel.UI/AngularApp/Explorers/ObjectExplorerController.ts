@@ -41,7 +41,7 @@
                 var request = {
                     ObjectId: prop.ObjectID,
                     PropertyName: prop.PropertyName,
-                    NonReferenceValue: prop.Value
+                    NonReferenceValue: prop.State.Value
                 };
                 var promise = fresnelService.setProperty(request);
 
@@ -54,9 +54,8 @@
                 });
             }
 
-
             $scope.setBitwiseEnumProperty = function (prop: any, enumValue: number) {
-                prop.Value = prop.Value ^ enumValue;
+                prop.State.Value = prop.State.Value ^ enumValue;
                 $scope.setProperty(prop);
             }
 
@@ -70,7 +69,7 @@
                     var obj = promiseResult.data.ReturnValue;
                     var existingObj = appService.identityMap.getObject(obj.ID);
 
-                    appService.identityMap.mergeObjects(obj, existingObj);
+                    angular.extend(existingObj, obj);
                 });
             }
 

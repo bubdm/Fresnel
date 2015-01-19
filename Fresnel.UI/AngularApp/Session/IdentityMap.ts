@@ -32,7 +32,8 @@ module FresnelApp {
                     this.addObject(item);
                 }
                 else {
-                    this.mergeObjects(item, existingItem);
+                    // Merge the objects:
+                    angular.extend(existingItem, item);
                 }
             }
 
@@ -50,21 +51,26 @@ module FresnelApp {
                 var propertyChange = modifications.PropertyChanges[i];
 
                 var existingItem = this.getObject(propertyChange.ObjectId);
-                if (existingItem != null) {
-                    var newPropertyValue = null;
-
-                    if (propertyChange.ReferenceValueId != null) {
-                        newPropertyValue = this.getObject(propertyChange.ReferenceValueId);
-                    }
-                    else {
-                        newPropertyValue = propertyChange.NonReferenceValue;
-                    }
-
-                    var prop: any = $.grep(existingItem.Properties, function (e: any) {
-                        return e.PropertyName == propertyChange.PropertyName;
-                    }, false)[0];
-                    prop.Value = newPropertyValue;
+                if (existingItem == null) {
+                    continue;
                 }
+
+                var newPropertyValue = null;
+
+                if (propertyChange.ReferenceValueId != null) {
+                    newPropertyValue = this.getObject(propertyChange.ReferenceValueId);
+                }
+                else {
+                    newPropertyValue = propertyChange.NonReferenceValue;
+                }
+
+                var prop: any = $.grep(existingItem.Properties, function (e: any) {
+                    return e.PropertyName == propertyChange.PropertyName;
+                }, false)[0];
+
+                angular.extend(prop.State, propertyChange.State);
+
+                prop.State.Value = newPropertyValue;
             }
 
             // 3: Perform removals:
@@ -81,12 +87,12 @@ module FresnelApp {
             }
         }
 
-        mergeObjects(newObj: IObjectVM, existingObj: IObjectVM) {
-            for (var i = 0; i < existingObj.Properties.length; i++) {
-                // NB: Don't replace the prop object, otherwise the bindings will break:
-                existingObj.Properties[i].Value = newObj.Properties[i].Value;
-            }
-        }
+        //mergeObjects(newObj: IObjectVM, existingObj: IObjectVM) {
+        //    for (var i = 0; i < existingObj.Properties.length; i++) {
+        //        // NB: Don't replace the prop object, otherwise the bindings will break:
+        //        existingObj.Properties[i].Value = newObj.Properties[i].Value;
+        //    }
+        //}
 
     }
 

@@ -4,9 +4,9 @@
                class=""
                name="{{prop.Name}}.{{enumItem.Name}}"
                value="{{enumItem.Name}}"
-               ng-disabled="!prop.Set.IsEnabled"
-               ng-checked="prop.Value == enumItem.Value"
-               ng-model="prop.Value"
+               ng-disabled="!prop.State.Set.IsEnabled"
+               ng-checked="prop.State.Value == enumItem.Value"
+               ng-model="prop.State.Value"
                ng-change="setProperty(prop)" />
         {{enumItem.Name}}
     </label>
