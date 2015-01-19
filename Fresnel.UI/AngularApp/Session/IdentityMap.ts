@@ -33,7 +33,7 @@ module FresnelApp {
                 }
                 else {
                     // Merge the objects:
-                    angular.extend(existingItem, item);
+                    this.extendDeep(existingItem, item);
                 }
             }
 
@@ -68,7 +68,7 @@ module FresnelApp {
                     return e.PropertyName == propertyChange.PropertyName;
                 }, false)[0];
 
-                angular.extend(prop.State, propertyChange.State);
+                this.extendDeep(prop.State, propertyChange.State);
 
                 prop.State.Value = newPropertyValue;
             }
@@ -90,8 +90,21 @@ module FresnelApp {
         mergeObjects(existingObj: IObjectVM, newObj: IObjectVM) {
             for (var i = 0; i < existingObj.Properties.length; i++) {
                 // NB: Don't replace the prop object, otherwise the bindings will break:
-                angular.extend(existingObj.Properties[i].State, newObj.Properties[i].State);
+                this.extendDeep(existingObj.Properties[i].State, newObj.Properties[i].State);
             }
+        }
+
+        extendDeep(destination, source) {
+            for (var property in source) {
+                if (source[property] && source[property].constructor &&
+                    source[property].constructor === Object) {
+                    destination[property] = destination[property] || {};
+                    arguments.callee(destination[property], source[property]);
+                } else {
+                    destination[property] = source[property];
+                }
+            }
+            return destination;
         }
 
     }
