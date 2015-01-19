@@ -53,7 +53,7 @@
     <Compile Include="UiCore\ExplorerControllerTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UiCore\ProxyChangeTrackingTests.cs" />
+    <Compile Include="UiCore\ChangeTrackingTests.cs" />
     <Compile Include="UiCore\SessionControllerTests.cs">
       <SubType>Code</SubType>
     </Compile>
