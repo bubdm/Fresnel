@@ -1,8 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
-
-namespace Envivo.Fresnel.DomainTypes.Interfaces
+﻿namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
     /// <summary>
     /// A set of stateless methods for creating complex Domain Objects of the given type.
@@ -11,8 +7,6 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
     public interface IFactory<T>
         where T : class
     {
-
         T Create();
-
     }
 }

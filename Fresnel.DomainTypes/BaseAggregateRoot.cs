@@ -1,8 +1,5 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.DomainTypes
 {
@@ -15,6 +12,5 @@ namespace Envivo.Fresnel.DomainTypes
     [Serializable]
     public abstract partial class BaseAggregateRoot : BaseDomainObject, IAggregateRoot
     {
-
     }
 }

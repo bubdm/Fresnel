@@ -1,10 +1,9 @@
-﻿
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
-using System;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.DomainTypes
 {
@@ -19,7 +18,6 @@ namespace Envivo.Fresnel.DomainTypes
                                          IDisposable
         where T : class
     {
-
         private Guid _ID = Guid.NewGuid();
         private List<T> _Items = new List<T>();
         private IList<T> _InnerList = new List<T>();
@@ -77,24 +75,28 @@ namespace Envivo.Fresnel.DomainTypes
         }
 
         public virtual event NotifyCollectionChangesEventHandler<T> Adding;
+
         public virtual event NotifyCollectionChangesEventHandler<T> Added;
 
         public virtual event NotifyCollectionChangesEventHandler<T> Replacing;
+
         public virtual event NotifyCollectionChangesEventHandler<T> Replaced;
 
         public virtual event NotifyCollectionChangesEventHandler<T> Removing;
+
         public virtual event NotifyCollectionChangesEventHandler<T> Removed;
 
         public virtual event NotifyCollectionChangesEventHandler<T> Clearing;
+
         public virtual event NotifyCollectionChangesEventHandler<T> Cleared;
 
         public virtual event NotifyCollectionChangesEventHandler<T> Changing;
+
         public virtual event NotifyCollectionChangesEventHandler<T> Changed;
 
         public virtual event NotifyCollectionChangedEventHandler CollectionChanged;
 
-
-        public virtual T this [int index]
+        public virtual T this[int index]
         {
             get
             {
@@ -436,7 +438,6 @@ namespace Envivo.Fresnel.DomainTypes
                 this.CollectionChanged(this, this.CreateCollectionChangedArgsFrom(e));
         }
 
-
         public override bool Equals(object obj)
         {
             if (object.ReferenceEquals(this, obj))
@@ -453,7 +454,6 @@ namespace Envivo.Fresnel.DomainTypes
         {
             return _ID.GetHashCode();
         }
-
 
         public virtual void Dispose()
         {

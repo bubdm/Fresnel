@@ -1,8 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
-
-namespace Envivo.Fresnel.DomainTypes.Interfaces
+﻿namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
     /// <summary>
     /// A object within a Domain that is described by it's characteristics, not identity.
@@ -10,7 +6,5 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
     /// </summary>
     public interface IValueObject : IDomainObject
     {
-
     }
-
 }

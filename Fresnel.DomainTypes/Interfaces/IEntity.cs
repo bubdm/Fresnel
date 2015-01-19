@@ -1,7 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
-using System;
+﻿using System;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
@@ -15,6 +12,5 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// The unique identifier for this Entity
         /// </summary>
         Guid ID { get; set; }
-
     }
 }

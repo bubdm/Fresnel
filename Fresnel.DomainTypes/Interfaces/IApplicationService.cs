@@ -1,8 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
-
-namespace Envivo.Fresnel.DomainTypes.Interfaces
+﻿namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
     /// <summary>
     /// A set of stateless operations that are exposed to external consumers (e.g. Web Services)
@@ -11,7 +7,5 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
     /// </summary>
     public interface IApplicationService
     {
-
     }
-
 }

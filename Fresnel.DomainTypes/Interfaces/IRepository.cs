@@ -1,7 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
-using System;
+﻿using System;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
@@ -13,13 +10,12 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
     public interface IRepository<TAggregateRoot>
         where TAggregateRoot : class
     {
-
         /// <summary>
         /// Loads and returns the Aggregate Root matching the given ID
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
-        
+
         TAggregateRoot Load(Guid id);
 
         /// <summary>
@@ -32,7 +28,7 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// Saves the given list of Domain Objects within a transaction. Changes made to other objects within the Aggregate will now be persisted.
         /// </summary>
         /// <param name="objects"></param>
-        
+
         void Save(params IDomainObject[] domainObjects);
 
         /// <summary>
@@ -52,6 +48,5 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// </summary>
         /// <param name="aggregateRoot"></param>
         void Unlock(TAggregateRoot aggregateRoot);
-
     }
 }

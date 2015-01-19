@@ -1,10 +1,9 @@
-﻿
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Linq;
-using System;
-using Envivo.Fresnel.DomainTypes.Interfaces;
+using System.Text;
 
 namespace Envivo.Fresnel.DomainTypes
 {
@@ -19,7 +18,6 @@ namespace Envivo.Fresnel.DomainTypes
                                                      IValidatable,
                                                      IDisposable
     {
-
         private Guid _ID = Guid.NewGuid();
         private long _Version = -1;
         private IAudit _Audit = new Audit();
@@ -81,7 +79,7 @@ namespace Envivo.Fresnel.DomainTypes
         /// <param name="propertyName"></param>
         /// <example>this.Set(ref _Name, value, "Name");
         /// </example>
-        
+
         virtual protected bool Set<T>(ref T backingField, T newValue, string propertyName)
         {
             if (EqualityComparer<T>.Default.Equals(backingField, newValue))
@@ -93,11 +91,10 @@ namespace Envivo.Fresnel.DomainTypes
             return true;
         }
 
-
         private Dictionary<string, string> _ErrorMap = new Dictionary<string, string>();
         private string _ErrorMessage;
 
-        Dictionary<string, string> Errors
+        private Dictionary<string, string> Errors
         {
             get { return _ErrorMap; }
         }
@@ -107,7 +104,7 @@ namespace Envivo.Fresnel.DomainTypes
             get { return _ErrorMessage; }
         }
 
-        string IDataErrorInfo.this [string propertyName]
+        string IDataErrorInfo.this[string propertyName]
         {
             get
             {
@@ -156,6 +153,5 @@ namespace Envivo.Fresnel.DomainTypes
         {
             _ErrorMap = null;
         }
-
     }
 }

@@ -1,7 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
-using System;
+﻿using System;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
@@ -21,6 +18,5 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// The time when the lock should be released. Using an 'end time' should prevent rogue locks blocking usage indefinitely.
         /// </summary>
         DateTime LockedUntil { get; set; }
-
     }
 }

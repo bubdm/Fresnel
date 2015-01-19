@@ -1,7 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
@@ -14,8 +11,7 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// Returns TRUE if the Domain Object is in a valid state. The Error property provides details of actual problems.
         /// </summary>
         /// <param name="obj"></param>
-        
-        bool IsValid();
 
+        bool IsValid();
     }
 }

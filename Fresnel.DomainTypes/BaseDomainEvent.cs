@@ -1,22 +1,17 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.DomainTypes
 {
     /// <summary>
     /// Captures the state of an Entity (or Entities) at a point in time.
     /// Each Domain Event is unique and should NOT be treated as a Value Object.
-    /// However, Domain Events should be immutable to avoid the risk of corruption. 
+    /// However, Domain Events should be immutable to avoid the risk of corruption.
     /// </summary>
     [Serializable]
     public abstract partial class BaseDomainEvent : BaseDomainObject, IDomainEvent
     {
-
         public virtual DateTime OccurredAt { get; set; }
-
 
         public override bool Equals(object obj)
         {

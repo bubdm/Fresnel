@@ -1,6 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
@@ -9,13 +7,10 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
     /// </summary>
     public interface IQuerySpecification<TResult>
     {
-
         /// <summary>
         /// Returns a set of results
         /// </summary>
-        
-        IEnumerable<TResult> GetResults();
 
+        IEnumerable<TResult> GetResults();
     }
 }
-

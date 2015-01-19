@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Envivo.Fresnel.DomainTypes
 {
-
     /// <summary>
     /// Provides a richer way of checking conditions. Makes a useful replacement for Boolean return types.
     /// </summary>
@@ -198,5 +197,4 @@ namespace Envivo.Fresnel.DomainTypes
             }
         }
     }
-
 }

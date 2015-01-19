@@ -1,6 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
@@ -10,12 +8,9 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
     public interface IListAdapter<T> : IList<T>
         where T : class
     {
-
         /// <summary>
         /// The original list that is being wrapped
         /// </summary>
         IList<T> InnerList { get; set; }
-
     }
-
 }

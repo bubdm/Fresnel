@@ -1,8 +1,5 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.DomainTypes
 {
@@ -12,7 +9,6 @@ namespace Envivo.Fresnel.DomainTypes
     [Serializable]
     public class AggregateLock : IAggregateLock
     {
-
         /// <summary>
         /// The Aggregate Root being locked
         /// </summary>
@@ -27,6 +23,5 @@ namespace Envivo.Fresnel.DomainTypes
         /// The time when the lock should be released. Using an 'end time' should prevent rogue locks blocking usage indefinitely.
         /// </summary>
         public DateTime LockedUntil { get; set; }
-
     }
 }

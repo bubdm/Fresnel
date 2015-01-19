@@ -1,8 +1,5 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.DomainTypes
 {
@@ -13,7 +10,6 @@ namespace Envivo.Fresnel.DomainTypes
     [Serializable]
     public abstract partial class BaseValueObject : BaseDomainObject, IValueObject
     {
-
         public override bool Equals(object obj)
         {
             throw new MethodAccessException("Value Objects must be compared using property values. Please override the Equals() method and implement the comparison");

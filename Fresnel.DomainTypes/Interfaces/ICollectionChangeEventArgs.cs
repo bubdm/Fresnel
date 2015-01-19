@@ -1,11 +1,7 @@
-﻿
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
+﻿using System.Collections.Specialized;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
-
     public interface ICollectionChangeEventArgs<T>
     {
         /// <summary>
@@ -28,5 +24,4 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// </summary>
         bool IsCancelled { get; set; }
     }
-
 }

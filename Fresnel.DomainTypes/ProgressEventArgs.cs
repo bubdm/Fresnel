@@ -1,15 +1,10 @@
-﻿
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.DomainTypes
 {
     public class ProgressEventArgs : EventArgs, IProgressArgs
     {
-
         /// <summary>
         /// Determines if the operation can be cancelled. This is typically set by the consumer, and used within the operation.
         /// </summary>
@@ -29,6 +24,5 @@ namespace Envivo.Fresnel.DomainTypes
         /// The message to report to the consumer
         /// </summary>
         public string Message { get; set; }
-
     }
 }

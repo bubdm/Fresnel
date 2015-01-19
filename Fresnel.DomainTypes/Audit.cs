@@ -1,8 +1,5 @@
-﻿
-using System.Collections.Generic;
-using System.Text;
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.DomainTypes
 {
@@ -12,7 +9,6 @@ namespace Envivo.Fresnel.DomainTypes
     [Serializable]
     public class Audit : IAudit
     {
-
         public virtual IDomainObject DomainObject { get; set; }
 
         public virtual string CreatedBy { get; set; }
@@ -26,6 +22,5 @@ namespace Envivo.Fresnel.DomainTypes
         public virtual string DeletedBy { get; set; }
 
         public virtual DateTime? DeletedAt { get; set; }
-
     }
 }

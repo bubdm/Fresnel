@@ -1,9 +1,6 @@
-﻿
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
-using Envivo.Fresnel.DomainTypes.Interfaces;
+using System.Collections.Specialized;
 
 namespace Envivo.Fresnel.DomainTypes
 {
@@ -28,7 +25,5 @@ namespace Envivo.Fresnel.DomainTypes
         /// Determines if the action should be cancelled
         /// </summary>
         public bool IsCancelled { get; set; }
-
     }
-
 }

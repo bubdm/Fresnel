@@ -3,7 +3,6 @@ using System;
 
 namespace Envivo.Fresnel.DomainTypes
 {
-
     /// <summary>
     /// An Assertion that additionally allows objects/values to be returned to the caller
     /// </summary>
@@ -11,14 +10,13 @@ namespace Envivo.Fresnel.DomainTypes
     [Serializable]
     public class Assertion<T> : Assertion, IAssertion<T>
     {
-
         public static Assertion<T> Pass(T result)
         {
             return new Assertion<T>()
             {
-                 Passed = true,
-                 Failed = false,
-                 ReturnValue = result
+                Passed = true,
+                Failed = false,
+                ReturnValue = result
             };
         }
 
@@ -40,10 +38,10 @@ namespace Envivo.Fresnel.DomainTypes
         {
             return new Assertion<T>()
             {
-                 Passed = false,
-                 Failed = true,
-                 FailureReason = failureReason,
-                 ReturnValue = result
+                Passed = false,
+                Failed = true,
+                FailureReason = failureReason,
+                ReturnValue = result
             };
         }
 
@@ -71,10 +69,10 @@ namespace Envivo.Fresnel.DomainTypes
                 ReturnValue = result
             };
         }
+
         /// <summary>
         /// The value that would be returned naturally by the method
         /// </summary>
         public T ReturnValue { get; set; }
     }
-
 }
