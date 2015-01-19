@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class CollectionTypeIdentifier
     {
         /// <summary>
@@ -92,7 +91,5 @@ namespace Envivo.Fresnel.Introspection.Templates
             }
             return null;
         }
-
     }
-
 }

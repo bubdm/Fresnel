@@ -8,7 +8,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// A Template that represents a method in a .NET class
     /// </summary>

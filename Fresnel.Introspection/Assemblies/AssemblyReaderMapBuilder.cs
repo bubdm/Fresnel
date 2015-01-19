@@ -3,7 +3,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
 {
-
     public class AssemblyReaderMapBuilder
     {
         private readonly AssemblyReaderBuilder _AssemblyReaderBuilder;
@@ -20,7 +19,5 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             //var reader = _AssemblyReaderBuilder.Create(domainAssembly, enableInfrastructureServices);
             return result;
         }
-
     }
-
 }

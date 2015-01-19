@@ -9,7 +9,6 @@ namespace Envivo.Fresnel.Introspection.Commands
 
         private TemplateCache _TemplateCache;
 
-
         public CloneObjectCommand(TemplateCache templateCache)
         {
             _TemplateCache = templateCache;
@@ -53,10 +52,10 @@ namespace Envivo.Fresnel.Introspection.Commands
 
             foreach (var tProp in tClass.Properties.Values)
             {
-                // Use the backing fields when possible, 
+                // Use the backing fields when possible,
                 // to prevent proxies from triggering lazy-loads unnecessarily:
                 var value = tProp.BackingField != null ?
-                            tProp.GetField(source):
+                            tProp.GetField(source) :
                             tProp.GetProperty(source);
 
                 if (tProp.BackingField != null)
@@ -71,6 +70,5 @@ namespace Envivo.Fresnel.Introspection.Commands
 
             return clone;
         }
-
     }
 }

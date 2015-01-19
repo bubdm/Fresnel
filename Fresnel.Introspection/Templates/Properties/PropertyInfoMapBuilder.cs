@@ -6,7 +6,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class PropertyInfoMapBuilder
     {
         private BindingFlags _BindingFlags = BindingFlags.Public | BindingFlags.Instance;
@@ -62,7 +61,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             //  What if we already have a property with the same name?
             //   (a) VB.NET supports overloaded properties
-            //       We can't handle this yet (how do we render property overloads in the UI?)   
+            //       We can't handle this yet (how do we render property overloads in the UI?)
             //   (b) A sub-class might be 'hiding' a property from it's super-class
             //       We need to replace the existing property with the 'new' one
 
@@ -90,7 +89,5 @@ namespace Envivo.Fresnel.Introspection.Templates
                 existingProperties[item.Name] = item;
             }
         }
-
     }
-
 }

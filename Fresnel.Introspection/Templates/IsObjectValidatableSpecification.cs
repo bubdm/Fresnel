@@ -4,7 +4,6 @@ using System;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// Determines if the given class can be validated using an IsValid method.
     /// </summary>
@@ -22,7 +21,5 @@ namespace Envivo.Fresnel.Introspection.Templates
             var msg = string.Concat(sender.GetType().Name, " is not a validatable domain object. Consider implementing a DomainTypes interface, or adding an IsValid()::bool method.");
             return Assertion.FailWithWarning(msg);
         }
-
     }
-
 }

@@ -1,11 +1,5 @@
-
-using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Introspection.Assemblies;
-using Newtonsoft.Json;
-
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class XmlComments
     {
         /// <summary>

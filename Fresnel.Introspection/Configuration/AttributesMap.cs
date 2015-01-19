@@ -4,20 +4,17 @@ using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Contains all Attributes for a particular Template. Attributes will be extracted from a ClassConfiguration if provided.
     /// </summary>
 
     public class AttributesMap : Dictionary<Type, BaseAttribute>
     {
-
         /// <summary>
         /// Returns an attribute that matches the given Attribute type.
         /// If the attribute doesn't exist, a new one is created and returned
         /// </summary>
         /// <param name="requestedAttributeType"></param>
-
 
         private BaseAttribute GetAttribute(Type requestedAttributeType)
         {
@@ -55,7 +52,5 @@ namespace Envivo.Fresnel.Configuration
         {
             return (T)this.GetAttribute(typeof(T));
         }
-
-
     }
 }

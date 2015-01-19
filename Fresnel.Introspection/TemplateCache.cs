@@ -6,7 +6,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection
 {
-
     /// <summary>
     /// Creates and returns Class Templates for all known Domain Assemblies
     /// </summary>
@@ -91,7 +90,6 @@ namespace Envivo.Fresnel.Introspection
         /// </summary>
         /// <param name="className"></param>
 
-
         private string ExtractAssemblyName(string className)
         {
             var lastPeriodPos = className.LastIndexOf('.');
@@ -104,7 +102,5 @@ namespace Envivo.Fresnel.Introspection
                 return className;
             }
         }
-
     }
-
 }

@@ -7,7 +7,6 @@ using System.Xml.XPath;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
 {
-
     /// <summary>
     /// Reads the comments from the Domain Assembly XML document, and inserts them into the appropriate Templates
     /// </summary>
@@ -409,7 +408,5 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
             return param.Value.Trim();
         }
-
     }
-
 }

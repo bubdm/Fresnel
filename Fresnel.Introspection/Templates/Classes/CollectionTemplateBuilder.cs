@@ -4,7 +4,6 @@ using System;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class CollectionTemplateBuilder
     {
         private RealTypeResolver _RealTypeResolver;
@@ -39,6 +38,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return result;
         }
-
     }
 }

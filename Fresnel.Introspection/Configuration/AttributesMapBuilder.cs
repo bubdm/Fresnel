@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Contains all Attributes for a particular Template. Attributes will be extracted from a ClassConfiguration if provided.
     /// </summary>
@@ -47,7 +46,6 @@ namespace Envivo.Fresnel.Configuration
 
             return result;
         }
-
 
         /// <summary>
         /// Instantiates and initialises the attributes for the given Property
@@ -215,6 +213,5 @@ namespace Envivo.Fresnel.Configuration
                 attributesMap.Add(key, (BaseAttribute)item);
             }
         }
-
     }
 }

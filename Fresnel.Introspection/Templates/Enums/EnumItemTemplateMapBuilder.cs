@@ -3,7 +3,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class EnumItemTemplateMapBuilder
     {
         private EnumItemTemplateBuilder _EnumItemTemplateBuilder;
@@ -26,7 +25,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return new EnumItemTemplateMap(results);
         }
-
     }
-
 }

@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class EnumTemplateBulider
     {
         private RealTypeResolver _RealTypeResolver;
@@ -20,7 +19,6 @@ namespace Envivo.Fresnel.Introspection.Templates
             _RealTypeResolver = realTypeResolver;
             _EnumTemplateFactory = enumTemplateFactory;
         }
-
 
         public EnumTemplate BuildFor(Type enumType, AttributesMap enumAttributes)
         {
@@ -44,6 +42,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return result;
         }
-
     }
 }

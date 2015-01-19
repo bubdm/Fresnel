@@ -1,4 +1,3 @@
-using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
@@ -6,7 +5,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
 {
-
     public class NamespaceHierarchyBuilder
     {
         public HierarchyNode BuildTreeFor(Assembly domainAssembly)
@@ -212,7 +210,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
             return newNode;
         }
-
     }
 
     public class HierarchyNode
@@ -226,9 +223,13 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         public Type Type { get; internal set; }
 
         public bool IsNamespace { get; internal set; }
+
         public bool IsAbstract { get; internal set; }
+
         public bool IsClass { get; internal set; }
+
         public bool IsSubClass { get; internal set; }
+
         public bool IsGeneric { get; internal set; }
 
         public override string ToString()
@@ -274,5 +275,4 @@ namespace Envivo.Fresnel.Introspection.Assemblies
                                     string.Concat(this.FQN, ".", childToAdd.Name);
         }
     }
-
 }

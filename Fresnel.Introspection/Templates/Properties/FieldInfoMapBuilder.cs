@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class FieldInfoMapBuilder
     {
         private readonly BindingFlags _flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy;
@@ -49,5 +48,4 @@ namespace Envivo.Fresnel.Introspection.Templates
             return new FieldInfoMap(results, eventDelegates);
         }
     }
-
 }

@@ -42,6 +42,5 @@ namespace Envivo.Fresnel.Introspection.Commands
             var result = tMethod.Invoke(obj, args);
             return result;
         }
-
     }
 }

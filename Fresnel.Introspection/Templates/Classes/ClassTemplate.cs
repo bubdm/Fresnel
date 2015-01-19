@@ -1,5 +1,4 @@
 using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Utils;
 using Newtonsoft.Json;
 using System;
@@ -8,7 +7,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// A Template that represents a Object Type
     /// </summary>
@@ -347,7 +345,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         //        /// Returns TRUE if a Relationship exists with the given Target class
         //        /// </summary>
         //        /// <param name="tTargetClass"></param>
-        //        
+        //
         //        /// <remarks>Humane interface</remarks>
         //        public bool HasRelationshipWith(ClassTemplate tTargetClass)
         //        {
@@ -360,7 +358,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         //        /// Returns TRUE if a Relationship exists with the given Target property
         //        /// </summary>
         //        /// <param name="tTargetProperty"></param>
-        //        
+        //
         //        /// <remarks>Humane interface</remarks>
         //        public bool HasRelationshipWith(PropertyTemplate tTargetProperty)
         //        {
@@ -389,6 +387,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return result;
         }
-
     }
 }

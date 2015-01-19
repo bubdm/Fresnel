@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Contains all configurations associated with an Assembly
     /// </summary>
@@ -40,7 +39,5 @@ namespace Envivo.Fresnel.Configuration
         {
             _ClassConfigurationMap[classType] = configuration;
         }
-
     }
-
 }

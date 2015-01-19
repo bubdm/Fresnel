@@ -24,7 +24,5 @@ namespace Envivo.Fresnel.Introspection
             : base(info, context)
         {
         }
-
     }
 }
-

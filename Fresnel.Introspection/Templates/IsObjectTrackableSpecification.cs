@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// Determines if the given class can be tracked by the framework.
     /// Typically used to identify Domain Objects
@@ -39,5 +38,4 @@ namespace Envivo.Fresnel.Introspection.Templates
             return Assertion.FailWithWarning(msg);
         }
     }
-
 }

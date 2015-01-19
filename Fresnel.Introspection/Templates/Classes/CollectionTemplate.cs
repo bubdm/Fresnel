@@ -7,7 +7,6 @@ using System.Linq;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// A Template that represents a Collection/List Class
     /// </summary>
@@ -204,7 +203,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         //    }
         //    else if (realCollectionType.IsDerivedFrom(TypeExtensions.IGenericEnumerable))
         //    {
-
         //        var flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
         //        enumerable = (IEnumerator)TypeExtensions.IGenericEnumerable.InvokeMember("GetEnumerator", flags, null, collection, null);
         //    }
@@ -282,7 +280,5 @@ namespace Envivo.Fresnel.Introspection.Templates
             //    return false;
             //}
         }
-
     }
-
 }

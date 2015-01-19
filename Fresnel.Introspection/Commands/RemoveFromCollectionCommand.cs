@@ -71,6 +71,5 @@ namespace Envivo.Fresnel.Introspection.Commands
             var result = tCollection.Remove(collection, item, tItem.RealType);
             return result;
         }
-
     }
 }

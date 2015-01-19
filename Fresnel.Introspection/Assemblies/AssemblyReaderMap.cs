@@ -7,7 +7,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
 {
-
     /// <summary>
     /// A collection of AssemblyReader objects. Each entry is keyed by an Assembly object
     /// </summary>
@@ -84,7 +83,5 @@ namespace Envivo.Fresnel.Introspection.Assemblies
                 reader.Dispose();
             }
         }
-
     }
-
 }

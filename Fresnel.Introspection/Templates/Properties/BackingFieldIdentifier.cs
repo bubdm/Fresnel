@@ -6,7 +6,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class BackingFieldIdentifier
     {
         internal const string AutoPropertyFieldSuffix = "k__BackingField";
@@ -104,7 +103,5 @@ namespace Envivo.Fresnel.Introspection.Templates
                 Trace.TraceWarning(string.Concat("Cannot find the Backing Field for ", tProperty.FullName));
             }
         }
-
     }
-
 }

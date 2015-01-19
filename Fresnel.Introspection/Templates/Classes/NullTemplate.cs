@@ -1,7 +1,5 @@
-
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// A Template that represents a 'null' value
     /// </summary>
@@ -10,6 +8,5 @@ namespace Envivo.Fresnel.Introspection.Templates
         public NullTemplate()
         {
         }
-
     }
 }

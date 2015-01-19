@@ -5,8 +5,11 @@ using System.Reflection.Emit;
 namespace Envivo.Fresnel.Introspection.Templates
 {
     public delegate object RapidCtor();
+
     public delegate object RapidGet(object target);
+
     public delegate void RapidSet(object target, object value);
+
     public delegate object RapidMethod(object target, object[] parameters);
 
     /// <summary>
@@ -313,30 +316,39 @@ namespace Envivo.Fresnel.Introspection.Templates
                 case -1:
                     ilGen.Emit(OpCodes.Ldc_I4_M1);
                     return;
+
                 case 0:
                     ilGen.Emit(OpCodes.Ldc_I4_0);
                     return;
+
                 case 1:
                     ilGen.Emit(OpCodes.Ldc_I4_1);
                     return;
+
                 case 2:
                     ilGen.Emit(OpCodes.Ldc_I4_2);
                     return;
+
                 case 3:
                     ilGen.Emit(OpCodes.Ldc_I4_3);
                     return;
+
                 case 4:
                     ilGen.Emit(OpCodes.Ldc_I4_4);
                     return;
+
                 case 5:
                     ilGen.Emit(OpCodes.Ldc_I4_5);
                     return;
+
                 case 6:
                     ilGen.Emit(OpCodes.Ldc_I4_6);
                     return;
+
                 case 7:
                     ilGen.Emit(OpCodes.Ldc_I4_7);
                     return;
+
                 case 8:
                     ilGen.Emit(OpCodes.Ldc_I4_8);
                     return;

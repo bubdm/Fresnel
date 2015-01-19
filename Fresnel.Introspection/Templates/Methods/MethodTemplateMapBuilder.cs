@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class MethodTemplateMapBuilder
     {
         private MethodInfoMapBuilder _MethodInfoMapBuilder;
@@ -98,7 +97,5 @@ namespace Envivo.Fresnel.Introspection.Templates
                 return string.Empty;
             }
         }
-
     }
-
 }

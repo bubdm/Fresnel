@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class ParameterTemplateMapBuilder
     {
         private ParameterTemplateBuilder _ParameterTemplateBuilder;
@@ -32,7 +31,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return new ParameterTemplateMap(results);
         }
-
     }
-
 }

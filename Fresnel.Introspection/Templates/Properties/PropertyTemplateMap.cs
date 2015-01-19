@@ -5,10 +5,8 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class PropertyTemplateMap : ReadOnlyDictionary<string, PropertyTemplate>
     {
-
         private IDictionary<PropertyInfo, PropertyTemplate> _tProperties;
         private IEnumerable<PropertyTemplate> _ForObjects;
 
@@ -29,7 +27,5 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             return _tProperties.TryGetValueOrNull(propertyInfo);
         }
-
     }
-
 }

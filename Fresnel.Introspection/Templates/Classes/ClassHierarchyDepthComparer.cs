@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 
-
-
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class ClassHierarchyDepthComparer : IComparer<ClassTemplate>
     {
         public int Compare(ClassTemplate x, ClassTemplate y)
@@ -19,5 +16,4 @@ namespace Envivo.Fresnel.Introspection.Templates
             return difference;
         }
     }
-
 }

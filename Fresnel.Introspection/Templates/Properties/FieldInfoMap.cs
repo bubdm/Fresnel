@@ -3,7 +3,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class FieldInfoMap : ReadOnlyDictionary<string, FieldInfo>
     {
         /// <summary>
@@ -26,5 +25,4 @@ namespace Envivo.Fresnel.Introspection.Templates
             this.EventDelegates = eventDelegates;
         }
     }
-
 }

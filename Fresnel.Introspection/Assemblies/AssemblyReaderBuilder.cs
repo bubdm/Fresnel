@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
 {
-
     public class AssemblyReaderBuilder
     {
         private ConfigurationMapBuilder _ConfigurationMapBuilder;
@@ -58,8 +57,5 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
             //_ClassStructureXml = new ClassStructureBuilder(_Assembly).GetClassStructureXml();
         }
-
     }
-
-
 }

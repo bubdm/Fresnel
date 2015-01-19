@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class PropertyTemplateBuilder
     {
         private RealTypeResolver _RealTypeResolver;
@@ -125,6 +124,5 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsParentRelationship = true;
             }
         }
-
     }
 }

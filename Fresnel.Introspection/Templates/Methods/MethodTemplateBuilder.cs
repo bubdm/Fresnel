@@ -6,7 +6,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class MethodTemplateBuilder
     {
         private RealTypeResolver _RealTypeResolver;
@@ -56,6 +55,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return result;
         }
-
     }
 }

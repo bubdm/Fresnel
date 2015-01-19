@@ -4,7 +4,6 @@ using System;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// Determines if the given class has an IAudit property
     /// Typically used to method audit information when persisting Domain Objects
@@ -26,7 +25,5 @@ namespace Envivo.Fresnel.Introspection.Templates
             var msg = string.Concat(sender.GetType().Name, " does not have a property of type IAudit");
             return Assertion.FailWithWarning(msg);
         }
-
     }
-
 }

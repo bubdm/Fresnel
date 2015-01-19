@@ -1,10 +1,7 @@
-
-
-
 using System;
+
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// A Template that represents an Enumeration
     /// </summary>
@@ -26,6 +23,5 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             return this.FriendlyName;
         }
-
     }
 }

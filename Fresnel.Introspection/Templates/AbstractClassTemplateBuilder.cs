@@ -1,11 +1,9 @@
 using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Utils;
 using System;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class AbstractClassTemplateBuilder
     {
         private AttributesMapBuilder _AttributesMapBuilder;
@@ -71,7 +69,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return result;
         }
-
-
     }
 }

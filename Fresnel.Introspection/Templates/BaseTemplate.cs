@@ -1,4 +1,3 @@
-
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Newtonsoft.Json;
@@ -6,7 +5,6 @@ using System;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class BaseTemplate : ITemplate
     {
         protected internal Lazy<XmlComments> _XmlComments;

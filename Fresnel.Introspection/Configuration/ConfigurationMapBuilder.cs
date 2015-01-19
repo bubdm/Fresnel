@@ -1,9 +1,7 @@
-using Envivo.Fresnel.Introspection.Assemblies;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Configuration
 {
-
     public class ConfigurationMapBuilder
     {
         public ConfigurationMapBuilder
@@ -118,7 +116,5 @@ namespace Envivo.Fresnel.Configuration
             //    assemblyConfig.ConfigureExportService(defaultConfiguration.ExportServiceConfig);
             //}
         }
-
     }
-
 }

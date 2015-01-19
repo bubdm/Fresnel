@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class PropertyTemplateMapBuilder
     {
         private PropertyInfoMapBuilder _PropertyInfoMapBuilder;
@@ -42,7 +41,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return new PropertyTemplateMap(results);
         }
-
     }
-
 }

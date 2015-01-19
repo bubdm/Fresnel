@@ -1,16 +1,12 @@
-
 using Envivo.Fresnel.Utils;
 using System.Reflection;
 
-
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class EnumItemTemplateBuilder
     {
         public EnumItemTemplateBuilder()
         {
-
         }
 
         public EnumItemTemplate BuildFor(EnumTemplate tEnum, FieldInfo enumField)
@@ -53,6 +49,5 @@ namespace Envivo.Fresnel.Introspection.Templates
                                     enumField.DeclaringType.Name, ".",
                                     enumField.Name);
         }
-
     }
 }

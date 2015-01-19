@@ -1,7 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace Envivo.Fresnel.Introspection.IoC
 {
@@ -10,13 +7,10 @@ namespace Envivo.Fresnel.Introspection.IoC
     /// </summary>
     public interface IDomainClassRegistrar
     {
-
         /// <summary>
         /// Registers the given Types so they can be created by an IoC container
         /// </summary>
         /// <param name="domainClassTypes"></param>
         void RegisterTypes(Type[] domainClassTypes);
-
     }
-
 }

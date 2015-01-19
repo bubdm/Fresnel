@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Introspection
 {
-
     /// <summary>
     /// Returns the true Type of a proxied object
     /// </summary>
@@ -42,5 +41,4 @@ namespace Envivo.Fresnel.Introspection
             return proxyType;
         }
     }
-
 }

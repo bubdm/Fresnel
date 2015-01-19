@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-
 namespace Envivo.Fresnel.Introspection
 {
     /// <summary>
@@ -77,7 +76,7 @@ namespace Envivo.Fresnel.Introspection
             }
         }
 
-        #endregion
+        #endregion IDictionary<TKey,TValue> Members
 
         #region ICollection<KeyValuePair<TKey,TValue>> Members
 
@@ -116,7 +115,7 @@ namespace Envivo.Fresnel.Introspection
             throw new NotSupportedException("This dictionary is read-only");
         }
 
-        #endregion
+        #endregion ICollection<KeyValuePair<TKey,TValue>> Members
 
         #region IEnumerable<KeyValuePair<TKey,TValue>> Members
 
@@ -125,7 +124,7 @@ namespace Envivo.Fresnel.Introspection
             return _Items.GetEnumerator();
         }
 
-        #endregion
+        #endregion IEnumerable<KeyValuePair<TKey,TValue>> Members
 
         #region IEnumerable Members
 
@@ -134,7 +133,7 @@ namespace Envivo.Fresnel.Introspection
             return (_Items as System.Collections.IEnumerable).GetEnumerator();
         }
 
-        #endregion
+        #endregion IEnumerable Members
 
         public void Dispose()
         {

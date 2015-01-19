@@ -8,7 +8,6 @@ using System.Linq;
 
 namespace Envivo.Fresnel.Introspection
 {
-
     /// <summary>
     /// Used to collect/aggregate a set of Assertions
     /// </summary>
@@ -116,8 +115,10 @@ namespace Envivo.Fresnel.Introspection
             {
                 case 0:
                     return null;
+
                 case 1:
                     return exceptions[0];
+
                 default:
                     var messages = string.Join(Environment.NewLine, exceptions.Select(e => e.Message));
                     var ex = new IntrospectionException(messages);
@@ -176,7 +177,6 @@ namespace Envivo.Fresnel.Introspection
                     flatList.Add(assertion);
                 }
             }
-
         }
 
         public IEnumerator<IAssertion> GetEnumerator()
@@ -189,5 +189,4 @@ namespace Envivo.Fresnel.Introspection
             return _Assertions.GetEnumerator();
         }
     }
-
 }

@@ -4,10 +4,8 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class MethodTemplateMap : ReadOnlyDictionary<string, MethodTemplate>
     {
-
         private IDictionary<MethodInfo, MethodTemplate> _tMethods;
         private IEnumerable<MethodTemplate> _tMethodsForLinking;
         private IEnumerable<MethodTemplate> _tMethodsForUnlinking;
@@ -45,7 +43,5 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             get { return _tMethodsForUnlinking; }
         }
-
     }
-
 }

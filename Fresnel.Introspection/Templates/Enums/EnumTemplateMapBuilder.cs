@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class EnumTemplateMapBuilder
     {
         private EnumTemplateBulider _EnumTemplateBulider;
@@ -39,7 +38,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return new EnumTemplateMap(results);
         }
-
     }
-
 }

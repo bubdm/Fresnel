@@ -50,6 +50,5 @@ namespace Envivo.Fresnel.Introspection.Commands
             var value = tProp.GetProperty(obj);
             return value;
         }
-
     }
 }

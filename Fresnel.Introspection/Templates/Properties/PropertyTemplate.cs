@@ -6,7 +6,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// A Template that represents a Property in a .NET class
     /// </summary>
@@ -311,7 +310,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Note that this function is only useful against Collection properties.
         /// </summary>
 
-
         public ClassTemplate GetManyToManyClass(TemplateCache templateCache)
         {
             if (!this.IsCollection)
@@ -343,6 +341,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return null;
         }
-
     }
 }

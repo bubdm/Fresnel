@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// The hierarchy of Classes that descend from the associated Class
     /// </summary>
@@ -77,7 +76,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             if (results.Count > 1)
             {
-                // Sort the results by inheritance depth order 
+                // Sort the results by inheritance depth order
                 // (i.e. super classes at the top, sub classes at the bottom):
                 results.Sort(_ClassHierarchyDepthComparer);
             }
@@ -85,13 +84,11 @@ namespace Envivo.Fresnel.Introspection.Templates
             return results;
         }
 
-
         /// <summary>
         /// Returns all Class Templates for all Sub-Classes
         /// </summary>
         /// <param name="includeStartingClass"></param>
         /// <param name="useDeepScan"></param>
-
 
         public IEnumerable<ClassTemplate> GetSubClasses(bool includeStartingClass, bool useDeepScan)
         {
@@ -142,7 +139,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             if (results.Count > 1)
             {
-                // Sort the results by inheritance depth order 
+                // Sort the results by inheritance depth order
                 // (i.e. super classes at the top, sub classes at the bottom):
                 results.Sort(_ClassHierarchyDepthComparer);
             }
@@ -153,7 +150,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns all Class Templates for all the interfaces that this class implements
         /// </summary>
-
 
         public IEnumerable<ClassTemplate> GetInterfaces()
         {
@@ -173,7 +169,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns all Properties from all of the Sub-Classes in the Hierarchy
         /// </summary>
-
 
         public IEnumerable<PropertyTemplate> GetProperties()
         {
@@ -195,6 +190,5 @@ namespace Envivo.Fresnel.Introspection.Templates
             // Send back the results as a simple generic List:
             return new List<PropertyTemplate>(tProperties.Values);
         }
-
     }
 }

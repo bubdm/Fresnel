@@ -4,10 +4,8 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class StaticMethodInfoMapBuilder
     {
-
         public MethodInfoMap BuildFor(Type realObjectType)
         {
             var results = new Dictionary<string, MethodInfo>();
@@ -24,7 +22,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return new MethodInfoMap(results);
         }
-
     }
-
 }

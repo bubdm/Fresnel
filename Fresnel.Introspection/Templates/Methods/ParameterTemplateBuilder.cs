@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class ParameterTemplateBuilder
     {
         private Func<ParameterTemplate> _paramterFactory;
@@ -70,6 +69,5 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tParameter.IsNullableType = paramType.IsNullableType() || paramType.IsDerivedFrom<string>();
             }
         }
-
     }
 }

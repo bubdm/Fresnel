@@ -7,7 +7,6 @@ using System.ComponentModel;
 
 namespace Envivo.Fresnel.Introspection
 {
-
     public static class TypeExtensions
     {
         private static IsObjectTrackableSpecification s_IsObjectTrackableSpecification = new IsObjectTrackableSpecification();
@@ -22,6 +21,7 @@ namespace Envivo.Fresnel.Introspection
         static private Type IFactoryType = typeof(IFactory<>);
         static private Type IRepositoryType = typeof(IRepository<>);
         static private Type IDomainServiceType = typeof(IDomainService);
+
         //static private Type IPresenterType = typeof(UI.IPresenterInfrastructureService<>);
         static private Type IDataErrorInfoType = typeof(IDataErrorInfo);
 
@@ -138,7 +138,6 @@ namespace Envivo.Fresnel.Introspection
             return type.IsDerivedFrom(IDomainServiceType);
         }
 
-
         ///// <summary>
         ///// Determines if the given type implements IPresenter
         ///// </summary>
@@ -206,7 +205,6 @@ namespace Envivo.Fresnel.Introspection
             return isValid;
         }
 
-
         /// Determines if the given type implements IDataErrorInfo
         /// </summary>
         /// <param name="type"></param>
@@ -215,6 +213,5 @@ namespace Envivo.Fresnel.Introspection
         {
             return type.IsDerivedFrom(IDataErrorInfoType);
         }
-
     }
 }

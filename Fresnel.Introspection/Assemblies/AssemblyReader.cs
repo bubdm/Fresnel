@@ -10,7 +10,6 @@ using System.Xml;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
 {
-
     /// <summary>
     /// Used to interrogate a .NET assembly for Object classes
     /// </summary>
@@ -19,7 +18,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
     /// </remarks>
     public class AssemblyReader : IDisposable
     {
-
         private IDomainClassRegistrar _DomainClassRegistrar;
         private IDomainDependencyRegistrar _DomainDependencyRegistrar;
 
@@ -169,7 +167,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         private void InitialiseDomainClasses(Type[] publicTypes)
         {
-
             var domainClasses = publicTypes
                                     .Where(t => t.IsTrackable())
                                     .ToArray();
@@ -189,7 +186,5 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             _ClassStructureXml = null;
             this.XmlDocReader = null;
         }
-
     }
-
 }

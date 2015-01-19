@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class MethodInfoMapBuilder
     {
         private readonly BindingFlags _flags = BindingFlags.Public | BindingFlags.Instance;
@@ -43,7 +42,5 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             return newName;
         }
-
     }
-
 }

@@ -48,6 +48,5 @@ namespace Envivo.Fresnel.Introspection.Commands
 
             tProp.SetProperty(obj, value);
         }
-
     }
 }

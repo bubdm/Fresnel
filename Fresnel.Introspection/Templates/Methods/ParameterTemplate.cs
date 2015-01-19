@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// A Template that represents a Parameter in a .NET method
     /// </summary>
@@ -101,7 +100,5 @@ namespace Envivo.Fresnel.Introspection.Templates
             var result = _TemplateCache.GetTemplate(this.ParameterType);
             return result;
         }
-
-
     }
 }

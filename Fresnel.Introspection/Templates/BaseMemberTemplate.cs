@@ -1,12 +1,9 @@
-
-
 using Envivo.Fresnel.Configuration;
 using Newtonsoft.Json;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     /// <summary>
     /// The base class for all 'Member' Templates
     /// </summary>

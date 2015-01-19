@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class ClassHierarchyBuilder
     {
         private AssemblyReaderMap _AssemblyReaderMap;
@@ -68,7 +67,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             if (results.Count > 1)
             {
-                // Sort the results by inheritance depth order 
+                // Sort the results by inheritance depth order
                 // (i.e. super classes at the top, sub classes at the bottom):
                 results.Sort(_ClassHierarchyDepthComparer);
             }
@@ -76,13 +75,11 @@ namespace Envivo.Fresnel.Introspection.Templates
             return results;
         }
 
-
         /// <summary>
         /// Returns all Class Templates for all Sub-Classes
         /// </summary>
         /// <param name="includeStartingClass"></param>
         /// <param name="useDeepScan"></param>
-
 
         public IEnumerable<ClassTemplate> GetSubClasses(ClassTemplate tRootClass, bool includeStartingClass, bool useDeepScan)
         {
@@ -133,7 +130,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             if (results.Count > 1)
             {
-                // Sort the results by inheritance depth order 
+                // Sort the results by inheritance depth order
                 // (i.e. super classes at the top, sub classes at the bottom):
                 results.Sort(_ClassHierarchyDepthComparer);
             }
@@ -144,7 +141,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// <summary>
         /// Returns all Class Templates for all the interfaces that this class implements
         /// </summary>
-
 
         public IEnumerable<ClassTemplate> GetInterfaces(ClassTemplate tRootClass)
         {
@@ -166,7 +162,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// Returns all Properties from all of the Sub-Classes in the Hierarchy
         /// </summary>
 
-
         public IEnumerable<PropertyTemplate> GetProperties(ClassTemplate tRootClass)
         {
             var tProperties = new Dictionary<string, PropertyTemplate>();
@@ -187,6 +182,5 @@ namespace Envivo.Fresnel.Introspection.Templates
             // Send back the results as a simple generic List:
             return tProperties.Values;
         }
-
     }
 }

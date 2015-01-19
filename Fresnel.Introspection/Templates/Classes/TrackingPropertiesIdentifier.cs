@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class TrackingPropertiesIdentifier
     {
         private readonly Type _GuidType = typeof(Guid);
@@ -74,7 +73,5 @@ namespace Envivo.Fresnel.Introspection.Templates
             var result = tClass.Properties.Values.FirstOrDefault(p => p.PropertyType.IsDerivedFrom(_IAuditType));
             return result;
         }
-
     }
-
 }

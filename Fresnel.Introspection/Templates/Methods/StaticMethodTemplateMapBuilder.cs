@@ -1,7 +1,5 @@
-
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class StaticMethodTemplateMapBuilder
     {
         private StaticMethodInfoMapBuilder _StaticMethodInfoMapBuilder;
@@ -23,8 +21,5 @@ namespace Envivo.Fresnel.Introspection.Templates
             var result = _MethodTemplateMapBuilder.BuildFrom(tClass, staticMethodInfoMap);
             return result;
         }
-
-
     }
-
 }

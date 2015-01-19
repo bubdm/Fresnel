@@ -2,10 +2,8 @@ using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
-
     public class EnumItemTemplateMap : ReadOnlyDictionary<string, EnumItemTemplate>
     {
-
         //private List<EnumItemTemplate> _tEnumItems;
 
         public EnumItemTemplateMap(IDictionary<string, EnumItemTemplate> items)
@@ -23,7 +21,5 @@ namespace Envivo.Fresnel.Introspection.Templates
         //{
         //    get { return _tEnumItems[_tEnumItems.Count - 1]; }
         //}
-
     }
-
 }

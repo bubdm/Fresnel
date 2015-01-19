@@ -19,6 +19,5 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// The AssemblyReader associated with this Template
         /// </summary>
         AssemblyReader AssemblyReader { get; }
-
     }
 }
