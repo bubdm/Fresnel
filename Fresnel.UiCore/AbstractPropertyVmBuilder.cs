@@ -78,8 +78,6 @@ namespace Envivo.Fresnel.UiCore
             var tProp = oProp.Template;
             var objectProp = oProp as ObjectPropertyObserver;
 
-            var setCheck = _CanSetPropertyPermission.IsSatisfiedBy(oProp);
-            var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(oProp);
 
             var propVM = this.BuildFor(tProp);
             propVM.ObjectID = oProp.OuterObject.ID;
@@ -87,19 +85,12 @@ namespace Envivo.Fresnel.UiCore
             propVM.IsNonReference = oProp.Template.IsNonReference;
             propVM.IsCollection = oProp.Template.IsCollection;
             propVM.IsObject = !propVM.IsNonReference && !propVM.IsCollection;
-            propVM.CanRead = getCheck.Passed;
-            propVM.CanWrite = setCheck.Passed;
 
-            if (setCheck.Passed)
-            {
-                propVM.IsEnabled = true;
-            }
-            else
-            {
-                propVM.Warning = setCheck.FailureReason;
-            }
+            propVM.Get = this.CreateGet(oProp);
+            propVM.Set = this.CreateSet(oProp);
 
-            if (getCheck.Passed)
+            propVM.IsEnabled = propVM.Get.IsEnabled;
+            if (propVM.IsEnabled)
             {
                 try
                 {
@@ -115,17 +106,68 @@ namespace Envivo.Fresnel.UiCore
                 }
                 catch (Exception ex)
                 {
-                    propVM.Error = ex.Message;
+                    propVM.Get.Error = ex.Message;
                 }
             }
-            else
+
+            propVM.Clear = this.CreateClear(oProp, propVM.Value);
+
+            if (oProp.Template.IsCollection)
             {
-                propVM.Error = getCheck.FailureReason;
+                propVM.Add = this.CreateAdd(oProp, propVM.Value);
             }
 
             return propVM;
         }
 
+        private InteractionPoint CreateGet(BasePropertyObserver oProp)
+        {
+            var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(oProp);
+
+            var result = new InteractionPoint()
+            {
+                IsEnabled = getCheck.Passed,
+                Error = getCheck.FailureReason,
+            };
+            return result;
+        }
+
+        private InteractionPoint CreateSet(BasePropertyObserver oProp)
+        {
+            var setCheck = _CanSetPropertyPermission.IsSatisfiedBy(oProp);
+
+            var result = new InteractionPoint()
+            {
+                IsEnabled = setCheck.Passed,
+                Error = setCheck.FailureReason,
+            };
+            return result;
+        }
+
+        private InteractionPoint CreateClear(BasePropertyObserver oProp, object propertyValue)
+        {
+            var tProp = oProp.Template;
+            var result = new InteractionPoint()
+            {
+                IsEnabled =  tProp.CanWrite &&
+                             propertyValue != null && 
+                             (!tProp.IsNonReference || tProp.IsNullableType),
+            };
+            return result;
+        }
+
+        private InteractionPoint CreateAdd(BasePropertyObserver oProp, object propertyValue)
+        {
+            var tProp = oProp.Template;
+            var result = new InteractionPoint()
+            {
+                IsEnabled = tProp.CanAdd &&
+                            propertyValue != null && 
+                            tProp.IsCollection
+            };
+            return result;
+        }
+        
         //private string ConvertToJavascriptType(Type type)
         //{
         //    switch (type.Name.ToLower())

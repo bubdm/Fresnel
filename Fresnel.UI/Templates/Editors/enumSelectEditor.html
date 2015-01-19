@@ -3,7 +3,7 @@
         ng-change="setProperty(prop)">
     <option ng-repeat="enumItem in prop.Info.Items"
             name="enumItem"
-            ng-disabled="!prop.CanWrite"
+            ng-disabled="!prop.Set.IsEnabled"
             ng-checked="enumItem.IsChecked"
             ng-model="enumItem.Value"
             title="{{enumItem.Description}}"

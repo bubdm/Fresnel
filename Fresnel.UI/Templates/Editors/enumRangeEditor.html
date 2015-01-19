@@ -3,7 +3,7 @@
         <input type="radio"
                name="{{prop.Name}}.{{enumItem.Name}}"
                value="{{enumItem.Name}}"
-               ng-disabled="!prop.CanWrite"
+               ng-disabled="!prop.Set.IsEnabled"
                ng-checked="enumItem.IsChecked"
                ng-model="prop.Value"
                ng-change="setProperty(prop)" />

@@ -14,7 +14,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 
         public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
         {
-            targetVM.CanWrite = false;
+            
         }
     }
 }

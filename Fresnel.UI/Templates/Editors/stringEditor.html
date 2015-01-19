@@ -5,7 +5,7 @@
        ng-change="setProperty(prop)"
        ng-model-options="{ updateOn: 'blur' }"
        ng-keyup="cancel($event)"
-       ng-disabled="!prop.CanWrite"
+       ng-disabled="!prop.Set.IsEnabled"
        minlength="{{prop.Info.MinLength}}"
        maxlength="{{prop.Info.MaxLength}}"
        pattern="{{prop.Info.EditMask}}" />

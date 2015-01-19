@@ -1,7 +1,7 @@
 ﻿<div class="btn-group ">
     <button type="button"
             class="btn btn-default"
-            ng-show="prop.IsObject"
+            ng-show="prop.IsObject && prop.Get.IsEnabled"
             ng-click="openNewExplorer(prop)"
             tooltip="Open contents in a new panel">
         <i class="fa fa-ellipsis-h"></i>
@@ -9,24 +9,34 @@
 
     <button type="button"
             class="btn btn-default"
-            ng-show="!prop.Value"
-            ng-click="createAndLink(prop)"
+            ng-show="prop.IsObject && prop.Create.IsEnabled"
+            ng-click="createAndAssociate(prop)"
             tooltip="Add a new item">
         <i class="fa fa-plus"></i>
     </button>
 
     <button type="button"
             class="btn btn-default"
-            ng-click="link(prop)"
+            ng-show="prop.IsObject && prop.Set.IsEnabled"
+            ng-click="associated(prop)"
             tooltip="Link to another item">
         <i class="fa fa-link"></i>
     </button>
 
     <button type="button"
             class="btn btn-default"
-            ng-show="prop.Value"
-            ng-click="unlink(prop)"
+            ng-show="prop.IsObject && prop.Clear.IsEnabled"
+            ng-click="disassociate(prop)"
             tooltip="Unlink this item">
         <i class="fa fa-unlink"></i>
     </button>
+
+    <button type="button"
+            class="btn btn-default"
+            ng-show="prop.IsObject && prop.Set.IsEnabled"
+            ng-click="associated(prop)"
+            tooltip="Link to another item">
+        <i class="fa fa-link"></i>
+    </button>
+
 </div>

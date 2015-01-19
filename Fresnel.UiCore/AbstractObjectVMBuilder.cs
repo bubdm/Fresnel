@@ -172,5 +172,32 @@ namespace Envivo.Fresnel.UiCore
             }
             return methods;
         }
+
+        // TODO: Populate Add and Remove collection interactions:
+
+        //private InteractionPoint CreateAdd(BasePropertyObserver oProp, object propertyValue)
+        //{
+        //    var tProp = oProp.Template;
+        //    var result = new InteractionPoint()
+        //    {
+        //        IsEnabled = tProp.CanAdd &&
+        //                    propertyValue != null &&
+        //                    tProp.IsCollection
+        //    };
+        //    return result;
+        //}
+
+        //private InteractionPoint CreateRemove(BasePropertyObserver oProp, object propertyValue)
+        //{
+        //    var tProp = oProp.Template;
+        //    var result = new InteractionPoint()
+        //    {
+        //        IsEnabled = tProp.CanRemove &&
+        //                    propertyValue != null &&
+        //                    tProp.IsCollection
+        //    };
+        //    return result;
+        //}
+
     }
 }
