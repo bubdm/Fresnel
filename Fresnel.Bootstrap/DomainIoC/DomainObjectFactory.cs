@@ -1,12 +1,7 @@
 ﻿using Autofac;
-using Autofac.Core;
-using Autofac.Core.Registration;
 using Envivo.Fresnel.Introspection.IoC;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Bootstrap.DomainIoC
 {

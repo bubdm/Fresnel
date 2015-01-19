@@ -1,9 +1,5 @@
 ﻿using Autofac;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Bootstrap
 {
@@ -22,7 +18,7 @@ namespace Envivo.Fresnel.Bootstrap
 
         private Type[] GetSingleInstanceTypes()
         {
-            return new Type[] { 
+            return new Type[] {
                 typeof(Fresnel.Introspection.RealTypeResolver),
 
                 typeof(Fresnel.Configuration.AttributesMapBuilder),
@@ -86,7 +82,7 @@ namespace Envivo.Fresnel.Bootstrap
 
         private Type[] GetPerDependencyInstanceTypes()
         {
-            return new Type[] { 
+            return new Type[] {
                 typeof(Fresnel.Introspection.Assemblies.AssemblyReader),
 
                 typeof(Fresnel.Introspection.Templates.ClassTemplate),
@@ -99,7 +95,5 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Introspection.Templates.PropertyTemplate),
             };
         }
-
-
     }
 }

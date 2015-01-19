@@ -1,14 +1,8 @@
 ﻿using Autofac;
-using Autofac.Features.ResolveAnything;
 
-using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.IoC;
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Bootstrap
 {
@@ -61,7 +55,6 @@ namespace Envivo.Fresnel.Bootstrap
 
         private void SetupContainer(IContainer container)
         {
-            
         }
 
         private void RegisterMandatoryModules(ContainerBuilder builder)
@@ -75,6 +68,5 @@ namespace Envivo.Fresnel.Bootstrap
             builder.RegisterType<DomainIoC.DomainDependencyRegistrar>().As<IDomainDependencyRegistrar>().SingleInstance();
             builder.RegisterType<DomainIoC.DomainDependencyResolver>().As<IDomainDependencyResolver>().SingleInstance();
         }
-
     }
 }

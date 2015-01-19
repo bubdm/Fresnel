@@ -1,9 +1,5 @@
 ﻿using Autofac;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Bootstrap
 {
@@ -11,7 +7,6 @@ namespace Envivo.Fresnel.Bootstrap
     {
         protected override void Load(ContainerBuilder builder)
         {
-
             builder.RegisterTypes(this.GetSingleInstanceTypes())
                     .SingleInstance()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
@@ -27,7 +22,7 @@ namespace Envivo.Fresnel.Bootstrap
 
         private Type[] GetSingleInstanceTypes()
         {
-            return new Type[] { 
+            return new Type[] {
                 typeof(Fresnel.Core.Engine),
 
                 typeof(Fresnel.Core.OuterObjectsIdentifier),
@@ -52,7 +47,7 @@ namespace Envivo.Fresnel.Bootstrap
 
         private Type[] GetPerDependencyInstanceTypes()
         {
-            return new Type[] { 
+            return new Type[] {
                 typeof(Fresnel.Core.Observers.CollectionObserver),
                 typeof(Fresnel.Core.Observers.EnumObserver),
                 typeof(Fresnel.Core.Observers.MethodObserver),
@@ -70,7 +65,7 @@ namespace Envivo.Fresnel.Bootstrap
 
         private Type[] GetPerSessionInstanceTypes()
         {
-            return new Type[] { 
+            return new Type[] {
                 // These depend on the ObserverCache, hence the need for them being Per Session:
                 typeof(Fresnel.Core.Commands.AddToCollectionCommand),
                 typeof(Fresnel.Core.Commands.ClearCollectionCommand),
@@ -90,6 +85,5 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Core.UserSession),
             };
         }
-
     }
 }

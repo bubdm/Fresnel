@@ -1,10 +1,6 @@
 ﻿using Autofac;
 using Envivo.Fresnel.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.Bootstrap
 {
@@ -23,12 +19,11 @@ namespace Envivo.Fresnel.Bootstrap
             builder.RegisterType<SystemClock>().As<IClock>()
                     .SingleInstance()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
-
         }
 
         private Type[] GetSingleInstanceTypes()
         {
-            return new Type[] { 
+            return new Type[] {
                 typeof(Fresnel.UiCore.Commands.GetClassHierarchyCommand),
                 typeof(Fresnel.UiCore.Commands.CleanupSessionCommand),
                 typeof(Fresnel.UiCore.Commands.CreateCommand),
@@ -56,7 +51,7 @@ namespace Envivo.Fresnel.Bootstrap
 
         private Type[] GetPerDependencyInstanceTypes()
         {
-            return new Type[] { 
+            return new Type[] {
                 typeof(Fresnel.UiCore.Controllers.ToolboxController),
                 typeof(Fresnel.UiCore.Controllers.ExplorerController),
                 typeof(Fresnel.UiCore.Controllers.SessionController),
@@ -67,6 +62,5 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Objects.MethodVmBuilder),
             };
         }
-
     }
 }
