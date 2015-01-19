@@ -1,24 +1,12 @@
 ﻿using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core;
-using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.DomainTypes.Interfaces;
-using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Changes;
-using Envivo.Fresnel.UiCore.Classes;
-using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Messages;
 using Envivo.Fresnel.UiCore.Objects;
 using Envivo.Fresnel.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
@@ -169,6 +157,5 @@ namespace Envivo.Fresnel.UiCore.Commands
 
             return value == null ? null : value.ToString();
         }
-
     }
 }

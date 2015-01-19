@@ -1,9 +1,4 @@
 ﻿using Envivo.Fresnel.UiCore.Commands;
-using Envivo.Fresnel.UiCore.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
 
 namespace Envivo.Fresnel.UiCore.Controllers
@@ -35,6 +30,5 @@ namespace Envivo.Fresnel.UiCore.Controllers
             var result = _CleanupSessionCommand.Invoke();
             return result;
         }
-
     }
 }

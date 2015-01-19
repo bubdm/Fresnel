@@ -1,12 +1,6 @@
 ﻿using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Permissions;
-using Envivo.Fresnel.UiCore.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore.Objects
 {
@@ -47,6 +41,5 @@ namespace Envivo.Fresnel.UiCore.Objects
 
             return methodVM;
         }
-
     }
 }

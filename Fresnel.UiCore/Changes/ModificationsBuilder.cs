@@ -1,11 +1,8 @@
 ﻿using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Objects;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Envivo.Fresnel.UiCore.Changes
 {
@@ -110,6 +107,5 @@ namespace Envivo.Fresnel.UiCore.Changes
             };
             return result;
         }
-
     }
 }

@@ -1,11 +1,8 @@
 ﻿using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore.Objects
 {
@@ -174,6 +171,5 @@ namespace Envivo.Fresnel.UiCore.Objects
             }
             return methods;
         }
-
     }
 }

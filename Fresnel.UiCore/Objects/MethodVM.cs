@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore.Objects
 {
@@ -17,6 +14,5 @@ namespace Envivo.Fresnel.UiCore.Objects
         public string MethodName { get; set; }
 
         public bool IsAsync { get; set; }
-
     }
 }

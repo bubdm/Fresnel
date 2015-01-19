@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Http;
-
-using Envivo.Fresnel.Introspection.Assemblies;
-using Envivo.Fresnel.UiCore.Commands;
-using Envivo.Fresnel.UiCore.Classes;
-using Envivo.Fresnel.Introspection.Templates;
+﻿using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
-
-using Envivo.Fresnel.Configuration;
-
+using Envivo.Fresnel.Introspection.Templates;
+using System;
+using System.Web.Http;
 
 namespace Envivo.Fresnel.UiCore.Controllers
 {
@@ -52,6 +42,5 @@ namespace Envivo.Fresnel.UiCore.Controllers
             var observer = _ObserverCache.GetObserver(instance);
             return observer;
         }
-
     }
 }

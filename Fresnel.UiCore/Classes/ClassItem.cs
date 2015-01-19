@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Envivo.Fresnel.UiCore.Classes
+﻿namespace Envivo.Fresnel.UiCore.Classes
 {
     public class ClassItem : BaseViewModel
     {
@@ -12,7 +6,7 @@ namespace Envivo.Fresnel.UiCore.Classes
 
         public string FullTypeName { get; set; }
 
-        public InteractionPoint Create{ get; set; }
+        public InteractionPoint Create { get; set; }
 
         public InteractionPoint Search { get; set; }
 

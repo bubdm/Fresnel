@@ -1,9 +1,4 @@
 ﻿using Envivo.Fresnel.UiCore.Commands;
-using Envivo.Fresnel.UiCore.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
 
 namespace Envivo.Fresnel.UiCore.Controllers
@@ -28,7 +23,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
             _SetPropertyCommand = setPropertyCommand;
             _InvokeMethodCommand = invokeMethodCommand;
         }
-        
+
         [HttpPost]
         public GetPropertyResponse GetObject([FromBody]GetObjectRequest id)
         {
@@ -36,7 +31,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
             var results = _GetObjectCommand.Invoke(request);
             return results;
         }
-        
+
         [HttpPost]
         public GetPropertyResponse GetObjectProperty([FromBody]GetPropertyRequest id)
         {

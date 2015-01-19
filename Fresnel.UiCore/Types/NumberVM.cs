@@ -1,9 +1,4 @@
 ﻿using Envivo.Fresnel.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore.Types
 {
@@ -20,6 +15,5 @@ namespace Envivo.Fresnel.UiCore.Types
         public int DecimalPlaces { get; set; }
 
         public string CurrencySymbol { get; set; }
-
     }
 }

@@ -1,12 +1,6 @@
 ﻿using Envivo.Fresnel.Core.Permissions;
 using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Introspection.Templates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore.Classes
 {
@@ -56,6 +50,5 @@ namespace Envivo.Fresnel.UiCore.Classes
 
             return item;
         }
-
     }
 }

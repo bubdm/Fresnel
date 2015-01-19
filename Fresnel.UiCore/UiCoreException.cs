@@ -24,7 +24,5 @@ namespace Envivo.Fresnel.UiCore
             : base(info, context)
         {
         }
-
     }
 }
-

@@ -1,9 +1,5 @@
 ﻿using Envivo.Fresnel.UiCore.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Envivo.Fresnel.UiCore.Objects
 {
@@ -34,6 +30,5 @@ namespace Envivo.Fresnel.UiCore.Objects
         public bool IsNonReference { get; set; }
 
         public ITypeInfo Info { get; set; }
-
     }
 }
