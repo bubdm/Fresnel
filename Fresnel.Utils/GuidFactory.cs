@@ -1,12 +1,8 @@
-
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
 using System;
+using System.Runtime.InteropServices;
 
 namespace Envivo.Fresnel.Utils
 {
-
     /// <summary>
     /// A set of methods to create GUID values
     /// </summary>
@@ -18,7 +14,7 @@ namespace Envivo.Fresnel.Utils
         /// <summary>
         /// Generates a Sequential Guid using Rpcrt4.DLL. The resulting GUID performs very well with SQL Server.
         /// </summary>
-        
+
         /// <remarks>
         /// UuidCreateSequential isn't directly compatible with SQL Server 2005's NewSequentialID()
         /// See http://codebetter.com/blogs/scott.bellware/archive/2006/12/27/156671.aspx
@@ -107,7 +103,5 @@ namespace Envivo.Fresnel.Utils
 
             return date;
         }
-
     }
-
 }

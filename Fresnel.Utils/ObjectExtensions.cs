@@ -1,6 +1,5 @@
-
-
 using System;
+
 namespace Envivo.Fresnel.Utils
 {
     public static class ObjectExtensions
@@ -12,6 +11,5 @@ namespace Envivo.Fresnel.Utils
 
             obj.Dispose();
         }
-
     }
 }

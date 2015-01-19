@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Envivo.Fresnel.Utils
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class MemoryHelper
     {
@@ -42,7 +42,7 @@ namespace Envivo.Fresnel.Utils
         public MemoryHelper()
         {
             this.MemoryStatus = new MEMORYSTATUSEX();
-            this.UpdateMemoryStatus();          
+            this.UpdateMemoryStatus();
         }
 
         public void UpdateMemoryStatus()
@@ -82,7 +82,5 @@ namespace Envivo.Fresnel.Utils
                 System.Diagnostics.Debug.WriteLine(msg);
             }
         }
-
     }
-
 }

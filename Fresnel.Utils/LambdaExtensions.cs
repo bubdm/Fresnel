@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 
 namespace Envivo.Fresnel.Utils
 {
-
     public static class LambdaExtensions
     {
         /// <summary>
@@ -48,7 +47,5 @@ namespace Envivo.Fresnel.Utils
 
             throw new ArgumentOutOfRangeException("expression", "Unable to determine member/method name for given expression");
         }
-
     }
-
 }

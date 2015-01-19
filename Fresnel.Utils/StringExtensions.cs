@@ -1,10 +1,8 @@
 using System;
 using System.Globalization;
 
-
 namespace Envivo.Fresnel.Utils
 {
-
     /// <summary>
     /// Some String helper functions
     /// </summary>
@@ -12,7 +10,6 @@ namespace Envivo.Fresnel.Utils
     /// </remarks>
     public static class StringExtensions
     {
-
         public static string PILCROW = ((char)182).ToString();
 
         /// <summary>
@@ -53,8 +50,7 @@ namespace Envivo.Fresnel.Utils
         /// </summary>
         /// <param name="value"></param>
         /// <param name="maximumLength"></param>
-        
-        
+
         public static string CompressToFit(this string value, int maximumLength)
         {
             if (string.IsNullOrEmpty(value))
@@ -85,8 +81,7 @@ namespace Envivo.Fresnel.Utils
         /// All vowels and duplicate characters are removed.
         /// </summary>
         /// <param name="value"></param>
-        
-        
+
         public static string Compress(this string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -108,7 +103,7 @@ namespace Envivo.Fresnel.Utils
         /// Replaces 'newline' characters so that the value can be displayed in a single line
         /// </summary>
         /// <param name="value"></param>
-        
+
         public static string ConvertToSingleLine(this string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -117,12 +112,11 @@ namespace Envivo.Fresnel.Utils
             return value.Replace(Environment.NewLine, PILCROW);
         }
 
-
         /// <summary>
         /// Replaces PILCROW characters with newlines, so that the value is displayed over multiple lines
         /// </summary>
         /// <param name="value"></param>
-        
+
         public static string ConvertToMultiLine(this string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -136,7 +130,7 @@ namespace Envivo.Fresnel.Utils
         /// </summary>
         /// <param name="stringA"></param>
         /// <param name="stringB"></param>
-        
+
         public static int CalculateDistanceFrom(this string stringA, string stringB)
         {
             var lengthA = stringA.Length;
@@ -180,7 +174,7 @@ namespace Envivo.Fresnel.Utils
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        
+
         public static bool IsNotSameAs(this string stringA, string stringB)
         {
             return (string.Equals(stringA, stringB, StringComparison.Ordinal)) == false;
@@ -201,7 +195,7 @@ namespace Envivo.Fresnel.Utils
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        
+
         public static bool IsSameAs(this string stringA, string stringB)
         {
             return (string.Equals(stringA, stringB, StringComparison.Ordinal));
@@ -216,7 +210,7 @@ namespace Envivo.Fresnel.Utils
         /// Returns TRUE if the string has a value
         /// </summary>
         /// <param name="value"></param>
-        
+
         public static bool IsNotEmpty(this string value)
         {
             return string.IsNullOrEmpty(value) == false;
@@ -226,7 +220,7 @@ namespace Envivo.Fresnel.Utils
         /// Returns TRUE if the string is null or empty
         /// </summary>
         /// <param name="value"></param>
-        
+
         public static bool IsEmpty(this string value)
         {
             return string.IsNullOrEmpty(value);
@@ -244,7 +238,5 @@ namespace Envivo.Fresnel.Utils
 
             return value.ToString();
         }
-
     }
-
 }

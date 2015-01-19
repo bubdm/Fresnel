@@ -5,7 +5,7 @@ namespace Envivo.Fresnel.Utils
 {
     public class ExecutionTimer : IDisposable
     {
-        #if DEBUG
+#if DEBUG
         private string _Title = "Execution";
         private Stopwatch _sw = new Stopwatch();
 
@@ -30,7 +30,8 @@ namespace Envivo.Fresnel.Utils
             _sw.Stop();
             Trace.TraceInformation(string.Concat("EXECUTION TIMER: ", _Title, " took ", _sw.ElapsedMilliseconds, "ms"));
         }
-        #else
+
+#else
         public ExecutionTimer()
         {
         }

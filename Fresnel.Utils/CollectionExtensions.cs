@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-
 
 namespace Envivo.Fresnel.Utils
 {
@@ -10,7 +7,6 @@ namespace Envivo.Fresnel.Utils
     /// </summary>
     public static class CollectionExtensions
     {
-       
         public static bool DoesNotContain<T>(this IEnumerable<T> items, T item)
         {
             return System.Linq.Enumerable.Contains(items, item) == false;
@@ -72,6 +68,5 @@ namespace Envivo.Fresnel.Utils
                 collection.Clear();
             }
         }
-
     }
 }

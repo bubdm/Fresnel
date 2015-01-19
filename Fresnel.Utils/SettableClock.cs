@@ -1,6 +1,5 @@
-
-
 using System;
+
 namespace Envivo.Fresnel.Utils
 {
     public class SettableClock : IClock
