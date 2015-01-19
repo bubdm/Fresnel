@@ -1,16 +1,15 @@
-﻿using NUnit.Framework;
-using Autofac;
-using System.Linq;
+﻿using Autofac;
 using Envivo.Fresnel.Bootstrap;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Objects;
+using NUnit.Framework;
+using System.Linq;
 
 namespace Envivo.Fresnel.Tests.Proxies
 {
     [TestFixture()]
     public class ToolboxControllerTests
     {
-
         [Test()]
         public void ShouldReturnToolboxClassItems()
         {
@@ -45,8 +44,5 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsTrue(createOperation.Passed);
             Assert.IsInstanceOf<ObjectVM>(createOperation.NewObject);
         }
-
     }
-
 }
-

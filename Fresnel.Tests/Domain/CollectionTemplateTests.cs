@@ -1,20 +1,16 @@
 ﻿using Autofac;
-using NUnit.Framework;
-using System;
-using System.Linq;
-using Envivo.Fresnel.SampleModel.Objects;
 using Envivo.Fresnel.Bootstrap;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Commands;
+using Envivo.Fresnel.Introspection.Templates;
+using NUnit.Framework;
+using System.Linq;
 
 namespace Envivo.Fresnel.Tests.Domain
 {
     [TestFixture()]
     public class CollectionTemplateTests
     {
-
         [Test()]
         public void ShouldAddToCollection()
         {
@@ -110,7 +106,5 @@ namespace Envivo.Fresnel.Tests.Domain
             // Assert:
             Assert.AreEqual(0, pocoObject.ChildObjects.Count);
         }
-
     }
 }
-

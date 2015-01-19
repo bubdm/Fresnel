@@ -1,17 +1,10 @@
-﻿using NUnit.Framework;
-using Autofac;
-using System;
-using System.Linq;
-using Envivo.Fresnel;
+﻿using Autofac;
 using Envivo.Fresnel.Bootstrap;
-using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Assemblies;
-using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Core.Observers;
-using System.Reflection;
+using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using Envivo.Fresnel.DomainTypes;
+using System.Linq;
 
 namespace Envivo.Fresnel.Tests.Domain
 {
@@ -241,7 +234,6 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(observer);
         }
 
-
         [Test()]
         public void ShouldCleanupCache()
         {
@@ -263,8 +255,5 @@ namespace Envivo.Fresnel.Tests.Domain
             // Assert:
             Assert.AreEqual(0, observerCache.GetAllObservers().Count());
         }
-
-
     }
 }
-

@@ -1,20 +1,17 @@
 ﻿using Autofac;
+using Envivo.Fresnel.Bootstrap;
+using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.Commands;
+using Envivo.Fresnel.Introspection.Templates;
 using NUnit.Framework;
 using System;
 using System.Linq;
-using Envivo.Fresnel.SampleModel.Objects;
-using Envivo.Fresnel.Bootstrap;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Commands;
 
 namespace Envivo.Fresnel.Tests.Domain
 {
     [TestFixture()]
     public class MethodTemplateTests
     {
-
         [Test()]
         public void ShouldInvokeMethod()
         {
@@ -70,4 +67,3 @@ namespace Envivo.Fresnel.Tests.Domain
         }
     }
 }
-

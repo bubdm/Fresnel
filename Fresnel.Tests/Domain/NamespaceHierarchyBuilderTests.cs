@@ -1,20 +1,14 @@
-﻿//  Author:
+﻿using Autofac;
+using Envivo.Fresnel.Bootstrap;
+using Envivo.Fresnel.Introspection.Assemblies;
+
+//  Author:
 //       Vijay Patel
 //
 // Copyright (c) 2014 Vijay Patel
 //
 using NUnit.Framework;
-using Autofac;
-using System;
 using System.Linq;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel;
-using Envivo.Fresnel.Bootstrap;
-using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Assemblies;
-using System.Reflection;
-using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Tests.Domain
 {
@@ -28,7 +22,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var hierarchyBuilder = container.Resolve<NamespaceHierarchyBuilder>();
-            
+
             // Act:
             var hierarchy = hierarchyBuilder.BuildTreeFor(typeof(SampleModel.Objects.PocoObject).Assembly);
 
@@ -40,7 +34,5 @@ namespace Envivo.Fresnel.Tests.Domain
 
             Assert.IsTrue(productNode.Children.All(c => c.IsSubClass));
         }
-
     }
 }
-

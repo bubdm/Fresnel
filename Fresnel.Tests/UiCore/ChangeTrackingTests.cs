@@ -1,30 +1,20 @@
-﻿using NUnit.Framework;
-using Autofac;
-using System;
-using System.Linq;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel;
+﻿using Autofac;
 using Envivo.Fresnel.Bootstrap;
-using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Assemblies;
-using System.Reflection;
-using System.Collections.Generic;
-
-using System.ComponentModel;
-using Envivo.Fresnel.DomainTypes;
-using System.Diagnostics;
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.UiCore.Controllers;
+using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.UiCore.Commands;
+using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Objects;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Envivo.Fresnel.Tests.Proxies
 {
     [TestFixture()]
     public class ProxyChangeTrackingTests
     {
-
         [Test()]
         public void ShouldReturnCollectionAdditions()
         {
@@ -46,7 +36,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             };
             var getResult = controller.GetObjectProperty(getRequest);
 
-            // Act:          
+            // Act:
             var invokeRequest = new InvokeMethodRequest()
             {
                 ObjectID = poco.ID,
@@ -58,7 +48,6 @@ namespace Envivo.Fresnel.Tests.Proxies
             var invokeResult2 = controller.InvokeMethod(invokeRequest);
 
             var invokeResult3 = controller.InvokeMethod(invokeRequest);
-
 
             // Assert:
             // Each call performs 3 new additions:
@@ -88,7 +77,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             };
             var getResult = controller.GetObjectProperty(getRequest);
 
-            // Act:          
+            // Act:
             var invokeRequest = new InvokeMethodRequest()
             {
                 ObjectID = poco.ID,
@@ -116,7 +105,7 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             poco.AddSomeChildObjects();
 
-            // Act:          
+            // Act:
             var request = new GetPropertyRequest()
             {
                 ObjectID = poco.ID,
@@ -146,7 +135,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var poco = new SampleModel.BasicTypes.MultiType();
             var oObject = observerCache.GetObserver(poco) as ObjectObserver;
 
-            // Act:     
+            // Act:
             var requests = new List<SetPropertyRequest>()
             {
                 new SetPropertyRequest() { ObjectID = oObject.ID, PropertyName = "A_Char", NonReferenceValue = "X" },
@@ -175,7 +164,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             poco.ID = Guid.NewGuid();
             var oObject = observerCache.GetObserver(poco) as ObjectObserver;
 
-            // Act:          
+            // Act:
             var request = new SetPropertyRequest()
             {
                 ObjectID = poco.ID,
@@ -202,7 +191,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             poco.ID = Guid.NewGuid();
             var oObject = observerCache.GetObserver(poco) as ObjectObserver;
 
-            // Act:          
+            // Act:
             var request = new SetPropertyRequest()
             {
                 ObjectID = poco.ID,
@@ -216,8 +205,5 @@ namespace Envivo.Fresnel.Tests.Proxies
             // All of the text properties are bound to the same value:
             Assert.AreEqual(7, setResult.Modifications.PropertyChanges.Count());
         }
-
     }
-
 }
-

@@ -1,17 +1,10 @@
-﻿using NUnit.Framework;
-using Autofac;
+﻿using Autofac;
+using Envivo.Fresnel.Bootstrap;
+using Envivo.Fresnel.Core.Commands;
+using Envivo.Fresnel.Core.Observers;
+using NUnit.Framework;
 using System;
 using System.Linq;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel;
-using Envivo.Fresnel.Bootstrap;
-using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Assemblies;
-using System.Reflection;
-using System.Collections.Generic;
-using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.Core.Commands;
 
 namespace Envivo.Fresnel.Tests.Domain
 {
@@ -169,7 +162,6 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsFalse(oObject.ChangeTracker.HasDirtyObjectGraph);
         }
 
-
         [Test()]
         public void ShouldDetectChangesToLargeObjectGraph()
         {
@@ -204,9 +196,5 @@ namespace Envivo.Fresnel.Tests.Domain
             oCollection = (CollectionObserver)getCommand.Invoke(oProp);
             Assert.AreEqual(iterations, oCollection.GetItems().Cast<object>().Count());
         }
-
     }
-
-
 }
-

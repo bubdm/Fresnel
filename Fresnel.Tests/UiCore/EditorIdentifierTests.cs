@@ -1,31 +1,17 @@
-﻿using NUnit.Framework;
-using Autofac;
-using System;
-using System.Linq;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel;
+﻿using Autofac;
 using Envivo.Fresnel.Bootstrap;
 using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Assemblies;
-using System.Reflection;
-using System.Collections.Generic;
-
-
-using System.ComponentModel;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.UiCore.Controllers;
-using Envivo.Fresnel.UiCore;
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.UiCore.Types;
+using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.UiCore.Objects;
+using Envivo.Fresnel.UiCore.Types;
+using NUnit.Framework;
 
 namespace Envivo.Fresnel.Tests.Proxies
 {
     [TestFixture()]
     public class EditorIdentifierTests
     {
-
         [Test()]
         public void ShouldIdentifyTextValues()
         {
@@ -52,7 +38,6 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(InputControlTypes.TextArea, multiLineVM.Info.PreferredControl);
             Assert.AreEqual(InputControlTypes.Password, passwordVM.Info.PreferredControl);
         }
-
 
         [Test()]
         public void ShouldIdentifyEnumPropertyTypes()
@@ -108,6 +93,4 @@ namespace Envivo.Fresnel.Tests.Proxies
             }
         }
     }
-
 }
-

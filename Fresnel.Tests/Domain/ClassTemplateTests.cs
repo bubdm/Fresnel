@@ -1,16 +1,11 @@
-﻿using NUnit.Framework;
-using Autofac;
-using System;
-using System.Linq;
-using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel;
+﻿using Autofac;
 using Envivo.Fresnel.Bootstrap;
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.Introspection.Assemblies;
-using System.Reflection;
-using System.Collections.Generic;
 using Envivo.Fresnel.Introspection.Commands;
+using Envivo.Fresnel.Introspection.Templates;
+using NUnit.Framework;
+using System.Linq;
 
 namespace Envivo.Fresnel.Tests.Domain
 {
@@ -220,7 +215,5 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(newInstance.PocoObject);
             Assert.AreEqual("test", newInstance.Name);
         }
-
     }
 }
-
