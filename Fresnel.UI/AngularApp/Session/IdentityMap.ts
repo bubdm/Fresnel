@@ -87,12 +87,12 @@ module FresnelApp {
             }
         }
 
-        //mergeObjects(newObj: IObjectVM, existingObj: IObjectVM) {
-        //    for (var i = 0; i < existingObj.Properties.length; i++) {
-        //        // NB: Don't replace the prop object, otherwise the bindings will break:
-        //        existingObj.Properties[i].Value = newObj.Properties[i].Value;
-        //    }
-        //}
+        mergeObjects(existingObj: IObjectVM, newObj: IObjectVM) {
+            for (var i = 0; i < existingObj.Properties.length; i++) {
+                // NB: Don't replace the prop object, otherwise the bindings will break:
+                angular.extend(existingObj.Properties[i].State, newObj.Properties[i].State);
+            }
+        }
 
     }
 

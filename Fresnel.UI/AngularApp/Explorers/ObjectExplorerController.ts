@@ -69,7 +69,7 @@
                     var obj = promiseResult.data.ReturnValue;
                     var existingObj = appService.identityMap.getObject(obj.ID);
 
-                    angular.extend(existingObj, obj);
+                    appService.identityMap.mergeObjects(existingObj, obj);
                 });
             }
 
