@@ -1,9 +1,3 @@
-
-
-
-
-
-
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,7 +10,6 @@ namespace Envivo.Fresnel.Configuration
     /// <typeparam name="TClass">Specify any public class in the assembly being configured</typeparam>
     public abstract class AssemblyConfiguration<T> : IAssemblyConfiguration
     {
-
         public AssemblyConfiguration()
         {
             this.AssociatedAssemblies = new List<Assembly>();
@@ -79,7 +72,5 @@ namespace Envivo.Fresnel.Configuration
         /// A list of all Assemblies that this Configuration applies to
         /// </summary>
         public ICollection<Assembly> AssociatedAssemblies { get; private set; }
-
     }
-
 }

@@ -1,15 +1,12 @@
 using System;
 
-
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Attributes for a Property
     /// </summary>
 
     [Serializable()]
-
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
     public class PropertyAttribute : MemberAttribute
     {
@@ -40,7 +37,6 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         /// <value></value>
 
-
         public bool CanRead { get; set; }
 
         /// <summary>
@@ -48,7 +44,6 @@ namespace Envivo.Fresnel.Configuration
         /// This is usually used to override the scope of the associated Property.
         /// </summary>
         /// <value></value>
-
 
         public bool CanWrite { get; set; }
 
@@ -86,12 +81,9 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         public bool UseOptimisticLock { get; set; }
 
-
         /// <summary>
         /// The preferred control for viewing and editing the enum value
         /// </summary>
         public InputControlTypes PreferredInputControl { get; set; }
-
     }
-
 }

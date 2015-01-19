@@ -1,19 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Utils;
+using System;
+using System.Reflection;
 
 namespace Envivo.Fresnel.Configuration
 {
-
     public static class ConfigurationTypeExtensions
     {
-     
         //static private Type ApplicationConfigurationType = typeof(ApplicationConfiguration);
         static private Type AssemblyConfigurationType = typeof(AssemblyConfiguration<>);
+
         static private Type ClassConfigurationType = typeof(ClassConfiguration<>);
 
         ///// <summary>
@@ -91,6 +86,5 @@ namespace Envivo.Fresnel.Configuration
 
             return (tEnum != null);
         }
-                
     }
 }

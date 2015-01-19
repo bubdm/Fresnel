@@ -1,13 +1,11 @@
 using System;
 
-
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Attributes for a Domain Object constructor
     /// </summary>
-    
+
     [Serializable()]
     [AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Interface)]
     public class ObjectConstructorAttribute : BaseAttribute
@@ -23,10 +21,7 @@ namespace Envivo.Fresnel.Configuration
         /// Useful for preventing Domain Objects with default constructors from being created accidentally.
         /// </summary>
         /// <value></value>
-        
-        
+
         public bool CanCreate { get; set; }
-
     }
-
 }

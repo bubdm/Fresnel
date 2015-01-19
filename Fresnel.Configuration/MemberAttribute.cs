@@ -1,15 +1,12 @@
 using System;
 
-
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Attributes for a class Member
     /// </summary>
-    
-    [Serializable()]
 
+    [Serializable()]
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
     public class MemberAttribute : BaseAttribute
     {
@@ -32,5 +29,4 @@ namespace Envivo.Fresnel.Configuration
         /// <value></value>
         public bool RequiresConfirmation { get; set; }
     }
-
 }

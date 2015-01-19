@@ -1,15 +1,12 @@
 using System;
 
-
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Attributes for a DateTime Property
     /// </summary>
-    
+
     [Serializable()]
-    
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
     public class DateTimeAttribute : PropertyAttribute
     {
@@ -25,7 +22,5 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         /// <value></value>
         public string CustomFormat { get; set; }
-
     }
-
 }

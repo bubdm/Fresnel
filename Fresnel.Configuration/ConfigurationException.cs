@@ -10,12 +10,12 @@ namespace Envivo.Fresnel.Configuration
         {
         }
 
-        public  ConfigurationException(string message)
+        public ConfigurationException(string message)
             : base(message)
         {
         }
 
-        public  ConfigurationException(string message, Exception innerException)
+        public ConfigurationException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
@@ -24,7 +24,5 @@ namespace Envivo.Fresnel.Configuration
             : base(info, context)
         {
         }
-
     }
 }
-

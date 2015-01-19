@@ -1,19 +1,15 @@
 using System;
 
-
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Attributes for a Domain Object or List Property
     /// </summary>
-    
-    [Serializable()]
 
+    [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
     public class ObjectPropertyBaseAttribute : PropertyAttribute
     {
-
         private bool _IsShownInline;
 
         public ObjectPropertyBaseAttribute()
@@ -31,8 +27,7 @@ namespace Envivo.Fresnel.Configuration
         /// Use this to prevent objects being created in the wrong operational context.
         /// </summary>
         /// <value></value>
-        
-        
+
         public bool CanCreate { get; set; }
 
         /// <summary>
@@ -41,8 +36,7 @@ namespace Envivo.Fresnel.Configuration
         /// If set to FALSE, the object is Eager loaded.
         /// </summary>
         /// <value></value>
-        
-        
+
         public bool IsLazyLoaded { get; set; }
 
         /// <summary>
@@ -86,7 +80,5 @@ namespace Envivo.Fresnel.Configuration
                 }
             }
         }
-
     }
-
 }

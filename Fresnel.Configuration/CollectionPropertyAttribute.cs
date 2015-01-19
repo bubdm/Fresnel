@@ -1,14 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Attributes for a Collection Property
     /// </summary>
-    
+
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
     public class CollectionPropertyAttribute : ObjectPropertyBaseAttribute
@@ -32,8 +30,7 @@ namespace Envivo.Fresnel.Configuration
         /// The default relationship is "HasMany".
         /// </summary>
         /// <value></value>
-        
-        
+
         [XmlAttribute()]
         public ManyRelationship Relationship
         {
@@ -57,7 +54,6 @@ namespace Envivo.Fresnel.Configuration
                         this.CanAdd = false;
                         this.CanRemove = true;
                         break;
-
                 }
             }
         }
@@ -67,7 +63,7 @@ namespace Envivo.Fresnel.Configuration
         /// Use this to prevent Domain Objects being added in the wrong operational context.
         /// </summary>
         /// <value></value>
-        
+
         public bool CanAdd { get; set; }
 
         /// <summary>
@@ -75,7 +71,7 @@ namespace Envivo.Fresnel.Configuration
         /// Use this to prevent Domain Objects being removed in the wrong operational context.
         /// </summary>
         /// <value></value>
-        
+
         public bool CanRemove { get; set; }
 
         /// <summary>
@@ -88,7 +84,5 @@ namespace Envivo.Fresnel.Configuration
         /// Used in conjunction with IsShownInline.
         /// </summary>
         public string[] InlineColumnNames { get; set; }
-
     }
-
 }

@@ -1,9 +1,7 @@
 using System;
 
-
 namespace Envivo.Fresnel.Configuration
 {
-
     [Serializable()]
     public enum ManyRelationship
     {
@@ -11,16 +9,14 @@ namespace Envivo.Fresnel.Configuration
         /// The current Object is related to all of the Domain Objects within the List.
         /// The current Object can method the links to the Domain Objects within the List, but cannot destroy those Domain Objects.
         /// </summary>
-        
+
         HasMany,
 
         /// <summary>
         /// The current Object owns all of the Domain Objects within the List.
         /// The current Object can delete the Domain Objects within the List.
         /// </summary>
-        
+
         OwnsMany,
-
     }
-
 }

@@ -1,6 +1,5 @@
 using System;
 
-
 namespace Envivo.Fresnel.Configuration
 {
     [Serializable()]
@@ -26,5 +25,4 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         FolderBrowser
     }
-
 }

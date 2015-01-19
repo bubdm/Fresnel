@@ -1,15 +1,12 @@
 using System;
 
-
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Attributes for a Boolean Property
     /// </summary>
-    
+
     [Serializable()]
-    
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
     public class BooleanAttribute : PropertyAttribute
     {
@@ -33,7 +30,5 @@ namespace Envivo.Fresnel.Configuration
         /// <value></value>
         /// <remarks>This attribute can be used to provide clarity when rendering boolean values in the UI</remarks>
         public string FalseValue { get; set; }
-
     }
-
 }

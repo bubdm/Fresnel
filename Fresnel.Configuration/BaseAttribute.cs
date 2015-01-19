@@ -1,13 +1,11 @@
 using System;
-using System.ComponentModel;
 
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// The base class to build concrete Attribute classes
     /// </summary>
-    
+
     [Serializable]
     [AttributeUsage(AttributeTargets.All)]
     public abstract class BaseAttribute : System.Attribute
@@ -22,7 +20,7 @@ namespace Envivo.Fresnel.Configuration
         /// Determines if the associated element should be made visible to the user
         /// </summary>
         /// <value></value>
-        
+
         public bool IsVisible { get; set; }
 
         /// <summary>
@@ -34,7 +32,5 @@ namespace Envivo.Fresnel.Configuration
         /// Determines if the Attribute values were provided by the consumer (i.e. we're NOT using default values)
         /// </summary>
         public bool IsConfiguredAtRunTime { get; set; }
-
     }
-
 }

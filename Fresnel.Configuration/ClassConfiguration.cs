@@ -1,9 +1,6 @@
+using Envivo.Fresnel.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
-
-using System;
-using System.Linq.Expressions;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Configuration
 {
@@ -47,7 +44,6 @@ namespace Envivo.Fresnel.Configuration
         [Browsable(false)]
         public IDictionary<string, PropertyAttribute> ParameterConfigurations { get; private set; }
 
-
         [Browsable(false)]
         public IEnumerable<PermissionsAttribute> ClassPermissions
         {
@@ -65,7 +61,6 @@ namespace Envivo.Fresnel.Configuration
 
         [Browsable(false)]
         public IDictionary<string, List<PermissionsAttribute>> ParameterPermissions { get; private set; }
-
 
         /// <summary>
         /// The class being configured. Use this for identifying class members using LINQ/Lambda expressions.
@@ -222,7 +217,5 @@ namespace Envivo.Fresnel.Configuration
             }
             permissionsList.Add(parameterPermissions);
         }
-
     }
-
 }

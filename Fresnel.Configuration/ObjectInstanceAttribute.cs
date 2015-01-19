@@ -1,16 +1,14 @@
+using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
-using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Attributes for a Domain Object Class
     /// </summary>
-    
-    [Serializable()]
 
+    [Serializable()]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public class ObjectInstanceAttribute : BaseAttribute
     {
@@ -44,20 +42,20 @@ namespace Envivo.Fresnel.Configuration
             // Note that the list also contains members from the Object:
             var memberNamesToHide = new List<string>();
             memberNamesToHide.AddRange(new string[]
-                { "Audit", "DependencyLocator", "IsValid", "IsConsistent", 
-                    "InnerList", "Load", "Save", "Lock", "Unlock", "Delete" 
+                { "Audit", "DependencyLocator", "IsValid", "IsConsistent",
+                    "InnerList", "Load", "Save", "Lock", "Unlock", "Delete"
                 });
 
             memberNamesToHide.AddRange(new string[]
-                { "Equals", "ToString", "GetType", "GetHashCode", "Dispose", "Finalize", "Error" 
+                { "Equals", "ToString", "GetType", "GetHashCode", "Dispose", "Finalize", "Error"
                 });
 
             memberNamesToHide.AddRange(new string[]
                 { "Add", "Remove", "Contains", "Clear", "Count", "GetEnumerator", "CopyTo", "Comparer",
                     "Keys", "Values", "ContainsKey", "ContainsValue",
-                    "GetObjectData", "OnDeserialization", "TryGetValue", 
+                    "GetObjectData", "OnDeserialization", "TryGetValue",
                     "AddRange", "AsReadOnly", "BinarySearch", "ConvertAll", "Exists", "Find",
-                    "FindAll", "FindIndex", "FindLast", "FindLastIndex", "ForEach", "GetRange", 
+                    "FindAll", "FindIndex", "FindLast", "FindLastIndex", "ForEach", "GetRange",
                     "IndexOf", "Insert", "InsertRange", "IsReadOnly", "LastIndexOf", "List",
                     "RemoveAll", "RemoveAt", "RemoveRange", "Reverse", "Sort",
                     "ToArray", "TrimExcess", "TrueForAll", "Capacity",
@@ -85,17 +83,14 @@ namespace Envivo.Fresnel.Configuration
         /// Determines if the object can be created by the end user
         /// </summary>
         /// <value></value>
-        
-        
-        public bool IsCreatable { get; set; }
 
+        public bool IsCreatable { get; set; }
 
         /// <summary>
         /// Determines if the object can be persisted
         /// </summary>
         /// <value></value>
-        
-        
+
         public bool IsPersistable { get; set; }
 
         /// <summary>
@@ -104,8 +99,7 @@ namespace Envivo.Fresnel.Configuration
         /// If set to FALSE, all Object/list properties are Eager loaded.
         /// </summary>
         /// <value></value>
-        
-        
+
         public bool IsLazyLoaded { get; set; }
 
         /// <summary>
@@ -113,16 +107,14 @@ namespace Envivo.Fresnel.Configuration
         /// Use this with objects that are highly requested and are immutable.
         /// </summary>
         /// <value></value>
-        
-        
+
         public bool IsStaticData { get; set; }
 
         /// <summary>
         /// Determines whether persistant Object's can be modified
         /// </summary>
         /// <value></value>
-        
-        
+
         public bool IsImmutable { get; set; }
 
         /// <summary>
@@ -130,15 +122,13 @@ namespace Envivo.Fresnel.Configuration
         /// Set this attribute to FALSE if the Object accesses a resource that is not thread safe (e.g. Windows controls).
         /// </summary>
         /// <value></value>
-        
-        
+
         public bool IsThreadSafe { get; set; }
 
         /// <summary>
         /// Determines whether the user can elect to lock the object prior to editing it
         /// </summary>
         /// <value></value>
-
 
         public bool AllowPessimisticLocking { get; set; }
 
@@ -147,30 +137,27 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         /// <value></value>
 
-
         public bool ForcePessimisticLocking { get; set; }
 
         /// <summary>
         /// A list of Member names in the order that should be displayed to the end user
         /// </summary>
         /// <value></value>
-        
-        
+
         public string[] MemberDisplayOrder { get; set; }
 
         /// <summary>
         /// A list of Category names in the order that should be displayed to the end user
         /// </summary>
         /// <value></value>
-        
-        
+
         public string[] CategoryDisplayOrder { get; set; }
 
         /// <summary>
         /// A list of Member names that should not be displayed to the end user
         /// </summary>
         /// <value></value>
-        
+
         public string[] HiddenMembers
         {
             get { return _HiddenMemberNames.ToArray(); }
@@ -215,7 +202,6 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         public bool HideAllProperties { get; set; }
 
-
         /// <summary>
         /// Determines whether all Methods are hidden from the end user
         /// </summary>
@@ -235,7 +221,6 @@ namespace Envivo.Fresnel.Configuration
             }
         }
 
-
         /// <summary>
         /// The name of the property that stores the Domain Object's Version.  The Domain Object's property must be int64.
         /// </summary>
@@ -249,7 +234,5 @@ namespace Envivo.Fresnel.Configuration
                 _HiddenMemberNamesMap[_VersionPropertyName.ToLower()] = _VersionPropertyName;
             }
         }
-
     }
-
 }

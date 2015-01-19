@@ -2,11 +2,10 @@ using System;
 
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Attributes for providing static Authorisation
     /// </summary>
-    
+
     [Serializable()]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Enum | AttributeTargets.Struct |
         AttributeTargets.Constructor | AttributeTargets.Method |
@@ -30,7 +29,6 @@ namespace Envivo.Fresnel.Configuration
         public Allow AllowedOperations { get; set; }
     }
 
-    
     [Serializable]
     [Flags]
     public enum Allow
@@ -75,5 +73,4 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         All = 255
     }
-
 }

@@ -1,15 +1,12 @@
 using System;
 
-
 namespace Envivo.Fresnel.Configuration
 {
-
     /// <summary>
     /// Attributes for a Text (i.e. String) Property
     /// </summary>
-    
-    [Serializable()]
 
+    [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
     public class TextAttribute : StringAttribute
     {
@@ -24,7 +21,5 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         /// <value></value>
         public string EditMask { get; set; }
-
     }
-
 }
