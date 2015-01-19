@@ -1,7 +1,7 @@
-﻿using Envivo.Fresnel.UiCore.Types;
+﻿using Envivo.Fresnel.UiCore.TypeInfo;
 using System;
 
-namespace Envivo.Fresnel.UiCore.Objects
+namespace Envivo.Fresnel.UiCore.Model
 {
     public class PropertyVM : BaseViewModel
     {

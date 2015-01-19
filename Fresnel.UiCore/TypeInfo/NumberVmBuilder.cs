@@ -1,9 +1,10 @@
 ﻿using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection.Templates;
-using Envivo.Fresnel.UiCore.Objects;
+using Envivo.Fresnel.UiCore.Model;
+
 using System;
 
-namespace Envivo.Fresnel.UiCore.Types
+namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class NumberVmBuilder : IPropertyVmBuilder
     {

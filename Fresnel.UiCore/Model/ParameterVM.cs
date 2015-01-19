@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Envivo.Fresnel.UiCore.Objects
+namespace Envivo.Fresnel.UiCore.Model
 {
     public class ParameterVM : BaseViewModel
     {

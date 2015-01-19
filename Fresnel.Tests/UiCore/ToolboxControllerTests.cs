@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Envivo.Fresnel.Bootstrap;
 using Envivo.Fresnel.UiCore.Controllers;
-using Envivo.Fresnel.UiCore.Objects;
+using Envivo.Fresnel.UiCore.Model;
 using NUnit.Framework;
 using System.Linq;
 

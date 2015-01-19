@@ -1,4 +1,5 @@
-﻿using Envivo.Fresnel.UiCore.Objects;
+﻿using Envivo.Fresnel.UiCore.Model;
+
 using System.Collections.Generic;
 
 namespace Envivo.Fresnel.UiCore.Changes

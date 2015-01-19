@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Envivo.Fresnel.UiCore.Objects
+namespace Envivo.Fresnel.UiCore.Model
 {
     public class ObjectVM : BaseViewModel
     {

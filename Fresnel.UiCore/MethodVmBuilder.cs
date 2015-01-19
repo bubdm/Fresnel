@@ -1,8 +1,9 @@
 ﻿using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Permissions;
+using Envivo.Fresnel.UiCore.Model;
 
-namespace Envivo.Fresnel.UiCore.Objects
+namespace Envivo.Fresnel.UiCore
 {
     public class MethodVmBuilder
     {

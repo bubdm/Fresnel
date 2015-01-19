@@ -1,11 +1,13 @@
 ﻿using Envivo.Fresnel.Configuration;
 
-namespace Envivo.Fresnel.UiCore.Types
+namespace Envivo.Fresnel.UiCore.TypeInfo
 {
-    public class NullVM : ITypeInfo
+    public class DateTimeVM : ITypeInfo
     {
         public string Name { get; set; }
 
         public InputControlTypes PreferredControl { get; set; }
+
+        public string CustomFormat { get; set; }
     }
 }

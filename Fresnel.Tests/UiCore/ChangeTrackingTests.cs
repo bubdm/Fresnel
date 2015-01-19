@@ -4,7 +4,7 @@ using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
-using Envivo.Fresnel.UiCore.Objects;
+using Envivo.Fresnel.UiCore.Model;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

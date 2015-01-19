@@ -1,10 +1,11 @@
 ﻿using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.UiCore.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Envivo.Fresnel.UiCore.Objects
+namespace Envivo.Fresnel.UiCore
 {
     public class AbstractObjectVMBuilder
     {

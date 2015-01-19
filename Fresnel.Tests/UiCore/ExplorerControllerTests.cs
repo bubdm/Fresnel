@@ -5,7 +5,8 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
-using Envivo.Fresnel.UiCore.Objects;
+using Envivo.Fresnel.UiCore.Model;
+
 using NUnit.Framework;
 using System;
 using System.Linq;

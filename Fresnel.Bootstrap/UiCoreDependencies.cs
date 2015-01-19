@@ -37,13 +37,13 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Classes.ClassItemBuilder),
                 typeof(Fresnel.UiCore.Classes.NamespacesBuilder),
 
-                typeof(Fresnel.UiCore.Types.BooleanVmBuilder),
-                typeof(Fresnel.UiCore.Types.DateTimeVmBuilder),
-                typeof(Fresnel.UiCore.Types.EnumVmBuilder),
-                typeof(Fresnel.UiCore.Types.NumberVmBuilder),
-                typeof(Fresnel.UiCore.Types.StringVmBuilder),
-                typeof(Fresnel.UiCore.Types.ObjectSelectionVmBuilder),
-                typeof(Fresnel.UiCore.Types.UnknownVmBuilder),
+                typeof(Fresnel.UiCore.TypeInfo.BooleanVmBuilder),
+                typeof(Fresnel.UiCore.TypeInfo.DateTimeVmBuilder),
+                typeof(Fresnel.UiCore.TypeInfo.EnumVmBuilder),
+                typeof(Fresnel.UiCore.TypeInfo.NumberVmBuilder),
+                typeof(Fresnel.UiCore.TypeInfo.StringVmBuilder),
+                typeof(Fresnel.UiCore.TypeInfo.ObjectSelectionVmBuilder),
+                typeof(Fresnel.UiCore.TypeInfo.UnknownVmBuilder),
 
                 typeof(Fresnel.UiCore.SessionVmBuilder),
             };
@@ -57,9 +57,9 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Controllers.SessionController),
                 typeof(Fresnel.UiCore.Controllers.TestController),
 
-                typeof(Fresnel.UiCore.Objects.AbstractObjectVMBuilder),
-                typeof(Fresnel.UiCore.Objects.AbstractPropertyVmBuilder),
-                typeof(Fresnel.UiCore.Objects.MethodVmBuilder),
+                typeof(Fresnel.UiCore.AbstractObjectVMBuilder),
+                typeof(Fresnel.UiCore.AbstractPropertyVmBuilder),
+                typeof(Fresnel.UiCore.MethodVmBuilder),
             };
         }
     }

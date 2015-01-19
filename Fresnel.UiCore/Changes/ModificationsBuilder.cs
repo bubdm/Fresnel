@@ -1,6 +1,6 @@
 ﻿using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.UiCore.Objects;
+
 using System.Collections.Generic;
 using System.Linq;
 

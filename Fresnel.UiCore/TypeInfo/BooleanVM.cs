@@ -1,6 +1,6 @@
 ﻿using Envivo.Fresnel.Configuration;
 
-namespace Envivo.Fresnel.UiCore.Types
+namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class BooleanVM : ITypeInfo
     {

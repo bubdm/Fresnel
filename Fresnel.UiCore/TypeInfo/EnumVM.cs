@@ -1,7 +1,7 @@
 ﻿using Envivo.Fresnel.Configuration;
 using System.Collections.Generic;
 
-namespace Envivo.Fresnel.UiCore.Types
+namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class EnumVM : ITypeInfo
     {
