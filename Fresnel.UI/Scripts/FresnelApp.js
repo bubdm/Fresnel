@@ -216,7 +216,7 @@ var FresnelApp;
                 });
             };
             $scope.gridsterOptions = {
-                columns: 12,
+                columns: 24,
                 pushing: true,
                 floating: true,
                 swapping: false,
@@ -231,11 +231,11 @@ var FresnelApp;
                 minColumns: 1,
                 minRows: 2,
                 maxRows: 100,
-                defaultSizeX: 4,
-                defaultSizeY: 3,
-                minSizeX: 4,
+                defaultSizeX: 8,
+                defaultSizeY: 6,
+                minSizeX: 6,
                 maxSizeX: null,
-                minSizeY: 3,
+                minSizeY: 4,
                 maxSizeY: null,
                 resizable: {
                     enabled: true,
@@ -275,8 +275,9 @@ var FresnelApp;
                     var explorer = scope.explorer;
                     var id = "explorer_" + explorer.__meta.ID;
                     var content = angular.element(document.getElementById(id));
-                    var rowHeightPx = 100; // Hand tuned, based on gridsterOptions.columns
-                    explorer.RowHeight = Math.round(content.height() / rowHeightPx);
+                    // Hand tuned, based on gridsterOptions.columns:
+                    var rowHeightPx = 68;
+                    explorer.RowHeight = Math.round(content.height() / rowHeightPx) + 1;
                 }, 0);
             }
         };
