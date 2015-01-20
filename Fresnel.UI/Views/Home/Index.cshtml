@@ -33,7 +33,7 @@
 
     <script src="~/Scripts/smart-table/smart-table.min.js"></script>
 
-    <script src="~/Scripts/bootstrap.min.js"></script>    
+    <script src="~/Scripts/bootstrap.min.js"></script>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Content/ionicons.min.css" rel="stylesheet" type="text/css" />
@@ -131,18 +131,18 @@
             <section class="content workbenchContainer">
 
                 <div ng-controller="objectExplorerController">
-                    <div gridster="gridsterOptions">
-                        <div gridster-item ng-repeat="explorer in visibleExplorers">
+                    <ul gridster="gridsterOptions" class="gridster-content">
+                        <li gridster-item gridster-auto-rowheight size-y="explorer.RowHeight" class="gridster-item explorerPanel" ng-repeat="explorer in visibleExplorers">
                             <div ng-switch="explorer.__meta.IsCollection">
                                 <div ng-switch-when="true">
                                     <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'"></div>
                                 </div>
                                 <div ng-switch-default>
-                                    <div ng-include="'/Templates/objectExplorer.html'"></div>
+                                    <div ng-include="'/Templates/objectExplorer.html'" gridster-auto-rowheight></div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
                 </div>
 
             </section><!-- /.content -->

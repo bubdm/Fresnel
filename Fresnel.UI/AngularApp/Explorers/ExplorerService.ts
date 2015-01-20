@@ -15,8 +15,6 @@
 
         addExplorer(obj: IObjectVM): Explorer {
             var explorer = new Explorer();
-            explorer.ColWidth = 2;
-            explorer.RowHeight = 2;
             explorer.__meta = obj;
             this.CheckForCustomTemplate(explorer);
 

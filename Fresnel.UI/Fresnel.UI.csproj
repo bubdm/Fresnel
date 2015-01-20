@@ -1037,6 +1037,7 @@
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerService.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\CollectionExplorerController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ObjectExplorerController.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\GridsterAutoRowHeightDirective.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ObjectExplorerDirective.ts" />
     <TypeScriptCompile Include="AngularApp\Classes.ts" />
     <TypeScriptCompile Include="AngularApp\FresnelService.ts" />

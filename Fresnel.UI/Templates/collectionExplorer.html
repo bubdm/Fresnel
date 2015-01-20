@@ -1,6 +1,6 @@
 ﻿<ng-form name="explorerForm" role="form" class="" ng-init="oObj = explorer.__meta">
 
-    <div id="collectionExplorer_{{oCol.ID}}" ng-init="oCol = explorer.__meta" object-explorer block-ui class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
+    <div id="explorer_{{oCol.ID}}" ng-init="oCol = explorer.__meta" object-explorer block-ui class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
 
         <div class="box-header">
             <span class="explorerItemIcon fa fa-folder-open-o"> </span>

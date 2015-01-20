@@ -7,8 +7,6 @@ var FresnelApp;
         }
         ExplorerService.prototype.addExplorer = function (obj) {
             var explorer = new FresnelApp.Explorer();
-            explorer.ColWidth = 2;
-            explorer.RowHeight = 2;
             explorer.__meta = obj;
             this.CheckForCustomTemplate(explorer);
             this.attachMembers(explorer);
@@ -234,18 +232,30 @@ var FresnelApp;
                 minRows: 2,
                 maxRows: 100,
                 defaultSizeX: 4,
-                defaultSizeY: 1,
+                defaultSizeY: 3,
                 minSizeX: 4,
                 maxSizeX: null,
-                minSizeY: 1,
+                minSizeY: 3,
                 maxSizeY: null,
                 resizable: {
                     enabled: true,
-                    handles: ['s', 'se', 'e'] // ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw']
+                    handles: ['s', 'se', 'e'],
+                    start: function (event, uiWidget, $element) {
+                    },
+                    resize: function (event, uiWidget, $element) {
+                    },
+                    stop: function (event, uiWidget, $element) {
+                    } // optional callback fired when item is finished resizing
                 },
                 draggable: {
                     enabled: true,
                     handle: '.dragHandle',
+                    start: function (event, uiWidget, $element) {
+                    },
+                    drag: function (event, uiWidget, $element) {
+                    },
+                    stop: function (event, uiWidget, $element) {
+                    } // optional callback fired when item is finished dragging
                 }
             };
         }
@@ -256,14 +266,33 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
+    function GridsterAutoRowHeightDirective($timeout) {
+        return {
+            link: function (scope, elem, attributes) {
+                // We're using a delay so that the element is rendered before we inspect it:
+                // See http://stackoverflow.com/a/20156250/80369
+                $timeout(function () {
+                    var explorer = scope.explorer;
+                    var id = "explorer_" + explorer.__meta.ID;
+                    var content = angular.element(document.getElementById(id));
+                    var rowHeightPx = 100; // Hand tuned, based on gridsterOptions.columns
+                    explorer.RowHeight = Math.round(content.height() / rowHeightPx);
+                }, 0);
+            }
+        };
+    }
+    FresnelApp.GridsterAutoRowHeightDirective = GridsterAutoRowHeightDirective;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     // Used to ensure the Toolbox allows interaction with the Class nodes
     function ObjectExplorerDirective() {
         return {
             link: function (scope, elem, attributes) {
-                scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
-                    ////bootstrap WYSIHTML5 - text editor
-                    //$(".textarea").wysihtml5();
-                });
+                //scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
+                //    ////bootstrap WYSIHTML5 - text editor
+                //    //$(".textarea").wysihtml5();
+                //})
             }
         };
     }
@@ -551,7 +580,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var requires = ['blockUI', 'gridster', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table'];
-    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
+    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("gridsterAutoRowheight", FresnelApp.GridsterAutoRowHeightDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);
             return responseData;

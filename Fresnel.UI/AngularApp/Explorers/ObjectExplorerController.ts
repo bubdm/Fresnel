@@ -145,18 +145,24 @@
                 minRows: 2, // the minimum height of the grid, in rows
                 maxRows: 100,
                 defaultSizeX: 4, // the default width of a gridster item, if not specifed
-                defaultSizeY: 1, // the default height of a gridster item, if not specified
+                defaultSizeY: 3, // the default height of a gridster item, if not specified
                 minSizeX: 4, // minimum column width of an item
                 maxSizeX: null, // maximum column width of an item
-                minSizeY: 1, // minumum row height of an item
+                minSizeY: 3, // minumum row height of an item
                 maxSizeY: null, // maximum row height of an item
                 resizable: {
                     enabled: true,
-                    handles: ['s', 'se', 'e'] // ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw']
+                    handles: ['s', 'se', 'e'], // ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw']
+                    start: function (event, uiWidget, $element) { }, // optional callback fired when resize is started,
+                    resize: function (event, uiWidget, $element) { }, // optional callback fired when item is resized,
+                    stop: function (event, uiWidget, $element) { } // optional callback fired when item is finished resizing
                 },
                 draggable: {
                     enabled: true, // whether dragging items is supported
                     handle: '.dragHandle', // optional selector for resize handle
+                    start: function (event, uiWidget, $element) { }, // optional callback fired when drag is started,
+                    drag: function (event, uiWidget, $element) { }, // optional callback fired when item is moved,
+                    stop: function (event, uiWidget, $element) { } // optional callback fired when item is finished dragging
                 }
             };
 

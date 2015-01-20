@@ -14,6 +14,7 @@
         .controller("collectionExplorerController", FresnelApp.CollectionExplorerController)
         .directive("classLibrary", FresnelApp.ClassLibaryDirective)
         .directive("objectExplorer", FresnelApp.ObjectExplorerDirective)
+        .directive("gridsterAutoRowheight", FresnelApp.GridsterAutoRowHeightDirective)
         .directive("aDisabled", FresnelApp.DisableAnchorDirective)
         .config(["$httpProvider", function ($httpProvider) {
             $httpProvider.defaults.transformResponse.push(function (responseData) {

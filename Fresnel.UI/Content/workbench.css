@@ -22,14 +22,13 @@ a.disabled {
 .explorerPanel {
     padding: 0px !important;
     background-color: #BBBBBB;
-    /*margin: 4px !important;*/
-    /*min-height: 300px;*/
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .objectExplorerPanelBody {
     overflow-x: hidden;
     overflow-y: auto;
-    /*max-height: 768px;*/
 }
 
 .collectionExplorerPanelBody {
