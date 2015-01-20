@@ -1,6 +1,6 @@
 ﻿module FresnelApp {
 
-    var requires = ['blockUI',
+    var requires = ['blockUI', 'gridster',
         'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate',
         'smart-table'];
 
