@@ -3,7 +3,7 @@
             class="btn btn-default"
             ng-show="prop.IsCollection"
             ng-click="openNewExplorer(prop)"
-            tooltip="Open contents in a new panel">
+            title="Open contents in a new panel">
         <i class="fa fa-ellipsis-h"></i>
     </button>
 
@@ -11,7 +11,7 @@
             class="btn btn-default"
             ng-show="prop.IsCollection && prop.State.Create.IsEnabled"
             ng-click="addNewItem(prop)"
-            tooltip="Add a new item">
+            title="Create a new item">
         <i class="fa fa-plus"></i>
     </button>
 
@@ -19,7 +19,7 @@
             class="btn btn-default"
             ng-show="prop.IsCollection && prop.State.Add.IsEnabled"
             ng-click="addItem(prop)"
-            tooltip="Add another item">
+            title="Add an existing item">
         <i class="fa fa-plus"></i>
     </button>
 

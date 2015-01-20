@@ -1,0 +1,103 @@
+﻿<div class="form-group form-horizontal propertyItem" ng-show="prop.IsVisible">
+    <div ng-class="{'row' : true }">
+        <div class="col-sm-1 control-label propertyItemIcon {{prop.State.ValueType}}Icon">
+        </div>
+        <label class="col-sm-4 control-label" draggable="true">
+            {{ prop.Name }}
+        </label>
+
+        <div ng-switch="prop.Info.Name" class="col-sm-7">
+            <div ng-switch-when="boolean">
+                <div ng-switch="prop.Info.PreferredControl">
+                    <div ng-switch-when="Checkbox">
+                        <div ng-include="''"></div>
+                    </div>
+                    <div ng-switch-default>
+                        <div ng-include="'/Templates/Editors/booleanRadioEditor.html'"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-switch-when="datetime">
+                <div ng-switch="prop.Info.PreferredControl">
+                    <div ng-switch-when="Date">
+                        <div ng-include="'/Templates/Editors/dateEditor.html'"></div>
+                    </div>
+                    <div ng-switch-when="Time">
+                        <div ng-include="'/Templates/Editors/timeEditor.html'"></div>
+                    </div>
+                    <div ng-switch-default>
+                        <div ng-include="'/Templates/Editors/dateTimeEditor.html'"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-switch-when="enum">
+                <div ng-switch="prop.Info.PreferredControl">
+                    <div ng-switch-when="Checkbox">
+                        <div ng-if="prop.Info.IsBitwiseEnum">
+                            <div ng-include="'/Templates/Editors/enumBitwiseCheckboxEditor.html'"></div>
+                        </div>
+                        <div ng-if="!prop.Info.IsBitwiseEnum">
+                            <div ng-include="'/Templates/Editors/enumCheckboxEditor.html'"></div>
+                        </div>
+                    </div>
+                    <div ng-switch-when="Radio">
+                        <div ng-include="'/Templates/Editors/enumRadioEditor.html'"></div>
+                    </div>
+                    <div ng-switch-default>
+                        <div ng-include="'/Templates/Editors/enumSelectEditor.html'"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-switch-when="number">
+                <div ng-switch="prop.Info.PreferredControl">
+                    <div ng-switch-when="Currency">
+                        <div ng-include="''"></div>
+                    </div>
+                    <div ng-switch-default>
+                        <div ng-include="'/Templates/Editors/numberEditor.html'"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-switch-when="string">
+                <div ng-switch="prop.Info.PreferredControl">
+                    <div ng-switch-when="Password">
+                        <div ng-include="'/Templates/Editors/passwordEditor.html'"></div>
+                    </div>
+                    <div ng-switch-when="TextArea">
+                        <div ng-include="'/Templates/Editors/textAreaEditor.html'"></div>
+                    </div>
+                    <div ng-switch-when="RichTextArea">
+                        <div ng-include="'/Templates/Editors/richTextEditor.html'"></div>
+                    </div>
+                    <div ng-switch-default>
+                        <div ng-include="'/Templates/Editors/stringEditor.html'"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-switch-default>
+                <div ng-switch="prop.IsCollection">
+                    <div ng-switch-when="true">
+                        <div ng-include="'/Templates/Editors/collectionInteractions.html'"></div>
+                    </div>
+                    <div ng-switch-when="false">
+                        <div ng-include="'/Templates/Editors/objectInteractions.html'"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="prop.State.Get.Error" class="alert-danger">
+                {{ prop.State.Get.Error }}
+            </div>
+
+            <span class="help-block propertyDescription">
+                {{ prop.Description }}
+            </span>
+        </div>
+    </div>
+
+</div>

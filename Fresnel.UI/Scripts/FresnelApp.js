@@ -218,9 +218,9 @@ var FresnelApp;
                 });
             };
             $scope.gridsterOptions = {
-                columns: 6,
+                columns: 12,
                 pushing: true,
-                floating: false,
+                floating: true,
                 swapping: false,
                 width: 'auto',
                 colWidth: 'auto',
@@ -233,11 +233,11 @@ var FresnelApp;
                 minColumns: 1,
                 minRows: 2,
                 maxRows: 100,
-                defaultSizeX: 2,
+                defaultSizeX: 4,
                 defaultSizeY: 1,
-                minSizeX: 2,
+                minSizeX: 4,
                 maxSizeX: null,
-                minSizeY: 2,
+                minSizeY: 1,
                 maxSizeY: null,
                 resizable: {
                     enabled: true,

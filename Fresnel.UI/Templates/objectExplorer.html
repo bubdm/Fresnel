@@ -1,11 +1,11 @@
-﻿<ng-form name="explorerForm" role="form" class="">
+﻿<ng-form name="explorerForm" role="form" class="" ng-init="oObj = explorer.__meta">
 
-    <div id="objectExplorer_{{explorer.__meta.ID}}" object-explorer block-ui class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
+    <div id="objectExplorer_{{oObj.ID}}" object-explorer block-ui class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
 
         <div class="box-header">
-            <span class="explorerItemIcon {{explorer.__meta.Type}}Icon"> </span>
+            <span class="explorerItemIcon {{oObj.Type}}Icon"> </span>
             <span class="box-title">
-                {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
+                {{ oObj.OuterProperty.Name ? oObj.OuterProperty.Name : oObj.Name }}
             </span>
 
             <div ng-include="'/Templates/explorerToolbar.html'"></div>
@@ -20,8 +20,7 @@
             <!-- Default view -->
             <div class="box-body">
                 <div class="propertyItems">
-                    <div ng-repeat='prop in explorer.__meta.Properties' ng-include="'/Templates/propertyItem.html'">
-                    </div>
+                    <div ng-repeat='prop in oObj.Properties' ng-include="'/Templates/objectExplorerPropertyItem.html'"></div>
                 </div>
             </div>
         </div>

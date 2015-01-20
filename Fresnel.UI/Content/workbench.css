@@ -10,6 +10,7 @@ a.disabled {
 }
 
 .workbenchContainer {
+    background-color: #DDDDDD;
     width: 100%;
 }
 
@@ -20,6 +21,7 @@ a.disabled {
 
 .explorerPanel {
     padding: 0px !important;
+    background-color: #BBBBBB;
     /*margin: 4px !important;*/
     /*min-height: 300px;*/
 }
@@ -53,6 +55,10 @@ a.disabled {
     margin: 2px;
 }
 
+.collectionPropertyCellItem {
+    border: 0px;
+}
+
 .propertyDescription {
     font-size: smaller;
 }
@@ -67,4 +73,3 @@ a.disabled {
 .fullWidth {
     width: 100%;
 }
-

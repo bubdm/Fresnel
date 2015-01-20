@@ -1,12 +1,12 @@
-﻿<ng-form name="explorerForm" role="form" class="">
+﻿<ng-form name="explorerForm" role="form" class="" ng-init="oObj = explorer.__meta">
 
-    <div id="collectionExplorer_{{explorer.__meta.ID}}" object-explorer block-ui class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
+    <div id="collectionExplorer_{{oCol.ID}}" ng-init="oCol = explorer.__meta" object-explorer block-ui class="container-fluid col-sm-4 box box-solid box-primary explorerPanel" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
 
         <div class="box-header">
             <span class="explorerItemIcon fa fa-folder-open-o"> </span>
             <span class="box-title">
-                {{ explorer.__meta.OuterProperty.Name ? explorer.__meta.OuterProperty.Name : explorer.__meta.Name }}
-                <span ng-show="explorer.__meta.IsCollection">({{ explorer.__meta.Items.length }})</span>
+                {{ oCol.OuterProperty.Name ? oCol.OuterProperty.Name : oCol.Name }}
+                <span ng-show="oCol.IsCollection">({{ oCol.Items.length }})</span>
             </span>
 
             <div ng-include="'/Templates/explorerToolbar.html'"></div>
@@ -19,24 +19,39 @@
 
         <div ng-if="explorer.CustomTemplateUrl == null" class="collectionExplorerPanelBody">
             <!-- NB: Use st-safe-src to ensure collection is watched -->
-            <table id="collectionGrid_{{explorer.__meta.ID}}" st-table="explorer.__meta.DisplayItems" st-safe-src="explorer.__meta.Items" class="table table-striped">
+            <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" class="table table-striped">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th ng-repeat="prop in explorer.__meta.ElementProperties">{{prop.Name}}</th>
+                        <th st-ratio="1">&nbsp;</th> <!--Icon-->
+                        <th st-ratio="20" ng-repeat="prop in oCol.ElementProperties">{{prop.Name}}</th>
+                        <th st-ratio="1">&nbsp;</th> <!--Remove-->
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in explorer.__meta.Items track by $index">
-                        <td><span class="{{item.Type}}Icon"> </span></td>
-                        <td ng-repeat="prop in explorer.__meta.ElementProperties">{{item.Properties[prop.Index].State.Value}}</td>
+                    <tr ng-repeat="item in oCol.Items track by $index">
+                        <td st-ratio="1">
+                            <span class="{{item.Type}}Icon"></span>
+                            <button ng-click="openNewExplorerForObject(item)"
+                                    title="Open contents in a new panel">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </button>
+                        </td>
+                        <td st-ratio="20" ng-repeat="elementProp in oCol.ElementProperties" ng-init="prop = item.Properties[elementProp.Index]">
+                            {{prop.State.Value}}
+                        </td>
+                        <td st-ratio="1">
+                            <button ng-click="removeItem(item)"
+                                    title="Remove this item">
+                                <i class="fa fa-remove alert-danger"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
         <div class="box-tools">
-            <button class=" btn btn-sm" ng-click="addNewItem(explorer.__meta.ElementType)" title="Add a new item to this list">
+            <button class=" btn btn-sm" ng-click="addNewItem(oCol.ElementType)" title="Add a new item to this list">
                 <i class="fa fa-plus"></i> Add...
             </button>
         </div>
