@@ -218,13 +218,34 @@ var FresnelApp;
                 });
             };
             $scope.gridsterOptions = {
-                columns: 10,
+                columns: 6,
+                pushing: true,
+                floating: false,
+                swapping: false,
+                width: 'auto',
+                colWidth: 'auto',
+                rowHeight: 'match',
+                margins: [10, 10],
+                outerMargin: true,
+                isMobile: false,
+                mobileBreakPoint: 600,
+                mobileModeEnabled: true,
+                minColumns: 1,
+                minRows: 2,
+                maxRows: 100,
+                defaultSizeX: 2,
+                defaultSizeY: 1,
+                minSizeX: 2,
+                maxSizeX: null,
+                minSizeY: 2,
+                maxSizeY: null,
                 resizable: {
                     enabled: true,
-                    handles: ['se']
+                    handles: ['s', 'se', 'e'] // ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw']
                 },
                 draggable: {
-                    enabled: true
+                    enabled: true,
+                    handle: '.dragHandle',
                 }
             };
         }
@@ -446,7 +467,7 @@ var FresnelApp;
                 }
                 else {
                     // Merge the objects:
-                    angular.extend(existingItem, item);
+                    this.extendDeep(existingItem, item);
                 }
             }
             for (var i = 0; i < modifications.CollectionAdditions.length; i++) {
@@ -473,7 +494,7 @@ var FresnelApp;
                 var prop = $.grep(existingItem.Properties, function (e) {
                     return e.PropertyName == propertyChange.PropertyName;
                 }, false)[0];
-                angular.extend(prop.State, propertyChange.State);
+                this.extendDeep(prop.State, propertyChange.State);
                 prop.State.Value = newPropertyValue;
             }
             for (var i = 0; i < modifications.CollectionRemovals.length; i++) {
@@ -491,8 +512,20 @@ var FresnelApp;
         IdentityMap.prototype.mergeObjects = function (existingObj, newObj) {
             for (var i = 0; i < existingObj.Properties.length; i++) {
                 // NB: Don't replace the prop object, otherwise the bindings will break:
-                angular.extend(existingObj.Properties[i].State, newObj.Properties[i].State);
+                this.extendDeep(existingObj.Properties[i].State, newObj.Properties[i].State);
             }
+        };
+        IdentityMap.prototype.extendDeep = function (destination, source) {
+            for (var property in source) {
+                if (source[property] && source[property].constructor && source[property].constructor === Object) {
+                    destination[property] = destination[property] || {};
+                    arguments.callee(destination[property], source[property]);
+                }
+                else {
+                    destination[property] = source[property];
+                }
+            }
+            return destination;
         };
         return IdentityMap;
     })();
@@ -517,7 +550,7 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    var requires = ['blockUI', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table'];
+    var requires = ['blockUI', 'gridster', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table'];
     angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);

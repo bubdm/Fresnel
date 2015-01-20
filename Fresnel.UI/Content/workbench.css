@@ -20,20 +20,20 @@ a.disabled {
 
 .explorerPanel {
     padding: 0px !important;
-    margin: 4px !important;
-    min-height: 300px;
+    /*margin: 4px !important;*/
+    /*min-height: 300px;*/
 }
 
 .objectExplorerPanelBody {
     overflow-x: hidden;
     overflow-y: auto;
-    max-height: 768px;
+    /*max-height: 768px;*/
 }
 
 .collectionExplorerPanelBody {
     overflow-x: auto;
     overflow-y: auto;
-    max-height: 768px;
+    /*max-height: 768px;*/
 }
 
 .propertyItems {
@@ -68,46 +68,3 @@ a.disabled {
     width: 100%;
 }
 
-@media screen and (min-width: 927px) {
-
-    .explorerPanelNormalSize {
-        width: 440px; /* This allows 2 horzontal panels (no sidebar)*/
-    }
-
-    .explorerPanelMaximised {
-        width: 900px;
-    }
-}
-
-@media screen and (min-width: 1023px) {
-
-    .explorerPanelNormalSize {
-        width: 430px; /* This allows 2 horzontal panels (with sidebar) */
-    }
-
-    .explorerPanelMaximised {
-        width: 870px;
-    }
-}
-
-@media screen and (min-width: 1200px) {
-
-    .explorerPanelNormalSize {
-        width: 485px; /* This allows 3 horzontal panels (with sidebar)*/
-    }
-
-    .explorerPanelMaximised {
-        width: 980px;
-    }
-}
-
-@media screen and (min-width: 1903) {
-
-    .explorerPanelNormalSize {
-        width: 540px; /* This allows 3 horzontal panels (with sidebar)*/
-    }
-
-    .explorerPanelMaximised {
-        width: 1100px;
-    }
-}
