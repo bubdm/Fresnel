@@ -122,8 +122,59 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
+    function GridsterOptionsFactory() {
+        var result = {};
+        result.Options = {
+            columns: 24,
+            pushing: true,
+            floating: true,
+            swapping: false,
+            width: 'auto',
+            colWidth: 'auto',
+            rowHeight: 'match',
+            margins: [10, 10],
+            outerMargin: true,
+            isMobile: false,
+            mobileBreakPoint: 600,
+            mobileModeEnabled: true,
+            minColumns: 1,
+            minRows: 2,
+            maxRows: 100,
+            defaultSizeX: 8,
+            defaultSizeY: 6,
+            minSizeX: 6,
+            maxSizeX: null,
+            minSizeY: 4,
+            maxSizeY: null,
+            resizable: {
+                enabled: true,
+                handles: ['s', 'se', 'e'],
+                start: function (event, uiWidget, $element) {
+                },
+                resize: function (event, uiWidget, $element) {
+                },
+                stop: function (event, uiWidget, $element) {
+                } // optional callback fired when item is finished resizing
+            },
+            draggable: {
+                enabled: true,
+                handle: '.dragHandle',
+                start: function (event, uiWidget, $element) {
+                },
+                drag: function (event, uiWidget, $element) {
+                },
+                stop: function (event, uiWidget, $element) {
+                } // optional callback fired when item is finished dragging
+            }
+        };
+        return result;
+    }
+    FresnelApp.GridsterOptionsFactory = GridsterOptionsFactory;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     var ObjectExplorerController = (function () {
-        function ObjectExplorerController($rootScope, $scope, fresnelService, appService, explorerService) {
+        function ObjectExplorerController($rootScope, $scope, fresnelService, appService, explorerService, gridsterOptionsFactory) {
             $scope.visibleExplorers = [];
             $scope.$on('showObject', function (event, obj) {
                 var explorer = explorerService.getExplorer(obj.ID);
@@ -215,51 +266,9 @@ var FresnelApp;
                     }
                 });
             };
-            $scope.gridsterOptions = {
-                columns: 24,
-                pushing: true,
-                floating: true,
-                swapping: false,
-                width: 'auto',
-                colWidth: 'auto',
-                rowHeight: 'match',
-                margins: [10, 10],
-                outerMargin: true,
-                isMobile: false,
-                mobileBreakPoint: 600,
-                mobileModeEnabled: true,
-                minColumns: 1,
-                minRows: 2,
-                maxRows: 100,
-                defaultSizeX: 8,
-                defaultSizeY: 6,
-                minSizeX: 6,
-                maxSizeX: null,
-                minSizeY: 4,
-                maxSizeY: null,
-                resizable: {
-                    enabled: true,
-                    handles: ['s', 'se', 'e'],
-                    start: function (event, uiWidget, $element) {
-                    },
-                    resize: function (event, uiWidget, $element) {
-                    },
-                    stop: function (event, uiWidget, $element) {
-                    } // optional callback fired when item is finished resizing
-                },
-                draggable: {
-                    enabled: true,
-                    handle: '.dragHandle',
-                    start: function (event, uiWidget, $element) {
-                    },
-                    drag: function (event, uiWidget, $element) {
-                    },
-                    stop: function (event, uiWidget, $element) {
-                    } // optional callback fired when item is finished dragging
-                }
-            };
+            $scope.gridsterOptions = gridsterOptionsFactory.Options;
         }
-        ObjectExplorerController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService'];
+        ObjectExplorerController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService', 'gridsterOptionsFactory'];
         return ObjectExplorerController;
     })();
     FresnelApp.ObjectExplorerController = ObjectExplorerController;
@@ -275,9 +284,15 @@ var FresnelApp;
                     var explorer = scope.explorer;
                     var id = "explorer_" + explorer.__meta.ID;
                     var content = angular.element(document.getElementById(id));
-                    // Hand tuned, based on gridsterOptions.columns:
-                    var rowHeightPx = 68;
-                    explorer.RowHeight = Math.round(content.height() / rowHeightPx) + 1;
+                    if (explorer.__meta.IsCollection) {
+                        explorer.ColWidth = 24;
+                        explorer.RowHeight = 9;
+                    }
+                    else {
+                        // Hand tuned, based on gridsterOptions.columns:
+                        var rowHeightPx = 68;
+                        explorer.RowHeight = Math.round(content.height() / rowHeightPx) + 1;
+                    }
                 }, 0);
             }
         };
@@ -581,7 +596,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var requires = ['blockUI', 'gridster', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table'];
-    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("gridsterAutoRowheight", FresnelApp.GridsterAutoRowHeightDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
+    angular.module("fresnelApp", requires).factory("gridsterOptionsFactory", FresnelApp.GridsterOptionsFactory).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("objectExplorerController", FresnelApp.ObjectExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ObjectExplorerDirective).directive("gridsterAutoRowheight", FresnelApp.GridsterAutoRowHeightDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);
             return responseData;

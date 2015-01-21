@@ -5,6 +5,7 @@
         'smart-table'];
 
     angular.module("fresnelApp", requires)
+        .factory("gridsterOptionsFactory", FresnelApp.GridsterOptionsFactory)
         .service("appService", FresnelApp.AppService)
         .service("explorerService", FresnelApp.ExplorerService)
         .service("fresnelService", FresnelApp.FresnelService)
