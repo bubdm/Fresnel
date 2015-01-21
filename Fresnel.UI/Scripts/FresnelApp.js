@@ -1,130 +1,110 @@
 var FresnelApp;
 (function (FresnelApp) {
-    var requires = ['blockUI', 'gridster', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table'];
-    angular.module("fresnelApp", requires).factory("gridsterOptionsFactory", FresnelApp.GridsterOptionsFactory).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("gridsterAutoRowheight", FresnelApp.GridsterAutoRowHeightDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
-        $httpProvider.defaults.transformResponse.push(function (responseData) {
-            convertDateStringsToDates(responseData);
-            return responseData;
-        });
-    }]).config(function (blockUIConfig) {
-        blockUIConfig.message = 'Please wait...';
-        blockUIConfig.delay = 250;
-        blockUIConfig.resetOnException = true;
-    });
-    // See http://aboutcode.net/2013/07/27/json-date-parsing-angularjs.html
-    // and http://stackoverflow.com/a/3143231/80369
-    // TODO: Refactor the Date conversion into a self-contained object:
-    var regexIso8601 = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/;
-    function convertDateStringsToDates(input) {
-        // Ignore things that aren't objects.
-        if (typeof input !== "object")
-            return input;
-        for (var key in input) {
-            if (!input.hasOwnProperty(key))
-                continue;
-            var value = input[key];
-            var match;
-            // Check for string properties which look like dates.
-            if (typeof value === "string" && (match = value.match(regexIso8601))) {
-                var milliseconds = Date.parse(match[0]);
-                if (!isNaN(milliseconds)) {
-                    input[key] = new Date(milliseconds);
+    var WorkbenchController = (function () {
+        function WorkbenchController($rootScope, $scope, fresnelService, appService, explorerService, gridsterOptionsFactory) {
+            $scope.visibleExplorers = [];
+            $scope.gridsterOptions = gridsterOptionsFactory.Options;
+            $scope.$on('openNewExplorer', function (event, obj) {
+                if (!obj)
+                    return;
+                // Re-use the existing object, so that any bindings aren't lost:
+                var existingObj = appService.identityMap.getObject(obj.ID);
+                if (existingObj != null) {
+                    obj = existingObj;
                 }
-            }
-            else if (typeof value === "object") {
-                // Recurse into object
-                convertDateStringsToDates(value);
-            }
-        }
-    }
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
-    var Explorer = (function () {
-        function Explorer() {
-        }
-        return Explorer;
-    })();
-    FresnelApp.Explorer = Explorer;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
-    // Used to ensure the Toolbox allows interaction with the Class nodes
-    function ClassLibaryDirective() {
-        return {
-            link: function (scope, elem, attributes) {
-                scope.$watchCollection('classHierarchy', function (newVal, oldVal) {
-                    // Force the treeview to register any new nodes:
-                    $(".sidebar .treeview").tree();
-                    // Force the tooltips to respond:
-                    $("[data-toggle='tooltip']").tooltip();
-                });
-            }
-        };
-    }
-    FresnelApp.ClassLibaryDirective = ClassLibaryDirective;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
-    var ToolboxController = (function () {
-        function ToolboxController($rootScope, $scope, fresnelService, appService) {
-            $scope.loadClassHierarchy = function () {
-                var _this = this;
-                var promise = fresnelService.getClassHierarchy();
-                promise.then(function (promiseResult) {
-                    _this.classHierarchy = promiseResult.data;
-                });
-            };
-            $scope.create = function (fullyQualifiedName) {
-                var promise = fresnelService.createObject(fullyQualifiedName);
-                promise.then(function (promiseResult) {
-                    var newObject = promiseResult.data.NewObject;
-                    appService.identityMap.addObject(newObject);
-                    $rootScope.$broadcast("openNewExplorer", newObject);
-                });
-            };
-            // This will run when the page loads:
-            angular.element(document).ready(function () {
-                $scope.loadClassHierarchy();
+                else {
+                    appService.identityMap.addObject(obj);
+                }
+                var explorer = explorerService.getExplorer(obj.ID);
+                if (explorer == null) {
+                    explorer = explorerService.addExplorer(obj);
+                    $scope.visibleExplorers.push(explorer);
+                }
+            });
+            $scope.$on('closeExplorer', function (event, explorer) {
+                var index = $scope.visibleExplorers.indexOf(explorer);
+                if (index > -1) {
+                    $scope.visibleExplorers.splice(index, 1);
+                    explorerService.remove(explorer);
+                    if ($scope.visibleExplorers.length == 0) {
+                        var promise = fresnelService.cleanupSession();
+                        promise.then(function (promiseResult) {
+                            var result = promiseResult.data;
+                            $rootScope.$broadcast("messagesReceived", result.Messages);
+                        });
+                    }
+                }
             });
         }
-        ToolboxController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService'];
-        return ToolboxController;
+        WorkbenchController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService', 'gridsterOptionsFactory'];
+        return WorkbenchController;
     })();
-    FresnelApp.ToolboxController = ToolboxController;
+    FresnelApp.WorkbenchController = WorkbenchController;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    // Taken from http://stackoverflow.com/a/25391043/80369
-    function DisableAnchorDirective() {
-        return {
-            compile: function (tElement, tAttrs, transclude) {
-                //Disable ngClick
-                tAttrs["ngClick"] = ("ng-click", "!(" + tAttrs["aDisabled"] + ") && (" + tAttrs["ngClick"] + ")");
-                //Toggle "disabled" to class when aDisabled becomes true
-                return function (scope, iElement, iAttrs) {
-                    scope.$watch(iAttrs["aDisabled"], function (newValue) {
-                        if (newValue !== undefined) {
-                            iElement.toggleClass("disabled", newValue);
-                        }
-                    });
-                    //Disable href on click
-                    iElement.on("click", function (e) {
-                        if (scope.$eval(iAttrs["aDisabled"])) {
-                            e.preventDefault();
-                        }
-                    });
-                };
+    var ExplorerService = (function () {
+        function ExplorerService($templateCache) {
+            this.explorers = [];
+            this.templateCache = $templateCache;
+        }
+        ExplorerService.prototype.addExplorer = function (obj) {
+            var explorer = new FresnelApp.Explorer();
+            explorer.__meta = obj;
+            this.CheckForCustomTemplate(explorer);
+            this.attachMembers(explorer);
+            this.explorers[obj.ID] = explorer;
+            return explorer;
+        };
+        ExplorerService.prototype.CheckForCustomTemplate = function (explorer) {
+            var templateUrl = "/Customisations/" + explorer.__meta.Type + ".html";
+            // We're using XMLHttpRequest so that failures don't propogate to angular-inform:
+            var request = new XMLHttpRequest();
+            request.open('HEAD', templateUrl, false);
+            request.send();
+            if (request.status == 200) {
+                explorer.CustomTemplateUrl = templateUrl;
+            }
+            else {
+                // This ensures that newer templates are picked up next time:
+                this.templateCache.remove(templateUrl);
             }
         };
-    }
-    FresnelApp.DisableAnchorDirective = DisableAnchorDirective;
+        ExplorerService.prototype.getExplorer = function (objID) {
+            var result = this.explorers[objID];
+            return result;
+        };
+        ExplorerService.prototype.remove = function (explorer) {
+            var objID = explorer.__meta.ID;
+            delete this.explorers[objID];
+        };
+        ExplorerService.prototype.attachMembers = function (explorer) {
+            var obj = explorer.__meta;
+            if (obj.Properties) {
+                for (var i = 0; i < obj.Properties.length; i++) {
+                    var prop = obj.Properties[i];
+                    explorer[prop.PropertyName] = prop;
+                }
+            }
+            if (obj.Methods) {
+                for (var i = 0; i < obj.Methods.length; i++) {
+                    var method = obj.Methods[i];
+                    explorer[method.MethodName] = method;
+                }
+            }
+        };
+        ExplorerService.$inject = ['$templateCache'];
+        return ExplorerService;
+    })();
+    FresnelApp.ExplorerService = ExplorerService;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
     var CollectionExplorerController = (function () {
         function CollectionExplorerController($rootScope, $scope, fresnelService, appService) {
             var collection = $scope.explorer.__meta;
+            // This allows Smart-Table to handle the st-safe-src properly:
+            collection.DisplayItems = [].concat(collection.Items);
             $scope.addNewItem = function (itemType) {
                 var request = {
                     CollectionID: collection.ID,
@@ -213,6 +193,57 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
+    function GridsterOptionsFactory() {
+        var result = {};
+        result.Options = {
+            columns: 24,
+            pushing: true,
+            floating: true,
+            swapping: false,
+            width: 'auto',
+            colWidth: 'auto',
+            rowHeight: 'match',
+            margins: [10, 10],
+            outerMargin: true,
+            isMobile: false,
+            mobileBreakPoint: 600,
+            mobileModeEnabled: true,
+            minColumns: 1,
+            minRows: 2,
+            maxRows: 100,
+            defaultSizeX: 8,
+            defaultSizeY: 6,
+            minSizeX: 6,
+            maxSizeX: null,
+            minSizeY: 4,
+            maxSizeY: null,
+            resizable: {
+                enabled: true,
+                handles: ['s', 'se', 'e'],
+                start: function (event, uiWidget, $element) {
+                },
+                resize: function (event, uiWidget, $element) {
+                },
+                stop: function (event, uiWidget, $element) {
+                } // optional callback fired when item is finished resizing
+            },
+            draggable: {
+                enabled: true,
+                handle: '.dragHandle',
+                start: function (event, uiWidget, $element) {
+                },
+                drag: function (event, uiWidget, $element) {
+                },
+                stop: function (event, uiWidget, $element) {
+                } // optional callback fired when item is finished dragging
+            }
+        };
+        return result;
+    }
+    FresnelApp.GridsterOptionsFactory = GridsterOptionsFactory;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     var ExplorerController = (function () {
         function ExplorerController($rootScope, $scope, fresnelService, appService, explorerService) {
             $scope.invoke = function (method) {
@@ -296,86 +327,6 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    // Used to ensure the Toolbox allows interaction with the Class nodes
-    function ExplorerDirective($timeout, $location, $anchorScroll) {
-        return {
-            link: function (scope, elem, attributes) {
-                // Scroll to the new panel:
-                // We're using a delay so that the element is rendered before we inspect it:
-                // See http://stackoverflow.com/a/20156250/80369
-                $timeout(function () {
-                    var elementID = "explorer_" + scope.explorer.__meta.ID;
-                    $location.hash(elementID);
-                    $anchorScroll();
-                }, 0);
-                //scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
-                //    ////bootstrap WYSIHTML5 - text editor
-                //    //$(".textarea").wysihtml5();
-                //})
-            }
-        };
-    }
-    FresnelApp.ExplorerDirective = ExplorerDirective;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
-    var ExplorerService = (function () {
-        function ExplorerService($templateCache) {
-            this.explorers = [];
-            this.templateCache = $templateCache;
-        }
-        ExplorerService.prototype.addExplorer = function (obj) {
-            var explorer = new FresnelApp.Explorer();
-            explorer.__meta = obj;
-            this.CheckForCustomTemplate(explorer);
-            this.attachMembers(explorer);
-            this.explorers[obj.ID] = explorer;
-            return explorer;
-        };
-        ExplorerService.prototype.CheckForCustomTemplate = function (explorer) {
-            var templateUrl = "/Customisations/" + explorer.__meta.Type + ".html";
-            // We're using XMLHttpRequest so that failures don't propogate to angular-inform:
-            var request = new XMLHttpRequest();
-            request.open('HEAD', templateUrl, false);
-            request.send();
-            if (request.status == 200) {
-                explorer.CustomTemplateUrl = templateUrl;
-            }
-            else {
-                // This ensures that newer templates are picked up next time:
-                this.templateCache.remove(templateUrl);
-            }
-        };
-        ExplorerService.prototype.getExplorer = function (objID) {
-            var result = this.explorers[objID];
-            return result;
-        };
-        ExplorerService.prototype.remove = function (explorer) {
-            var objID = explorer.__meta.ID;
-            delete this.explorers[objID];
-        };
-        ExplorerService.prototype.attachMembers = function (explorer) {
-            var obj = explorer.__meta;
-            if (obj.Properties) {
-                for (var i = 0; i < obj.Properties.length; i++) {
-                    var prop = obj.Properties[i];
-                    explorer[prop.PropertyName] = prop;
-                }
-            }
-            if (obj.Methods) {
-                for (var i = 0; i < obj.Methods.length; i++) {
-                    var method = obj.Methods[i];
-                    explorer[method.MethodName] = method;
-                }
-            }
-        };
-        ExplorerService.$inject = ['$templateCache'];
-        return ExplorerService;
-    })();
-    FresnelApp.ExplorerService = ExplorerService;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
     function GridsterAutoRowHeightDirective($timeout) {
         return {
             link: function (scope, elem, attributes) {
@@ -402,97 +353,35 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    function GridsterOptionsFactory() {
-        var result = {};
-        result.Options = {
-            columns: 24,
-            pushing: true,
-            floating: true,
-            swapping: false,
-            width: 'auto',
-            colWidth: 'auto',
-            rowHeight: 'match',
-            margins: [10, 10],
-            outerMargin: true,
-            isMobile: false,
-            mobileBreakPoint: 600,
-            mobileModeEnabled: true,
-            minColumns: 1,
-            minRows: 2,
-            maxRows: 100,
-            defaultSizeX: 8,
-            defaultSizeY: 6,
-            minSizeX: 6,
-            maxSizeX: null,
-            minSizeY: 4,
-            maxSizeY: null,
-            resizable: {
-                enabled: true,
-                handles: ['s', 'se', 'e'],
-                start: function (event, uiWidget, $element) {
-                },
-                resize: function (event, uiWidget, $element) {
-                },
-                stop: function (event, uiWidget, $element) {
-                } // optional callback fired when item is finished resizing
-            },
-            draggable: {
-                enabled: true,
-                handle: '.dragHandle',
-                start: function (event, uiWidget, $element) {
-                },
-                drag: function (event, uiWidget, $element) {
-                },
-                stop: function (event, uiWidget, $element) {
-                } // optional callback fired when item is finished dragging
+    // Used to ensure the Toolbox allows interaction with the Class nodes
+    function ExplorerDirective($timeout, $location, $anchorScroll) {
+        return {
+            link: function (scope, elem, attributes) {
+                // Scroll to the new panel:
+                // We're using a delay so that the element is rendered before we inspect it:
+                // See http://stackoverflow.com/a/20156250/80369
+                $timeout(function () {
+                    var elementID = "explorer_" + scope.explorer.__meta.ID;
+                    $location.hash(elementID);
+                    $anchorScroll();
+                }, 0);
+                //scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
+                //    ////bootstrap WYSIHTML5 - text editor
+                //    //$(".textarea").wysihtml5();
+                //})
             }
         };
-        return result;
     }
-    FresnelApp.GridsterOptionsFactory = GridsterOptionsFactory;
+    FresnelApp.ExplorerDirective = ExplorerDirective;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    var WorkbenchController = (function () {
-        function WorkbenchController($rootScope, $scope, fresnelService, appService, explorerService, gridsterOptionsFactory) {
-            $scope.visibleExplorers = [];
-            $scope.gridsterOptions = gridsterOptionsFactory.Options;
-            $scope.$on('openNewExplorer', function (event, obj) {
-                if (!obj)
-                    return;
-                // Re-use the existing object, so that any bindings aren't lost:
-                var existingObj = appService.identityMap.getObject(obj.ID);
-                if (existingObj != null) {
-                    obj = existingObj;
-                }
-                else {
-                    appService.identityMap.addObject(obj);
-                }
-                var explorer = explorerService.getExplorer(obj.ID);
-                if (explorer == null) {
-                    explorer = explorerService.addExplorer(obj);
-                    $scope.visibleExplorers.push(explorer);
-                }
-            });
-            $scope.$on('closeExplorer', function (event, explorer) {
-                var index = $scope.visibleExplorers.indexOf(explorer);
-                if (index > -1) {
-                    $scope.visibleExplorers.splice(index, 1);
-                    explorerService.remove(explorer);
-                    if ($scope.visibleExplorers.length == 0) {
-                        var promise = fresnelService.cleanupSession();
-                        promise.then(function (promiseResult) {
-                            var result = promiseResult.data;
-                            $rootScope.$broadcast("messagesReceived", result.Messages);
-                        });
-                    }
-                }
-            });
+    var Explorer = (function () {
+        function Explorer() {
         }
-        WorkbenchController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService', 'gridsterOptionsFactory'];
-        return WorkbenchController;
+        return Explorer;
     })();
-    FresnelApp.WorkbenchController = WorkbenchController;
+    FresnelApp.Explorer = Explorer;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
@@ -601,6 +490,71 @@ var FresnelApp;
     })();
     FresnelApp.AppService = AppService;
 })(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var ToolboxController = (function () {
+        function ToolboxController($rootScope, $scope, fresnelService, appService) {
+            $scope.loadClassHierarchy = function () {
+                var _this = this;
+                var promise = fresnelService.getClassHierarchy();
+                promise.then(function (promiseResult) {
+                    _this.classHierarchy = promiseResult.data;
+                });
+            };
+            $scope.create = function (fullyQualifiedName) {
+                var promise = fresnelService.createObject(fullyQualifiedName);
+                promise.then(function (promiseResult) {
+                    var newObject = promiseResult.data.NewObject;
+                    appService.identityMap.addObject(newObject);
+                    $rootScope.$broadcast("openNewExplorer", newObject);
+                });
+            };
+            // This will run when the page loads:
+            angular.element(document).ready(function () {
+                $scope.loadClassHierarchy();
+            });
+        }
+        ToolboxController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService'];
+        return ToolboxController;
+    })();
+    FresnelApp.ToolboxController = ToolboxController;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var Session = (function () {
+        function Session() {
+        }
+        return Session;
+    })();
+    FresnelApp.Session = Session;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    // Taken from http://stackoverflow.com/a/25391043/80369
+    function DisableAnchorDirective() {
+        return {
+            compile: function (tElement, tAttrs, transclude) {
+                //Disable ngClick
+                tAttrs["ngClick"] = ("ng-click", "!(" + tAttrs["aDisabled"] + ") && (" + tAttrs["ngClick"] + ")");
+                //Toggle "disabled" to class when aDisabled becomes true
+                return function (scope, iElement, iAttrs) {
+                    scope.$watch(iAttrs["aDisabled"], function (newValue) {
+                        if (newValue !== undefined) {
+                            iElement.toggleClass("disabled", newValue);
+                        }
+                    });
+                    //Disable href on click
+                    iElement.on("click", function (e) {
+                        if (scope.$eval(iAttrs["aDisabled"])) {
+                            e.preventDefault();
+                        }
+                    });
+                };
+            }
+        };
+    }
+    FresnelApp.DisableAnchorDirective = DisableAnchorDirective;
+})(FresnelApp || (FresnelApp = {}));
 /// <reference path="../../scripts/typings/jquery/jquery.d.ts" />
 var FresnelApp;
 (function (FresnelApp) {
@@ -696,10 +650,58 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    var Session = (function () {
-        function Session() {
+    // Used to ensure the Toolbox allows interaction with the Class nodes
+    function ClassLibaryDirective() {
+        return {
+            link: function (scope, elem, attributes) {
+                scope.$watchCollection('classHierarchy', function (newVal, oldVal) {
+                    // Force the treeview to register any new nodes:
+                    $(".sidebar .treeview").tree();
+                    // Force the tooltips to respond:
+                    $("[data-toggle='tooltip']").tooltip();
+                });
+            }
+        };
+    }
+    FresnelApp.ClassLibaryDirective = ClassLibaryDirective;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var requires = ['blockUI', 'gridster', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table'];
+    angular.module("fresnelApp", requires).factory("gridsterOptionsFactory", FresnelApp.GridsterOptionsFactory).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("gridsterAutoRowheight", FresnelApp.GridsterAutoRowHeightDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
+        $httpProvider.defaults.transformResponse.push(function (responseData) {
+            convertDateStringsToDates(responseData);
+            return responseData;
+        });
+    }]).config(function (blockUIConfig) {
+        blockUIConfig.message = 'Please wait...';
+        blockUIConfig.delay = 250;
+        blockUIConfig.resetOnException = true;
+    });
+    // See http://aboutcode.net/2013/07/27/json-date-parsing-angularjs.html
+    // and http://stackoverflow.com/a/3143231/80369
+    // TODO: Refactor the Date conversion into a self-contained object:
+    var regexIso8601 = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/;
+    function convertDateStringsToDates(input) {
+        // Ignore things that aren't objects.
+        if (typeof input !== "object")
+            return input;
+        for (var key in input) {
+            if (!input.hasOwnProperty(key))
+                continue;
+            var value = input[key];
+            var match;
+            // Check for string properties which look like dates.
+            if (typeof value === "string" && (match = value.match(regexIso8601))) {
+                var milliseconds = Date.parse(match[0]);
+                if (!isNaN(milliseconds)) {
+                    input[key] = new Date(milliseconds);
+                }
+            }
+            else if (typeof value === "object") {
+                // Recurse into object
+                convertDateStringsToDates(value);
+            }
         }
-        return Session;
-    })();
-    FresnelApp.Session = Session;
+    }
 })(FresnelApp || (FresnelApp = {}));

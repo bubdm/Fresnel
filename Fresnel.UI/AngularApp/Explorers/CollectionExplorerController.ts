@@ -11,11 +11,13 @@
             appService: AppService) {
 
             var collection: any = $scope.explorer.__meta;
+            // This allows Smart-Table to handle the st-safe-src properly:
+            collection.DisplayItems = [].concat(collection.Items);
 
             $scope.addNewItem = function (itemType: string) {
                 var request = {
                     CollectionID: collection.ID,
-                    ElementTypeName : itemType
+                    ElementTypeName: itemType
                 };
 
                 var promise = fresnelService.addNewItemToCollection(request);
