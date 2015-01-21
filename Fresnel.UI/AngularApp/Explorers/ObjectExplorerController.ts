@@ -97,8 +97,6 @@
                             var result = promiseResult.data;
                             $rootScope.$broadcast("messagesReceived", result.Messages);
                         });
-
-                        fresnelService.cleanupSession();
                     }
                 }
             }
