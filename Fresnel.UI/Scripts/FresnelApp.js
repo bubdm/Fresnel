@@ -304,8 +304,8 @@ var FresnelApp;
                 // See http://stackoverflow.com/a/20156250/80369
                 $timeout(function () {
                     var explorer = scope.explorer;
-                    var id = "explorer_" + explorer.__meta.ID;
-                    var content = angular.element(document.getElementById(id));
+                    var elementID = "explorer_" + explorer.__meta.ID;
+                    var content = angular.element(document.getElementById(elementID));
                     if (explorer.__meta.IsCollection) {
                         explorer.ColWidth = 16;
                         explorer.RowHeight = 9;
@@ -324,9 +324,17 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     // Used to ensure the Toolbox allows interaction with the Class nodes
-    function ExplorerDirective() {
+    function ExplorerDirective($timeout, $location, $anchorScroll) {
         return {
             link: function (scope, elem, attributes) {
+                // Scroll to the new panel:
+                // We're using a delay so that the element is rendered before we inspect it:
+                // See http://stackoverflow.com/a/20156250/80369
+                $timeout(function () {
+                    var elementID = "explorer_" + scope.explorer.__meta.ID;
+                    $location.hash(elementID);
+                    $anchorScroll();
+                }, 0);
                 //scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
                 //    ////bootstrap WYSIHTML5 - text editor
                 //    //$(".textarea").wysihtml5();
