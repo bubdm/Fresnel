@@ -228,7 +228,10 @@ namespace Envivo.Fresnel.Core.Observers
         {
             foreach (var oObject in _ObjectIdMap.Values)
             {
-                _ObjectMap.Remove(oObject.RealObject);
+                if (oObject.RealObject != null)
+                {
+                    _ObjectMap.Remove(oObject.RealObject);
+                }
                 oObject.DisposeSafely();
             }
             _ObjectIdMap.Clear();

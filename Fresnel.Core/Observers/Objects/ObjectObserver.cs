@@ -281,13 +281,13 @@ namespace Envivo.Fresnel.Core.Observers
 
         public override void Dispose()
         {
-            if (_Methods.IsValueCreated)
+            if (_Methods != null && _Methods.IsValueCreated)
             {
                 _Methods.Value.Dispose();
             }
             _Methods = null;
 
-            if (_Properties.IsValueCreated)
+            if (_Properties != null && _Properties.IsValueCreated)
             {
                 _Properties.Value.Dispose();
             }
