@@ -4,7 +4,7 @@ table {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    height: 500px; /* this can vary */
+    height: 100%; /* this can vary */
 }
 
 table * {
