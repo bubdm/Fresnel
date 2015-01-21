@@ -23,11 +23,6 @@
                 promise.then((promiseResult) => {
                     var result = promiseResult.data;
 
-                    // Do we really need this?
-                    //var newObject = promiseResult.data.NewObject;
-                    //appService.identityMap.addObject(newObject);
-                    //collection.Items.push(newObject);
-
                     appService.identityMap.merge(result.Modifications);
                     $rootScope.$broadcast("messagesReceived", result.Messages);
 
@@ -48,16 +43,8 @@
                 promise.then((promiseResult) => {
                     var result = promiseResult.data;
 
-                    // Do we really need this?
-                    //var newObject = promiseResult.data.NewObject;
-                    //appService.identityMap.addObject(newObject);
-                    //collection.Items.push(newObject);
-
                     appService.identityMap.merge(result.Modifications);
                     $rootScope.$broadcast("messagesReceived", result.Messages);
-
-                    // This will cause the new object to appear in a new Explorer:
-                    //$rootScope.$broadcast("openNewExplorer", newObject);             
                 });
 
             };
