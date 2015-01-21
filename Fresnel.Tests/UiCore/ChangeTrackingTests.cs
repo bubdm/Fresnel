@@ -205,5 +205,56 @@ namespace Envivo.Fresnel.Tests.Proxies
             // All of the text properties are bound to the same value:
             Assert.AreEqual(7, setResult.Modifications.PropertyChanges.Count());
         }
+
+
+        [Test()]
+        public void ShouldDetectCorrectModificationsWhenCollectionIsExploreredPartway()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var templateCache = container.Resolve<TemplateCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
+
+            // Act:
+
+            // Step 1: Modify the collection, before we've started tracking it:
+            var invokeRequest = new InvokeMethodRequest()
+            {
+                ObjectID = poco.ID,
+                MethodName = "AddSomeChildObjects",
+            };
+
+            var invokeResult1 = controller.InvokeMethod(invokeRequest);
+            // As we're not tracking the collection, we're not expecting any new items:
+            Assert.AreEqual(0, invokeResult1.Modifications.CollectionAdditions.Count());
+
+            // Step 2: Open the Collection, so that the engine starts tracking it:
+            var getRequest = new GetPropertyRequest()
+            {
+                ObjectID = poco.ID,
+                PropertyName = "ChildObjects"
+            };
+            var getPropertyResponse = controller.GetObjectProperty(getRequest);
+
+            var getObjectRequest = new GetObjectRequest()
+            {
+                ObjectID = getPropertyResponse.ReturnValue.ID
+            };
+            var getObjectResult = controller.GetObject(getObjectRequest);
+
+            // Step 2: Modify the collection, now that the collection's being tracked:
+            var invokeResult2 = controller.InvokeMethod(invokeRequest);
+
+            // Assert:
+            // We're expecting 3 new items:
+            Assert.AreEqual(3, invokeResult2.Modifications.CollectionAdditions.Count());
+        }
+
+
     }
 }

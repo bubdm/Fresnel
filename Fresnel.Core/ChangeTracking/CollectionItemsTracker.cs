@@ -47,8 +47,8 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
         internal void DetermineInitialState()
         {
-            //var items = _oCollection.GetContents();
-            //this.PreviousItems = this.LatestItems = items.Cast<object>();
+            // NB: Use array to ensure we have a *copy* of the contents:
+            this.LatestItems = _oCollection.GetItems().Cast<object>().ToArray();
         }
 
         internal IAssertion DetectChanges()
