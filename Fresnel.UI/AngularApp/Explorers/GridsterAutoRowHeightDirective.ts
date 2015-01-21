@@ -3,7 +3,7 @@
     export function GridsterAutoRowHeightDirective($timeout: ng.ITimeoutService): ng.IDirective {
 
         return {
-            link: function (scope: IObjectExplorerControllerScope, elem: JQuery, attributes: ng.IAttributes) {
+            link: function (scope: IExplorerControllerScope, elem: JQuery, attributes: ng.IAttributes) {
                 // We're using a delay so that the element is rendered before we inspect it:
                 // See http://stackoverflow.com/a/20156250/80369
                 $timeout(function () {

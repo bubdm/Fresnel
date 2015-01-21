@@ -12,9 +12,6 @@
 
             var collection: any = $scope.explorer.__meta;
             
-            // This allows Smart-Table to handle the st-safe-src properly:
-            collection.DisplayedItems = [].concat(collection.Items);
-
             $scope.addNewItem = function (itemType: string) {
                 var promise = fresnelService.createObject(itemType);
 
@@ -25,7 +22,7 @@
                     collection.Items.push(newObject);
 
                     // This will cause the new object to appear in a new Explorer:
-                    //$rootScope.$broadcast("showObject", newObject);             
+                    //$rootScope.$broadcast("openNewExplorer", newObject);             
                 });
 
             };

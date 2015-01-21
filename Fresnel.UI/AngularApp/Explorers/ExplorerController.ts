@@ -1,26 +1,15 @@
 ﻿module FresnelApp {
 
-    export class ObjectExplorerController {
+    export class ExplorerController {
 
-        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService', 'gridsterOptionsFactory'];
+        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
-            $scope: IObjectExplorerControllerScope,
+            $scope: IExplorerControllerScope,
             fresnelService: IFresnelService,
             appService: AppService,
-            explorerService: ExplorerService,
-            gridsterOptionsFactory: any) {
-
-            $scope.visibleExplorers = [];
-
-            $scope.$on('showObject', function (event, obj: IObjectVM) {
-                var explorer = explorerService.getExplorer(obj.ID);
-                if (explorer == null) {
-                    explorer = explorerService.addExplorer(obj);
-                    $scope.visibleExplorers.push(explorer);
-                }
-            });
+            explorerService: ExplorerService) {
 
             $scope.invoke = function (method: any) {
                 var promise = fresnelService.invokeMethod(method);
@@ -33,7 +22,7 @@
                     $rootScope.$broadcast("messagesReceived", result.Messages);
 
                     if (result.ResultObject) {
-                        $rootScope.$broadcast("showObject", result.ResultObject);
+                        $rootScope.$broadcast("openNewExplorer", result.ResultObject);
                     }
                 });
             }
@@ -85,20 +74,7 @@
             $scope.close = function (explorer: Explorer) {
                 // TODO: Check for dirty status
 
-                var index = $scope.visibleExplorers.indexOf(explorer);
-                if (index > -1) {
-                    $scope.visibleExplorers.splice(index, 1);
-
-                    explorerService.remove(explorer);
-                    if ($scope.visibleExplorers.length == 0) {
-                        var promise = fresnelService.cleanupSession();
-
-                        promise.then((promiseResult) => {
-                            var result = promiseResult.data;
-                            $rootScope.$broadcast("messagesReceived", result.Messages);
-                        });
-                    }
-                }
+                $rootScope.$broadcast("closeExplorer", explorer);
             }
 
             $scope.openNewExplorer = function (prop: any) {
@@ -120,18 +96,11 @@
 
                         obj.OuterProperty = prop;
 
-                        // TODO: Insert the object just after it's parent?
-                        var explorer = explorerService.getExplorer(obj.ID);
-                        if (explorer == null) {
-                            explorer = explorerService.addExplorer(obj);
-                            $scope.visibleExplorers.push(explorer);
-                        }
+                        $rootScope.$broadcast("openNewExplorer", obj);
                     }
                 });
 
             }
-
-            $scope.gridsterOptions = gridsterOptionsFactory.Options;
 
         }
 

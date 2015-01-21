@@ -11,10 +11,11 @@
         .service("fresnelService", FresnelApp.FresnelService)
         .controller("appController", FresnelApp.AppController)
         .controller("toolboxController", FresnelApp.ToolboxController)
-        .controller("objectExplorerController", FresnelApp.ObjectExplorerController)
+        .controller("workbenchController", FresnelApp.WorkbenchController)
+        .controller("explorerController", FresnelApp.ExplorerController)
         .controller("collectionExplorerController", FresnelApp.CollectionExplorerController)
         .directive("classLibrary", FresnelApp.ClassLibaryDirective)
-        .directive("objectExplorer", FresnelApp.ObjectExplorerDirective)
+        .directive("objectExplorer", FresnelApp.ExplorerDirective)
         .directive("gridsterAutoRowheight", FresnelApp.GridsterAutoRowHeightDirective)
         .directive("aDisabled", FresnelApp.DisableAnchorDirective)
         .config(["$httpProvider", function ($httpProvider) {

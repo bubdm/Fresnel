@@ -19,12 +19,19 @@
 
     }
 
-    export interface IObjectExplorerControllerScope extends ng.IScope {
-
-        explorer: Explorer;
+    export interface IWorkbenchControllerScope extends ng.IScope {
 
         visibleExplorers: Explorer[];
 
+        openNewExplorer(obj: IObjectVM);
+
+        gridsterOptions: any;
+    }
+
+    export interface IExplorerControllerScope extends ng.IScope {
+
+        explorer: Explorer;
+        
         minimise(explorer: Explorer);
 
         maximise(explorer: Explorer);
@@ -41,10 +48,9 @@
 
         openNewExplorer(prop: any);
 
-        gridsterOptions: any;
     }
 
-    export interface ICollectionExplorerControllerScope extends IObjectExplorerControllerScope {
+    export interface ICollectionExplorerControllerScope extends IExplorerControllerScope {
 
         gridColumns: any[];
 
