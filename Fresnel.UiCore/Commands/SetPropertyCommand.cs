@@ -34,7 +34,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public SetPropertyResponse Invoke(SetPropertyRequest request)
+        public GenericResponse Invoke(SetPropertyRequest request)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                            string.Concat(oProp.Template.FriendlyName, " changed to ", friendlyValue) :
                            string.Concat(oProp.Template.FriendlyName, " was cleared"),
                 };
-                return new SetPropertyResponse()
+                return new GenericResponse()
                 {
                     Passed = true,
                     Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
@@ -81,7 +81,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Detail = ex.ToString(),
                 };
 
-                return new SetPropertyResponse()
+                return new GenericResponse()
                 {
                     Failed = true,
                     Messages = new MessageVM[] { errorVM }

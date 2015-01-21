@@ -9,51 +9,63 @@ namespace Envivo.Fresnel.UiCore.Controllers
         private GetPropertyCommand _GetPropertyCommand;
         private SetPropertyCommand _SetPropertyCommand;
         private InvokeMethodCommand _InvokeMethodCommand;
+        private CollectionAddCommand _CollectionAddCommand;
 
         public ExplorerController
             (
             GetObjectCommand getObjectCommand,
             GetPropertyCommand getPropertyCommand,
             SetPropertyCommand setPropertyCommand,
-            InvokeMethodCommand invokeMethodCommand
+            InvokeMethodCommand invokeMethodCommand,
+            CollectionAddCommand collectionAddCommand
             )
         {
             _GetObjectCommand = getObjectCommand;
             _GetPropertyCommand = getPropertyCommand;
             _SetPropertyCommand = setPropertyCommand;
             _InvokeMethodCommand = invokeMethodCommand;
+            _CollectionAddCommand = collectionAddCommand;
         }
 
         [HttpPost]
         public GetPropertyResponse GetObject([FromBody]GetObjectRequest id)
         {
             var request = id;
-            var results = _GetObjectCommand.Invoke(request);
-            return results;
+            var response = _GetObjectCommand.Invoke(request);
+            return response;
         }
 
         [HttpPost]
         public GetPropertyResponse GetObjectProperty([FromBody]GetPropertyRequest id)
         {
             var request = id;
-            var results = _GetPropertyCommand.Invoke(request);
-            return results;
+            var response = _GetPropertyCommand.Invoke(request);
+            return response;
         }
 
         [HttpPost]
-        public SetPropertyResponse SetProperty([FromBody]SetPropertyRequest id)
+        public GenericResponse SetProperty([FromBody]SetPropertyRequest id)
         {
             var request = id;
-            var results = _SetPropertyCommand.Invoke(request);
-            return results;
+            var response = _SetPropertyCommand.Invoke(request);
+            return response;
         }
 
         [HttpPost]
         public InvokeMethodResponse InvokeMethod([FromBody]InvokeMethodRequest id)
         {
             var request = id;
-            var results = _InvokeMethodCommand.Invoke(request);
-            return results;
+            var response = _InvokeMethodCommand.Invoke(request);
+            return response;
         }
+
+        [HttpPost]
+        public GenericResponse AddItemToCollection([FromBody]CollectionRequest id)
+        {
+            var request = id;
+            var response = _CollectionAddCommand.Invoke(request);
+            return response;
+        }
+
     }
 }

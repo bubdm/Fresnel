@@ -50,6 +50,23 @@
             return this.http.post(uri, request);
         }
 
+        addNewItemToCollection(request: any): ng.IPromise<any> {
+            var uri = "api/Explorer/AddItemToCollection";
+            return this.http.post(uri, request);
+        }
+
+        addItemToCollection(request: any): ng.IPromise<any> {
+            var uri = "api/Explorer/AddItemToCollection";
+            return this.http.post(uri, request);
+        }
+
+        removeItemFromCollection(request: any): ng.IPromise<any> {
+            var uri = "api/Explorer/RemoveItemFromCollection";
+            return this.http.post(uri, request);
+        }
+
+
+
         cleanupSession(): ng.IPromise<any> {
             var uri = "api/Session/CleanUp";
             return this.http.get(uri);

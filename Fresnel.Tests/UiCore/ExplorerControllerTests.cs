@@ -109,5 +109,92 @@ namespace Envivo.Fresnel.Tests.Proxies
             var propVM = refreshedObject.ReturnValue.Properties.Single(p => p.PropertyName == "EnumValue");
             Assert.AreEqual(30, propVM.State.Value);
         }
+
+        [Test()]
+        public void ShouldAddNewItemToCollection()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+            poco.AddSomeChildObjects();
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
+
+            // Make sure we start tracking the collection:
+            var request = new GetPropertyRequest()
+            {
+                ObjectID = poco.ID,
+                PropertyName = "ChildObjects"
+            };
+            var getResult = controller.GetObjectProperty(request);
+
+            var collectionVM = (CollectionVM)getResult.ReturnValue;
+
+            // Act:
+            var addRequest = new CollectionRequest()
+            {
+                CollectionID = collectionVM.ID,
+                ElementTypeName = oObject.Template.FullName
+            };
+
+            var response = controller.AddItemToCollection(addRequest);
+
+            // Assert:
+            Assert.IsTrue(response.Passed);
+            Assert.AreEqual(1, response.Modifications.NewObjects.Count());
+            Assert.AreEqual(1, response.Modifications.CollectionAdditions.Count());
+
+            // Check that the domain object has changed:
+            var oChild = observerCache.GetObserverById(response.Modifications.NewObjects.First().ID);
+            Assert.IsTrue(poco.ChildObjects.Contains(oChild.RealObject));
+        }
+
+        [Test()]
+        public void ShouldAddExistingItemToCollection()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+            poco.AddSomeChildObjects();
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
+
+            var child = new SampleModel.Objects.PocoObject();
+            child.ID = Guid.NewGuid();
+            var oChild = observerCache.GetObserver(child) as ObjectObserver;
+
+            // Make sure we start tracking the collection:
+            var request = new GetPropertyRequest()
+            {
+                ObjectID = poco.ID,
+                PropertyName = "ChildObjects"
+            };
+            var getResult = controller.GetObjectProperty(request);
+
+            var collectionVM = (CollectionVM)getResult.ReturnValue;
+
+            // Act:
+            var addRequest = new CollectionRequest()
+            {
+                CollectionID = collectionVM.ID,
+                ElementID = oChild.ID,
+            };
+
+            var response = controller.AddItemToCollection(addRequest);
+
+            // Assert:
+            Assert.IsTrue(response.Passed);
+            Assert.AreEqual(0, response.Modifications.NewObjects.Count());
+            Assert.AreEqual(1, response.Modifications.CollectionAdditions.Count());
+
+            // Check that the domain object has changed:
+            Assert.IsTrue(poco.ChildObjects.Contains(oChild.RealObject));
+        }
     }
 }

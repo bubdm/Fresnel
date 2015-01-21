@@ -104,13 +104,51 @@ var FresnelApp;
         function CollectionExplorerController($rootScope, $scope, fresnelService, appService) {
             var collection = $scope.explorer.__meta;
             $scope.addNewItem = function (itemType) {
-                var promise = fresnelService.createObject(itemType);
+                var request = {
+                    CollectionID: collection.ID,
+                    ElementTypeName: itemType
+                };
+                var promise = fresnelService.addNewItemToCollection(request);
                 promise.then(function (promiseResult) {
-                    var newObject = promiseResult.data.NewObject;
-                    appService.identityMap.addObject(newObject);
-                    collection.Items.push(newObject);
+                    var result = promiseResult.data;
+                    // Do we really need this?
+                    //var newObject = promiseResult.data.NewObject;
+                    //appService.identityMap.addObject(newObject);
+                    //collection.Items.push(newObject);
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
                     // This will cause the new object to appear in a new Explorer:
                     //$rootScope.$broadcast("openNewExplorer", newObject);             
+                });
+            };
+            $scope.addExistingItem = function (obj) {
+                var request = {
+                    CollectionID: collection.ID,
+                    ElementID: obj.ID
+                };
+                var promise = fresnelService.addItemToCollection(request);
+                promise.then(function (promiseResult) {
+                    var result = promiseResult.data;
+                    // Do we really need this?
+                    //var newObject = promiseResult.data.NewObject;
+                    //appService.identityMap.addObject(newObject);
+                    //collection.Items.push(newObject);
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    // This will cause the new object to appear in a new Explorer:
+                    //$rootScope.$broadcast("openNewExplorer", newObject);             
+                });
+            };
+            $scope.removeItem = function (obj) {
+                var request = {
+                    CollectionID: collection.ID,
+                    ElementID: obj.ID
+                };
+                var promise = fresnelService.removeItemFromCollection(request);
+                promise.then(function (promiseResult) {
+                    var result = promiseResult.data;
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
                 });
             };
         }
@@ -389,6 +427,18 @@ var FresnelApp;
         };
         FresnelService.prototype.invokeMethod = function (request) {
             var uri = "api/Explorer/InvokeMethod";
+            return this.http.post(uri, request);
+        };
+        FresnelService.prototype.addNewItemToCollection = function (request) {
+            var uri = "api/Explorer/AddItemToCollection";
+            return this.http.post(uri, request);
+        };
+        FresnelService.prototype.addItemToCollection = function (request) {
+            var uri = "api/Explorer/AddItemToCollection";
+            return this.http.post(uri, request);
+        };
+        FresnelService.prototype.removeItemFromCollection = function (request) {
+            var uri = "api/Explorer/RemoveItemFromCollection";
             return this.http.post(uri, request);
         };
         FresnelService.prototype.cleanupSession = function () {

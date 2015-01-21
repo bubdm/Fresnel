@@ -39,13 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CollectionRequest.cs" />
+    <Compile Include="Commands\CollectionAddCommand.cs" />
+    <Compile Include="Commands\CollectionAddResponse.cs" />
     <Compile Include="PropertyStateVmBuilder.cs" />
     <Compile Include="Changes\CollectionElementVM.cs" />
     <Compile Include="Commands\CleanupSessionResponse.cs" />
     <Compile Include="Commands\CleanupSessionCommand.cs" />
     <Compile Include="Commands\GetObjectCommand.cs" />
     <Compile Include="Commands\GetObjectRequest.cs" />
-    <Compile Include="Commands\SetPropertyResponse.cs" />
+    <Compile Include="Commands\GenericResponse.cs" />
     <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Commands\InvokeMethodResponse.cs" />
     <Compile Include="Commands\InvokeMethodRequest.cs" />

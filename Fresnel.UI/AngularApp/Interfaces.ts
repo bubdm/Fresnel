@@ -80,6 +80,12 @@
 
         invokeMethod(request: any): ng.IPromise<any>;
 
+        addNewItemToCollection(request: any): ng.IPromise<any>;
+
+        addItemToCollection(request: any): ng.IPromise<any>;
+
+        removeItemFromCollection(request: any): ng.IPromise<any>;
+
         cleanupSession(): ng.IPromise<any>;
     }
 
