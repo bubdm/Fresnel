@@ -38,11 +38,11 @@ namespace Envivo.Fresnel.Tests.Proxies
             engine.RegisterDomainAssembly(typeof(SampleModel.Objects.DependencyAwareObject).Assembly);
 
             // Act:
-            var createOperation = controller.Create("Envivo.Fresnel.SampleModel.Objects.DependencyAwareObject");
+            var response = controller.Create("Envivo.Fresnel.SampleModel.Objects.DependencyAwareObject");
 
             // Assert:
-            Assert.IsTrue(createOperation.Passed);
-            Assert.IsInstanceOf<ObjectVM>(createOperation.NewObject);
+            Assert.IsTrue(response.Passed);
+            Assert.IsInstanceOf<ObjectVM>(response.NewObject);
         }
     }
 }
