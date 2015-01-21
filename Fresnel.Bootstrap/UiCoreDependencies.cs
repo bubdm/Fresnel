@@ -32,6 +32,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Commands.SetPropertyCommand),
                 typeof(Fresnel.UiCore.Commands.InvokeMethodCommand),
                 typeof(Fresnel.UiCore.Commands.CollectionAddCommand),
+                typeof(Fresnel.UiCore.Commands.CollectionRemoveCommand),
 
                 typeof(Fresnel.UiCore.Changes.ModificationsBuilder),
 

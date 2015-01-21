@@ -79,9 +79,9 @@ module FresnelApp {
                 var collectionVM = this.getObject(removal.CollectionId);
                 var elementVM = this.getObject(removal.ElementId);
                 if (collectionVM != null) {
-                    var index = collectionVM.items.indexOf(elementVM);
+                    var index = collectionVM.Items.indexOf(elementVM);
                     if (index > -1) {
-                        collectionVM.items.splice(index, 1);
+                        collectionVM.Items.splice(index, 1);
                     }
                 }
             }

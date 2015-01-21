@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CollectionRemoveCommand.cs" />
     <Compile Include="Commands\CollectionRequest.cs" />
     <Compile Include="Commands\CollectionAddCommand.cs" />
     <Compile Include="Commands\CollectionAddResponse.cs" />

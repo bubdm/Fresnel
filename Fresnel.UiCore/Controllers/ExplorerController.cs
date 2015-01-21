@@ -10,6 +10,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         private SetPropertyCommand _SetPropertyCommand;
         private InvokeMethodCommand _InvokeMethodCommand;
         private CollectionAddCommand _CollectionAddCommand;
+        private CollectionRemoveCommand _CollectionRemoveCommand;
 
         public ExplorerController
             (
@@ -17,7 +18,8 @@ namespace Envivo.Fresnel.UiCore.Controllers
             GetPropertyCommand getPropertyCommand,
             SetPropertyCommand setPropertyCommand,
             InvokeMethodCommand invokeMethodCommand,
-            CollectionAddCommand collectionAddCommand
+            CollectionAddCommand collectionAddCommand,
+            CollectionRemoveCommand collectionRemoveCommand
             )
         {
             _GetObjectCommand = getObjectCommand;
@@ -25,6 +27,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
             _SetPropertyCommand = setPropertyCommand;
             _InvokeMethodCommand = invokeMethodCommand;
             _CollectionAddCommand = collectionAddCommand;
+            _CollectionRemoveCommand = collectionRemoveCommand;
         }
 
         [HttpPost]
@@ -67,5 +70,12 @@ namespace Envivo.Fresnel.UiCore.Controllers
             return response;
         }
 
+        [HttpPost]
+        public GenericResponse RemoveItemFromCollection([FromBody]CollectionRequest id)
+        {
+            var request = id;
+            var response = _CollectionRemoveCommand.Invoke(request);
+            return response;
+        }
     }
 }

@@ -196,5 +196,49 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Check that the domain object has changed:
             Assert.IsTrue(poco.ChildObjects.Contains(oChild.RealObject));
         }
+
+
+        [Test()]
+        public void ShouldRemoveItemFromCollection()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+            poco.AddSomeChildObjects();
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
+
+            var child = poco.ChildObjects.First();
+            var oChild = observerCache.GetObserver(child) as ObjectObserver;
+
+            // Make sure we start tracking the collection:
+            var request = new GetPropertyRequest()
+            {
+                ObjectID = poco.ID,
+                PropertyName = "ChildObjects"
+            };
+            var getResult = controller.GetObjectProperty(request);
+
+            var collectionVM = (CollectionVM)getResult.ReturnValue;
+
+            // Act:
+            var removeRequest = new CollectionRequest()
+            {
+                CollectionID = collectionVM.ID,
+                ElementID = oChild.ID,
+            };
+
+            var response = controller.RemoveItemFromCollection(removeRequest);
+
+            // Assert:
+            Assert.IsTrue(response.Passed);
+            Assert.AreEqual(1, response.Modifications.CollectionRemovals.Count());
+
+            // Check that the domain object has changed:
+            Assert.IsFalse(poco.ChildObjects.Contains(child));
+        }
     }
 }
