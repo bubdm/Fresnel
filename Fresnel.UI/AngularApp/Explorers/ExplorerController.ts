@@ -77,7 +77,11 @@
                 $rootScope.$broadcast("closeExplorer", explorer);
             }
 
-            $scope.openNewExplorer = function (prop: any) {
+            $scope.openNewExplorer = function (obj: IObjectVM) {
+                $rootScope.$broadcast("openNewExplorer", obj);
+            }
+
+            $scope.openNewExplorerForProperty = function (prop: any) {
                 var promise = fresnelService.getProperty(prop);
 
                 promise.then((promiseResult) => {
@@ -99,7 +103,6 @@
                         $rootScope.$broadcast("openNewExplorer", obj);
                     }
                 });
-
             }
 
         }

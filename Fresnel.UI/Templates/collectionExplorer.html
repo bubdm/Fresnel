@@ -31,7 +31,7 @@
                     <tr ng-repeat="item in oCol.Items track by $index">
                         <td st-ratio="1">
                             <span class="{{item.Type}}Icon"></span>
-                            <button ng-click="openNewExplorerForObject(item)"
+                            <button ng-click="openNewExplorer(item)"
                                     title="Open contents in a new panel">
                                 <i class="fa fa-ellipsis-h"></i>
                             </button>
@@ -52,7 +52,10 @@
 
         <div class="box-tools">
             <button class=" btn btn-sm" ng-click="addNewItem(oCol.ElementType)" title="Add a new item to this list">
-                <i class="fa fa-plus"></i> Add...
+                <i class="fa fa-plus"></i> New ...
+            </button>
+            <button class=" btn btn-sm" ng-click="addExistingItem(oCol.ElementType)" title="Add an existing item to this list">
+                <i class="fa fa-link"></i> Add ...
             </button>
         </div>
 

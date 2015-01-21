@@ -23,15 +23,13 @@
 
         visibleExplorers: Explorer[];
 
-        openNewExplorer(obj: IObjectVM);
-
         gridsterOptions: any;
     }
 
     export interface IExplorerControllerScope extends ng.IScope {
 
         explorer: Explorer;
-        
+
         minimise(explorer: Explorer);
 
         maximise(explorer: Explorer);
@@ -46,7 +44,9 @@
 
         setBitwiseEnumProperty(prop: any, enumValue: number);
 
-        openNewExplorer(prop: any);
+        openNewExplorer(obj: IObjectVM);
+
+        openNewExplorerForProperty(prop: any);
 
     }
 

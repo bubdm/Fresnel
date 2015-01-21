@@ -3,22 +3,22 @@ var FresnelApp;
     var WorkbenchController = (function () {
         function WorkbenchController($rootScope, $scope, fresnelService, appService, explorerService, gridsterOptionsFactory) {
             $scope.visibleExplorers = [];
+            $scope.gridsterOptions = gridsterOptionsFactory.Options;
             $scope.$on('openNewExplorer', function (event, obj) {
-                if (obj) {
-                    var existingObj = appService.identityMap.getObject(obj.ID);
-                    if (existingObj == null) {
-                        appService.identityMap.addObject(obj);
-                    }
-                    else {
-                        // Re-use the existing object, so that any bindings aren't lost:
-                        obj = existingObj;
-                    }
-                    // TODO: Insert the object just after it's parent?
-                    var explorer = explorerService.getExplorer(obj.ID);
-                    if (explorer == null) {
-                        explorer = explorerService.addExplorer(obj);
-                        $scope.visibleExplorers.push(explorer);
-                    }
+                if (!obj)
+                    return;
+                // Re-use the existing object, so that any bindings aren't lost:
+                var existingObj = appService.identityMap.getObject(obj.ID);
+                if (existingObj != null) {
+                    obj = existingObj;
+                }
+                else {
+                    appService.identityMap.addObject(obj);
+                }
+                var explorer = explorerService.getExplorer(obj.ID);
+                if (explorer == null) {
+                    explorer = explorerService.addExplorer(obj);
+                    $scope.visibleExplorers.push(explorer);
                 }
             });
             $scope.$on('closeExplorer', function (event, explorer) {
@@ -35,7 +35,6 @@ var FresnelApp;
                     }
                 }
             });
-            $scope.gridsterOptions = gridsterOptionsFactory.Options;
         }
         WorkbenchController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService', 'gridsterOptionsFactory'];
         return WorkbenchController;
@@ -268,7 +267,10 @@ var FresnelApp;
                 // TODO: Check for dirty status
                 $rootScope.$broadcast("closeExplorer", explorer);
             };
-            $scope.openNewExplorer = function (prop) {
+            $scope.openNewExplorer = function (obj) {
+                $rootScope.$broadcast("openNewExplorer", obj);
+            };
+            $scope.openNewExplorerForProperty = function (prop) {
                 var promise = fresnelService.getProperty(prop);
                 promise.then(function (promiseResult) {
                     var result = promiseResult.data;
