@@ -11,7 +11,11 @@
             </li>
         </ul>
     </div>
-    <button class="btn btn-primary btn-sm" ng-disabled="!explorerForm.$dirty" ng-click="save(explorer)" tooltip="prop.Tooltip" ng-class="{ 'alert-default' : explorerForm.$dirty }"><i class=" fa fa-save"></i></button>
+    <button class="btn btn-primary btn-sm" ng-click="save(explorer)" tooltip="prop.Tooltip" ng-class="{ 'alert-default' : explorerForm.$dirty }"><i class=" fa fa-save"></i></button>
+
+    <button class="btn btn-primary btn-sm" ng-show="explorer.__meta.IsCollection" ng-click="addNewItem(oCol.ElementType)" title="Add a new item to this list"><i class="fa fa-plus-square"></i></button>
+    <button class="btn btn-primary btn-sm" ng-show="explorer.__meta.IsCollection" ng-click="addExistingItem(oCol.ElementType)" title="Add an existing item to this list"><i class="fa fa-plus"></i></button>
+
     <button class="btn btn-primary btn-sm" ng-click="showInfo(explorer)"><i class="fa fa-info-circle"></i></button>
     <button class="btn btn-primary btn-sm" ng-click="refresh(explorer)"><i class="fa fa-refresh"></i></button>
     <button class="btn btn-primary btn-sm" ng-show="explorer.IsMaximised" ng-click="minimise(explorer)"><i class="fa fa-compress"></i></button>
