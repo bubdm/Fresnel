@@ -12,9 +12,15 @@
                     var id = "explorer_" + explorer.__meta.ID;
                     var content = angular.element(document.getElementById(id));
 
-                    // Hand tuned, based on gridsterOptions.columns:
-                    var rowHeightPx = 68; 
-                    explorer.RowHeight = Math.round(content.height() / rowHeightPx) + 1;
+                    if (explorer.__meta.IsCollection) {
+                        explorer.ColWidth = 24;
+                        explorer.RowHeight = 9;
+                    }
+                    else {
+                        // Hand tuned, based on gridsterOptions.columns:
+                        var rowHeightPx = 68;
+                        explorer.RowHeight = Math.round(content.height() / rowHeightPx) + 1;
+                    }
                 }, 0);
             }
 
