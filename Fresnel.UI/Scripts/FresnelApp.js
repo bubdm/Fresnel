@@ -242,7 +242,6 @@ var FresnelApp;
                             var result = promiseResult.data;
                             $rootScope.$broadcast("messagesReceived", result.Messages);
                         });
-                        fresnelService.cleanupSession();
                     }
                 }
             };
@@ -285,7 +284,7 @@ var FresnelApp;
                     var id = "explorer_" + explorer.__meta.ID;
                     var content = angular.element(document.getElementById(id));
                     if (explorer.__meta.IsCollection) {
-                        explorer.ColWidth = 24;
+                        explorer.ColWidth = 16;
                         explorer.RowHeight = 9;
                     }
                     else {

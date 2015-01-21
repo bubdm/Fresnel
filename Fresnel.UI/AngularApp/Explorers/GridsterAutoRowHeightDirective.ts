@@ -13,7 +13,7 @@
                     var content = angular.element(document.getElementById(id));
 
                     if (explorer.__meta.IsCollection) {
-                        explorer.ColWidth = 24;
+                        explorer.ColWidth = 16;
                         explorer.RowHeight = 9;
                     }
                     else {

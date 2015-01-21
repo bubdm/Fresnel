@@ -132,7 +132,7 @@
 
                 <div ng-controller="objectExplorerController">
                     <ul gridster="gridsterOptions" class="gridster-content">
-                        <li gridster-item gridster-auto-rowheight size-y="explorer.RowHeight" class="gridster-item explorerPanel" ng-repeat="explorer in visibleExplorers">
+                        <li gridster-item gridster-auto-rowheight size-x="explorer.ColWidth" size-y="explorer.RowHeight" class="gridster-item explorerPanel" ng-repeat="explorer in visibleExplorers">
                             <div ng-switch="explorer.__meta.IsCollection">
                                 <div ng-switch-when="true">
                                     <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'"></div>
