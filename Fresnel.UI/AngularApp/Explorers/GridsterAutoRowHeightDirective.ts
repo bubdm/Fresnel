@@ -9,8 +9,8 @@
                 $timeout(function () {
                     var explorer = scope.explorer;
 
-                    var id = "explorer_" + explorer.__meta.ID;
-                    var content = angular.element(document.getElementById(id));
+                    var elementID = "explorer_" + explorer.__meta.ID;
+                    var content = angular.element(document.getElementById(elementID));
 
                     if (explorer.__meta.IsCollection) {
                         explorer.ColWidth = 16;

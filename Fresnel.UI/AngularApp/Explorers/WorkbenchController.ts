@@ -13,24 +13,25 @@
             gridsterOptionsFactory: any) {
 
             $scope.visibleExplorers = [];
+            $scope.gridsterOptions = gridsterOptionsFactory.Options;
 
             $scope.$on('openNewExplorer', function (event, obj: IObjectVM) {
-                if (obj) {
-                    var existingObj = appService.identityMap.getObject(obj.ID);
-                    if (existingObj == null) {
-                        appService.identityMap.addObject(obj);
-                    }
-                    else {
-                        // Re-use the existing object, so that any bindings aren't lost:
-                        obj = existingObj;
-                    }
+                if (!obj)
+                    return;
 
-                    // TODO: Insert the object just after it's parent?
-                    var explorer = explorerService.getExplorer(obj.ID);
-                    if (explorer == null) {
-                        explorer = explorerService.addExplorer(obj);
-                        $scope.visibleExplorers.push(explorer);
-                    }
+                // Re-use the existing object, so that any bindings aren't lost:
+                var existingObj = appService.identityMap.getObject(obj.ID);
+                if (existingObj != null) {
+                    obj = existingObj;
+                }
+                else {
+                    appService.identityMap.addObject(obj);
+                }
+
+                var explorer = explorerService.getExplorer(obj.ID);
+                if (explorer == null) {
+                    explorer = explorerService.addExplorer(obj);
+                    $scope.visibleExplorers.push(explorer);
                 }
             });
 
@@ -50,8 +51,6 @@
                     }
                 }
             });
-
-            $scope.gridsterOptions = gridsterOptionsFactory.Options;
 
         }
 
