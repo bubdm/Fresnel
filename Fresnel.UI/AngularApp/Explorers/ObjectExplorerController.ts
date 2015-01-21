@@ -113,6 +113,10 @@
                         if (existingObj == null) {
                             appService.identityMap.addObject(obj);
                         }
+                        else {
+                            // Re-use the existing object, so that any bindings aren't lost:
+                            obj = existingObj;
+                        }
 
                         obj.OuterProperty = prop;
 
