@@ -15,11 +15,16 @@
             <li ng-repeat="item in namespace.Classes" class="active classItem">
                 <div class="">
 
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <div class="btn-group" ng-show="item.IsVisible">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
-                        </button>
+                            &nbsp;
+                            <span class="classItemIcon {{item.Type}}Icon" data-toggle="tooltip" title="{{item.Description}}">
+                                {{item.Name}}
+                            </span>
+                        </a>
+
                         <ul class="dropdown-menu" role="menu">
                             <li>
                                 <a href="" a-disabled="!item.Search.IsEnabled" ng-click="search(item.FullTypeName)" data-toggle="tooltip" title="{{item.Search.Tooltip}}">
@@ -36,11 +41,6 @@
                         </ul>
                     </div>
 
-                    <a class="" href="" ng-show="item.IsVisible" data-toggle="tooltip" title="{{item.Description}}">
-                        <span class="classItemIcon {{item.Type}}Icon">
-                            {{item.Name}}
-                        </span>
-                    </a>
 
                 </div>
             </li>
