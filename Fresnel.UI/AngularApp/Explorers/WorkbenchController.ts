@@ -2,18 +2,16 @@
 
     export class WorkbenchController {
 
-        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService', 'gridsterOptionsFactory'];
+        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: IWorkbenchControllerScope,
             fresnelService: IFresnelService,
             appService: AppService,
-            explorerService: ExplorerService,
-            gridsterOptionsFactory: any) {
+            explorerService: ExplorerService) {
 
             $scope.visibleExplorers = [];
-            $scope.gridsterOptions = gridsterOptionsFactory.Options;
 
             $scope.$on('openNewExplorer', function (event, obj: IObjectVM) {
                 if (!obj)

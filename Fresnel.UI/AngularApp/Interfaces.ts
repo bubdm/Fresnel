@@ -22,8 +22,6 @@
     export interface IWorkbenchControllerScope extends ng.IScope {
 
         visibleExplorers: Explorer[];
-
-        gridsterOptions: any;
     }
 
     export interface IExplorerControllerScope extends ng.IScope {

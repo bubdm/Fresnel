@@ -22,9 +22,6 @@
     <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
 
-    <script src="~/Scripts/angular-gridster/angular-gridster.min.js"></script>
-    <link href="~/Scripts/angular-gridster/angular-gridster.min.css" rel="stylesheet" />
-
     <script src="~/Scripts/angular-block-ui/angular-block-ui.min.js"></script>
     <link href="~/Scripts/angular-block-ui/angular-block-ui.min.css" rel="stylesheet" />
 
@@ -131,19 +128,17 @@
             <section class="content workbenchContainer">
 
                 <div ng-controller="workbenchController">
-                    <ul gridster="gridsterOptions" class="gridster-content">
-                        <li gridster-item size-x="explorer.ColWidth" size-y="explorer.RowHeight" class="gridster-item explorerPanel" ng-repeat="explorer in visibleExplorers">
-                            <div ng-switch="explorer.__meta.IsCollection" ng-controller="explorerController">
-                                <div ng-switch-when="true">
-                                    <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
-                                    <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'" gridster-auto-rowheight></div>
-                                </div>
-                                <div ng-switch-default>
-                                    <div ng-include="'/Templates/objectExplorer.html'" gridster-auto-rowheight></div>
-                                </div>
+                    <div ng-repeat="explorer in visibleExplorers" class="explorerPanel">
+                        <div ng-switch="explorer.__meta.IsCollection" ng-controller="explorerController">
+                            <div ng-switch-when="true">
+                                <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
+                                <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'"></div>
                             </div>
-                        </li>
-                    </ul>
+                            <div ng-switch-default>
+                                <div ng-include="'/Templates/objectExplorer.html'"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </section><!-- /.content -->

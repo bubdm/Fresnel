@@ -1,11 +1,10 @@
 ﻿module FresnelApp {
 
-    var requires = ['blockUI', 'gridster',
+    var requires = ['blockUI',
         'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate',
         'smart-table'];
 
     angular.module("fresnelApp", requires)
-        .factory("gridsterOptionsFactory", FresnelApp.GridsterOptionsFactory)
         .service("appService", FresnelApp.AppService)
         .service("explorerService", FresnelApp.ExplorerService)
         .service("fresnelService", FresnelApp.FresnelService)
@@ -16,7 +15,6 @@
         .controller("collectionExplorerController", FresnelApp.CollectionExplorerController)
         .directive("classLibrary", FresnelApp.ClassLibaryDirective)
         .directive("objectExplorer", FresnelApp.ExplorerDirective)
-        .directive("gridsterAutoRowheight", FresnelApp.GridsterAutoRowHeightDirective)
         .directive("aDisabled", FresnelApp.DisableAnchorDirective)
         .config(["$httpProvider", function ($httpProvider) {
             $httpProvider.defaults.transformResponse.push(function (responseData) {
