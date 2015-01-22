@@ -4,7 +4,7 @@
     export function ExplorerDirective(
         $timeout: ng.ITimeoutService,
         $location: ng.ILocationService,
-        $anchorScroll : ng.IAnchorScrollService
+        $anchorScroll: ng.IAnchorScrollService
         ): ng.IDirective {
         return {
             link: function (scope: IExplorerControllerScope, elem: JQuery, attributes: ng.IAttributes) {
@@ -13,9 +13,14 @@
                 // We're using a delay so that the element is rendered before we inspect it:
                 // See http://stackoverflow.com/a/20156250/80369
                 $timeout(function () {
-                    var elementID = "explorer_" + scope.explorer.__meta.ID;
-                    $location.hash(elementID);
-                    $anchorScroll();
+                    var explorer = scope.explorer;
+
+                    // If the panel is off the screen, scroll to it:
+                    if (explorer.XPos > 10) {
+                        var elementID = "explorer_" + explorer.__meta.ID;
+                        $location.hash(elementID);
+                        $anchorScroll();
+                    }
                 }, 0);
 
                 //scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {

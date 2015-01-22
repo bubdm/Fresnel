@@ -132,11 +132,11 @@
 
                 <div ng-controller="workbenchController">
                     <ul gridster="gridsterOptions" class="gridster-content">
-                        <li gridster-item gridster-auto-rowheight size-x="explorer.ColWidth" size-y="explorer.RowHeight" class="gridster-item explorerPanel" ng-repeat="explorer in visibleExplorers">
+                        <li gridster-item size-x="explorer.ColWidth" size-y="explorer.RowHeight" class="gridster-item explorerPanel" ng-repeat="explorer in visibleExplorers">
                             <div ng-switch="explorer.__meta.IsCollection" ng-controller="explorerController">
                                 <div ng-switch-when="true">
                                     <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
-                                    <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'"></div>
+                                    <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'" gridster-auto-rowheight></div>
                                 </div>
                                 <div ng-switch-default>
                                     <div ng-include="'/Templates/objectExplorer.html'" gridster-auto-rowheight></div>
