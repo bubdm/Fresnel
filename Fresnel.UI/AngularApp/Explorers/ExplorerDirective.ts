@@ -15,12 +15,9 @@
                 $timeout(function () {
                     var explorer = scope.explorer;
 
-                    // If the panel is off the screen, scroll to it:
-                    if (explorer.XPos > 10) {
-                        var elementID = "explorer_" + explorer.__meta.ID;
-                        $location.hash(elementID);
-                        $anchorScroll();
-                    }
+                    var elementID = "explorer_" + explorer.__meta.ID;
+                    $location.hash(elementID);
+                    $anchorScroll();
                 }, 0);
 
                 //scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
