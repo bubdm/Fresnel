@@ -192,57 +192,6 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    function GridsterOptionsFactory() {
-        var result = {};
-        result.Options = {
-            columns: 24,
-            pushing: true,
-            floating: true,
-            swapping: false,
-            width: 'auto',
-            colWidth: 'auto',
-            rowHeight: 'match',
-            margins: [10, 10],
-            outerMargin: true,
-            isMobile: false,
-            mobileBreakPoint: 600,
-            mobileModeEnabled: true,
-            minColumns: 1,
-            minRows: 2,
-            maxRows: 100,
-            defaultSizeX: 8,
-            defaultSizeY: 6,
-            minSizeX: 6,
-            maxSizeX: null,
-            minSizeY: 4,
-            maxSizeY: null,
-            resizable: {
-                enabled: true,
-                handles: ['s', 'se', 'e'],
-                start: function (event, uiWidget, $element) {
-                },
-                resize: function (event, uiWidget, $element) {
-                },
-                stop: function (event, uiWidget, $element) {
-                } // optional callback fired when item is finished resizing
-            },
-            draggable: {
-                enabled: true,
-                handle: '.dragHandle',
-                start: function (event, uiWidget, $element) {
-                },
-                drag: function (event, uiWidget, $element) {
-                },
-                stop: function (event, uiWidget, $element) {
-                } // optional callback fired when item is finished dragging
-            }
-        };
-        return result;
-    }
-    FresnelApp.GridsterOptionsFactory = GridsterOptionsFactory;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
     var ExplorerController = (function () {
         function ExplorerController($rootScope, $scope, fresnelService, appService, explorerService) {
             $scope.invoke = function (method) {
@@ -326,32 +275,6 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    function GridsterAutoRowHeightDirective($timeout) {
-        return {
-            link: function (scope, elem, attributes) {
-                // We're using a delay so that the element is rendered before we inspect it:
-                // See http://stackoverflow.com/a/20156250/80369
-                $timeout(function () {
-                    var explorer = scope.explorer;
-                    var elementID = "explorer_" + explorer.__meta.ID;
-                    var content = angular.element(document.getElementById(elementID));
-                    if (explorer.__meta.IsCollection) {
-                        explorer.ColWidth = 16;
-                        explorer.RowHeight = 9;
-                    }
-                    else {
-                        // Hand tuned, based on gridsterOptions.columns:
-                        var rowHeightPx = 68;
-                        explorer.RowHeight = Math.round(content.height() / rowHeightPx) + 1;
-                    }
-                }, 0);
-            }
-        };
-    }
-    FresnelApp.GridsterAutoRowHeightDirective = GridsterAutoRowHeightDirective;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
     // Used to ensure the Toolbox allows interaction with the Class nodes
     function ExplorerDirective($timeout, $location, $anchorScroll) {
         return {
@@ -361,12 +284,9 @@ var FresnelApp;
                 // See http://stackoverflow.com/a/20156250/80369
                 $timeout(function () {
                     var explorer = scope.explorer;
-                    // If the panel is off the screen, scroll to it:
-                    if (explorer.XPos > 10) {
-                        var elementID = "explorer_" + explorer.__meta.ID;
-                        $location.hash(elementID);
-                        $anchorScroll();
-                    }
+                    var elementID = "explorer_" + explorer.__meta.ID;
+                    $location.hash(elementID);
+                    $anchorScroll();
                 }, 0);
                 //scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
                 //    ////bootstrap WYSIHTML5 - text editor

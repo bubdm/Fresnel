@@ -1,4 +1,8 @@
-.container {
+.footer {
+    height: 1px;
+    margin-top: -1px;
+    width: 100%;
+    background-color: black;
 }
 
 a.disabled {
@@ -9,8 +13,12 @@ a.disabled {
 }
 
 .workbenchContainer {
-    overflow-x: auto;
-    white-space: nowrap;
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
+
+    overflow-x: scroll;
+    white-space: nowrap; /* This allows ExplorerPanels to be aligned horzxontally, but breaks intenal text wrapping  */
 }
 
 .explorerToolbar {
@@ -23,6 +31,7 @@ a.disabled {
     margin: 4px !important;
     display: inline-block;
     vertical-align: top;
+    white-space: normal; /* This restores the text wrapping from the workbenchContainer */
 }
 
 .objectExplorerPanelBody {

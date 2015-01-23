@@ -16,7 +16,7 @@ body {
   overflow-x: hidden!important;
   font-family: 'Source Sans Pro', sans-serif;
   -webkit-font-smoothing: antialiased;
-  min-height: 100%;
+  min-height: 95%;
   background: #f9f9f9;
 }
 a {
@@ -31,7 +31,7 @@ a:focus {
 }
 /* Layouts */
 .wrapper {
-  min-height: 100%;
+  
 }
 .wrapper:before,
 .wrapper:after {
