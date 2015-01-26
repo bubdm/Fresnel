@@ -8,10 +8,12 @@
 
 .animate.ng-enter,
 .animate.ng-leave.ng-leave-active {
+    left: -100px;
     opacity: 0;
 }
 
 .animate.ng-leave,
 .animate.ng-enter.ng-enter-active {
+    left: 0px;
     opacity: 1;
 }
