@@ -74,6 +74,7 @@ namespace Envivo.Fresnel.UiCore
                 ElementProperties = elementProperties,
                 Description = oCollection.Template.XmlComments.Summary,
                 Properties = this.CreateProperties(oCollection),
+                Methods = this.CreateMethods(oCollection),
                 Items = this.CreateItems(oCollection, allKnownProperties)
             };
 

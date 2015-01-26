@@ -1,10 +1,26 @@
-﻿<div ng-init="oObj = explorer.__meta" class="btn-group btn-group-sm methodItems">
-    <button ng-repeat='method in oObj.Methods'
+﻿<div ng-init="oObj = explorer.__meta; oCol = oObj;" class="btn-group btn-group-sm methodItems">
+
+    <!-- Collection specific buttons: -->
+    <button class="btn btn-default methodItem"
+            ng-show="oCol.IsCollection"
+            ng-click="addNewItem(oCol.ElementType)"
+            title="Create a new item in this list">
+        <i class="fa fa-plus-square"></i> Create
+    </button>
+    <button class="btn btn-default methodItem"
+            ng-show="oCol.IsCollection"
+            ng-click="addExistingItem(oCol.ElementType)"
+            title="Add an existing item to this list">
+        <i class="fa fa-plus"></i> Add
+    </button>
+
+    <!-- Domain object actions: -->
+    <button class="btn btn-default methodItem"
+            ng-repeat='method in oObj.Methods'
             ng-disabled="!method.IsEnabled"
             ng-click="invoke(method)"
             data-toggle="tooltip"
-            title="{{method.Description}}"
-            class="btn btn-default methodItem">
+            title="{{method.Description}}">
         <div class="methodItemText">
             <span class="fa {{oObj.Type}}-{{method.MethodName}}-Icon"></span>
             {{method.Name}}

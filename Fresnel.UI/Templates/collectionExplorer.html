@@ -1,6 +1,6 @@
-﻿<ng-form name="explorerForm" role="form" class="" ng-init="oObj = explorer.__meta">
+﻿<ng-form name="explorerForm" role="form" class="" ng-init="oObj = explorer.__meta; oCol = explorer.__meta">
 
-    <div id="explorer_{{oCol.ID}}" ng-init="oCol = explorer.__meta" object-explorer block-ui class="container-fluid box box-solid box-primary" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
+    <div id="explorer_{{oCol.ID}}" object-explorer block-ui class="container-fluid box box-solid box-primary" ng-class="{'explorerPanelNormalSize' : !explorer.IsMaximised, 'explorerPanelMaximised' : explorer.IsMaximised}">
 
         <div class="box-header">
             <span class="explorerItemIcon fa fa-folder-open-o"> </span>
@@ -19,7 +19,7 @@
 
         <div ng-if="explorer.CustomTemplateUrl == null" class="collectionExplorerPanelBody">
             <!-- NB: Use st-safe-src to ensure collection is watched -->
-            <div ng-show="oObj.Methods.length > 0" ng-include="'/Templates/methodsPanel.html'"></div>
+            <div ng-include="'/Templates/methodsPanel.html'"></div>
 
             <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" class="table table-striped collectionRowText">
                 <thead>
