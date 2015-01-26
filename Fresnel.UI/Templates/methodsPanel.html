@@ -5,6 +5,10 @@
             data-toggle="tooltip"
             title="{{method.Description}}"
             class="btn btn-default methodItem">
-        <div class="methodItemText">{{method.Name}}</div>
+        <div class="methodItemText">
+            <span class="fa {{oObj.Type}}-{{method.MethodName}}-Icon"></span>
+            {{method.Name}}
+        </div>
+
     </button>
 </div>

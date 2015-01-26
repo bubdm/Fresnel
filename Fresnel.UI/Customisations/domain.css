@@ -1,8 +1,13 @@
 /* 
     See http://fortawesome.github.io/Font-Awesome/cheatsheet/ for codes 
-    If your class is called "MyProduct", you would create a style called "MyProductIcon"
+    If you have a class called "MyProduct", you would create a style called "MyProduct-Icon"
+    If you have a method called "DoSomething" on the "MyProduct" class, you would create a style called "MyProduct-DoSomething-Icon"
 */
 
-.PocoObjectIcon:before {
+.PocoObject-Icon:before {
+    content: "\f118";
+}
+
+.PocoObject-AddSomeChildObjects-Icon:before {
     content: "\f118";
 }
