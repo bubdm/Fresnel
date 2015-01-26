@@ -30,7 +30,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in oCol.Items track by $index">
+                    <tr ng-repeat="item in oCol.DisplayItems">
                         <td st-ratio="1">
                             <span class="{{item.Type}}Icon"></span>
                             <button ng-click="openNewExplorer(item)"
@@ -38,9 +38,9 @@
                                 <i class="fa fa-ellipsis-h"></i>
                             </button>
                         </td>
-                        <td st-ratio="20" 
-                            ng-repeat="elementProp in oCol.ElementProperties" 
-                            ng-init="prop = item.Properties[elementProp.Index]" 
+                        <td st-ratio="20"
+                            ng-repeat="elementProp in oCol.ElementProperties"
+                            ng-init="prop = item.Properties[elementProp.Index]"
                             title="{{prop.State.Value}}">
                             {{prop.State.Value}}
                         </td>

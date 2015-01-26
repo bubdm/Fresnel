@@ -206,7 +206,6 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(7, setResult.Modifications.PropertyChanges.Count());
         }
 
-
         [Test()]
         public void ShouldDetectCorrectModificationsWhenCollectionIsExploreredPartway()
         {
@@ -247,7 +246,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             };
             var getObjectResult = controller.GetObject(getObjectRequest);
 
-            // Step 2: Modify the collection, now that the collection's being tracked:
+            // Step 3: Modify the collection, now that the collection's being tracked:
             var invokeResult2 = controller.InvokeMethod(invokeRequest);
 
             // Assert:
@@ -255,6 +254,63 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(3, invokeResult2.Modifications.CollectionAdditions.Count());
         }
 
+
+        [Test()]
+        public void ShouldDetectRemoveFromCollection()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var templateCache = container.Resolve<TemplateCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var poco = new SampleModel.Objects.PocoObject();
+            poco.ID = Guid.NewGuid();
+            var oObject = observerCache.GetObserver(poco) as ObjectObserver;
+
+            // Act:
+
+            // Step 1: Modify the collection, before we've started tracking it:
+            var invokeRequest = new InvokeMethodRequest()
+            {
+                ObjectID = poco.ID,
+                MethodName = "AddSomeChildObjects",
+            };
+
+            var invokeResult1 = controller.InvokeMethod(invokeRequest);
+            // As we're not tracking the collection, we're not expecting any new items:
+            Assert.AreEqual(0, invokeResult1.Modifications.CollectionAdditions.Count());
+
+            // Step 2: Open the Collection, so that the engine starts tracking it:
+            var getRequest = new GetPropertyRequest()
+            {
+                ObjectID = poco.ID,
+                PropertyName = "ChildObjects"
+            };
+            var getPropertyResponse = controller.GetObjectProperty(getRequest);
+
+            var collectionVM = (CollectionVM)getPropertyResponse.ReturnValue;
+
+            var firstPocoChild = poco.ChildObjects.First();
+            var elementToRemove = collectionVM.Items.First();
+
+            // Step 3: Modify the collection, now that the collection's being tracked:
+            var removeRequest = new CollectionRequest()
+            {
+                CollectionID = collectionVM.ID,
+                ElementID = elementToRemove.ID,
+            };
+            var removeResult = controller.RemoveItemFromCollection(removeRequest);
+
+            // Assert:
+            Assert.AreEqual(1, removeResult.Modifications.CollectionRemovals.Count());
+            Assert.IsFalse(poco.ChildObjects.Contains(firstPocoChild));
+
+            var getPropertyResponse2 = controller.GetObjectProperty(getRequest);
+            var collectionVM2 = (CollectionVM)getPropertyResponse2.ReturnValue;
+
+            Assert.IsFalse(collectionVM2.Items.Any(c => c.ID == elementToRemove.ID));
+        }
 
     }
 }
