@@ -21,7 +21,7 @@
             <!-- NB: Use st-safe-src to ensure collection is watched -->
             <div ng-show="oObj.Methods.length > 0" ng-include="'/Templates/methodsPanel.html'"></div>
 
-            <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" class="table table-striped">
+            <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" class="table table-striped collectionRowText">
                 <thead>
                     <tr>
                         <th st-ratio="1">&nbsp;</th> <!--Icon-->
@@ -38,7 +38,10 @@
                                 <i class="fa fa-ellipsis-h"></i>
                             </button>
                         </td>
-                        <td st-ratio="20" ng-repeat="elementProp in oCol.ElementProperties" ng-init="prop = item.Properties[elementProp.Index]">
+                        <td st-ratio="20" 
+                            ng-repeat="elementProp in oCol.ElementProperties" 
+                            ng-init="prop = item.Properties[elementProp.Index]" 
+                            title="{{prop.State.Value}}">
                             {{prop.State.Value}}
                         </td>
                         <td st-ratio="1">

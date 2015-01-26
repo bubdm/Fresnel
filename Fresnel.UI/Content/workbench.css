@@ -43,9 +43,13 @@ a.disabled {
     overflow-y: auto;
 }
 
+.collectionRowText {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .propertyItems {
-    /*overflow-x: auto;*/
-    /*overflow-y: auto;*/
 }
 
 .propertyItem {
