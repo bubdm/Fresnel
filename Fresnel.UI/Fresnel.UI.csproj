@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\AdminLTE.css" />
+    <Content Include="Content\animations.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -177,6 +178,8 @@
     <Content Include="Scripts\angular-messages.js" />
     <Content Include="Scripts\angular-messages.min.js" />
     <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-panhandler\angular-panhandler.js" />
+    <Content Include="Scripts\angular-panhandler\angular-panhandler.min.js" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-resource.min.js" />
     <Content Include="Scripts\angular-route.js" />
@@ -955,8 +958,7 @@
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\ng-dock.js" />
-    <Content Include="Scripts\smart-table\smart-table.debug.js" />
-    <Content Include="Scripts\smart-table\smart-table.min.js" />
+    <Content Include="Scripts\angular-smart-table\smart-table.min.js" />
     <Content Include="Templates\Editors\dateEditor.html" />
     <Content Include="Templates\Editors\enumBitwiseCheckboxEditor.html" />
     <Content Include="Templates\Editors\collectionInteractions.html" />

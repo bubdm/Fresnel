@@ -16,7 +16,6 @@
 
     <script src="~/Scripts/jquery-2.1.1.js"></script>
     <script src="~/Scripts/angular.js"></script>
-
     <script src="~/Scripts/angular-animate.js"></script>
 
     <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
@@ -28,7 +27,7 @@
     <script src="~/Scripts/angular-inform/angular-inform.min.js"></script>
     <link href="~/Scripts/angular-inform/angular-inform.min.css" rel="stylesheet" />
 
-    <script src="~/Scripts/smart-table/smart-table.min.js"></script>
+    <script src="~/Scripts/angular-smart-table/smart-table.min.js"></script>
 
     <script src="~/Scripts/bootstrap.min.js"></script>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
@@ -43,6 +42,7 @@
     <link href="~/Content/workbench.css" rel="stylesheet" />
     <link href="~/Content/smart-table.css" rel="stylesheet" />
     <link href="~/Content/icons.css" rel="stylesheet" />
+    <link href="~/Content/animations.css" rel="stylesheet" />
     <link href="~/Customisations/domain.css" rel="stylesheet" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -128,7 +128,7 @@
             <section class="content workbenchContainer">
 
                 <div ng-controller="workbenchController">
-                    <div ng-repeat="explorer in visibleExplorers" class="explorerPanel">
+                    <div ng-repeat="explorer in visibleExplorers" class="explorerPanel animate">
                         <div ng-switch="explorer.__meta.IsCollection" ng-controller="explorerController">
                             <div ng-switch-when="true">
                                 <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
