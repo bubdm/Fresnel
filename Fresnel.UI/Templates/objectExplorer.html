@@ -18,6 +18,8 @@
 
         <div ng-if="explorer.CustomTemplateUrl == null" class="objectExplorerPanelBody">
             <!-- Default view -->
+            <div ng-show="oObj.Methods.length > 0" ng-include="'/Templates/methodsPanel.html'"></div>
+
             <div class="box-body">
                 <div class="propertyItems">
                     <div ng-repeat='prop in oObj.Properties' ng-include="'/Templates/objectExplorerPropertyItem.html'"></div>

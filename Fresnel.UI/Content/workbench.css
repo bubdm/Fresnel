@@ -14,9 +14,7 @@ a.disabled {
 
 .workbenchContainer {
     height: 100%;
-    min-height: 100%;
     width: 100%;
-
     overflow-x: scroll;
     white-space: nowrap; /* This allows ExplorerPanels to be aligned horzxontally, but breaks intenal text wrapping  */
 }
@@ -29,6 +27,7 @@ a.disabled {
 .explorerPanel {
     padding: 0px !important;
     margin: 4px !important;
+    min-height: 200px;
     display: inline-block;
     vertical-align: top;
     white-space: normal; /* This restores the text wrapping from the workbenchContainer */
@@ -59,6 +58,22 @@ a.disabled {
     color: black;
     padding: 2px;
     margin: 2px;
+}
+
+.methodItems {
+    align-content: center;
+}
+
+.methodItem {
+    width: 160px;
+    padding: 2px;
+    margin: 2px;
+}
+
+.methodItemText {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .collectionPropertyCellItem {

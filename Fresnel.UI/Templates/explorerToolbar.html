@@ -1,16 +1,5 @@
 ﻿
 <div class="box-tools pull-right">
-    <div class="btn-group" ng-show="oObj.Methods.length > 0">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-            <span class="caret"></span>
-            <span class="sr-only">Actions</span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            <li ng-repeat='method in oObj.Methods'>
-                <a href="" a-disabled="!method.IsEnabled" ng-click="invoke(method)" data-toggle="tooltip" title="{{method.Description}}">{{method.Name}}</a>
-            </li>
-        </ul>
-    </div>
     <button class="btn btn-primary btn-sm" ng-click="save(explorer)" tooltip="prop.Tooltip" ng-class="{ 'alert-default' : explorerForm.$dirty }"><i class=" fa fa-save"></i></button>
 
     <button class="btn btn-primary btn-sm" ng-show="explorer.__meta.IsCollection" ng-click="addNewItem(oCol.ElementType)" title="Add a new item to this list"><i class="fa fa-plus-square"></i></button>

@@ -1,0 +1,10 @@
+﻿<div ng-init="oObj = explorer.__meta" class="btn-group btn-group-sm methodItems">
+    <button ng-repeat='method in oObj.Methods'
+            ng-disabled="!method.IsEnabled"
+            ng-click="invoke(method)"
+            data-toggle="tooltip"
+            title="{{method.Description}}"
+            class="btn btn-default methodItem">
+        <div class="methodItemText">{{method.Name}}</div>
+    </button>
+</div>

@@ -970,6 +970,7 @@
     <Content Include="Templates\Editors\timeEditor.html" />
     <Content Include="Templates\Editors\passwordEditor.html" />
     <Content Include="Templates\Editors\textAreaEditor.html" />
+    <Content Include="Templates\methodsPanel.html" />
     <Content Include="Templates\mainHeader.html" />
     <Content Include="Templates\explorerToolbar.html" />
     <Content Include="Templates\collectionExplorerPropertyItem.html" />

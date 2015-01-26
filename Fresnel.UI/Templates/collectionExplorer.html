@@ -19,6 +19,8 @@
 
         <div ng-if="explorer.CustomTemplateUrl == null" class="collectionExplorerPanelBody">
             <!-- NB: Use st-safe-src to ensure collection is watched -->
+            <div ng-show="oObj.Methods.length > 0" ng-include="'/Templates/methodsPanel.html'"></div>
+
             <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" class="table table-striped">
                 <thead>
                     <tr>
