@@ -12,8 +12,14 @@ module FresnelApp {
         }
 
         addObject(obj: IObjectVM) {
-            this.remove(obj.ID);
             this.objectMap[obj.ID] = obj;
+
+            if (obj.IsCollection) {
+                for (var i = 0; i < obj.Items.length; i++) {
+                    var item = obj.Items[i];
+                    this.objectMap[item.ID] = item;
+                }
+            }
         }
 
         remove(objID: string) {
@@ -105,6 +111,10 @@ module FresnelApp {
                 }
             }
             return destination;
+        }
+
+        reset() {
+            this.objectMap = [];
         }
 
     }

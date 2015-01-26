@@ -44,6 +44,7 @@
 
                         promise.then((promiseResult) => {
                             var result = promiseResult.data;
+                            appService.identityMap.reset(); 
                             $rootScope.$broadcast("messagesReceived", result.Messages);
                         });
                     }
