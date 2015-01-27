@@ -43,6 +43,14 @@
                 }
             });
 
+            $scope.$on('modalOpened', function (event, messages: any) {
+                $scope.IsModalVisible = true;
+            });
+
+            $scope.$on('modalClosed', function (event, messages: any) {
+                $scope.IsModalVisible = false;
+            });
+
             // This will run when the page loads:
             angular.element(document).ready(function () {
                 $scope.loadSession();

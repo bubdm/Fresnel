@@ -54,10 +54,12 @@ module FresnelApp {
                             }
                         }
                     }
-                    var modal = $modal.open(options);
 
-                    modal.result.then(() => {
-                        fresnelService.invokeMethod(method);
+                    var modal = $modal.open(options);
+                    $rootScope.$broadcast("modalOpened", modal);
+
+                    modal.result.finally(() => {
+                        $rootScope.$broadcast("modalClosed", modal);
                     });
                 }
             }

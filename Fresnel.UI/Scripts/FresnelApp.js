@@ -282,8 +282,9 @@ var FresnelApp;
                         }
                     };
                     var modal = $modal.open(options);
-                    modal.result.then(function () {
-                        fresnelService.invokeMethod(method);
+                    $rootScope.$broadcast("modalOpened", modal);
+                    modal.result.finally(function () {
+                        $rootScope.$broadcast("modalClosed", modal);
                     });
                 }
             };
@@ -521,6 +522,12 @@ var FresnelApp;
                     var messageTtl = message.RequiresAcknowledgement ? 0 : 5000;
                     inform.add(message.Text, { ttl: messageTtl, type: messageType });
                 }
+            });
+            $scope.$on('modalOpened', function (event, messages) {
+                $scope.IsModalVisible = true;
+            });
+            $scope.$on('modalClosed', function (event, messages) {
+                $scope.IsModalVisible = false;
             });
             // This will run when the page loads:
             angular.element(document).ready(function () {

@@ -7,6 +7,8 @@
         session: Session;
 
         loadSession();
+
+        IsModalVisible: boolean;
     }
 
     export interface IToolboxControllerScope extends ng.IScope {
