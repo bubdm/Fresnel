@@ -9,6 +9,7 @@
         .service("appService", FresnelApp.AppService)
         .service("explorerService", FresnelApp.ExplorerService)
         .service("fresnelService", FresnelApp.FresnelService)
+        .service("requestBuilder", FresnelApp.RequestBuilder)
         .controller("appController", FresnelApp.AppController)
         .controller("toolboxController", FresnelApp.ToolboxController)
         .controller("workbenchController", FresnelApp.WorkbenchController)

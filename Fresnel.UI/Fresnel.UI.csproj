@@ -1042,6 +1042,7 @@
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerDirective.ts" />
     <TypeScriptCompile Include="AngularApp\Classes.ts" />
+    <TypeScriptCompile Include="AngularApp\RequestBuilder.ts" />
     <TypeScriptCompile Include="AngularApp\FresnelService.ts" />
     <TypeScriptCompile Include="AngularApp\Session\AppController.ts" />
     <TypeScriptCompile Include="AngularApp\Session\AppService.ts" />

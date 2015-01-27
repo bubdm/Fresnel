@@ -54,9 +54,14 @@ namespace Envivo.Fresnel.SampleModel
         /// <param name="aNumber">This should accept an Integer</param>
         /// <param name="aDate">This should accept a Date</param>
         /// /// <param name="category">This should accept a Category</param>
-        public void MethodWithMultipleParameters(string aString, int aNumber, DateTime aDate, Category category)
+        public string MethodWithValueParameters(string aString, int aNumber, DateTime aDate)
         {
-            Trace.TraceInformation(MethodBase.GetCurrentMethod().Name);
+            return MethodBase.GetCurrentMethod().Name;
+        }
+
+        public string MethodWithObjectParameters(string aString, int aNumber, DateTime aDate)
+        {
+            return MethodBase.GetCurrentMethod().Name;
         }
 
         /// <summary>

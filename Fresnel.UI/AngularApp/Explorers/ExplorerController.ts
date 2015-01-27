@@ -16,7 +16,11 @@ module FresnelApp {
 
             $scope.invoke = function (method: any) {
                 if (method.Parameters.length == 0) {
-                    var promise = fresnelService.invokeMethod(method);
+                    var request = {
+                        ObjectId: method.ObjectID,
+                        MethodName: method.MethodName,
+                    };
+                    var promise = fresnelService.invokeMethod(request);
 
                     promise.then((promiseResult) => {
                         var result = promiseResult.data;
@@ -34,8 +38,9 @@ module FresnelApp {
                     var options: ng.ui.bootstrap.IModalSettings = {
                         templateUrl: '/Templates/methodDialog.html',
                         controller: 'methodController',
+                        backdrop: 'static',
                         resolve: {
-                            // These objects will be available on the MethodController's scope:
+                            // These objects will be injected into the MethodController's ctor:
                             explorer: function () {
                                 return $scope.explorer;
                             },

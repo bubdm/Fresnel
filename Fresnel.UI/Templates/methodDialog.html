@@ -24,7 +24,10 @@
         </div>
 
         <div class="box-footer text-center">
-            <button class="btn btn-primary fa fa-play" ng-disabled="!method.AreAllParamtersSet" ng-click="invoke(method)"> Execute</button>
+            <button class="btn btn-primary fa fa-play"
+                    ng-disabled="method.ParametersSetByUser.length < method.Parameters.length" ng-click="invoke(method)">
+                Execute
+            </button>
         </div>
     </div>
 
