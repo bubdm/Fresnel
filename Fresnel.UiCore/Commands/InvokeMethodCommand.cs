@@ -6,6 +6,7 @@ using Envivo.Fresnel.UiCore.Messages;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
@@ -44,6 +45,9 @@ namespace Envivo.Fresnel.UiCore.Commands
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
                 var oMethod = oObject.Methods[request.MethodName];
+
+                this.UpdateParameters(oMethod, request);
+
                 var oMethodResult = _InvokeMethodCommand.Invoke(oMethod, oObject.RealObject);
                 var oResultObject = oMethodResult as ObjectObserver;
 
@@ -99,5 +103,24 @@ namespace Envivo.Fresnel.UiCore.Commands
                 };
             }
         }
+
+        private void UpdateParameters(MethodObserver oMethod, InvokeMethodRequest request)
+        {
+            if (request.Parameters == null ||
+                !request.Parameters.Any())
+                return;
+
+            foreach (var paramVM in request.Parameters)
+            {
+                var oParam = oMethod.Parameters[paramVM.InternalName];
+
+                var oValue = (paramVM.State.ReferenceValueID != null) ?
+                            _ObserverCache.GetObserverById(paramVM.State.ReferenceValueID.Value) :
+                            _ObserverCache.GetValueObserver(paramVM.State.Value.ToStringOrNull(), oParam.Template.ParameterType);
+
+                oParam.Value = oValue.RealObject;
+            }
+        }
+
     }
 }

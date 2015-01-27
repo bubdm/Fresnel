@@ -98,6 +98,52 @@ namespace Envivo.Fresnel.Core.Observers
             return result;
         }
 
+        public BaseObjectObserver GetValueObserver(string value, Type valueType)
+        {
+            BaseObjectObserver oValue = null;
+
+            var isNonReference = valueType.IsNonReference();
+            var isNullable = valueType.IsNullableType();
+
+            if (valueType.IsEnum)
+            {
+                var typedValue = Enum.Parse(valueType, value, true);
+                oValue = this.GetObserver(typedValue, valueType);
+            }
+            else if (isNonReference &&
+                     isNullable &&
+                     valueType.IsNotTypeOf<string>() &&
+                     value == null)
+            {
+                var targetType = valueType.GetInnerType();
+                oValue = this.GetObserver(value, targetType);
+            }
+            else if (valueType.IsNonReference() &&
+                    value == null)
+            {
+                throw new CoreException("The given value is not allowed");
+            }
+            else if (isNonReference &&
+                     isNullable &&
+                     valueType.IsNotTypeOf<string>() &&
+                     value != null)
+            {
+                var targetType = valueType.GetInnerType();
+                var typedValue = Convert.ChangeType(value, targetType);
+                oValue = this.GetObserver(typedValue, targetType);
+            }
+            else
+            {
+                var targetType = valueType;
+                var typedValue = value != null ?
+                                Convert.ChangeType(value, targetType) :
+                                null;
+                oValue = this.GetObserver(typedValue, targetType);
+            }
+
+            return oValue;
+        }
+
         private BaseObjectObserver GetCachedObserver(Guid objectId, object obj, ClassTemplate tClass)
         {
             BaseObjectObserver result = null;

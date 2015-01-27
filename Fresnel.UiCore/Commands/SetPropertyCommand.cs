@@ -45,7 +45,10 @@ namespace Envivo.Fresnel.UiCore.Commands
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
                 var oProp = oObject.Properties[request.PropertyName];
-                var oValue = GetValueObserver(request, oProp);
+
+                var oValue = (request.ReferenceValueId != Guid.Empty) ?
+                            _ObserverCache.GetObserverById(request.ReferenceValueId) :
+                            _ObserverCache.GetValueObserver(request.NonReferenceValue.ToStringOrNull(), oProp.Template.PropertyType);
 
                 var previousValue = oProp.PreviousValue;
                 _SetPropertyCommand.Invoke(oProp, oValue);
@@ -89,50 +92,50 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
         }
 
-        private BaseObjectObserver GetValueObserver(SetPropertyRequest request, BasePropertyObserver oProp)
-        {
-            BaseObjectObserver oValue = null;
-            if (request.ReferenceValueId != Guid.Empty)
-            {
-                oValue = _ObserverCache.GetObserverById(request.ReferenceValueId);
-            }
-            else if (oProp.Template.PropertyType.IsEnum)
-            {
-                var value = Enum.Parse(oProp.Template.PropertyType, request.NonReferenceValue.ToString(), true);
-                oValue = _ObserverCache.GetObserver(value, oProp.Template.PropertyType);
-            }
-            else if (oProp.Template.IsNonReference &&
-                     oProp.Template.IsNullableType &&
-                     oProp.Template.PropertyType.IsNotTypeOf<string>() &&
-                     request.NonReferenceValue == null)
-            {
-                var targetType = oProp.Template.PropertyType.GetInnerType();
-                oValue = _ObserverCache.GetObserver(request.NonReferenceValue, targetType);
-            }
-            else if (oProp.Template.IsNonReference &&
-                 request.NonReferenceValue == null)
-            {
-                throw new UiCoreException("The given value is not allowed");
-            }
-            else if (oProp.Template.IsNonReference &&
-                     oProp.Template.IsNullableType &&
-                     oProp.Template.PropertyType.IsNotTypeOf<string>() &&
-                     request.NonReferenceValue != null)
-            {
-                var targetType = oProp.Template.PropertyType.GetInnerType();
-                var value = Convert.ChangeType(request.NonReferenceValue, targetType);
-                oValue = _ObserverCache.GetObserver(value, targetType);
-            }
-            else
-            {
-                var targetType = oProp.Template.PropertyType;
-                var value = request.NonReferenceValue != null ?
-                                Convert.ChangeType(request.NonReferenceValue, targetType) :
-                                null;
-                oValue = _ObserverCache.GetObserver(value, targetType);
-            }
-            return oValue;
-        }
+        //private BaseObjectObserver GetValueObserver(SetPropertyRequest request, BasePropertyObserver oProp)
+        //{
+        //    BaseObjectObserver oValue = null;
+        //    if (request.ReferenceValueId != Guid.Empty)
+        //    {
+        //        oValue = _ObserverCache.GetObserverById(request.ReferenceValueId);
+        //    }
+        //    else if (oProp.Template.PropertyType.IsEnum)
+        //    {
+        //        var value = Enum.Parse(oProp.Template.PropertyType, request.NonReferenceValue.ToString(), true);
+        //        oValue = _ObserverCache.GetObserver(value, oProp.Template.PropertyType);
+        //    }
+        //    else if (oProp.Template.IsNonReference &&
+        //             oProp.Template.IsNullableType &&
+        //             oProp.Template.PropertyType.IsNotTypeOf<string>() &&
+        //             request.NonReferenceValue == null)
+        //    {
+        //        var targetType = oProp.Template.PropertyType.GetInnerType();
+        //        oValue = _ObserverCache.GetObserver(request.NonReferenceValue, targetType);
+        //    }
+        //    else if (oProp.Template.IsNonReference &&
+        //         request.NonReferenceValue == null)
+        //    {
+        //        throw new UiCoreException("The given value is not allowed");
+        //    }
+        //    else if (oProp.Template.IsNonReference &&
+        //             oProp.Template.IsNullableType &&
+        //             oProp.Template.PropertyType.IsNotTypeOf<string>() &&
+        //             request.NonReferenceValue != null)
+        //    {
+        //        var targetType = oProp.Template.PropertyType.GetInnerType();
+        //        var value = Convert.ChangeType(request.NonReferenceValue, targetType);
+        //        oValue = _ObserverCache.GetObserver(value, targetType);
+        //    }
+        //    else
+        //    {
+        //        var targetType = oProp.Template.PropertyType;
+        //        var value = request.NonReferenceValue != null ?
+        //                        Convert.ChangeType(request.NonReferenceValue, targetType) :
+        //                        null;
+        //        oValue = _ObserverCache.GetObserver(value, targetType);
+        //    }
+        //    return oValue;
+        //}
 
         private string CreateFriendlyValueName(BasePropertyObserver oProp, object value)
         {
