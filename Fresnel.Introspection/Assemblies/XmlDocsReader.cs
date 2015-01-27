@@ -2,6 +2,7 @@ using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml.XPath;
 
@@ -147,6 +148,56 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
                     var tSuperMethod = tSuperClass.Methods.TryGetValueOrNull(tMethod.Name);
                     if (tSuperMethod == null)
+                        return _EmptyXmlComments;
+
+                    xmlComments = tSuperClass.XmlComments;
+                }
+                finally
+                {
+                    superType = superType.BaseType;
+                }
+            }
+
+            return xmlComments;
+        }
+
+
+        public XmlComments GetXmlCommentsFor(ParameterTemplate tParam)
+        {
+            if (this.IsHelpAvailable == false)
+                return _EmptyXmlComments;
+
+            if (tParam.IsVisible == false)
+                return _EmptyXmlComments;
+
+            var xmlComments = this.GetXmlComments(tParam);
+
+            var methodSignature = tParam.OuterMethod.Parameters.Values
+                                    .Select(p => p.ParameterType).ToArray();
+
+            // If the summary is empty, we need to obtain the value from one of the Super classes:
+            var superType = tParam.OuterClass.RealType.BaseType;
+            while ((superType != null) && xmlComments.Summary.IsEmpty())
+            {
+                try
+                {
+                    // NB: If we can't find the super class, there's no point in continuing:
+                    var tSuperClass = _AssemblyReader.GetTemplate(superType) as ClassTemplate;
+                    if (tSuperClass == null)
+                        return _EmptyXmlComments;
+
+                    var tSuperMethod = tSuperClass.Methods.TryGetValueOrNull(tParam.OuterMethod.Name);
+                    if (tSuperMethod == null)
+                        return _EmptyXmlComments;
+
+                    var superMethodSignature = tSuperMethod.Parameters.Values
+                                                .Select(p => p.ParameterType).ToArray();
+
+                    // Look for a method that has the same name and signature:
+                    var tSuperParam = tSuperMethod.Parameters.Values
+                                        .SingleOrDefault(p => p.Name == tParam.Name &&
+                                                             methodSignature.SequenceEqual(superMethodSignature));
+                    if (tSuperParam == null)
                         return _EmptyXmlComments;
 
                     xmlComments = tSuperClass.XmlComments;

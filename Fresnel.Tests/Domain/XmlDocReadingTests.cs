@@ -62,5 +62,26 @@ namespace Envivo.Fresnel.Tests.Domain
                 Assert.IsNotEmpty(tMethod.XmlComments.Summary);
             }
         }
+
+        [Test()]
+        public void ShouldParseXmlCommentsForMethodParameters()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+
+            var typeToInspect = typeof(SampleModel.MethodTests);
+
+            // Act:
+            var tClass = (ClassTemplate)templateCache.GetTemplate(typeToInspect);
+
+            // Assert:
+            var tMethod = tClass.Methods["MethodWithValueParameters"];
+
+            foreach (var tParam in tMethod.Parameters.Values)
+            {
+                Assert.IsNotEmpty(tParam.XmlComments.Summary);
+            }
+        }
     }
 }

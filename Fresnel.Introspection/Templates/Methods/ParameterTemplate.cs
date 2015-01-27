@@ -25,6 +25,10 @@ namespace Envivo.Fresnel.Introspection.Templates
             _InnerClass = new Lazy<IClassTemplate>(
                                     () => this.DetermineInnerClass(),
                                     System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+
+            _XmlComments = new Lazy<XmlComments>(
+                                () => this.AssemblyReader.XmlDocReader.GetXmlCommentsFor(this),
+                                System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>

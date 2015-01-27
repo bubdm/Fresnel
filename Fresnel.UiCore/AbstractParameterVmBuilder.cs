@@ -52,7 +52,7 @@ namespace Envivo.Fresnel.UiCore
                 IsVisible = true,
                 Name = tParam.FriendlyName,
                 InternalName = tParam.Name,
-                //Description = tParam.XmlComments.Summary,     // We haven't got parameter XML working yet
+                Description = tParam.XmlComments.Summary,
                 State = this.CreateStateFor(tParam)
             };
 

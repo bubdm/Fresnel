@@ -26,6 +26,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var result = _paramterFactory();
 
+            result.IsVisible = true;
             result.OuterClass = tMethod.OuterClass;
             result.OuterMethod = tMethod;
             result.ParameterInfo = paramInfo;
@@ -36,6 +37,8 @@ namespace Envivo.Fresnel.Introspection.Templates
                             paramInfo.Name;
 
             result.FriendlyName = paramInfo.Name.CreateFriendlyName();
+
+            result.AssemblyReader = tMethod.AssemblyReader;
 
             result.FinaliseConstruction();
 

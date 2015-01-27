@@ -96,7 +96,7 @@ namespace Envivo.Fresnel.Tests.Proxies
         }
 
         [Test()]
-        public void ShouldIdentifyMethodParameterTextValues()
+        public void ShouldIdentifyMethodParameterValues()
         {
             // Arrange:
             var container = new ContainerFactory().Build();
@@ -110,10 +110,11 @@ namespace Envivo.Fresnel.Tests.Proxies
             var vm = vmBuilder.BuildFor(oObject);
 
             // Assert:
-            var methodWithParams = vm.Methods.First(m => m.Parameters.Count() > 1);
+            var methodWithParams = vm.Methods.Single(m => m.MethodName == "MethodWithValueParameters");
 
             Assert.IsTrue(methodWithParams.Parameters.Any(p => p.State.ValueType != null));
             Assert.IsTrue(methodWithParams.Parameters.Any(p => p.Info != null));
+            Assert.IsTrue(methodWithParams.Parameters.Any(p => p.Description != null));
         }
     }
 }
