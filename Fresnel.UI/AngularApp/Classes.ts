@@ -1,7 +1,7 @@
 ﻿module FresnelApp {
 
     export class Explorer {
-        __meta: IObjectVM;
+        __meta: ObjectVM;
 
         IsMaximised: boolean;
 

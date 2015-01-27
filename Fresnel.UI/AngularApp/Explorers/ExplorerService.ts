@@ -13,7 +13,7 @@
             this.templateCache = $templateCache;
         }
 
-        addExplorer(obj: IObjectVM): Explorer {
+        addExplorer(obj: ObjectVM): Explorer {
             var explorer = new Explorer();
             explorer.__meta = obj;
             this.CheckForCustomTemplate(explorer);

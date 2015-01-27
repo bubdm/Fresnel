@@ -1,9 +1,11 @@
 ﻿using Envivo.Fresnel.UiCore.Model;
 
 using System.Collections.Generic;
+using T4TS;
 
 namespace Envivo.Fresnel.UiCore.Changes
 {
+    [TypeScriptInterface]
     public class Modifications
     {
         public IEnumerable<ObjectVM> NewObjects { get; set; }

@@ -1,11 +1,13 @@
 ﻿using Envivo.Fresnel.UiCore.TypeInfo;
 using System;
+using T4TS;
 
 namespace Envivo.Fresnel.UiCore.Model
 {
     /// <summary>
     /// Represents a Property or Parameter Value in the UI
     /// </summary>
+    [TypeScriptInterface]
     public class ValueVM : BaseViewModel
     {
         public Guid? ObjectID { get; set; }

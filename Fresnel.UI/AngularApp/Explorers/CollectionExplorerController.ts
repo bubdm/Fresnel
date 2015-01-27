@@ -34,7 +34,7 @@
 
             };
 
-            $scope.addExistingItem = function (obj: IObjectVM) {
+            $scope.addExistingItem = function (obj: ObjectVM) {
                 var request = {
                     CollectionID: collection.ID,
                     ElementID: obj.ID
@@ -51,7 +51,7 @@
 
             };
 
-            $scope.removeItem = function (obj: IObjectVM) {
+            $scope.removeItem = function (obj: ObjectVM) {
                 var request = {
                     CollectionID: collection.ID,
                     ElementID: obj.ID

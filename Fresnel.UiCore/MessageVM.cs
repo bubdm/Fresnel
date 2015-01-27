@@ -1,7 +1,9 @@
 ﻿using System;
+using T4TS;
 
 namespace Envivo.Fresnel.UiCore.Messages
 {
+    [TypeScriptInterface]
     public class MessageVM
     {
         public DateTime OccurredAt { get; set; }

@@ -1,5 +1,7 @@
-﻿namespace Envivo.Fresnel.UiCore
+﻿using T4TS;
+namespace Envivo.Fresnel.UiCore
 {
+    [TypeScriptInterface]
     public class InteractionPoint : BaseViewModel
     {
         public string CommandUri { get; set; }

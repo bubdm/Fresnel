@@ -44,7 +44,7 @@
             return request;
         }
 
-        buildGetObjectRequest(obj: IObjectVM) {
+        buildGetObjectRequest(obj: ObjectVM) {
             var request = {
                 ObjectId: obj.ID,
             };

@@ -13,7 +13,7 @@
 
             $scope.visibleExplorers = [];
 
-            $scope.$on('openNewExplorer', function (event, obj: IObjectVM) {
+            $scope.$on('openNewExplorer', function (event, obj: ObjectVM) {
                 if (!obj)
                     return;
 

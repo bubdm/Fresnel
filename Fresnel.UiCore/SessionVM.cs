@@ -1,9 +1,11 @@
 ﻿using Envivo.Fresnel.UiCore.Messages;
 using System;
 using System.Collections.Generic;
+using T4TS;
 
 namespace Envivo.Fresnel.UiCore
 {
+    [TypeScriptInterface]
     public class SessionVM
     {
         public SessionVM()

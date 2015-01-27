@@ -1,5 +1,7 @@
-﻿namespace Envivo.Fresnel.UiCore
+﻿using T4TS;
+namespace Envivo.Fresnel.UiCore
 {
+    [TypeScriptInterface]
     public abstract class BaseViewModel
     {
         public bool IsVisible { get; set; }

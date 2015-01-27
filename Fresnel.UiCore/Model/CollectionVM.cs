@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using T4TS;
 
 namespace Envivo.Fresnel.UiCore.Model
 {
+    [TypeScriptInterface]
     public class CollectionVM : ObjectVM
     {
         public bool IsCollection { get { return true; } }

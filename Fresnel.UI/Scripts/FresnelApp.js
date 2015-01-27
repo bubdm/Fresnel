@@ -631,9 +631,11 @@ var FresnelApp;
         };
         IdentityMap.prototype.addObject = function (obj) {
             this.objectMap[obj.ID] = obj;
-            if (obj.IsCollection) {
-                for (var i = 0; i < obj.Items.length; i++) {
-                    var item = obj.Items[i];
+            var isCollection = obj.hasOwnProperty("IsCollection");
+            if (isCollection) {
+                var coll = obj;
+                for (var i = 0; i < coll.Items.length; i++) {
+                    var item = coll.Items[i];
                     this.objectMap[item.ID] = item;
                 }
             }

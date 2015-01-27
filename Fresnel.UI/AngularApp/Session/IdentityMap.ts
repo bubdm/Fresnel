@@ -11,12 +11,14 @@ module FresnelApp {
             return item;
         }
 
-        addObject(obj: IObjectVM) {
+        addObject(obj: ObjectVM) {
             this.objectMap[obj.ID] = obj;
 
-            if (obj.IsCollection) {
-                for (var i = 0; i < obj.Items.length; i++) {
-                    var item = obj.Items[i];
+            var isCollection = obj.hasOwnProperty("IsCollection");
+            if (isCollection) {
+                var coll = <CollectionVM>obj;
+                for (var i = 0; i < coll.Items.length; i++) {
+                    var item = coll.Items[i];
                     this.objectMap[item.ID] = item;
                 }
             }
@@ -32,7 +34,7 @@ module FresnelApp {
 
             // 1: Add new objects:
             for (var i = 0; i < modifications.NewObjects.length; i++) {
-                var item: IObjectVM = modifications.NewObjects[i];
+                var item: ObjectVM = modifications.NewObjects[i];
                 var existingItem = this.getObject(item.ID);
                 if (existingItem == null) {
                     this.addObject(item);
@@ -93,7 +95,7 @@ module FresnelApp {
             }
         }
 
-        mergeObjects(existingObj: IObjectVM, newObj: IObjectVM) {
+        mergeObjects(existingObj: ObjectVM, newObj: ObjectVM) {
             for (var i = 0; i < existingObj.Properties.length; i++) {
                 // NB: Don't replace the prop object, otherwise the bindings will break:
                 this.extendDeep(existingObj.Properties[i].State, newObj.Properties[i].State);

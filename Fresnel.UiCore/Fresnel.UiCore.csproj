@@ -37,6 +37,9 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
+    <Reference Include="T4TS.Attributes">
+      <HintPath>..\packages\T4TS-Ignoreable.0.9\lib\net20\T4TS.Attributes.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractParameterVmBuilder.cs" />
@@ -92,7 +95,6 @@
     <Compile Include="Controllers\ToolboxController.cs" />
     <Compile Include="Changes\Modifications.cs" />
     <Compile Include="BaseViewModel.cs" />
-    <Compile Include="IdentityMap.cs" />
     <Compile Include="AbstractPropertyVmBuilder.cs" />
     <Compile Include="Model\CollectionVM.cs" />
     <Compile Include="AbstractObjectVMBuilder.cs" />
@@ -107,7 +109,14 @@
     <Compile Include="TypeInfo\ITypeInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="T4TS.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>T4TS.d.ts</LastGenOutput>
+    </None>
+    <None Include="T4TS.tt.settings.t4" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fresnel.Configuration\Fresnel.Configuration.csproj">
       <Project>{b3122093-8ebb-423b-a4ed-951752690288}</Project>
@@ -129,6 +138,16 @@
       <Project>{3ba54d1e-0d73-4c83-a3c7-5fd199e0f468}</Project>
       <Name>Fresnel.Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="T4TS.d.ts">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>T4TS.tt</DependentUpon>
+    </TypeScriptCompile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

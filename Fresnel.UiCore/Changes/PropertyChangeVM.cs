@@ -1,8 +1,10 @@
 ﻿using Envivo.Fresnel.UiCore.Model;
 using System;
+using T4TS;
 
 namespace Envivo.Fresnel.UiCore.Changes
 {
+    [TypeScriptInterface]
     public class PropertyChangeVM
     {
         public Guid ObjectId { get; set; }

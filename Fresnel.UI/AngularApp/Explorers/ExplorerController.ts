@@ -108,7 +108,7 @@ module FresnelApp {
                 $rootScope.$broadcast("closeExplorer", explorer);
             }
 
-            $scope.openNewExplorer = function (obj: IObjectVM) {
+            $scope.openNewExplorer = function (obj: ObjectVM) {
                 $rootScope.$broadcast("openNewExplorer", obj);
             }
 

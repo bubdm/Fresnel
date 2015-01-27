@@ -38,13 +38,13 @@
 
         refresh(explorer: Explorer);
 
-        invoke(method: IObjectVM);
+        invoke(method: MethodVM);
 
         setProperty(prop: any);
 
         setBitwiseEnumProperty(prop: any, enumValue: number);
 
-        openNewExplorer(obj: IObjectVM);
+        openNewExplorer(obj: ObjectVM);
 
         openNewExplorerForProperty(prop: any);
 
@@ -58,9 +58,9 @@
 
         addNewItem(itemType: string);
 
-        addExistingItem(obj: IObjectVM);
+        addExistingItem(obj: ObjectVM);
 
-        removeItem(obj: IObjectVM);
+        removeItem(obj: ObjectVM);
 
     }
 
@@ -93,11 +93,11 @@
 
         setBitwiseEnumProperty(prop: any, enumValue: number);
 
-        openNewExplorer(obj: IObjectVM);
+        openNewExplorer(obj: ObjectVM);
 
-        results: IObjectVM[];
+        results: ObjectVM[];
 
-        selectedItems: IObjectVM[];
+        selectedItems: ObjectVM[];
 
     }
 
@@ -126,20 +126,4 @@
         cleanupSession(): ng.IPromise<any>;
     }
 
-    export interface IObjectVM {
-
-        ID: string;
-
-        IsCollection: boolean;
-
-        Items: IObjectVM[];
-
-        Properties: any[];
-
-        Methods: any[];
-
-        IsMaximised: boolean;
-
-        Type: string;
-    }
 }
