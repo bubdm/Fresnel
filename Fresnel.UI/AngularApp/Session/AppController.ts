@@ -24,7 +24,6 @@
             }
 
             $scope.$on('messagesReceived', function (event, messages: any) {
-                $scope.session.TestValue++;
                 appService.mergeMessages(messages, $scope.session);
 
                 for (var i = 0; i < messages.length; i++) {

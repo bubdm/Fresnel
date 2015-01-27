@@ -513,7 +513,6 @@ var FresnelApp;
                 });
             };
             $scope.$on('messagesReceived', function (event, messages) {
-                $scope.session.TestValue++;
                 appService.mergeMessages(messages, $scope.session);
                 for (var i = 0; i < messages.length; i++) {
                     var message = messages[i];
@@ -581,15 +580,6 @@ var FresnelApp;
         return ToolboxController;
     })();
     FresnelApp.ToolboxController = ToolboxController;
-})(FresnelApp || (FresnelApp = {}));
-var FresnelApp;
-(function (FresnelApp) {
-    var Session = (function () {
-        function Session() {
-        }
-        return Session;
-    })();
-    FresnelApp.Session = Session;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {

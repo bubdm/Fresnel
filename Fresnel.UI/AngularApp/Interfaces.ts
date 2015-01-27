@@ -4,7 +4,7 @@
 
         identityMap: IdentityMap;
 
-        session: Session;
+        session: SessionVM;
 
         loadSession();
 
