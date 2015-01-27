@@ -970,10 +970,12 @@
     <Content Include="Templates\Editors\timeEditor.html" />
     <Content Include="Templates\Editors\passwordEditor.html" />
     <Content Include="Templates\Editors\textAreaEditor.html" />
+    <Content Include="Templates\dialogToolbar.html" />
     <Content Include="Templates\methodsPanel.html" />
     <Content Include="Templates\mainHeader.html" />
     <Content Include="Templates\explorerToolbar.html" />
     <Content Include="Templates\collectionExplorerPropertyItem.html" />
+    <Content Include="Templates\methodDialog.html" />
     <Content Include="Templates\propertyItem.html" />
     <Content Include="Templates\toolbox.html" />
     <Content Include="Templates\Editors\emptyEditor.html" />
@@ -1033,6 +1035,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="AngularApp\Explorers\MethodController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\WorkbenchController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerService.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\CollectionExplorerController.ts" />
@@ -1044,6 +1047,7 @@
     <TypeScriptCompile Include="AngularApp\Session\AppService.ts" />
     <TypeScriptCompile Include="AngularApp\ClassLibrary\ToolboxController.ts" />
     <TypeScriptCompile Include="AngularApp\Session\Session.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angular-ui-bootstrap\angular-ui-bootstrap.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\customExtensions.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />

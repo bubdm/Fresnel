@@ -1,3 +1,39 @@
+/// <reference path="../../scripts/typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts" />
+var FresnelApp;
+(function (FresnelApp) {
+    var MethodController = (function () {
+        function MethodController($rootScope, $scope, fresnelService, appService, explorerService, explorer, method) {
+            $scope.explorer = explorer;
+            $scope.method = method;
+            $scope.invoke = function (method) {
+                var promise = fresnelService.invokeMethod(method);
+                promise.then(function (promiseResult) {
+                    var result = promiseResult.data;
+                    method.Error = result.Passed ? "" : result.Messages[0].Text;
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    if (result.ResultObject) {
+                        $rootScope.$broadcast("openNewExplorer", result.ResultObject);
+                    }
+                });
+            };
+            $scope.setProperty = function (param) {
+                // Find the parameter, and set it's value:
+                // If it's an Object, set the ReferenceValueID
+            };
+            $scope.setBitwiseEnumProperty = function (param, enumValue) {
+                param.State.Value = param.State.Value ^ enumValue;
+                $scope.setProperty(param);
+            };
+            $scope.cancel = function () {
+                //modalInstance.dismiss();
+            };
+        }
+        MethodController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService', 'explorer', 'method'];
+        return MethodController;
+    })();
+    FresnelApp.MethodController = MethodController;
+})(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
     var WorkbenchController = (function () {
@@ -191,21 +227,43 @@ var FresnelApp;
     })();
     FresnelApp.CollectionExplorerController = CollectionExplorerController;
 })(FresnelApp || (FresnelApp = {}));
+/// <reference path="../../scripts/typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts" />
 var FresnelApp;
 (function (FresnelApp) {
     var ExplorerController = (function () {
-        function ExplorerController($rootScope, $scope, fresnelService, appService, explorerService) {
+        function ExplorerController($rootScope, $scope, fresnelService, appService, explorerService, $modal) {
             $scope.invoke = function (method) {
-                var promise = fresnelService.invokeMethod(method);
-                promise.then(function (promiseResult) {
-                    var result = promiseResult.data;
-                    method.Error = result.Passed ? "" : result.Messages[0].Text;
-                    appService.identityMap.merge(result.Modifications);
-                    $rootScope.$broadcast("messagesReceived", result.Messages);
-                    if (result.ResultObject) {
-                        $rootScope.$broadcast("openNewExplorer", result.ResultObject);
-                    }
-                });
+                if (method.Parameters.length == 0) {
+                    var promise = fresnelService.invokeMethod(method);
+                    promise.then(function (promiseResult) {
+                        var result = promiseResult.data;
+                        method.Error = result.Passed ? "" : result.Messages[0].Text;
+                        appService.identityMap.merge(result.Modifications);
+                        $rootScope.$broadcast("messagesReceived", result.Messages);
+                        if (result.ResultObject) {
+                            $rootScope.$broadcast("openNewExplorer", result.ResultObject);
+                        }
+                    });
+                }
+                else {
+                    var options = {
+                        templateUrl: '/Templates/methodDialog.html',
+                        controller: 'methodController',
+                        resolve: {
+                            // These objects will be available on the MethodController's scope:
+                            explorer: function () {
+                                return $scope.explorer;
+                            },
+                            method: function () {
+                                return method;
+                            }
+                        }
+                    };
+                    var modal = $modal.open(options);
+                    modal.result.then(function () {
+                        fresnelService.invokeMethod(method);
+                    });
+                }
             };
             $scope.setProperty = function (prop) {
                 var request = {
@@ -269,7 +327,7 @@ var FresnelApp;
                 });
             };
         }
-        ExplorerController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService'];
+        ExplorerController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService', '$modal'];
         return ExplorerController;
     })();
     FresnelApp.ExplorerController = ExplorerController;
@@ -599,8 +657,8 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    var requires = ['blockUI', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table'];
-    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
+    var requires = ['blockUI', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table', 'ui.bootstrap'];
+    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("methodController", FresnelApp.MethodController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);
             return responseData;

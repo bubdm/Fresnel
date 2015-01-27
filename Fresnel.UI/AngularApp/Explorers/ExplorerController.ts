@@ -1,30 +1,55 @@
-﻿module FresnelApp {
+﻿/// <reference path="../../scripts/typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts" />
+
+module FresnelApp {
 
     export class ExplorerController {
 
-        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService'];
+        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService', '$modal'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: IExplorerControllerScope,
             fresnelService: IFresnelService,
             appService: AppService,
-            explorerService: ExplorerService) {
+            explorerService: ExplorerService,
+            $modal: ng.ui.bootstrap.IModalService) {
 
             $scope.invoke = function (method: any) {
-                var promise = fresnelService.invokeMethod(method);
+                if (method.Parameters.length == 0) {
+                    var promise = fresnelService.invokeMethod(method);
 
-                promise.then((promiseResult) => {
-                    var result = promiseResult.data;
-                    method.Error = result.Passed ? "" : result.Messages[0].Text;
+                    promise.then((promiseResult) => {
+                        var result = promiseResult.data;
+                        method.Error = result.Passed ? "" : result.Messages[0].Text;
 
-                    appService.identityMap.merge(result.Modifications);
-                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                        appService.identityMap.merge(result.Modifications);
+                        $rootScope.$broadcast("messagesReceived", result.Messages);
 
-                    if (result.ResultObject) {
-                        $rootScope.$broadcast("openNewExplorer", result.ResultObject);
+                        if (result.ResultObject) {
+                            $rootScope.$broadcast("openNewExplorer", result.ResultObject);
+                        }
+                    });
+                }
+                else {
+                    var options: ng.ui.bootstrap.IModalSettings = {
+                        templateUrl: '/Templates/methodDialog.html',
+                        controller: 'methodController',
+                        resolve: {
+                            // These objects will be available on the MethodController's scope:
+                            explorer: function () {
+                                return $scope.explorer;
+                            },
+                            method: function () {
+                                return method;
+                            }
+                        }
                     }
-                });
+                    var modal = $modal.open(options);
+
+                    modal.result.then(() => {
+                        fresnelService.invokeMethod(method);
+                    });
+                }
             }
 
             $scope.setProperty = function (prop: any) {

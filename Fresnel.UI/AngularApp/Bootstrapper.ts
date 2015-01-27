@@ -2,7 +2,8 @@
 
     var requires = ['blockUI',
         'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate',
-        'smart-table'];
+        'smart-table',
+        'ui.bootstrap'];
 
     angular.module("fresnelApp", requires)
         .service("appService", FresnelApp.AppService)
@@ -12,12 +13,13 @@
         .controller("toolboxController", FresnelApp.ToolboxController)
         .controller("workbenchController", FresnelApp.WorkbenchController)
         .controller("explorerController", FresnelApp.ExplorerController)
+        .controller("methodController", FresnelApp.MethodController)
         .controller("collectionExplorerController", FresnelApp.CollectionExplorerController)
         .directive("classLibrary", FresnelApp.ClassLibaryDirective)
         .directive("objectExplorer", FresnelApp.ExplorerDirective)
         .directive("aDisabled", FresnelApp.DisableAnchorDirective)
         .config(["$httpProvider", function ($httpProvider) {
-            $httpProvider.defaults.transformResponse.push(function (responseData) {
+        $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);
             return responseData;
         })

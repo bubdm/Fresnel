@@ -62,6 +62,43 @@
 
     }
 
+    export interface IMethodControllerScope extends ng.IScope {
+
+        explorer: Explorer;
+
+        method: any;
+
+        invoke(method: any);
+
+        setProperty(param: any);
+
+        setBitwiseEnumProperty(param: any, enumValue: number);
+
+        cancel();
+    }
+
+    export interface ISearchControllerScope extends ng.IScope {
+
+        explorer: Explorer;
+
+        searchType: string;
+
+        close(explorer: Explorer);
+
+        refresh(explorer: Explorer);
+
+        setProperty(prop: any);
+
+        setBitwiseEnumProperty(prop: any, enumValue: number);
+
+        openNewExplorer(obj: IObjectVM);
+
+        results: IObjectVM[];
+
+        selectedItems: IObjectVM[];
+
+    }
+
     export interface IFresnelService {
 
         getSession(): ng.IPromise<any>;

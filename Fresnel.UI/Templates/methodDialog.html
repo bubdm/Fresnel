@@ -1,0 +1,29 @@
+﻿<ng-form name="methodDialog" role="form" class="">
+
+    <div id="methodDialog_{{method.MethodName}}" block-ui class="container-fluid box box-solid box-primary">
+
+        <div class="box-header">
+            <span class="box-title">{{ method.Name }}</span>
+            <div ng-include="'/Templates/dialogToolbar.html'"></div>
+        </div>
+
+        <div ng-if="explorer.CustomTemplateUrl != null">
+            <!-- Custom Template should be used here: -->
+            <div ng-include="explorer.CustomTemplateUrl"></div>
+        </div>
+
+        <div ng-if="explorer.CustomTemplateUrl == null" class="methodDialogBody">
+            <!-- Default view -->
+
+            <div class="box-body">
+                <div class="parameterItems">
+                    <!-- NB: We're reusing the Property editors to reduce dupilcation -->
+                    <div ng-repeat='prop in method.Parameters' ng-include="'/Templates/objectExplorerPropertyItem.html'"></div>
+                </div>
+            </div>
+        </div>
+
+        <button ng-disabled="!method.AreAllParamtersSet" ng-click="invoke(method)">Go</button>
+    </div>
+
+</ng-form>

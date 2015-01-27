@@ -47,6 +47,7 @@
     <Compile Include="Domain\MethodTemplateTests.cs" />
     <Compile Include="Domain\PropertyTemplateTests.cs" />
     <Compile Include="Domain\CollectionTemplateTests.cs" />
+    <Compile Include="UiCore\MethodTests.cs" />
     <Compile Include="UiCore\EditorIdentifierTests.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -106,7 +106,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var refreshedObject = controller.GetObject(getRequest);
 
             // Assert:
-            var propVM = refreshedObject.ReturnValue.Properties.Single(p => p.PropertyName == "EnumValue");
+            var propVM = refreshedObject.ReturnValue.Properties.Single(p => p.InternalName == "EnumValue");
             Assert.AreEqual(30, propVM.State.Value);
         }
 
