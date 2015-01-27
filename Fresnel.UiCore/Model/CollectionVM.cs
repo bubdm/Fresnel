@@ -14,6 +14,6 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public IEnumerable<ObjectVM> Items { get; set; }
 
-
+        public IEnumerable<ObjectVM> DisplayItems { get; set; }
     }
 }

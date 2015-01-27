@@ -17,8 +17,8 @@ declare module FresnelApp {
         CollectionId: any;
         ElementId: any;
     }
-    /** Generated from Envivo.Fresnel.UiCore.Changes.Modifications **/
-    export interface Modifications {
+    /** Generated from Envivo.Fresnel.UiCore.Changes.ModificationsVM **/
+    export interface ModificationsVM {
         NewObjects: any;
         PropertyChanges: any;
         CollectionAdditions: any;
@@ -54,7 +54,7 @@ declare module FresnelApp {
         Passed: boolean;
         Failed: boolean;
         Messages: any;
-        Modifications: FresnelApp.Modifications;
+        Modifications: FresnelApp.ModificationsVM;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CleanupSessionResponse **/
     export interface CleanupSessionResponse extends FresnelApp.BaseCommandResponse {
@@ -116,7 +116,7 @@ declare module FresnelApp {
         OccurredAt: string;
         Text: string;
         Detail: string;
-        RequiresAcknowledgment: boolean;
+        RequiresAcknowledgement: boolean;
         IsSuccess: boolean;
         IsInfo: boolean;
         IsWarning: boolean;
@@ -128,6 +128,7 @@ declare module FresnelApp {
         ElementType: string;
         ElementProperties: any;
         Items: any;
+        DisplayItems: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.MethodVM **/
     export interface MethodVM extends FresnelApp.BaseViewModel {
@@ -135,6 +136,7 @@ declare module FresnelApp {
         Index: number;
         MethodName: string;
         Parameters: any;
+        ParametersSetByUser: any;
         IsAsync: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.ObjectVM **/

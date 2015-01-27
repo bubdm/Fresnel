@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.UiCore.Messages
 
         public string Detail { get; set; }
 
-        public bool RequiresAcknowledgment { get; set; }
+        public bool RequiresAcknowledgement { get; set; }
 
         public bool IsSuccess { get; set; }
 

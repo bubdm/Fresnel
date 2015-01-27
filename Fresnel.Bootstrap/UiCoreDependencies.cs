@@ -34,7 +34,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Commands.CollectionAddCommand),
                 typeof(Fresnel.UiCore.Commands.CollectionRemoveCommand),
 
-                typeof(Fresnel.UiCore.Changes.ModificationsBuilder),
+                typeof(Fresnel.UiCore.Changes.ModificationsVmBuilder),
 
                 typeof(Fresnel.UiCore.Classes.ClassItemBuilder),
                 typeof(Fresnel.UiCore.Classes.NamespacesBuilder),
@@ -59,7 +59,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Controllers.SessionController),
                 typeof(Fresnel.UiCore.Controllers.TestController),
 
-                typeof(Fresnel.UiCore.AbstractObjectVMBuilder),
+                typeof(Fresnel.UiCore.AbstractObjectVmBuilder),
                 typeof(Fresnel.UiCore.AbstractPropertyVmBuilder),
                 typeof(Fresnel.UiCore.PropertyStateVmBuilder),
                 typeof(Fresnel.UiCore.MethodVmBuilder),

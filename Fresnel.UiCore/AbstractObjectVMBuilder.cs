@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Envivo.Fresnel.UiCore
 {
-    public class AbstractObjectVMBuilder
+    public class AbstractObjectVmBuilder
     {
         private RealTypeResolver _RealTypeResolver;
         private ObserverCache _ObserverCache;
@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.UiCore
         private AbstractPropertyVmBuilder _PropertyVmBuilder;
         private MethodVmBuilder _MethodVmBuilder;
 
-        public AbstractObjectVMBuilder
+        public AbstractObjectVmBuilder
             (
             RealTypeResolver realTypeResolver,
             ObserverCache observerCache,

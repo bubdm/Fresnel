@@ -10,14 +10,15 @@
             fresnelService: IFresnelService,
             appService: AppService) {
 
-            var collection: any = $scope.explorer.__meta;
+            var collection = <CollectionVM>$scope.explorer.__meta;
             // This allows Smart-Table to handle the st-safe-src properly:
             collection.DisplayItems = [].concat(collection.Items);
 
             $scope.addNewItem = function (itemType: string) {
-                var request = {
+                var request: CollectionRequest = {
                     CollectionID: collection.ID,
-                    ElementTypeName: itemType
+                    ElementTypeName: itemType,
+                    ElementID: null
                 };
 
                 var promise = fresnelService.addNewItemToCollection(request);
@@ -35,8 +36,9 @@
             };
 
             $scope.addExistingItem = function (obj: ObjectVM) {
-                var request = {
+                var request: CollectionRequest = {
                     CollectionID: collection.ID,
+                    ElementTypeName: null,
                     ElementID: obj.ID
                 };
 
@@ -52,10 +54,12 @@
             };
 
             $scope.removeItem = function (obj: ObjectVM) {
-                var request = {
+                var request: CollectionRequest = {
                     CollectionID: collection.ID,
+                    ElementTypeName: null,
                     ElementID: obj.ID
                 };
+
                 var promise = fresnelService.removeItemFromCollection(request);
 
                 promise.then((promiseResult) => {

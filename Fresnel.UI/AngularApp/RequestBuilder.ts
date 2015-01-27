@@ -3,9 +3,9 @@
     export class RequestBuilder {
 
 
-        buildMethodInvokeRequest(method: any) {
-            var request = {
-                ObjectId: method.ObjectID,
+        buildMethodInvokeRequest(method: MethodVM) {
+            var request: InvokeMethodRequest = {
+                ObjectID: method.ObjectID,
                 MethodName: method.MethodName,
                 Parameters: []
             };
@@ -25,19 +25,20 @@
             return request;
         }
 
-        buildSetPropertyRequest(prop: any) {
-            var request = {
-                ObjectId: prop.ObjectID,
+        buildSetPropertyRequest(prop: ValueVM) {
+            var request: SetPropertyRequest = {
+                ObjectID: prop.ObjectID,
                 PropertyName: prop.InternalName,
-                NonReferenceValue: prop.State.Value
+                NonReferenceValue: prop.State.Value,
+                ReferenceValueId: null
             };
 
             return request;
         }
 
-        buildGetPropertyRequest(prop: any) {
-            var request = {
-                ObjectId: prop.ObjectID,
+        buildGetPropertyRequest(prop: ValueVM) {
+            var request: GetPropertyRequest = {
+                ObjectID: prop.ObjectID,
                 PropertyName: prop.InternalName
             };
 
@@ -45,8 +46,8 @@
         }
 
         buildGetObjectRequest(obj: ObjectVM) {
-            var request = {
-                ObjectId: obj.ID,
+            var request: GetObjectRequest = {
+                ObjectID: obj.ID
             };
 
             return request;

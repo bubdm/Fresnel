@@ -13,15 +13,15 @@ namespace Envivo.Fresnel.UiCore.Commands
     {
         private ObserverCache _ObserverCache;
         private RemoveFromCollectionCommand _RemoveFromCollectionCommand;
-        private AbstractObjectVMBuilder _ObjectVMBuilder;
-        private ModificationsBuilder _ModificationsBuilder;
+        private AbstractObjectVmBuilder _ObjectVMBuilder;
+        private ModificationsVmBuilder _ModificationsBuilder;
         private IClock _Clock;
 
         public CollectionRemoveCommand
             (
             ObserverCache observerCache,
             RemoveFromCollectionCommand removeFromCollectionCommand,
-            ModificationsBuilder modificationsBuilder,
+            ModificationsVmBuilder modificationsBuilder,
             IClock clock
             )
         {

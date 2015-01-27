@@ -6,15 +6,15 @@ using System.Linq;
 
 namespace Envivo.Fresnel.UiCore.Changes
 {
-    public class ModificationsBuilder
+    public class ModificationsVmBuilder
     {
-        private AbstractObjectVMBuilder _AbstractObjectVMBuilder;
+        private AbstractObjectVmBuilder _AbstractObjectVMBuilder;
         private PropertyStateVmBuilder _PropertyStateVmBuilder;
         private ObserverCache _ObserverCache;
 
-        public ModificationsBuilder
+        public ModificationsVmBuilder
             (
-            AbstractObjectVMBuilder abstractObjectVMBuilder,
+            AbstractObjectVmBuilder abstractObjectVMBuilder,
             PropertyStateVmBuilder _propertyStateVmBuilder,
             ObserverCache observerCache
             )
@@ -24,7 +24,7 @@ namespace Envivo.Fresnel.UiCore.Changes
             _ObserverCache = observerCache;
         }
 
-        public Modifications BuildFrom(IEnumerable<ObjectObserver> observers, long startedAt)
+        public ModificationsVM BuildFrom(IEnumerable<ObjectObserver> observers, long startedAt)
         {
             var newObjects = observers
                                     .Select(o => o.ChangeTracker.GetObjectCreation())
@@ -45,7 +45,7 @@ namespace Envivo.Fresnel.UiCore.Changes
                                     .SelectMany(c => c.ChangeTracker.GetCollectionRemovalsSince(startedAt))
                                     .ToArray();
 
-            var result = new Modifications()
+            var result = new ModificationsVM()
             {
                 NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)),
                 PropertyChanges = propertyChanges.Select(c => CreatePropertyChange(c)),

@@ -23,17 +23,17 @@
                 });
             }
 
-            $scope.$on('messagesReceived', function (event, messages: any) {
+            $scope.$on('messagesReceived', function (event, messages: MessageVM[]) {
                 appService.mergeMessages(messages, $scope.session);
 
                 for (var i = 0; i < messages.length; i++) {
                     var message = messages[i];
                     var messageType =
                         message.IsSuccess ? 'success' :
-                        message.IsInfo ? 'info' :
-                        message.IsWarning ? 'warning' :
-                        message.IsError ? 'danger' :
-                        'default';
+                            message.IsInfo ? 'info' :
+                                message.IsWarning ? 'warning' :
+                                    message.IsError ? 'danger' :
+                                        'default';
 
                     // Don't let the message automatically fade away:
                     var messageTtl = message.RequiresAcknowledgement ? 0 : 5000;
@@ -42,11 +42,11 @@
                 }
             });
 
-            $scope.$on('modalOpened', function (event, messages: any) {
+            $scope.$on('modalOpened', function (event) {
                 $scope.IsModalVisible = true;
             });
 
-            $scope.$on('modalClosed', function (event, messages: any) {
+            $scope.$on('modalClosed', function (event) {
                 $scope.IsModalVisible = false;
             });
 

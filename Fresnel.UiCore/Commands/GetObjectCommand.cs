@@ -10,13 +10,13 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class GetObjectCommand
     {
         private ObserverCache _ObserverCache;
-        private AbstractObjectVMBuilder _ObjectVMBuilder;
+        private AbstractObjectVmBuilder _ObjectVMBuilder;
         private IClock _Clock;
 
         public GetObjectCommand
             (
             ObserverCache observerCache,
-            AbstractObjectVMBuilder objectVMBuilder,
+            AbstractObjectVmBuilder objectVMBuilder,
             IClock clock
         )
         {

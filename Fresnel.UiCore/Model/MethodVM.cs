@@ -15,6 +15,8 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public IEnumerable<ValueVM> Parameters { get; set; }
 
+        public IEnumerable<ValueVM> ParametersSetByUser { get; set; }
+
         public bool IsAsync { get; set; }
     }
 }

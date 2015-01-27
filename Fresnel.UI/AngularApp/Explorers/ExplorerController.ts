@@ -22,7 +22,7 @@ module FresnelApp {
             explorerService: ExplorerService,
             $modal: ng.ui.bootstrap.IModalService) {
 
-            $scope.invoke = function (method: any) {
+            $scope.invoke = function (method: MethodVM) {
                 if (method.Parameters.length == 0) {
                     var request = requestBuilder.buildMethodInvokeRequest(method);
                     var promise = fresnelService.invokeMethod(request);
@@ -64,7 +64,7 @@ module FresnelApp {
                 }
             }
 
-            $scope.setProperty = function (prop: any) {
+            $scope.setProperty = function (prop: ValueVM) {
                 var request = requestBuilder.buildSetPropertyRequest(prop);
                 var promise = fresnelService.setProperty(request);
 
@@ -77,7 +77,7 @@ module FresnelApp {
                 });
             }
 
-            $scope.setBitwiseEnumProperty = function (prop: any, enumValue: number) {
+            $scope.setBitwiseEnumProperty = function (prop: ValueVM, enumValue: number) {
                 prop.State.Value = prop.State.Value ^ enumValue;
                 $scope.setProperty(prop);
             }
@@ -112,7 +112,7 @@ module FresnelApp {
                 $rootScope.$broadcast("openNewExplorer", obj);
             }
 
-            $scope.openNewExplorerForProperty = function (prop: any) {
+            $scope.openNewExplorerForProperty = function (prop: ValueVM) {
                 var request = requestBuilder.buildGetPropertyRequest(prop);
                 var promise = fresnelService.getProperty(request);
 

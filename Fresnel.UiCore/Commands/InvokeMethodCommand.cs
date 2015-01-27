@@ -13,17 +13,17 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class InvokeMethodCommand
     {
         private ObserverCache _ObserverCache;
-        private AbstractObjectVMBuilder _ObjectVMBuilder;
+        private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.InvokeMethodCommand _InvokeMethodCommand;
-        private ModificationsBuilder _ModificationsBuilder;
+        private ModificationsVmBuilder _ModificationsBuilder;
         private IClock _Clock;
 
         public InvokeMethodCommand
             (
             ObserverCache observerCache,
             Core.Commands.InvokeMethodCommand invokeMethodCommand,
-            AbstractObjectVMBuilder objectVMBuilder,
-            ModificationsBuilder modificationsBuilder,
+            AbstractObjectVmBuilder objectVMBuilder,
+            ModificationsVmBuilder modificationsBuilder,
             IClock clock
         )
         {

@@ -74,7 +74,7 @@
     <Compile Include="Commands\GetPropertyCommand.cs" />
     <Compile Include="Commands\CreateCommandResponse.cs" />
     <Compile Include="Commands\CreateCommand.cs" />
-    <Compile Include="Changes\ModificationsBuilder.cs" />
+    <Compile Include="Changes\ModificationsVmBuilder.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="MethodVmBuilder.cs" />
     <Compile Include="TypeInfo\EnumItemVM.cs" />
@@ -93,11 +93,11 @@
     <Compile Include="Commands\GetClassHierarchyCommand.cs" />
     <Compile Include="Controllers\ExplorerController.cs" />
     <Compile Include="Controllers\ToolboxController.cs" />
-    <Compile Include="Changes\Modifications.cs" />
+    <Compile Include="Changes\ModificationsVM.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="AbstractPropertyVmBuilder.cs" />
     <Compile Include="Model\CollectionVM.cs" />
-    <Compile Include="AbstractObjectVMBuilder.cs" />
+    <Compile Include="AbstractObjectVmBuilder.cs" />
     <Compile Include="Model\MethodVM.cs" />
     <Compile Include="Model\ValueVM.cs" />
     <Compile Include="Model\ObjectVM.cs" />

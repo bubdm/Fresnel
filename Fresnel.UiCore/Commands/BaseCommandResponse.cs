@@ -17,6 +17,6 @@ namespace Envivo.Fresnel.UiCore.Commands
         /// <summary>
         /// Any modifications to other Objects that occurred as part of the operation
         /// </summary>
-        public Modifications Modifications { get; set; }
+        public ModificationsVM Modifications { get; set; }
     }
 }

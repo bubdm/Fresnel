@@ -13,17 +13,17 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class SetPropertyCommand
     {
         private ObserverCache _ObserverCache;
-        private AbstractObjectVMBuilder _ObjectVMBuilder;
+        private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.SetPropertyCommand _SetPropertyCommand;
-        private ModificationsBuilder _ModificationsBuilder;
+        private ModificationsVmBuilder _ModificationsBuilder;
         private IClock _Clock;
 
         public SetPropertyCommand
             (
             Core.Commands.SetPropertyCommand setPropertyCommand,
             ObserverCache observerCache,
-            AbstractObjectVMBuilder objectVMBuilder,
-            ModificationsBuilder modificationsBuilder,
+            AbstractObjectVmBuilder objectVMBuilder,
+            ModificationsVmBuilder modificationsBuilder,
             IClock clock
         )
         {

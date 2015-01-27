@@ -15,8 +15,8 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ObserverCache _ObserverCache;
         private CreateObjectCommand _CreateObjectCommand;
         private AddToCollectionCommand _AddToCollectionCommand;
-        private AbstractObjectVMBuilder _ObjectVMBuilder;
-        private ModificationsBuilder _ModificationsBuilder;
+        private AbstractObjectVmBuilder _ObjectVMBuilder;
+        private ModificationsVmBuilder _ModificationsBuilder;
         private IClock _Clock;
 
         public CollectionAddCommand
@@ -25,8 +25,8 @@ namespace Envivo.Fresnel.UiCore.Commands
             ObserverCache observerCache,
             CreateObjectCommand createObjectCommand,
             AddToCollectionCommand addToCollectionCommand,
-            AbstractObjectVMBuilder objectVMBuilder,
-            ModificationsBuilder modificationsBuilder,
+            AbstractObjectVmBuilder objectVMBuilder,
+            ModificationsVmBuilder modificationsBuilder,
             IClock clock
             )
         {

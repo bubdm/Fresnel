@@ -30,42 +30,40 @@
             return this.http.post(uri, arg, config);
         }
 
-        getObject(request: any): ng.IPromise<any> {
+        getObject(request: GetObjectRequest): ng.IPromise<any> {
             var uri = "api/Explorer/GetObject";
             return this.http.post(uri, request);
         }
 
-        getProperty(request: any): ng.IPromise<any> {
+        getProperty(request: GetPropertyRequest): ng.IPromise<any> {
             var uri = "api/Explorer/GetObjectProperty";
             return this.http.post(uri, request);
         }
 
-        setProperty(request: any): ng.IPromise<any> {
+        setProperty(request: SetPropertyRequest): ng.IPromise<any> {
             var uri = "api/Explorer/SetProperty";
             return this.http.post(uri, request);
         }
 
-        invokeMethod(request: any): ng.IPromise<any> {
+        invokeMethod(request: InvokeMethodRequest): ng.IPromise<any> {
             var uri = "api/Explorer/InvokeMethod";
             return this.http.post(uri, request);
         }
 
-        addNewItemToCollection(request: any): ng.IPromise<any> {
+        addNewItemToCollection(request: CollectionRequest): ng.IPromise<any> {
             var uri = "api/Explorer/AddItemToCollection";
             return this.http.post(uri, request);
         }
 
-        addItemToCollection(request: any): ng.IPromise<any> {
+        addItemToCollection(request: CollectionRequest): ng.IPromise<any> {
             var uri = "api/Explorer/AddItemToCollection";
             return this.http.post(uri, request);
         }
 
-        removeItemFromCollection(request: any): ng.IPromise<any> {
+        removeItemFromCollection(request: CollectionRequest): ng.IPromise<any> {
             var uri = "api/Explorer/RemoveItemFromCollection";
             return this.http.post(uri, request);
         }
-
-
 
         cleanupSession(): ng.IPromise<any> {
             var uri = "api/Session/CleanUp";

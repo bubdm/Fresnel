@@ -3,7 +3,7 @@
     export class ExplorerService {
 
         private templateCache: ng.ITemplateCacheService;
-        private explorers: any[] = [];
+        private explorers: Explorer[] = [];
 
         static $inject = ['$templateCache'];
 

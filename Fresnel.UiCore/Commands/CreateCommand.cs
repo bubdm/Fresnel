@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
         private CreateObjectCommand _CreateObjectCommand;
-        private AbstractObjectVMBuilder _ObjectVMBuilder;
+        private AbstractObjectVmBuilder _ObjectVMBuilder;
         private IClock _Clock;
 
         public CreateCommand
@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             TemplateCache templateCache,
             ObserverCache observerCache,
             CreateObjectCommand createObjectCommand,
-            AbstractObjectVMBuilder objectVMBuilder,
+            AbstractObjectVmBuilder objectVMBuilder,
             IClock clock
             )
         {

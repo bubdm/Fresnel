@@ -11,7 +11,8 @@ module FresnelApp {
             'appService',
             'explorerService',
             'requestBuilder',
-            'explorer', 'method'];
+            'explorer',
+            'method'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
@@ -21,14 +22,14 @@ module FresnelApp {
             explorerService: ExplorerService,
             requestBuilder: RequestBuilder,
             explorer: Explorer,
-            method: any) {
+            method: MethodVM) {
 
             $scope.explorer = explorer;
             $scope.method = method;
 
             method.ParametersSetByUser = [];
 
-            $scope.invoke = function (method: any) {
+            $scope.invoke = function (method: MethodVM) {
                 var request = requestBuilder.buildMethodInvokeRequest(method);
                 var promise = fresnelService.invokeMethod(request);
 
@@ -45,7 +46,7 @@ module FresnelApp {
                 });
             }
 
-            $scope.setProperty = function (param: any) {
+            $scope.setProperty = function (param: ValueVM) {
                 // Find the parameter, and set it's value:
                 // If it's an Object, set the ReferenceValueID
                 if (!param.IsNonReference) {
@@ -60,7 +61,7 @@ module FresnelApp {
                 }
             }
 
-            $scope.setBitwiseEnumProperty = function (param: any, enumValue: number) {
+            $scope.setBitwiseEnumProperty = function (param: ValueVM, enumValue: number) {
                 param.State.Value = param.State.Value ^ enumValue;
                 $scope.setProperty(param);
             }

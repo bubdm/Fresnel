@@ -1038,13 +1038,20 @@
     <TypeScriptCompile Include="..\Fresnel.UiCore\T4TS.d.ts">
       <Link>AngularApp\T4TS.d.ts</Link>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="AngularApp\ClassLibrary\IToolboxControllerScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\ISearchControllerScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\IMethodControllerScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\ICollectionControllerScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\IExplorerControllerScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\IWorkbenchControllerScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\MethodController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\WorkbenchController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerService.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\CollectionExplorerController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerDirective.ts" />
-    <TypeScriptCompile Include="AngularApp\Classes.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\Explorer.ts" />
+    <TypeScriptCompile Include="AngularApp\IAppControllerScope.ts" />
     <TypeScriptCompile Include="AngularApp\RequestBuilder.ts" />
     <TypeScriptCompile Include="AngularApp\FresnelService.ts" />
     <TypeScriptCompile Include="AngularApp\Session\AppController.ts" />
@@ -1064,7 +1071,7 @@
     <TypeScriptCompile Include="AngularApp\DisableAnchorDirective.ts" />
     <TypeScriptCompile Include="AngularApp\Session\IdentityMap.ts" />
     <TypeScriptCompile Include="AngularApp\ClassLibrary\ClassLibraryDirective.ts" />
-    <TypeScriptCompile Include="AngularApp\Interfaces.ts" />
+    <TypeScriptCompile Include="AngularApp\IFresnelService.ts" />
     <TypeScriptCompile Include="AngularApp\Bootstrapper.ts" />
   </ItemGroup>
   <ItemGroup>

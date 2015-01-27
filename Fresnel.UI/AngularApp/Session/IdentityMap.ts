@@ -6,7 +6,7 @@ module FresnelApp {
 
         private objectMap: any[] = [];
 
-        getObject(key: string) {
+        getObject(key: string): ObjectVM {
             var item = this.objectMap[key];
             return item;
         }
@@ -28,7 +28,7 @@ module FresnelApp {
             delete this.objectMap[objID];
         }
 
-        merge(modifications: any) {
+        merge(modifications: ModificationsVM) {
             if (modifications == null)
                 return;
 
@@ -47,10 +47,10 @@ module FresnelApp {
 
             for (var i = 0; i < modifications.CollectionAdditions.length; i++) {
                 var addition = modifications.CollectionAdditions[i];
-                var collectionVM = this.getObject(addition.CollectionId);
-                var elementVM = this.getObject(addition.ElementId);
-                if (collectionVM != null) {
-                    collectionVM.Items.push(elementVM);
+                var collection = <CollectionVM>this.getObject(addition.CollectionId);
+                var element = this.getObject(addition.ElementId);
+                if (collection != null) {
+                    collection.Items.push(element);
                 }
             }
 
@@ -72,7 +72,7 @@ module FresnelApp {
                     newPropertyValue = propertyChange.NonReferenceValue;
                 }
 
-                var prop: any = $.grep(existingItem.Properties, function (e: any) {
+                var prop: ValueVM = $.grep(existingItem.Properties, function (e: ValueVM) {
                     return e.InternalName == propertyChange.PropertyName;
                 }, false)[0];
 
@@ -84,12 +84,12 @@ module FresnelApp {
             // 3: Perform removals:
             for (var i = 0; i < modifications.CollectionRemovals.length; i++) {
                 var removal = modifications.CollectionRemovals[i];
-                var collectionVM = this.getObject(removal.CollectionId);
-                var elementVM = this.getObject(removal.ElementId);
-                if (collectionVM != null) {
-                    var index = collectionVM.Items.indexOf(elementVM);
+                var collection = <CollectionVM>this.getObject(removal.CollectionId);
+                var element = this.getObject(removal.ElementId);
+                if (collection != null) {
+                    var index = collection.Items.indexOf(element);
                     if (index > -1) {
-                        collectionVM.Items.splice(index, 1);
+                        collection.Items.splice(index, 1);
                     }
                 }
             }

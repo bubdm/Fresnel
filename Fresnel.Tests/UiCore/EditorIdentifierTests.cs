@@ -77,7 +77,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-            var vmBuilder = container.Resolve<AbstractObjectVMBuilder>();
+            var vmBuilder = container.Resolve<AbstractObjectVmBuilder>();
 
             var col = new Collection<SampleModel.Objects.PocoObject>();
             var oColl = (ObjectObserver)observerCache.GetObserver(col);
@@ -101,7 +101,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-            var vmBuilder = container.Resolve<AbstractObjectVMBuilder>();
+            var vmBuilder = container.Resolve<AbstractObjectVmBuilder>();
 
             var obj = new SampleModel.MethodTests();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);

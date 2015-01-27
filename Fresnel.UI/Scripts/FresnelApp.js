@@ -164,7 +164,8 @@ var FresnelApp;
             $scope.addNewItem = function (itemType) {
                 var request = {
                     CollectionID: collection.ID,
-                    ElementTypeName: itemType
+                    ElementTypeName: itemType,
+                    ElementID: null
                 };
                 var promise = fresnelService.addNewItemToCollection(request);
                 promise.then(function (promiseResult) {
@@ -178,6 +179,7 @@ var FresnelApp;
             $scope.addExistingItem = function (obj) {
                 var request = {
                     CollectionID: collection.ID,
+                    ElementTypeName: null,
                     ElementID: obj.ID
                 };
                 var promise = fresnelService.addItemToCollection(request);
@@ -190,6 +192,7 @@ var FresnelApp;
             $scope.removeItem = function (obj) {
                 var request = {
                     CollectionID: collection.ID,
+                    ElementTypeName: null,
                     ElementID: obj.ID
                 };
                 var promise = fresnelService.removeItemFromCollection(request);
@@ -398,7 +401,7 @@ var FresnelApp;
         }
         RequestBuilder.prototype.buildMethodInvokeRequest = function (method) {
             var request = {
-                ObjectId: method.ObjectID,
+                ObjectID: method.ObjectID,
                 MethodName: method.MethodName,
                 Parameters: []
             };
@@ -417,22 +420,23 @@ var FresnelApp;
         };
         RequestBuilder.prototype.buildSetPropertyRequest = function (prop) {
             var request = {
-                ObjectId: prop.ObjectID,
+                ObjectID: prop.ObjectID,
                 PropertyName: prop.InternalName,
-                NonReferenceValue: prop.State.Value
+                NonReferenceValue: prop.State.Value,
+                ReferenceValueId: null
             };
             return request;
         };
         RequestBuilder.prototype.buildGetPropertyRequest = function (prop) {
             var request = {
-                ObjectId: prop.ObjectID,
+                ObjectID: prop.ObjectID,
                 PropertyName: prop.InternalName
             };
             return request;
         };
         RequestBuilder.prototype.buildGetObjectRequest = function (obj) {
             var request = {
-                ObjectId: obj.ID,
+                ObjectID: obj.ID
             };
             return request;
         };
@@ -522,10 +526,10 @@ var FresnelApp;
                     inform.add(message.Text, { ttl: messageTtl, type: messageType });
                 }
             });
-            $scope.$on('modalOpened', function (event, messages) {
+            $scope.$on('modalOpened', function (event) {
                 $scope.IsModalVisible = true;
             });
-            $scope.$on('modalClosed', function (event, messages) {
+            $scope.$on('modalClosed', function (event) {
                 $scope.IsModalVisible = false;
             });
             // This will run when the page loads:
@@ -649,10 +653,10 @@ var FresnelApp;
             }
             for (var i = 0; i < modifications.CollectionAdditions.length; i++) {
                 var addition = modifications.CollectionAdditions[i];
-                var collectionVM = this.getObject(addition.CollectionId);
-                var elementVM = this.getObject(addition.ElementId);
-                if (collectionVM != null) {
-                    collectionVM.Items.push(elementVM);
+                var collection = this.getObject(addition.CollectionId);
+                var element = this.getObject(addition.ElementId);
+                if (collection != null) {
+                    collection.Items.push(element);
                 }
             }
             for (var i = 0; i < modifications.PropertyChanges.length; i++) {
@@ -676,12 +680,12 @@ var FresnelApp;
             }
             for (var i = 0; i < modifications.CollectionRemovals.length; i++) {
                 var removal = modifications.CollectionRemovals[i];
-                var collectionVM = this.getObject(removal.CollectionId);
-                var elementVM = this.getObject(removal.ElementId);
-                if (collectionVM != null) {
-                    var index = collectionVM.Items.indexOf(elementVM);
+                var collection = this.getObject(removal.CollectionId);
+                var element = this.getObject(removal.ElementId);
+                if (collection != null) {
+                    var index = collection.Items.indexOf(element);
                     if (index > -1) {
-                        collectionVM.Items.splice(index, 1);
+                        collection.Items.splice(index, 1);
                     }
                 }
             }

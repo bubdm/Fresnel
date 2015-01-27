@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class GetPropertyCommand
     {
         private ObserverCache _ObserverCache;
-        private AbstractObjectVMBuilder _ObjectVMBuilder;
+        private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private IClock _Clock;
 
@@ -18,7 +18,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             (
             Core.Commands.GetPropertyCommand getPropertyCommand,
             ObserverCache observerCache,
-            AbstractObjectVMBuilder objectVMBuilder,
+            AbstractObjectVmBuilder objectVMBuilder,
             IClock clock
         )
         {
