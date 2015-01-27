@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Envivo.Fresnel.UiCore.Model;
+using System;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
@@ -7,5 +9,8 @@ namespace Envivo.Fresnel.UiCore.Commands
         public Guid ObjectID { get; set; }
 
         public string MethodName { get; set; }
+
+        public IEnumerable<MethodParameterVM> Parameters { get; set; }
+
     }
 }

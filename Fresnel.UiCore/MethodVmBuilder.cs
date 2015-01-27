@@ -1,19 +1,25 @@
 ﻿using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Permissions;
+using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Model;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Envivo.Fresnel.UiCore
 {
     public class MethodVmBuilder
     {
+        private AbstractParameterVmBuilder _AbstractParameterVmBuilder;
         private CanInvokeMethodPermission _CanInvokeMethodPermission;
 
         public MethodVmBuilder
             (
+            AbstractParameterVmBuilder abstractParameterVmBuilder,
             CanInvokeMethodPermission canInvokeMethodPermission
             )
         {
+            _AbstractParameterVmBuilder = abstractParameterVmBuilder;
             _CanInvokeMethodPermission = canInvokeMethodPermission;
         }
 
@@ -27,6 +33,7 @@ namespace Envivo.Fresnel.UiCore
                 Name = oMethod.Template.FriendlyName,
                 MethodName = oMethod.Template.Name,
                 Description = oMethod.Template.XmlComments.Summary,
+                Parameters = this.CreateParametersFor(oMethod),
                 IsAsync = oMethod.Template.Attributes.Get<MethodAttribute>().IsAsynchronous,
                 IsVisible = !oMethod.Template.IsFrameworkMember && oMethod.Template.IsVisible,
             };
@@ -41,6 +48,20 @@ namespace Envivo.Fresnel.UiCore
             }
 
             return methodVM;
+        }
+
+        private IEnumerable<MethodParameterVM> CreateParametersFor(MethodObserver oMethod)
+        {
+            var results = new List<MethodParameterVM>();
+
+            foreach (var tParam in oMethod.Template.Parameters.Values)
+            {
+                var paramVM = _AbstractParameterVmBuilder.BuildFor(tParam);
+                paramVM.MethodName = oMethod.Template.Name;
+                results.Add(paramVM);
+            }
+
+            return results;
         }
     }
 }

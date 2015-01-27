@@ -39,10 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractParameterVmBuilder.cs" />
     <Compile Include="Commands\CollectionRemoveCommand.cs" />
     <Compile Include="Commands\CollectionRequest.cs" />
     <Compile Include="Commands\CollectionAddCommand.cs" />
     <Compile Include="Commands\CollectionAddResponse.cs" />
+    <Compile Include="Model\MethodParameterState.cs" />
     <Compile Include="PropertyStateVmBuilder.cs" />
     <Compile Include="Changes\CollectionElementVM.cs" />
     <Compile Include="Commands\CleanupSessionResponse.cs" />
@@ -95,7 +97,7 @@
     <Compile Include="AbstractPropertyVmBuilder.cs" />
     <Compile Include="Model\CollectionVM.cs" />
     <Compile Include="AbstractObjectVMBuilder.cs" />
-    <Compile Include="Model\ParameterVM.cs" />
+    <Compile Include="Model\MethodParameterVM.cs" />
     <Compile Include="Model\MethodVM.cs" />
     <Compile Include="Model\PropertyVM.cs" />
     <Compile Include="Model\ObjectVM.cs" />

@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
     {
         private readonly DateTime _epoch = new DateTime(1970, 1, 1);
 
-        public bool CanHandle(PropertyTemplate tProp, Type actualType)
+        public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
             return actualType == typeof(DateTime) ||
                    actualType == typeof(DateTimeOffset);
@@ -19,8 +19,18 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
         public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var attr = tProp.Attributes.Get<DateTimeAttribute>();
+        }
 
-            targetVM.Info = new DateTimeVM()
+        public void Populate(MethodParameterVM targetVM, ParameterTemplate tParam, Type actualType)
+        {
+            var attr = tParam.Attributes.Get<DateTimeAttribute>();
+
+            targetVM.Info = this.CreateInfoVM(attr);
+        }
+
+        private ITypeInfo CreateInfoVM(DateTimeAttribute attr)
+        {
+            return new DateTimeVM()
             {
                 Name = "datetime",
                 CustomFormat = attr.CustomFormat,

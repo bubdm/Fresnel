@@ -8,9 +8,8 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class StringVmBuilder : IPropertyVmBuilder
     {
-        public bool CanHandle(PropertyTemplate tProp, Type actualType)
+        public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
-            var tClass = tProp.InnerClass;
             return actualType == typeof(char) ||
                    actualType == typeof(string);
         }
@@ -20,7 +19,20 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             var tClass = tProp.InnerClass;
             var attr = tProp.Attributes.Get<TextAttribute>();
 
-            targetVM.Info = new StringVM()
+            targetVM.Info = this.CreateInfoVM(attr, actualType);
+        }
+
+        public void Populate(MethodParameterVM targetVM, ParameterTemplate tParam, Type actualType)
+        {
+            var tClass = tParam.InnerClass;
+            var attr = tParam.Attributes.Get<TextAttribute>();
+
+            targetVM.Info = this.CreateInfoVM(attr, actualType);
+        }
+
+        private ITypeInfo CreateInfoVM(TextAttribute attr, Type actualType)
+        {
+            return new StringVM()
             {
                 Name = "string",
                 MinLength = attr.MinLength,

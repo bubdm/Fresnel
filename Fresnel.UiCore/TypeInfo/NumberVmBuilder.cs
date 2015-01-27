@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class NumberVmBuilder : IPropertyVmBuilder
     {
-        public bool CanHandle(PropertyTemplate tProp, Type actualType)
+        public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
             return actualType == typeof(double) ||
                    actualType == typeof(float) ||
@@ -23,7 +23,20 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
         {
             var attr = tProp.Attributes.Get<NumberAttribute>();
 
-            targetVM.Info = new NumberVM()
+            targetVM.Info = this.CreateInfoVM(attr);
+
+        }
+
+        public void Populate(MethodParameterVM targetVM, ParameterTemplate tParam, Type actualType)
+        {
+            var attr = tParam.Attributes.Get<NumberAttribute>();
+
+            targetVM.Info = this.CreateInfoVM(attr);
+        }
+
+        private ITypeInfo CreateInfoVM(NumberAttribute attr)
+        {
+            return new NumberVM()
             {
                 Name = "number",
                 MinValue = attr.MinValue,

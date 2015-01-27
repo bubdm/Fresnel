@@ -9,7 +9,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class BooleanVmBuilder : IPropertyVmBuilder
     {
-        public bool CanHandle(PropertyTemplate tProp, Type actualType)
+        public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
             return actualType == typeof(bool);
         }
@@ -19,7 +19,20 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             var tClass = tProp.InnerClass;
             var attr = tProp.Attributes.Get<BooleanAttribute>();
 
-            targetVM.Info = new BooleanVM()
+            targetVM.Info = this.CreateInfoVM(tClass, attr);
+        }
+
+        public void Populate(MethodParameterVM targetVM, ParameterTemplate tParam, Type actualType)
+        {
+            var tClass = tParam.InnerClass;
+            var attr = tParam.Attributes.Get<BooleanAttribute>();
+
+            targetVM.Info = this.CreateInfoVM(tClass, attr);
+        }
+
+        private ITypeInfo CreateInfoVM(IClassTemplate tClass, BooleanAttribute attr)
+        {
+            return new BooleanVM()
             {
                 Name = "boolean",
                 IsNullable = tClass.RealType.IsNullableType(),
@@ -30,5 +43,6 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
                                    InputControlTypes.Radio
             };
         }
+
     }
 }

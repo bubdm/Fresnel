@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             _DomainDependencyResolver = domainDependencyResolver;
         }
 
-        public bool CanHandle(PropertyTemplate tProp, Type actualType)
+        public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
             return actualType.IsEnum;
         }
@@ -31,7 +31,20 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             var tEnum = (EnumTemplate)tProp.InnerClass;
             var attr = tProp.Attributes.Get<EnumAttribute>();
 
-            targetVM.Info = new EnumVM()
+            targetVM.Info = this.CreateInfoVM(tEnum, attr);
+        }
+
+        public void Populate(MethodParameterVM targetVM, ParameterTemplate tParam, Type actualType)
+        {
+            var tEnum = (EnumTemplate)tParam.InnerClass;
+            var attr = tParam.Attributes.Get<EnumAttribute>();
+
+            targetVM.Info = this.CreateInfoVM(tEnum, attr);
+        }
+
+        private ITypeInfo CreateInfoVM(EnumTemplate tEnum, EnumAttribute attr)
+        {
+            return new EnumVM()
             {
                 Name = "enum",
                 IsBitwiseEnum = tEnum.IsBitwiseEnum,

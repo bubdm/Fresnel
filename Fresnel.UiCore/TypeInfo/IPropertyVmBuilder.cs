@@ -7,8 +7,11 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public interface IPropertyVmBuilder
     {
-        bool CanHandle(PropertyTemplate tProp, Type actualType);
+        bool CanHandle(ISettableMemberTemplate template,Type actualType);
 
         void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType);
+
+        void Populate(MethodParameterVM targetVM, ParameterTemplate tParam, Type actualType);
+        
     }
 }

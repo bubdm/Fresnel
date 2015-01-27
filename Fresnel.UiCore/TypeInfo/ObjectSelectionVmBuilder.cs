@@ -7,13 +7,16 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
 {
     public class ObjectSelectionVmBuilder : IPropertyVmBuilder
     {
-        public bool CanHandle(PropertyTemplate tProp, Type actualType)
+        public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
-            var tClass = tProp.InnerClass;
-            return tClass is ClassTemplate;
+            return template.IsDomainObject;
         }
 
         public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
+        {
+        }
+
+        public void Populate(MethodParameterVM targetVM, ParameterTemplate tParam, Type actualType)
         {
         }
     }

@@ -9,7 +9,7 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public int Index { get; set; }
 
-        public IEnumerable<ParameterVM> Parameters { get; set; }
+        public IEnumerable<MethodParameterVM> Parameters { get; set; }
 
         public string MethodName { get; set; }
 
