@@ -5,13 +5,13 @@ namespace Envivo.Fresnel.UiCore.Model
 {
     public class MethodVM : BaseViewModel
     {
-        public Guid ObjectID { get; set; }
+        public Guid? ObjectID { get; set; }
 
         public int Index { get; set; }
 
-        public IEnumerable<MethodParameterVM> Parameters { get; set; }
-
         public string MethodName { get; set; }
+
+        public IEnumerable<ValueVM> Parameters { get; set; }
 
         public bool IsAsync { get; set; }
     }

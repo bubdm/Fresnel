@@ -26,7 +26,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             return actualType.IsEnum;
         }
 
-        public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
+        public void Populate(ValueVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var tEnum = (EnumTemplate)tProp.InnerClass;
             var attr = tProp.Attributes.Get<EnumAttribute>();
@@ -34,7 +34,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             targetVM.Info = this.CreateInfoVM(tEnum, attr);
         }
 
-        public void Populate(MethodParameterVM targetVM, ParameterTemplate tParam, Type actualType)
+        public void Populate(ValueVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             var tEnum = (EnumTemplate)tParam.InnerClass;
             var attr = tParam.Attributes.Get<EnumAttribute>();

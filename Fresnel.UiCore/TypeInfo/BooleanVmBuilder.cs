@@ -14,7 +14,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             return actualType == typeof(bool);
         }
 
-        public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
+        public void Populate(ValueVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var tClass = tProp.InnerClass;
             var attr = tProp.Attributes.Get<BooleanAttribute>();
@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             targetVM.Info = this.CreateInfoVM(tClass, attr);
         }
 
-        public void Populate(MethodParameterVM targetVM, ParameterTemplate tParam, Type actualType)
+        public void Populate(ValueVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             var tClass = tParam.InnerClass;
             var attr = tParam.Attributes.Get<BooleanAttribute>();

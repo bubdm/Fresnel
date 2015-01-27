@@ -45,17 +45,17 @@ namespace Envivo.Fresnel.UiCore
             _PropertyStateVmBuilder = propertyStateVmBuilder;
         }
 
-        public PropertyVM BuildFor(PropertyTemplate tProp)
+        public ValueVM BuildFor(PropertyTemplate tProp)
         {
             var valueType = tProp.InnerClass.RealType;
             var actualType = valueType.IsNullableType() ?
                                valueType.GetGenericArguments()[0] :
                                valueType;
 
-            var propVM = new PropertyVM()
+            var propVM = new ValueVM()
             {
                 Name = tProp.FriendlyName,
-                PropertyName = tProp.Name,
+                InternalName = tProp.Name,
                 Description = tProp.XmlComments.Summary,
                 IsRequired = tProp.IsNonReference && !tProp.IsNullableType,
                 IsVisible = !tProp.IsFrameworkMember && tProp.IsVisible,
@@ -67,7 +67,7 @@ namespace Envivo.Fresnel.UiCore
             return propVM;
         }
 
-        public PropertyVM BuildFor(BasePropertyObserver oProp)
+        public ValueVM BuildFor(BasePropertyObserver oProp)
         {
             var tProp = oProp.Template;
             var objectProp = oProp as ObjectPropertyObserver;

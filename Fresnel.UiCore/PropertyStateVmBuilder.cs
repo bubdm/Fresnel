@@ -26,9 +26,9 @@ namespace Envivo.Fresnel.UiCore
             _CanSetPropertyPermission = canSetPropertyPermission;
         }
 
-        public PropertyStateVM BuildFor(BasePropertyObserver oProp)
+        public ValueStateVM BuildFor(BasePropertyObserver oProp)
         {
-            var result = new PropertyStateVM();
+            var result = new ValueStateVM();
             result.Get = this.CreateGet(oProp);
             result.Set = this.CreateSet(oProp);
 

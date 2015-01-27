@@ -50,14 +50,13 @@ namespace Envivo.Fresnel.UiCore
             return methodVM;
         }
 
-        private IEnumerable<MethodParameterVM> CreateParametersFor(MethodObserver oMethod)
+        private IEnumerable<ValueVM> CreateParametersFor(MethodObserver oMethod)
         {
-            var results = new List<MethodParameterVM>();
+            var results = new List<ValueVM>();
 
             foreach (var tParam in oMethod.Template.Parameters.Values)
             {
                 var paramVM = _AbstractParameterVmBuilder.BuildFor(tParam);
-                paramVM.MethodName = oMethod.Template.Name;
                 results.Add(paramVM);
             }
 

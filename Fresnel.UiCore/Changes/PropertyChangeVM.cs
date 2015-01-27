@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.UiCore.Changes
 
         public Guid? ReferenceValueId { get; set; }
 
-        public PropertyStateVM State { get; set; }
+        public ValueStateVM State { get; set; }
 
     }
 }

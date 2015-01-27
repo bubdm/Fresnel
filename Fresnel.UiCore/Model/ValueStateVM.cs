@@ -3,10 +3,12 @@ using System;
 
 namespace Envivo.Fresnel.UiCore.Model
 {
-    public class PropertyStateVM 
+    public class ValueStateVM 
     {
 
         public object Value { get; set; }
+
+        public Guid? ReferenceValueID { get; set; }
 
         public string ValueType { get; set; }
 

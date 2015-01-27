@@ -44,7 +44,6 @@
     <Compile Include="Commands\CollectionRequest.cs" />
     <Compile Include="Commands\CollectionAddCommand.cs" />
     <Compile Include="Commands\CollectionAddResponse.cs" />
-    <Compile Include="Model\MethodParameterState.cs" />
     <Compile Include="PropertyStateVmBuilder.cs" />
     <Compile Include="Changes\CollectionElementVM.cs" />
     <Compile Include="Commands\CleanupSessionResponse.cs" />
@@ -58,7 +57,7 @@
     <Compile Include="Commands\GetPropertyRequest.cs" />
     <Compile Include="Commands\SetPropertyRequest.cs" />
     <Compile Include="Controllers\SessionController.cs" />
-    <Compile Include="Model\PropertyStateVM.cs" />
+    <Compile Include="Model\ValueStateVM.cs" />
     <Compile Include="UiCoreException.cs" />
     <Compile Include="MessageVM.cs" />
     <Compile Include="Changes\PropertyChangeVM.cs" />
@@ -97,9 +96,8 @@
     <Compile Include="AbstractPropertyVmBuilder.cs" />
     <Compile Include="Model\CollectionVM.cs" />
     <Compile Include="AbstractObjectVMBuilder.cs" />
-    <Compile Include="Model\MethodParameterVM.cs" />
     <Compile Include="Model\MethodVM.cs" />
-    <Compile Include="Model\PropertyVM.cs" />
+    <Compile Include="Model\ValueVM.cs" />
     <Compile Include="Model\ObjectVM.cs" />
     <Compile Include="TypeInfo\DateTimeVM.cs" />
     <Compile Include="TypeInfo\EnumVM.cs" />

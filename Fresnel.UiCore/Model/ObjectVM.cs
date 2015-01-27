@@ -9,7 +9,7 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public string Type { get; set; }
 
-        public IEnumerable<PropertyVM> Properties { get; set; }
+        public IEnumerable<ValueVM> Properties { get; set; }
 
         public IEnumerable<MethodVM> Methods { get; set; }
     }

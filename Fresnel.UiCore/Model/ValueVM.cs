@@ -3,13 +3,16 @@ using System;
 
 namespace Envivo.Fresnel.UiCore.Model
 {
-    public class PropertyVM : BaseViewModel
+    /// <summary>
+    /// Represents a Property or Parameter Value in the UI
+    /// </summary>
+    public class ValueVM : BaseViewModel
     {
-        public Guid ObjectID { get; set; }
+        public Guid? ObjectID { get; set; }
 
         public int Index { get; set; }
 
-        public string PropertyName { get; set; }
+        public string InternalName { get; set; }
 
         public bool IsRequired { get; set; }
 
@@ -23,6 +26,6 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public ITypeInfo Info { get; set; }
 
-        public PropertyStateVM State { get; set; }
+        public ValueStateVM State { get; set; }
     }
 }

@@ -40,25 +40,43 @@ namespace Envivo.Fresnel.UiCore
             _UnknownVmBuilder = unknownVmBuilder;
         }
 
-        public MethodParameterVM BuildFor(ParameterTemplate tParam)
+        public ValueVM BuildFor(ParameterTemplate tParam)
         {
             var valueType = tParam.InnerClass.RealType;
             var actualType = valueType.IsNullableType() ?
                                valueType.GetGenericArguments()[0] :
                                valueType;
 
-            var paramVM = new MethodParameterVM()
+            var paramVM = new ValueVM()
             {
+                IsVisible = true,
                 Name = tParam.FriendlyName,
-                ParameterName = tParam.Name,
+                InternalName = tParam.Name,
                 //Description = tParam.XmlComments.Summary,     // We haven't got parameter XML working yet
-                State = new MethodParameterState() { ValueType = tParam.ParameterType.Name }
+                State = this.CreateStateFor(tParam)
             };
+
+            paramVM.IsNonReference = tParam.IsNonReference;
+            paramVM.IsCollection = tParam.IsCollection;
+            paramVM.IsObject = !paramVM.IsNonReference && !paramVM.IsCollection;
 
             var vmBuilder = _Builders.SingleOrDefault(s => s.CanHandle(tParam, actualType)) ?? _UnknownVmBuilder;
             vmBuilder.Populate(paramVM, tParam, actualType);
 
             return paramVM;
+        }
+
+        private ValueStateVM CreateStateFor(ParameterTemplate tParam)
+        {
+            return new ValueStateVM()
+            {
+                ValueType = tParam.ParameterType.Name,
+                Set = new InteractionPoint()
+                {
+                    IsEnabled = true,
+                    IsVisible = true
+                }
+            };
         }
 
     }
