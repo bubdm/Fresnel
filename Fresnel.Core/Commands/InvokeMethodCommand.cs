@@ -42,7 +42,7 @@ namespace Envivo.Fresnel.Core.Commands
 
             try
             {
-                var args = oMethod.Parameters.Values.Select(p => p.RealObject);
+                var args = oMethod.Parameters.Values.Select(p => p.Value);
 
                 // NB: Always use TargetObject instead of oMethod.OuterObject.RealObject
                 //     to ensure proxied members are intercepted:
