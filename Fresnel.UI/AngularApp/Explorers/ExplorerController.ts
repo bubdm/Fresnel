@@ -4,22 +4,27 @@ module FresnelApp {
 
     export class ExplorerController {
 
-        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService', '$modal'];
+        static $inject = [
+            '$rootScope',
+            '$scope',
+            'fresnelService',
+            'requestBuilder',
+            'appService',
+            'explorerService',
+            '$modal'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: IExplorerControllerScope,
             fresnelService: IFresnelService,
+            requestBuilder: RequestBuilder,
             appService: AppService,
             explorerService: ExplorerService,
             $modal: ng.ui.bootstrap.IModalService) {
 
             $scope.invoke = function (method: any) {
                 if (method.Parameters.length == 0) {
-                    var request = {
-                        ObjectId: method.ObjectID,
-                        MethodName: method.MethodName,
-                    };
+                    var request = requestBuilder.buildMethodInvokeRequest(method);
                     var promise = fresnelService.invokeMethod(request);
 
                     promise.then((promiseResult) => {
@@ -58,11 +63,7 @@ module FresnelApp {
             }
 
             $scope.setProperty = function (prop: any) {
-                var request = {
-                    ObjectId: prop.ObjectID,
-                    PropertyName: prop.PropertyName,
-                    NonReferenceValue: prop.State.Value
-                };
+                var request = requestBuilder.buildSetPropertyRequest(prop);
                 var promise = fresnelService.setProperty(request);
 
                 promise.then((promiseResult) => {
@@ -80,9 +81,7 @@ module FresnelApp {
             }
 
             $scope.refresh = function (explorer: Explorer) {
-                var request = {
-                    ObjectId: explorer.__meta.ID,
-                };
+                var request = requestBuilder.buildGetObjectRequest(explorer.__meta);
                 var promise = fresnelService.getObject(request);
 
                 promise.then((promiseResult) => {
@@ -112,7 +111,8 @@ module FresnelApp {
             }
 
             $scope.openNewExplorerForProperty = function (prop: any) {
-                var promise = fresnelService.getProperty(prop);
+                var request = requestBuilder.buildGetPropertyRequest(prop);
+                var promise = fresnelService.getProperty(request);
 
                 promise.then((promiseResult) => {
                     var result = promiseResult.data;

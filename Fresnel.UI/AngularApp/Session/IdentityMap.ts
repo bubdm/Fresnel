@@ -71,7 +71,7 @@ module FresnelApp {
                 }
 
                 var prop: any = $.grep(existingItem.Properties, function (e: any) {
-                    return e.PropertyName == propertyChange.PropertyName;
+                    return e.InternalName == propertyChange.PropertyName;
                 }, false)[0];
 
                 this.extendDeep(prop.State, propertyChange.State);

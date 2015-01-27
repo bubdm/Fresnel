@@ -56,7 +56,7 @@
             if (obj.Properties) {
                 for (var i = 0; i < obj.Properties.length; i++) {
                     var prop = obj.Properties[i];
-                    explorer[prop.PropertyName] = prop;
+                    explorer[prop.InternalName] = prop;
                 }
             }
 

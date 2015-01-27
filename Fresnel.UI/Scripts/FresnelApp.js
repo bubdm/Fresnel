@@ -139,7 +139,7 @@ var FresnelApp;
             if (obj.Properties) {
                 for (var i = 0; i < obj.Properties.length; i++) {
                     var prop = obj.Properties[i];
-                    explorer[prop.PropertyName] = prop;
+                    explorer[prop.InternalName] = prop;
                 }
             }
             if (obj.Methods) {
@@ -251,13 +251,10 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ExplorerController = (function () {
-        function ExplorerController($rootScope, $scope, fresnelService, appService, explorerService, $modal) {
+        function ExplorerController($rootScope, $scope, fresnelService, requestBuilder, appService, explorerService, $modal) {
             $scope.invoke = function (method) {
                 if (method.Parameters.length == 0) {
-                    var request = {
-                        ObjectId: method.ObjectID,
-                        MethodName: method.MethodName,
-                    };
+                    var request = requestBuilder.buildMethodInvokeRequest(method);
                     var promise = fresnelService.invokeMethod(request);
                     promise.then(function (promiseResult) {
                         var result = promiseResult.data;
@@ -291,11 +288,7 @@ var FresnelApp;
                 }
             };
             $scope.setProperty = function (prop) {
-                var request = {
-                    ObjectId: prop.ObjectID,
-                    PropertyName: prop.PropertyName,
-                    NonReferenceValue: prop.State.Value
-                };
+                var request = requestBuilder.buildSetPropertyRequest(prop);
                 var promise = fresnelService.setProperty(request);
                 promise.then(function (promiseResult) {
                     var result = promiseResult.data;
@@ -309,9 +302,7 @@ var FresnelApp;
                 $scope.setProperty(prop);
             };
             $scope.refresh = function (explorer) {
-                var request = {
-                    ObjectId: explorer.__meta.ID,
-                };
+                var request = requestBuilder.buildGetObjectRequest(explorer.__meta);
                 var promise = fresnelService.getObject(request);
                 promise.then(function (promiseResult) {
                     var obj = promiseResult.data.ReturnValue;
@@ -333,7 +324,8 @@ var FresnelApp;
                 $rootScope.$broadcast("openNewExplorer", obj);
             };
             $scope.openNewExplorerForProperty = function (prop) {
-                var promise = fresnelService.getProperty(prop);
+                var request = requestBuilder.buildGetPropertyRequest(prop);
+                var promise = fresnelService.getProperty(request);
                 promise.then(function (promiseResult) {
                     var result = promiseResult.data;
                     var obj = result.ReturnValue;
@@ -352,7 +344,15 @@ var FresnelApp;
                 });
             };
         }
-        ExplorerController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService', 'explorerService', '$modal'];
+        ExplorerController.$inject = [
+            '$rootScope',
+            '$scope',
+            'fresnelService',
+            'requestBuilder',
+            'appService',
+            'explorerService',
+            '$modal'
+        ];
         return ExplorerController;
     })();
     FresnelApp.ExplorerController = ExplorerController;
@@ -417,21 +417,21 @@ var FresnelApp;
         RequestBuilder.prototype.buildSetPropertyRequest = function (prop) {
             var request = {
                 ObjectId: prop.ObjectID,
-                PropertyName: prop.PropertyName,
+                PropertyName: prop.InternalName,
                 NonReferenceValue: prop.State.Value
-            };
-            return request;
-        };
-        RequestBuilder.prototype.buildGetObjectRequest = function (obj) {
-            var request = {
-                ObjectId: obj.ID,
             };
             return request;
         };
         RequestBuilder.prototype.buildGetPropertyRequest = function (prop) {
             var request = {
                 ObjectId: prop.ObjectID,
-                InternalName: prop.InternalName
+                PropertyName: prop.InternalName
+            };
+            return request;
+        };
+        RequestBuilder.prototype.buildGetObjectRequest = function (obj) {
+            var request = {
+                ObjectId: obj.ID,
             };
             return request;
         };
@@ -670,7 +670,7 @@ var FresnelApp;
                     newPropertyValue = propertyChange.NonReferenceValue;
                 }
                 var prop = $.grep(existingItem.Properties, function (e) {
-                    return e.PropertyName == propertyChange.PropertyName;
+                    return e.InternalName == propertyChange.PropertyName;
                 }, false)[0];
                 this.extendDeep(prop.State, propertyChange.State);
                 prop.State.Value = newPropertyValue;

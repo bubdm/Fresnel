@@ -28,8 +28,17 @@
         buildSetPropertyRequest(prop: any) {
             var request = {
                 ObjectId: prop.ObjectID,
-                PropertyName: prop.PropertyName,
+                PropertyName: prop.InternalName,
                 NonReferenceValue: prop.State.Value
+            };
+
+            return request;
+        }
+
+        buildGetPropertyRequest(prop: any) {
+            var request = {
+                ObjectId: prop.ObjectID,
+                PropertyName: prop.InternalName
             };
 
             return request;
@@ -43,14 +52,6 @@
             return request;
         }
 
-        buildGetPropertyRequest(prop: any) {
-            var request = {
-                ObjectId: prop.ObjectID,
-                InternalName: prop.InternalName
-            };
-
-            return request;
-        }
     }
 
 }
