@@ -56,7 +56,7 @@ namespace Envivo.Fresnel.UiCore
                                         .Where(p => !p.IsFrameworkMember &&
                                                      p.IsVisible);
 
-            var elementProperties = new List<ValueVM>();
+            var elementProperties = new List<SettableMemberVM>();
             foreach (var prop in allKnownProperties)
             {
                 var propVM = _PropertyVmBuilder.BuildFor(prop);
@@ -144,12 +144,12 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private IEnumerable<ValueVM> CreateProperties(ObjectObserver oObject)
+        private IEnumerable<SettableMemberVM> CreateProperties(ObjectObserver oObject)
         {
             var visibleProperties = oObject.Properties.Values.Where(p => !p.Template.IsFrameworkMember &&
                                                                           p.Template.IsVisible);
 
-            var properties = new List<ValueVM>();
+            var properties = new List<SettableMemberVM>();
             foreach (var oProp in visibleProperties)
             {
                 var propVM = _PropertyVmBuilder.BuildFor(oProp);

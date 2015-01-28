@@ -9,9 +9,9 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
     {
         bool CanHandle(ISettableMemberTemplate template,Type actualType);
 
-        void Populate(ValueVM targetVM, PropertyTemplate tProp, Type actualType);
+        void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType);
 
-        void Populate(ValueVM targetVM, ParameterTemplate tParam, Type actualType);
+        void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType);
         
     }
 }

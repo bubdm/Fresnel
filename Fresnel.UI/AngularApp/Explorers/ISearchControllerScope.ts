@@ -10,9 +10,9 @@
 
         refresh(explorer: Explorer);
 
-        setProperty(prop: ValueVM);
+        setProperty(prop: PropertyVM);
 
-        setBitwiseEnumProperty(prop: ValueVM, enumValue: number);
+        setBitwiseEnumProperty(prop: PropertyVM, enumValue: number);
 
         openNewExplorer(obj: ObjectVM);
 

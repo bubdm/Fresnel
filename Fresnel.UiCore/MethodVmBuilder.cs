@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.UiCore
             {
                 ObjectID = oObject.ID,
                 Name = oMethod.Template.FriendlyName,
-                MethodName = oMethod.Template.Name,
+                InternalName = oMethod.Template.Name,
                 Description = oMethod.Template.XmlComments.Summary,
                 Parameters = this.CreateParametersFor(oMethod),
                 IsAsync = oMethod.Template.Attributes.Get<MethodAttribute>().IsAsynchronous,
@@ -50,9 +50,9 @@ namespace Envivo.Fresnel.UiCore
             return methodVM;
         }
 
-        private IEnumerable<ValueVM> CreateParametersFor(MethodObserver oMethod)
+        private IEnumerable<SettableMemberVM> CreateParametersFor(MethodObserver oMethod)
         {
-            var results = new List<ValueVM>();
+            var results = new List<SettableMemberVM>();
 
             foreach (var tParam in oMethod.Template.Parameters.Values)
             {

@@ -45,14 +45,14 @@ namespace Envivo.Fresnel.UiCore
             _PropertyStateVmBuilder = propertyStateVmBuilder;
         }
 
-        public ValueVM BuildFor(PropertyTemplate tProp)
+        public SettableMemberVM BuildFor(PropertyTemplate tProp)
         {
             var valueType = tProp.InnerClass.RealType;
             var actualType = valueType.IsNullableType() ?
                                valueType.GetGenericArguments()[0] :
                                valueType;
 
-            var propVM = new ValueVM()
+            var propVM = new SettableMemberVM()
             {
                 Name = tProp.FriendlyName,
                 InternalName = tProp.Name,
@@ -67,7 +67,7 @@ namespace Envivo.Fresnel.UiCore
             return propVM;
         }
 
-        public ValueVM BuildFor(BasePropertyObserver oProp)
+        public SettableMemberVM BuildFor(BasePropertyObserver oProp)
         {
             var tProp = oProp.Template;
             var objectProp = oProp as ObjectPropertyObserver;

@@ -6,7 +6,7 @@
         buildMethodInvokeRequest(method: MethodVM) {
             var request: InvokeMethodRequest = {
                 ObjectID: method.ObjectID,
-                MethodName: method.MethodName,
+                MethodName: method.InternalName,
                 Parameters: []
             };
 
@@ -25,7 +25,7 @@
             return request;
         }
 
-        buildSetPropertyRequest(prop: ValueVM) {
+        buildSetPropertyRequest(prop: PropertyVM) {
             var request: SetPropertyRequest = {
                 ObjectID: prop.ObjectID,
                 PropertyName: prop.InternalName,
@@ -36,7 +36,7 @@
             return request;
         }
 
-        buildGetPropertyRequest(prop: ValueVM) {
+        buildGetPropertyRequest(prop: PropertyVM) {
             var request: GetPropertyRequest = {
                 ObjectID: prop.ObjectID,
                 PropertyName: prop.InternalName

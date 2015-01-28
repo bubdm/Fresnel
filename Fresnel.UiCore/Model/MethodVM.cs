@@ -11,11 +11,11 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public int Index { get; set; }
 
-        public string MethodName { get; set; }
+        public string InternalName { get; set; }
 
-        public IEnumerable<ValueVM> Parameters { get; set; }
+        public IEnumerable<SettableMemberVM> Parameters { get; set; }
 
-        public IEnumerable<ValueVM> ParametersSetByUser { get; set; }
+        public IEnumerable<SettableMemberVM> ParametersSetByUser { get; set; }
 
         public bool IsAsync { get; set; }
     }

@@ -64,7 +64,7 @@ module FresnelApp {
                 }
             }
 
-            $scope.setProperty = function (prop: ValueVM) {
+            $scope.setProperty = function (prop: PropertyVM) {
                 var request = requestBuilder.buildSetPropertyRequest(prop);
                 var promise = fresnelService.setProperty(request);
 
@@ -77,7 +77,7 @@ module FresnelApp {
                 });
             }
 
-            $scope.setBitwiseEnumProperty = function (prop: ValueVM, enumValue: number) {
+            $scope.setBitwiseEnumProperty = function (prop: PropertyVM, enumValue: number) {
                 prop.State.Value = prop.State.Value ^ enumValue;
                 $scope.setProperty(prop);
             }
@@ -112,7 +112,7 @@ module FresnelApp {
                 $rootScope.$broadcast("openNewExplorer", obj);
             }
 
-            $scope.openNewExplorerForProperty = function (prop: ValueVM) {
+            $scope.openNewExplorerForProperty = function (prop: PropertyVM) {
                 var request = requestBuilder.buildGetPropertyRequest(prop);
                 var promise = fresnelService.getProperty(request);
 

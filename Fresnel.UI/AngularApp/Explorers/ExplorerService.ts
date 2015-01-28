@@ -63,7 +63,7 @@
             if (obj.Methods) {
                 for (var i = 0; i < obj.Methods.length; i++) {
                     var method = obj.Methods[i];
-                    explorer[method.MethodName] = method;
+                    explorer[method.InternalName] = method;
                 }
             }
         }

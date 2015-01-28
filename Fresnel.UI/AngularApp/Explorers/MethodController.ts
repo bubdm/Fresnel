@@ -46,7 +46,7 @@ module FresnelApp {
                 });
             }
 
-            $scope.setProperty = function (param: ValueVM) {
+            $scope.setProperty = function (param: ParameterVM) {
                 // Find the parameter, and set it's value:
                 // If it's an Object, set the ReferenceValueID
                 if (!param.IsNonReference) {
@@ -61,7 +61,7 @@ module FresnelApp {
                 }
             }
 
-            $scope.setBitwiseEnumProperty = function (param: ValueVM, enumValue: number) {
+            $scope.setBitwiseEnumProperty = function (param: ParameterVM, enumValue: number) {
                 param.State.Value = param.State.Value ^ enumValue;
                 $scope.setProperty(param);
             }

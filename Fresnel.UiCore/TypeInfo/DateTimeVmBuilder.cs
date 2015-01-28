@@ -16,12 +16,12 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
                    actualType == typeof(DateTimeOffset);
         }
 
-        public void Populate(ValueVM targetVM, PropertyTemplate tProp, Type actualType)
+        public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var attr = tProp.Attributes.Get<DateTimeAttribute>();
         }
 
-        public void Populate(ValueVM targetVM, ParameterTemplate tParam, Type actualType)
+        public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             var attr = tParam.Attributes.Get<DateTimeAttribute>();
 

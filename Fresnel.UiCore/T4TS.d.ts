@@ -134,7 +134,7 @@ declare module FresnelApp {
     export interface MethodVM extends FresnelApp.BaseViewModel {
         ObjectID?: any;
         Index: number;
-        MethodName: string;
+        InternalName: string;
         Parameters: any;
         ParametersSetByUser: any;
         IsAsync: boolean;
@@ -146,19 +146,14 @@ declare module FresnelApp {
         Properties: any;
         Methods: any;
     }
-    /** Generated from Envivo.Fresnel.UiCore.Model.ValueStateVM **/
-    export interface ValueStateVM {
-        Value: any;
-        ReferenceValueID?: any;
-        ValueType: string;
-        Get: FresnelApp.InteractionPoint;
-        Set: FresnelApp.InteractionPoint;
-        Create: FresnelApp.InteractionPoint;
-        Clear: FresnelApp.InteractionPoint;
-        Add: FresnelApp.InteractionPoint;
+    /** Generated from Envivo.Fresnel.UiCore.Model.ParameterVM **/
+    export interface ParameterVM extends FresnelApp.SettableMemberVM {
     }
-    /** Generated from Envivo.Fresnel.UiCore.Model.ValueVM **/
-    export interface ValueVM extends FresnelApp.BaseViewModel {
+    /** Generated from Envivo.Fresnel.UiCore.Model.PropertyVM **/
+    export interface PropertyVM extends FresnelApp.SettableMemberVM {
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.SettableMemberVM **/
+    export interface SettableMemberVM extends FresnelApp.BaseViewModel {
         ObjectID?: any;
         Index: number;
         InternalName: string;
@@ -169,6 +164,17 @@ declare module FresnelApp {
         IsNonReference: boolean;
         Info: any;
         State: FresnelApp.ValueStateVM;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.ValueStateVM **/
+    export interface ValueStateVM {
+        Value: any;
+        ReferenceValueID?: any;
+        ValueType: string;
+        Get: FresnelApp.InteractionPoint;
+        Set: FresnelApp.InteractionPoint;
+        Create: FresnelApp.InteractionPoint;
+        Clear: FresnelApp.InteractionPoint;
+        Add: FresnelApp.InteractionPoint;
     }
     /** Generated from Envivo.Fresnel.UiCore.SessionVM **/
     export interface SessionVM {

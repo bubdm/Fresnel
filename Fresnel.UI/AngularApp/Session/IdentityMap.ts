@@ -72,7 +72,7 @@ module FresnelApp {
                     newPropertyValue = propertyChange.NonReferenceValue;
                 }
 
-                var prop: ValueVM = $.grep(existingItem.Properties, function (e: ValueVM) {
+                var prop: PropertyVM = $.grep(existingItem.Properties, function (e: PropertyVM) {
                     return e.InternalName == propertyChange.PropertyName;
                 }, false)[0];
 

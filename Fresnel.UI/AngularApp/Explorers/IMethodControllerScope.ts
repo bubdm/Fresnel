@@ -8,9 +8,9 @@
 
         invoke(method: MethodVM);
 
-        setProperty(param: ValueVM);
+        setProperty(param: ParameterVM);
 
-        setBitwiseEnumProperty(param: ValueVM, enumValue: number);
+        setBitwiseEnumProperty(param: ParameterVM, enumValue: number);
 
         cancel();
     }

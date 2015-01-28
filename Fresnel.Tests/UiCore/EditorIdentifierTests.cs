@@ -110,7 +110,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var vm = vmBuilder.BuildFor(oObject);
 
             // Assert:
-            var methodWithParams = vm.Methods.Single(m => m.MethodName == "MethodWithValueParameters");
+            var methodWithParams = vm.Methods.Single(m => m.InternalName == "MethodWithValueParameters");
 
             Assert.IsTrue(methodWithParams.Parameters.Any(p => p.State.ValueType != null));
             Assert.IsTrue(methodWithParams.Parameters.Any(p => p.Info != null));

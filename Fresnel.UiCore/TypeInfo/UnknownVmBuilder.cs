@@ -12,11 +12,11 @@ namespace Envivo.Fresnel.UiCore.TypeInfo
             return false;
         }
 
-        public void Populate(ValueVM targetVM, PropertyTemplate tProp, Type actualType)
+        public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {   
         }
 
-        public void Populate(ValueVM targetVM, ParameterTemplate tParam, Type actualType)
+        public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
         }
     }

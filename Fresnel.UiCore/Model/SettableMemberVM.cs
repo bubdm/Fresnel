@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.UiCore.Model
     /// Represents a Property or Parameter Value in the UI
     /// </summary>
     [TypeScriptInterface]
-    public class ValueVM : BaseViewModel
+    public class SettableMemberVM : BaseViewModel
     {
         public Guid? ObjectID { get; set; }
 

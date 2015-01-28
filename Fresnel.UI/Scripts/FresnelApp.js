@@ -145,7 +145,7 @@ var FresnelApp;
             if (obj.Methods) {
                 for (var i = 0; i < obj.Methods.length; i++) {
                     var method = obj.Methods[i];
-                    explorer[method.MethodName] = method;
+                    explorer[method.InternalName] = method;
                 }
             }
         };
@@ -402,7 +402,7 @@ var FresnelApp;
         RequestBuilder.prototype.buildMethodInvokeRequest = function (method) {
             var request = {
                 ObjectID: method.ObjectID,
-                MethodName: method.MethodName,
+                MethodName: method.InternalName,
                 Parameters: []
             };
             for (var i = 0; i < method.Parameters.length; i++) {

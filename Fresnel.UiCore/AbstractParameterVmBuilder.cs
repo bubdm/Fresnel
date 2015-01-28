@@ -40,14 +40,14 @@ namespace Envivo.Fresnel.UiCore
             _UnknownVmBuilder = unknownVmBuilder;
         }
 
-        public ValueVM BuildFor(ParameterTemplate tParam)
+        public SettableMemberVM BuildFor(ParameterTemplate tParam)
         {
             var valueType = tParam.InnerClass.RealType;
             var actualType = valueType.IsNullableType() ?
                                valueType.GetGenericArguments()[0] :
                                valueType;
 
-            var paramVM = new ValueVM()
+            var paramVM = new SettableMemberVM()
             {
                 IsVisible = true,
                 Name = tParam.FriendlyName,
