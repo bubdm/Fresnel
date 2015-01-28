@@ -17,7 +17,8 @@
 
             <div class="box-body">
                 <div class="parameterItems">
-                    <!-- NB: We're reusing the Property editors to reduce dupilcation -->
+                    <!-- NB: Notice that we're using the variable 'prop' instead of 'param'?
+                         This is so that we can reuse Property editors (less code duplication) -->
                     <div ng-repeat='prop in method.Parameters' ng-include="'/Templates/objectExplorerPropertyItem.html'"></div>
                 </div>
             </div>
