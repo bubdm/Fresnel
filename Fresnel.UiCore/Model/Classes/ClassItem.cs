@@ -1,5 +1,5 @@
 ﻿using T4TS;
-namespace Envivo.Fresnel.UiCore.Classes
+namespace Envivo.Fresnel.UiCore.Model.Classes
 {
     [TypeScriptInterface]
     public class ClassItem : BaseViewModel

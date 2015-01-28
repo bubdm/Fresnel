@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Envivo.Fresnel.UiCore.TypeInfo
+namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
     public class EnumVmBuilder : IPropertyVmBuilder
     {

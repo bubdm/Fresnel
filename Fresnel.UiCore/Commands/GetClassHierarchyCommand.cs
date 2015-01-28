@@ -1,5 +1,5 @@
 ﻿using Envivo.Fresnel.Introspection.Assemblies;
-using Envivo.Fresnel.UiCore.Classes;
+using Envivo.Fresnel.UiCore.Model.Classes;
 using Envivo.Fresnel.Utils;
 using System.Collections.Generic;
 using System.Linq;

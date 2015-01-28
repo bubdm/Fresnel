@@ -4,7 +4,7 @@ using Envivo.Fresnel.Introspection.Templates;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Envivo.Fresnel.UiCore.Classes
+namespace Envivo.Fresnel.UiCore.Model.Classes
 {
     public class NamespacesBuilder
     {

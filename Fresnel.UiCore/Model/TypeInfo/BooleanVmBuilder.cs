@@ -5,7 +5,7 @@ using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.Utils;
 using System;
 
-namespace Envivo.Fresnel.UiCore.TypeInfo
+namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
     public class BooleanVmBuilder : IPropertyVmBuilder
     {

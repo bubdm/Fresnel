@@ -1,7 +1,7 @@
 ﻿using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
-using Envivo.Fresnel.UiCore.Messages;
+using Envivo.Fresnel.UiCore.Model;
 
 using Envivo.Fresnel.Utils;
 using System;

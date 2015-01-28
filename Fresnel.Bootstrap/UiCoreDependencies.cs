@@ -34,18 +34,18 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Commands.CollectionAddCommand),
                 typeof(Fresnel.UiCore.Commands.CollectionRemoveCommand),
 
-                typeof(Fresnel.UiCore.Changes.ModificationsVmBuilder),
+                typeof(Fresnel.UiCore.Model.Changes.ModificationsVmBuilder),
 
-                typeof(Fresnel.UiCore.Classes.ClassItemBuilder),
-                typeof(Fresnel.UiCore.Classes.NamespacesBuilder),
+                typeof(Fresnel.UiCore.Model.Classes.ClassItemBuilder),
+                typeof(Fresnel.UiCore.Model.Classes.NamespacesBuilder),
 
-                typeof(Fresnel.UiCore.TypeInfo.BooleanVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.DateTimeVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.EnumVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.NumberVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.StringVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.ObjectSelectionVmBuilder),
-                typeof(Fresnel.UiCore.TypeInfo.UnknownVmBuilder),
+                typeof(Fresnel.UiCore.Model.TypeInfo.BooleanVmBuilder),
+                typeof(Fresnel.UiCore.Model.TypeInfo.DateTimeVmBuilder),
+                typeof(Fresnel.UiCore.Model.TypeInfo.EnumVmBuilder),
+                typeof(Fresnel.UiCore.Model.TypeInfo.NumberVmBuilder),
+                typeof(Fresnel.UiCore.Model.TypeInfo.StringVmBuilder),
+                typeof(Fresnel.UiCore.Model.TypeInfo.ObjectSelectionVmBuilder),
+                typeof(Fresnel.UiCore.Model.TypeInfo.UnknownVmBuilder),
 
                 typeof(Fresnel.UiCore.SessionVmBuilder),
             };

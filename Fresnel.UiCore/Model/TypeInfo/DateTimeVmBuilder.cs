@@ -4,7 +4,7 @@ using Envivo.Fresnel.UiCore.Model;
 
 using System;
 
-namespace Envivo.Fresnel.UiCore.TypeInfo
+namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
     public class DateTimeVmBuilder : IPropertyVmBuilder
     {

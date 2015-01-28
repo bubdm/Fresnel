@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.UiCore.Commands;
+using Envivo.Fresnel.UiCore.Model;
 using System.Web.Http;
 
 namespace Envivo.Fresnel.UiCore.Controllers

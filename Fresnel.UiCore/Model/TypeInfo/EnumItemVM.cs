@@ -1,5 +1,5 @@
 ﻿using T4TS;
-namespace Envivo.Fresnel.UiCore.TypeInfo
+namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
     [TypeScriptInterface]
     public class EnumItemVM : BaseViewModel

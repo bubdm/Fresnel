@@ -1,5 +1,5 @@
-﻿using Envivo.Fresnel.UiCore.Changes;
-using Envivo.Fresnel.UiCore.Messages;
+﻿using Envivo.Fresnel.UiCore.Model.Changes;
+using Envivo.Fresnel.UiCore.Model;
 using System.Collections.Generic;
 using T4TS;
 

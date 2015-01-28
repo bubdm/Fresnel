@@ -3,7 +3,7 @@ using Envivo.Fresnel.Core.Permissions;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Model;
-using Envivo.Fresnel.UiCore.TypeInfo;
+using Envivo.Fresnel.UiCore.Model.TypeInfo;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;

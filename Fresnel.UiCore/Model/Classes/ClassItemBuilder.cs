@@ -2,7 +2,7 @@
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 
-namespace Envivo.Fresnel.UiCore.Classes
+namespace Envivo.Fresnel.UiCore.Model.Classes
 {
     public class ClassItemBuilder
     {

@@ -1,5 +1,5 @@
 ﻿using Envivo.Fresnel.Core.Observers;
-using Envivo.Fresnel.UiCore.Messages;
+using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.Utils;
 using System;
 

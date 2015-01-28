@@ -1,4 +1,4 @@
-﻿using Envivo.Fresnel.UiCore.TypeInfo;
+﻿using Envivo.Fresnel.UiCore.Model.TypeInfo;
 using System;
 using T4TS;
 

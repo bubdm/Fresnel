@@ -1,5 +1,5 @@
-﻿using Envivo.Fresnel.UiCore.Classes;
-using Envivo.Fresnel.UiCore.Commands;
+﻿using Envivo.Fresnel.UiCore.Commands;
+using Envivo.Fresnel.UiCore.Model.Classes;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;

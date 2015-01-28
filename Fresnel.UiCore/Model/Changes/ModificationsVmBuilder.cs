@@ -4,7 +4,7 @@ using Envivo.Fresnel.Core.Observers;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Envivo.Fresnel.UiCore.Changes
+namespace Envivo.Fresnel.UiCore.Model.Changes
 {
     public class ModificationsVmBuilder
     {
