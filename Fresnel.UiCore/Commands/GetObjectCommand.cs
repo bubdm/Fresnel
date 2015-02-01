@@ -1,13 +1,12 @@
 ﻿using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.UiCore.Model;
-using Envivo.Fresnel.UiCore.Model;
 
 using Envivo.Fresnel.Utils;
 using System;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
-    public class GetObjectCommand
+    public class GetObjectCommand : ICommand
     {
         private ObserverCache _ObserverCache;
         private AbstractObjectVmBuilder _ObjectVMBuilder;

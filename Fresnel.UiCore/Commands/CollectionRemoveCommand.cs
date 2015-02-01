@@ -9,7 +9,7 @@ using System;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
-    public class CollectionRemoveCommand
+    public class CollectionRemoveCommand : ICommand
     {
         private ObserverCache _ObserverCache;
         private RemoveFromCollectionCommand _RemoveFromCollectionCommand;

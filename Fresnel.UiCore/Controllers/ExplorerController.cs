@@ -1,5 +1,7 @@
 ﻿using Envivo.Fresnel.UiCore.Commands;
+using System.Collections.Generic;
 using System.Web.Http;
+using System.Linq;
 
 namespace Envivo.Fresnel.UiCore.Controllers
 {
@@ -14,20 +16,15 @@ namespace Envivo.Fresnel.UiCore.Controllers
 
         public ExplorerController
             (
-            GetObjectCommand getObjectCommand,
-            GetPropertyCommand getPropertyCommand,
-            SetPropertyCommand setPropertyCommand,
-            InvokeMethodCommand invokeMethodCommand,
-            CollectionAddCommand collectionAddCommand,
-            CollectionRemoveCommand collectionRemoveCommand
+            IEnumerable<ICommand> commands
             )
         {
-            _GetObjectCommand = getObjectCommand;
-            _GetPropertyCommand = getPropertyCommand;
-            _SetPropertyCommand = setPropertyCommand;
-            _InvokeMethodCommand = invokeMethodCommand;
-            _CollectionAddCommand = collectionAddCommand;
-            _CollectionRemoveCommand = collectionRemoveCommand;
+            _GetObjectCommand = commands.OfType<GetObjectCommand>().Single();
+            _GetPropertyCommand = commands.OfType<GetPropertyCommand>().Single(); ;
+            _SetPropertyCommand = commands.OfType<SetPropertyCommand>().Single(); ;
+            _InvokeMethodCommand = commands.OfType<InvokeMethodCommand>().Single(); ;
+            _CollectionAddCommand = commands.OfType<CollectionAddCommand>().Single(); ;
+            _CollectionRemoveCommand = commands.OfType<CollectionRemoveCommand>().Single(); ;
         }
 
         [HttpPost]

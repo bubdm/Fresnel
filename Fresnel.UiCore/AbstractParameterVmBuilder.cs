@@ -13,31 +13,16 @@ namespace Envivo.Fresnel.UiCore
 {
     public class AbstractParameterVmBuilder
     {
-        private List<IPropertyVmBuilder> _Builders;
+        private IEnumerable<IPropertyVmBuilder> _Builders;
         private UnknownVmBuilder _UnknownVmBuilder;
-
 
         public AbstractParameterVmBuilder
             (
-            BooleanVmBuilder booleanVmBuilder,
-            DateTimeVmBuilder dateTimeVmBuilder,
-            EnumVmBuilder enumVmBuilder,
-            NumberVmBuilder numberVmBuilder,
-            StringVmBuilder textVmBuilder,
-            ObjectSelectionVmBuilder objectSelectionVmBuilder,
-            UnknownVmBuilder unknownVmBuilder
+            IEnumerable<IPropertyVmBuilder> builders
             )
         {
-            _Builders = new List<IPropertyVmBuilder>()
-            {
-                booleanVmBuilder ,
-                dateTimeVmBuilder,
-                enumVmBuilder,
-                numberVmBuilder,
-                textVmBuilder,
-                objectSelectionVmBuilder,
-            };
-            _UnknownVmBuilder = unknownVmBuilder;
+            _Builders = builders;
+            _UnknownVmBuilder = builders.OfType<UnknownVmBuilder>().Single();
         }
 
         public SettableMemberVM BuildFor(ParameterTemplate tParam)

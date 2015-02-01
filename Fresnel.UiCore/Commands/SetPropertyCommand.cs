@@ -10,7 +10,7 @@ using System;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
-    public class SetPropertyCommand
+    public class SetPropertyCommand : ICommand
     {
         private ObserverCache _ObserverCache;
         private AbstractObjectVmBuilder _ObjectVMBuilder;

@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
-    public class GetClassHierarchyCommand
+    public class GetClassHierarchyCommand : ICommand
     {
         private AssemblyReaderMap _AssemblyReaderMap;
         private NamespacesBuilder _NamespacesBuilder;

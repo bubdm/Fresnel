@@ -5,7 +5,7 @@ using System;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
-    public class CleanupSessionCommand
+    public class CleanupSessionCommand : ICommand
     {
         private ObserverCache _ObserverCache;
         private IClock _Clock;

@@ -9,14 +9,20 @@ namespace Envivo.Fresnel.Bootstrap
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterTypes(this.GetSingleInstanceTypes())
+                    .AsImplementedInterfaces()
+                    .AsSelf()
                     .SingleInstance()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
             builder.RegisterTypes(this.GetPerDependencyInstanceTypes())
+                    .AsImplementedInterfaces()
+                    .AsSelf()
                     .InstancePerDependency()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
             builder.RegisterType<SystemClock>().As<IClock>()
+                    .AsImplementedInterfaces()
+                    .AsSelf()
                     .SingleInstance()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
         }

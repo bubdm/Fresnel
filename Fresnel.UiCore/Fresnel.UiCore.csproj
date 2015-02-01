@@ -47,6 +47,7 @@
     <Compile Include="Commands\CollectionRequest.cs" />
     <Compile Include="Commands\CollectionAddCommand.cs" />
     <Compile Include="Commands\CollectionAddResponse.cs" />
+    <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Model\ParameterVM.cs" />
     <Compile Include="Model\PropertyVM.cs" />
     <Compile Include="PropertyStateVmBuilder.cs" />

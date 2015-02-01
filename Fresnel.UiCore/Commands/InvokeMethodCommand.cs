@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
-    public class InvokeMethodCommand
+    public class InvokeMethodCommand : ICommand
     {
         private ObserverCache _ObserverCache;
         private AbstractObjectVmBuilder _ObjectVMBuilder;

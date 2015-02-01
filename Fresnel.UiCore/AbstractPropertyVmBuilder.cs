@@ -13,34 +13,19 @@ namespace Envivo.Fresnel.UiCore
 {
     public class AbstractPropertyVmBuilder
     {
-        private List<IPropertyVmBuilder> _Builders;
+        private IEnumerable<IPropertyVmBuilder> _Builders;
         private UnknownVmBuilder _UnknownVmBuilder;
 
         private PropertyStateVmBuilder _PropertyStateVmBuilder;
 
         public AbstractPropertyVmBuilder
             (
-            BooleanVmBuilder booleanVmBuilder,
-            DateTimeVmBuilder dateTimeVmBuilder,
-            EnumVmBuilder enumVmBuilder,
-            NumberVmBuilder numberVmBuilder,
-            StringVmBuilder textVmBuilder,
-            ObjectSelectionVmBuilder objectSelectionVmBuilder,
-            UnknownVmBuilder unknownVmBuilder,
-
+            IEnumerable<IPropertyVmBuilder> builders,
             PropertyStateVmBuilder propertyStateVmBuilder
             )
         {
-            _Builders = new List<IPropertyVmBuilder>()
-            {
-                booleanVmBuilder ,
-                dateTimeVmBuilder,
-                enumVmBuilder,
-                numberVmBuilder,
-                textVmBuilder,
-                objectSelectionVmBuilder,
-            };
-            _UnknownVmBuilder = unknownVmBuilder;
+            _Builders = builders;
+            _UnknownVmBuilder = builders.OfType<UnknownVmBuilder>().Single();
 
             _PropertyStateVmBuilder = propertyStateVmBuilder;
         }
@@ -83,7 +68,7 @@ namespace Envivo.Fresnel.UiCore
 
             return propVM;
         }
-        
+
         //private string ConvertToJavascriptType(Type type)
         //{
         //    switch (type.Name.ToLower())
