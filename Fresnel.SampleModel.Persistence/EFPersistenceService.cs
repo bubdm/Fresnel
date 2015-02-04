@@ -30,6 +30,12 @@ namespace Fresnel.SampleModel.Persistence
             return _ModelContext.GetObject<T>(id);
         }
 
+        public IQueryable<T> GetAll<T>()
+            where T : class
+        {
+            return _ModelContext.GetAll<T>();
+        }
+
         public void LoadProperty<TParent>(TParent parent, Expression<Func<TParent, object>> selector)
             where TParent : class
         {

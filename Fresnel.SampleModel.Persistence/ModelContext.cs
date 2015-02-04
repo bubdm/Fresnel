@@ -66,6 +66,12 @@ namespace Fresnel.SampleModel.Persistence
             return string.Concat(this.GetType().Name, ".", typeof(T).Name, "Set");
         }
 
+        public IQueryable<T> GetAll<T>()
+            where T : class
+        {
+            return this.Set<T>();
+        }
+
         public void LoadProperty<TParent>(TParent parent, Expression<Func<TParent, object>> selector)
             where TParent : class
         {

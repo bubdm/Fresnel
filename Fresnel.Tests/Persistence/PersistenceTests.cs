@@ -113,5 +113,34 @@ namespace Envivo.Fresnel.Tests.Persistence
         }
 
 
+        [Test]
+        public void ShouldLoadAll()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
+
+            var persistenceService = container.Resolve<IPersistenceService>();
+
+            for (var i = 0; i < 5; i++)
+            {
+                var poco = persistenceService.CreateObject<PocoObject>();
+                poco.ID = Guid.NewGuid();
+                poco.AddSomeChildObjects();
+
+                var savedChanges = persistenceService.SaveChanges();
+            }
+
+            // Act:
+            var pocos = persistenceService.GetAll<PocoObject>();
+
+            // Assert:
+            Assert.AreNotEqual(0, pocos.Count());
+        }
+
     }
 }

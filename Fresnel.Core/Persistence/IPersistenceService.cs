@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 namespace Envivo.Fresnel.Core.Persistence
 {
@@ -10,6 +12,9 @@ namespace Envivo.Fresnel.Core.Persistence
         T GetObject<T>(Guid id)
             where T : class;
 
+        IQueryable<T> GetAll<T>()
+            where T : class;
+
         void LoadProperty<TParent>(TParent parent, Expression<Func<TParent, object>> selector)
             where TParent : class;
 
@@ -18,7 +23,6 @@ namespace Envivo.Fresnel.Core.Persistence
 
         void DeleteObject<T>(T entityToDelete)
             where T : class;
-
 
         int SaveChanges();
 
