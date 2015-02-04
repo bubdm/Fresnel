@@ -54,14 +54,11 @@
     <Compile Include="Configuration\ConfigurationMapBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IoC\DomainServiceLocator.cs" />
     <Compile Include="IoC\IDomainDependencyResolver.cs" />
     <Compile Include="IoC\IDomainClassRegistrar.cs" />
     <Compile Include="IoC\IDomainObjectFactory.cs" />
     <Compile Include="IoC\IDomainDependencyRegistrar.cs" />
     <Compile Include="IoC\QuerySpecificationLocator.cs" />
-    <Compile Include="IoC\RepositoryLocator.cs" />
-    <Compile Include="IoC\FactoryLocator.cs" />
     <Compile Include="Templates\AbstractClassTemplateBuilder.cs" />
     <Compile Include="Commands\CloneObjectCommand.cs" />
     <Compile Include="Commands\CreateObjectCommand.cs" />

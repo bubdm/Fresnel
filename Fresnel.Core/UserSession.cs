@@ -17,12 +17,9 @@ namespace Envivo.Fresnel.Core
             _CreateObjectCommand = createObjectCommand;
 
             this.IdentityMap = new IdentityMap();
-            this.UnitOfWork = new UnitOfWork();
         }
 
         public IdentityMap IdentityMap { get; private set; }
-
-        public UnitOfWork UnitOfWork { get; private set; }
 
         /// <summary>
         /// Creates an instance of the given Type

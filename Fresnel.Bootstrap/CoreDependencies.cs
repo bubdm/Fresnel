@@ -86,7 +86,6 @@ namespace Envivo.Fresnel.Bootstrap
 
                 typeof(Fresnel.Core.Observers.ObserverCache),
                 typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
-                typeof(Fresnel.Core.Persistence.UnitOfWork),
                 typeof(Fresnel.Core.IdentityMap),
                 typeof(Fresnel.Core.UserSession),
             };

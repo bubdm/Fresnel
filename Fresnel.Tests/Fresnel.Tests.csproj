@@ -31,10 +31,18 @@
     <Reference Include="Autofac">
       <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +55,7 @@
     <Compile Include="Domain\MethodTemplateTests.cs" />
     <Compile Include="Domain\PropertyTemplateTests.cs" />
     <Compile Include="Domain\CollectionTemplateTests.cs" />
+    <Compile Include="Persistence\PersistenceTests.cs" />
     <Compile Include="UiCore\MethodTests.cs" />
     <Compile Include="UiCore\EditorIdentifierTests.cs">
       <SubType>Code</SubType>
@@ -64,6 +73,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +95,10 @@
     <ProjectReference Include="..\Fresnel.Introspection\Fresnel.Introspection.csproj">
       <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>
       <Name>Fresnel.Introspection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.SampleModel.Persistence\Fresnel.SampleModel.Persistence.csproj">
+      <Project>{38243c48-0890-4d8c-a07f-e0ac6840f844}</Project>
+      <Name>Fresnel.SampleModel.Persistence</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fresnel.SampleModel\Fresnel.SampleModel.csproj">
       <Project>{77810A26-5586-42C5-B05A-4C06DB029FD2}</Project>

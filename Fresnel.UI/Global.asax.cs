@@ -28,18 +28,36 @@ namespace Envivo.Fresnel.UI
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            ConfigureAutofac();
+            var domainAssemblies = GetDomainAssemblies();
 
-            RegisterDomainAssembly();
+            ConfigureAutofac(domainAssemblies);
+
+            RegisterDomainAssembies(domainAssemblies);
+        }
+        
+        private static IEnumerable<Assembly> GetDomainAssemblies()
+        {
+            var results = new List<Assembly>();
+
+            var domainAssemblyPath = ConfigurationManager.AppSettings["DomainAssemblyFile"];
+            var domainAssembly = Assembly.LoadFile(domainAssemblyPath);
+            results.Add(domainAssembly);
+
+            var persistenceAssemblyPath = ConfigurationManager.AppSettings["DomainAssemblyFile"];
+            var persistenceAssembly = Assembly.LoadFile(persistenceAssemblyPath);
+            results.Add(persistenceAssembly);
+
+            return results;
         }
 
-        private static void RegisterDomainAssembly()
+        private static void RegisterDomainAssembies(IEnumerable<Assembly> assemblies)
         {
-            var path = ConfigurationManager.AppSettings["DomainAssemblyFile"];
-            var domainAssembly = Assembly.LoadFile(path);
-
             var engine = DependencyResolver.Current.GetService<Core.Engine>();
-            engine.RegisterDomainAssembly(domainAssembly);
+
+            foreach (var assembly in assemblies)
+            {
+                engine.RegisterDomainAssembly(assembly);
+            }
         }
 
         private static void ConfigureExternalControllers()
@@ -50,11 +68,19 @@ namespace Envivo.Fresnel.UI
             Trace.TraceInformation(dummy.FullName);
         }
 
-        private static void ConfigureAutofac()
+        private static void ConfigureAutofac(IEnumerable<Assembly> assemblies)
         {
-            var additionalDependencies = new Autofac.Module[] { new UiDependencies() };
+            // Determine if any modules exist within the Domain assemblies:
+            var additionalModules = assemblies
+                                    .SelectMany(a => a.GetExportedTypes())
+                                    .Where(t => t.IsSubclassOf(typeof(Autofac.Module)))
+                                    .Select(t => Activator.CreateInstance(t))
+                                    .Cast<Autofac.Module>()
+                                    .ToList();
+            additionalModules.Add(new UiDependencies());
+
             var container = new ContainerFactory()
-                                .Build(additionalDependencies);
+                                .Build(additionalModules);
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
