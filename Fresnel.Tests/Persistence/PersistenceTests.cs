@@ -77,7 +77,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var differences = poco.ChildObjects.Except(persistedPoco.ChildObjects);
             Assert.AreEqual(0, differences.Count());
         }
-        
+
         [Test(), Ignore("Functionality doesn't work yet")]
         public void ShouldCreateBiDirectionalLinks()
         {
@@ -140,6 +140,36 @@ namespace Envivo.Fresnel.Tests.Persistence
 
             // Assert:
             Assert.AreNotEqual(0, pocos.Count());
+        }
+
+        [Test]
+        public void ShouldRefreshObjectFromDB()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
+
+            var dummyText = "This is a test " + DateTime.Now.ToString();
+
+            var persistenceService = container.Resolve<IPersistenceService>();
+
+            var poco = persistenceService.CreateObject<PocoObject>();
+            poco.ID = Guid.NewGuid();
+            poco.NormalText = dummyText;
+            poco.AddSomeChildObjects();
+
+            var savedChanges = persistenceService.SaveChanges();
+
+            // Act:
+            poco.NormalText = "123456";
+            persistenceService.Refresh(poco);
+
+            // Assert:
+            Assert.AreEqual(dummyText, poco.NormalText);
         }
 
     }

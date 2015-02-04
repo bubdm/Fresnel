@@ -42,6 +42,11 @@ namespace Fresnel.SampleModel.Persistence
             _ModelContext.LoadProperty(parent, selector);
         }
 
+        public void Refresh<T>(T entity) where T : class
+        {
+            _ModelContext.Refresh<T>(entity);
+        }
+
         public void UpdateObject<T>(T entityWithChanges) where T : class
         {
             _ModelContext.UpdateObject(entityWithChanges);

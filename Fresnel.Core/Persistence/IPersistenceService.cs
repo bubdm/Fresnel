@@ -18,6 +18,8 @@ namespace Envivo.Fresnel.Core.Persistence
         void LoadProperty<TParent>(TParent parent, Expression<Func<TParent, object>> selector)
             where TParent : class;
 
+        void Refresh<T>(T entity) where T : class;
+
         void UpdateObject<T>(T entityWithChanges)
             where T : class;
 

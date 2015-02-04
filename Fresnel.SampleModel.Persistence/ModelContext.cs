@@ -78,6 +78,11 @@ namespace Fresnel.SampleModel.Persistence
             _ObjectContext.LoadProperty<TParent>(parent, selector);
         }
 
+        public void Refresh<T>(T entity) where T : class
+        {
+            _ObjectContext.Refresh(RefreshMode.StoreWins, entity);
+        }
+
         public void UpdateObject<T>(T entityWithChanges) where T : class
         {
             var entitySetName = this.CreateEntitySetName<T>();
