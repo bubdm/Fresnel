@@ -18,6 +18,10 @@ namespace Fresnel.SampleModel.Persistence
         protected override void Load(ContainerBuilder builder)
         {
             var connectionString = @"Server=CHRONOS\SQLEXPRESS;Database=SampleModel;Integrated Security=True;";
+            
+            builder.RegisterType<ModelConfigurator>()
+                   .AsSelf()
+                   .InstancePerLifetimeScope();
 
             builder.RegisterType<ModelContext>()
                     .WithParameter("nameOrConnectionString", connectionString)

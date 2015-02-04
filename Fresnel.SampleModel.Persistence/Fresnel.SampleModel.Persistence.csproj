@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomDependencyModule.cs" />
+    <Compile Include="ModelConfigurator.cs" />
     <Compile Include="ModelContext.cs" />
     <Compile Include="EFPersistenceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

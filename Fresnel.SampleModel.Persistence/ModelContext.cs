@@ -10,19 +10,29 @@ using System.Linq.Expressions;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Fresnel.SampleModel.Persistence
 {
     public class ModelContext : DbContext
     {
+        private ModelConfigurator _Configurator;
         private ObjectContext _ObjectContext;
 
-        public ModelContext(string nameOrConnectionString)
+        public ModelContext(string nameOrConnectionString, ModelConfigurator configurator)
             : base(nameOrConnectionString)
         {
+            _Configurator = configurator;
             _ObjectContext = ((IObjectContextAdapter)this).ObjectContext;
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            _Configurator.ExecuteOn(modelBuilder);
+        }
+
+        public DbSet<BiDirectionalExample> BiDirectionalExampleSet { get; set; }
         public DbSet<Category> CategorySet { get; set; }
         public DbSet<DetailObject> DetailObjectSet { get; set; }
         public DbSet<Product> ProductSet { get; set; }
@@ -66,6 +76,25 @@ namespace Fresnel.SampleModel.Persistence
         {
             var entitySetName = this.CreateEntitySetName<T>();
             _ObjectContext.ApplyCurrentValues(entitySetName, entityWithChanges);
+        }
+
+        public override int SaveChanges()
+        {
+            var changedEntities = this.ChangeTracker
+                                        .Entries()
+                                        .Where(x => x.State == EntityState.Added ||
+                                                    x.State == EntityState.Modified);
+
+            foreach (var entry in changedEntities)
+            {
+                var entity = entry.Entity as IPersistable;
+                if (entity != null)
+                {
+                    entity.Version++;
+                }
+            }
+
+            return base.SaveChanges();
         }
 
         public void DeleteObject<T>(T entityToDelete) where T : class

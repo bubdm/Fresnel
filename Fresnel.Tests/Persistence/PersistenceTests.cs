@@ -20,30 +20,6 @@ namespace Envivo.Fresnel.Tests.Persistence
     public class PersistenceTests
     {
         [Test()]
-        public void ShouldCreateNewObjects()
-        {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
-            engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
-
-            var persistenceService = container.Resolve<IPersistenceService>();
-
-            // Act:
-            var poco = persistenceService.CreateObject<PocoObject>();
-            poco.ID = Guid.NewGuid();
-
-            var savedChanges = persistenceService.SaveChanges();
-
-            // Assert:
-            Assert.IsNotNull(poco);
-            Assert.AreNotEqual(0, savedChanges);
-        }
-
-        [Test()]
         public void ShouldCreateCompleteAggregate()
         {
             // Arrange:
@@ -88,17 +64,54 @@ namespace Envivo.Fresnel.Tests.Persistence
 
             // Step 1:
             var savedChanges1 = persistenceService.SaveChanges();
-            Assert.IsTrue(savedChanges1 > 1);
 
             // Step 2:
             poco.ChildObjects.Remove(poco.ChildObjects.First());
             var savedChanges2 = persistenceService.SaveChanges();
+
+            // Assert:
+            Assert.IsTrue(savedChanges1 > 1);
             Assert.IsTrue(savedChanges2 > 0);
 
             var persistedPoco = persistenceService.GetObject<PocoObject>(poco.ID);
             var differences = poco.ChildObjects.Except(persistedPoco.ChildObjects);
             Assert.AreEqual(0, differences.Count());
         }
+        
+        [Test(), Ignore("Functionality doesn't work yet")]
+        public void ShouldCreateBiDirectionalLinks()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
+
+            var persistenceService = container.Resolve<IPersistenceService>();
+
+            // Act:
+            var objA = persistenceService.CreateObject<BiDirectionalExample>();
+            objA.ID = Guid.NewGuid();
+
+            var objB = persistenceService.CreateObject<BiDirectionalExample>();
+            objB.ID = Guid.NewGuid();
+
+            objA.AddToContents(objB);
+
+            var savedChanges = persistenceService.SaveChanges();
+
+            // Assert:
+            Assert.AreEqual(2, savedChanges);
+
+            var persistedA = persistenceService.GetObject<BiDirectionalExample>(objA.ID);
+            var persistedB = persistenceService.GetObject<BiDirectionalExample>(objB.ID);
+
+            Assert.IsTrue(persistedA.Contents.Contains(persistedB));
+            Assert.IsTrue(persistedB.Contents.Contains(persistedA));
+        }
+
 
     }
 }

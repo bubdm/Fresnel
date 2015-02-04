@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.DomainTypes;
+using System;
 using System.Collections.Generic;
 
 namespace Envivo.Fresnel.SampleModel.Objects
@@ -10,32 +11,29 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public class BiDirectionalExample : BaseEntity
     {
-        private Collection<BiDirectionalExample> _Contents = new Collection<BiDirectionalExample>();
 
-        /// <summary>
-        ///
-        /// </summary>
         public BiDirectionalExample()
         {
+            this.Contents = new List<BiDirectionalExample>();
         }
 
+        public BiDirectionalExample Owner { get; set; }
+
         /// <summary>
-        ///
+        /// Contains all of the other objects that relate back to this one
         /// </summary>
         [CollectionProperty(Relationship = ManyRelationship.OwnsMany)]
-        public virtual ICollection<BiDirectionalExample> Contents
-        {
-            get { return _Contents; }
-        }
+        public virtual ICollection<BiDirectionalExample> Contents { get; set; }
 
         /// <summary>
-        /// This method will take precedence over the Contents Collection's Add() method
+        /// This method should be used instead of Contents.Add() method
         /// </summary>
         /// <param name="item"></param>
-        public virtual void AddToContents(BiDirectionalExample item)
+        public void AddToContents(BiDirectionalExample item)
         {
-            _Contents.Add(item);
+            this.Contents.Add(item);
 
+            item.Owner = this;
             item.Contents.Add(this);
         }
     }
