@@ -23,15 +23,18 @@ namespace Fresnel.SampleModel.Persistence
             _ObjectContext = ((IObjectContextAdapter)this).ObjectContext;
         }
 
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<DetailObject> DetailObjects { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Money> Money { get; set; }
-        public DbSet<PocoObject> PocoObjects { get; set; }
+        public DbSet<Category> CategorySet { get; set; }
+        public DbSet<DetailObject> DetailObjectSet { get; set; }
+        public DbSet<Product> ProductSet { get; set; }
+        public DbSet<Money> MoneySet { get; set; }
+        public DbSet<PocoObject> PocoObjectSet { get; set; }
 
         public T CreateObject<T>() where T : class
         {
-            return _ObjectContext.CreateObject<T>();
+            var newObject = _ObjectContext.CreateObject<T>();
+            this.Set<T>().Add(newObject);
+
+            return newObject;
         }
 
         public T GetObject<T>(Guid id) where T : class
@@ -40,8 +43,8 @@ namespace Fresnel.SampleModel.Persistence
             {
                 new KeyValuePair<string, object>("ID", id)
             };
-            var key = new EntityKey(this.CreateEntitySetName<T>(), keyValues);
-
+            var entitySetName = this.CreateEntitySetName<T>();
+            var key = new EntityKey(entitySetName, keyValues);
 
             var result = (T)_ObjectContext.GetObjectByKey(key);
             return result;
@@ -49,7 +52,8 @@ namespace Fresnel.SampleModel.Persistence
 
         private string CreateEntitySetName<T>()
         {
-            return typeof(T).Name + "Set";
+            // NB: This creates names that match the DbSet properties declared earlier:
+            return string.Concat(this.GetType().Name, ".", typeof(T).Name, "Set");
         }
 
         public void LoadProperty<TParent>(TParent parent, Expression<Func<TParent, object>> selector)
@@ -60,7 +64,8 @@ namespace Fresnel.SampleModel.Persistence
 
         public void UpdateObject<T>(T entityWithChanges) where T : class
         {
-            _ObjectContext.ApplyCurrentValues(this.CreateEntitySetName<T>(), entityWithChanges);
+            var entitySetName = this.CreateEntitySetName<T>();
+            _ObjectContext.ApplyCurrentValues(entitySetName, entityWithChanges);
         }
 
         public void DeleteObject<T>(T entityToDelete) where T : class

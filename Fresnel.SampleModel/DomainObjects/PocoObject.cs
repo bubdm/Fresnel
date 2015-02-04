@@ -27,34 +27,34 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual long Version { get; set; }
+        public long Version { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual int RecordId { get; protected set; }
+        public int RecordId { get; protected set; }
 
         /// <summary>
         /// This is a normal Boolean
         /// </summary>
         [Property(Category = "Sort 1")]
-        public virtual bool NormalBoolean { get; set; }
+        public bool NormalBoolean { get; set; }
 
         /// <summary>
         /// This is a Rich Text field, and should appear as a large editor
         /// </summary>
-        public virtual string FormattedText { get; set; }
+        public string FormattedText { get; set; }
 
         /// <summary>
         /// This is an unformatted Date.
         /// Clicking the down-arrow will reveal the DatePicker dialog.
         /// </summary>
-        public virtual DateTime NormalDate
+        public DateTime NormalDate
         {
             get { return _NormalDate; }
             set { _NormalDate = value; }
@@ -64,29 +64,29 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// This enum should be shown as a drop-down list.
         /// </summary>
         [Property(Category = "Sort 2")]
-        public virtual EnumValues.IndividualOptions EnumValue { get; set; }
+        public EnumValues.IndividualOptions EnumValue { get; set; }
 
         /// <summary>
         /// This enum should be shown as a check-list.
         /// </summary>
-        public virtual CombinationOptions EnumSwitches { get; set; }
+        public CombinationOptions EnumSwitches { get; set; }
 
         /// <summary>
         /// This is a normal Text
         /// </summary>
-        public virtual string NormalText { get; set; }
+        public string NormalText { get; set; }
 
         /// <summary>
         /// It should be possible to clear this value.
         /// It should also be possible to 'Cut' this value using the clipboard commands.
         /// </summary>
-        public virtual int? NullableInt { get; set; }
+        public int? NullableInt { get; set; }
 
         /// <summary>
         /// This will show a PropertyGrid with X/Y values.
         /// The background colour should change when the control gets focus
         /// </summary>
-        public virtual Point Point { get; set; }
+        public Point Point { get; set; }
 
         /// <summary>
         ///
@@ -101,12 +101,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// This wil method some objects to the "Child Objects" property.
         /// Actions can only be invoked if there are no unsaved objects on the Workbench.
         /// </summary>
-        public virtual void AddSomeChildObjects()
+        public void AddSomeChildObjects()
         {
             var stamp = Environment.TickCount;
-            this.ChildObjects.Add(new PocoObject() { RecordId = stamp });
-            this.ChildObjects.Add(new PocoObject() { RecordId = stamp + 1 });
-            this.ChildObjects.Add(new PocoObject() { RecordId = stamp + 2 });
+            this.ChildObjects.Add(new PocoObject() { ID = Guid.NewGuid(), RecordId = stamp });
+            this.ChildObjects.Add(new PocoObject() { ID = Guid.NewGuid(), RecordId = stamp + 1 });
+            this.ChildObjects.Add(new PocoObject() { ID = Guid.NewGuid(), RecordId = stamp + 2 });
         }
 
         /// <summary>
