@@ -8,7 +8,7 @@ using System;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
-    public class CreateCommand
+    public class CreateCommand : ICommand
     {
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;

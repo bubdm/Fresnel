@@ -17,8 +17,9 @@ using System.Linq;
 namespace Envivo.Fresnel.Tests.Persistence
 {
     [TestFixture()]
-    public class PersistenceTests
+    public class PersistenceServiceTests
     {
+       
         [Test()]
         public void ShouldCreateCompleteAggregate()
         {
@@ -32,8 +33,10 @@ namespace Envivo.Fresnel.Tests.Persistence
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
+            var pocoType = typeof(PocoObject);
+
             // Act:
-            var poco = persistenceService.CreateObject<PocoObject>();
+            var poco = (PocoObject)persistenceService.CreateObject(pocoType);
             poco.ID = Guid.NewGuid();
             poco.AddSomeChildObjects();
 
@@ -57,8 +60,10 @@ namespace Envivo.Fresnel.Tests.Persistence
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
+            var pocoType = typeof(PocoObject);
+
             // Act:
-            var poco = persistenceService.CreateObject<PocoObject>();
+            var poco = (PocoObject)persistenceService.CreateObject(pocoType);
             poco.ID = Guid.NewGuid();
             poco.AddSomeChildObjects();
 
@@ -73,48 +78,13 @@ namespace Envivo.Fresnel.Tests.Persistence
             Assert.IsTrue(savedChanges1 > 1);
             Assert.IsTrue(savedChanges2 > 0);
 
-            var persistedPoco = persistenceService.GetObject<PocoObject>(poco.ID);
+            var persistedPoco = (PocoObject)persistenceService.GetObject(pocoType, poco.ID);
             var differences = poco.ChildObjects.Except(persistedPoco.ChildObjects);
             Assert.AreEqual(0, differences.Count());
         }
 
-        [Test(), Ignore("Functionality doesn't work yet")]
-        public void ShouldCreateBiDirectionalLinks()
-        {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
-            engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
-
-            var persistenceService = container.Resolve<IPersistenceService>();
-
-            // Act:
-            var objA = persistenceService.CreateObject<BiDirectionalExample>();
-            objA.ID = Guid.NewGuid();
-
-            var objB = persistenceService.CreateObject<BiDirectionalExample>();
-            objB.ID = Guid.NewGuid();
-
-            objA.AddToContents(objB);
-
-            var savedChanges = persistenceService.SaveChanges();
-
-            // Assert:
-            Assert.AreEqual(2, savedChanges);
-
-            var persistedA = persistenceService.GetObject<BiDirectionalExample>(objA.ID);
-            var persistedB = persistenceService.GetObject<BiDirectionalExample>(objB.ID);
-
-            Assert.IsTrue(persistedA.Contents.Contains(persistedB));
-            Assert.IsTrue(persistedB.Contents.Contains(persistedA));
-        }
-
-
         [Test]
-        public void ShouldLoadAll()
+        public void ShouldGetObjects()
         {
             // Arrange:
             var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
@@ -125,10 +95,12 @@ namespace Envivo.Fresnel.Tests.Persistence
             engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
+
+            var pocoType = typeof(PocoObject);
 
             for (var i = 0; i < 5; i++)
             {
-                var poco = persistenceService.CreateObject<PocoObject>();
+                var poco = (PocoObject)persistenceService.CreateObject(pocoType);
                 poco.ID = Guid.NewGuid();
                 poco.AddSomeChildObjects();
 
@@ -136,10 +108,10 @@ namespace Envivo.Fresnel.Tests.Persistence
             }
 
             // Act:
-            var pocos = persistenceService.GetAll<PocoObject>();
+            var pocos = persistenceService.GetObjects(pocoType);
 
             // Assert:
-            Assert.AreNotEqual(0, pocos.Count());
+            Assert.AreNotEqual(0, pocos.OfType<PocoObject>().Count());
         }
 
         [Test]
@@ -157,7 +129,9 @@ namespace Envivo.Fresnel.Tests.Persistence
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
-            var poco = persistenceService.CreateObject<PocoObject>();
+            var pocoType = typeof(PocoObject);
+
+            var poco = (PocoObject)persistenceService.CreateObject(pocoType);
             poco.ID = Guid.NewGuid();
             poco.NormalText = dummyText;
             poco.AddSomeChildObjects();

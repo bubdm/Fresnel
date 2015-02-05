@@ -20,6 +20,46 @@ namespace Fresnel.SampleModel.Persistence
             _ModelContext = modelContext;
         }
 
+        public object CreateObject(Type objectType)
+        {
+            return _ModelContext.CreateObject(objectType);
+        }
+
+        public object GetObject(Type objectType, Guid id)
+        {
+            return _ModelContext.GetObject(objectType, id);
+        }
+
+        public IQueryable GetObjects(Type objectType)
+        {
+            return _ModelContext.GetObjects(objectType);
+        }
+
+        public void LoadProperty(Type objectType, Guid id, string propertyName)
+        {
+            _ModelContext.LoadProperty(objectType, id, propertyName);
+        }
+
+        public void Refresh(object entity)
+        {
+            _ModelContext.Refresh(entity);
+        }
+
+        public void UpdateObject(object entityWithChanges, Type objectType)
+        {
+            _ModelContext.UpdateObject(entityWithChanges, objectType);
+        }
+
+        public void DeleteObject(object entityToDelete, Type objectType)
+        {
+            _ModelContext.DeleteObject(entityToDelete, objectType);
+        }
+
+        public int SaveChanges()
+        {
+            return _ModelContext.SaveChanges();
+        }
+
         public T CreateObject<T>() where T : class
         {
             return _ModelContext.CreateObject<T>();
@@ -30,37 +70,24 @@ namespace Fresnel.SampleModel.Persistence
             return _ModelContext.GetObject<T>(id);
         }
 
-        public IQueryable<T> GetAll<T>()
-            where T : class
+        public IQueryable<T> GetObjects<T>() where T : class
         {
-            return _ModelContext.GetAll<T>();
+            return _ModelContext.GetObjects<T>();
         }
 
-        public void LoadProperty<TParent>(TParent parent, Expression<Func<TParent, object>> selector)
-            where TParent : class
+        public void LoadProperty<TParent>(TParent parent, Expression<Func<TParent, object>> selector) where TParent : class
         {
-            _ModelContext.LoadProperty(parent, selector);
-        }
-
-        public void Refresh<T>(T entity) where T : class
-        {
-            _ModelContext.Refresh<T>(entity);
+            _ModelContext.LoadProperty<TParent>(parent, selector);
         }
 
         public void UpdateObject<T>(T entityWithChanges) where T : class
         {
-            _ModelContext.UpdateObject(entityWithChanges);
+            _ModelContext.UpdateObject<T>(entityWithChanges);
         }
 
         public void DeleteObject<T>(T entityToDelete) where T : class
         {
-            _ModelContext.DeleteObject(entityToDelete);
+            _ModelContext.DeleteObject<T>(entityToDelete);
         }
-
-        public int SaveChanges()
-        {
-            return _ModelContext.SaveChanges();
-        }
-
     }
 }

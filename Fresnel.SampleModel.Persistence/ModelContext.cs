@@ -39,6 +39,96 @@ namespace Fresnel.SampleModel.Persistence
         public DbSet<Money> MoneySet { get; set; }
         public DbSet<PocoObject> PocoObjectSet { get; set; }
 
+        public object CreateObject(Type objectType)
+        {
+            var set = this.Set(objectType);
+
+            var newObject = set.Create();
+            set.Add(newObject);
+
+            return newObject;
+        }
+
+        public object GetObject(Type objectType, Guid id)
+        {
+            var set = this.Set(objectType);
+            var result = set.Find(id);
+            return result;
+        }
+
+        public IQueryable GetObjects(Type objectType)
+        {
+            var set = this.Set(objectType);
+            return set;
+        }
+
+        private string CreateEntitySetName<T>()
+        {
+            return this.CreateEntitySetName(typeof(T));
+        }
+
+        private string CreateEntitySetName(Type type)
+        {
+            // NB: This creates names that match the DbSet properties declared earlier:
+            return string.Concat(this.GetType().Name, ".", type.Name, "Set");
+        }
+
+        public void LoadProperty(Type objectType, Guid id, string propertyName)
+        {
+            var set = this.Set(objectType);
+
+            var entity = set.Find(id);
+
+            var collectionEntry = this.Entry(entity).Collection(propertyName);
+            if (collectionEntry != null)
+            {
+                collectionEntry.Load();
+            }
+            else
+            {
+                this.Entry(entity).Reference(propertyName).Load();
+            }
+        }
+
+        public void Refresh(object entity)
+        {
+            _ObjectContext.Refresh(RefreshMode.StoreWins, entity);
+        }
+
+        public void UpdateObject(object entityWithChanges, Type objectType)
+        {
+            var entry = base.Entry(entityWithChanges);
+            entry.State = EntityState.Modified;
+        }
+
+        public void DeleteObject(object entityToDelete, Type objectType)
+        {
+            _ObjectContext.DeleteObject(entityToDelete);
+        }
+
+        public override int SaveChanges()
+        {
+            this.IncrementConcurrencyTokens();
+            return base.SaveChanges();
+        }
+
+        private void IncrementConcurrencyTokens()
+        {
+            var changes = this.ChangeTracker
+                            .Entries()
+                            .Where(x => x.State == EntityState.Added ||
+                                        x.State == EntityState.Modified);
+
+            foreach (var entry in changes)
+            {
+                var entity = entry.Entity as IPersistable;
+                if (entity != null)
+                {
+                    entity.Version++;
+                }
+            }
+        }
+
         public T CreateObject<T>() where T : class
         {
             var newObject = _ObjectContext.CreateObject<T>();
@@ -60,13 +150,7 @@ namespace Fresnel.SampleModel.Persistence
             return result;
         }
 
-        private string CreateEntitySetName<T>()
-        {
-            // NB: This creates names that match the DbSet properties declared earlier:
-            return string.Concat(this.GetType().Name, ".", typeof(T).Name, "Set");
-        }
-
-        public IQueryable<T> GetAll<T>()
+        public IQueryable<T> GetObjects<T>()
             where T : class
         {
             return this.Set<T>();
@@ -78,37 +162,13 @@ namespace Fresnel.SampleModel.Persistence
             _ObjectContext.LoadProperty<TParent>(parent, selector);
         }
 
-        public void Refresh<T>(T entity) where T : class
-        {
-            _ObjectContext.Refresh(RefreshMode.StoreWins, entity);
-        }
-
         public void UpdateObject<T>(T entityWithChanges) where T : class
         {
             var entitySetName = this.CreateEntitySetName<T>();
             _ObjectContext.ApplyCurrentValues(entitySetName, entityWithChanges);
         }
 
-        public override int SaveChanges()
-        {
-            var changedEntities = this.ChangeTracker
-                                        .Entries()
-                                        .Where(x => x.State == EntityState.Added ||
-                                                    x.State == EntityState.Modified);
-
-            foreach (var entry in changedEntities)
-            {
-                var entity = entry.Entity as IPersistable;
-                if (entity != null)
-                {
-                    entity.Version++;
-                }
-            }
-
-            return base.SaveChanges();
-        }
-
-        public void DeleteObject<T>(T entityToDelete) where T : class
+        public void DeleteObject<T>(T entityToDelete)
         {
             _ObjectContext.DeleteObject(entityToDelete);
         }

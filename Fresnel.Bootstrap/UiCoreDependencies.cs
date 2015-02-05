@@ -34,6 +34,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Commands.CleanupSessionCommand),
                 typeof(Fresnel.UiCore.Commands.CreateCommand),
                 typeof(Fresnel.UiCore.Commands.GetObjectCommand),
+                typeof(Fresnel.UiCore.Commands.GetObjectsCommand),
                 typeof(Fresnel.UiCore.Commands.GetPropertyCommand),
                 typeof(Fresnel.UiCore.Commands.SetPropertyCommand),
                 typeof(Fresnel.UiCore.Commands.InvokeMethodCommand),

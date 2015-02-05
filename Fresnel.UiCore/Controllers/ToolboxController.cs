@@ -1,6 +1,7 @@
 ﻿using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Model.Classes;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -10,21 +11,16 @@ namespace Envivo.Fresnel.UiCore.Controllers
     {
         private GetClassHierarchyCommand _GetClassHierarchyCommand;
         private CreateCommand _CreateCommand;
+        private GetObjectsCommand _GetObjectsCommand;
 
         public ToolboxController
             (
-            GetClassHierarchyCommand getClassHierarchyCommand,
-            CreateCommand createCommand
+            IEnumerable<ICommand> commands
             )
         {
-            _GetClassHierarchyCommand = getClassHierarchyCommand;
-            _CreateCommand = createCommand;
-        }
-
-        [HttpGet]
-        public string GetTestMessage()
-        {
-            return DateTime.Now.ToString();
+            _GetClassHierarchyCommand = commands.OfType<GetClassHierarchyCommand>().Single();
+            _CreateCommand = commands.OfType<CreateCommand>().Single();
+            _GetObjectsCommand = commands.OfType<GetObjectsCommand>().Single();
         }
 
         [HttpGet]
@@ -39,6 +35,14 @@ namespace Envivo.Fresnel.UiCore.Controllers
         {
             var fullyQualifiedName = id;
             var result = _CreateCommand.Invoke(fullyQualifiedName);
+            return result;
+        }
+
+        [HttpPost]
+        public GetObjectsResponse GetAll([FromBody]GetObjectsRequest id)
+        {
+            var fullyQualifiedName = id;
+            var result = _GetObjectsCommand.Invoke(id);
             return result;
         }
     }
