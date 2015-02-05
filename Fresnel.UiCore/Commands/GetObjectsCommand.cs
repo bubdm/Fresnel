@@ -6,6 +6,7 @@ using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
@@ -42,9 +43,22 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var classType = _TemplateCache.GetTemplate(request.TypeName).RealType;
 
-                var objects = _PersistenceService
-                                .GetObjects(classType)
-                                .AsQueryable();
+                IQueryable objects = null;
+
+                if (request.OrderBy.IsNotEmpty())
+                {
+                    objects = _PersistenceService
+                                    .GetObjects(classType)
+                                    .OrderBy(request.OrderBy)
+                                    .Skip(request.Skip)
+                                    .Take(request.Take);
+                }
+                else
+                {
+                    objects = _PersistenceService
+                                    .GetObjects(classType)
+                                    .Take(request.Take);
+                }
 
                 var results = new List<ObjectVM>();
 

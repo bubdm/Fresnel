@@ -66,7 +66,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             {
                 TypeName = typeof(PocoObject).FullName,
                 Skip = 0,
-                Take = 100,
+                Take = 10,
             };
 
             var getResponse = controller.GetObjects(getRequest);
@@ -74,6 +74,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Assert:
             Assert.IsTrue(getResponse.Passed);
             Assert.AreNotEqual(0, getResponse.Results.Count());
+            Assert.IsTrue(getResponse.Results.Count() <= getRequest.Take);
         }
     }
 }
