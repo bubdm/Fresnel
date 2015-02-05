@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.Core.Observers
         }
 
         [JsonIgnore]
-        public ClassTemplate Template
+        public new ClassTemplate Template
         {
             get { return (ClassTemplate)base.Template; }
         }
