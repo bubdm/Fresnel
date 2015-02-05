@@ -13,6 +13,10 @@ namespace Envivo.Fresnel.SampleModel.Objects
     /// </summary>
     public class PocoObject
     {
+
+        private ICollection<PocoObject> _ChildObjects = new Collection<PocoObject>();
+        private DateTime _NormalDate = DateTime.UtcNow;
+
         public PocoObject()
         {
             //this.NormalText = DateTime.Now.ToShortDateString();
@@ -21,8 +25,10 @@ namespace Envivo.Fresnel.SampleModel.Objects
             //this.RecordId = Environment.TickCount;
         }
 
-        private ICollection<PocoObject> _ChildObjects = new Collection<PocoObject>();
-        private DateTime _NormalDate = DateTime.UtcNow;
+        public override string ToString()
+        {
+            return string.Concat(typeof(PocoObject).Name, "/", this.RecordId);
+        }
 
         /// <summary>
         /// The unique ID for this entity
