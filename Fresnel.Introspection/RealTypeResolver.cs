@@ -10,16 +10,24 @@ namespace Envivo.Fresnel.Introspection
     /// </remarks>
     public class RealTypeResolver
     {
-        private List<IRealTypeResolver> _Resolvers = new List<IRealTypeResolver>();
+        private IEnumerable<IRealTypeResolver> _Resolvers;
 
-        /// <summary>
-        /// Adds the given Type Resolver strategy to the internal list of strategies
-        /// </summary>
-        /// <param name="resolver"></param>
-        public void Register(IRealTypeResolver resolver)
+        public RealTypeResolver
+            (
+            IEnumerable<IRealTypeResolver> resolvers
+            )
         {
-            _Resolvers.Add(resolver);
+            _Resolvers = resolvers;
         }
+
+        ///// <summary>
+        ///// Adds the given Type Resolver strategy to the internal list of strategies
+        ///// </summary>
+        ///// <param name="resolver"></param>
+        //public void Register(IRealTypeResolver resolver)
+        //{
+        //    _Resolvers.Add(resolver);
+        //}
 
         public Type GetRealType(object proxy)
         {

@@ -39,10 +39,10 @@ namespace Envivo.Fresnel.Core
             _AssemblyReaderMap.Add(nonDomainAssembly, newReader);
         }
 
-        public void RegisterTypeResolver(IRealTypeResolver typeResolver)
-        {
-            _RealTypeResolver.Register(typeResolver);
-        }
+        //public void RegisterTypeResolver(IRealTypeResolver typeResolver)
+        //{
+        //    _RealTypeResolver.Register(typeResolver);
+        //}
 
         public UserSession CreateNewSession()
         {

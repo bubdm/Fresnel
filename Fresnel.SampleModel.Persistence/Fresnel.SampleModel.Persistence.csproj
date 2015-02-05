@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomDependencyModule.cs" />
+    <Compile Include="RealTypeResolver.cs" />
     <Compile Include="ModelConfigurator.cs" />
     <Compile Include="ModelContext.cs" />
     <Compile Include="EFPersistenceService.cs" />
@@ -67,6 +68,10 @@
     <ProjectReference Include="..\Fresnel.DomainTypes\Fresnel.DomainTypes.csproj">
       <Project>{beec9a50-f328-43d1-aaf1-f818aa56653e}</Project>
       <Name>Fresnel.DomainTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Introspection\Fresnel.Introspection.csproj">
+      <Project>{f7873fcb-7eac-4a75-9b7c-e4ef646c9960}</Project>
+      <Name>Fresnel.Introspection</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fresnel.SampleModel\Fresnel.SampleModel.csproj">
       <Project>{77810a26-5586-42c5-b05a-4c06db029fd2}</Project>

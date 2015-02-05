@@ -17,8 +17,13 @@ namespace Fresnel.SampleModel.Persistence
 
         protected override void Load(ContainerBuilder builder)
         {
-            var connectionString = @"Server=CHRONOS\SQLEXPRESS;Database=SampleModel;Integrated Security=True;";
-            
+            // NB: MARS is important:
+            var connectionString = @"Server=CHRONOS\SQLEXPRESS;Database=SampleModel;Integrated Security=True;MultipleActiveResultSets=true";
+
+            builder.RegisterType<RealTypeResolver>()
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope();
+
             builder.RegisterType<ModelConfigurator>()
                    .AsSelf()
                    .InstancePerLifetimeScope();
