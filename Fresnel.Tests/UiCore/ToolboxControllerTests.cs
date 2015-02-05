@@ -1,7 +1,10 @@
 ﻿using Autofac;
 using Envivo.Fresnel.Bootstrap;
+using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Model;
+using Fresnel.SampleModel.Persistence;
 using NUnit.Framework;
 using System.Linq;
 
@@ -43,6 +46,34 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Assert:
             Assert.IsTrue(response.Passed);
             Assert.IsInstanceOf<ObjectVM>(response.NewObject);
+        }
+
+        [Test]
+        public void ShouldGetAllObjects()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
+
+            var controller = container.Resolve<ToolboxController>();
+
+            // Act:
+            var getRequest = new GetObjectsRequest()
+            {
+                TypeName = typeof(PocoObject).FullName,
+                Skip = 0,
+                Take = 100,
+            };
+
+            var getResponse = controller.GetObjects(getRequest);
+
+            // Assert:
+            Assert.IsTrue(getResponse.Passed);
+            Assert.AreNotEqual(0, getResponse.Results.Count());
         }
     }
 }

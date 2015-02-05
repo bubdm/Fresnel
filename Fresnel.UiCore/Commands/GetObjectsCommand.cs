@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
-        //private IPersistenceService _PersistenceService;
+        private IPersistenceService _PersistenceService;
         private IClock _Clock;
 
         public GetObjectsCommand
@@ -24,7 +24,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             TemplateCache templateCache,
             ObserverCache observerCache,
             AbstractObjectVmBuilder objectVMBuilder,
-            //IPersistenceService persistenceService,
+            IPersistenceService persistenceService,
             IClock clock
         )
         {
@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
             _ObjectVMBuilder = objectVMBuilder;
-            //_PersistenceService = persistenceService;
+            _PersistenceService = persistenceService;
             _Clock = clock;
         }
 
@@ -42,25 +42,25 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var classType = _TemplateCache.GetTemplate(request.TypeName).RealType;
 
-                //var objects = _PersistenceService
-                //                .GetObjects(classType)
-                //                .AsQueryable();
+                var objects = _PersistenceService
+                                .GetObjects(classType)
+                                .AsQueryable();
 
-                //var results = new List<ObjectVM>();
+                var results = new List<ObjectVM>();
 
-                //foreach (var obj in objects)
-                //{
-                //    var realType = _RealTypeResolver.GetRealType(obj);
-                //    var oObject = _ObserverCache.GetObserver(obj, realType);
-                //    var objectVM = _ObjectVMBuilder.BuildFor(oObject);
-                //    results.Add(objectVM);
-                //}
+                foreach (var obj in objects)
+                {
+                    var realType = _RealTypeResolver.GetRealType(obj);
+                    var oObject = _ObserverCache.GetObserver(obj, realType);
+                    var objectVM = _ObjectVMBuilder.BuildFor(oObject);
+                    results.Add(objectVM);
+                }
 
                 // Done:
                 return new GetObjectsResponse()
                 {
                     Passed = true,
-                    //Results = results
+                    Results = results
                 };
             }
             catch (Exception ex)

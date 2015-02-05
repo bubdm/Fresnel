@@ -51,7 +51,6 @@
     <Compile Include="BasicTypes\NumberValues.cs" />
     <Compile Include="BasicTypes\StructValues.cs" />
     <Compile Include="BasicTypes\TextValues.cs" />
-    <Compile Include="DomainObjects\BiDirectionalExample.cs" />
     <Compile Include="DomainObjects\Category.cs" />
     <Compile Include="DomainObjects\DetailObject.cs" />
     <Compile Include="DomainObjects\MasterObject.cs" />

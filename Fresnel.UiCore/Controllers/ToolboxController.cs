@@ -39,7 +39,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public GetObjectsResponse GetAll([FromBody]GetObjectsRequest id)
+        public GetObjectsResponse GetObjects([FromBody]GetObjectsRequest id)
         {
             var fullyQualifiedName = id;
             var result = _GetObjectsCommand.Invoke(id);
