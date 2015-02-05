@@ -69,7 +69,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 return new GetObjectsResponse()
                 {
                     Passed = true,
-                    Results = (CollectionVM)_ObjectVMBuilder.BuildForCollection(oColl, tClass)
+                    Matches = (CollectionVM)_ObjectVMBuilder.BuildForCollection(oColl, tClass)
                 };
             }
             catch (Exception ex)

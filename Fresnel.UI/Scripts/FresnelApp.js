@@ -530,6 +530,8 @@ var FresnelApp;
                 });
             };
             $scope.$on('messagesReceived', function (event, messages) {
+                if (messages == null)
+                    return;
                 appService.mergeMessages(messages, $scope.session);
                 for (var i = 0; i < messages.length; i++) {
                     var message = messages[i];
@@ -577,24 +579,36 @@ var FresnelApp;
                 var _this = this;
                 var promise = fresnelService.getClassHierarchy();
                 promise.then(function (promiseResult) {
+                    var result = promiseResult.data;
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
                     _this.classHierarchy = promiseResult.data;
                 });
             };
             $scope.create = function (fullyQualifiedName) {
                 var promise = fresnelService.createObject(fullyQualifiedName);
                 promise.then(function (promiseResult) {
-                    var newObject = promiseResult.data.NewObject;
-                    appService.identityMap.addObject(newObject);
-                    $rootScope.$broadcast("openNewExplorer", newObject);
+                    var result = promiseResult.data;
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    if (result.Passed) {
+                        var newObject = result.NewObject;
+                        appService.identityMap.addObject(newObject);
+                        $rootScope.$broadcast("openNewExplorer", newObject);
+                    }
                 });
             };
             $scope.getObjects = function (fullyQualifiedName) {
                 var request = requestBuilder.buildGetObjectsRequest(fullyQualifiedName);
                 var promise = fresnelService.getObjects(request);
                 promise.then(function (promiseResult) {
-                    var resultCollection = promiseResult.data.Results;
-                    appService.identityMap.addObject(resultCollection);
-                    $rootScope.$broadcast("openNewExplorer", resultCollection);
+                    var result = promiseResult.data;
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    if (result.Passed) {
+                        appService.identityMap.addObject(result.Matches);
+                        $rootScope.$broadcast("openNewExplorer", result.Matches);
+                    }
                 });
             };
             // This will run when the page loads:

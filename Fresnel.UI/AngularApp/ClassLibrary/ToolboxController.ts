@@ -21,6 +21,11 @@
                 var promise = fresnelService.getClassHierarchy();
 
                 promise.then((promiseResult) => {
+                    var result = promiseResult.data;
+
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
+
                     this.classHierarchy = promiseResult.data;
                 });
             }
@@ -29,9 +34,16 @@
                 var promise = fresnelService.createObject(fullyQualifiedName);
 
                 promise.then((promiseResult) => {
-                    var newObject = promiseResult.data.NewObject;
-                    appService.identityMap.addObject(newObject);
-                    $rootScope.$broadcast("openNewExplorer", newObject);
+                    var result = promiseResult.data;
+
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
+
+                    if (result.Passed) {
+                        var newObject = result.NewObject;
+                        appService.identityMap.addObject(newObject);
+                        $rootScope.$broadcast("openNewExplorer", newObject);
+                    }
                 });
             }
 
@@ -41,9 +53,15 @@
                 var promise = fresnelService.getObjects(request);
 
                 promise.then((promiseResult) => {
-                    var resultCollection = promiseResult.data.Results;
-                    appService.identityMap.addObject(resultCollection);
-                    $rootScope.$broadcast("openNewExplorer", resultCollection);
+                    var result = promiseResult.data;
+
+                    appService.identityMap.merge(result.Modifications);
+                    $rootScope.$broadcast("messagesReceived", result.Messages);
+
+                    if (result.Passed) {
+                        appService.identityMap.addObject(result.Matches);
+                        $rootScope.$broadcast("openNewExplorer", result.Matches);
+                    }
                 });
             }
 
