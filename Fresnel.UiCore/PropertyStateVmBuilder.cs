@@ -40,7 +40,7 @@ namespace Envivo.Fresnel.UiCore
                     // TODO: Use the GetPropertyCommand, in case the property should be hidden:
                     var realValue = oProp.Template.GetProperty(oProp.OuterObject.RealObject);
                     result.Value = realValue;
-                    result.FriendlyValue = this.CreateFriendlyValueName(oProp, realValue);
+                    result.FriendlyValue = this.CreateFriendlyValue(oProp, realValue);
 
                     // Hack:
                     if (oProp.Template.PropertyType.IsEnum)
@@ -93,8 +93,8 @@ namespace Envivo.Fresnel.UiCore
             var tProp = oProp.Template;
             var result = new InteractionPoint()
             {
-                IsEnabled =  tProp.CanWrite &&
-                             propertyValue != null && 
+                IsEnabled = tProp.CanWrite &&
+                             propertyValue != null &&
                              (!tProp.IsNonReference || tProp.IsNullableType),
             };
             return result;
@@ -106,13 +106,13 @@ namespace Envivo.Fresnel.UiCore
             var result = new InteractionPoint()
             {
                 IsEnabled = tProp.CanAdd &&
-                            propertyValue != null && 
+                            propertyValue != null &&
                             tProp.IsCollection
             };
             return result;
         }
 
-        private string CreateFriendlyValueName(BasePropertyObserver oProp, object value)
+        private string CreateFriendlyValue(BasePropertyObserver oProp, object value)
         {
             if (oProp.Template.IsCollection)
                 return "...";
@@ -127,14 +127,18 @@ namespace Envivo.Fresnel.UiCore
             var propertyType = oProp.Template.PropertyType;
             if (propertyType.IsEnum)
             {
-                var enumValue = ((EnumTemplate)oProp.Template.InnerClass).IsBitwiseEnum ?
-                                Enum.ToObject(propertyType, value) :
-                                Enum.ToObject(propertyType, Convert.ToInt64(value));
-
-                var result = enumValue == (object)0 ?
-                                Enum.Format(propertyType, enumValue, "G") :
-                                "";
-                return result;
+                if (((EnumTemplate)oProp.Template.InnerClass).IsBitwiseEnum)
+                {
+                    var enumValue = Enum.ToObject(propertyType, value);
+                    return (int)enumValue == 0 ?
+                            "" :
+                            Enum.Format(propertyType, enumValue, "G");
+                }
+                else
+                {
+                    var enumValue = Enum.ToObject(propertyType, Convert.ToInt64(value));
+                    return Enum.Format(propertyType, enumValue, "G");
+                }
             }
 
             return value == null ? null : value.ToString();
