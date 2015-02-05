@@ -20,11 +20,14 @@ namespace Fresnel.SampleModel.Persistence
         public void ExecuteOn(DbModelBuilder modelBuilder)
         {
             modelBuilder
-                .Entity<BiDirectionalExample>()
-                .Property(x => x.Version)
-                .IsConcurrencyToken();
+                .Entity<MasterObject>()
+                .HasMany<DetailObject>(x => x.Children)
+                .WithRequired(x=> x.Parent);
 
-
+            //modelBuilder
+            //    .Entity<DetailObject>()
+            //    .Property(x => x.Version)
+            //    .IsConcurrencyToken();
         }
 
     }

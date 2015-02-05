@@ -17,8 +17,9 @@ namespace Envivo.Fresnel.SampleModel.Objects
             this.Contents = new List<BiDirectionalExample>();
         }
 
-        public BiDirectionalExample Owner { get; set; }
-
+        [Property(IsVisible = false)]
+        public Guid? OwnerID { get; set; }
+        
         /// <summary>
         /// Contains all of the other objects that relate back to this one
         /// </summary>
@@ -33,7 +34,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
         {
             this.Contents.Add(item);
 
-            item.Owner = this;
             item.Contents.Add(this);
         }
     }

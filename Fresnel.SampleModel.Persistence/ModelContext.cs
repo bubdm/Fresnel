@@ -32,8 +32,8 @@ namespace Fresnel.SampleModel.Persistence
             _Configurator.ExecuteOn(modelBuilder);
         }
 
-        public DbSet<BiDirectionalExample> BiDirectionalExampleSet { get; set; }
         public DbSet<Category> CategorySet { get; set; }
+        public DbSet<MasterObject> MasterObjectSet { get; set; }
         public DbSet<DetailObject> DetailObjectSet { get; set; }
         public DbSet<Product> ProductSet { get; set; }
         public DbSet<Money> MoneySet { get; set; }

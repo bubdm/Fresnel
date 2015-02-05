@@ -78,7 +78,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             Assert.AreEqual(0, differences.Count());
         }
 
-        [Test(), Ignore("Functionality doesn't work yet")]
+        [Test]
         public void ShouldCreateBiDirectionalLinks()
         {
             // Arrange:
@@ -92,24 +92,24 @@ namespace Envivo.Fresnel.Tests.Persistence
             var persistenceService = container.Resolve<IPersistenceService>();
 
             // Act:
-            var objA = persistenceService.CreateObject<BiDirectionalExample>();
-            objA.ID = Guid.NewGuid();
+            var master = persistenceService.CreateObject<MasterObject>();
+            master.ID = Guid.NewGuid();
 
-            var objB = persistenceService.CreateObject<BiDirectionalExample>();
-            objB.ID = Guid.NewGuid();
+            var detail = persistenceService.CreateObject<DetailObject>();
+            detail.ID = Guid.NewGuid();
 
-            objA.AddToContents(objB);
+            master.Children.Add(detail);
 
             var savedChanges = persistenceService.SaveChanges();
 
             // Assert:
-            Assert.AreEqual(2, savedChanges);
+            Assert.AreEqual(3, savedChanges);
 
-            var persistedA = persistenceService.GetObject<BiDirectionalExample>(objA.ID);
-            var persistedB = persistenceService.GetObject<BiDirectionalExample>(objB.ID);
+            var persistedA = persistenceService.GetObject<MasterObject>(master.ID);
+            var persistedB = persistenceService.GetObject<DetailObject>(detail.ID);
 
-            Assert.IsTrue(persistedA.Contents.Contains(persistedB));
-            Assert.IsTrue(persistedB.Contents.Contains(persistedA));
+            Assert.IsTrue(persistedA.Children.Contains(persistedB));
+            Assert.AreEqual(persistedB.Parent, persistedA);
         }
 
         [Test]
