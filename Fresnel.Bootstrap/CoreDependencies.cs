@@ -84,6 +84,8 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.Core.Commands.SetParameterCommand),
                 typeof(Fresnel.Core.Commands.SetPropertyCommand),
 
+                typeof(Fresnel.Core.Persistence.NullPersistenceService),
+
                 typeof(Fresnel.Core.Observers.ObserverCache),
                 typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
                 typeof(Fresnel.Core.IdentityMap),

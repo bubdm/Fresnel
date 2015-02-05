@@ -29,7 +29,6 @@ namespace Envivo.Fresnel.Tests.Persistence
 
             var engine = container.Resolve<Core.Engine>();
             engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
-            engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
@@ -56,7 +55,6 @@ namespace Envivo.Fresnel.Tests.Persistence
 
             var engine = container.Resolve<Core.Engine>();
             engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
-            engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
@@ -92,7 +90,6 @@ namespace Envivo.Fresnel.Tests.Persistence
 
             var engine = container.Resolve<Core.Engine>();
             engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
-            engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
@@ -123,7 +120,6 @@ namespace Envivo.Fresnel.Tests.Persistence
 
             var engine = container.Resolve<Core.Engine>();
             engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
-            engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
 
             var dummyText = "This is a test " + DateTime.Now.ToString();
 

@@ -57,7 +57,6 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             var engine = container.Resolve<Core.Engine>();
             engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
-            engine.RegisterDomainAssembly(typeof(EFPersistenceService).Assembly);
 
             var controller = container.Resolve<ToolboxController>();
 
