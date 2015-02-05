@@ -40,11 +40,11 @@ namespace Envivo.Fresnel.UI
             var results = new List<Assembly>();
 
             var domainAssemblyPath = ConfigurationManager.AppSettings["DomainAssemblyFile"];
-            var domainAssembly = Assembly.LoadFile(domainAssemblyPath);
+            var domainAssembly = Assembly.LoadFrom(domainAssemblyPath);
             results.Add(domainAssembly);
 
-            var persistenceAssemblyPath = ConfigurationManager.AppSettings["DomainAssemblyFile"];
-            var persistenceAssembly = Assembly.LoadFile(persistenceAssemblyPath);
+            var persistenceAssemblyPath = ConfigurationManager.AppSettings["PersistenceAssemblyFile"];
+            var persistenceAssembly = Assembly.LoadFrom(persistenceAssemblyPath);
             results.Add(persistenceAssembly);
 
             return results;
