@@ -1,9 +1,11 @@
 ﻿using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Persistence;
 using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.Utils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -41,10 +43,10 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             try
             {
-                var classType = _TemplateCache.GetTemplate(request.TypeName).RealType;
+                var tClass = (ClassTemplate)_TemplateCache.GetTemplate(request.TypeName);
+                var classType = tClass.RealType;
 
-                IQueryable objects = null;
-
+                IEnumerable objects = null;
                 if (request.OrderBy.IsNotEmpty())
                 {
                     objects = _PersistenceService
@@ -60,21 +62,14 @@ namespace Envivo.Fresnel.UiCore.Commands
                                     .Take(request.Take);
                 }
 
-                var results = new List<ObjectVM>();
-
-                foreach (var obj in objects)
-                {
-                    var realType = _RealTypeResolver.GetRealType(obj);
-                    var oObject = _ObserverCache.GetObserver(obj, realType);
-                    var objectVM = _ObjectVMBuilder.BuildFor(oObject);
-                    results.Add(objectVM);
-                }
+                var results = new List<object>(objects.Cast<object>());
+                var oColl = (CollectionObserver)_ObserverCache.GetObserver(results, results.GetType());
 
                 // Done:
                 return new GetObjectsResponse()
                 {
                     Passed = true,
-                    Results = results
+                    Results = (CollectionVM)_ObjectVMBuilder.BuildForCollection(oColl, tClass)
                 };
             }
             catch (Exception ex)

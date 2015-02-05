@@ -53,6 +53,16 @@
             return request;
         }
 
+        buildGetObjectsRequest(fullyQualifiedName: string) {
+            var request: GetObjectsRequest = {
+                TypeName: fullyQualifiedName,
+                OrderBy: null,
+                Skip: 0,
+                Take: 100
+            };
+
+            return request;
+        }
     }
 
 }

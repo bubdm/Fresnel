@@ -440,6 +440,15 @@ var FresnelApp;
             };
             return request;
         };
+        RequestBuilder.prototype.buildGetObjectsRequest = function (fullyQualifiedName) {
+            var request = {
+                TypeName: fullyQualifiedName,
+                OrderBy: null,
+                Skip: 0,
+                Take: 100
+            };
+            return request;
+        };
         return RequestBuilder;
     })();
     FresnelApp.RequestBuilder = RequestBuilder;
@@ -468,6 +477,10 @@ var FresnelApp;
         };
         FresnelService.prototype.getObject = function (request) {
             var uri = "api/Explorer/GetObject";
+            return this.http.post(uri, request);
+        };
+        FresnelService.prototype.getObjects = function (request) {
+            var uri = "api/Toolbox/GetObjects";
             return this.http.post(uri, request);
         };
         FresnelService.prototype.getProperty = function (request) {
@@ -559,7 +572,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
-        function ToolboxController($rootScope, $scope, fresnelService, appService) {
+        function ToolboxController($rootScope, $scope, fresnelService, requestBuilder, appService) {
             $scope.loadClassHierarchy = function () {
                 var _this = this;
                 var promise = fresnelService.getClassHierarchy();
@@ -575,12 +588,27 @@ var FresnelApp;
                     $rootScope.$broadcast("openNewExplorer", newObject);
                 });
             };
+            $scope.getObjects = function (fullyQualifiedName) {
+                var request = requestBuilder.buildGetObjectsRequest(fullyQualifiedName);
+                var promise = fresnelService.getObjects(request);
+                promise.then(function (promiseResult) {
+                    var resultCollection = promiseResult.data.Results;
+                    appService.identityMap.addObject(resultCollection);
+                    $rootScope.$broadcast("openNewExplorer", resultCollection);
+                });
+            };
             // This will run when the page loads:
             angular.element(document).ready(function () {
                 $scope.loadClassHierarchy();
             });
         }
-        ToolboxController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService'];
+        ToolboxController.$inject = [
+            '$rootScope',
+            '$scope',
+            'fresnelService',
+            'requestBuilder',
+            'appService'
+        ];
         return ToolboxController;
     })();
     FresnelApp.ToolboxController = ToolboxController;

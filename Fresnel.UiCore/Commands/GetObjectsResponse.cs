@@ -7,6 +7,6 @@ namespace Envivo.Fresnel.UiCore.Commands
     [TypeScriptInterface]
     public class GetObjectsResponse : BaseCommandResponse
     {
-        public IEnumerable<ObjectVM> Results { get; set; }
+        public CollectionVM Results { get; set; }
     }
 }

@@ -27,6 +27,11 @@
 
                         <ul class="dropdown-menu" role="menu">
                             <li>
+                                <a href="" a-disabled="!item.ShowAll.IsEnabled" ng-click="getObjects(item.FullTypeName)" data-toggle="tooltip" title="{{item.ShowAll.Tooltip}}">
+                                    <i class="fa fa-search"></i>Show all
+                                </a>
+                            </li>
+                            <li>
                                 <a href="" a-disabled="!item.Search.IsEnabled" ng-click="search(item.FullTypeName)" data-toggle="tooltip" title="{{item.Search.Tooltip}}">
                                     <i class="fa fa-search"></i>Search
                                 </a>

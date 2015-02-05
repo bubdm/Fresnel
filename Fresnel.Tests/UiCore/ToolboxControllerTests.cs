@@ -72,8 +72,13 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // Assert:
             Assert.IsTrue(getResponse.Passed);
-            Assert.AreNotEqual(0, getResponse.Results.Count());
-            Assert.IsTrue(getResponse.Results.Count() <= getRequest.Take);
+
+            // We should have the results that we asked for:
+            Assert.AreNotEqual(0, getResponse.Results.Items.Count());
+            Assert.IsTrue(getResponse.Results.Items.Count() <= getRequest.Take);
+
+            // The Results should show all Properties for the items:
+            Assert.AreEqual(10, getResponse.Results.ElementProperties.Count());
         }
     }
 }

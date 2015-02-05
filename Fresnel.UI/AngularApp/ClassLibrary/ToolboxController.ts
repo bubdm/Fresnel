@@ -3,12 +3,18 @@
     export class ToolboxController {
         public classHierarchy: ClassItem[];
 
-        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService'];
+        static $inject = [
+            '$rootScope',
+            '$scope',
+            'fresnelService',
+            'requestBuilder',
+            'appService'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: IToolboxControllerScope,
             fresnelService: IFresnelService,
+            requestBuilder: RequestBuilder,
             appService: AppService) {
 
             $scope.loadClassHierarchy = function () {
@@ -28,6 +34,20 @@
                     $rootScope.$broadcast("openNewExplorer", newObject);
                 });
             }
+
+            $scope.getObjects = function (fullyQualifiedName: string) {
+                var request = requestBuilder.buildGetObjectsRequest(fullyQualifiedName);
+
+                var promise = fresnelService.getObjects(request);
+
+                promise.then((promiseResult) => {
+                    var resultCollection = promiseResult.data.Results;
+                    appService.identityMap.addObject(resultCollection);
+                    $rootScope.$broadcast("openNewExplorer", resultCollection);
+                });
+            }
+
+
 
             // This will run when the page loads:
             angular.element(document).ready(function () {

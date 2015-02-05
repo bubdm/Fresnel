@@ -38,7 +38,9 @@ namespace Envivo.Fresnel.UiCore
 
             if (oCollection != null)
             {
-                return this.BuildForCollection(oCollection);
+                // The View needs to know about ALL properties for all sub-classes of the Collection's element type:
+                var tElement = oCollection.Template.InnerClass;
+                return this.BuildForCollection(oCollection, tElement);
             }
             else if (oObject != null)
             {
@@ -48,11 +50,10 @@ namespace Envivo.Fresnel.UiCore
             return null;
         }
 
-        private ObjectVM BuildForCollection(CollectionObserver oCollection)
+        public CollectionVM BuildForCollection(CollectionObserver oCollection, ClassTemplate tElement)
         {
-            // The View needs to know about ALL properties for all sub-classes of the Collection's element type:
-            var tElement = oCollection.Template.InnerClass;
-            var allKnownProperties = _ClassHierarchyBuilder.GetProperties(tElement)
+            var allKnownProperties = _ClassHierarchyBuilder
+                                        .GetProperties(tElement)
                                         .Where(p => !p.IsFrameworkMember &&
                                                      p.IsVisible);
 
@@ -92,35 +93,10 @@ namespace Envivo.Fresnel.UiCore
                 var oObject = (ObjectObserver)_ObserverCache.GetObserver(obj, objType);
                 var objVM = this.BuildForObject(oObject);
 
-                //this.InsertUnallocatedProperties(objVM, allKnownProperties);
-
                 items.Add(objVM);
             }
             return items;
         }
-
-        //private void InsertUnallocatedProperties(ObjectVM objVM, IEnumerable<PropertyTemplate> allKnownProperties)
-        //{
-        //    var allocatedProperties = objVM.Properties.ToList();
-        //    var allocatedPropertyNames = objVM.Properties.Select(p => p.PropertyName);
-
-        //    var unallocatedProperties = allKnownProperties.Where(p => !allocatedPropertyNames.Contains(p.Name));
-        //    foreach (var tProp in unallocatedProperties)
-        //    {
-        //        var propVM = new PropertyVM()
-        //        {
-        //            Name = tProp.FriendlyName,
-        //            Index = allocatedProperties.Count,
-        //            PropertyName = tProp.Name,
-        //            IsRequired = tProp.IsNonReference && !tProp.IsNullableType,
-        //            IsEnabled = false,
-        //            CanWrite = false,
-        //        };
-        //        allocatedProperties.Add(propVM);
-        //    }
-
-        //    objVM.Properties = allocatedProperties;
-        //}
 
         private ObjectVM BuildForObject(ObjectObserver oObject)
         {

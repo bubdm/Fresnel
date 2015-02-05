@@ -3,52 +3,6 @@
 ****************************************************************************/
 
 declare module FresnelApp {
-    /** Generated from Envivo.Fresnel.UiCore.BaseViewModel **/
-    export interface BaseViewModel {
-        IsVisible: boolean;
-        IsEnabled: boolean;
-        Name: string;
-        Description: string;
-        Error: string;
-        Tooltip: string;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.Changes.CollectionElementVM **/
-    export interface CollectionElementVM {
-        CollectionId: any;
-        ElementId: any;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.Changes.ModificationsVM **/
-    export interface ModificationsVM {
-        NewObjects: any;
-        PropertyChanges: any;
-        CollectionAdditions: any;
-        CollectionRemovals: any;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.Changes.PropertyChangeVM **/
-    export interface PropertyChangeVM {
-        ObjectId: any;
-        PropertyName: string;
-        NonReferenceValue: any;
-        ReferenceValueId?: any;
-        State: FresnelApp.ValueStateVM;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.Classes.ClassItem **/
-    export interface ClassItem extends FresnelApp.BaseViewModel {
-        Type: string;
-        FullTypeName: string;
-        Create: FresnelApp.InteractionPoint;
-        Search: FresnelApp.InteractionPoint;
-        ShowAll: FresnelApp.InteractionPoint;
-        RepositoryCommands: FresnelApp.InteractionPoint[];
-        StaticMethodCommands: FresnelApp.InteractionPoint[];
-        FactoryCommands: FresnelApp.InteractionPoint[];
-        ServiceCommands: FresnelApp.InteractionPoint[];
-    }
-    /** Generated from Envivo.Fresnel.UiCore.Classes.Namespace **/
-    export interface Namespace extends FresnelApp.BaseViewModel {
-        FullName: string;
-        Classes: FresnelApp.ClassItem[];
-    }
     /** Generated from Envivo.Fresnel.UiCore.Commands.BaseCommandResponse **/
     export interface BaseCommandResponse {
         Passed: boolean;
@@ -80,6 +34,17 @@ declare module FresnelApp {
     export interface GetObjectRequest {
         ObjectID: any;
     }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.GetObjectsRequest **/
+    export interface GetObjectsRequest {
+        TypeName: string;
+        OrderBy: string;
+        Skip: number;
+        Take: number;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.GetObjectsResponse **/
+    export interface GetObjectsResponse extends FresnelApp.BaseCommandResponse {
+        Results: FresnelApp.CollectionVM;
+    }
     /** Generated from Envivo.Fresnel.UiCore.Commands.GetPropertyRequest **/
     export interface GetPropertyRequest {
         ObjectID: any;
@@ -106,12 +71,66 @@ declare module FresnelApp {
         NonReferenceValue: any;
         ReferenceValueId: any;
     }
-    /** Generated from Envivo.Fresnel.UiCore.InteractionPoint **/
+    /** Generated from Envivo.Fresnel.UiCore.Model.BaseViewModel **/
+    export interface BaseViewModel {
+        IsVisible: boolean;
+        IsEnabled: boolean;
+        Name: string;
+        Description: string;
+        Error: string;
+        Tooltip: string;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.Changes.CollectionElementVM **/
+    export interface CollectionElementVM {
+        CollectionId: any;
+        ElementId: any;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.Changes.ModificationsVM **/
+    export interface ModificationsVM {
+        NewObjects: any;
+        PropertyChanges: any;
+        CollectionAdditions: any;
+        CollectionRemovals: any;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.Changes.PropertyChangeVM **/
+    export interface PropertyChangeVM {
+        ObjectId: any;
+        PropertyName: string;
+        NonReferenceValue: any;
+        ReferenceValueId?: any;
+        State: FresnelApp.ValueStateVM;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.Classes.ClassItem **/
+    export interface ClassItem extends FresnelApp.BaseViewModel {
+        Type: string;
+        FullTypeName: string;
+        Create: FresnelApp.InteractionPoint;
+        Search: FresnelApp.InteractionPoint;
+        ShowAll: FresnelApp.InteractionPoint;
+        RepositoryCommands: FresnelApp.InteractionPoint[];
+        StaticMethodCommands: FresnelApp.InteractionPoint[];
+        FactoryCommands: FresnelApp.InteractionPoint[];
+        ServiceCommands: FresnelApp.InteractionPoint[];
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.Classes.Namespace **/
+    export interface Namespace extends FresnelApp.BaseViewModel {
+        FullName: string;
+        Classes: FresnelApp.ClassItem[];
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.CollectionVM **/
+    export interface CollectionVM extends FresnelApp.ObjectVM {
+        IsCollection: boolean;
+        ElementType: string;
+        ElementProperties: any;
+        Items: any;
+        DisplayItems: any;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.InteractionPoint **/
     export interface InteractionPoint extends FresnelApp.BaseViewModel {
         CommandUri: string;
         CommandArg: string;
     }
-    /** Generated from Envivo.Fresnel.UiCore.Messages.MessageVM **/
+    /** Generated from Envivo.Fresnel.UiCore.Model.MessageVM **/
     export interface MessageVM {
         OccurredAt: string;
         Text: string;
@@ -121,14 +140,6 @@ declare module FresnelApp {
         IsInfo: boolean;
         IsWarning: boolean;
         IsError: boolean;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.Model.CollectionVM **/
-    export interface CollectionVM extends FresnelApp.ObjectVM {
-        IsCollection: boolean;
-        ElementType: string;
-        ElementProperties: any;
-        Items: any;
-        DisplayItems: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.MethodVM **/
     export interface MethodVM extends FresnelApp.BaseViewModel {
@@ -152,6 +163,12 @@ declare module FresnelApp {
     /** Generated from Envivo.Fresnel.UiCore.Model.PropertyVM **/
     export interface PropertyVM extends FresnelApp.SettableMemberVM {
     }
+    /** Generated from Envivo.Fresnel.UiCore.Model.SessionVM **/
+    export interface SessionVM {
+        UserName: string;
+        LogonTime: string;
+        Messages: any;
+    }
     /** Generated from Envivo.Fresnel.UiCore.Model.SettableMemberVM **/
     export interface SettableMemberVM extends FresnelApp.BaseViewModel {
         ObjectID?: any;
@@ -165,6 +182,55 @@ declare module FresnelApp {
         Info: any;
         State: FresnelApp.ValueStateVM;
     }
+    /** Generated from Envivo.Fresnel.UiCore.Model.TypeInfo.BooleanVM **/
+    export interface BooleanVM {
+        Name: string;
+        PreferredControl: any;
+        IsNullable: boolean;
+        TrueValue: string;
+        FalseValue: string;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.TypeInfo.DateTimeVM **/
+    export interface DateTimeVM {
+        Name: string;
+        PreferredControl: any;
+        CustomFormat: string;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.TypeInfo.EnumItemVM **/
+    export interface EnumItemVM extends FresnelApp.BaseViewModel {
+        EnumName: string;
+        Value: number;
+        IsChecked: boolean;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.TypeInfo.EnumVM **/
+    export interface EnumVM {
+        Name: string;
+        IsBitwiseEnum: boolean;
+        Items: any;
+        PreferredControl: any;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.TypeInfo.NullVM **/
+    export interface NullVM {
+        Name: string;
+        PreferredControl: any;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.TypeInfo.NumberVM **/
+    export interface NumberVM {
+        Name: string;
+        PreferredControl: any;
+        MinValue: number;
+        MaxValue: number;
+        DecimalPlaces: number;
+        CurrencySymbol: string;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.TypeInfo.StringVM **/
+    export interface StringVM {
+        Name: string;
+        PreferredControl: any;
+        MinLength: number;
+        MaxLength: number;
+        EditMask: string;
+    }
     /** Generated from Envivo.Fresnel.UiCore.Model.ValueStateVM **/
     export interface ValueStateVM {
         Value: any;
@@ -175,60 +241,5 @@ declare module FresnelApp {
         Create: FresnelApp.InteractionPoint;
         Clear: FresnelApp.InteractionPoint;
         Add: FresnelApp.InteractionPoint;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.SessionVM **/
-    export interface SessionVM {
-        UserName: string;
-        LogonTime: string;
-        Messages: any;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.TypeInfo.BooleanVM **/
-    export interface BooleanVM {
-        Name: string;
-        PreferredControl: any;
-        IsNullable: boolean;
-        TrueValue: string;
-        FalseValue: string;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.TypeInfo.DateTimeVM **/
-    export interface DateTimeVM {
-        Name: string;
-        PreferredControl: any;
-        CustomFormat: string;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.TypeInfo.EnumItemVM **/
-    export interface EnumItemVM extends FresnelApp.BaseViewModel {
-        EnumName: string;
-        Value: number;
-        IsChecked: boolean;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.TypeInfo.EnumVM **/
-    export interface EnumVM {
-        Name: string;
-        IsBitwiseEnum: boolean;
-        Items: any;
-        PreferredControl: any;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.TypeInfo.NullVM **/
-    export interface NullVM {
-        Name: string;
-        PreferredControl: any;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.TypeInfo.NumberVM **/
-    export interface NumberVM {
-        Name: string;
-        PreferredControl: any;
-        MinValue: number;
-        MaxValue: number;
-        DecimalPlaces: number;
-        CurrencySymbol: string;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.TypeInfo.StringVM **/
-    export interface StringVM {
-        Name: string;
-        PreferredControl: any;
-        MinLength: number;
-        MaxLength: number;
-        EditMask: string;
     }
 }

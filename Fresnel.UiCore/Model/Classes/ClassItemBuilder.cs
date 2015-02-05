@@ -41,10 +41,19 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
             create.CommandUri = create.IsEnabled ? "/Toolbox/Create" : "";
             create.CommandArg = create.IsEnabled ? tClass.FullName : "";
 
+            var showAll = item.ShowAll = new InteractionPoint();
+            showAll.IsVisible = true;
+            showAll.IsEnabled = tClass.IsPersistable;
+            showAll.Tooltip = showAll.IsEnabled ? "Show all existing instances of " + tClass.FriendlyName : "These items are not saved to the database";
+            showAll.CommandUri = showAll.IsEnabled ? "/Toolbox/GetObjects" : "";
+            showAll.CommandArg = showAll.IsEnabled ? tClass.FullName : "";
+
             var search = item.Search = new InteractionPoint();
             search.IsVisible = true;
             search.IsEnabled = tClass.IsPersistable;
-            search.Tooltip = search.IsEnabled ? "Search for existing instances of " + tClass.FriendlyName : "This item cannot be searched for";
+            search.Tooltip = search.IsEnabled ? "Search for existing instances of " + tClass.FriendlyName : "These items are not saved to the database";
+
+
 
             // TODO: Add other Interaction Points (Factory, Service, Static methods, etc)
 
