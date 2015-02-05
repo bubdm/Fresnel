@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Tests.Proxies
     [TestFixture()]
     public class ProxyChangeTrackingTests
     {
-        [Test()]
+        [Test]
         public void ShouldReturnCollectionAdditions()
         {
             // Arrange:
@@ -56,7 +56,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(3, invokeResult3.Modifications.CollectionAdditions.Count());
         }
 
-        [Test()]
+        [Test]
         public void ShouldReturnNewlyCreatedObservers()
         {
             // Arrange:
@@ -90,7 +90,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(3, invokeResult.Modifications.NewObjects.Count());
         }
 
-        [Test()]
+        [Test]
         public void ShouldReturnPopulatedCollectionProperty()
         {
             // Arrange:
@@ -123,7 +123,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreNotEqual(0, collectionVM.Items.Count());
         }
 
-        [Test()]
+        [Test]
         public void ShouldSetNonReferenceProperties()
         {
             // Arrange:
@@ -151,7 +151,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             }
         }
 
-        [Test()]
+        [Test]
         public void ShouldReturnPropertyModifications()
         {
             // Arrange:
@@ -206,7 +206,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(7, setResult.Modifications.PropertyChanges.Count());
         }
 
-        [Test()]
+        [Test]
         public void ShouldDetectCorrectModificationsWhenCollectionIsExploreredPartway()
         {
             // Arrange:
@@ -255,7 +255,7 @@ namespace Envivo.Fresnel.Tests.Proxies
         }
 
 
-        [Test()]
+        [Test]
         public void ShouldDetectRemoveFromCollection()
         {
             // Arrange:

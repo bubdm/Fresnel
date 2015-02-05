@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class ObjectObserverTests
     {
-        [Test()]
+        [Test]
         public void ShouldCreateObjectObserver()
         {
             // Arrange:
@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(observer);
         }
 
-        [Test()]
+        [Test]
         public void ShouldCreateNullObserver()
         {
             // Arrange:
@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual(typeof(SampleModel.Objects.PocoObject), observer.Template.RealType);
         }
 
-        [Test()]
+        [Test]
         public void ShouldGetObjectObserverFromCache()
         {
             // Arrange:
@@ -64,7 +64,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(poco);
         }
 
-        [Test()]
+        [Test]
         public void ShouldReplaceInvalidIdForTrackableObjects()
         {
             // Arrange:
@@ -83,7 +83,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual(obj.ID, observer.ID);
         }
 
-        [Test()]
+        [Test]
         public void ShouldLocateTrackableObjectsByID()
         {
             // Arrange:
@@ -102,7 +102,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual(poco, objFromCache);
         }
 
-        [Test()]
+        [Test]
         public void ShouldLocateNonTrackableObjectsByID()
         {
             // Arrange:
@@ -120,7 +120,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual(pocoList, objFromCache);
         }
 
-        [Test()]
+        [Test]
         public void ShouldGetSameCachedObserver()
         {
             // Arrange:
@@ -140,7 +140,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreSame(observer1, observer2);
         }
 
-        [Test()]
+        [Test]
         public void ShouldReturnSeparateObserversForSeparateInstances()
         {
             // Arrange:
@@ -163,7 +163,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreNotSame(observer1, observer2);
         }
 
-        [Test()]
+        [Test]
         public void ShouldCreatePropertyObservers()
         {
             // Arrange:
@@ -186,7 +186,7 @@ namespace Envivo.Fresnel.Tests.Domain
             }
         }
 
-        [Test()]
+        [Test]
         public void ShouldCreateMethodObservers()
         {
             // Arrange:
@@ -215,7 +215,7 @@ namespace Envivo.Fresnel.Tests.Domain
             }
         }
 
-        [Test()]
+        [Test]
         public void ShouldCreateCollectionObserver()
         {
             // Arrange:
@@ -234,7 +234,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(observer);
         }
 
-        [Test()]
+        [Test]
         public void ShouldCleanupCache()
         {
             // Arrange:

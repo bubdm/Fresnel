@@ -14,7 +14,7 @@ namespace Envivo.Fresnel.Tests.Proxies
     [TestFixture()]
     public class EditorIdentifierTests
     {
-        [Test()]
+        [Test]
         public void ShouldIdentifyTextValues()
         {
             // Arrange:
@@ -41,7 +41,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(InputControlTypes.Password, passwordVM.Info.PreferredControl);
         }
 
-        [Test()]
+        [Test]
         public void ShouldIdentifyEnumPropertyTypes()
         {
             // Arrange:
@@ -71,7 +71,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             }
         }
 
-        [Test()]
+        [Test]
         public void ShouldIdentifyPropertyTypesForCollection()
         {
             // Arrange:
@@ -95,7 +95,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             }
         }
 
-        [Test()]
+        [Test]
         public void ShouldIdentifyMethodParameterValues()
         {
             // Arrange:

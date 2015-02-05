@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class PropertyTemplateTests
     {
-        [Test()]
+        [Test]
         public void ShouldGetProperty()
         {
             // Arrange:
@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual(pocoObject.NormalText, value);
         }
 
-        [Test()]
+        [Test]
         public void ShouldSetProperty()
         {
             // Arrange:
@@ -51,7 +51,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual(newValue, pocoObject.NormalText);
         }
 
-        [Test()]
+        [Test]
         public void ShouldGetBackingField()
         {
             // Arrange:
@@ -71,7 +71,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual(pocoObject.NormalText, value);
         }
 
-        [Test()]
+        [Test]
         public void ShouldSetBackingField()
         {
             // Arrange:
@@ -91,7 +91,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual(newValue, pocoObject.NormalText);
         }
 
-        [Test()]
+        [Test]
         public void ShouldIdentifyInheritedProperties()
         {
             // Arrange:

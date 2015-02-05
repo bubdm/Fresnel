@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.Tests.Proxies
     [TestFixture()]
     public class ToolboxControllerTests
     {
-        [Test()]
+        [Test]
         public void ShouldReturnToolboxClassItems()
         {
             // Arrange:
@@ -27,7 +27,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreNotEqual(0, results.Count());
         }
 
-        [Test()]
+        [Test]
         public void ShouldCreateNewInstance()
         {
             // Arrange:

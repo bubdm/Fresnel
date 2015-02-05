@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class CollectionTemplateTests
     {
-        [Test()]
+        [Test]
         public void ShouldAddToCollection()
         {
             // Arrange:
@@ -34,7 +34,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreNotEqual(0, pocoObject.ChildObjects.Count);
         }
 
-        [Test()]
+        [Test]
         public void ShouldAddToCollectionProperty()
         {
             // Arrange:
@@ -56,7 +56,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreNotEqual(0, pocoObject.ChildObjects.Count);
         }
 
-        [Test()]
+        [Test]
         public void ShouldRemoveFromCollection()
         {
             // Arrange:
@@ -83,7 +83,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual(0, pocoObject.ChildObjects.Count);
         }
 
-        [Test()]
+        [Test]
         public void ShouldRemoveFromCollectionProperty()
         {
             // Arrange:

@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class CollectionObserverTests
     {
-        [Test()]
+        [Test]
         public void ShouldIdentifyCollectionProperties()
         {
             // Arrange:

@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class ChangeTrackingTests
     {
-        [Test()]
+        [Test]
         public void ShouldHaveDefaultChangeStatus()
         {
             // Arrange:
@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsFalse(observer.ChangeTracker.IsDirty);
         }
 
-        [Test()]
+        [Test]
         public void ShouldDetectPropertyChanges()
         {
             // Arrange:
@@ -50,7 +50,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsTrue(oObject.ChangeTracker.IsDirty);
         }
 
-        [Test()]
+        [Test]
         public void ShouldDetectNewInstances()
         {
             // Arrange:
@@ -66,7 +66,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsInstanceOf<SampleModel.Objects.PocoObject>(oObject.RealObject);
         }
 
-        [Test()]
+        [Test]
         public void ShouldDetectAddToCollection()
         {
             // Arrange:
@@ -96,7 +96,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsTrue(oObject.ChangeTracker.HasDirtyObjectGraph);
         }
 
-        [Test()]
+        [Test]
         public void ShouldDetectRemoveFromCollection()
         {
             // Arrange:
@@ -127,7 +127,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsTrue(oObject.ChangeTracker.HasDirtyObjectGraph);
         }
 
-        [Test()]
+        [Test]
         public void ShouldLeaveCollectionUnchangedWhenAddingAndRemovingNewInstance()
         {
             // Arrange:
@@ -162,7 +162,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsFalse(oObject.ChangeTracker.HasDirtyObjectGraph);
         }
 
-        [Test()]
+        [Test]
         public void ShouldDetectChangesToLargeObjectGraph()
         {
             // Arrange:

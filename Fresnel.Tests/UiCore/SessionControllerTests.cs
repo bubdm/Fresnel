@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.Tests.Proxies
     [TestFixture()]
     public class SessionControllerTests
     {
-        [Test()]
+        [Test]
         public void ShouldReturnSingleSession()
         {
             // Arrange:

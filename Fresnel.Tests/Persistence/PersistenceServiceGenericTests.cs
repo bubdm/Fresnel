@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.Tests.Persistence
     [TestFixture()]
     public class PersistenceServiceGenericTests
     {
-        [Test()]
+        [Test]
         public void ShouldCreateCompleteAggregate()
         {
             // Arrange:
@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             Assert.IsTrue(savedChanges > 1);
         }
 
-        [Test()]
+        [Test]
         public void ShouldModifyChildCollection()
         {
             // Arrange:

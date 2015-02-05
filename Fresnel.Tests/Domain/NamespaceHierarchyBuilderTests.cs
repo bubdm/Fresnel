@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class NamespaceHierarchyBuilderTests
     {
-        [Test()]
+        [Test]
         public void ShouldCreateHierarchy()
         {
             // Arrange:

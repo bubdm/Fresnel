@@ -17,7 +17,7 @@ namespace Envivo.Fresnel.Tests.Proxies
     [TestFixture()]
     public class ExplorerControllerTests
     {
-        [Test()]
+        [Test]
         public void ShouldReturnObjectProperty()
         {
             // Arrange:
@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsNotNull(getResult.ReturnValue);
         }
 
-        [Test()]
+        [Test]
         public void ShouldReturnCorrectHeadersForCollection()
         {
             // Arrange:
@@ -77,7 +77,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.GreaterOrEqual(collectionVM.ElementProperties.Count(), visibleProperties.Count());
         }
 
-        [Test()]
+        [Test]
         public void ShouldRefreshObject()
         {
             // Arrange:
@@ -110,7 +110,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(30, propVM.State.Value);
         }
 
-        [Test()]
+        [Test]
         public void ShouldAddNewItemToCollection()
         {
             // Arrange:
@@ -152,7 +152,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsTrue(poco.ChildObjects.Contains(oChild.RealObject));
         }
 
-        [Test()]
+        [Test]
         public void ShouldAddExistingItemToCollection()
         {
             // Arrange:
@@ -198,7 +198,7 @@ namespace Envivo.Fresnel.Tests.Proxies
         }
 
 
-        [Test()]
+        [Test]
         public void ShouldRemoveItemFromCollection()
         {
             // Arrange:
@@ -242,7 +242,7 @@ namespace Envivo.Fresnel.Tests.Proxies
         }
 
 
-        [Test()]
+        [Test]
         public void ShouldInvokeMethodWithMultipleParameters()
         {
             // Arrange:

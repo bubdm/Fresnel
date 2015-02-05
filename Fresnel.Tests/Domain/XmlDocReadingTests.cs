@@ -9,7 +9,7 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class XmlDocReadingTests
     {
-        [Test()]
+        [Test]
         public void ShouldParseXmlCommentsForClass()
         {
             // Arrange:
@@ -25,7 +25,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual("A set of Text(string) properties", tClass.XmlComments.Summary);
         }
 
-        [Test()]
+        [Test]
         public void ShouldParseXmlCommentsForProperties()
         {
             // Arrange:
@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.Tests.Domain
             }
         }
 
-        [Test()]
+        [Test]
         public void ShouldParseXmlCommentsForMethods()
         {
             // Arrange:
@@ -63,7 +63,7 @@ namespace Envivo.Fresnel.Tests.Domain
             }
         }
 
-        [Test()]
+        [Test]
         public void ShouldParseXmlCommentsForMethodParameters()
         {
             // Arrange:

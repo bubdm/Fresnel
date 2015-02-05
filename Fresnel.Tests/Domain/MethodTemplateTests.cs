@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class MethodTemplateTests
     {
-        [Test()]
+        [Test]
         public void ShouldInvokeMethod()
         {
             // Arrange:
@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreNotEqual(0, domainObject.ChildObjects);
         }
 
-        [Test()]
+        [Test]
         public void ShouldReturnValueFromMethod()
         {
             // Arrange:
@@ -48,7 +48,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsInstanceOf<string>(result);
         }
 
-        [Test()]
+        [Test]
         public void ShouldInvokeMethodWithArguments()
         {
             // Arrange:

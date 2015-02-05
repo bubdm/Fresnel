@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class ClassTemplateTests
     {
-        [Test()]
+        [Test]
         public void ShouldCreateClassTemplate()
         {
             // Arrange:
@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(template);
         }
 
-        [Test()]
+        [Test]
         public void ShouldGetClassTemplateFromCache()
         {
             // Arrange:
@@ -49,7 +49,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(template);
         }
 
-        [Test()]
+        [Test]
         public void ShouldCreatePropertyTemplates()
         {
             // Arrange:
@@ -74,7 +74,7 @@ namespace Envivo.Fresnel.Tests.Domain
             }
         }
 
-        [Test()]
+        [Test]
         public void ShouldCreateMethodTemplates()
         {
             // Arrange:
@@ -105,7 +105,7 @@ namespace Envivo.Fresnel.Tests.Domain
             }
         }
 
-        [Test()]
+        [Test]
         public void ShouldCreateCollectionTemplate()
         {
             // Arrange:
@@ -128,7 +128,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(collectionTemplate.InnerClass);
         }
 
-        [Test()]
+        [Test]
         public void ShouldCreateInstanceWithNoArgs()
         {
             // Arrange:
@@ -151,7 +151,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsInstanceOf<SampleModel.Objects.PocoObject>(newInstance);
         }
 
-        [Test()]
+        [Test]
         public void ShouldCreateInstanceWithArgs()
         {
             // Arrange:
@@ -175,7 +175,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreSame(master, detail.Parent);
         }
 
-        [Test()]
+        [Test]
         public void ShouldNotCreateInstanceIfCtorUnavailable()
         {
             // Arrange:
@@ -195,7 +195,7 @@ namespace Envivo.Fresnel.Tests.Domain
                         () => createCommand.Invoke(classTemplate));
         }
 
-        [Test()]
+        [Test]
         public void ShouldInjectDependenciesIntoCtor()
         {
             // Arrange:
