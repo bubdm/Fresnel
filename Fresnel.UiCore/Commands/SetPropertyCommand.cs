@@ -7,6 +7,7 @@ using Envivo.Fresnel.UiCore.Model;
 
 using Envivo.Fresnel.Utils;
 using System;
+using System.Linq;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
@@ -25,7 +26,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsBuilder,
             IClock clock
-        )
+            )
         {
             _SetPropertyCommand = setPropertyCommand;
             _ObserverCache = observerCache;
@@ -57,20 +58,21 @@ namespace Envivo.Fresnel.UiCore.Commands
                 _ObserverCache.ScanForChanges();
 
                 // Done:
-                var friendlyValue = this.CreateFriendlyValueName(oProp, request.NonReferenceValue);
+                var modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt);
+                var thisPropertyChange = modifications.PropertyChanges.Single(p => p.ObjectId == oObject.ID && p.PropertyName == oProp.Template.Name);
 
                 var infoVM = new MessageVM()
                 {
                     IsSuccess = true,
                     OccurredAt = _Clock.Now,
                     Text = request.NonReferenceValue != null ?
-                           string.Concat(oProp.Template.FriendlyName, " changed to ", friendlyValue) :
+                           string.Concat(oProp.Template.FriendlyName, " changed to ", thisPropertyChange.State.FriendlyValue) :
                            string.Concat(oProp.Template.FriendlyName, " was cleared"),
                 };
                 return new GenericResponse()
                 {
                     Passed = true,
-                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
+                    Modifications = modifications,
                     Messages = new MessageVM[] { infoVM }
                 };
             }
@@ -92,73 +94,5 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
         }
 
-        //private BaseObjectObserver GetValueObserver(SetPropertyRequest request, BasePropertyObserver oProp)
-        //{
-        //    BaseObjectObserver oValue = null;
-        //    if (request.ReferenceValueId != Guid.Empty)
-        //    {
-        //        oValue = _ObserverCache.GetObserverById(request.ReferenceValueId);
-        //    }
-        //    else if (oProp.Template.PropertyType.IsEnum)
-        //    {
-        //        var value = Enum.Parse(oProp.Template.PropertyType, request.NonReferenceValue.ToString(), true);
-        //        oValue = _ObserverCache.GetObserver(value, oProp.Template.PropertyType);
-        //    }
-        //    else if (oProp.Template.IsNonReference &&
-        //             oProp.Template.IsNullableType &&
-        //             oProp.Template.PropertyType.IsNotTypeOf<string>() &&
-        //             request.NonReferenceValue == null)
-        //    {
-        //        var targetType = oProp.Template.PropertyType.GetInnerType();
-        //        oValue = _ObserverCache.GetObserver(request.NonReferenceValue, targetType);
-        //    }
-        //    else if (oProp.Template.IsNonReference &&
-        //         request.NonReferenceValue == null)
-        //    {
-        //        throw new UiCoreException("The given value is not allowed");
-        //    }
-        //    else if (oProp.Template.IsNonReference &&
-        //             oProp.Template.IsNullableType &&
-        //             oProp.Template.PropertyType.IsNotTypeOf<string>() &&
-        //             request.NonReferenceValue != null)
-        //    {
-        //        var targetType = oProp.Template.PropertyType.GetInnerType();
-        //        var value = Convert.ChangeType(request.NonReferenceValue, targetType);
-        //        oValue = _ObserverCache.GetObserver(value, targetType);
-        //    }
-        //    else
-        //    {
-        //        var targetType = oProp.Template.PropertyType;
-        //        var value = request.NonReferenceValue != null ?
-        //                        Convert.ChangeType(request.NonReferenceValue, targetType) :
-        //                        null;
-        //        oValue = _ObserverCache.GetObserver(value, targetType);
-        //    }
-        //    return oValue;
-        //}
-
-        private string CreateFriendlyValueName(BasePropertyObserver oProp, object value)
-        {
-            var propertyType = oProp.Template.PropertyType;
-
-            if (value is bool)
-            {
-                var attr = oProp.Template.Attributes.Get<BooleanAttribute>();
-                var result = (bool)value ? attr.TrueValue : attr.FalseValue;
-                return result;
-            }
-
-            if (propertyType.IsEnum)
-            {
-                var enumValue = ((EnumTemplate)oProp.Template.InnerClass).IsBitwiseEnum ?
-                                Enum.ToObject(propertyType, value) :
-                                Enum.ToObject(propertyType, Convert.ToInt64(value));
-
-                var result = Enum.Format(propertyType, enumValue, "G");
-                return result;
-            }
-
-            return value == null ? null : value.ToString();
-        }
     }
 }

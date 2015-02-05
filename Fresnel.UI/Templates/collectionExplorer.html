@@ -41,8 +41,8 @@
                         <td st-ratio="20"
                             ng-repeat="elementProp in oCol.ElementProperties"
                             ng-init="prop = item.Properties[elementProp.Index]"
-                            title="{{prop.State.Value}}">
-                            {{prop.State.Value}}
+                            title="{{prop.State.FriendlyValue}}">
+                            {{prop.State.FriendlyValue}}
                         </td>
                         <td st-ratio="1">
                             <button ng-click="removeItem(item)"

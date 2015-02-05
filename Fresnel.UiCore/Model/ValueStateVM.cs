@@ -12,6 +12,8 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public Guid? ReferenceValueID { get; set; }
 
+        public string FriendlyValue { get; set; }
+
         public string ValueType { get; set; }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using Envivo.Fresnel.Core.Observers;
+﻿using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Permissions;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
@@ -39,6 +40,7 @@ namespace Envivo.Fresnel.UiCore
                     // TODO: Use the GetPropertyCommand, in case the property should be hidden:
                     var realValue = oProp.Template.GetProperty(oProp.OuterObject.RealObject);
                     result.Value = realValue;
+                    result.FriendlyValue = this.CreateFriendlyValueName(oProp, realValue);
 
                     // Hack:
                     if (oProp.Template.PropertyType.IsEnum)
@@ -109,7 +111,35 @@ namespace Envivo.Fresnel.UiCore
             };
             return result;
         }
-        
+
+        private string CreateFriendlyValueName(BasePropertyObserver oProp, object value)
+        {
+            if (oProp.Template.IsCollection)
+                return "...";
+
+            if (value is bool)
+            {
+                var attr = oProp.Template.Attributes.Get<BooleanAttribute>();
+                var result = (bool)value ? attr.TrueValue : attr.FalseValue;
+                return result;
+            }
+
+            var propertyType = oProp.Template.PropertyType;
+            if (propertyType.IsEnum)
+            {
+                var enumValue = ((EnumTemplate)oProp.Template.InnerClass).IsBitwiseEnum ?
+                                Enum.ToObject(propertyType, value) :
+                                Enum.ToObject(propertyType, Convert.ToInt64(value));
+
+                var result = enumValue == (object)0 ?
+                                Enum.Format(propertyType, enumValue, "G") :
+                                "";
+                return result;
+            }
+
+            return value == null ? null : value.ToString();
+        }
+
         //private string ConvertToJavascriptType(Type type)
         //{
         //    switch (type.Name.ToLower())
