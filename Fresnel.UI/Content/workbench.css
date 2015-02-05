@@ -40,7 +40,8 @@ a.disabled {
 
 .collectionExplorerPanelBody {
     overflow-x: auto;
-    overflow-y: auto;
+    overflow-y: none;
+    max-height: 700px;
 }
 
 .collectionRowText {
@@ -109,6 +110,14 @@ a.disabled {
     .explorerPanelMaximised {
         width: 900px;
     }
+
+    .collectionExplorerPanelNormalSize {
+        width: 900px;
+    }
+
+    .collectionExplorerPanelMaximised {
+        width: 900px;
+    }
 }
 
 @media screen and (min-width: 1023px) {
@@ -119,6 +128,14 @@ a.disabled {
 
     .explorerPanelMaximised {
         width: 870px;
+    }
+
+    .collectionExplorerPanelNormalSize {
+        width: 870px;
+    }
+
+    .collectionExplorerPanelMaximised {
+        width: 1720px;
     }
 }
 
@@ -131,6 +148,14 @@ a.disabled {
     .explorerPanelMaximised {
         width: 980px;
     }
+
+    .collectionExplorerPanelNormalSize {
+        width: 980px;
+    }
+
+    .collectionExplorerPanelMaximised {
+        width: 1400px;
+    }
 }
 
 @media screen and (min-width: 1903) {
@@ -142,3 +167,12 @@ a.disabled {
     .explorerPanelMaximised {
         width: 1100px;
     }
+
+    .collectionExplorerPanelNormalSize {
+        width: 1100px;
+    }
+
+    .collectionExplorerPanelMaximised {
+        width: 1640px;
+    }
+}
