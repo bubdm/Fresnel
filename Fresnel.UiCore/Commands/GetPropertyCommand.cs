@@ -47,10 +47,17 @@ namespace Envivo.Fresnel.UiCore.Commands
                 }
 
                 // Done:
+                var infoVM = new MessageVM()
+                {
+                    IsSuccess = true,
+                    OccurredAt = _Clock.Now,
+                    Text = string.Concat("Loaded property", oProp.Template.FriendlyName, " for ", oObject.Template.FriendlyName)
+                };
                 return new GetPropertyResponse()
                 {
                     Passed = true,
-                    ReturnValue = result
+                    ReturnValue = result,
+                    Messages = new MessageVM[] { infoVM }
                 };
             }
             catch (Exception ex)

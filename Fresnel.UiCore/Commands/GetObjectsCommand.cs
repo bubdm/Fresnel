@@ -46,6 +46,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var tClass = (ClassTemplate)_TemplateCache.GetTemplate(request.TypeName);
                 var classType = tClass.RealType;
 
+                var maxLimit = request.Take + 1;
+
                 IEnumerable objects = null;
                 if (request.OrderBy.IsNotEmpty())
                 {
@@ -53,23 +55,33 @@ namespace Envivo.Fresnel.UiCore.Commands
                                     .GetObjects(classType)
                                     .OrderBy(request.OrderBy)
                                     .Skip(request.Skip)
-                                    .Take(request.Take);
+                                    .Take(maxLimit);
                 }
                 else
                 {
                     objects = _PersistenceService
                                     .GetObjects(classType)
-                                    .Take(request.Take);
+                                    .Take(maxLimit);
                 }
 
-                var results = new List<object>(objects.Cast<object>());
+                var areMoreItemsAvailable = objects.Count() > request.Take;
+
+                // Only return back the number of items actually requested:
+                var results = new List<object>(objects.Cast<object>().Take(request.Take));
                 var oColl = (CollectionObserver)_ObserverCache.GetObserver(results, results.GetType());
 
                 // Done:
+                var infoVM = new MessageVM()
+                {
+                    IsSuccess = true,
+                    OccurredAt = _Clock.Now,
+                    Text = string.Concat("Returned ", results.Count, " ", tClass.FriendlyName, " instances (", areMoreItemsAvailable ? "more are" : "no more", " available)")
+                };
                 return new GetObjectsResponse()
                 {
                     Passed = true,
-                    Matches = (CollectionVM)_ObjectVMBuilder.BuildForCollection(oColl, tClass)
+                    Matches = (CollectionVM)_ObjectVMBuilder.BuildForCollection(oColl, tClass),
+                    Messages = new MessageVM[] { infoVM }
                 };
             }
             catch (Exception ex)
