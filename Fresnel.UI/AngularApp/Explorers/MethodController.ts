@@ -34,14 +34,14 @@ module FresnelApp {
                 var promise = fresnelService.invokeMethod(request);
 
                 promise.then((promiseResult) => {
-                    var result = promiseResult.data;
-                    method.Error = result.Passed ? "" : result.Messages[0].Text;
+                    var response = promiseResult.data;
+                    method.Error = response.Passed ? "" : response.Messages[0].Text;
 
-                    appService.identityMap.merge(result.Modifications);
-                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
 
-                    if (result.ResultObject) {
-                        $rootScope.$broadcast("openNewExplorer", result.ResultObject);
+                    if (response.ResultObject) {
+                        $rootScope.$broadcast("openNewExplorer", response.ResultObject);
                     }
                 });
             }

@@ -24,10 +24,10 @@
                 var promise = fresnelService.addNewItemToCollection(request);
 
                 promise.then((promiseResult) => {
-                    var result = promiseResult.data;
+                    var response = promiseResult.data;
 
-                    appService.identityMap.merge(result.Modifications);
-                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
 
                     // This will cause the new object to appear in a new Explorer:
                     //$rootScope.$broadcast("openNewExplorer", newObject);             
@@ -45,10 +45,10 @@
                 var promise = fresnelService.addItemToCollection(request);
 
                 promise.then((promiseResult) => {
-                    var result = promiseResult.data;
+                    var response = promiseResult.data;
 
-                    appService.identityMap.merge(result.Modifications);
-                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
                 });
 
             };
@@ -63,10 +63,10 @@
                 var promise = fresnelService.removeItemFromCollection(request);
 
                 promise.then((promiseResult) => {
-                    var result = promiseResult.data;
+                    var response = promiseResult.data;
 
-                    appService.identityMap.merge(result.Modifications);
-                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
                 });
 
             };

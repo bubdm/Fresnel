@@ -21,10 +21,10 @@
                 var promise = fresnelService.getClassHierarchy();
 
                 promise.then((promiseResult) => {
-                    var result = promiseResult.data;
+                    var response = promiseResult.data;
 
-                    appService.identityMap.merge(result.Modifications);
-                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
 
                     this.classHierarchy = promiseResult.data;
                 });
@@ -34,13 +34,13 @@
                 var promise = fresnelService.createObject(fullyQualifiedName);
 
                 promise.then((promiseResult) => {
-                    var result = promiseResult.data;
+                    var response = promiseResult.data;
 
-                    appService.identityMap.merge(result.Modifications);
-                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
 
-                    if (result.Passed) {
-                        var newObject = result.NewObject;
+                    if (response.Passed) {
+                        var newObject = response.NewObject;
                         appService.identityMap.addObject(newObject);
                         $rootScope.$broadcast("openNewExplorer", newObject);
                     }
@@ -53,14 +53,14 @@
                 var promise = fresnelService.getObjects(request);
 
                 promise.then((promiseResult) => {
-                    var result = promiseResult.data;
+                    var response = promiseResult.data;
 
-                    appService.identityMap.merge(result.Modifications);
-                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
 
-                    if (result.Passed) {
-                        appService.identityMap.addObject(result.Matches);
-                        $rootScope.$broadcast("openNewExplorer", result.Matches);
+                    if (response.Passed) {
+                        appService.identityMap.addObject(response.Result);
+                        $rootScope.$broadcast("openNewExplorer", response.Result);
                     }
                 });
             }

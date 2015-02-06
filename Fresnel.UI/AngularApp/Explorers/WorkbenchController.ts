@@ -43,9 +43,9 @@
                         var promise = fresnelService.cleanupSession();
 
                         promise.then((promiseResult) => {
-                            var result = promiseResult.data;
+                            var response = promiseResult.data;
                             appService.identityMap.reset(); 
-                            $rootScope.$broadcast("messagesReceived", result.Messages);
+                            $rootScope.$broadcast("messagesReceived", response.Messages);
                         });
                     }
                 }

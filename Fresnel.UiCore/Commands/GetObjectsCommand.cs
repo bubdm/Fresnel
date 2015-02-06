@@ -80,7 +80,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 return new GetObjectsResponse()
                 {
                     Passed = true,
-                    Matches = (CollectionVM)_ObjectVMBuilder.BuildForCollection(oColl, tClass),
+                    Result = (CollectionVM)_ObjectVMBuilder.BuildForCollection(oColl, tClass),
                     Messages = new MessageVM[] { infoVM }
                 };
             }

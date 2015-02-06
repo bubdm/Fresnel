@@ -31,6 +31,7 @@ a.disabled {
     display: inline-block;
     vertical-align: top;
     white-space: normal; /* This restores the text wrapping from the workbenchContainer */
+    resize: both;
 }
 
 .objectExplorerPanelBody {

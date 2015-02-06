@@ -28,14 +28,14 @@ module FresnelApp {
                     var promise = fresnelService.invokeMethod(request);
 
                     promise.then((promiseResult) => {
-                        var result = promiseResult.data;
-                        method.Error = result.Passed ? "" : result.Messages[0].Text;
+                        var response = promiseResult.data;
+                        method.Error = response.Passed ? "" : response.Messages[0].Text;
 
-                        appService.identityMap.merge(result.Modifications);
-                        $rootScope.$broadcast("messagesReceived", result.Messages);
+                        appService.identityMap.merge(response.Modifications);
+                        $rootScope.$broadcast("messagesReceived", response.Messages);
 
-                        if (result.ResultObject) {
-                            $rootScope.$broadcast("openNewExplorer", result.ResultObject);
+                        if (response.ResultObject) {
+                            $rootScope.$broadcast("openNewExplorer", response.ResultObject);
                         }
                     });
                 }
@@ -69,11 +69,11 @@ module FresnelApp {
                 var promise = fresnelService.setProperty(request);
 
                 promise.then((promiseResult) => {
-                    var result = promiseResult.data;
-                    prop.Error = result.Passed ? "" : result.Messages[0].Text;
+                    var response = promiseResult.data;
+                    prop.Error = response.Passed ? "" : response.Messages[0].Text;
 
-                    appService.identityMap.merge(result.Modifications);
-                    $rootScope.$broadcast("messagesReceived", result.Messages);
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
                 });
             }
 
@@ -87,7 +87,8 @@ module FresnelApp {
                 var promise = fresnelService.getObject(request);
 
                 promise.then((promiseResult) => {
-                    var obj = promiseResult.data.ReturnValue;
+                    var response = promiseResult.data;
+                    var obj = response.ReturnValue;
                     var existingObj = appService.identityMap.getObject(obj.ID);
 
                     appService.identityMap.mergeObjects(existingObj, obj);
@@ -117,9 +118,9 @@ module FresnelApp {
                 var promise = fresnelService.getProperty(request);
 
                 promise.then((promiseResult) => {
-                    var result = promiseResult.data;
+                    var response = promiseResult.data;
 
-                    var obj = result.ReturnValue;
+                    var obj = response.ReturnValue;
                     if (obj) {
                         var existingObj = appService.identityMap.getObject(obj.ID);
                         if (existingObj == null) {
