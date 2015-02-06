@@ -22,6 +22,8 @@ namespace Envivo.Fresnel.Core.Persistence
 
         int SaveChanges();
 
+        void RollbackChanges();
+
         T CreateObject<T>()
             where T : class;
 

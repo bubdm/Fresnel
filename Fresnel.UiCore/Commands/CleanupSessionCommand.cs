@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Core.Persistence;
 using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.Utils;
 using System;
@@ -8,15 +9,18 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class CleanupSessionCommand : ICommand
     {
         private ObserverCache _ObserverCache;
+        private IPersistenceService _PersistenceService;
         private IClock _Clock;
 
         public CleanupSessionCommand
             (
             ObserverCache observerCache,
+             IPersistenceService persistenceService,
             IClock clock
             )
         {
             _ObserverCache = observerCache;
+            _PersistenceService = persistenceService;
             _Clock = clock;
         }
 
@@ -24,6 +28,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             try
             {
+                _PersistenceService.RollbackChanges();
                 _ObserverCache.CleanUp();
 
                 var infoVM = new MessageVM()

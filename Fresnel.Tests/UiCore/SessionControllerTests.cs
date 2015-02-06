@@ -1,8 +1,12 @@
 ﻿using Autofac;
 using Envivo.Fresnel.Bootstrap;
+using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
+using Fresnel.SampleModel.Persistence;
 using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Threading;
 
 namespace Envivo.Fresnel.Tests.Proxies
@@ -32,6 +36,61 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(Environment.UserName, session1.UserName);
             Assert.GreaterOrEqual(session1.LogonTime, now);
             Assert.AreEqual(session1.LogonTime, session2.LogonTime);
+        }
+
+        [Test]
+        public void ShouldCleanupSession()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var sessionController = container.Resolve<SessionController>();
+            var toolboxController = container.Resolve<ToolboxController>();
+            var explorerController = container.Resolve<ExplorerController>();
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var now = DateTime.Now;
+
+            // Act:
+            // Start a new session:
+            var session = sessionController.GetSession();
+
+            // Find an object to edit:
+            var getRequest = new GetObjectsRequest()
+            {
+                TypeName = typeof(PocoObject).FullName,
+                Skip = 0,
+                Take = 10,
+            };
+            var getResponse = toolboxController.GetObjects(getRequest);
+            var pocoA = getResponse.Result.Items.First();
+
+            // Make a change
+            var request = new SetPropertyRequest()
+            {
+                ObjectID = pocoA.ID,
+                PropertyName = "NormalText",
+                NonReferenceValue = DateTime.Now.ToString()
+            };
+
+            var setResult = explorerController.SetProperty(request);
+
+            // This should revert all changes:
+            sessionController.CleanUp();
+
+            // Assert:
+            getResponse = toolboxController.GetObjects(getRequest);
+            var pocoB = getResponse.Result.Items.First();
+
+            var propertyValue = pocoB
+                                .Properties
+                                .Single(p => p.InternalName == request.PropertyName)
+                                .IsNonReference;
+
+            Assert.AreNotEqual(request.NonReferenceValue, propertyValue);
         }
     }
 }

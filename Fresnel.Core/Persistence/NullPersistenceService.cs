@@ -47,6 +47,11 @@ namespace Envivo.Fresnel.Core.Persistence
             return -1;
         }
 
+        public void RollbackChanges()
+        {
+        
+        }
+
         public T CreateObject<T>() where T : class
         {
             return null;
@@ -76,5 +81,6 @@ namespace Envivo.Fresnel.Core.Persistence
         {
             
         }
+
     }
 }

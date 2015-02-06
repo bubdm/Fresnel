@@ -32,7 +32,7 @@ namespace Fresnel.SampleModel.Persistence
                     .WithParameter("nameOrConnectionString", connectionString)
                     .AsImplementedInterfaces()
                     .AsSelf()
-                    .InstancePerLifetimeScope();
+                    .InstancePerDependency();
 
             builder.RegisterType<EFPersistenceService>()
                     .AsImplementedInterfaces()

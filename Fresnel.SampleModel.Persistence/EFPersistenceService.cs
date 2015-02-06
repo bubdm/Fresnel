@@ -13,11 +13,13 @@ namespace Fresnel.SampleModel.Persistence
 {
     public class EFPersistenceService : IPersistenceService
     {
+        private Func<ModelContext> _ModelContextFactory;
         private ModelContext _ModelContext;
 
-        public EFPersistenceService(ModelContext modelContext)
+        public EFPersistenceService(Func<ModelContext> modelContextFactory)
         {
-            _ModelContext = modelContext;
+            _ModelContextFactory = modelContextFactory;
+            _ModelContext = _ModelContextFactory();
         }
 
         public object CreateObject(Type objectType)
@@ -58,6 +60,13 @@ namespace Fresnel.SampleModel.Persistence
         public int SaveChanges()
         {
             return _ModelContext.SaveChanges();
+        }
+
+        public void RollbackChanges()
+        {
+            // See http://stackoverflow.com/a/5468570/80369
+            _ModelContext.Dispose();
+            _ModelContext = _ModelContextFactory();
         }
 
         public T CreateObject<T>() where T : class
