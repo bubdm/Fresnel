@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         public CleanupSessionCommand
             (
             ObserverCache observerCache,
-             IPersistenceService persistenceService,
+            IPersistenceService persistenceService,
             IClock clock
             )
         {
@@ -24,7 +24,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public CleanupSessionResponse Invoke()
+        public GenericResponse Invoke()
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     OccurredAt = _Clock.Now,
                     Text = string.Concat("Your session is now clear")
                 };
-                return new CleanupSessionResponse()
+                return new GenericResponse()
                 {
                     Passed = true,
                     Messages = new MessageVM[] { infoVM }
@@ -53,7 +53,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Detail = ex.ToString(),
                 };
 
-                return new CleanupSessionResponse()
+                return new GenericResponse()
                 {
                     Failed = true,
                     Messages = new MessageVM[] { errorVM }
