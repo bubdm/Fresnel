@@ -129,13 +129,17 @@
 
                 <div ng-controller="workbenchController">
                     <div ng-repeat="explorer in visibleExplorers" class="explorerPanel animate">
-                        <div ng-switch="explorer.__meta.IsCollection" ng-controller="explorerController">
-                            <div ng-switch-when="true">
+                        <div ng-controller="explorerController">
+                            <div ng-if="explorer.__meta.IsSearchResults">
+                                <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
+                                <div ng-controller="collectionExplorerController" ng-include="'/Templates/searchResultsExplorer.html'"></div>
+                            </div>
+                            <div ng-if="!explorer.__meta.IsSearchResults && explorer.__meta.IsCollection">
                                 <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
                                 <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'"></div>
                             </div>
-                            <div ng-switch-default>
-                                <div ng-include="'/Templates/objectExplorer.html'"></div>
+                            <div ng-if="!explorer.__meta.IsCollection">
+                                <div ng-include=" '/Templates/objectExplorer.html' "></div>
                             </div>
                         </div>
                     </div>

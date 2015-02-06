@@ -59,6 +59,7 @@
                     $rootScope.$broadcast("messagesReceived", response.Messages);
 
                     if (response.Passed) {
+                        response.Result.IsSearchResults = true;
                         appService.identityMap.addObject(response.Result);
                         $rootScope.$broadcast("openNewExplorer", response.Result);
                     }

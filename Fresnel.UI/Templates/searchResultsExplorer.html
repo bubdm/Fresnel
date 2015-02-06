@@ -1,0 +1,48 @@
+﻿<div ng-init="oCol = explorer.__meta">
+
+    <div id="explorer_{{oCol.ID}}" object-explorer block-ui class="container-fluid box box-solid box-primary" ng-class="{'collectionExplorerPanelNormalSize' : !explorer.IsMaximised, 'collectionExplorerPanelMaximised' : explorer.IsMaximised}">
+
+        <div class="box-header">
+            <span class="explorerItemIcon fa fa-folder-open-o"> </span>
+            <span class="box-title">
+                Search results (showing {{ oCol.Items.length }})
+            </span>
+
+            <div ng-include="'/Templates/dialogToolbar.html'"></div>
+        </div>
+
+        <div class="collectionExplorerPanelBody">
+            <!-- NB: Use st-safe-src to ensure collection is watched -->
+            <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" class="table table-striped collectionRowText">
+                <thead>
+                    <tr>
+                        <th st-ratio="1">&nbsp;</th> <!--Icon-->
+                        <th st-ratio="20" ng-repeat="prop in oCol.ElementProperties" st-sort="{{prop.InternalName}}" title="{{prop.Description}}">{{prop.Name}}</th>
+                        <th st-ratio="1">&nbsp;</th> <!--Buttons-->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in oCol.DisplayItems">
+                        <td st-ratio="1">
+                            <span class="classItemIcon {{item.Type}}-Icon"></span> {{item.Type}}
+                        </td>
+                        <td st-ratio="20"
+                            ng-repeat="elementProp in oCol.ElementProperties"
+                            ng-init="prop = item.Properties[elementProp.Index]"
+                            title="{{prop.State.FriendlyValue}}">
+                            {{prop.State.FriendlyValue}}
+                        </td>
+                        <td st-ratio="1">
+                            <button ng-click="openNewExplorer(item)"
+                                    title="Open contents in a new panel">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>

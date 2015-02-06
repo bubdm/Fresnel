@@ -965,6 +965,7 @@
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\ng-dock.js" />
     <Content Include="Scripts\angular-smart-table\smart-table.min.js" />
+    <Content Include="Templates\searchResultsExplorer.html" />
     <Content Include="Templates\Editors\dateEditor.html" />
     <Content Include="Templates\Editors\enumBitwiseCheckboxEditor.html" />
     <Content Include="Templates\Editors\collectionInteractions.html" />
