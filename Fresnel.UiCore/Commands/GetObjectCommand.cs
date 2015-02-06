@@ -28,13 +28,11 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             try
             {
-                ObjectVM result = null;
-
                 var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
-                result = _ObjectVMBuilder.BuildFor(oObject);
+                var result = _ObjectVMBuilder.BuildFor(oObject);
 
                 // Done:
                 return new GetPropertyResponse()
