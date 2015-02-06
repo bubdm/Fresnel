@@ -138,6 +138,18 @@ module FresnelApp {
                 });
             }
 
+            $scope.save = function (obj: ObjectVM) {
+                var request = requestBuilder.buildSaveChangesRequest(obj);
+                var promise = fresnelService.saveChanges(request);
+
+                promise.then((promiseResult) => {
+                    var response = promiseResult.data;
+
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                });
+            }
+
         }
 
     }

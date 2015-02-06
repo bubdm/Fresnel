@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 namespace Envivo.Fresnel.Core.Persistence
 {
     public interface IPersistenceService
-    {                
+    {
         object CreateObject(Type objectType);
 
         object GetObject(Type objectType, Guid id);
@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.Core.Persistence
 
         void DeleteObject(object entityWithChanges, Type objectType);
 
-        int SaveChanges();
+        int SaveChanges(params object[] entities);
 
         void RollbackChanges();
 

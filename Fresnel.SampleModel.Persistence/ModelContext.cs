@@ -106,8 +106,9 @@ namespace Fresnel.SampleModel.Persistence
             _ObjectContext.DeleteObject(entityToDelete);
         }
 
-        public override int SaveChanges()
+        public int SaveChanges(params object[] entities)
         {
+            // TODO: Make this only save the entities given, not the whole context:
             this.IncrementConcurrencyTokens();
             return base.SaveChanges();
         }

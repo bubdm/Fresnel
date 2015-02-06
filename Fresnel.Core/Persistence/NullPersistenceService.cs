@@ -42,7 +42,7 @@ namespace Envivo.Fresnel.Core.Persistence
             
         }
 
-        public int SaveChanges()
+        public int SaveChanges(params object[] entities)
         {
             return -1;
         }

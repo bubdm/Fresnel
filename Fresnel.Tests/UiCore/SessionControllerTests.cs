@@ -39,7 +39,7 @@ namespace Envivo.Fresnel.Tests.Proxies
         }
 
         [Test]
-        public void ShouldCleanupSession()
+        public void ShouldSaveAllChanges()
         {
             // Arrange:
             var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
@@ -52,7 +52,52 @@ namespace Envivo.Fresnel.Tests.Proxies
             var engine = container.Resolve<Core.Engine>();
             engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
 
-            var now = DateTime.Now;
+            // Act:
+            // Start a new session:
+            var session = sessionController.GetSession();
+
+            var createResponse = toolboxController.Create("Envivo.Fresnel.SampleModel.Objects.PocoObject");
+
+            // Make a change
+            var request = new SetPropertyRequest()
+            {
+                ObjectID = createResponse.NewObject.ID,
+                PropertyName = "NormalText",
+                NonReferenceValue = DateTime.Now.ToString()
+            };
+            var setResult = explorerController.SetProperty(request);
+
+            // This should revert all changes:
+            var saveRequest = new SaveChangesRequest()
+            {
+                ObjectID = request.ObjectID,
+            };
+            var saveResponse = explorerController.SaveChanges(saveRequest);
+
+            // Assert:
+            Assert.IsTrue(saveResponse.Passed);
+
+            var getRequest = new GetObjectRequest()
+            {
+                ObjectID = request.ObjectID
+            };
+            var getResponse = explorerController.GetObject(getRequest);
+            Assert.IsNotNull(getResponse.ReturnValue);
+        }
+
+        [Test]
+        public void ShouldCleanupSession()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var sessionController = container.Resolve<SessionController>();
+            var toolboxController = container.Resolve<ToolboxController>();
+            var explorerController = container.Resolve<ExplorerController>();
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
 
             // Act:
             // Start a new session:
@@ -75,7 +120,6 @@ namespace Envivo.Fresnel.Tests.Proxies
                 PropertyName = "NormalText",
                 NonReferenceValue = DateTime.Now.ToString()
             };
-
             var setResult = explorerController.SetProperty(request);
 
             // This should revert all changes:

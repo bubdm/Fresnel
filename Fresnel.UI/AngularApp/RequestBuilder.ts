@@ -63,6 +63,15 @@
 
             return request;
         }
+
+        buildSaveChangesRequest(obj: ObjectVM) {
+            var request: SaveChangesRequest = {
+                ObjectID: obj.ID
+            };
+
+            return request;
+        }
+
     }
 
 }

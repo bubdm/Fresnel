@@ -25,6 +25,8 @@
         removeItemFromCollection(request: CollectionRequest): ng.IPromise<any>;
 
         cleanupSession(): ng.IPromise<any>;
+
+        saveChanges(request: SaveChangesRequest): ng.IPromise<any>;
     }
 
 }

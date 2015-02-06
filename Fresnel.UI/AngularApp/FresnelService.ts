@@ -75,6 +75,10 @@
             return this.http.get(uri);
         }
 
+        saveChanges(request: SaveChangesRequest): ng.IPromise<any> {
+            var uri = "api/Explorer/SaveChanges";
+            return this.http.post(uri, request);
+        }
     }
 
 }

@@ -57,9 +57,9 @@ namespace Fresnel.SampleModel.Persistence
             _ModelContext.DeleteObject(entityToDelete, objectType);
         }
 
-        public int SaveChanges()
+        public int SaveChanges(params object[] entities)
         {
-            return _ModelContext.SaveChanges();
+            return _ModelContext.SaveChanges(entities);
         }
 
         public void RollbackChanges()

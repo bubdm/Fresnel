@@ -40,6 +40,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Commands.InvokeMethodCommand),
                 typeof(Fresnel.UiCore.Commands.CollectionAddCommand),
                 typeof(Fresnel.UiCore.Commands.CollectionRemoveCommand),
+                typeof(Fresnel.UiCore.Commands.SaveChangesCommand),
 
                 typeof(Fresnel.UiCore.Model.Changes.ModificationsVmBuilder),
 

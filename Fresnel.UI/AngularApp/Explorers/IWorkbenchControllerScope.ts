@@ -22,6 +22,8 @@
 
         openNewExplorerForProperty(prop: PropertyVM);
 
+        save(obj: ObjectVM);
+
     }
 
 }

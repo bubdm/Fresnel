@@ -10,9 +10,6 @@ declare module FresnelApp {
         Messages: any;
         Modifications: FresnelApp.ModificationsVM;
     }
-    /** Generated from Envivo.Fresnel.UiCore.Commands.CleanupSessionResponse **/
-    export interface CleanupSessionResponse extends FresnelApp.BaseCommandResponse {
-    }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionAddResponse **/
     export interface CollectionAddResponse extends FresnelApp.BaseCommandResponse {
         AddedItem: FresnelApp.ObjectVM;
@@ -43,7 +40,7 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.GetObjectsResponse **/
     export interface GetObjectsResponse extends FresnelApp.BaseCommandResponse {
-        Results: FresnelApp.CollectionVM;
+        Result: FresnelApp.CollectionVM;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.GetPropertyRequest **/
     export interface GetPropertyRequest {
@@ -63,6 +60,10 @@ declare module FresnelApp {
     /** Generated from Envivo.Fresnel.UiCore.Commands.InvokeMethodResponse **/
     export interface InvokeMethodResponse extends FresnelApp.BaseCommandResponse {
         ResultObject: FresnelApp.ObjectVM;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.SaveChangesRequest **/
+    export interface SaveChangesRequest {
+        ObjectID: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SetPropertyRequest **/
     export interface SetPropertyRequest {
@@ -235,6 +236,7 @@ declare module FresnelApp {
     export interface ValueStateVM {
         Value: any;
         ReferenceValueID?: any;
+        FriendlyValue: string;
         ValueType: string;
         Get: FresnelApp.InteractionPoint;
         Set: FresnelApp.InteractionPoint;

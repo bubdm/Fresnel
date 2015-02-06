@@ -13,6 +13,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         private InvokeMethodCommand _InvokeMethodCommand;
         private CollectionAddCommand _CollectionAddCommand;
         private CollectionRemoveCommand _CollectionRemoveCommand;
+        private SaveChangesCommand _SaveChangesCommand;
 
         public ExplorerController
             (
@@ -25,6 +26,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
             _InvokeMethodCommand = commands.OfType<InvokeMethodCommand>().Single(); ;
             _CollectionAddCommand = commands.OfType<CollectionAddCommand>().Single(); ;
             _CollectionRemoveCommand = commands.OfType<CollectionRemoveCommand>().Single(); ;
+            _SaveChangesCommand = commands.OfType<SaveChangesCommand>().Single();
         }
 
         [HttpPost]
@@ -74,5 +76,13 @@ namespace Envivo.Fresnel.UiCore.Controllers
             var response = _CollectionRemoveCommand.Invoke(request);
             return response;
         }
+
+        [HttpPost]
+        public GenericResponse SaveChanges([FromBody]SaveChangesRequest id)
+        {
+            var result = _SaveChangesCommand.Invoke(id);
+            return result;
+        }
+
     }
 }

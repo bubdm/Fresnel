@@ -1,6 +1,8 @@
 ﻿using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Model;
+using System.Collections.Generic;
 using System.Web.Http;
+using System.Linq;
 
 namespace Envivo.Fresnel.UiCore.Controllers
 {
@@ -12,11 +14,11 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public SessionController
             (
             SessionVmBuilder sessionVmBuilder,
-            CleanupSessionCommand cleanupSessionCommand
+            IEnumerable<ICommand> commands
             )
         {
             _SessionVmBuilder = sessionVmBuilder;
-            _CleanupSessionCommand = cleanupSessionCommand;
+            _CleanupSessionCommand = commands.OfType<CleanupSessionCommand>().Single();
         }
 
         [HttpGet]
@@ -26,7 +28,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpGet]
-        public CleanupSessionResponse CleanUp()
+        public GenericResponse CleanUp()
         {
             var result = _CleanupSessionCommand.Invoke();
             return result;
