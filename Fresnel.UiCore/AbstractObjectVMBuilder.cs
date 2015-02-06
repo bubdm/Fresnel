@@ -70,7 +70,7 @@ namespace Envivo.Fresnel.UiCore
                 ID = oCollection.ID,
                 Name = oCollection.Template.FriendlyName,
                 Type = oCollection.Template.RealType.Name,
-                ElementType = oCollection.Template.InnerClass.RealType.FullName,
+                ElementType = tElement.RealType.FullName,
                 IsVisible = oCollection.Template.IsVisible,
                 ElementProperties = elementProperties,
                 Description = oCollection.Template.XmlComments.Summary,
