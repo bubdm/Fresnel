@@ -1,8 +1,29 @@
 ﻿module FresnelApp {
 
-    export interface IWorkbenchControllerScope extends ng.IScope {
+    export interface IExplorerControllerScope extends ng.IScope {
 
-        visibleExplorers: Explorer[];
+        explorer: Explorer;
+
+        minimise(explorer: Explorer);
+
+        maximise(explorer: Explorer);
+
+        close(explorer: Explorer);
+
+        refresh(explorer: Explorer);
+
+        invoke(method: MethodVM);
+
+        setProperty(prop: PropertyVM);
+
+        setBitwiseEnumProperty(prop: PropertyVM, enumValue: number);
+
+        openNewExplorer(obj: ObjectVM);
+
+        openNewExplorerForProperty(prop: PropertyVM);
+
+        save(obj: ObjectVM);
+
     }
 
 }
