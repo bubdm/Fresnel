@@ -79,7 +79,25 @@ namespace Envivo.Fresnel.UiCore
                 Items = this.CreateItems(oCollection, allKnownProperties)
             };
 
+            this.TrimRedundantContentFrom(result);
+
             return result;
+        }
+
+        private void TrimRedundantContentFrom(CollectionVM collectionVM)
+        {
+            foreach (var item in collectionVM.Items)
+            {
+                item.Description = null;
+                foreach (var prop in item.Properties)
+                {
+                    prop.Description = null;
+                }
+                foreach (var method in item.Methods)
+                {
+                    method.Description = null;
+                }
+            }
         }
 
         private IEnumerable<ObjectVM> CreateItems(CollectionObserver oCollection,

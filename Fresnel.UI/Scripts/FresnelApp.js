@@ -157,10 +157,26 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var CollectionExplorerController = (function () {
-        function CollectionExplorerController($rootScope, $scope, fresnelService, appService) {
+        function CollectionExplorerController($rootScope, $scope, fresnelService, requestBuilder, appService) {
             var collection = $scope.explorer.__meta;
             // This allows Smart-Table to handle the st-safe-src properly:
             collection.DisplayItems = [].concat(collection.Items);
+            // NB: This overrides the function in ExplorerController
+            $scope.openNewExplorer = function (obj) {
+                // As the collection only contains a lightweight object, we need to fetch one with more detail:
+                var request = requestBuilder.buildGetObjectRequest(obj);
+                var promise = fresnelService.getObject(request);
+                promise.then(function (promiseResult) {
+                    var response = promiseResult.data;
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    if (response.Passed) {
+                        var latestObj = response.ReturnValue;
+                        appService.identityMap.addObject(latestObj);
+                        $rootScope.$broadcast("openNewExplorer", latestObj);
+                    }
+                });
+            };
             $scope.addNewItem = function (itemType) {
                 var request = {
                     CollectionID: collection.ID,
@@ -245,7 +261,13 @@ var FresnelApp;
                     return '';
             }
         };
-        CollectionExplorerController.$inject = ['$rootScope', '$scope', 'fresnelService', 'appService'];
+        CollectionExplorerController.$inject = [
+            '$rootScope',
+            '$scope',
+            'fresnelService',
+            'requestBuilder',
+            'appService'
+        ];
         return CollectionExplorerController;
     })();
     FresnelApp.CollectionExplorerController = CollectionExplorerController;

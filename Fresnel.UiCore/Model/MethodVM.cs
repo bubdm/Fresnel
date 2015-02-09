@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using T4TS;
 
 namespace Envivo.Fresnel.UiCore.Model
@@ -17,6 +18,7 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public IEnumerable<SettableMemberVM> ParametersSetByUser { get; set; }
 
+        [DefaultValue(false)]
         public bool IsAsync { get; set; }
     }
 }

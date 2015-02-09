@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.UiCore.Model.TypeInfo;
+using Newtonsoft.Json;
 using System;
 using T4TS;
 
@@ -7,7 +8,9 @@ namespace Envivo.Fresnel.UiCore.Model
     [TypeScriptInterface]
     public class ValueStateVM 
     {
-
+        // By default, null values are omitted by the WebApi serialiser. 
+        // However, we need to ensure this property is always sent:
+        [JsonProperty(NullValueHandling = NullValueHandling.Include)]
         public object Value { get; set; }
 
         public Guid? ReferenceValueID { get; set; }

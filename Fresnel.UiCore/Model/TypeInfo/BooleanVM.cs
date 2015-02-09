@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.Configuration;
+using System.ComponentModel;
 using T4TS;
 
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
@@ -10,6 +11,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 
         public InputControlTypes PreferredControl { get; set; }
 
+        [DefaultValue(false)]
         public bool IsNullable { get; set; }
 
         public string TrueValue { get; set; }

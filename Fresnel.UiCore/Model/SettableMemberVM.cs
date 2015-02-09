@@ -1,5 +1,6 @@
 ﻿using Envivo.Fresnel.UiCore.Model.TypeInfo;
 using System;
+using System.ComponentModel;
 using T4TS;
 
 namespace Envivo.Fresnel.UiCore.Model
@@ -16,14 +17,19 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public string InternalName { get; set; }
 
+        [DefaultValue(false)]
         public bool IsRequired { get; set; }
 
+        [DefaultValue(false)]
         public bool IsLoaded { get; set; }
 
+        [DefaultValue(false)]
         public bool IsObject { get; set; }
 
+        [DefaultValue(false)]
         public bool IsCollection { get; set; }
 
+        [DefaultValue(false)]
         public bool IsNonReference { get; set; }
 
         public ITypeInfo Info { get; set; }

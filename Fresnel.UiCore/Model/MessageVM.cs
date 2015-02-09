@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using T4TS;
 
 namespace Envivo.Fresnel.UiCore.Model
@@ -16,10 +17,13 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public bool IsSuccess { get; set; }
 
+        [DefaultValue(false)]
         public bool IsInfo { get; set; }
 
+        [DefaultValue(false)]
         public bool IsWarning { get; set; }
 
+        [DefaultValue(false)]
         public bool IsError { get; set; }
     }
 }

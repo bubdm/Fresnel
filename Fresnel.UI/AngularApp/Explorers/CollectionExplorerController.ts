@@ -2,17 +2,43 @@
 
     export class CollectionExplorerController {
 
-        static $inject = ['$rootScope', '$scope', 'fresnelService', 'appService'];
+        static $inject = [
+            '$rootScope',
+            '$scope',
+            'fresnelService',
+            'requestBuilder',
+            'appService'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: ICollectionExplorerControllerScope,
             fresnelService: IFresnelService,
+            requestBuilder: RequestBuilder,
             appService: AppService) {
 
             var collection = <CollectionVM>$scope.explorer.__meta;
             // This allows Smart-Table to handle the st-safe-src properly:
             collection.DisplayItems = [].concat(collection.Items);
+
+            // NB: This overrides the function in ExplorerController
+            $scope.openNewExplorer = function (obj: ObjectVM) {
+                // As the collection only contains a lightweight object, we need to fetch one with more detail:
+                var request = requestBuilder.buildGetObjectRequest(obj);
+                var promise = fresnelService.getObject(request);
+
+                promise.then((promiseResult) => {
+                    var response = promiseResult.data;
+
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
+
+                    if (response.Passed) {
+                        var latestObj = response.ReturnValue;
+                        appService.identityMap.addObject(latestObj);
+                        $rootScope.$broadcast("openNewExplorer", latestObj);
+                    }
+                });
+            }
 
             $scope.addNewItem = function (itemType: string) {
                 var request: CollectionRequest = {

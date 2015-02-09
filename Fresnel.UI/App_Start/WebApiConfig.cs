@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -28,9 +30,13 @@ namespace Envivo.Fresnel.UI
             // Make sure we return JSON from any API calls:
             var jsonFormatter = config.Formatters.JsonFormatter;
             jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
-            jsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
-            jsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            jsonFormatter.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+
+            var settings = jsonFormatter.SerializerSettings;
+            settings.DefaultValueHandling = DefaultValueHandling.Ignore;
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            settings.PreserveReferencesHandling = PreserveReferencesHandling.None;
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            settings.Converters.Add(new StringEnumConverter());
         }
     }
 }
