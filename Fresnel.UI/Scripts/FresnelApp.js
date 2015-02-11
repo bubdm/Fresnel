@@ -274,6 +274,13 @@ var FresnelApp;
             };
             $scope.addExistingItems = function (coll) {
                 var onSelectionConfirmed = function (selectedItems) {
+                    var request = requestBuilder.buildAddItemsRequest(coll, selectedItems);
+                    var promise = fresnelService.addItemsToCollection(request);
+                    promise.then(function (promiseResult) {
+                        var response = promiseResult.data;
+                        appService.identityMap.merge(response.Modifications);
+                        $rootScope.$broadcast("messagesReceived", response.Messages);
+                    });
                 };
                 searchService.showSearchForCollection(coll, onSelectionConfirmed);
             };

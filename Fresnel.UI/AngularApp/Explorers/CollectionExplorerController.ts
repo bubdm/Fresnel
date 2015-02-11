@@ -66,7 +66,14 @@
             $scope.addExistingItems = function (coll: CollectionVM) {
 
                 var onSelectionConfirmed = function (selectedItems) {
+                    var request = requestBuilder.buildAddItemsRequest(coll, selectedItems);
+                    var promise = fresnelService.addItemsToCollection(request);
+                    promise.then((promiseResult) => {
+                        var response = promiseResult.data;
 
+                        appService.identityMap.merge(response.Modifications);
+                        $rootScope.$broadcast("messagesReceived", response.Messages);
+                    });
                 };
 
                 searchService.showSearchForCollection(coll, onSelectionConfirmed);
