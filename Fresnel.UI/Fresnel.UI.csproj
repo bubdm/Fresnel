@@ -1051,6 +1051,8 @@
     <TypeScriptCompile Include="AngularApp\Explorers\ICollectionControllerScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\IExplorerControllerScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\IWorkbenchControllerScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\SearchExplorerlController.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\SearchService.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\MethodController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\WorkbenchController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerService.ts" />

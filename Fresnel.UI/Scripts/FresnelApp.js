@@ -1,3 +1,87 @@
+var FresnelApp;
+(function (FresnelApp) {
+    // Used to control the interactions within an open Search form
+    var SearchExplorerController = (function () {
+        function SearchExplorerController($rootScope, $scope, fresnelService, requestBuilder, explorer, parentExplorer, searchResults) {
+            $scope.explorer = explorer;
+            $scope.parentExplorer = parentExplorer;
+            $scope.searchResults = searchResults;
+        }
+        SearchExplorerController.$inject = [
+            '$rootScope',
+            '$scope',
+            'fresnelService',
+            'requestBuilder',
+            'explorer',
+            'parentExplorer',
+            'searchResults'
+        ];
+        return SearchExplorerController;
+    })();
+    FresnelApp.SearchExplorerController = SearchExplorerController;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var SearchService = (function () {
+        function SearchService($rootScope, fresnelService, explorerService, requestBuilder, $modal) {
+            this.showSearchForCollection = function (parentExplorer, elementTypeName) {
+            };
+            this.showSearchForProperty = function (parentExplorer, prop) {
+            };
+            this.showSearchForParameter = function (parentExplorer, param) {
+            };
+            this.showSearchForCollection = function (parentExplorer, fullTypeName) {
+                var request = requestBuilder.buildSearchObjectsRequest(fullTypeName);
+                var promiseSearch = fresnelService.searchObjects(request);
+                promiseSearch.then(function (promiseResult) {
+                    var response = promiseResult.data;
+                    var searchResults = response.Result;
+                    var searchExplorer = explorerService.addExplorer(searchResults);
+                    var options = {
+                        templateUrl: '/Templates/searchResultsExplorer.html',
+                        controller: 'searchExplorerController',
+                        backdrop: 'static',
+                        resolve: {
+                            // These objects will be injected into the SearchController's ctor:
+                            explorer: function () {
+                                return searchExplorer;
+                            },
+                            parentExplorer: function () {
+                                return parentExplorer;
+                            },
+                            searchResults: function () {
+                                return searchResults;
+                            }
+                        }
+                    };
+                    var modal = $modal.open(options);
+                    $rootScope.$broadcast("modalOpened", modal);
+                    modal.result.then(function () {
+                        //var addItemsRequest = requestBuilder.buildAddItemsRequest(coll, items);
+                        //var promiseAdd = fresnelService.addItemsToCollection(addItemsRequest);
+                        //promiseAdd.then((promiseResult) => {
+                        //    var response = promiseResult.data;
+                        //    appService.identityMap.merge(response.Modifications);
+                        //    $rootScope.$broadcast("messagesReceived", response.Messages);
+                        //});
+                    });
+                    modal.result.finally(function () {
+                        $rootScope.$broadcast("modalClosed", modal);
+                    });
+                });
+            };
+        }
+        SearchService.$inject = [
+            '$rootScope',
+            'fresnelService',
+            'explorerService',
+            'requestBuilder',
+            '$modal'
+        ];
+        return SearchService;
+    })();
+    FresnelApp.SearchService = SearchService;
+})(FresnelApp || (FresnelApp = {}));
 /// <reference path="../../scripts/typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts" />
 var FresnelApp;
 (function (FresnelApp) {
@@ -157,7 +241,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var CollectionExplorerController = (function () {
-        function CollectionExplorerController($rootScope, $scope, fresnelService, requestBuilder, appService) {
+        function CollectionExplorerController($rootScope, $scope, fresnelService, requestBuilder, appService, searchService) {
             var collection = $scope.explorer.__meta;
             // This allows Smart-Table to handle the st-safe-src properly:
             collection.DisplayItems = [].concat(collection.Items);
@@ -192,26 +276,7 @@ var FresnelApp;
                 });
             };
             $scope.addExistingItems = function (coll) {
-                var request = requestBuilder.buildSearchObjectsRequest(coll.ElementType);
-                var promiseSearch = fresnelService.searchObjects(request);
-                promiseSearch.then(function (promiseResult) {
-                    var response = promiseResult.data;
-                    $rootScope.$broadcast("messagesReceived", response.Messages);
-                    if (response.Passed) {
-                        var searchResult = response.Result;
-                        // Set the callback when the user confirms the selection:
-                        searchResult.OnSelectionConfirmed = function (items) {
-                            var addItemsRequest = requestBuilder.buildAddItemsRequest(coll, items);
-                            var promiseAdd = fresnelService.addItemsToCollection(addItemsRequest);
-                            promiseAdd.then(function (promiseResult) {
-                                var response = promiseResult.data;
-                                appService.identityMap.merge(response.Modifications);
-                                $rootScope.$broadcast("messagesReceived", response.Messages);
-                            });
-                        };
-                        $rootScope.$broadcast("openNewExplorer", searchResult);
-                    }
-                });
+                searchService.showSearchForCollection($scope.explorer, coll.ElementType);
             };
             $scope.removeItem = function (obj) {
                 var request = {
@@ -226,54 +291,13 @@ var FresnelApp;
                 });
             };
         }
-        CollectionExplorerController.prototype.getEditorTemplate = function (prop) {
-            if (prop.Info == null)
-                return;
-            switch (prop.Info.Name) {
-                case "boolean":
-                    switch (prop.Info.PreferredControl) {
-                        default:
-                            return '/Templates/Editors/booleanRadioEditor.html';
-                    }
-                case "datetime":
-                    switch (prop.Info.PreferredControl) {
-                        case "Date":
-                            return '/Templates/Editors/dateEditor.html';
-                        case "Time":
-                            return '/Templates/Editors/timeEditor.html';
-                        default:
-                            return '/Templates/Editors/dateTimeEditor.html';
-                    }
-                case "enum":
-                    switch (prop.Info.PreferredControl) {
-                        case "Checkbox":
-                            return '/Templates/Editors/enumCheckboxEditor.html';
-                        case "Radio":
-                            return '/Templates/Editors/enumRadioEditor.html';
-                        default:
-                            return '/Templates/Editors/enumSelectEditor.html';
-                    }
-                case "string":
-                    switch (prop.Info.PreferredControl) {
-                        case "Password":
-                            return '/Templates/Editors/passwordEditor.html';
-                        case "TextArea":
-                            return '/Templates/Editors/textAreaEditor.html';
-                        case "RichTextArea":
-                            return '/Templates/Editors/richTextEditor.html';
-                        default:
-                            return '/Templates/Editors/stringEditor.html';
-                    }
-                default:
-                    return '';
-            }
-        };
         CollectionExplorerController.$inject = [
             '$rootScope',
             '$scope',
             'fresnelService',
             'requestBuilder',
-            'appService'
+            'appService',
+            'searchService'
         ];
         return CollectionExplorerController;
     })();
@@ -339,9 +363,9 @@ var FresnelApp;
                 var promise = fresnelService.searchObjects(request);
                 promise.then(function (promiseResult) {
                     var response = promiseResult.data;
-                    var searchResult = response.Result;
+                    var searchResults = response.Result;
                     // Set the callback when the user confirms the selection:
-                    searchResult.OnSelectionConfirmed = function (items) {
+                    searchResults.OnSelectionConfirmed = function (items) {
                         if (items.length == 1) {
                             var selectedItem = items[0];
                             prop.State.ReferenceValueID = selectedItem.ID;
@@ -349,7 +373,7 @@ var FresnelApp;
                             $scope.setProperty(prop);
                         }
                     };
-                    $rootScope.$broadcast("openNewExplorer", searchResult);
+                    $rootScope.$broadcast("openNewExplorer", searchResults);
                 });
             };
             $scope.disassociate = function (prop) {
@@ -874,7 +898,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var requires = ['blockUI', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table', 'ui.bootstrap'];
-    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).service("requestBuilder", FresnelApp.RequestBuilder).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("methodController", FresnelApp.MethodController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
+    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).service("requestBuilder", FresnelApp.RequestBuilder).service("searchService", FresnelApp.SearchService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("methodController", FresnelApp.MethodController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).controller("searchExplorerController", FresnelApp.SearchExplorerController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);
             return responseData;

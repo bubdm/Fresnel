@@ -89,10 +89,10 @@ module FresnelApp {
                 promise.then((promiseResult) => {
                     var response = promiseResult.data;
 
-                    var searchResult = response.Result;
+                    var searchResults = response.Result;
 
                     // Set the callback when the user confirms the selection:
-                    searchResult.OnSelectionConfirmed = function (items: ObjectVM[]) {
+                    searchResults.OnSelectionConfirmed = function (items: ObjectVM[]) {
                         if (items.length == 1) {
                             var selectedItem = items[0];
                             prop.State.ReferenceValueID = selectedItem.ID;
@@ -101,7 +101,7 @@ module FresnelApp {
                         }
                     }
 
-                    $rootScope.$broadcast("openNewExplorer", searchResult);
+                    $rootScope.$broadcast("openNewExplorer", searchResults);
                 });
             }
 

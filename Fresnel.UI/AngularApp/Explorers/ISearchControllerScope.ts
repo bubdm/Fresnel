@@ -4,21 +4,9 @@
 
         explorer: Explorer;
 
-        searchType: string;
+        parentExplorer: Explorer;
 
-        close(explorer: Explorer);
-
-        refresh(explorer: Explorer);
-
-        setProperty(prop: PropertyVM);
-
-        setBitwiseEnumProperty(prop: PropertyVM, enumValue: number);
-
-        openNewExplorer(obj: ObjectVM);
-
-        results: ObjectVM[];
-
-        selectedItems: ObjectVM[];
+        searchResults: SearchResultsVM;
 
     }
 
