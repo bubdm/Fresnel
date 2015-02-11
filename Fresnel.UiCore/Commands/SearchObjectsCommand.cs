@@ -81,7 +81,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 return new SearchObjectsResponse()
                 {
                     Passed = true,
-                    Results = _SearchResultsVmBuilder.BuildForCollection(oColl, tClass),
+                    Result = _SearchResultsVmBuilder.BuildForCollection(oColl, tClass),
                     Messages = new MessageVM[] { infoVM }
                 };
             }

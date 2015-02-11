@@ -14,10 +14,18 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 
         public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
+            targetVM.Info = new ReferenceTypeVM()
+            {
+                FullTypeName = tProp.InnerClass.FullName
+            };
         }
 
         public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
+            targetVM.Info = new ReferenceTypeVM()
+            {
+                FullTypeName = tParam.InnerClass.FullName
+            };
         }
     }
 }

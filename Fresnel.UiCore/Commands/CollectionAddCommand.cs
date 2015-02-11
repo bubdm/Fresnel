@@ -6,6 +6,8 @@ using Envivo.Fresnel.UiCore.Model.Changes;
 using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.Utils;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
@@ -39,7 +41,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public GenericResponse Invoke(CollectionRequest request)
+        public GenericResponse Invoke(CollectionAddNewRequest request)
         {
             try
             {
@@ -50,24 +52,12 @@ namespace Envivo.Fresnel.UiCore.Commands
                     throw new UiCoreException("Cannot find collection with ID " + request.CollectionID);
 
                 ObjectObserver oObject = null;
-
-                var isCreationRequired = request.ElementTypeName.IsNotEmpty();
-
-                if (isCreationRequired)
+                var tClass = _TemplateCache.GetTemplate(request.ElementTypeName);
+                if (tClass != null)
                 {
-                    var tClass = _TemplateCache.GetTemplate(request.ElementTypeName);
-                    if (tClass != null)
-                    {
-                        oObject = (ObjectObserver)_CreateObjectCommand.Invoke(tClass.RealType, null);
-                        if (oObject == null)
-                            throw new UiCoreException("Cannot create object of type " + tClass.FriendlyName);
-                    }
-                }
-                else
-                {
-                    oObject = (ObjectObserver)_ObserverCache.GetObserverById(request.ElementID);
+                    oObject = (ObjectObserver)_CreateObjectCommand.Invoke(tClass.RealType, null);
                     if (oObject == null)
-                        throw new UiCoreException("Cannot find object with ID " + request.ElementID);
+                        throw new UiCoreException("Cannot create object of type " + tClass.FriendlyName);
                 }
 
                 var oResult = _AddToCollectionCommand.Invoke(oCollection, oObject);
@@ -79,15 +69,82 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     IsSuccess = true,
                     OccurredAt = _Clock.Now,
-                    Text = isCreationRequired ?
-                           string.Concat("Created and added new ", oObject.Template.FriendlyName) :
-                           string.Concat("Added ", oObject.RealObject.ToString(), " to the collection")
+                    Text = string.Concat("Created and added new ", oObject.Template.FriendlyName)
                 };
                 return new GenericResponse()
                 {
                     Passed = true,
                     Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
                     Messages = new MessageVM[] { infoVM }
+                };
+            }
+            catch (Exception ex)
+            {
+                var errorVM = new MessageVM()
+                {
+                    IsError = true,
+                    OccurredAt = _Clock.Now,
+                    Text = ex.Message,
+                    Detail = ex.ToString(),
+                };
+
+                return new GenericResponse()
+                {
+                    Failed = true,
+                    Messages = new MessageVM[] { errorVM }
+                };
+            }
+        }
+
+        public GenericResponse Invoke(CollectionAddRequest request)
+        {
+            try
+            {
+                var messages = new List<MessageVM>();
+
+                var startedAt = SequentialIdGenerator.Next;
+
+                var oCollection = (CollectionObserver)_ObserverCache.GetObserverById(request.CollectionID);
+                if (oCollection == null)
+                    throw new UiCoreException("Cannot find collection with ID " + request.CollectionID);
+
+                var oObjects = new List<ObjectObserver>();
+                foreach (var elementID in request.ElementIDs)
+                {
+                    var oObject = (ObjectObserver)_ObserverCache.GetObserverById(elementID);
+                    if (oObject == null)
+                        throw new UiCoreException("Cannot find object with ID " + elementID);
+
+                    oObjects.Add(oObject);
+                    var oResult = _AddToCollectionCommand.Invoke(oCollection, oObject);
+
+                    var infoVM = new MessageVM()
+                    {
+                        IsInfo = true,
+                        OccurredAt = _Clock.Now,
+                        Text = string.Concat("Added ", oObject.RealObject.ToString(), " to the collection")
+                    };
+                    messages.Add(infoVM);
+                }
+
+                // Other objects may have been affected by the action:
+                _ObserverCache.ScanForChanges();
+
+                if (oObjects.Count > 1)
+                {
+                    var infoVM = new MessageVM()
+                    {
+                        IsSuccess = true,
+                        OccurredAt = _Clock.Now,
+                        Text = string.Concat("Added ", oObjects.Count, " items to the collection")
+                    };
+                    messages.Insert(0, infoVM);
+                }
+                return new GenericResponse()
+                {
+                    Passed = true,
+                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
+                    Messages = messages
                 };
             }
             catch (Exception ex)

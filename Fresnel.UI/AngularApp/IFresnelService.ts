@@ -18,15 +18,17 @@
 
         invokeMethod(request: InvokeMethodRequest): ng.IPromise<any>;
 
-        addNewItemToCollection(request: CollectionRequest): ng.IPromise<any>;
+        addNewItemToCollection(request: CollectionAddNewRequest): ng.IPromise<any>;
 
-        addItemToCollection(request: CollectionRequest): ng.IPromise<any>;
+        addItemsToCollection(request: CollectionAddRequest): ng.IPromise<any>;
 
-        removeItemFromCollection(request: CollectionRequest): ng.IPromise<any>;
+        removeItemFromCollection(request: CollectionRemoveRequest): ng.IPromise<any>;
 
         cleanupSession(): ng.IPromise<any>;
 
         saveChanges(request: SaveChangesRequest): ng.IPromise<any>;
+
+        searchObjects(request: SearchObjectsRequest): ng.IPromise<any>;
     }
 
 }

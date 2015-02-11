@@ -55,17 +55,17 @@
             return this.http.post(uri, request);
         }
 
-        addNewItemToCollection(request: CollectionRequest): ng.IPromise<any> {
-            var uri = "api/Explorer/AddItemToCollection";
+        addNewItemToCollection(request: CollectionAddNewRequest): ng.IPromise<any> {
+            var uri = "api/Explorer/AddNewItemToCollection";
             return this.http.post(uri, request);
         }
 
-        addItemToCollection(request: CollectionRequest): ng.IPromise<any> {
-            var uri = "api/Explorer/AddItemToCollection";
+        addItemsToCollection(request: CollectionAddRequest): ng.IPromise<any> {
+            var uri = "api/Explorer/AddItemsToCollection";
             return this.http.post(uri, request);
         }
 
-        removeItemFromCollection(request: CollectionRequest): ng.IPromise<any> {
+        removeItemFromCollection(request: CollectionRemoveRequest): ng.IPromise<any> {
             var uri = "api/Explorer/RemoveItemFromCollection";
             return this.http.post(uri, request);
         }
@@ -79,6 +79,12 @@
             var uri = "api/Explorer/SaveChanges";
             return this.http.post(uri, request);
         }
+        
+        searchObjects(request: SearchObjectsRequest): ng.IPromise<any> {
+            var uri = "api/Toolbox/SearchObjects";
+            return this.http.post(uri, request);
+        }
+
     }
 
 }

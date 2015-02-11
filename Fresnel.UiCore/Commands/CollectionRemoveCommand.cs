@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public GenericResponse Invoke(CollectionRequest request)
+        public GenericResponse Invoke(CollectionRemoveRequest request)
         {
             try
             {

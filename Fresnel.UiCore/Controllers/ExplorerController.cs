@@ -62,7 +62,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public GenericResponse AddItemToCollection([FromBody]CollectionRequest id)
+        public GenericResponse AddNewItemToCollection([FromBody]CollectionAddNewRequest id)
         {
             var request = id;
             var response = _CollectionAddCommand.Invoke(request);
@@ -70,7 +70,15 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public GenericResponse RemoveItemFromCollection([FromBody]CollectionRequest id)
+        public GenericResponse AddItemsToCollection([FromBody]CollectionAddRequest id)
+        {
+            var request = id;
+            var response = _CollectionAddCommand.Invoke(request);
+            return response;
+        }
+
+        [HttpPost]
+        public GenericResponse RemoveItemFromCollection([FromBody]CollectionRemoveRequest id)
         {
             var request = id;
             var response = _CollectionRemoveCommand.Invoke(request);

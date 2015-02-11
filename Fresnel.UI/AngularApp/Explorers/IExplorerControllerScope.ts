@@ -16,6 +16,10 @@
 
         setProperty(prop: PropertyVM);
 
+        associate(prop: PropertyVM);
+
+        disassociate(prop: PropertyVM);
+
         setBitwiseEnumProperty(prop: PropertyVM, enumValue: number);
 
         openNewExplorer(obj: ObjectVM);
@@ -23,7 +27,6 @@
         openNewExplorerForProperty(prop: PropertyVM);
 
         save(obj: ObjectVM);
-
     }
 
 }

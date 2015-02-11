@@ -134,13 +134,13 @@ namespace Envivo.Fresnel.Tests.Proxies
             var collectionVM = (CollectionVM)getResult.ReturnValue;
 
             // Act:
-            var addRequest = new CollectionRequest()
+            var addRequest = new CollectionAddNewRequest()
             {
                 CollectionID = collectionVM.ID,
                 ElementTypeName = oObject.Template.FullName
             };
 
-            var response = controller.AddItemToCollection(addRequest);
+            var response = controller.AddNewItemToCollection(addRequest);
 
             // Assert:
             Assert.IsTrue(response.Passed);
@@ -180,13 +180,13 @@ namespace Envivo.Fresnel.Tests.Proxies
             var collectionVM = (CollectionVM)getResult.ReturnValue;
 
             // Act:
-            var addRequest = new CollectionRequest()
+            var addRequest = new CollectionAddRequest()
             {
                 CollectionID = collectionVM.ID,
-                ElementID = oChild.ID,
+                ElementIDs = new Guid[] { oChild.ID },
             };
 
-            var response = controller.AddItemToCollection(addRequest);
+            var response = controller.AddItemsToCollection(addRequest);
 
             // Assert:
             Assert.IsTrue(response.Passed);
@@ -225,7 +225,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var collectionVM = (CollectionVM)getResult.ReturnValue;
 
             // Act:
-            var removeRequest = new CollectionRequest()
+            var removeRequest = new CollectionRemoveRequest()
             {
                 CollectionID = collectionVM.ID,
                 ElementID = oChild.ID,

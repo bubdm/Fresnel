@@ -82,6 +82,35 @@ module FresnelApp {
                 $scope.setProperty(prop);
             }
 
+            $scope.associate = function (prop: PropertyVM) {
+                var request = requestBuilder.buildSearchObjectsRequest(prop.Info.FullTypeName);
+                var promise = fresnelService.searchObjects(request);
+
+                promise.then((promiseResult) => {
+                    var response = promiseResult.data;
+
+                    var searchResult = response.Result;
+
+                    // Set the callback when the user confirms the selection:
+                    searchResult.OnSelectionConfirmed = function (items: ObjectVM[]) {
+                        if (items.length == 1) {
+                            var selectedItem = items[0];
+                            prop.State.ReferenceValueID = selectedItem.ID;
+                            // Send the request to the server:
+                            $scope.setProperty(prop);
+                        }
+                    }
+
+                    $rootScope.$broadcast("openNewExplorer", searchResult);
+                });
+            }
+
+            $scope.disassociate = function (prop: PropertyVM) {
+                prop.State.Value = null;
+                prop.State.ReferenceValueID = null;
+                $scope.setProperty(prop);
+            }
+
             $scope.refresh = function (explorer: Explorer) {
                 var request = requestBuilder.buildGetObjectRequest(explorer.__meta);
                 var promise = fresnelService.getObject(request);

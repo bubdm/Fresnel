@@ -10,15 +10,24 @@ declare module FresnelApp {
         Messages: any;
         Modifications: FresnelApp.ModificationsVM;
     }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionAddNewRequest **/
+    export interface CollectionAddNewRequest {
+        CollectionID: any;
+        ElementTypeName: string;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionAddRequest **/
+    export interface CollectionAddRequest {
+        CollectionID: any;
+        ElementIDs: any[];
+    }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionAddResponse **/
     export interface CollectionAddResponse extends FresnelApp.BaseCommandResponse {
         AddedItem: FresnelApp.ObjectVM;
     }
-    /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionRequest **/
-    export interface CollectionRequest {
+    /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionRemoveRequest **/
+    export interface CollectionRemoveRequest {
         CollectionID: any;
         ElementID: any;
-        ElementTypeName: string;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CreateCommandResponse **/
     export interface CreateCommandResponse extends FresnelApp.BaseCommandResponse {
@@ -75,7 +84,7 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SearchObjectsResponse **/
     export interface SearchObjectsResponse extends FresnelApp.BaseCommandResponse {
-        Results: FresnelApp.SearchResultsVM;
+        Result: FresnelApp.SearchResultsVM;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SetPropertyRequest **/
     export interface SetPropertyRequest {
@@ -182,6 +191,7 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.SearchResultsVM **/
     export interface SearchResultsVM extends FresnelApp.ObjectVM {
+        IsSearchResults: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.SearchVM **/
     export interface SearchVM extends FresnelApp.BaseViewModel {
@@ -251,6 +261,11 @@ declare module FresnelApp {
         MaxValue: number;
         DecimalPlaces: number;
         CurrencySymbol: string;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.TypeInfo.ReferenceTypeVM **/
+    export interface ReferenceTypeVM {
+        FullTypeName: string;
+        PreferredControl: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.TypeInfo.StringVM **/
     export interface StringVM {

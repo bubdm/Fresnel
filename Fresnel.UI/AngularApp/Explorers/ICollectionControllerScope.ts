@@ -4,7 +4,7 @@
 
         addNewItem(itemType: string);
 
-        addExistingItem(obj: ObjectVM);
+        addExistingItems(obj: ObjectVM);
 
         removeItem(obj: ObjectVM);
 

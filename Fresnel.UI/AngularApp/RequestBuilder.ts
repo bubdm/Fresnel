@@ -72,9 +72,9 @@
             return request;
         }
 
-        buildSearchObjectsRequest(prop: PropertyVM) {
+        buildSearchObjectsRequest(fullyQualifiedName: string) {
             var request: SearchObjectsRequest = {
-                SearchType: prop.Info.FullTypeName,
+                SearchType: fullyQualifiedName,
                 SearchFilters: null,
                 OrderBy: null,
                 PageNumber: 1,
@@ -84,6 +84,16 @@
             return request;
         }
 
+        buildAddItemsRequest(coll: CollectionVM, itemsToAdd: ObjectVM[]) {
+            var elementIDs = itemsToAdd.map(function (o) { return o.ID });
+
+            var request: CollectionAddRequest = {
+                CollectionID: coll.ID,
+                ElementIDs: elementIDs,
+            };
+
+            return request;
+        }
     }
 
 }

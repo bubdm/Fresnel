@@ -16,6 +16,7 @@
             <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" class="table table-striped collectionRowText">
                 <thead>
                     <tr>
+                        <th st-ratio="1">&nbsp;</th> <!--Checkbox-->
                         <th st-ratio="1">&nbsp;</th> <!--Icon-->
                         <th st-ratio="20" ng-repeat="prop in oCol.ElementProperties" st-sort="{{prop.InternalName}}" title="{{prop.Description}}">{{prop.Name}}</th>
                         <th st-ratio="1">&nbsp;</th> <!--Buttons-->
@@ -23,6 +24,9 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in oCol.DisplayItems">
+                        <td st-ratio="1">
+                            <input type="checkbox" ng-model="item.IsSelected" />
+                        </td>
                         <td st-ratio="1">
                             <span class="classItemIcon {{item.Type}}-Icon"></span> {{item.Type}}
                         </td>
@@ -44,6 +48,14 @@
             <div ng-show="oCol.DisplayItems.length == 0">
                 <h1>No results found</h1>
             </div>
+        </div>
+
+        <div class="footer center-block">
+            <button ng-click="confirmSelection(oCol)"
+                    title="Choose the selected items">
+                Select
+                <i class="fa fa-check"></i>
+            </button>
         </div>
 
     </div>

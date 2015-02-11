@@ -181,7 +181,6 @@ var FresnelApp;
                 var request = {
                     CollectionID: collection.ID,
                     ElementTypeName: itemType,
-                    ElementID: null
                 };
                 var promise = fresnelService.addNewItemToCollection(request);
                 promise.then(function (promiseResult) {
@@ -192,23 +191,31 @@ var FresnelApp;
                     //$rootScope.$broadcast("openNewExplorer", newObject);             
                 });
             };
-            $scope.addExistingItem = function (obj) {
-                var request = {
-                    CollectionID: collection.ID,
-                    ElementTypeName: null,
-                    ElementID: obj.ID
-                };
-                var promise = fresnelService.addItemToCollection(request);
-                promise.then(function (promiseResult) {
+            $scope.addExistingItems = function (coll) {
+                var request = requestBuilder.buildSearchObjectsRequest(coll.ElementType);
+                var promiseSearch = fresnelService.searchObjects(request);
+                promiseSearch.then(function (promiseResult) {
                     var response = promiseResult.data;
-                    appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast("messagesReceived", response.Messages);
+                    if (response.Passed) {
+                        var searchResult = response.Result;
+                        // Set the callback when the user confirms the selection:
+                        searchResult.OnSelectionConfirmed = function (items) {
+                            var addItemsRequest = requestBuilder.buildAddItemsRequest(coll, items);
+                            var promiseAdd = fresnelService.addItemsToCollection(addItemsRequest);
+                            promiseAdd.then(function (promiseResult) {
+                                var response = promiseResult.data;
+                                appService.identityMap.merge(response.Modifications);
+                                $rootScope.$broadcast("messagesReceived", response.Messages);
+                            });
+                        };
+                        $rootScope.$broadcast("openNewExplorer", searchResult);
+                    }
                 });
             };
             $scope.removeItem = function (obj) {
                 var request = {
                     CollectionID: collection.ID,
-                    ElementTypeName: null,
                     ElementID: obj.ID
                 };
                 var promise = fresnelService.removeItemFromCollection(request);
@@ -325,6 +332,29 @@ var FresnelApp;
             };
             $scope.setBitwiseEnumProperty = function (prop, enumValue) {
                 prop.State.Value = prop.State.Value ^ enumValue;
+                $scope.setProperty(prop);
+            };
+            $scope.associate = function (prop) {
+                var request = requestBuilder.buildSearchObjectsRequest(prop.Info.FullTypeName);
+                var promise = fresnelService.searchObjects(request);
+                promise.then(function (promiseResult) {
+                    var response = promiseResult.data;
+                    var searchResult = response.Result;
+                    // Set the callback when the user confirms the selection:
+                    searchResult.OnSelectionConfirmed = function (items) {
+                        if (items.length == 1) {
+                            var selectedItem = items[0];
+                            prop.State.ReferenceValueID = selectedItem.ID;
+                            // Send the request to the server:
+                            $scope.setProperty(prop);
+                        }
+                    };
+                    $rootScope.$broadcast("openNewExplorer", searchResult);
+                });
+            };
+            $scope.disassociate = function (prop) {
+                prop.State.Value = null;
+                prop.State.ReferenceValueID = null;
                 $scope.setProperty(prop);
             };
             $scope.refresh = function (explorer) {
@@ -476,14 +506,34 @@ var FresnelApp;
             var request = {
                 TypeName: fullyQualifiedName,
                 OrderBy: null,
-                Skip: 0,
-                Take: 100
+                PageNumber: 1,
+                PageSize: 100
             };
             return request;
         };
         RequestBuilder.prototype.buildSaveChangesRequest = function (obj) {
             var request = {
                 ObjectID: obj.ID
+            };
+            return request;
+        };
+        RequestBuilder.prototype.buildSearchObjectsRequest = function (fullyQualifiedName) {
+            var request = {
+                SearchType: fullyQualifiedName,
+                SearchFilters: null,
+                OrderBy: null,
+                PageNumber: 1,
+                PageSize: 100
+            };
+            return request;
+        };
+        RequestBuilder.prototype.buildAddItemsRequest = function (coll, itemsToAdd) {
+            var elementIDs = itemsToAdd.map(function (o) {
+                return o.ID;
+            });
+            var request = {
+                CollectionID: coll.ID,
+                ElementIDs: elementIDs,
             };
             return request;
         };
@@ -534,11 +584,11 @@ var FresnelApp;
             return this.http.post(uri, request);
         };
         FresnelService.prototype.addNewItemToCollection = function (request) {
-            var uri = "api/Explorer/AddItemToCollection";
+            var uri = "api/Explorer/AddNewItemToCollection";
             return this.http.post(uri, request);
         };
-        FresnelService.prototype.addItemToCollection = function (request) {
-            var uri = "api/Explorer/AddItemToCollection";
+        FresnelService.prototype.addItemsToCollection = function (request) {
+            var uri = "api/Explorer/AddItemsToCollection";
             return this.http.post(uri, request);
         };
         FresnelService.prototype.removeItemFromCollection = function (request) {
@@ -551,6 +601,10 @@ var FresnelApp;
         };
         FresnelService.prototype.saveChanges = function (request) {
             var uri = "api/Explorer/SaveChanges";
+            return this.http.post(uri, request);
+        };
+        FresnelService.prototype.searchObjects = function (request) {
+            var uri = "api/Toolbox/SearchObjects";
             return this.http.post(uri, request);
         };
         FresnelService.$inject = ['$http'];

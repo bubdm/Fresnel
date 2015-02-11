@@ -7,6 +7,6 @@ namespace Envivo.Fresnel.UiCore.Commands
     [TypeScriptInterface]
     public class SearchObjectsResponse : BaseCommandResponse
     {
-        public SearchResultsVM Results { get; set; }
+        public SearchResultsVM Result { get; set; }
     }
 }

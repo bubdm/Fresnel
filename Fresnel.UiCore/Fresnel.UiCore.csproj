@@ -49,11 +49,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CollectionAddRequest.cs" />
+    <Compile Include="Commands\CollectionAddNewRequest.cs" />
     <Compile Include="Model\SearchResultsVM.cs" />
+    <Compile Include="Model\TypeInfo\ReferenceTypeVM.cs" />
     <Compile Include="SearchResultsVmBuilder.cs" />
     <Compile Include="AbstractParameterVmBuilder.cs" />
     <Compile Include="Commands\CollectionRemoveCommand.cs" />
-    <Compile Include="Commands\CollectionRequest.cs" />
+    <Compile Include="Commands\CollectionRemoveRequest.cs" />
     <Compile Include="Commands\CollectionAddCommand.cs" />
     <Compile Include="Commands\CollectionAddResponse.cs" />
     <Compile Include="Commands\SearchObjectsResponse.cs" />

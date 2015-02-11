@@ -41,10 +41,9 @@
             }
 
             $scope.addNewItem = function (itemType: string) {
-                var request: CollectionRequest = {
+                var request: CollectionAddNewRequest = {
                     CollectionID: collection.ID,
                     ElementTypeName: itemType,
-                    ElementID: null
                 };
 
                 var promise = fresnelService.addNewItemToCollection(request);
@@ -61,28 +60,38 @@
 
             };
 
-            $scope.addExistingItem = function (obj: ObjectVM) {
-                var request: CollectionRequest = {
-                    CollectionID: collection.ID,
-                    ElementTypeName: null,
-                    ElementID: obj.ID
-                };
+            $scope.addExistingItems = function (coll: CollectionVM) {
+                var request = requestBuilder.buildSearchObjectsRequest(coll.ElementType);
+                var promiseSearch = fresnelService.searchObjects(request);
 
-                var promise = fresnelService.addItemToCollection(request);
-
-                promise.then((promiseResult) => {
+                promiseSearch.then((promiseResult) => {
                     var response = promiseResult.data;
 
-                    appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast("messagesReceived", response.Messages);
-                });
 
+                    if (response.Passed) {
+                        var searchResult = response.Result;
+
+                        // Set the callback when the user confirms the selection:
+                        searchResult.OnSelectionConfirmed = function (items: ObjectVM[]) {
+                            var addItemsRequest = requestBuilder.buildAddItemsRequest(coll, items);
+                            var promiseAdd = fresnelService.addItemsToCollection(addItemsRequest);
+                            promiseAdd.then((promiseResult) => {
+                                var response = promiseResult.data;
+
+                                appService.identityMap.merge(response.Modifications);
+                                $rootScope.$broadcast("messagesReceived", response.Messages);
+                            });
+                        }
+
+                        $rootScope.$broadcast("openNewExplorer", searchResult);
+                    }
+                });
             };
 
             $scope.removeItem = function (obj: ObjectVM) {
-                var request: CollectionRequest = {
+                var request: CollectionRemoveRequest = {
                     CollectionID: collection.ID,
-                    ElementTypeName: null,
                     ElementID: obj.ID
                 };
 

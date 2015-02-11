@@ -33,17 +33,17 @@ namespace Envivo.Fresnel.Tests.Proxies
                 PageSize = 100
             };
 
-            var searchResponse = controller.SearchForObjects(searchRequest);
+            var searchResponse = controller.SearchObjects(searchRequest);
 
             // Assert:
             Assert.IsTrue(searchResponse.Passed);
 
             // We should have the results that we asked for:
-            Assert.AreNotEqual(0, searchResponse.Results.Items.Count());
-            Assert.IsTrue(searchResponse.Results.Items.Count() <= searchRequest.PageSize);
+            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+            Assert.IsTrue(searchResponse.Result.Items.Count() <= searchRequest.PageSize);
 
             // The Results should show all Properties for the items:
-            Assert.AreEqual(10, searchResponse.Results.ElementProperties.Count());
+            Assert.AreEqual(10, searchResponse.Result.ElementProperties.Count());
         }
 
     }

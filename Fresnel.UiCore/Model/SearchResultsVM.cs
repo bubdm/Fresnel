@@ -6,6 +6,6 @@ namespace Envivo.Fresnel.UiCore.Model
     [TypeScriptInterface]
     public class SearchResultsVM : CollectionVM
     {
-        
+        public bool IsSearchResults { get { return true; } }
     }
 }
