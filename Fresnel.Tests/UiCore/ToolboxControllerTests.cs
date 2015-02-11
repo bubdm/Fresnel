@@ -64,8 +64,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             var getRequest = new GetObjectsRequest()
             {
                 TypeName = typeof(PocoObject).FullName,
-                Skip = 0,
-                Take = 10,
+                PageSize = 0,
+                PageNumber = 10,
             };
 
             var getResponse = controller.GetObjects(getRequest);
@@ -75,7 +75,7 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // We should have the results that we asked for:
             Assert.AreNotEqual(0, getResponse.Result.Items.Count());
-            Assert.IsTrue(getResponse.Result.Items.Count() <= getRequest.Take);
+            Assert.IsTrue(getResponse.Result.Items.Count() <= getRequest.PageNumber);
 
             // The Results should show all Properties for the items:
             Assert.AreEqual(10, getResponse.Result.ElementProperties.Count());

@@ -57,8 +57,8 @@
             var request: GetObjectsRequest = {
                 TypeName: fullyQualifiedName,
                 OrderBy: null,
-                Skip: 0,
-                Take: 100
+                PageNumber: 0,
+                PageSize: 100
             };
 
             return request;

@@ -10,8 +10,8 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         public string OrderBy { get; set; }
 
-        public int Skip { get; set; }
+        public int PageSize { get; set; }
 
-        public int Take { get; set; }
+        public int PageNumber { get; set; }
     }
 }

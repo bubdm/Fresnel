@@ -107,8 +107,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             var getRequest = new GetObjectsRequest()
             {
                 TypeName = typeof(PocoObject).FullName,
-                Skip = 0,
-                Take = 10,
+                PageSize = 0,
+                PageNumber = 10,
             };
             var getResponse = toolboxController.GetObjects(getRequest);
             var pocoA = getResponse.Result.Items.First();

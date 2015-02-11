@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var tClass = (ClassTemplate)_TemplateCache.GetTemplate(request.TypeName);
                 var classType = tClass.RealType;
 
-                var maxLimit = request.Take + 1;
+                var maxLimit = request.PageSize + 1;
 
                 IEnumerable objects = null;
                 if (request.OrderBy.IsNotEmpty())
@@ -54,7 +54,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     objects = _PersistenceService
                                     .GetObjects(classType)
                                     .OrderBy(request.OrderBy)
-                                    .Skip(request.Skip)
+                                    .Skip(request.PageSize * request.PageNumber)
                                     .Take(maxLimit);
                 }
                 else
@@ -64,10 +64,10 @@ namespace Envivo.Fresnel.UiCore.Commands
                                     .Take(maxLimit);
                 }
 
-                var areMoreItemsAvailable = objects.Count() > request.Take;
+                var areMoreItemsAvailable = objects.Count() > request.PageNumber;
 
                 // Only return back the number of items actually requested:
-                var results = new List<object>(objects.Cast<object>().Take(request.Take));
+                var results = new List<object>(objects.Cast<object>().Take(request.PageNumber));
                 var oColl = (CollectionObserver)_ObserverCache.GetObserver(results, results.GetType());
 
                 // Done:
