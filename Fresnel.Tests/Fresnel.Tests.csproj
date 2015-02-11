@@ -68,6 +68,7 @@
     <Compile Include="UiCore\SessionControllerTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UiCore\SearchTests.cs" />
     <Compile Include="UiCore\ToolboxControllerTests.cs">
       <SubType>Code</SubType>
     </Compile>

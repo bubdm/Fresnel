@@ -35,8 +35,8 @@ declare module FresnelApp {
     export interface GetObjectsRequest {
         TypeName: string;
         OrderBy: string;
-        Skip: number;
-        Take: number;
+        PageSize: number;
+        PageNumber: number;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.GetObjectsResponse **/
     export interface GetObjectsResponse extends FresnelApp.BaseCommandResponse {
@@ -64,6 +64,18 @@ declare module FresnelApp {
     /** Generated from Envivo.Fresnel.UiCore.Commands.SaveChangesRequest **/
     export interface SaveChangesRequest {
         ObjectID: any;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.SearchObjectsRequest **/
+    export interface SearchObjectsRequest {
+        SearchType: string;
+        SearchFilters: any;
+        OrderBy: any;
+        PageSize: number;
+        PageNumber: number;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.SearchObjectsResponse **/
+    export interface SearchObjectsResponse extends FresnelApp.BaseCommandResponse {
+        Results: FresnelApp.SearchResultsVM;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SetPropertyRequest **/
     export interface SetPropertyRequest {
@@ -163,6 +175,22 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.PropertyVM **/
     export interface PropertyVM extends FresnelApp.SettableMemberVM {
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.SearchResultItemVM **/
+    export interface SearchResultItemVM extends FresnelApp.ObjectVM {
+        IsSelected: boolean;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.SearchResultsVM **/
+    export interface SearchResultsVM extends FresnelApp.ObjectVM {
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.SearchVM **/
+    export interface SearchVM extends FresnelApp.BaseViewModel {
+        SearchType: string;
+        Properties: any;
+        SearchFilters: any;
+        OrderBy: any;
+        SearchResults: any;
+        SelectedItems: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.SessionVM **/
     export interface SessionVM {

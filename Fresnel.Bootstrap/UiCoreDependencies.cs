@@ -41,6 +41,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Commands.CollectionAddCommand),
                 typeof(Fresnel.UiCore.Commands.CollectionRemoveCommand),
                 typeof(Fresnel.UiCore.Commands.SaveChangesCommand),
+                typeof(Fresnel.UiCore.Commands.SearchObjectsCommand),
 
                 typeof(Fresnel.UiCore.Model.Changes.ModificationsVmBuilder),
 
@@ -72,6 +73,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.PropertyStateVmBuilder),
                 typeof(Fresnel.UiCore.MethodVmBuilder),
                 typeof(Fresnel.UiCore.AbstractParameterVmBuilder),
+                typeof(Fresnel.UiCore.SearchResultsVmBuilder),
             };
         }
     }

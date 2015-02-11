@@ -49,17 +49,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\SearchResultsVM.cs" />
+    <Compile Include="SearchResultsVmBuilder.cs" />
     <Compile Include="AbstractParameterVmBuilder.cs" />
     <Compile Include="Commands\CollectionRemoveCommand.cs" />
     <Compile Include="Commands\CollectionRequest.cs" />
     <Compile Include="Commands\CollectionAddCommand.cs" />
     <Compile Include="Commands\CollectionAddResponse.cs" />
+    <Compile Include="Commands\SearchObjectsResponse.cs" />
+    <Compile Include="Commands\SearchObjectsCommand.cs" />
+    <Compile Include="Commands\SearchObjectsRequest.cs" />
     <Compile Include="Commands\SaveChangesRequest.cs" />
     <Compile Include="Commands\GetObjectsRequest.cs" />
     <Compile Include="Commands\GetObjectsCommand.cs" />
     <Compile Include="Commands\GetObjectsResponse.cs" />
     <Compile Include="Commands\SaveChangesCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Model\SearchResultItemVM.cs" />
+    <Compile Include="Model\SearchVM.cs" />
     <Compile Include="Model\ParameterVM.cs" />
     <Compile Include="Model\PropertyVM.cs" />
     <Compile Include="PropertyStateVmBuilder.cs" />

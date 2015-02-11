@@ -12,21 +12,21 @@ using System.Linq.Dynamic;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
-    public class GetObjectsCommand : ICommand
+    public class SearchObjectsCommand : ICommand
     {
         private RealTypeResolver _RealTypeResolver;
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
-        private AbstractObjectVmBuilder _ObjectVMBuilder;
+        private SearchResultsVmBuilder _SearchResultsVmBuilder;
         private IPersistenceService _PersistenceService;
         private IClock _Clock;
 
-        public GetObjectsCommand
+        public SearchObjectsCommand
             (
             RealTypeResolver realTypeResolver,
             TemplateCache templateCache,
             ObserverCache observerCache,
-            AbstractObjectVmBuilder objectVMBuilder,
+            SearchResultsVmBuilder searchResultsVmBuilder,
             IPersistenceService persistenceService,
             IClock clock
         )
@@ -34,28 +34,28 @@ namespace Envivo.Fresnel.UiCore.Commands
             _RealTypeResolver = realTypeResolver;
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
-            _ObjectVMBuilder = objectVMBuilder;
+            _SearchResultsVmBuilder = searchResultsVmBuilder;
             _PersistenceService = persistenceService;
             _Clock = clock;
         }
 
-        public GetObjectsResponse Invoke(GetObjectsRequest request)
+        public SearchObjectsResponse Invoke(SearchObjectsRequest request)
         {
             try
             {
-                var tClass = (ClassTemplate)_TemplateCache.GetTemplate(request.TypeName);
+                var tClass = (ClassTemplate)_TemplateCache.GetTemplate(request.SearchType);
                 var classType = tClass.RealType;
 
-                var rowsToSkip = request.PageSize * (request.PageNumber - 1);
                 var maxLimit = request.PageSize + 1;
 
                 IEnumerable objects = null;
-                if (request.OrderBy.IsNotEmpty())
+                if (request.OrderBy != null && request.OrderBy.Any())
                 {
+                    var orderBy = string.Join(",", request.OrderBy);
                     objects = _PersistenceService
                                     .GetObjects(classType)
-                                    .OrderBy(request.OrderBy)
-                                    .Skip(rowsToSkip)
+                                    .OrderBy(orderBy)
+                                    .Skip(request.PageSize * request.PageNumber)
                                     .Take(maxLimit);
                 }
                 else
@@ -65,7 +65,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                                     .Take(maxLimit);
                 }
 
-                var areMoreItemsAvailable = objects.Count() > request.PageNumber;
+                var areMoreItemsAvailable = objects.Count() > request.PageSize;
 
                 // Only return back the number of items actually requested:
                 var results = new List<object>(objects.Cast<object>().Take(request.PageSize));
@@ -78,10 +78,10 @@ namespace Envivo.Fresnel.UiCore.Commands
                     OccurredAt = _Clock.Now,
                     Text = string.Concat("Returned ", results.Count, " ", tClass.FriendlyName, " instances (", areMoreItemsAvailable ? "more are" : "no more", " available)")
                 };
-                return new GetObjectsResponse()
+                return new SearchObjectsResponse()
                 {
                     Passed = true,
-                    Result = (CollectionVM)_ObjectVMBuilder.BuildForCollection(oColl, tClass),
+                    Results = _SearchResultsVmBuilder.BuildForCollection(oColl, tClass),
                     Messages = new MessageVM[] { infoVM }
                 };
             }
@@ -95,7 +95,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Detail = ex.ToString(),
                 };
 
-                return new GetObjectsResponse()
+                return new SearchObjectsResponse()
                 {
                     Failed = true,
                     Messages = new MessageVM[] { errorVM }
