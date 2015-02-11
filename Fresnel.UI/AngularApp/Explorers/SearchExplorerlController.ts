@@ -8,23 +8,27 @@
             '$scope',
             'fresnelService',
             'requestBuilder',
-            'explorer',
-            'parentExplorer',
-            'searchResults'];
+            'explorer'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: ISearchControllerScope,
             fresnelService: IFresnelService,
             requestBuilder: RequestBuilder,
-            explorer: Explorer,
-            parentExplorer: Explorer,
-            searchResults: SearchResultsVM) {
+            explorer: Explorer) {
 
             $scope.explorer = explorer;
-            $scope.parentExplorer = parentExplorer;
-            $scope.searchResults = searchResults;
             
+            $scope.$on('closeExplorer', function (event, explorer: Explorer) {
+                if (explorer == $scope.explorer)
+                {
+                    // The scope is automatically augmented with the $dismiss() method
+                    // See http://angular-ui.github.io/bootstrap/#/modal
+                    var modal: any = $scope;
+                    modal.$dismiss();
+                }
+            });
+
         }
 
     }

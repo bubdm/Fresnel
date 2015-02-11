@@ -64,7 +64,12 @@
             };
 
             $scope.addExistingItems = function (coll: CollectionVM) {
-                searchService.showSearchForCollection($scope.explorer, coll.ElementType);
+
+                var onSelectionConfirmed = function (selectedItems) {
+
+                };
+
+                searchService.showSearchForCollection(coll, onSelectionConfirmed);
             };
 
             $scope.removeItem = function (obj: ObjectVM) {

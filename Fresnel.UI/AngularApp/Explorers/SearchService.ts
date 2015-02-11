@@ -17,13 +17,13 @@ module FresnelApp {
             requestBuilder: RequestBuilder,
             $modal: ng.ui.bootstrap.IModalService) {
 
-            this.showSearchForCollection = function (parentExplorer: Explorer, fullTypeName: string) {
-                var request = requestBuilder.buildSearchObjectsRequest(fullTypeName);
-                var promiseSearch = fresnelService.searchObjects(request);
+            this.showSearchForCollection = function (coll: CollectionVM, onSelectionConfirmed) {
+                var request = requestBuilder.buildSearchObjectsRequest(coll.ElementType);
+                var searchPromise = fresnelService.searchObjects(request);
 
-                promiseSearch.then((promiseResult) => {
+                searchPromise.then((promiseResult) => {
                     var response = promiseResult.data;
-                    var searchResults = response.Result;
+                    var searchResults: CollectionVM = response.Result;
                     var searchExplorer = explorerService.addExplorer(searchResults);
 
                     var options: ng.ui.bootstrap.IModalSettings = {
@@ -34,12 +34,6 @@ module FresnelApp {
                             // These objects will be injected into the SearchController's ctor:
                             explorer: function () {
                                 return searchExplorer;
-                            },
-                            parentExplorer: function () {
-                                return parentExplorer;
-                            },
-                            searchResults: function () {
-                                return searchResults;
                             }
                         }
                     }
@@ -48,14 +42,12 @@ module FresnelApp {
                     $rootScope.$broadcast("modalOpened", modal);
 
                     modal.result.then(() => {
-                        //var addItemsRequest = requestBuilder.buildAddItemsRequest(coll, items);
-                        //var promiseAdd = fresnelService.addItemsToCollection(addItemsRequest);
-                        //promiseAdd.then((promiseResult) => {
-                        //    var response = promiseResult.data;
-
-                        //    appService.identityMap.merge(response.Modifications);
-                        //    $rootScope.$broadcast("messagesReceived", response.Messages);
-                        //});
+                        var selectedItems = $.grep(searchResults.Items, function (o: SearchResultItemVM) {
+                            return o.IsSelected;
+                        });
+                        if (selectedItems.length > 0) {
+                            onSelectionConfirmed(selectedItems);
+                        }
                     });
 
                     modal.result.finally(() => {
@@ -66,11 +58,11 @@ module FresnelApp {
             }
         }
 
-        showSearchForCollection = function (parentExplorer: Explorer, elementTypeName: string) { }
+        showSearchForCollection = function (coll: CollectionVM, onSelectionConfirmed) { }
 
-        showSearchForProperty = function (parentExplorer: Explorer, prop: PropertyVM) { }
+        showSearchForProperty = function (prop: PropertyVM, onSelectionConfirmed) { }
 
-        showSearchForParameter = function (parentExplorer: Explorer, param: ParameterVM) { }
+        showSearchForParameter = function (param: ParameterVM, onSelectionConfirmed) { }
 
     }
 }

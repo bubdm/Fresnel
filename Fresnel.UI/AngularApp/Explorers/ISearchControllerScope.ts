@@ -4,10 +4,6 @@
 
         explorer: Explorer;
 
-        parentExplorer: Explorer;
-
-        searchResults: SearchResultsVM;
-
     }
 
 }
