@@ -101,6 +101,10 @@ a.disabled {
     width: 100%;
 }
 
+.modalDialog {
+    width: 100%;
+    height: 775px;
+}
 
 @media screen and (min-width: 927px) {
 

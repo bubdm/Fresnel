@@ -30,6 +30,7 @@ module FresnelApp {
                         templateUrl: '/Templates/searchResultsExplorer.html',
                         controller: 'searchExplorerController',
                         backdrop: 'static',
+                        size: 'lg',
                         resolve: {
                             // These objects will be injected into the SearchController's ctor:
                             explorer: function () {

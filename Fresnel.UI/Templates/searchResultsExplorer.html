@@ -1,6 +1,6 @@
 ﻿<div ng-init="oCol = explorer.__meta">
 
-    <div id="explorer_{{oCol.ID}}" object-explorer block-ui class="container-fluid box box-solid box-primary" ng-class="{'collectionExplorerPanelNormalSize' : !explorer.IsMaximised, 'collectionExplorerPanelMaximised' : explorer.IsMaximised}">
+    <div id="explorer_{{oCol.ID}}" object-explorer block-ui class="modalDialog container-fluid box box-solid box-primary">
 
         <div class="box-header">
             <span class="explorerItemIcon fa fa-folder-open-o"> </span>
@@ -35,7 +35,7 @@
                         </td>
                         <td>
                             <button ng-click="openNewExplorer(item)"
-                                    title="Open contents in a new panel" 
+                                    title="Open contents in a new panel"
                                     class="btn btn-xs btn-default">
                                 <i class="glyphicon glyphicon-new-window"></i>
                             </button>

@@ -44,6 +44,7 @@ module FresnelApp {
                         templateUrl: '/Templates/methodDialog.html',
                         controller: 'methodController',
                         backdrop: 'static',
+                        size: 'lg',
                         resolve: {
                             // These objects will be injected into the MethodController's ctor:
                             explorer: function () {
