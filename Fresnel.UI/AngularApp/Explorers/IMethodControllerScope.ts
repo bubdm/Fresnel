@@ -12,6 +12,8 @@
 
         setBitwiseEnumProperty(param: ParameterVM, enumValue: number);
 
+        isBitwiseEnumPropertySet(param: ParameterVM, enumValue: number): boolean
+
         cancel();
     }
 

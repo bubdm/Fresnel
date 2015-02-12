@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using T4TS;
+﻿using T4TS;
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
     [TypeScriptInterface]
@@ -8,8 +7,5 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
         public string EnumName { get; set; }
 
         public int Value { get; set; }
-
-        [DefaultValue(false)]
-        public bool IsChecked { get; set; }
     }
 }

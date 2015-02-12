@@ -66,6 +66,10 @@ module FresnelApp {
                 $scope.setProperty(param);
             }
 
+            $scope.isBitwiseEnumPropertySet = function (param: ParameterVM, enumValue: number) {
+                return (param.State.Value & enumValue) != 0;
+            }
+
             $scope.cancel = function () {
                 //modalInstance.dismiss();
             }

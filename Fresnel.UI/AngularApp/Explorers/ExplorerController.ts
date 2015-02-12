@@ -82,6 +82,10 @@ module FresnelApp {
                 $scope.setProperty(prop);
             }
 
+            $scope.isBitwiseEnumPropertySet = function (prop: PropertyVM, enumValue: number) {
+                return (prop.State.Value & enumValue) != 0;
+            }
+
             $scope.associate = function (prop: PropertyVM) {
                 var request = requestBuilder.buildSearchObjectsRequest(prop.Info.FullTypeName);
                 var promise = fresnelService.searchObjects(request);

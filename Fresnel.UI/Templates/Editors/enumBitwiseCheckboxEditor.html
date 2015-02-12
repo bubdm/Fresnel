@@ -3,10 +3,9 @@
         <input type="checkbox"
                name="enumItem"
                ng-disabled="!prop.State.Set.IsEnabled"
-               ng-checked="enumItem.IsChecked"
-               ng-model="enumItem.IsChecked"
-               ng-change="setBitwiseEnumProperty(prop, enumItem.Value)"
-               value="{{enumItem.Value}}"> {{enumItem.Name}}
+               ng-checked="isBitwiseEnumPropertySet(prop, enumItem.Value)"
+               ng-click="setBitwiseEnumProperty(prop, enumItem.Value)"
+               value="{{enumItem.Value}}" />  {{enumItem.Name}}
     </label>
     <span class="col-sm-7 help-block propertyDescription">{{enumItem.Description}} </span>
 </div>

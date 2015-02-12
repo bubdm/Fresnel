@@ -22,6 +22,8 @@
 
         setBitwiseEnumProperty(prop: PropertyVM, enumValue: number);
 
+        isBitwiseEnumPropertySet(prop: PropertyVM, enumValue: number) : boolean;
+
         openNewExplorer(obj: ObjectVM);
 
         openNewExplorerForProperty(prop: PropertyVM);

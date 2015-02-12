@@ -3,10 +3,9 @@
         <input type="checkbox"
                name="enumItem"
                ng-disabled="!prop.State.Set.IsEnabled"
-               ng-checked="enumItem.IsChecked"
-               ng-model="enumItem.IsChecked"
-               ng-change="setProperty(prop)"
-               value="{{enumItem.Value}}"> {{enumItem.Name}}
+               ng-checked="'prop.State.Value == enumItem.Value'"
+               ng-click="setProperty(prop)"
+               value="{{enumItem.Value}}" /> {{enumItem.Name}} 
     </label>
     <span class="col-sm-7 help-block propertyDescription">{{enumItem.Description}} </span>
 </div>
