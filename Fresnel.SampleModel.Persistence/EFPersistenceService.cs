@@ -22,6 +22,11 @@ namespace Fresnel.SampleModel.Persistence
             _ModelContext = _ModelContextFactory();
         }
 
+        public bool IsTypeRecognised(Type objectType)
+        {
+            return _ModelContext.IsKnownType(objectType);
+        }
+
         public object CreateObject(Type objectType)
         {
             return _ModelContext.CreateObject(objectType);

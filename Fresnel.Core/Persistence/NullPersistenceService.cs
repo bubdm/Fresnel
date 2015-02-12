@@ -6,6 +6,10 @@ namespace Envivo.Fresnel.Core.Persistence
 {
     public class NullPersistenceService: IPersistenceService
     {
+        public bool IsTypeRecognised(Type objectType)
+        {
+            return false;
+        }
 
         public object CreateObject(Type objectType)
         {

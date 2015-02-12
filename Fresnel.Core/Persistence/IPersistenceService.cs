@@ -6,6 +6,8 @@ namespace Envivo.Fresnel.Core.Persistence
 {
     public interface IPersistenceService
     {
+        bool IsTypeRecognised(Type objectType);
+
         object CreateObject(Type objectType);
 
         object GetObject(Type objectType, Guid id);

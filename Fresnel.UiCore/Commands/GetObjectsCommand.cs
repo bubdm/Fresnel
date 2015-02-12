@@ -46,6 +46,9 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var tClass = (ClassTemplate)_TemplateCache.GetTemplate(request.TypeName);
                 var classType = tClass.RealType;
 
+                if (!_PersistenceService.IsTypeRecognised(classType))
+                    throw new UiCoreException(string.Concat(_PersistenceService.GetType().Name, " does not recognise " , tClass.FriendlyName));
+
                 var rowsToSkip = request.PageSize * (request.PageNumber - 1);
                 var maxLimit = request.PageSize + 1;
 

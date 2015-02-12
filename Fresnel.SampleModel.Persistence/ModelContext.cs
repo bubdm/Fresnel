@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using Envivo.Fresnel.SampleModel.Objects;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using System.Data.Entity.Core.Metadata.Edm;
 
 namespace Fresnel.SampleModel.Persistence
 {
@@ -18,7 +19,8 @@ namespace Fresnel.SampleModel.Persistence
     {
         private ModelConfigurator _Configurator;
         private ObjectContext _ObjectContext;
-
+        private IDictionary<string, EntityType> _KnownTypes;
+             
         public ModelContext(string nameOrConnectionString, ModelConfigurator configurator)
             : base(nameOrConnectionString)
         {
@@ -38,6 +40,19 @@ namespace Fresnel.SampleModel.Persistence
         public DbSet<Product> ProductSet { get; set; }
         public DbSet<Money> MoneySet { get; set; }
         public DbSet<PocoObject> PocoObjectSet { get; set; }
+
+        public bool IsKnownType(Type objectType)
+        {
+            if (_KnownTypes == null)
+            {
+                var items = _ObjectContext.MetadataWorkspace.GetItems<EntityType>(System.Data.Entity.Core.Metadata.Edm.DataSpace.CSpace);
+                _KnownTypes = items.ToDictionary(i => i.Name);
+            }
+
+            EntityType match;
+            _KnownTypes.TryGetValue(objectType.Name, out match);
+            return match != null;
+        }
 
         public object CreateObject(Type objectType)
         {

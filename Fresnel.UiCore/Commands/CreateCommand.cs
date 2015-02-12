@@ -43,11 +43,17 @@ namespace Envivo.Fresnel.UiCore.Commands
                 if (tClass == null)
                     return null;
 
-                var newObject = _PersistenceService.CreateObject(tClass.RealType);
+                var classType = tClass.RealType;
+
+                object newObject = null;
+                if (_PersistenceService.IsTypeRecognised(classType))
+                {
+                    newObject = _PersistenceService.CreateObject(classType);
+                }
 
                 var oObject = newObject != null ?
-                                _ObserverCache.GetObserver(newObject, tClass.RealType) :
-                                _CreateObjectCommand.Invoke(tClass.RealType, null);
+                                _ObserverCache.GetObserver(newObject, classType) :
+                                _CreateObjectCommand.Invoke(classType, null);
 
                 var vm = _ObjectVMBuilder.BuildFor(oObject);
 
