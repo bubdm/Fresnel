@@ -96,9 +96,12 @@ module FresnelApp {
         }
 
         mergeObjects(existingObj: ObjectVM, newObj: ObjectVM) {
+            // NB: We have to be selective, otherwise the Angular bindings will break:
             for (var i = 0; i < existingObj.Properties.length; i++) {
-                // NB: Don't replace the prop object, otherwise the bindings will break:
-                this.extendDeep(existingObj.Properties[i].State, newObj.Properties[i].State);
+                this.extendDeep(existingObj.Properties[i], newObj.Properties[i]);
+            }
+            for (var i = 0; i < existingObj.Methods.length; i++) {
+                this.extendDeep(existingObj.Methods[i], newObj.Methods[i]);
             }
         }
 
