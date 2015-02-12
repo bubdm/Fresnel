@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.UiCore.Model.TypeInfo;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using T4TS;
@@ -13,6 +14,7 @@ namespace Envivo.Fresnel.UiCore.Model
     {
         public Guid? ObjectID { get; set; }
 
+        [DefaultValue(-1)]
         public int Index { get; set; }
 
         public string InternalName { get; set; }
