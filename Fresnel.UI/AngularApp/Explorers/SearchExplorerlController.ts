@@ -18,16 +18,13 @@
             explorer: Explorer) {
 
             $scope.explorer = explorer;
-            
-            $scope.$on('closeExplorer', function (event, explorer: Explorer) {
-                if (explorer == $scope.explorer)
-                {
-                    // The scope is automatically augmented with the $dismiss() method
-                    // See http://angular-ui.github.io/bootstrap/#/modal
-                    var modal: any = $scope;
-                    modal.$dismiss();
-                }
-            });
+
+            $scope.close = function (explorer: Explorer) {
+                // The scope is automatically augmented with the $dismiss() method
+                // See http://angular-ui.github.io/bootstrap/#/modal
+                var modal: any = $scope;
+                modal.$dismiss();
+            }
 
         }
 

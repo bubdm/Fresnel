@@ -14,7 +14,7 @@
 
         isBitwiseEnumPropertySet(param: ParameterVM, enumValue: number): boolean
 
-        cancel();
+        close(explorer: Explorer);
     }
 
 }

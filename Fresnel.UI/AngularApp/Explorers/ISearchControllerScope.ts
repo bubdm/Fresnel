@@ -4,6 +4,7 @@
 
         explorer: Explorer;
 
+        close(explorer: Explorer);
     }
 
 }

@@ -4,14 +4,12 @@ var FresnelApp;
     var SearchExplorerController = (function () {
         function SearchExplorerController($rootScope, $scope, fresnelService, requestBuilder, explorer) {
             $scope.explorer = explorer;
-            $scope.$on('closeExplorer', function (event, explorer) {
-                if (explorer == $scope.explorer) {
-                    // The scope is automatically augmented with the $dismiss() method
-                    // See http://angular-ui.github.io/bootstrap/#/modal
-                    var modal = $scope;
-                    modal.$dismiss();
-                }
-            });
+            $scope.close = function (explorer) {
+                // The scope is automatically augmented with the $dismiss() method
+                // See http://angular-ui.github.io/bootstrap/#/modal
+                var modal = $scope;
+                modal.$dismiss();
+            };
         }
         SearchExplorerController.$inject = [
             '$rootScope',
@@ -121,8 +119,11 @@ var FresnelApp;
             $scope.isBitwiseEnumPropertySet = function (param, enumValue) {
                 return (param.State.Value & enumValue) != 0;
             };
-            $scope.cancel = function () {
-                //modalInstance.dismiss();
+            $scope.close = function (explorer) {
+                // The scope is automatically augmented with the $dismiss() method
+                // See http://angular-ui.github.io/bootstrap/#/modal
+                var modal = $scope;
+                modal.$dismiss();
             };
         }
         MethodController.$inject = [
