@@ -16,19 +16,16 @@
             <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" class="table table-striped collectionRowText">
                 <thead>
                     <tr>
-                        <th st-ratio="1">&nbsp;</th> <!--Checkbox-->
-                        <th st-ratio="1">&nbsp;</th> <!--Icon-->
+                        <th>&nbsp;</th> <!--Common-->
                         <th st-ratio="20" ng-repeat="prop in oCol.ElementProperties" st-sort="{{prop.InternalName}}" title="{{prop.Description}}">{{prop.Name}}</th>
-                        <th st-ratio="1">&nbsp;</th> <!--Buttons-->
+                        <th>&nbsp;</th> <!--Buttons-->
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in oCol.DisplayItems">
-                        <td st-ratio="1">
-                            <input type="checkbox" ng-model="item.IsSelected" />
-                        </td>
-                        <td st-ratio="1">
-                            <span class="classItemIcon {{item.Type}}-Icon"></span> {{item.Type}}
+                        <td title="{{item.Type}}">
+                            <input type="checkbox" class="" ng-model="item.IsSelected" />
+                            <span class="classItemIcon {{item.Type}}-Icon"></span>
                         </td>
                         <td st-ratio="20"
                             ng-repeat="elementProp in oCol.ElementProperties"
@@ -36,10 +33,11 @@
                             title="{{prop.State.FriendlyValue}}">
                             {{prop.State.FriendlyValue}}
                         </td>
-                        <td st-ratio="1">
+                        <td>
                             <button ng-click="openNewExplorer(item)"
-                                    title="Open contents in a new panel">
-                                <i class="fa fa-ellipsis-h"></i>
+                                    title="Open contents in a new panel" 
+                                    class="btn btn-xs btn-default">
+                                <i class="glyphicon glyphicon-new-window"></i>
                             </button>
                         </td>
                     </tr>
@@ -50,12 +48,21 @@
             </div>
         </div>
 
-        <div class="footer center-block">
-            <button ng-click="$close(oCol)"
-                    title="Choose the selected items">
-                Select
-                <i class="fa fa-check"></i>
-            </button>
+        <div class="collectionFooter">
+            <div class="pull-left">
+                <button ng-click="$close(oCol)"
+                        title="Use the selected items"
+                        class="btn btn-default">
+                    Use selected items
+                </button>
+            </div>
+            <div class="pull-right">
+                <button ng-click="getMoreItems(oCol)"
+                        title="Fetch more items"
+                        class="btn btn-default">
+                    More...
+                </button>
+            </div>
         </div>
 
     </div>

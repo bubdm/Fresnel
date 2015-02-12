@@ -24,15 +24,15 @@
             <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" class="table table-striped collectionRowText">
                 <thead>
                     <tr>
-                        <th st-ratio="1">&nbsp;</th> <!--Icon-->
+                        <th>&nbsp;</th> <!--Icon-->
                         <th st-ratio="20" ng-repeat="prop in oCol.ElementProperties" st-sort="{{prop.InternalName}}" title="{{prop.Description}}">{{prop.Name}}</th>
-                        <th st-ratio="1">&nbsp;</th> <!--Buttons-->
+                        <th>&nbsp;</th> <!--Buttons-->
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in oCol.DisplayItems">
-                        <td st-ratio="1">
-                            <span class="classItemIcon {{item.Type}}-Icon"></span> {{item.Type}}
+                        <td title="{{item.Type}}">
+                            <span class="classItemIcon {{item.Type}}-Icon"></span>
                         </td>
                         <td st-ratio="20"
                             ng-repeat="elementProp in oCol.ElementProperties"
@@ -40,14 +40,16 @@
                             title="{{prop.State.FriendlyValue}}">
                             {{prop.State.FriendlyValue}}
                         </td>
-                        <td st-ratio="1">
+                        <td>
                             <button ng-click="removeItem(item)"
-                                    title="Remove this item">
+                                    title="Remove this item"
+                                    class="btn btn-default">
                                 <i class="fa fa-remove alert-danger"></i>
                             </button>
                             <button ng-click="openNewExplorer(item)"
-                                    title="Open contents in a new panel">
-                                <i class="fa fa-ellipsis-h"></i>
+                                    title="Open contents in a new panel"
+                                    class="btn btn-default">
+                                <i class="glyphicon glyphicon-new-window"></i>
                             </button>
                         </td>
                     </tr>
