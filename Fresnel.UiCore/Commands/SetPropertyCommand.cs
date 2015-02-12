@@ -59,15 +59,19 @@ namespace Envivo.Fresnel.UiCore.Commands
 
                 // Done:
                 var modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt);
-                var thisPropertyChange = modifications.PropertyChanges.Single(p => p.ObjectId == oObject.ID && p.PropertyName == oProp.Template.Name);
+                var thisPropertyChange = modifications.PropertyChanges.SingleOrDefault(p => p.ObjectId == oObject.ID && p.PropertyName == oProp.Template.Name);
+
+                var infoText = thisPropertyChange == null ?
+                                "Nothing was changed" :
+                                request.NonReferenceValue == null ?
+                                string.Concat(oProp.Template.FriendlyName, " was cleared") :
+                                string.Concat(oProp.Template.FriendlyName, " changed to ", thisPropertyChange.State.FriendlyValue);
 
                 var infoVM = new MessageVM()
                 {
                     IsSuccess = true,
                     OccurredAt = _Clock.Now,
-                    Text = request.NonReferenceValue != null ?
-                           string.Concat(oProp.Template.FriendlyName, " changed to ", thisPropertyChange.State.FriendlyValue) :
-                           string.Concat(oProp.Template.FriendlyName, " was cleared"),
+                    Text = infoText
                 };
                 return new GenericResponse()
                 {
