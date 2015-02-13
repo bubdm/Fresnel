@@ -6,7 +6,7 @@
 
         constructor(
             $rootScope: ng.IRootScopeService,
-            $scope: IWorkbenchControllerScope,
+            $scope: IWorkbenchScope,
             fresnelService: IFresnelService,
             appService: AppService,
             explorerService: ExplorerService) {

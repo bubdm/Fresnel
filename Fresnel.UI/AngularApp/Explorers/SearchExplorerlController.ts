@@ -14,7 +14,7 @@
 
         constructor(
             $rootScope: ng.IRootScopeService,
-            $scope: ISearchControllerScope,
+            $scope: ISearchScope,
             fresnelService: IFresnelService,
             requestBuilder: RequestBuilder,
             explorer: Explorer,

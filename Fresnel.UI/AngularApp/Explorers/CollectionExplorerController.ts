@@ -13,7 +13,7 @@
 
         constructor(
             $rootScope: ng.IRootScopeService,
-            $scope: ICollectionExplorerControllerScope,
+            $scope: ICollectionScope,
             fresnelService: IFresnelService,
             requestBuilder: RequestBuilder,
             appService: AppService,

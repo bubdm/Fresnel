@@ -7,7 +7,7 @@
         $anchorScroll: ng.IAnchorScrollService
         ): ng.IDirective {
         return {
-            link: function (scope: IExplorerControllerScope, elem: JQuery, attributes: ng.IAttributes) {
+            link: function (scope: IExplorerScope, elem: JQuery, attributes: ng.IAttributes) {
                 // Scroll to the new panel:
 
                 // We're using a delay so that the element is rendered before we inspect it:

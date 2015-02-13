@@ -5,7 +5,7 @@
         static $inject = ['$scope', 'fresnelService', 'appService', 'inform'];
 
         constructor(
-            $scope: IAppControllerScope,
+            $scope: IApplicationScope,
             fresnelService: IFresnelService,
             appService: AppService,
             inform: any) {

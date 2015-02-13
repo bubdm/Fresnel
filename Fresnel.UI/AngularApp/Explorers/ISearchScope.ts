@@ -1,6 +1,6 @@
 ﻿module FresnelApp {
 
-    export interface ISearchControllerScope extends ng.IScope {
+    export interface ISearchScope extends ng.IScope {
 
         explorer: Explorer;
 

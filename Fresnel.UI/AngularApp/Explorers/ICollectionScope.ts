@@ -1,6 +1,6 @@
 ﻿module FresnelApp {
 
-    export interface ICollectionExplorerControllerScope extends IExplorerControllerScope {
+    export interface ICollectionScope extends IExplorerScope {
 
         addNewItem(itemType: string);
 

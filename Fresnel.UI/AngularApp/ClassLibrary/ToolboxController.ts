@@ -48,9 +48,8 @@
             }
 
             $scope.getObjects = function (fullyQualifiedName: string) {
-                var request = requestBuilder.buildGetObjectsRequest(fullyQualifiedName);
-
-                var promise = fresnelService.getObjects(request);
+                var request = requestBuilder.buildSearchObjectsRequest(fullyQualifiedName);
+                var promise = fresnelService.searchObjects(request);
 
                 promise.then((promiseResult) => {
                     var response = promiseResult.data;
@@ -60,13 +59,13 @@
 
                     if (response.Passed) {
                         response.Result.IsSearchResults = true;
+                        response.Result.OriginalRequest = request;
+
                         appService.identityMap.addObject(response.Result);
                         $rootScope.$broadcast("openNewExplorer", response.Result);
                     }
                 });
             }
-
-
 
             // This will run when the page loads:
             angular.element(document).ready(function () {

@@ -1,6 +1,6 @@
 ﻿module FresnelApp {
 
-    export interface IAppControllerScope extends ng.IScope {
+    export interface IApplicationScope extends ng.IScope {
 
         identityMap: IdentityMap;
 

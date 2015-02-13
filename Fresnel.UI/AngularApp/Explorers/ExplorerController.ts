@@ -15,7 +15,7 @@ module FresnelApp {
 
         constructor(
             $rootScope: ng.IRootScopeService,
-            $scope: IExplorerControllerScope,
+            $scope: IExplorerScope,
             fresnelService: IFresnelService,
             requestBuilder: RequestBuilder,
             appService: AppService,

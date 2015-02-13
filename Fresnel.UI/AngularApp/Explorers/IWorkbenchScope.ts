@@ -1,6 +1,6 @@
 ﻿module FresnelApp {
 
-    export interface IWorkbenchControllerScope extends ng.IScope {
+    export interface IWorkbenchScope extends ng.IScope {
 
         visibleExplorers: Explorer[];
     }

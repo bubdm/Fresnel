@@ -1045,12 +1045,12 @@
     <TypeScriptCompile Include="..\Fresnel.UiCore\T4TS.d.ts">
       <Link>AngularApp\T4TS.d.ts</Link>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="AngularApp\ClassLibrary\IToolboxControllerScope.ts" />
-    <TypeScriptCompile Include="AngularApp\Explorers\ISearchControllerScope.ts" />
-    <TypeScriptCompile Include="AngularApp\Explorers\IMethodControllerScope.ts" />
-    <TypeScriptCompile Include="AngularApp\Explorers\ICollectionControllerScope.ts" />
-    <TypeScriptCompile Include="AngularApp\Explorers\IExplorerControllerScope.ts" />
-    <TypeScriptCompile Include="AngularApp\Explorers\IWorkbenchControllerScope.ts" />
+    <TypeScriptCompile Include="AngularApp\ClassLibrary\IToolboxScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\ISearchScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\IMethodScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\ICollectionScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\IExplorerScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\IWorkbenchScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\SearchExplorerlController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\SearchService.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\MethodController.ts" />
@@ -1060,7 +1060,7 @@
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerDirective.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\Explorer.ts" />
-    <TypeScriptCompile Include="AngularApp\IAppControllerScope.ts" />
+    <TypeScriptCompile Include="AngularApp\IApplicationScope.ts" />
     <TypeScriptCompile Include="AngularApp\RequestBuilder.ts" />
     <TypeScriptCompile Include="AngularApp\FresnelService.ts" />
     <TypeScriptCompile Include="AngularApp\Session\AppController.ts" />
