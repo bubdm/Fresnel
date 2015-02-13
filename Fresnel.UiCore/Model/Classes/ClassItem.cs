@@ -12,8 +12,6 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
 
         public InteractionPoint Search { get; set; }
 
-        public InteractionPoint ShowAll { get; set; }
-
         public InteractionPoint[] RepositoryCommands { get; set; }
 
         public InteractionPoint[] StaticMethodCommands { get; set; }

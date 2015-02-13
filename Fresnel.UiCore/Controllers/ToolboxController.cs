@@ -11,7 +11,6 @@ namespace Envivo.Fresnel.UiCore.Controllers
     {
         private GetClassHierarchyCommand _GetClassHierarchyCommand;
         private CreateCommand _CreateCommand;
-        private GetObjectsCommand _GetObjectsCommand;
         private SearchObjectsCommand _SearchObjectsCommand;
 
         public ToolboxController
@@ -21,7 +20,6 @@ namespace Envivo.Fresnel.UiCore.Controllers
         {
             _GetClassHierarchyCommand = commands.OfType<GetClassHierarchyCommand>().Single();
             _CreateCommand = commands.OfType<CreateCommand>().Single();
-            _GetObjectsCommand = commands.OfType<GetObjectsCommand>().Single();
             _SearchObjectsCommand = commands.OfType<SearchObjectsCommand>().Single();
         }
 
@@ -37,14 +35,6 @@ namespace Envivo.Fresnel.UiCore.Controllers
         {
             var fullyQualifiedName = id;
             var result = _CreateCommand.Invoke(fullyQualifiedName);
-            return result;
-        }
-
-        [HttpPost]
-        public GetObjectsResponse GetObjects([FromBody]GetObjectsRequest id)
-        {
-            var fullyQualifiedName = id;
-            var result = _GetObjectsCommand.Invoke(id);
             return result;
         }
 

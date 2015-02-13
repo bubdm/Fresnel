@@ -35,12 +35,6 @@ module FresnelApp {
                         size: 'lg',
                         resolve: {
                             // These objects will be injected into the SearchController's ctor:
-                            request: function () {
-                                return request;
-                            },
-                            results: function () {
-                                return searchResults;
-                            },
                             explorer: function () {
                                 return searchExplorer;
                             }

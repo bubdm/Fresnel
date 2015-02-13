@@ -2,13 +2,12 @@ var FresnelApp;
 (function (FresnelApp) {
     // Used to control the interactions within an open Search form
     var SearchExplorerController = (function () {
-        function SearchExplorerController($rootScope, $scope, fresnelService, requestBuilder, explorer, request, results) {
-            $scope.explorer = explorer;
-            $scope.request = request;
-            $scope.results = results;
+        function SearchExplorerController($rootScope, $scope, fresnelService, requestBuilder) {
+            $scope.results = $scope.explorer.__meta;
+            $scope.request = $scope.results.OriginalRequest;
             $scope.loadNextPage = function () {
                 $scope.request.PageNumber++;
-                var promise = fresnelService.searchObjects(request);
+                var promise = fresnelService.searchObjects($scope.request);
                 promise.then(function (promiseResult) {
                     var response = promiseResult.data;
                     var newSearchResults = response.Result;
@@ -21,21 +20,12 @@ var FresnelApp;
                     }
                 });
             };
-            $scope.close = function (explorer) {
-                // The scope is automatically augmented with the $dismiss() method
-                // See http://angular-ui.github.io/bootstrap/#/modal
-                var modal = $scope;
-                modal.$dismiss();
-            };
         }
         SearchExplorerController.$inject = [
             '$rootScope',
             '$scope',
             'fresnelService',
-            'requestBuilder',
-            'explorer',
-            'request',
-            'results'
+            'requestBuilder'
         ];
         return SearchExplorerController;
     })();
@@ -66,12 +56,6 @@ var FresnelApp;
                         size: 'lg',
                         resolve: {
                             // These objects will be injected into the SearchController's ctor:
-                            request: function () {
-                                return request;
-                            },
-                            results: function () {
-                                return searchResults;
-                            },
                             explorer: function () {
                                 return searchExplorer;
                             }
@@ -568,15 +552,6 @@ var FresnelApp;
             };
             return request;
         };
-        RequestBuilder.prototype.buildGetObjectsRequest = function (fullyQualifiedName) {
-            var request = {
-                TypeName: fullyQualifiedName,
-                OrderBy: null,
-                PageNumber: 1,
-                PageSize: 100
-            };
-            return request;
-        };
         RequestBuilder.prototype.buildSaveChangesRequest = function (obj) {
             var request = {
                 ObjectID: obj.ID
@@ -631,10 +606,6 @@ var FresnelApp;
         };
         FresnelService.prototype.getObject = function (request) {
             var uri = "api/Explorer/GetObject";
-            return this.http.post(uri, request);
-        };
-        FresnelService.prototype.getObjects = function (request) {
-            var uri = "api/Toolbox/GetObjects";
             return this.http.post(uri, request);
         };
         FresnelService.prototype.getProperty = function (request) {
@@ -760,15 +731,16 @@ var FresnelApp;
                     }
                 });
             };
-            $scope.getObjects = function (fullyQualifiedName) {
-                var request = requestBuilder.buildGetObjectsRequest(fullyQualifiedName);
-                var promise = fresnelService.getObjects(request);
+            $scope.searchObjects = function (fullyQualifiedName) {
+                var request = requestBuilder.buildSearchObjectsRequest(fullyQualifiedName);
+                var promise = fresnelService.searchObjects(request);
                 promise.then(function (promiseResult) {
                     var response = promiseResult.data;
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast("messagesReceived", response.Messages);
                     if (response.Passed) {
                         response.Result.IsSearchResults = true;
+                        response.Result.OriginalRequest = request;
                         appService.identityMap.addObject(response.Result);
                         $rootScope.$broadcast("openNewExplorer", response.Result);
                     }

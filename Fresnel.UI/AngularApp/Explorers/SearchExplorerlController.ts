@@ -7,28 +7,21 @@
             '$rootScope',
             '$scope',
             'fresnelService',
-            'requestBuilder',
-            'explorer',
-            'request',
-            'results'];
+            'requestBuilder'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: ISearchScope,
             fresnelService: IFresnelService,
-            requestBuilder: RequestBuilder,
-            explorer: Explorer,
-            request: SearchObjectsRequest,
-            results: SearchResultsVM) {
+            requestBuilder: RequestBuilder) {
 
-            $scope.explorer = explorer;
-            $scope.request = request;
-            $scope.results = results;
+            $scope.results = <SearchResultsVM>$scope.explorer.__meta;
+            $scope.request = $scope.results.OriginalRequest;
 
             $scope.loadNextPage = function () {
                 $scope.request.PageNumber++;
 
-                var promise = fresnelService.searchObjects(request);
+                var promise = fresnelService.searchObjects($scope.request);
 
                 promise.then((promiseResult) => {
                     var response = promiseResult.data;
@@ -43,13 +36,6 @@
                         existingSearchResults.Items.push(newSearchResults.Items[i]);
                     }
                 });
-            }
-
-            $scope.close = function (explorer: Explorer) {
-                // The scope is automatically augmented with the $dismiss() method
-                // See http://angular-ui.github.io/bootstrap/#/modal
-                var modal: any = $scope;
-                modal.$dismiss();
             }
 
         }

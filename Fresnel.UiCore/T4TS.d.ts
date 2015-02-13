@@ -40,17 +40,6 @@ declare module FresnelApp {
     export interface GetObjectRequest {
         ObjectID: any;
     }
-    /** Generated from Envivo.Fresnel.UiCore.Commands.GetObjectsRequest **/
-    export interface GetObjectsRequest {
-        TypeName: string;
-        OrderBy: string;
-        PageSize: number;
-        PageNumber: number;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.Commands.GetObjectsResponse **/
-    export interface GetObjectsResponse extends FresnelApp.BaseCommandResponse {
-        Result: FresnelApp.CollectionVM;
-    }
     /** Generated from Envivo.Fresnel.UiCore.Commands.GetPropertyRequest **/
     export interface GetPropertyRequest {
         ObjectID: any;
@@ -128,7 +117,6 @@ declare module FresnelApp {
         FullTypeName: string;
         Create: FresnelApp.InteractionPoint;
         Search: FresnelApp.InteractionPoint;
-        ShowAll: FresnelApp.InteractionPoint;
         RepositoryCommands: FresnelApp.InteractionPoint[];
         StaticMethodCommands: FresnelApp.InteractionPoint[];
         FactoryCommands: FresnelApp.InteractionPoint[];
@@ -192,6 +180,7 @@ declare module FresnelApp {
     /** Generated from Envivo.Fresnel.UiCore.Model.SearchResultsVM **/
     export interface SearchResultsVM extends FresnelApp.ObjectVM {
         IsSearchResults: boolean;
+        OriginalRequest: FresnelApp.SearchObjectsRequest;
         AreMoreAvailable: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.SearchVM **/

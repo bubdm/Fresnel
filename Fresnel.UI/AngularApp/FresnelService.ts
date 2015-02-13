@@ -35,11 +35,6 @@
             return this.http.post(uri, request);
         }
 
-        getObjects(request: GetObjectsRequest): ng.IPromise<any> {
-            var uri = "api/Toolbox/GetObjects";
-            return this.http.post(uri, request);
-        }
-
         getProperty(request: GetPropertyRequest): ng.IPromise<any> {
             var uri = "api/Explorer/GetObjectProperty";
             return this.http.post(uri, request);

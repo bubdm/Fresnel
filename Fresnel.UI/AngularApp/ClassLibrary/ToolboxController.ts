@@ -47,7 +47,7 @@
                 });
             }
 
-            $scope.getObjects = function (fullyQualifiedName: string) {
+            $scope.searchObjects = function (fullyQualifiedName: string) {
                 var request = requestBuilder.buildSearchObjectsRequest(fullyQualifiedName);
                 var promise = fresnelService.searchObjects(request);
 

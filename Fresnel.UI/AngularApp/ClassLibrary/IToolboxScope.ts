@@ -6,7 +6,7 @@
 
         create(fullyQualifiedName: string);
 
-        getObjects(fullyQualifiedName: string);
+        searchObjects(fullyQualifiedName: string);
 
         loadClassHierarchy();
 

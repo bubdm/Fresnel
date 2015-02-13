@@ -53,17 +53,6 @@
             return request;
         }
 
-        buildGetObjectsRequest(fullyQualifiedName: string) {
-            var request: GetObjectsRequest = {
-                TypeName: fullyQualifiedName,
-                OrderBy: null,
-                PageNumber: 1,
-                PageSize: 100
-            };
-
-            return request;
-        }
-
         buildSaveChangesRequest(obj: ObjectVM) {
             var request: SaveChangesRequest = {
                 ObjectID: obj.ID

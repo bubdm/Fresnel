@@ -49,7 +49,7 @@ namespace Envivo.Fresnel.Tests.Proxies
         }
 
         [Test]
-        public void ShouldGetAllObjects()
+        public void ShouldSearchForObjects()
         {
             // Arrange:
             var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
@@ -61,24 +61,24 @@ namespace Envivo.Fresnel.Tests.Proxies
             var controller = container.Resolve<ToolboxController>();
 
             // Act:
-            var getRequest = new GetObjectsRequest()
+            var searchRequest = new SearchObjectsRequest()
             {
-                TypeName = typeof(PocoObject).FullName,
+                SearchType = typeof(PocoObject).FullName,
                 PageSize = 10,
                 PageNumber = 1,
             };
 
-            var getResponse = controller.GetObjects(getRequest);
+            var searchResponse = controller.SearchObjects(searchRequest);
 
             // Assert:
-            Assert.IsTrue(getResponse.Passed);
+            Assert.IsTrue(searchResponse.Passed);
 
             // We should have the results that we asked for:
-            Assert.AreNotEqual(0, getResponse.Result.Items.Count());
-            Assert.IsTrue(getResponse.Result.Items.Count() <= getRequest.PageSize);
+            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+            Assert.IsTrue(searchResponse.Result.Items.Count() <= searchRequest.PageSize);
 
             // The Results should show all Properties for the items:
-            Assert.AreEqual(10, getResponse.Result.ElementProperties.Count());
+            Assert.AreEqual(10, searchResponse.Result.ElementProperties.Count());
         }
     }
 }

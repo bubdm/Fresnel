@@ -104,14 +104,14 @@ namespace Envivo.Fresnel.Tests.Proxies
             var session = sessionController.GetSession();
 
             // Find an object to edit:
-            var getRequest = new GetObjectsRequest()
+            var searchRequest = new SearchObjectsRequest()
             {
-                TypeName = typeof(PocoObject).FullName,
+                SearchType = typeof(PocoObject).FullName,
                 PageSize = 10,
                 PageNumber = 1,
             };
-            var getResponse = toolboxController.GetObjects(getRequest);
-            var pocoA = getResponse.Result.Items.First();
+            var searchResponse = toolboxController.SearchObjects(searchRequest);
+            var pocoA = searchResponse.Result.Items.First();
 
             // Make a change
             var request = new SetPropertyRequest()
@@ -126,8 +126,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             sessionController.CleanUp();
 
             // Assert:
-            getResponse = toolboxController.GetObjects(getRequest);
-            var pocoB = getResponse.Result.Items.First();
+            searchResponse = toolboxController.SearchObjects(searchRequest);
+            var pocoB = searchResponse.Result.Items.First();
 
             var propertyValue = pocoB
                                 .Properties

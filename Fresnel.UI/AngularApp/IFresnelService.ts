@@ -10,8 +10,6 @@
 
         getObject(request: GetObjectRequest): ng.IPromise<any>;
 
-        getObjects(request: GetObjectsRequest): ng.IPromise<any>;
-
         getProperty(request: GetPropertyRequest): ng.IPromise<any>;
 
         setProperty(request: SetPropertyRequest): ng.IPromise<any>;

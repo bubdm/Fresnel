@@ -132,7 +132,7 @@
                         <div ng-controller="explorerController">
                             <div ng-if="explorer.__meta.IsSearchResults">
                                 <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
-                                <div ng-controller="collectionExplorerController" ng-include="'/Templates/searchResultsExplorer.html'"></div>
+                                <div ng-controller="searchExplorerController" ng-include="'/Templates/searchResultsExplorer.html'"></div>
                             </div>
                             <div ng-if="!explorer.__meta.IsSearchResults && explorer.__meta.IsCollection">
                                 <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
