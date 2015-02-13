@@ -21,6 +21,8 @@ module FresnelApp {
                 var request = requestBuilder.buildSearchObjectsRequest(coll.ElementType);
                 var searchPromise = fresnelService.searchObjects(request);
 
+                // TODO: Open the modal _before_ the search is executed:
+
                 searchPromise.then((promiseResult) => {
                     var response = promiseResult.data;
                     var searchResults: CollectionVM = response.Result;
@@ -33,6 +35,12 @@ module FresnelApp {
                         size: 'lg',
                         resolve: {
                             // These objects will be injected into the SearchController's ctor:
+                            request: function () {
+                                return request;
+                            },
+                            results: function () {
+                                return searchResults;
+                            },
                             explorer: function () {
                                 return searchExplorer;
                             }

@@ -2,8 +2,25 @@ var FresnelApp;
 (function (FresnelApp) {
     // Used to control the interactions within an open Search form
     var SearchExplorerController = (function () {
-        function SearchExplorerController($rootScope, $scope, fresnelService, requestBuilder, explorer) {
+        function SearchExplorerController($rootScope, $scope, fresnelService, requestBuilder, explorer, request, results) {
             $scope.explorer = explorer;
+            $scope.request = request;
+            $scope.results = results;
+            $scope.loadNextPage = function () {
+                $scope.request.PageNumber++;
+                var promise = fresnelService.searchObjects(request);
+                promise.then(function (promiseResult) {
+                    var response = promiseResult.data;
+                    var newSearchResults = response.Result;
+                    // Append the new items to the exist results:
+                    // TODO: T4TS doesn't convert sub-classes correctly, 
+                    //       so it doesn't know that $scope.results is derived from CollectionVM
+                    var existingSearchResults = $scope.results;
+                    for (var i = 0; i < newSearchResults.Items.length; i++) {
+                        existingSearchResults.Items.push(newSearchResults.Items[i]);
+                    }
+                });
+            };
             $scope.close = function (explorer) {
                 // The scope is automatically augmented with the $dismiss() method
                 // See http://angular-ui.github.io/bootstrap/#/modal
@@ -16,7 +33,9 @@ var FresnelApp;
             '$scope',
             'fresnelService',
             'requestBuilder',
-            'explorer'
+            'explorer',
+            'request',
+            'results'
         ];
         return SearchExplorerController;
     })();
@@ -35,6 +54,7 @@ var FresnelApp;
             this.showSearchForCollection = function (coll, onSelectionConfirmed) {
                 var request = requestBuilder.buildSearchObjectsRequest(coll.ElementType);
                 var searchPromise = fresnelService.searchObjects(request);
+                // TODO: Open the modal _before_ the search is executed:
                 searchPromise.then(function (promiseResult) {
                     var response = promiseResult.data;
                     var searchResults = response.Result;
@@ -46,6 +66,12 @@ var FresnelApp;
                         size: 'lg',
                         resolve: {
                             // These objects will be injected into the SearchController's ctor:
+                            request: function () {
+                                return request;
+                            },
+                            results: function () {
+                                return searchResults;
+                            },
                             explorer: function () {
                                 return searchExplorer;
                             }

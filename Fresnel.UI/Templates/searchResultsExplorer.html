@@ -13,7 +13,7 @@
 
         <div class="collectionExplorerPanelBody">
             <!-- NB: Use st-safe-src to ensure collection is watched -->
-            <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" class="table table-striped collectionRowText">
+            <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" class="table table-striped collectionRowText fullWidth">
                 <thead>
                     <tr>
                         <th>&nbsp;</th> <!--Common-->
@@ -43,8 +43,8 @@
                     </tr>
                 </tbody>
             </table>
-            <div ng-show="oCol.DisplayItems.length == 0">
-                <h1>No results found</h1>
+            <div ng-show="oCol.DisplayItems.length == 0" class="alert alert-info">
+                <h2>No results found</h2>
             </div>
         </div>
 
@@ -57,7 +57,8 @@
                 </button>
             </div>
             <div class="pull-right">
-                <button ng-click="getMoreItems(oCol)"
+                <button ng-disabled="!results.AreMoreAvailable"
+                        ng-click="loadNextPage()"
                         title="Fetch more items"
                         class="btn btn-default">
                     More...

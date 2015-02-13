@@ -63,8 +63,11 @@ namespace Envivo.Fresnel.UiCore.Commands
                 }
                 else
                 {
+                    var orderBy = tClass.Properties.First().Value.Name;
                     objects = _PersistenceService
                                     .GetObjects(classType)
+                                    .OrderBy(orderBy)
+                                    .Skip(request.PageSize * request.PageNumber)
                                     .Take(maxLimit);
                 }
 
@@ -73,6 +76,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                 // Only return back the number of items actually requested:
                 var results = new List<object>(objects.Cast<object>().Take(request.PageSize));
                 var oColl = (CollectionObserver)_ObserverCache.GetObserver(results, results.GetType());
+                var result = _SearchResultsVmBuilder.BuildForCollection(oColl, tClass);
+                result.AreMoreAvailable = areMoreItemsAvailable;
 
                 // Done:
                 var infoVM = new MessageVM()
@@ -81,10 +86,11 @@ namespace Envivo.Fresnel.UiCore.Commands
                     OccurredAt = _Clock.Now,
                     Text = string.Concat("Returned ", results.Count, " ", tClass.FriendlyName, " instances (", areMoreItemsAvailable ? "more are" : "no more", " available)")
                 };
+
                 return new SearchObjectsResponse()
                 {
                     Passed = true,
-                    Result = _SearchResultsVmBuilder.BuildForCollection(oColl, tClass),
+                    Result = result,
                     Messages = new MessageVM[] { infoVM }
                 };
             }

@@ -192,6 +192,7 @@ declare module FresnelApp {
     /** Generated from Envivo.Fresnel.UiCore.Model.SearchResultsVM **/
     export interface SearchResultsVM extends FresnelApp.ObjectVM {
         IsSearchResults: boolean;
+        AreMoreAvailable: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.SearchVM **/
     export interface SearchVM extends FresnelApp.BaseViewModel {
@@ -239,7 +240,6 @@ declare module FresnelApp {
     export interface EnumItemVM extends FresnelApp.BaseViewModel {
         EnumName: string;
         Value: number;
-        IsChecked: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.TypeInfo.EnumVM **/
     export interface EnumVM {
