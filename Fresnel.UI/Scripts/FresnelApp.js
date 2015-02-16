@@ -2,9 +2,25 @@ var FresnelApp;
 (function (FresnelApp) {
     // Used to control the interactions within an open Search form
     var SearchExplorerController = (function () {
-        function SearchExplorerController($rootScope, $scope, fresnelService, requestBuilder) {
+        function SearchExplorerController($rootScope, $scope, fresnelService, requestBuilder, appService) {
             $scope.results = $scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
+            $scope.openNewExplorer = function (obj) {
+                // As the collection only contains a lightweight object, we need to fetch one with more detail:
+                var request = requestBuilder.buildGetObjectRequest(obj);
+                var promise = fresnelService.getObject(request);
+                promise.then(function (promiseResult) {
+                    var response = promiseResult.data;
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    if (response.Passed) {
+                        var latestObj = response.ReturnValue;
+                        var existingObj = appService.identityMap.getObject(obj.ID);
+                        appService.identityMap.mergeObjects(existingObj, latestObj);
+                        $rootScope.$broadcast("openNewExplorer", latestObj);
+                    }
+                });
+            };
             $scope.loadNextPage = function () {
                 $scope.request.PageNumber++;
                 var promise = fresnelService.searchObjects($scope.request);
@@ -23,7 +39,8 @@ var FresnelApp;
             '$rootScope',
             '$scope',
             'fresnelService',
-            'requestBuilder'
+            'requestBuilder',
+            'appService'
         ];
         return SearchExplorerController;
     })();
@@ -866,8 +883,15 @@ var FresnelApp;
             }
         };
         IdentityMap.prototype.mergeObjects = function (existingObj, newObj) {
+            // NB: We have to be selective, otherwise the Angular bindings will break:
+            if (!existingObj.Properties) {
+                existingObj.Properties = [];
+            }
             for (var i = 0; i < existingObj.Properties.length; i++) {
                 this.extendDeep(existingObj.Properties[i], newObj.Properties[i]);
+            }
+            if (!existingObj.Methods) {
+                existingObj.Methods = [];
             }
             for (var i = 0; i < existingObj.Methods.length; i++) {
                 this.extendDeep(existingObj.Methods[i], newObj.Methods[i]);

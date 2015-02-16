@@ -7,16 +7,38 @@
             '$rootScope',
             '$scope',
             'fresnelService',
-            'requestBuilder'];
+            'requestBuilder',
+            'appService'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: ISearchScope,
             fresnelService: IFresnelService,
-            requestBuilder: RequestBuilder) {
+            requestBuilder: RequestBuilder,
+            appService: AppService) {
 
             $scope.results = <SearchResultsVM>$scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
+
+            $scope.openNewExplorer = function (obj: ObjectVM) {
+                // As the collection only contains a lightweight object, we need to fetch one with more detail:
+                var request = requestBuilder.buildGetObjectRequest(obj);
+                var promise = fresnelService.getObject(request);
+
+                promise.then((promiseResult) => {
+                    var response = promiseResult.data;
+
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast("messagesReceived", response.Messages);
+
+                    if (response.Passed) {
+                        var latestObj = response.ReturnValue;
+                        var existingObj = appService.identityMap.getObject(obj.ID);
+                        appService.identityMap.mergeObjects(existingObj, latestObj);
+                        $rootScope.$broadcast("openNewExplorer", latestObj);
+                    }
+                });
+            }
 
             $scope.loadNextPage = function () {
                 $scope.request.PageNumber++;
