@@ -25,12 +25,10 @@
 
                 promise.then((promiseResult) => {
                     var response = promiseResult.data;
-                    var newSearchResults: CollectionVM = response.Result;
+                    var newSearchResults: SearchResultsVM = response.Result;
 
                     // Append the new items to the exist results:
-                    // TODO: T4TS doesn't convert sub-classes correctly, 
-                    //       so it doesn't know that $scope.results is derived from CollectionVM
-                    var existingSearchResults: any = $scope.results;
+                    var existingSearchResults = $scope.results;
 
                     for (var i = 0; i < newSearchResults.Items.length; i++) {
                         existingSearchResults.Items.push(newSearchResults.Items[i]);

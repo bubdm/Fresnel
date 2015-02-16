@@ -178,7 +178,7 @@ declare module FresnelApp {
         IsSelected: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.SearchResultsVM **/
-    export interface SearchResultsVM extends FresnelApp.ObjectVM {
+    export interface SearchResultsVM extends FresnelApp.CollectionVM {
         IsSearchResults: boolean;
         OriginalRequest: FresnelApp.SearchObjectsRequest;
         AreMoreAvailable: boolean;

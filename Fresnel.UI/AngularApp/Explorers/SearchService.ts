@@ -25,7 +25,7 @@ module FresnelApp {
 
                 searchPromise.then((promiseResult) => {
                     var response = promiseResult.data;
-                    var searchResults: CollectionVM = response.Result;
+                    var searchResults: SearchResultsVM = response.Result;
                     var searchExplorer = explorerService.addExplorer(searchResults);
 
                     var options: ng.ui.bootstrap.IModalSettings = {

@@ -582,10 +582,9 @@ Project GetProjectContainingT4File(DTE dte) {
                 });
             });
 
-            var tsInterfaces = tsMap.Values.ToList();
             tsMap.Keys.ToList().ForEach(codeClass =>
             {
-                var parent = tsInterfaces.LastOrDefault(intf => codeClass.IsDerivedFrom[intf.FullName] && intf.FullName != codeClass.FullName);
+                var parent= DetermineParent(codeClass, tsMap);
                 if (parent != null)
                     tsMap[codeClass].Parent = parent;
             });
@@ -594,7 +593,34 @@ Project GetProjectContainingT4File(DTE dte) {
                 .OrderBy(m => m.QualifiedName)
                 .ToList();
         }
-        
+                
+        /// Determines the immediate parent of the given CodeClass
+        private TypeScriptInterface DetermineParent(CodeClass codeClass, Dictionary<CodeClass, TypeScriptInterface> tsMap)
+        {
+            var tsInterfaces = tsMap.Values.ToList();
+
+            var superClasses =
+                tsMap
+                .Where(kp => codeClass.IsDerivedFrom[kp.Key.FullName] && kp.Key.FullName != codeClass.FullName)
+                .Select(kp => kp.Key)
+                .ToList();                           
+
+            var classCounts = new Dictionary<TypeScriptInterface, int>();
+            foreach (CodeClass superClass in superClasses)
+            {
+                var parents = superClasses.Where(cc => superClass.IsDerivedFrom[cc.FullName] && superClass.FullName != cc.FullName).ToList();
+                var intF= tsInterfaces.Single(i=> i.FullName == superClass.FullName);
+                classCounts.Add(intF, parents.Count());
+            }
+
+            var parent = classCounts
+                .OrderBy(kp => kp.Value)
+                .Select(kp => kp.Key)
+                .LastOrDefault();
+
+            return parent;
+        }
+
         private string GetInterfaceName(TypeScriptInterfaceAttributeValues attributeValues)
         {
             if (!string.IsNullOrEmpty(attributeValues.NamePrefix))

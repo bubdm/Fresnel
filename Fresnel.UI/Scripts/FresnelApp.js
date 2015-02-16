@@ -12,8 +12,6 @@ var FresnelApp;
                     var response = promiseResult.data;
                     var newSearchResults = response.Result;
                     // Append the new items to the exist results:
-                    // TODO: T4TS doesn't convert sub-classes correctly, 
-                    //       so it doesn't know that $scope.results is derived from CollectionVM
                     var existingSearchResults = $scope.results;
                     for (var i = 0; i < newSearchResults.Items.length; i++) {
                         existingSearchResults.Items.push(newSearchResults.Items[i]);
