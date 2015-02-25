@@ -2,47 +2,21 @@ var FresnelApp;
 (function (FresnelApp) {
     // Used to control the interactions within an open Search form
     var SearchModalController = (function () {
-        function SearchModalController($rootScope, $scope, searchService, fresnelService, requestBuilder, appService, explorer) {
+        function SearchModalController($rootScope, $scope, searchService, explorer) {
             $scope.explorer = explorer;
             $scope.results = explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
             $scope.openNewExplorer = function (obj) {
-                // As the collection only contains a lightweight object, we need to fetch one with more detail:
-                var request = requestBuilder.buildGetObjectRequest(obj);
-                var promise = fresnelService.getObject(request);
-                promise.then(function (promiseResult) {
-                    var response = promiseResult.data;
-                    appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
-                    if (response.Passed) {
-                        var latestObj = response.ReturnValue;
-                        var existingObj = appService.identityMap.getObject(obj.ID);
-                        appService.identityMap.mergeObjects(existingObj, latestObj);
-                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, latestObj);
-                    }
-                });
+                searchService.openNewExplorer(obj, $rootScope);
             };
             $scope.loadNextPage = function () {
-                $scope.request.PageNumber++;
-                var promise = fresnelService.searchObjects($scope.request);
-                promise.then(function (promiseResult) {
-                    var response = promiseResult.data;
-                    var newSearchResults = response.Result;
-                    // Append the new items to the exist results:
-                    var existingSearchResults = $scope.results;
-                    for (var i = 0; i < newSearchResults.Items.length; i++) {
-                        existingSearchResults.Items.push(newSearchResults.Items[i]);
-                    }
-                });
+                searchService.loadNextPage($scope.request, $scope.results);
             };
         }
         SearchModalController.$inject = [
             '$rootScope',
             '$scope',
             'searchService',
-            'fresnelService',
-            'requestBuilder',
-            'appService',
             'explorer'
         ];
         return SearchModalController;
@@ -53,48 +27,22 @@ var FresnelApp;
 (function (FresnelApp) {
     // Used to control the interactions within an open Search form
     var SearchExplorerController = (function () {
-        function SearchExplorerController($rootScope, $scope, searchService, fresnelService, requestBuilder, appService) {
+        function SearchExplorerController($rootScope, $scope, searchService) {
             $scope.results = $scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
             // This allows Smart-Table to handle the st-safe-src properly:
             $scope.results.DisplayItems = [].concat($scope.results.Items);
             $scope.openNewExplorer = function (obj) {
-                // As the collection only contains a lightweight object, we need to fetch one with more detail:
-                var request = requestBuilder.buildGetObjectRequest(obj);
-                var promise = fresnelService.getObject(request);
-                promise.then(function (promiseResult) {
-                    var response = promiseResult.data;
-                    appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
-                    if (response.Passed) {
-                        var latestObj = response.ReturnValue;
-                        var existingObj = appService.identityMap.getObject(obj.ID);
-                        appService.identityMap.mergeObjects(existingObj, latestObj);
-                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, latestObj);
-                    }
-                });
+                searchService.openNewExplorer(obj, $rootScope);
             };
             $scope.loadNextPage = function () {
-                $scope.request.PageNumber++;
-                var promise = fresnelService.searchObjects($scope.request);
-                promise.then(function (promiseResult) {
-                    var response = promiseResult.data;
-                    var newSearchResults = response.Result;
-                    // Append the new items to the exist results:
-                    var existingSearchResults = $scope.results;
-                    for (var i = 0; i < newSearchResults.Items.length; i++) {
-                        existingSearchResults.Items.push(newSearchResults.Items[i]);
-                    }
-                });
+                searchService.loadNextPage($scope.request, $scope.results);
             };
         }
         SearchExplorerController.$inject = [
             '$rootScope',
             '$scope',
-            'searchService',
-            'fresnelService',
-            'requestBuilder',
-            'appService'
+            'searchService'
         ];
         return SearchExplorerController;
     })();
@@ -104,82 +52,84 @@ var FresnelApp;
 (function (FresnelApp) {
     var SearchService = (function () {
         function SearchService($rootScope, fresnelService, appService, explorerService, requestBuilder, $modal) {
-            this.showSearchForCollection = function (coll, onSelectionConfirmed) {
-            };
-            this.showSearchForProperty = function (prop, onSelectionConfirmed) {
-            };
-            this.showSearchForParameter = function (param, onSelectionConfirmed) {
-            };
-            this.openNewExplorer = function (obj, $rootScope) {
-            };
-            this.loadNextPage = function ($scope) {
-            };
-            this.showSearchForCollection = function (coll, onSelectionConfirmed) {
-                var request = requestBuilder.buildSearchObjectsRequest(coll.ElementType);
-                var searchPromise = fresnelService.searchObjects(request);
-                // TODO: Open the modal _before_ the search is executed:
-                searchPromise.then(function (promiseResult) {
-                    var response = promiseResult.data;
-                    var searchResults = response.Result;
-                    searchResults.OriginalRequest = request;
-                    var searchExplorer = explorerService.addExplorer(searchResults);
-                    var options = {
-                        templateUrl: '/Templates/searchResultsExplorer.html',
-                        controller: 'searchModalController',
-                        backdrop: 'static',
-                        size: 'lg',
-                        resolve: {
-                            // These objects will be injected into the SearchController's ctor:
-                            explorer: function () {
-                                return searchExplorer;
-                            }
-                        }
-                    };
-                    var modal = $modal.open(options);
-                    $rootScope.$broadcast(FresnelApp.UiEventType.ModalOpened, modal);
-                    modal.result.then(function () {
-                        var selectedItems = $.grep(searchResults.Items, function (o) {
-                            return o.IsSelected;
-                        });
-                        if (selectedItems.length > 0) {
-                            onSelectionConfirmed(selectedItems);
-                        }
-                    });
-                    modal.result.finally(function () {
-                        $rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
-                    });
-                });
-                this.openNewExplorer = function (obj, $rootScope) {
-                    // As the collection only contains a lightweight object, we need to fetch one with more detail:
-                    var request = requestBuilder.buildGetObjectRequest(obj);
-                    var promise = fresnelService.getObject(request);
-                    promise.then(function (promiseResult) {
-                        var response = promiseResult.data;
-                        appService.identityMap.merge(response.Modifications);
-                        $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
-                        if (response.Passed) {
-                            var latestObj = response.ReturnValue;
-                            var existingObj = appService.identityMap.getObject(obj.ID);
-                            appService.identityMap.mergeObjects(existingObj, latestObj);
-                            $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, latestObj);
-                        }
-                    });
-                };
-                this.loadNextPage = function ($scope) {
-                    $scope.request.PageNumber++;
-                    var promise = fresnelService.searchObjects($scope.request);
-                    promise.then(function (promiseResult) {
-                        var response = promiseResult.data;
-                        var newSearchResults = response.Result;
-                        // Append the new items to the exist results:
-                        var existingSearchResults = $scope.results;
-                        for (var i = 0; i < newSearchResults.Items.length; i++) {
-                            existingSearchResults.Items.push(newSearchResults.Items[i]);
-                        }
-                    });
-                };
-            };
+            this.rootScope = $rootScope;
+            this.fresnelService = fresnelService;
+            this.appService = appService;
+            this.explorerService = explorerService;
+            this.requestBuilder = requestBuilder;
+            this.modal = $modal;
         }
+        SearchService.prototype.showSearchForCollection = function (coll, onSelectionConfirmed) {
+            var _this = this;
+            var request = this.requestBuilder.buildSearchObjectsRequest(coll.ElementType);
+            var searchPromise = this.fresnelService.searchObjects(request);
+            // TODO: Open the modal _before_ the search is executed:
+            searchPromise.then(function (promiseResult) {
+                var response = promiseResult.data;
+                var searchResults = response.Result;
+                searchResults.OriginalRequest = request;
+                var searchExplorer = _this.explorerService.addExplorer(searchResults);
+                var options = {
+                    templateUrl: '/Templates/searchResultsExplorer.html',
+                    controller: 'searchModalController',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        // These objects will be injected into the SearchController's ctor:
+                        explorer: function () {
+                            return searchExplorer;
+                        }
+                    }
+                };
+                var modal = _this.modal.open(options);
+                _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalOpened, modal);
+                modal.result.then(function () {
+                    var selectedItems = $.grep(searchResults.Items, function (o) {
+                        return o.IsSelected;
+                    });
+                    if (selectedItems.length > 0) {
+                        onSelectionConfirmed(selectedItems);
+                    }
+                });
+                modal.result.finally(function () {
+                    _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
+                });
+            });
+        };
+        SearchService.prototype.showSearchForProperty = function (prop, onSelectionConfirmed) {
+        };
+        SearchService.prototype.showSearchForParameter = function (param, onSelectionConfirmed) {
+        };
+        SearchService.prototype.openNewExplorer = function (obj, $rootScope) {
+            var _this = this;
+            // As the collection only contains a lightweight object, we need to fetch one with more detail:
+            var request = this.requestBuilder.buildGetObjectRequest(obj);
+            var promise = this.fresnelService.getObject(request);
+            promise.then(function (promiseResult) {
+                var response = promiseResult.data;
+                _this.appService.identityMap.merge(response.Modifications);
+                $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
+                if (response.Passed) {
+                    var latestObj = response.ReturnValue;
+                    var existingObj = _this.appService.identityMap.getObject(obj.ID);
+                    _this.appService.identityMap.mergeObjects(existingObj, latestObj);
+                    $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, latestObj);
+                }
+            });
+        };
+        SearchService.prototype.loadNextPage = function (request, results) {
+            request.PageNumber++;
+            var promise = this.fresnelService.searchObjects(request);
+            promise.then(function (promiseResult) {
+                var response = promiseResult.data;
+                var newSearchResults = response.Result;
+                // Append the new items to the exist results:
+                var existingSearchResults = results;
+                for (var i = 0; i < newSearchResults.Items.length; i++) {
+                    existingSearchResults.Items.push(newSearchResults.Items[i]);
+                }
+            });
+        };
         SearchService.$inject = [
             '$rootScope',
             'fresnelService',
