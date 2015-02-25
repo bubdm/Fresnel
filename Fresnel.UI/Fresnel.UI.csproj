@@ -1066,6 +1066,7 @@
     <TypeScriptCompile Include="AngularApp\Session\AppController.ts" />
     <TypeScriptCompile Include="AngularApp\Session\AppService.ts" />
     <TypeScriptCompile Include="AngularApp\ClassLibrary\ToolboxController.ts" />
+    <TypeScriptCompile Include="AngularApp\UiEventType.ts" />
     <TypeScriptCompile Include="Scripts\typings\angular-ui-bootstrap\angular-ui-bootstrap.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\customExtensions.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />

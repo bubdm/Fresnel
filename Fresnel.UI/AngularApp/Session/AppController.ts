@@ -23,7 +23,7 @@
                 });
             }
 
-            $scope.$on('messagesReceived', function (event, messages: MessageVM[]) {
+            $scope.$on(UiEventType.MessagesReceived, function (event, messages: MessageVM[]) {
                 if (messages == null)
                     return;
 
@@ -45,11 +45,11 @@
                 }
             });
 
-            $scope.$on('modalOpened', function (event) {
+            $scope.$on(UiEventType.ModalOpened, function (event) {
                 $scope.IsModalVisible = true;
             });
 
-            $scope.$on('modalClosed', function (event) {
+            $scope.$on(UiEventType.ModalClosed, function (event) {
                 $scope.IsModalVisible = false;
             });
 

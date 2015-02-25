@@ -38,10 +38,10 @@ module FresnelApp {
                     method.Error = response.Passed ? "" : response.Messages[0].Text;
 
                     appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     if (response.ResultObject) {
-                        $rootScope.$broadcast("openNewExplorer", response.ResultObject);
+                        $rootScope.$broadcast(UiEventType.ExplorerOpen, response.ResultObject);
                     }
                 });
             }

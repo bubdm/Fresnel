@@ -24,7 +24,7 @@
                     var response = promiseResult.data;
 
                     appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     this.classHierarchy = promiseResult.data;
                 });
@@ -37,12 +37,12 @@
                     var response = promiseResult.data;
 
                     appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     if (response.Passed) {
                         var newObject = response.NewObject;
                         appService.identityMap.addObject(newObject);
-                        $rootScope.$broadcast("openNewExplorer", newObject);
+                        $rootScope.$broadcast(UiEventType.ExplorerOpen, newObject);
                     }
                 });
             }
@@ -55,14 +55,14 @@
                     var response = promiseResult.data;
 
                     appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     if (response.Passed) {
                         response.Result.IsSearchResults = true;
                         response.Result.OriginalRequest = request;
 
                         appService.identityMap.addObject(response.Result);
-                        $rootScope.$broadcast("openNewExplorer", response.Result);
+                        $rootScope.$broadcast(UiEventType.ExplorerOpen, response.Result);
                     }
                 });
             }

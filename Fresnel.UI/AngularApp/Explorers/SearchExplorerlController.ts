@@ -8,16 +8,19 @@
             '$scope',
             'fresnelService',
             'requestBuilder',
-            'appService'];
+            'appService',
+            'explorer'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: ISearchScope,
             fresnelService: IFresnelService,
             requestBuilder: RequestBuilder,
-            appService: AppService) {
+            appService: AppService,
+            searchExplorer: Explorer) {
 
-            $scope.results = <SearchResultsVM>$scope.explorer.__meta;
+            //$scope.results = <SearchResultsVM>$scope.explorer.__meta;
+            $scope.results = <SearchResultsVM>searchExplorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
 
             $scope.openNewExplorer = function (obj: ObjectVM) {
@@ -29,13 +32,13 @@
                     var response = promiseResult.data;
 
                     appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     if (response.Passed) {
                         var latestObj = response.ReturnValue;
                         var existingObj = appService.identityMap.getObject(obj.ID);
                         appService.identityMap.mergeObjects(existingObj, latestObj);
-                        $rootScope.$broadcast("openNewExplorer", latestObj);
+                        $rootScope.$broadcast(UiEventType.ExplorerOpen, latestObj);
                     }
                 });
             }

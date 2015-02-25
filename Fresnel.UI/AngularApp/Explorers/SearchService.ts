@@ -42,7 +42,7 @@ module FresnelApp {
                     }
 
                     var modal = $modal.open(options);
-                    $rootScope.$broadcast("modalOpened", modal);
+                    $rootScope.$broadcast(UiEventType.ModalOpened, modal);
 
                     modal.result.then(() => {
                         var selectedItems = $.grep(searchResults.Items, function (o: SearchResultItemVM) {
@@ -54,7 +54,7 @@ module FresnelApp {
                     });
 
                     modal.result.finally(() => {
-                        $rootScope.$broadcast("modalClosed", modal);
+                        $rootScope.$broadcast(UiEventType.ModalClosed, modal);
                     });
                 });
 

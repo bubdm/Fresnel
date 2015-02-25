@@ -32,10 +32,10 @@ module FresnelApp {
                         method.Error = response.Passed ? "" : response.Messages[0].Text;
 
                         appService.identityMap.merge(response.Modifications);
-                        $rootScope.$broadcast("messagesReceived", response.Messages);
+                        $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                         if (response.ResultObject) {
-                            $rootScope.$broadcast("openNewExplorer", response.ResultObject);
+                            $rootScope.$broadcast(UiEventType.ExplorerOpen, response.ResultObject);
                         }
                     });
                 }
@@ -57,10 +57,10 @@ module FresnelApp {
                     }
 
                     var modal = $modal.open(options);
-                    $rootScope.$broadcast("modalOpened", modal);
+                    $rootScope.$broadcast(UiEventType.ModalOpened, modal);
 
                     modal.result.finally(() => {
-                        $rootScope.$broadcast("modalClosed", modal);
+                        $rootScope.$broadcast(UiEventType.ModalClosed, modal);
                     });
                 }
             }
@@ -74,7 +74,7 @@ module FresnelApp {
                     prop.Error = response.Passed ? "" : response.Messages[0].Text;
 
                     appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
                 });
             }
 
@@ -106,7 +106,7 @@ module FresnelApp {
                         }
                     }
 
-                    $rootScope.$broadcast("openNewExplorer", searchResults);
+                    $rootScope.$broadcast(UiEventType.ExplorerOpen, searchResults);
                 });
             }
 
@@ -140,11 +140,11 @@ module FresnelApp {
             $scope.close = function (explorer: Explorer) {
                 // TODO: Check for dirty status
 
-                $rootScope.$broadcast("closeExplorer", explorer);
+                $rootScope.$broadcast(UiEventType.ExplorerClose, explorer);
             }
 
             $scope.openNewExplorer = function (obj: ObjectVM) {
-                $rootScope.$broadcast("openNewExplorer", obj);
+                $rootScope.$broadcast(UiEventType.ExplorerOpen, obj);
             }
 
             $scope.openNewExplorerForProperty = function (prop: PropertyVM) {
@@ -167,7 +167,7 @@ module FresnelApp {
 
                         obj.OuterProperty = prop;
 
-                        $rootScope.$broadcast("openNewExplorer", obj);
+                        $rootScope.$broadcast(UiEventType.ExplorerOpen, obj);
                     }
                 });
             }
@@ -180,7 +180,7 @@ module FresnelApp {
                     var response = promiseResult.data;
 
                     appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
                 });
             }
 

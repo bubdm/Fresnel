@@ -13,7 +13,7 @@
 
             $scope.visibleExplorers = [];
 
-            $scope.$on('openNewExplorer', function (event, obj: ObjectVM) {
+            $scope.$on(UiEventType.ExplorerOpen, function (event, obj: ObjectVM) {
                 if (!obj)
                     return;
 
@@ -33,7 +33,7 @@
                 }
             });
 
-            $scope.$on('closeExplorer', function (event, explorer: Explorer) {
+            $scope.$on(UiEventType.ExplorerClose, function (event, explorer: Explorer) {
                 var index = $scope.visibleExplorers.indexOf(explorer);
                 if (index > -1) {
                     $scope.visibleExplorers.splice(index, 1);
@@ -45,7 +45,7 @@
                         promise.then((promiseResult) => {
                             var response = promiseResult.data;
                             appService.identityMap.reset(); 
-                            $rootScope.$broadcast("messagesReceived", response.Messages);
+                            $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
                         });
                     }
                 }

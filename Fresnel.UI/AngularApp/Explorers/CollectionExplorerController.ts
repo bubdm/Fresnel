@@ -33,13 +33,13 @@
                     var response = promiseResult.data;
 
                     appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     if (response.Passed) {
                         var latestObj = response.ReturnValue;
                         var existingObj = appService.identityMap.getObject(obj.ID);
                         appService.identityMap.mergeObjects(existingObj, latestObj);
-                        $rootScope.$broadcast("openNewExplorer", latestObj);
+                        $rootScope.$broadcast(UiEventType.ExplorerOpen, latestObj);
                     }
                 });
             }
@@ -56,10 +56,10 @@
                     var response = promiseResult.data;
 
                     appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     // This will cause the new object to appear in a new Explorer:
-                    //$rootScope.$broadcast("openNewExplorer", newObject);             
+                    //$rootScope.$broadcast(UiEventType.ExplorerOpen, newObject);             
                 });
 
             };
@@ -73,7 +73,7 @@
                         var response = promiseResult.data;
 
                         appService.identityMap.merge(response.Modifications);
-                        $rootScope.$broadcast("messagesReceived", response.Messages);
+                        $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
                     });
                 };
 
@@ -92,7 +92,7 @@
                     var response = promiseResult.data;
 
                     appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast("messagesReceived", response.Messages);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
                 });
 
             };
