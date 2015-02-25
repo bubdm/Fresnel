@@ -18,6 +18,7 @@
         .controller("methodController", FresnelApp.MethodController)
         .controller("collectionExplorerController", FresnelApp.CollectionExplorerController)
         .controller("searchExplorerController", FresnelApp.SearchExplorerController)
+        .controller("searchModalController", FresnelApp.SearchModalController)
         .directive("classLibrary", FresnelApp.ClassLibaryDirective)
         .directive("objectExplorer", FresnelApp.ExplorerDirective)
         .directive("aDisabled", FresnelApp.DisableAnchorDirective)

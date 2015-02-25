@@ -1,7 +1,7 @@
 ﻿module FresnelApp {
 
     // Used to control the interactions within an open Search form
-    export class SearchExplorerController {
+    export class SearchModalController {
 
         static $inject = [
             '$rootScope',
@@ -9,7 +9,8 @@
             'searchService',
             'fresnelService',
             'requestBuilder',
-            'appService'];
+            'appService',
+            'explorer'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
@@ -17,15 +18,15 @@
             searchService: SearchService,
             fresnelService: IFresnelService,
             requestBuilder: RequestBuilder,
-            appService: AppService) {
+            appService: AppService,
+            explorer: Explorer) {
 
-            $scope.results = <SearchResultsVM>$scope.explorer.__meta;
+            $scope.explorer = explorer;
+            $scope.results = <SearchResultsVM>explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
 
-            // This allows Smart-Table to handle the st-safe-src properly:
-            $scope.results.DisplayItems = [].concat($scope.results.Items);
-
             $scope.openNewExplorer = function (obj: ObjectVM) {
+
                 // As the collection only contains a lightweight object, we need to fetch one with more detail:
                 var request = requestBuilder.buildGetObjectRequest(obj);
                 var promise = fresnelService.getObject(request);

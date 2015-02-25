@@ -6,6 +6,7 @@ module FresnelApp {
         static $inject = [
             '$rootScope',
             'fresnelService',
+            'appService',
             'explorerService',
             'requestBuilder',
             '$modal'];
@@ -13,6 +14,7 @@ module FresnelApp {
         constructor(
             $rootScope: ng.IRootScopeService,
             fresnelService: IFresnelService,
+            appService: AppService,
             explorerService: ExplorerService,
             requestBuilder: RequestBuilder,
             $modal: ng.ui.bootstrap.IModalService) {
@@ -26,11 +28,12 @@ module FresnelApp {
                 searchPromise.then((promiseResult) => {
                     var response = promiseResult.data;
                     var searchResults: SearchResultsVM = response.Result;
+                    searchResults.OriginalRequest = request;
                     var searchExplorer = explorerService.addExplorer(searchResults);
 
                     var options: ng.ui.bootstrap.IModalSettings = {
                         templateUrl: '/Templates/searchResultsExplorer.html',
-                        controller: 'searchExplorerController',
+                        controller: 'searchModalController',
                         backdrop: 'static',
                         size: 'lg',
                         resolve: {
@@ -58,6 +61,45 @@ module FresnelApp {
                     });
                 });
 
+                this.openNewExplorer = function (obj: ObjectVM, $rootScope: ng.IScope) {
+
+                    // As the collection only contains a lightweight object, we need to fetch one with more detail:
+                    var request = requestBuilder.buildGetObjectRequest(obj);
+                    var promise = fresnelService.getObject(request);
+
+                    promise.then((promiseResult) => {
+                        var response = promiseResult.data;
+
+                        appService.identityMap.merge(response.Modifications);
+                        $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
+                        if (response.Passed) {
+                            var latestObj = response.ReturnValue;
+                            var existingObj = appService.identityMap.getObject(obj.ID);
+                            appService.identityMap.mergeObjects(existingObj, latestObj);
+                            $rootScope.$broadcast(UiEventType.ExplorerOpen, latestObj);
+                        }
+                    });
+                }
+
+                this.loadNextPage = function ($scope: ISearchScope) {
+                    $scope.request.PageNumber++;
+
+                    var promise = fresnelService.searchObjects($scope.request);
+
+                    promise.then((promiseResult) => {
+                        var response = promiseResult.data;
+                        var newSearchResults: SearchResultsVM = response.Result;
+
+                        // Append the new items to the exist results:
+                        var existingSearchResults = $scope.results;
+
+                        for (var i = 0; i < newSearchResults.Items.length; i++) {
+                            existingSearchResults.Items.push(newSearchResults.Items[i]);
+                        }
+                    });
+                }
+
             }
         }
 
@@ -66,6 +108,10 @@ module FresnelApp {
         showSearchForProperty = function (prop: PropertyVM, onSelectionConfirmed) { }
 
         showSearchForParameter = function (param: ParameterVM, onSelectionConfirmed) { }
+
+        openNewExplorer = function (obj: ObjectVM, $rootScope: ng.IScope) { }
+
+        loadNextPage = function ($scope: ISearchScope) { }
 
     }
 }
