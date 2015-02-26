@@ -44,6 +44,7 @@ module FresnelApp {
                 var response = promiseResult.data;
                 var searchResults: SearchResultsVM = response.Result;
                 searchResults.OriginalRequest = request;
+                searchResults.AllowMultiSelect = true;
                 var searchExplorer = this.explorerService.addExplorer(searchResults);
 
                 var options: ng.ui.bootstrap.IModalSettings = {
@@ -86,6 +87,7 @@ module FresnelApp {
             searchPromise.then((promiseResult) => {
                 var response = promiseResult.data;
                 var searchResults: SearchResultsVM = response.Result;
+                searchResults.AllowMultiSelect = prop.IsCollection;
                 searchResults.OriginalRequest = request;
                 var searchExplorer = this.explorerService.addExplorer(searchResults);
 

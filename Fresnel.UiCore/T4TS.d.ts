@@ -196,6 +196,7 @@ declare module FresnelApp {
         IsSearchResults: boolean;
         OriginalRequest: FresnelApp.SearchRequest;
         AreMoreAvailable: boolean;
+        AllowMultiSelect: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.SearchVM **/
     export interface SearchVM extends FresnelApp.BaseViewModel {
