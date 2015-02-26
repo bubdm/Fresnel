@@ -124,7 +124,6 @@
     <Content Include="Content\icons.css" />
     <Content Include="Content\ionicons.min.css" />
     <Content Include="Content\isotope.css" />
-    <Content Include="Content\smart-table.css" />
     <Content Include="Content\workbench.css" />
     <Content Include="Content\toolbox.css" />
     <Content Include="Content\font-awesome.css" />
@@ -1101,6 +1100,10 @@
     <ProjectReference Include="..\Fresnel.UiCore\Fresnel.UiCore.csproj">
       <Project>{81df9fcc-50e5-4d2e-b47b-4e61efd2fbf3}</Project>
       <Name>Fresnel.UiCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fresnel.Utils\Fresnel.Utils.csproj">
+      <Project>{3ba54d1e-0d73-4c83-a3c7-5fd199e0f468}</Project>
+      <Name>Fresnel.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
