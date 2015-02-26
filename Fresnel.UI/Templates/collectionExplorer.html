@@ -25,7 +25,7 @@
                 <thead>
                     <tr>
                         <th>&nbsp;</th> <!--Icon-->
-                        <th st-ratio="20" ng-repeat="prop in oCol.ElementProperties" st-sort="{{prop.InternalName}}" title="{{prop.Description}}">{{prop.Name}}</th>
+                        <th ng-repeat="prop in oCol.ElementProperties" st-sort="{{prop.InternalName}}" title="{{prop.Description}}">{{prop.Name}}</th>
                         <th>&nbsp;</th> <!--Buttons-->
                     </tr>
                 </thead>
@@ -34,7 +34,7 @@
                         <td title="{{item.Type}}">
                             <span class="classItemIcon {{item.Type}}-Icon"></span>
                         </td>
-                        <td st-ratio="20"
+                        <td 
                             ng-repeat="elementProp in oCol.ElementProperties"
                             ng-init="prop = item.Properties[elementProp.Index]"
                             title="{{prop.State.FriendlyValue}}">
