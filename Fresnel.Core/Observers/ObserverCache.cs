@@ -190,15 +190,20 @@ namespace Envivo.Fresnel.Core.Observers
 
             //Debug.WriteLine(string.Concat("Creating Observer for ", tClass.Name, " with hash code ", obj.GetHashCode()));
 
-            var result = (ObjectObserver)_AbstractObserverBuilder.BuildFor(obj, tClass);
-            _ObjectMap.Add(obj, result);
+            var observer = _AbstractObserverBuilder.BuildFor(obj, tClass);
+            var oObject = observer as ObjectObserver;
+            if (oObject != null)
+            {
+                _ObjectMap.Add(obj, oObject);
 
-            ReplaceInvalidKeyWithValidKey(result, objectId);
+                ReplaceInvalidKeyWithValidKey(oObject, objectId);
 
-            _ObjectIdMap.Add(objectId, result);
+                _ObjectIdMap.Add(objectId, oObject);
 
-            MergeObjectsWithSameId(obj, result);
-            return result;
+                MergeObjectsWithSameId(obj, oObject);
+            }
+
+            return observer;
         }
 
         private BaseObjectObserver CreateAndCacheObserver(Guid objectId, object obj, NonReferenceTemplate tNonRefClass)

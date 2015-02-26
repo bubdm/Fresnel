@@ -49,7 +49,9 @@ namespace Envivo.Fresnel.UiCore.Commands
 
                 var oValue = (request.ReferenceValueId != Guid.Empty) ?
                             _ObserverCache.GetObserverById(request.ReferenceValueId) :
-                            _ObserverCache.GetValueObserver(request.NonReferenceValue.ToStringOrNull(), oProp.Template.PropertyType);
+                            (request.NonReferenceValue != null) ?
+                            _ObserverCache.GetValueObserver(request.NonReferenceValue.ToStringOrNull(), oProp.Template.PropertyType) :
+                            _ObserverCache.GetObserver(null, oProp.Template.PropertyType);
 
                 var previousValue = oProp.PreviousValue;
                 _SetPropertyCommand.Invoke(oProp, oValue);
