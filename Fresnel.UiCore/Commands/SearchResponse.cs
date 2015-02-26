@@ -5,7 +5,7 @@ using T4TS;
 namespace Envivo.Fresnel.UiCore.Commands
 {
     [TypeScriptInterface]
-    public class SearchObjectsResponse : BaseCommandResponse
+    public class SearchResponse : BaseCommandResponse
     {
         public SearchResultsVM Result { get; set; }
     }

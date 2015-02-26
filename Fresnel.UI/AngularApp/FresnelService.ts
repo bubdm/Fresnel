@@ -74,9 +74,19 @@
             var uri = "api/Explorer/SaveChanges";
             return this.http.post(uri, request);
         }
-        
+
         searchObjects(request: SearchObjectsRequest): ng.IPromise<any> {
             var uri = "api/Toolbox/SearchObjects";
+            return this.http.post(uri, request);
+        }
+
+        searchPropertyObjects(request: SearchPropertyRequest): ng.IPromise<any> {
+            var uri = "api/Toolbox/SearchPropertyObjects";
+            return this.http.post(uri, request);
+        }
+
+        searchParameterObjects(request: SearchParameterRequest): ng.IPromise<any> {
+            var uri = "api/Toolbox/SearchParameterObjects";
             return this.http.post(uri, request);
         }
 

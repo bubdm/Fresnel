@@ -78,7 +78,47 @@ module FresnelApp {
         }
 
         showSearchForProperty(prop: PropertyVM, onSelectionConfirmed) {
-        }
+            var request = this.requestBuilder.buildSearchPropertyRequest(prop);
+            var searchPromise = this.fresnelService.searchPropertyObjects(request);
+
+            // TODO: Open the modal _before_ the search is executed:
+
+            searchPromise.then((promiseResult) => {
+                var response = promiseResult.data;
+                var searchResults: SearchResultsVM = response.Result;
+                searchResults.OriginalRequest = request;
+                var searchExplorer = this.explorerService.addExplorer(searchResults);
+
+                var options: ng.ui.bootstrap.IModalSettings = {
+                    templateUrl: '/Templates/searchResultsExplorer.html',
+                    controller: 'searchModalController',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        // These objects will be injected into the SearchController's ctor:
+                        explorer: function () {
+                            return searchExplorer;
+                        }
+                    }
+                }
+
+                var modal = this.modal.open(options);
+                this.rootScope.$broadcast(UiEventType.ModalOpened, modal);
+
+                modal.result.then(() => {
+                    var selectedItems = $.grep(searchResults.Items, function (o: SearchResultItemVM) {
+                        return o.IsSelected;
+                    });
+                    if (selectedItems.length > 0) {
+                        onSelectionConfirmed(selectedItems);
+                    }
+                });
+
+                modal.result.finally(() => {
+                    this.rootScope.$broadcast(UiEventType.ModalClosed, modal);
+                });
+            });
+ }
 
         showSearchForParameter(param: ParameterVM, onSelectionConfirmed) {
         }
@@ -104,12 +144,10 @@ module FresnelApp {
             });
         }
 
-        loadNextPage(request: SearchObjectsRequest, results: SearchResultsVM) {
+        loadNextPage(request: SearchRequest, results: SearchResultsVM, searchPromise: ng.IPromise<any>) {
             request.PageNumber++;
 
-            var promise = this.fresnelService.searchObjects(request);
-
-            promise.then((promiseResult) => {
+            searchPromise.then((promiseResult) => {
                 var response = promiseResult.data;
                 var newSearchResults: SearchResultsVM = response.Result;
 

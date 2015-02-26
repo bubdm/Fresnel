@@ -2,20 +2,25 @@ var FresnelApp;
 (function (FresnelApp) {
     // Used to control the interactions within an open Search form
     var SearchModalController = (function () {
-        function SearchModalController($rootScope, $scope, searchService, explorer) {
+        function SearchModalController($rootScope, $scope, fresnelService, searchService, explorer) {
             $scope.explorer = explorer;
             $scope.results = explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
+            $scope.searchAction = fresnelService.searchObjects($scope.request);
+            // TODO: Determine which FresnelService.Search() method to use:
+            // $scope.searchPromise = fresnelService.SearchPropertyObjects($scope.request);
+            // $scope.searchPromise = fresnelService.SearchParameterObjects($scope.request);
             $scope.openNewExplorer = function (obj) {
                 searchService.openNewExplorer(obj, $rootScope);
             };
             $scope.loadNextPage = function () {
-                searchService.loadNextPage($scope.request, $scope.results);
+                searchService.loadNextPage($scope.request, $scope.results, $scope.searchAction);
             };
         }
         SearchModalController.$inject = [
             '$rootScope',
             '$scope',
+            'fresnelService',
             'searchService',
             'explorer'
         ];
@@ -27,21 +32,23 @@ var FresnelApp;
 (function (FresnelApp) {
     // Used to control the interactions within an open Search form
     var SearchExplorerController = (function () {
-        function SearchExplorerController($rootScope, $scope, searchService) {
+        function SearchExplorerController($rootScope, $scope, fresnelService, searchService) {
             $scope.results = $scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
+            $scope.searchAction = fresnelService.searchObjects($scope.request);
             // This allows Smart-Table to handle the st-safe-src properly:
             $scope.results.DisplayItems = [].concat($scope.results.Items);
             $scope.openNewExplorer = function (obj) {
                 searchService.openNewExplorer(obj, $rootScope);
             };
             $scope.loadNextPage = function () {
-                searchService.loadNextPage($scope.request, $scope.results);
+                searchService.loadNextPage($scope.request, $scope.results, $scope.searchAction);
             };
         }
         SearchExplorerController.$inject = [
             '$rootScope',
             '$scope',
+            'fresnelService',
             'searchService'
         ];
         return SearchExplorerController;
@@ -97,6 +104,41 @@ var FresnelApp;
             });
         };
         SearchService.prototype.showSearchForProperty = function (prop, onSelectionConfirmed) {
+            var _this = this;
+            var request = this.requestBuilder.buildSearchPropertyRequest(prop);
+            var searchPromise = this.fresnelService.searchPropertyObjects(request);
+            // TODO: Open the modal _before_ the search is executed:
+            searchPromise.then(function (promiseResult) {
+                var response = promiseResult.data;
+                var searchResults = response.Result;
+                searchResults.OriginalRequest = request;
+                var searchExplorer = _this.explorerService.addExplorer(searchResults);
+                var options = {
+                    templateUrl: '/Templates/searchResultsExplorer.html',
+                    controller: 'searchModalController',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        // These objects will be injected into the SearchController's ctor:
+                        explorer: function () {
+                            return searchExplorer;
+                        }
+                    }
+                };
+                var modal = _this.modal.open(options);
+                _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalOpened, modal);
+                modal.result.then(function () {
+                    var selectedItems = $.grep(searchResults.Items, function (o) {
+                        return o.IsSelected;
+                    });
+                    if (selectedItems.length > 0) {
+                        onSelectionConfirmed(selectedItems);
+                    }
+                });
+                modal.result.finally(function () {
+                    _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
+                });
+            });
         };
         SearchService.prototype.showSearchForParameter = function (param, onSelectionConfirmed) {
         };
@@ -117,10 +159,9 @@ var FresnelApp;
                 }
             });
         };
-        SearchService.prototype.loadNextPage = function (request, results) {
+        SearchService.prototype.loadNextPage = function (request, results, searchPromise) {
             request.PageNumber++;
-            var promise = this.fresnelService.searchObjects(request);
-            promise.then(function (promiseResult) {
+            searchPromise.then(function (promiseResult) {
                 var response = promiseResult.data;
                 var newSearchResults = response.Result;
                 // Append the new items to the exist results:
@@ -622,6 +663,29 @@ var FresnelApp;
             };
             return request;
         };
+        RequestBuilder.prototype.buildSearchPropertyRequest = function (prop) {
+            var request = {
+                ObjectID: prop.ObjectID,
+                PropertyName: prop.InternalName,
+                SearchFilters: null,
+                OrderBy: null,
+                PageNumber: 1,
+                PageSize: 100
+            };
+            return request;
+        };
+        RequestBuilder.prototype.buildSearchParameterRequest = function (method, param) {
+            var request = {
+                ObjectID: method.ObjectID,
+                MethodName: method.InternalName,
+                ParameterName: param.InternalName,
+                SearchFilters: null,
+                OrderBy: null,
+                PageNumber: 1,
+                PageSize: 100
+            };
+            return request;
+        };
         RequestBuilder.prototype.buildAddItemsRequest = function (coll, itemsToAdd) {
             var elementIDs = itemsToAdd.map(function (o) {
                 return o.ID;
@@ -696,6 +760,14 @@ var FresnelApp;
         };
         FresnelService.prototype.searchObjects = function (request) {
             var uri = "api/Toolbox/SearchObjects";
+            return this.http.post(uri, request);
+        };
+        FresnelService.prototype.searchPropertyObjects = function (request) {
+            var uri = "api/Toolbox/SearchPropertyObjects";
+            return this.http.post(uri, request);
+        };
+        FresnelService.prototype.searchParameterObjects = function (request) {
+            var uri = "api/Toolbox/SearchParameterObjects";
             return this.http.post(uri, request);
         };
         FresnelService.$inject = ['$http'];

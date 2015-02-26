@@ -6,12 +6,14 @@
         static $inject = [
             '$rootScope',
             '$scope',
+            'fresnelService',
             'searchService',
             'explorer'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: ISearchScope,
+            fresnelService: IFresnelService,
             searchService: SearchService,
             explorer: Explorer) {
 
@@ -19,12 +21,17 @@
             $scope.results = <SearchResultsVM>explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
 
+            $scope.searchAction = fresnelService.searchObjects(<SearchObjectsRequest>$scope.request);
+            // TODO: Determine which FresnelService.Search() method to use:
+            // $scope.searchPromise = fresnelService.SearchPropertyObjects($scope.request);
+            // $scope.searchPromise = fresnelService.SearchParameterObjects($scope.request);
+
             $scope.openNewExplorer = function (obj: ObjectVM) {
                 searchService.openNewExplorer(obj, $rootScope);
             }
 
             $scope.loadNextPage = function () {
-                searchService.loadNextPage($scope.request, $scope.results);
+                searchService.loadNextPage($scope.request, $scope.results, $scope.searchAction);
             }
 
         }

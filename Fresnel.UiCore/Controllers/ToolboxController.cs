@@ -38,7 +38,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
             return result;
         }
 
-        public SearchObjectsResponse SearchObjects(SearchObjectsRequest id)
+        public SearchResponse SearchObjects(SearchObjectsRequest id)
         {
             var fullyQualifiedName = id;
             var result = _SearchObjectsCommand.Invoke(id);

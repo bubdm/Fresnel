@@ -39,7 +39,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public SearchObjectsResponse Invoke(SearchObjectsRequest request)
+        public SearchResponse Invoke(SearchObjectsRequest request)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Text = string.Concat("Returned ", results.Count, " ", tClass.FriendlyName, " instances (", areMoreItemsAvailable ? "more are" : "no more", " available)")
                 };
 
-                return new SearchObjectsResponse()
+                return new SearchResponse()
                 {
                     Passed = true,
                     Result = result,
@@ -104,7 +104,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Detail = ex.ToString(),
                 };
 
-                return new SearchObjectsResponse()
+                return new SearchResponse()
                 {
                     Failed = true,
                     Messages = new MessageVM[] { errorVM }

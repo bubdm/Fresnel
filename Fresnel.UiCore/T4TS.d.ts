@@ -64,15 +64,29 @@ declare module FresnelApp {
         ObjectID: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SearchObjectsRequest **/
-    export interface SearchObjectsRequest {
+    export interface SearchObjectsRequest extends FresnelApp.SearchRequest {
         SearchType: string;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.SearchParameterRequest **/
+    export interface SearchParameterRequest extends FresnelApp.SearchRequest {
+        ObjectID: any;
+        MethodName: string;
+        ParameterName: string;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.SearchPropertyRequest **/
+    export interface SearchPropertyRequest extends FresnelApp.SearchRequest {
+        ObjectID: any;
+        PropertyName: string;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.SearchRequest **/
+    export interface SearchRequest {
         SearchFilters: any;
         OrderBy: any;
         PageSize: number;
         PageNumber: number;
     }
-    /** Generated from Envivo.Fresnel.UiCore.Commands.SearchObjectsResponse **/
-    export interface SearchObjectsResponse extends FresnelApp.BaseCommandResponse {
+    /** Generated from Envivo.Fresnel.UiCore.Commands.SearchResponse **/
+    export interface SearchResponse extends FresnelApp.BaseCommandResponse {
         Result: FresnelApp.SearchResultsVM;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SetPropertyRequest **/
@@ -180,7 +194,7 @@ declare module FresnelApp {
     /** Generated from Envivo.Fresnel.UiCore.Model.SearchResultsVM **/
     export interface SearchResultsVM extends FresnelApp.CollectionVM {
         IsSearchResults: boolean;
-        OriginalRequest: FresnelApp.SearchObjectsRequest;
+        OriginalRequest: FresnelApp.SearchRequest;
         AreMoreAvailable: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.SearchVM **/

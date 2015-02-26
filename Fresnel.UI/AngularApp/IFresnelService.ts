@@ -27,6 +27,10 @@
         saveChanges(request: SaveChangesRequest): ng.IPromise<any>;
 
         searchObjects(request: SearchObjectsRequest): ng.IPromise<any>;
+
+        searchPropertyObjects(request: SearchPropertyRequest): ng.IPromise<any>;
+
+        searchParameterObjects(request: SearchParameterRequest): ng.IPromise<any>;
     }
 
 }

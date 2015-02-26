@@ -4,7 +4,9 @@
 
         explorer: Explorer;
 
-        request: SearchObjectsRequest;
+        searchAction: ng.IPromise<any>;
+
+        request: SearchRequest;
 
         results: SearchResultsVM;
 

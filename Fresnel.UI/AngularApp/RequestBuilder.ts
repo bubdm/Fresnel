@@ -73,6 +73,32 @@
             return request;
         }
 
+        buildSearchPropertyRequest(prop: PropertyVM) {
+            var request: SearchPropertyRequest = {
+                ObjectID: prop.ObjectID,
+                PropertyName: prop.InternalName,
+                SearchFilters: null,
+                OrderBy: null,
+                PageNumber: 1,
+                PageSize: 100
+            };
+
+            return request;
+        }
+
+        buildSearchParameterRequest(method: MethodVM, param: ParameterVM) {
+            var request: SearchParameterRequest = {
+                ObjectID: method.ObjectID,
+                MethodName: method.InternalName,
+                ParameterName: param.InternalName,
+                SearchFilters: null,
+                OrderBy: null,
+                PageNumber: 1,
+                PageSize: 100
+            };
+
+            return request;
+        }
         buildAddItemsRequest(coll: CollectionVM, itemsToAdd: ObjectVM[]) {
             var elementIDs = itemsToAdd.map(function (o) { return o.ID });
 

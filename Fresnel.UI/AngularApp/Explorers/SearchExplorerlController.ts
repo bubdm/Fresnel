@@ -6,15 +6,19 @@
         static $inject = [
             '$rootScope',
             '$scope',
+            'fresnelService',
             'searchService'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: ISearchScope,
+            fresnelService: IFresnelService,
             searchService: SearchService) {
 
             $scope.results = <SearchResultsVM>$scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
+
+            $scope.searchAction = fresnelService.searchObjects(<SearchObjectsRequest>$scope.request);
 
             // This allows Smart-Table to handle the st-safe-src properly:
             $scope.results.DisplayItems = [].concat($scope.results.Items);
@@ -24,7 +28,7 @@
             }
 
             $scope.loadNextPage = function () {
-                searchService.loadNextPage($scope.request, $scope.results);
+                searchService.loadNextPage($scope.request, $scope.results, $scope.searchAction);
             }
 
         }

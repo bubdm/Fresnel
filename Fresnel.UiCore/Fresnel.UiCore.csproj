@@ -51,6 +51,9 @@
   <ItemGroup>
     <Compile Include="Commands\CollectionAddRequest.cs" />
     <Compile Include="Commands\CollectionAddNewRequest.cs" />
+    <Compile Include="Commands\SearchParameterRequest.cs" />
+    <Compile Include="Commands\SearchPropertyRequest.cs" />
+    <Compile Include="Commands\SearchRequest.cs" />
     <Compile Include="Model\SearchResultsVM.cs" />
     <Compile Include="Model\TypeInfo\ReferenceTypeVM.cs" />
     <Compile Include="SearchResultsVmBuilder.cs" />
@@ -59,7 +62,7 @@
     <Compile Include="Commands\CollectionRemoveRequest.cs" />
     <Compile Include="Commands\CollectionAddCommand.cs" />
     <Compile Include="Commands\CollectionAddResponse.cs" />
-    <Compile Include="Commands\SearchObjectsResponse.cs" />
+    <Compile Include="Commands\SearchResponse.cs" />
     <Compile Include="Commands\SearchObjectsCommand.cs" />
     <Compile Include="Commands\SearchObjectsRequest.cs" />
     <Compile Include="Commands\SaveChangesRequest.cs" />

@@ -9,7 +9,7 @@ namespace Envivo.Fresnel.UiCore.Model
     {
         public bool IsSearchResults { get { return true; } }
 
-        public SearchObjectsRequest OriginalRequest { get; set; }
+        public SearchRequest OriginalRequest { get; set; }
 
         public bool AreMoreAvailable { get; set; }
 
