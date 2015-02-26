@@ -19,6 +19,8 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
         public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var attr = tProp.Attributes.Get<DateTimeAttribute>();
+
+            targetVM.Info = this.CreateInfoVM(attr);
         }
 
         public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)

@@ -15,6 +15,38 @@ namespace Envivo.Fresnel.Tests.Proxies
     public class EditorIdentifierTests
     {
         [Test]
+        public void ShouldIdentifyPropertyTypes()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var vmBuilder = container.Resolve<AbstractPropertyVmBuilder>();
+
+            var obj = new SampleModel.BasicTypes.MultiType();
+            var oObject = (ObjectObserver)observerCache.GetObserver(obj);
+
+            // Act:
+            var boolVM = vmBuilder.BuildFor(oObject.Properties["A_Boolean"]);
+            var charVM = vmBuilder.BuildFor(oObject.Properties["A_Char"]);
+            var stringVM = vmBuilder.BuildFor(oObject.Properties["A_String"]);
+            var intVM = vmBuilder.BuildFor(oObject.Properties["An_Int"]);
+            var doubleVM = vmBuilder.BuildFor(oObject.Properties["A_Double"]);
+            var floatVM = vmBuilder.BuildFor(oObject.Properties["A_Float"]);
+            var dateTimeVM = vmBuilder.BuildFor(oObject.Properties["A_DateTime"]);
+            var dateTimeOffsetVM = vmBuilder.BuildFor(oObject.Properties["A_DateTimeOffset"]);
+
+            // Assert:
+            Assert.AreEqual(InputControlTypes.Radio, boolVM.Info.PreferredControl);
+            Assert.AreEqual(InputControlTypes.Text, charVM.Info.PreferredControl);
+            Assert.AreEqual(InputControlTypes.Text, stringVM.Info.PreferredControl);
+            Assert.AreEqual(InputControlTypes.Number, intVM.Info.PreferredControl);
+            Assert.AreEqual(InputControlTypes.Number, doubleVM.Info.PreferredControl);
+            Assert.AreEqual(InputControlTypes.Number, floatVM.Info.PreferredControl);
+            Assert.AreEqual(InputControlTypes.DateTimeLocal, dateTimeVM.Info.PreferredControl);
+            Assert.AreEqual(InputControlTypes.DateTimeLocal, dateTimeOffsetVM.Info.PreferredControl);
+        }
+
+        [Test]
         public void ShouldIdentifyTextValues()
         {
             // Arrange:
