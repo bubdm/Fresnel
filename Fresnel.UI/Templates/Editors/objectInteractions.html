@@ -10,18 +10,18 @@
 
     <button type="button"
             class="btn btn-default"
-            ng-show="prop.IsObject && prop.State.Set.IsEnabled"
-            ng-click="associate(prop)"
-            title="Replace with another item">
-        <i class="fa fa-link"></i>
+            ng-show="prop.IsObject && prop.State.Clear.IsEnabled"
+            ng-click="disassociate(prop)"
+            title="Remove this item">
+        <i class="fa fa-unlink"></i>
     </button>
 
     <button type="button"
             class="btn btn-default"
-            ng-show="prop.IsObject && prop.Clear.IsEnabled"
-            ng-click="disassociate(prop)"
-            title="Remove this item">
-        <i class="fa fa-unlink"></i>
+            ng-show="prop.IsObject && prop.State.Set.IsEnabled"
+            ng-click="associate(prop)"
+            title="Replace with another item">
+        <i class="fa fa-link"></i>
     </button>
 
     <button type="button"

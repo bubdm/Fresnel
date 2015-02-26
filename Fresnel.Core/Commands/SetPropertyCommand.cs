@@ -41,6 +41,12 @@ namespace Envivo.Fresnel.Core.Commands
 
             _SetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name, oValue.RealObject);
 
+            var oObjectProp = oProperty as ObjectPropertyObserver;
+            if (oObjectProp != null)
+            {
+                oObjectProp.IsLazyLoaded = true;
+            }
+
             _DirtyObjectNotifier.PropertyHasChanged(oProperty);
 
             // Make sure we know of any changes in the object graph:

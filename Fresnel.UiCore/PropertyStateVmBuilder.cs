@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.UiCore
         public ValueStateVM BuildFor(BasePropertyObserver oProp)
         {
             var result = new ValueStateVM();
-            
+
             result.Get = this.BuildGet(oProp);
             result.Set = this.BuildSet(oProp);
 
@@ -58,11 +58,10 @@ namespace Envivo.Fresnel.UiCore
                 }
             }
 
-            if (oProp.Template.IsDomainObject && 
-                result.Value == null)
+            if (oProp.Template.IsDomainObject)
             {
-                result.Create = this.BuildCreate(oProp);
-            }            
+                result.Create = this.BuildCreate(oProp, result.Value);
+            }
 
             result.Clear = this.BuildClear(oProp, result.Value);
 
@@ -74,15 +73,23 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint BuildCreate(BasePropertyObserver oProp)
+        private InteractionPoint BuildCreate(BasePropertyObserver oProp, object propertyValue)
         {
-            var createCheck = _CanCreatePermission.IsSatisfiedBy((ClassTemplate)oProp.Template.InnerClass);
+            var result = new InteractionPoint();
 
-            var result = new InteractionPoint()
+            if (propertyValue == null)
             {
-                IsEnabled = createCheck.Passed,
-                Error = createCheck.FailureReason,
-            };
+                var createCheck = _CanCreatePermission.IsSatisfiedBy((ClassTemplate)oProp.Template.InnerClass);
+                result.IsEnabled = createCheck.Passed;
+                result.Error = createCheck.FailureReason;
+            }
+            else
+            {
+                result.IsEnabled = false;
+                result.IsVisible = false;
+                result.Error = "You must disassociate from the existing item before replacing it with a new one";
+            }
+
             return result;
         }
 

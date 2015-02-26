@@ -1,14 +1,15 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json;
+using System.ComponentModel;
 using T4TS;
 namespace Envivo.Fresnel.UiCore.Model
 {
     [TypeScriptInterface]
     public abstract class BaseViewModel
     {
-        [DefaultValue(false)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public bool IsVisible { get; set; }
 
-        [DefaultValue(false)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public bool IsEnabled { get; set; }
 
         public string Name { get; set; }

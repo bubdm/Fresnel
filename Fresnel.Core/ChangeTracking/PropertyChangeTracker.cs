@@ -62,6 +62,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             var oObjectProperty = _oProperty as ObjectPropertyObserver;
 
             if (oObjectProperty != null &&
+                oObjectProperty.OuterObject.Template.IsPersistable &&
                 oObjectProperty.IsLazyLoadPending)
             {
                 return Assertion.Fail("Property hasn't been lazy-loaded");
