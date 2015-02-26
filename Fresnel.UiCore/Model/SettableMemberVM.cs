@@ -19,6 +19,11 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public string InternalName { get; set; }
 
+        /// <summary>
+        /// The Types of objects that are allowed for this member
+        /// </summary>
+        public string[] AllowedClassTypes { get; set; }
+
         [DefaultValue(false)]
         public bool IsRequired { get; set; }
 

@@ -12,6 +12,8 @@
 
         getProperty(request: GetPropertyRequest): ng.IPromise<any>;
 
+        createAndSetProperty(request: CreateAndSetPropertyRequest): ng.IPromise<any>;
+
         setProperty(request: SetPropertyRequest): ng.IPromise<any>;
 
         invokeMethod(request: InvokeMethodRequest): ng.IPromise<any>;

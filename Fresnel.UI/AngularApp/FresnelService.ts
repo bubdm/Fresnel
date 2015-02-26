@@ -40,6 +40,12 @@
             return this.http.post(uri, request);
         }
 
+        createAndSetProperty(request: CreateAndSetPropertyRequest): ng.IPromise<any>
+        {
+            var uri = "api/Explorer/CreateAndSetProperty";
+            return this.http.post(uri, request);
+        }
+
         setProperty(request: SetPropertyRequest): ng.IPromise<any> {
             var uri = "api/Explorer/SetProperty";
             return this.http.post(uri, request);

@@ -25,6 +25,16 @@
             return request;
         }
 
+        buildCreateAndAssociateRequest(prop: PropertyVM, classTypeName: string) {
+            var request: CreateAndSetPropertyRequest = {
+                ObjectID: prop.ObjectID,
+                PropertyName: prop.InternalName,
+                ClassTypeName: classTypeName
+            };
+
+            return request;
+        }
+
         buildSetPropertyRequest(prop: PropertyVM) {
             var request: SetPropertyRequest = {
                 ObjectID: prop.ObjectID,

@@ -15,19 +15,20 @@ namespace Envivo.Fresnel.UiCore
     {
         private IEnumerable<IPropertyVmBuilder> _Builders;
         private UnknownVmBuilder _UnknownVmBuilder;
-
         private PropertyStateVmBuilder _PropertyStateVmBuilder;
+        private ClassHierarchyBuilder _ClassHierarchyBuilder;
 
         public AbstractPropertyVmBuilder
             (
             IEnumerable<IPropertyVmBuilder> builders,
-            PropertyStateVmBuilder propertyStateVmBuilder
+            PropertyStateVmBuilder propertyStateVmBuilder,
+            ClassHierarchyBuilder classHierarchyBuilder
             )
         {
             _Builders = builders;
             _UnknownVmBuilder = builders.OfType<UnknownVmBuilder>().Single();
-
             _PropertyStateVmBuilder = propertyStateVmBuilder;
+            _ClassHierarchyBuilder = classHierarchyBuilder;
         }
 
         public SettableMemberVM BuildFor(PropertyTemplate tProp)
@@ -45,6 +46,14 @@ namespace Envivo.Fresnel.UiCore
                 IsRequired = tProp.IsNonReference && !tProp.IsNullableType,
                 IsVisible = !tProp.IsFrameworkMember && tProp.IsVisible,
             };
+
+            if (tProp.IsDomainObject)
+            {
+                propVM.AllowedClassTypes = _ClassHierarchyBuilder
+                                            .GetCompleteTree((ClassTemplate)tProp.InnerClass)
+                                            .Select(t => t.FullName)
+                                            .ToArray();
+            }
 
             var vmBuilder = _Builders.SingleOrDefault(s => s.CanHandle(tProp, actualType)) ?? _UnknownVmBuilder;
             vmBuilder.Populate(propVM, tProp, actualType);

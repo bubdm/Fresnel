@@ -76,7 +76,6 @@
     <Compile Include="Templates\Enums\EnumTemplateBulider.cs" />
     <Compile Include="Templates\ITemplate.cs" />
     <Compile Include="Templates\BaseTemplate.cs" />
-    <Compile Include="Templates\Classes\ClassHierarchy.cs" />
     <Compile Include="Templates\Classes\ClassHierarchyDepthComparer.cs" />
     <Compile Include="Templates\Classes\ClassTemplate.cs" />
     <Compile Include="Templates\Classes\ClassTemplateBuilder.cs" />

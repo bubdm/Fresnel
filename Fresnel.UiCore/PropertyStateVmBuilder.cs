@@ -14,15 +14,18 @@ namespace Envivo.Fresnel.UiCore
 {
     public class PropertyStateVmBuilder
     {
+        private CanCreatePermission _CanCreatePermission;
         private CanGetPropertyPermission _CanGetPropertyPermission;
         private CanSetPropertyPermission _CanSetPropertyPermission;
 
         public PropertyStateVmBuilder
             (
+            CanCreatePermission canCreatePermission,
             CanGetPropertyPermission canGetPropertyPermission,
             CanSetPropertyPermission canSetPropertyPermission
             )
         {
+            _CanCreatePermission = canCreatePermission;
             _CanGetPropertyPermission = canGetPropertyPermission;
             _CanSetPropertyPermission = canSetPropertyPermission;
         }
@@ -30,8 +33,9 @@ namespace Envivo.Fresnel.UiCore
         public ValueStateVM BuildFor(BasePropertyObserver oProp)
         {
             var result = new ValueStateVM();
-            result.Get = this.CreateGet(oProp);
-            result.Set = this.CreateSet(oProp);
+            
+            result.Get = this.BuildGet(oProp);
+            result.Set = this.BuildSet(oProp);
 
             if (result.Get.IsEnabled)
             {
@@ -54,17 +58,35 @@ namespace Envivo.Fresnel.UiCore
                 }
             }
 
-            result.Clear = this.CreateClear(oProp, result.Value);
+            if (oProp.Template.IsDomainObject && 
+                result.Value == null)
+            {
+                result.Create = this.BuildCreate(oProp);
+            }            
+
+            result.Clear = this.BuildClear(oProp, result.Value);
 
             if (oProp.Template.IsCollection)
             {
-                result.Add = this.CreateAdd(oProp, result.Value);
+                result.Add = this.BuildAdd(oProp, result.Value);
             }
 
             return result;
         }
 
-        private InteractionPoint CreateGet(BasePropertyObserver oProp)
+        private InteractionPoint BuildCreate(BasePropertyObserver oProp)
+        {
+            var createCheck = _CanCreatePermission.IsSatisfiedBy((ClassTemplate)oProp.Template.InnerClass);
+
+            var result = new InteractionPoint()
+            {
+                IsEnabled = createCheck.Passed,
+                Error = createCheck.FailureReason,
+            };
+            return result;
+        }
+
+        private InteractionPoint BuildGet(BasePropertyObserver oProp)
         {
             var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(oProp);
 
@@ -76,7 +98,7 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint CreateSet(BasePropertyObserver oProp)
+        private InteractionPoint BuildSet(BasePropertyObserver oProp)
         {
             var setCheck = _CanSetPropertyPermission.IsSatisfiedBy(oProp);
 
@@ -88,7 +110,7 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint CreateClear(BasePropertyObserver oProp, object propertyValue)
+        private InteractionPoint BuildClear(BasePropertyObserver oProp, object propertyValue)
         {
             var tProp = oProp.Template;
             var result = new InteractionPoint()
@@ -100,7 +122,7 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint CreateAdd(BasePropertyObserver oProp, object propertyValue)
+        private InteractionPoint BuildAdd(BasePropertyObserver oProp, object propertyValue)
         {
             var tProp = oProp.Template;
             var result = new InteractionPoint()

@@ -35,7 +35,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             //-----
 
             var superClass = tRootClass.RealType;
-            while (superClass != null)
+            while (superClass != null && superClass != typeof(object))
             {
                 var tClass = assemblyReader.GetTemplate(superClass) as ClassTemplate;
                 if (tClass != null)

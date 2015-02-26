@@ -29,6 +29,16 @@ declare module FresnelApp {
         CollectionID: any;
         ElementID: any;
     }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.CreateAndSetPropertyRequest **/
+    export interface CreateAndSetPropertyRequest {
+        ObjectID: any;
+        PropertyName: string;
+        ClassTypeName: string;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.CreateAndSetPropertyResponse **/
+    export interface CreateAndSetPropertyResponse extends FresnelApp.BaseCommandResponse {
+        NewObject: FresnelApp.ObjectVM;
+    }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CreateCommandResponse **/
     export interface CreateCommandResponse extends FresnelApp.BaseCommandResponse {
         NewObject: FresnelApp.ObjectVM;

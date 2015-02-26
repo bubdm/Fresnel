@@ -51,9 +51,12 @@
   <ItemGroup>
     <Compile Include="Commands\CollectionAddRequest.cs" />
     <Compile Include="Commands\CollectionAddNewRequest.cs" />
+    <Compile Include="Commands\CreateAndSetPropertyResponse.cs" />
+    <Compile Include="Commands\CreateAndSetPropertyCommand.cs" />
     <Compile Include="Commands\SearchParameterRequest.cs" />
     <Compile Include="Commands\SearchPropertyRequest.cs" />
     <Compile Include="Commands\SearchRequest.cs" />
+    <Compile Include="Commands\CreateAndSetPropertyRequest.cs" />
     <Compile Include="Model\SearchResultsVM.cs" />
     <Compile Include="Model\TypeInfo\ReferenceTypeVM.cs" />
     <Compile Include="SearchResultsVmBuilder.cs" />

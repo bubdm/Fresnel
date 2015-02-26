@@ -92,6 +92,23 @@ module FresnelApp {
                 return (prop.State.Value & enumValue) != 0;
             }
 
+            $scope.createAndAssociate = function (prop: PropertyVM, classTypeName: string) {
+                var request = requestBuilder.buildCreateAndAssociateRequest(prop, classTypeName);
+                var promise = fresnelService.createAndSetProperty(request);
+
+                promise.then((promiseResult) => {
+                    var response = promiseResult.data;
+                    prop.Error = response.Passed ? "" : response.Messages[0].Text;
+
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
+                    if (response.Passed) {
+                        $rootScope.$broadcast(UiEventType.ExplorerOpen, response.NewObject);
+                    }
+                });
+            }
+
             $scope.associate = function (prop: PropertyVM) {
                 var request = requestBuilder.buildSearchObjectsRequest(prop.Info.FullTypeName);
                 var promise = fresnelService.searchObjects(request);

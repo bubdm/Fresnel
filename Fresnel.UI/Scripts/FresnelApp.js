@@ -486,6 +486,19 @@ var FresnelApp;
             $scope.isBitwiseEnumPropertySet = function (prop, enumValue) {
                 return (prop.State.Value & enumValue) != 0;
             };
+            $scope.createAndAssociate = function (prop, classTypeName) {
+                var request = requestBuilder.buildCreateAndAssociateRequest(prop, classTypeName);
+                var promise = fresnelService.createAndSetProperty(request);
+                promise.then(function (promiseResult) {
+                    var response = promiseResult.data;
+                    prop.Error = response.Passed ? "" : response.Messages[0].Text;
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
+                    if (response.Passed) {
+                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.NewObject);
+                    }
+                });
+            };
             $scope.associate = function (prop) {
                 var request = requestBuilder.buildSearchObjectsRequest(prop.Info.FullTypeName);
                 var promise = fresnelService.searchObjects(request);
@@ -632,6 +645,14 @@ var FresnelApp;
             }
             return request;
         };
+        RequestBuilder.prototype.buildCreateAndAssociateRequest = function (prop, classTypeName) {
+            var request = {
+                ObjectID: prop.ObjectID,
+                PropertyName: prop.InternalName,
+                ClassTypeName: classTypeName
+            };
+            return request;
+        };
         RequestBuilder.prototype.buildSetPropertyRequest = function (prop) {
             var request = {
                 ObjectID: prop.ObjectID,
@@ -735,6 +756,10 @@ var FresnelApp;
         };
         FresnelService.prototype.getProperty = function (request) {
             var uri = "api/Explorer/GetObjectProperty";
+            return this.http.post(uri, request);
+        };
+        FresnelService.prototype.createAndSetProperty = function (request) {
+            var uri = "api/Explorer/CreateAndSetProperty";
             return this.http.post(uri, request);
         };
         FresnelService.prototype.setProperty = function (request) {

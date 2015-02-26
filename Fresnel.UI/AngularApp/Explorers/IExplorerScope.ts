@@ -16,6 +16,8 @@
 
         setProperty(prop: PropertyVM);
 
+        createAndAssociate(prop: PropertyVM, classTypeName: string);
+
         associate(prop: PropertyVM);
 
         disassociate(prop: PropertyVM);

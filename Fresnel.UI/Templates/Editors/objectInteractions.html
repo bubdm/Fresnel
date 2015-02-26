@@ -1,16 +1,9 @@
 ﻿<div class="btn-group btn-group-sm">
-    <button type="button"
-            class="btn btn-default"
-            ng-show="prop.IsObject && prop.State.Get.IsEnabled"
-            ng-click="openNewExplorerForProperty(prop)"
-            title="Open contents in a new panel">
-        <i class="fa fa-ellipsis-h"></i>
-    </button>
 
     <button type="button"
             class="btn btn-default"
             ng-show="prop.IsObject && prop.State.Create.IsEnabled"
-            ng-click="createAndAssociate(prop)"
+            ng-click="createAndAssociate(prop, prop.AllowedClassTypes[0])"
             title="Create a new item">
         <i class="fa fa-plus-square"></i>
     </button>
@@ -29,6 +22,14 @@
             ng-click="disassociate(prop)"
             title="Remove this item">
         <i class="fa fa-unlink"></i>
+    </button>
+
+    <button type="button"
+            class="btn btn-default"
+            ng-show="prop.IsObject && prop.State.Get.IsEnabled"
+            ng-click="openNewExplorerForProperty(prop)"
+            title="Open contents in a new panel">
+        <i class="fa fa-ellipsis-h"></i>
     </button>
 
 </div>

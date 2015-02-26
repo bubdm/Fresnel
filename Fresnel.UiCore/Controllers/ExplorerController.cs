@@ -7,6 +7,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
 {
     public class ExplorerController : ApiController
     {
+        private CreateAndSetPropertyCommand _CreateAndSetPropertyCommand;
         private GetObjectCommand _GetObjectCommand;
         private GetPropertyCommand _GetPropertyCommand;
         private SetPropertyCommand _SetPropertyCommand;
@@ -20,6 +21,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
             IEnumerable<ICommand> commands
             )
         {
+            _CreateAndSetPropertyCommand = commands.OfType<CreateAndSetPropertyCommand>().Single();
             _GetObjectCommand = commands.OfType<GetObjectCommand>().Single();
             _GetPropertyCommand = commands.OfType<GetPropertyCommand>().Single(); ;
             _SetPropertyCommand = commands.OfType<SetPropertyCommand>().Single(); ;
@@ -50,6 +52,14 @@ namespace Envivo.Fresnel.UiCore.Controllers
         {
             var request = id;
             var response = _SetPropertyCommand.Invoke(request);
+            return response;
+        }
+
+        [HttpPost]
+        public BaseCommandResponse CreateAndSetProperty([FromBody]CreateAndSetPropertyRequest id)
+        {
+            var request = id;
+            var response = _CreateAndSetPropertyCommand.Invoke(request);
             return response;
         }
 
