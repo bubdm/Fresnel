@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -6,9 +7,11 @@ namespace Envivo.Fresnel.Core.Persistence
 {
     public class NullPersistenceService: IPersistenceService
     {
+        private IQueryable _DummyList = new List<IEntity>().AsQueryable();
+
         public bool IsTypeRecognised(Type objectType)
         {
-            return false;
+            return true;
         }
 
         public object CreateObject(Type objectType)
@@ -23,7 +26,7 @@ namespace Envivo.Fresnel.Core.Persistence
 
         public IQueryable GetObjects(Type objectType)
         {
-            return null;
+            return _DummyList;
         }
 
         public void LoadProperty(Type objectType, Guid id, string propertyName)
