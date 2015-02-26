@@ -66,6 +66,11 @@ module FresnelApp {
             }
 
             $scope.setProperty = function (prop: PropertyVM) {
+                // BUG: This is to prevent 'digest' model changes accidentally triggering server code:
+                // See https://github.com/angular/angular.js/issues/9867
+                if ($scope.$$phase == "$digest")
+                    return;
+
                 var request = requestBuilder.buildSetPropertyRequest(prop);
                 var promise = fresnelService.setProperty(request);
 
