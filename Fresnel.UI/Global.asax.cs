@@ -14,6 +14,7 @@ using Autofac.Integration.WebApi;
 using System.Diagnostics;
 using System.Configuration;
 using System.Reflection;
+using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.UI
 {
@@ -34,18 +35,25 @@ namespace Envivo.Fresnel.UI
 
             RegisterDomainAssembies(domainAssemblies);
         }
-        
+
         private static IEnumerable<Assembly> GetDomainAssemblies()
         {
             var results = new List<Assembly>();
 
             var domainAssemblyPath = ConfigurationManager.AppSettings["DomainAssemblyFile"];
+            if (domainAssemblyPath.IsEmpty())
+            {
+                throw new ApplicationException("The DomainAssemblyFile setting in web.config must be provided");
+            }
             var domainAssembly = Assembly.LoadFrom(domainAssemblyPath);
             results.Add(domainAssembly);
 
             var persistenceAssemblyPath = ConfigurationManager.AppSettings["PersistenceAssemblyFile"];
-            var persistenceAssembly = Assembly.LoadFrom(persistenceAssemblyPath);
-            results.Add(persistenceAssembly);
+            if (persistenceAssemblyPath.IsNotEmpty())
+            {
+                var persistenceAssembly = Assembly.LoadFrom(persistenceAssemblyPath);
+                results.Add(persistenceAssembly);
+            }
 
             return results;
         }
