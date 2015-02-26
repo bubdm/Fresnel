@@ -21,8 +21,7 @@ namespace Envivo.Fresnel.Bootstrap.DomainIoC
             var builder = new ContainerBuilder();
             builder
                 .RegisterTypes(domainClassTypes)
-                .InstancePerDependency()
-                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+                .InstancePerDependency();
 
             builder.Update(_ExistingContainer);
         }
