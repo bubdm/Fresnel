@@ -76,7 +76,11 @@ namespace Envivo.Fresnel.UiCore
                 Description = oCollection.Template.XmlComments.Summary,
                 Properties = this.CreateProperties(oCollection),
                 Methods = this.CreateMethods(oCollection),
-                Items = this.CreateItems(oCollection, allKnownProperties)
+                Items = this.CreateItems(oCollection, allKnownProperties),
+
+                IsTransient = oCollection.ChangeTracker.IsTransient,
+                IsPersistent = oCollection.ChangeTracker.IsPersistent,
+                IsModified = oCollection.ChangeTracker.IsDirty,
             };
 
             this.TrimRedundantContentFrom(result);
@@ -133,6 +137,10 @@ namespace Envivo.Fresnel.UiCore
                 Description = oObject.Template.XmlComments.Summary,
                 Properties = this.CreateProperties(oObject),
                 Methods = this.CreateMethods(oObject),
+
+                IsTransient = oObject.ChangeTracker.IsTransient,
+                IsPersistent = oObject.ChangeTracker.IsPersistent,
+                IsModified = oObject.ChangeTracker.IsDirty,
             };
 
             return result;

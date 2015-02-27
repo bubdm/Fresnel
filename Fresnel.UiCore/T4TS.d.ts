@@ -190,6 +190,9 @@ declare module FresnelApp {
         Type: string;
         Properties: any;
         Methods: any;
+        IsTransient: boolean;
+        IsPersistent: boolean;
+        IsModified: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.ParameterVM **/
     export interface ParameterVM extends FresnelApp.SettableMemberVM {
@@ -228,6 +231,7 @@ declare module FresnelApp {
         ObjectID?: any;
         Index: number;
         InternalName: string;
+        AllowedClassTypes: string[];
         IsRequired: boolean;
         IsLoaded: boolean;
         IsObject: boolean;

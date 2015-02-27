@@ -524,9 +524,28 @@ var FresnelApp;
                 });
             };
             $scope.disassociate = function (prop) {
+                // If we have a *transient* explorer already open for the property's value, 
+                // we need to close it when the property is cleared (not point keeping unwanted objects on screen):
+                var transientExplorer;
+                if (prop.State.Value) {
+                    var propertyObjectValue = appService.identityMap.getObject(prop.State.Value.ID);
+                    if (propertyObjectValue.IsTransient) {
+                        transientExplorer = explorerService.getExplorer(propertyObjectValue.ID);
+                    }
+                }
                 prop.State.Value = null;
                 prop.State.ReferenceValueID = null;
-                $scope.setProperty(prop);
+                var request = requestBuilder.buildSetPropertyRequest(prop);
+                var promise = fresnelService.setProperty(request);
+                promise.then(function (promiseResult) {
+                    var response = promiseResult.data;
+                    prop.Error = response.Passed ? "" : response.Messages[0].Text;
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
+                    if (transientExplorer) {
+                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerClose, transientExplorer);
+                    }
+                });
             };
             $scope.refresh = function (explorer) {
                 var request = requestBuilder.buildGetObjectRequest(explorer.__meta);
