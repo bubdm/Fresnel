@@ -34,6 +34,13 @@
                 searchService.loadNextPage($scope.request, $scope.results, $scope.searchAction);
             }
 
+            $scope.close = function (explorer: Explorer) {
+                // The scope is automatically augmented with the $dismiss() method
+                // See http://angular-ui.github.io/bootstrap/#/modal
+                var modal: any = $scope;
+                modal.$dismiss();
+            }
+
         }
 
     }

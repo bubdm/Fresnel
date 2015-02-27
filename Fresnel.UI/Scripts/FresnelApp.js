@@ -16,6 +16,12 @@ var FresnelApp;
             $scope.loadNextPage = function () {
                 searchService.loadNextPage($scope.request, $scope.results, $scope.searchAction);
             };
+            $scope.close = function (explorer) {
+                // The scope is automatically augmented with the $dismiss() method
+                // See http://angular-ui.github.io/bootstrap/#/modal
+                var modal = $scope;
+                modal.$dismiss();
+            };
         }
         SearchModalController.$inject = [
             '$rootScope',
