@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -21,7 +22,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Boolean with custom titles
         /// </summary>
-        [BooleanConfiguration(TrueValue = "Clockwise", FalseValue = "Anti-clockwise")]
+        [DisplayFormat(DataFormatString="Clockwise|Anti-Clockwise")]
         public virtual bool Orientation { get; set; }
 
         /// <summary>
