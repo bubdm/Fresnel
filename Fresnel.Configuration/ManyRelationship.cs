@@ -1,5 +1,3 @@
-using System;
-
 namespace Envivo.Fresnel.Configuration
 {
     public enum ManyRelationship

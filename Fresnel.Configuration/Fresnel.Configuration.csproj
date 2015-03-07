@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BooleanConfigurationBuilder.cs" />
+    <Compile Include="IConfigurationBuilder.cs" />
     <Compile Include="InputControlTypeEnums.cs" />
     <Compile Include="AssemblyConfiguration.cs" />
     <Compile Include="BaseConfiguration.cs" />
@@ -81,6 +83,9 @@
       <Project>{3ba54d1e-0d73-4c83-a3c7-5fd199e0f468}</Project>
       <Name>Fresnel.Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Attributes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,3 @@
-using System;
-using System.Xml.Serialization;
-
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>

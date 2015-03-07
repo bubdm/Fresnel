@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 
 namespace Envivo.Fresnel.Configuration

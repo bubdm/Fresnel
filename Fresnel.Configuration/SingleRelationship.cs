@@ -1,8 +1,5 @@
-using System;
-
 namespace Envivo.Fresnel.Configuration
 {
-    [Serializable()]
     public enum SingleRelationship
     {
         /// <summary>
