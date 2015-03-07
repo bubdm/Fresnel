@@ -50,9 +50,6 @@ namespace Envivo.Fresnel.Configuration
             get { return _ClassPermissions; }
         }
 
-        //[Browsable(false)]
-        //public List<PermissionsAttribute> ConstructorPermissions { get; private set; }
-
         [Browsable(false)]
         public IDictionary<string, List<PermissionsConfiguration>> PropertyPermissions { get; private set; }
 
@@ -159,15 +156,6 @@ namespace Envivo.Fresnel.Configuration
         {
             _ClassPermissions.Add(classPermissions);
         }
-
-        ///// <summary>
-        ///// Adds the given Permission to the default Constructor. NB: multiple Permissions are supported.
-        ///// </summary>
-        ///// <param name="ctorPermissions"></param>
-        //public void AddConstructorPermissions(PermissionsAttribute ctorPermissions)
-        //{
-        //    this.ConstructorPermissions.Add(ctorPermissions);
-        //}
 
         /// <summary>
         /// Adds the given Permission to the named Property. NB: multiple Permissions are supported.

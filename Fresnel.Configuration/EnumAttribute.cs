@@ -5,9 +5,6 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Attributes for an Enum Property
     /// </summary>
-
-    [Serializable()]
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
     public class EnumAttribute : PropertyConfiguration
     {
         /// <summary>

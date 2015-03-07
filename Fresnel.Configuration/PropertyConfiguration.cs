@@ -3,11 +3,8 @@ using System;
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// Attributes for a Property
+    /// Configuration for a Property
     /// </summary>
-
-    [Serializable()]
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
     public class PropertyConfiguration : MemberConfiguration
     {
         private bool _IsGeneratedByPersistenceStore;
@@ -65,7 +62,6 @@ namespace Envivo.Fresnel.Configuration
         /// This will also mark the property as read-only.
         /// </summary>
         /// <value></value>
-
         public bool IsGeneratedByPersistenceStore
         {
             get { return _IsGeneratedByPersistenceStore; }

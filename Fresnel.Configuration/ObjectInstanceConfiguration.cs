@@ -5,11 +5,8 @@ using System.Collections.Generic;
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// Attributes for a Domain Object Class
+    /// Configuration for a Domain Object Class
     /// </summary>
-
-    [Serializable()]
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public class ObjectInstanceConfiguration : BaseConfiguration
     {
         private static Dictionary<string, string> s_FrameworkMemberNameMap = CreateFrameworkMemberNameMap();
@@ -83,14 +80,12 @@ namespace Envivo.Fresnel.Configuration
         /// Determines if the object can be created by the end user
         /// </summary>
         /// <value></value>
-
         public bool IsCreatable { get; set; }
 
         /// <summary>
         /// Determines if the object can be persisted
         /// </summary>
         /// <value></value>
-
         public bool IsPersistable { get; set; }
 
         /// <summary>
@@ -99,7 +94,6 @@ namespace Envivo.Fresnel.Configuration
         /// If set to FALSE, all Object/list properties are Eager loaded.
         /// </summary>
         /// <value></value>
-
         public bool IsLazyLoaded { get; set; }
 
         /// <summary>
@@ -107,14 +101,12 @@ namespace Envivo.Fresnel.Configuration
         /// Use this with objects that are highly requested and are immutable.
         /// </summary>
         /// <value></value>
-
         public bool IsStaticData { get; set; }
 
         /// <summary>
         /// Determines whether persistant Object's can be modified
         /// </summary>
         /// <value></value>
-
         public bool IsImmutable { get; set; }
 
         /// <summary>
@@ -122,14 +114,12 @@ namespace Envivo.Fresnel.Configuration
         /// Set this attribute to FALSE if the Object accesses a resource that is not thread safe (e.g. Windows controls).
         /// </summary>
         /// <value></value>
-
         public bool IsThreadSafe { get; set; }
 
         /// <summary>
         /// Determines whether the user can elect to lock the object prior to editing it
         /// </summary>
         /// <value></value>
-
         public bool AllowPessimisticLocking { get; set; }
 
         /// <summary>
@@ -143,21 +133,18 @@ namespace Envivo.Fresnel.Configuration
         /// A list of Member names in the order that should be displayed to the end user
         /// </summary>
         /// <value></value>
-
         public string[] MemberDisplayOrder { get; set; }
 
         /// <summary>
         /// A list of Category names in the order that should be displayed to the end user
         /// </summary>
         /// <value></value>
-
         public string[] CategoryDisplayOrder { get; set; }
 
         /// <summary>
         /// A list of Member names that should not be displayed to the end user
         /// </summary>
         /// <value></value>
-
         public string[] HiddenMembers
         {
             get { return _HiddenMemberNames.ToArray(); }
@@ -176,7 +163,6 @@ namespace Envivo.Fresnel.Configuration
         /// Returns TRUE if the Member with the given name should be hidden
         /// </summary>
         /// <param name="memberName"></param>
-
         public bool HasHiddenMemberNamed(string memberName)
         {
             if (_HiddenMemberNamesMap.Count == 0)
@@ -191,7 +177,6 @@ namespace Envivo.Fresnel.Configuration
         /// Returns TRUE if the Member with the given name is a Framework member
         /// </summary>
         /// <param name="memberName"></param>
-
         public bool HasFrameworkMemberCalled(string memberName)
         {
             return s_FrameworkMemberNameMap.Contains(memberName.ToLower());

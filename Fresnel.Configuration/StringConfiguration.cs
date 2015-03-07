@@ -3,11 +3,8 @@ using System;
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// Attributes for a String Property
+    /// Configuration for a String Property
     /// </summary>
-
-    [Serializable()]
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
     public class StringConfiguration : PropertyConfiguration
     {
         protected const short DEFAULT_MAX_LENGTH = 80;
@@ -23,14 +20,12 @@ namespace Envivo.Fresnel.Configuration
         /// The minimum length of this string
         /// </summary>
         /// <value></value>
-
         public int MinLength { get; set; }
 
         /// <summary>
         /// The maximum length of this string
         /// </summary>
         /// <value></value>
-
         public int MaxLength { get; set; }
     }
 }

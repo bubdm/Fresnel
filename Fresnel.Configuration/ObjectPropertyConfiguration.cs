@@ -3,11 +3,8 @@ using System;
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// Attributes for a Domain Object Property
+    /// Configuration for a Domain Object Property
     /// </summary>
-
-    [Serializable()]
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
     public class ObjectPropertyConfiguration : ObjectPropertyBaseConfiguration
     {
         private SingleRelationship _Relationship;
@@ -23,7 +20,6 @@ namespace Envivo.Fresnel.Configuration
         /// The default relationship is "HasA".
         /// </summary>
         /// <value></value>
-
         public SingleRelationship Relationship
         {
             get { return _Relationship; }

@@ -3,11 +3,8 @@ using System;
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// Attributes for a class Member
+    /// Configuration for a class Member
     /// </summary>
-
-    [Serializable()]
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
     public class MemberConfiguration : BaseConfiguration
     {
         public MemberConfiguration()

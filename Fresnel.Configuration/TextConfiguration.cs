@@ -3,11 +3,8 @@ using System;
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// Attributes for a Text (i.e. String) Property
+    /// Configuration for a Text (i.e. String) Property
     /// </summary>
-
-    [Serializable()]
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
     public class TextConfiguration : StringConfiguration
     {
         public TextConfiguration()

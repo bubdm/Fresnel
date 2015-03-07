@@ -4,11 +4,8 @@ using System.Xml.Serialization;
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// Attributes for a Collection Property
+    /// Configuration for a Collection Property
     /// </summary>
-
-    [Serializable()]
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
     public class CollectionPropertyConfiguration : ObjectPropertyBaseConfiguration
     {
         private ManyRelationship _Relationship;
@@ -30,8 +27,6 @@ namespace Envivo.Fresnel.Configuration
         /// The default relationship is "HasMany".
         /// </summary>
         /// <value></value>
-
-        [XmlAttribute()]
         public ManyRelationship Relationship
         {
             get { return _Relationship; }
@@ -63,7 +58,6 @@ namespace Envivo.Fresnel.Configuration
         /// Use this to prevent Domain Objects being added in the wrong operational context.
         /// </summary>
         /// <value></value>
-
         public bool CanAdd { get; set; }
 
         /// <summary>
@@ -71,7 +65,6 @@ namespace Envivo.Fresnel.Configuration
         /// Use this to prevent Domain Objects being removed in the wrong operational context.
         /// </summary>
         /// <value></value>
-
         public bool CanRemove { get; set; }
 
         /// <summary>

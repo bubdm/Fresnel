@@ -5,13 +5,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Attributes for providing static Authorisation
     /// </summary>
-
-    [Serializable()]
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Enum | AttributeTargets.Struct |
-        AttributeTargets.Constructor | AttributeTargets.Method |
-        AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.GenericParameter,
-        AllowMultiple = true)]
-    public class PermissionsConfiguration : Attribute
+    public class PermissionsConfiguration
     {
         /// <summary>
         /// The Role these Permissions apply to
@@ -29,7 +23,6 @@ namespace Envivo.Fresnel.Configuration
         public Allow AllowedOperations { get; set; }
     }
 
-    [Serializable]
     [Flags]
     public enum Allow
     {

@@ -16,7 +16,6 @@ namespace Envivo.Fresnel.Configuration
 
         IEnumerable<PermissionsConfiguration> ClassPermissions { get; }
 
-        //List<PermissionsAttribute> ConstructorPermissions { get; }
         IDictionary<string, List<PermissionsConfiguration>> PropertyPermissions { get; }
 
         IDictionary<string, List<PermissionsConfiguration>> MethodPermissions { get; }
@@ -34,8 +33,6 @@ namespace Envivo.Fresnel.Configuration
         void ConfigureParameter(string methodName, string parameterName, PropertyConfiguration parameterAttribute);
 
         void AddClassPermissions(PermissionsConfiguration classPermissions);
-
-        //void AddConstructorPermissions(PermissionsAttribute ctorPermissions);
 
         void AddPropertyPermissions(string propertyName, PermissionsConfiguration propertyPermissions);
 

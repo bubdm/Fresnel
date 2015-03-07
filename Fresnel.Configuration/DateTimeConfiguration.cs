@@ -3,11 +3,8 @@ using System;
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// Attributes for a DateTime Property
+    /// Configuration for a DateTime Property
     /// </summary>
-
-    [Serializable()]
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
     public class DateTimeConfiguration : PropertyConfiguration
     {
         public DateTimeConfiguration()

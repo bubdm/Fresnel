@@ -6,27 +6,14 @@ namespace Envivo.Fresnel.Configuration
 {
     public static class ConfigurationTypeExtensions
     {
-        //static private Type ApplicationConfigurationType = typeof(ApplicationConfiguration);
         static private Type AssemblyConfigurationType = typeof(AssemblyConfiguration<>);
 
         static private Type ClassConfigurationType = typeof(ClassConfiguration<>);
-
-        ///// <summary>
-        ///// Determines if the given type is an Application Configuration
-        ///// </summary>
-        ///// <param name="type"></param>
-        //
-        //public static bool IsApplicationConfiguration(this Type type)
-        //{
-        //    // NB: Checking IsGenericType prevents the actual interface being recognised
-        //    return type.IsDerivedFrom(ApplicationConfigurationType) && !type.IsInterface && !type.IsGenericType;
-        //}
 
         /// <summary>
         /// Determines if the given type is an Assembly Configuration/mapper
         /// </summary>
         /// <param name="type"></param>
-
         public static bool IsAssemblyConfiguration(this Type type)
         {
             // NB: Checking IsGenericType prevents the actual interface being recognised
@@ -37,7 +24,6 @@ namespace Envivo.Fresnel.Configuration
         /// Determines if the given type is an Assembly Configuration/mapper
         /// </summary>
         /// <param name="type"></param>
-
         public static bool IsAssemblyConfiguration(this Type type, out Assembly domainAssembly)
         {
             domainAssembly = null;
@@ -61,7 +47,6 @@ namespace Envivo.Fresnel.Configuration
         /// Determines if the given type is a class Configuration/mapper
         /// </summary>
         /// <param name="type"></param>
-
         public static bool IsClassConfiguration(this Type type)
         {
             // NB: Checking IsGenericType prevents the actual interface being recognised

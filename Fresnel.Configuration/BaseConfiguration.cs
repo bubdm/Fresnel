@@ -3,12 +3,9 @@ using System;
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// The base class to build concrete Attribute classes
+    /// The base class to build concrete Configuration classes
     /// </summary>
-
-    [Serializable]
-    [AttributeUsage(AttributeTargets.All)]
-    public abstract class BaseConfiguration : System.Attribute
+    public abstract class BaseConfiguration
     {
         public BaseConfiguration()
         {
@@ -20,7 +17,6 @@ namespace Envivo.Fresnel.Configuration
         /// Determines if the associated element should be made visible to the user
         /// </summary>
         /// <value></value>
-
         public bool IsVisible { get; set; }
 
         /// <summary>

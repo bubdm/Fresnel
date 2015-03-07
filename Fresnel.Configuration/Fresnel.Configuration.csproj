@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,35 +42,35 @@
   <ItemGroup>
     <Compile Include="InputControlTypeEnums.cs" />
     <Compile Include="AssemblyConfiguration.cs" />
-    <Compile Include="BaseAttribute.cs" />
-    <Compile Include="BooleanAttribute.cs" />
+    <Compile Include="BaseConfiguration.cs" />
+    <Compile Include="BooleanConfiguration.cs" />
     <Compile Include="ClassConfiguration.cs" />
-    <Compile Include="CollectionInstanceAttribute.cs" />
-    <Compile Include="CollectionPropertyAttribute.cs" />
+    <Compile Include="CollectionInstanceConfiguration.cs" />
+    <Compile Include="CollectionPropertyConfiguration.cs" />
     <Compile Include="ConfigurationTypeExtensions.cs" />
-    <Compile Include="DateTimeAttribute.cs" />
+    <Compile Include="DateTimeConfiguration.cs" />
     <Compile Include="EnumAttribute.cs" />
-    <Compile Include="FilePathAttribute.cs" />
+    <Compile Include="FilePathConfiguration.cs" />
     <Compile Include="FilePathDialogType.cs" />
     <Compile Include="ConfigurationException.cs" />
     <Compile Include="IApplicationConfiguration.cs" />
     <Compile Include="IAssemblyConfiguration.cs" />
     <Compile Include="IClassConfiguration.cs" />
     <Compile Include="ManyRelationship.cs" />
-    <Compile Include="MemberAttribute.cs" />
-    <Compile Include="MethodAttribute.cs" />
-    <Compile Include="NumberAttribute.cs" />
-    <Compile Include="ObjectConstructorAttribute.cs" />
-    <Compile Include="ObjectInstanceAttribute.cs" />
-    <Compile Include="ObjectPropertyAttribute.cs" />
-    <Compile Include="ObjectPropertytBaseAttribute.cs" />
-    <Compile Include="ParameterAttribute.cs" />
-    <Compile Include="PermissionsAttribute.cs" />
+    <Compile Include="MemberConfiguration.cs" />
+    <Compile Include="MethodConfiguration.cs" />
+    <Compile Include="NumberConfiguration.cs" />
+    <Compile Include="ObjectConstructorConfiguration.cs" />
+    <Compile Include="ObjectInstanceConfiguration.cs" />
+    <Compile Include="ObjectPropertyConfiguration.cs" />
+    <Compile Include="ObjectPropertytBaseConfiguration.cs" />
+    <Compile Include="ParameterConfiguration.cs" />
+    <Compile Include="PermissionsConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyAttribute.cs" />
+    <Compile Include="PropertyConfiguration.cs" />
     <Compile Include="SingleRelationship.cs" />
-    <Compile Include="StringAttribute.cs" />
-    <Compile Include="TextAttribute.cs" />
+    <Compile Include="StringConfiguration.cs" />
+    <Compile Include="TextConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fresnel.DomainTypes\Fresnel.DomainTypes.csproj">

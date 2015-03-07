@@ -3,11 +3,8 @@ using System;
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// Attributes for a Boolean Property
+    /// Configuration for a Boolean Property
     /// </summary>
-
-    [Serializable()]
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
     public class BooleanConfiguration : PropertyConfiguration
     {
         public BooleanConfiguration()
