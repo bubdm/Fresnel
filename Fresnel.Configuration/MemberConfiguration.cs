@@ -8,9 +8,9 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
-    public class MemberAttribute : BaseAttribute
+    public class MemberConfiguration : BaseConfiguration
     {
-        public MemberAttribute()
+        public MemberConfiguration()
             : base()
         {
             this.Category = "Main";

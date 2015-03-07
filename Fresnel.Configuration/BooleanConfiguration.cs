@@ -8,9 +8,9 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class BooleanAttribute : PropertyAttribute
+    public class BooleanConfiguration : PropertyConfiguration
     {
-        public BooleanAttribute()
+        public BooleanConfiguration()
             : base()
         {
             this.TrueValue = "Yes";

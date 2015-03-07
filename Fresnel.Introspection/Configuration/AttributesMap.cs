@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.Configuration
     /// Contains all Attributes for a particular Template. Attributes will be extracted from a ClassConfiguration if provided.
     /// </summary>
 
-    public class AttributesMap : Dictionary<Type, BaseAttribute>
+    public class AttributesMap : Dictionary<Type, BaseConfiguration>
     {
         /// <summary>
         /// Returns an attribute that matches the given Attribute type.
@@ -16,7 +16,7 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         /// <param name="requestedAttributeType"></param>
 
-        private BaseAttribute GetAttribute(Type requestedAttributeType)
+        private BaseConfiguration GetAttribute(Type requestedAttributeType)
         {
             // First we'll try to find an exact match:
             var attr = this.TryGetValueOrNull(requestedAttributeType);
@@ -37,7 +37,7 @@ namespace Envivo.Fresnel.Configuration
             }
 
             // We didn't find anything, so create a default Attribute object with default values:
-            attr = (BaseAttribute)Activator.CreateInstance(requestedAttributeType);
+            attr = (BaseConfiguration)Activator.CreateInstance(requestedAttributeType);
             this.Add(requestedAttributeType, attr);
             return attr;
         }
@@ -48,7 +48,7 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         /// <typeparam name="TClass"></typeparam>
 
-        public T Get<T>() where T : BaseAttribute
+        public T Get<T>() where T : BaseConfiguration
         {
             return (T)this.GetAttribute(typeof(T));
         }

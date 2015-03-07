@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 
         public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
-            var attr = tProp.Attributes.Get<NumberAttribute>();
+            var attr = tProp.Attributes.Get<NumberConfiguration>();
 
             targetVM.Info = this.CreateInfoVM(attr);
 
@@ -29,12 +29,12 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 
         public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
-            var attr = tParam.Attributes.Get<NumberAttribute>();
+            var attr = tParam.Attributes.Get<NumberConfiguration>();
 
             targetVM.Info = this.CreateInfoVM(attr);
         }
 
-        private ITypeInfo CreateInfoVM(NumberAttribute attr)
+        private ITypeInfo CreateInfoVM(NumberConfiguration attr)
         {
             return new NumberVM()
             {

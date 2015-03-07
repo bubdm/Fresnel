@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.Core.Permissions
                 assertions.AddFailure(tProperty.Name + " does not have a getter");
             }
 
-            var propertyAttr = tProperty.Attributes.Get<PropertyAttribute>();
+            var propertyAttr = tProperty.Attributes.Get<PropertyConfiguration>();
             if (!propertyAttr.CanRead)
             {
                 assertions.AddFailure(tProperty.Name + " has not been configured for reading");

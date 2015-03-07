@@ -41,7 +41,7 @@ namespace Envivo.Fresnel.SampleModel
         /// It should appear with a 'disabled' icon.
         /// </summary>
         /// <param name="dateTime"></param>
-        public void MethodWithOneParameter([DateTime(PreferredInputControl = InputControlTypes.Date)] DateTime dateTime)
+        public void MethodWithOneParameter([DateTimeConfiguration(PreferredInputControl = InputControlTypes.Date)] DateTime dateTime)
         {
             Trace.TraceInformation(MethodBase.GetCurrentMethod().Name);
         }
@@ -102,7 +102,7 @@ namespace Envivo.Fresnel.SampleModel
         /// The execution happens on a separate thread.
         /// This button has a custom icon.
         /// </summary>
-        [Method(IsAsynchronous = true)]
+        [MethodConfiguration(IsAsynchronous = true)]
         public virtual void LongRunningAsyncMethod()
         {
             var runFor = TimeSpan.FromSeconds(10);
@@ -120,7 +120,7 @@ namespace Envivo.Fresnel.SampleModel
         /// The execution happens on the same thread (the UI is blocked until the method finishes).
         /// </summary>
         /// <returns></returns>
-        [Method(IsAsynchronous = false)]
+        [MethodConfiguration(IsAsynchronous = false)]
         public virtual string LongRunningSyncMethod()
         {
             var runFor = TimeSpan.FromSeconds(10);

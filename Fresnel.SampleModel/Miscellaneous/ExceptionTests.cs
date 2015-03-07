@@ -37,7 +37,7 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
         /// <summary>
         /// This should throw a single exception when the value is set to "Do it!"
         /// </summary>
-        [Boolean(TrueValue = "Do it!", FalseValue = "Don't do it!")]
+        [BooleanConfiguration(TrueValue = "Do it!", FalseValue = "Don't do it!")]
         public virtual bool ThrowExceptionIfTrue
         {
             get { return _Bool; }
@@ -54,7 +54,7 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
         /// <summary>
         /// This should throw a single exception when the value is set to "Do it!"
         /// </summary>
-        [Boolean(TrueValue = "Do it!", FalseValue = "Don't do it!")]
+        [BooleanConfiguration(TrueValue = "Do it!", FalseValue = "Don't do it!")]
         public virtual bool ThrowExceptionIfTrue_Synchronous
         {
             get { return _Bool; }

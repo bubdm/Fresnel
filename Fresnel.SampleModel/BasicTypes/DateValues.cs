@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <remarks>
         /// This should ideally show a PropertyGrid instead of a DatePicker
         /// </remarks>
-        [DateTime(PreferredInputControl = InputControlTypes.Time)]
+        [DateTimeConfiguration(PreferredInputControl = InputControlTypes.Time)]
         public virtual DateTime TimeFormat
         {
             get { return _DateTime; }
@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This is a date showing a Date format.
         /// Clicking the down-arrow will reveal the DatePicker dialog.
         /// </summary>
-        [DateTime(PreferredInputControl = InputControlTypes.Date)]
+        [DateTimeConfiguration(PreferredInputControl = InputControlTypes.Date)]
         public virtual DateTime DateFormat
         {
             get { return _DateTime; }
@@ -53,7 +53,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Date showing a custom format "yyyy MMMM dd (dddd) h:mm tt"
         /// </summary>
-        [DateTime(CustomFormat = "yyyy MMMM dd (dddd) h:mm tt")]
+        [DateTimeConfiguration(CustomFormat = "yyyy MMMM dd (dddd) h:mm tt")]
         public virtual DateTime CustomDateFormat
         {
             get { return _DateTime; }

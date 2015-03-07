@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
-    public class ParameterAttribute : BaseAttribute
+    public class ParameterConfiguration : BaseConfiguration
     {
     }
 }

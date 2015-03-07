@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.Core.Permissions
                 assertions.AddFailure(tProperty.Name + " does not have a setter");
             }
 
-            var propertyAttr = tProperty.Attributes.Get<PropertyAttribute>();
+            var propertyAttr = tProperty.Attributes.Get<PropertyConfiguration>();
             if (!propertyAttr.CanWrite)
             {
                 assertions.AddFailure(tProperty.Name + " has not been configured for writing");

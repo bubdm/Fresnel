@@ -39,12 +39,12 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             this.CheckPropertyType(result);
 
-            var propertyAttr = result.Attributes.Get<PropertyAttribute>();
+            var propertyAttr = result.Attributes.Get<PropertyConfiguration>();
 
             // If the Property name starts with "Parent", we'll treat it as a parent:
             if (!propertyAttr.IsConfiguredAtRunTime && result.FriendlyName.StartsWith("Parent "))
             {
-                var attr = result.Attributes.Get<ObjectPropertyAttribute>();
+                var attr = result.Attributes.Get<ObjectPropertyConfiguration>();
                 attr.Relationship = SingleRelationship.OwnedBy;
                 result.IsParentRelationship = true;
             }
@@ -76,7 +76,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsCollection = true;
                 tProp.IsReferenceType = true;
 
-                var attr = tProp.Attributes.Get<CollectionPropertyAttribute>();
+                var attr = tProp.Attributes.Get<CollectionPropertyConfiguration>();
                 tProp.CanCreate = attr.CanCreate;
                 tProp.CanAdd = attr.CanAdd;
                 tProp.CanRemove = attr.CanRemove;
@@ -96,7 +96,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsValueObject = true;
                 tProp.IsReferenceType = true;
 
-                var attr = tProp.Attributes.Get<ObjectPropertyAttribute>();
+                var attr = tProp.Attributes.Get<ObjectPropertyConfiguration>();
                 attr.Relationship = SingleRelationship.OwnsA;
                 tProp.IsCompositeRelationship = true;
             }
@@ -106,7 +106,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsDomainObject = true;
                 tProp.IsReferenceType = true;
 
-                var attr = tProp.Attributes.Get<ObjectPropertyAttribute>();
+                var attr = tProp.Attributes.Get<ObjectPropertyConfiguration>();
                 tProp.CanCreate = attr.CanCreate;
 
                 tProp.IsCompositeRelationship = (attr.Relationship == SingleRelationship.OwnsA);
@@ -115,11 +115,11 @@ namespace Envivo.Fresnel.Introspection.Templates
             }
 
             // If the Property name starts with "Parent", we'll treat it as a parent:
-            var propertyAttr = tProp.Attributes.Get<PropertyAttribute>();
+            var propertyAttr = tProp.Attributes.Get<PropertyConfiguration>();
             if (!propertyAttr.IsConfiguredAtRunTime &&
                 tProp.FriendlyName.StartsWith("Parent "))
             {
-                var attr = tProp.Attributes.Get<ObjectPropertyAttribute>();
+                var attr = tProp.Attributes.Get<ObjectPropertyConfiguration>();
                 attr.Relationship = SingleRelationship.OwnedBy;
                 tProp.IsParentRelationship = true;
             }

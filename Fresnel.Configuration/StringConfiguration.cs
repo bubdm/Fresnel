@@ -8,11 +8,11 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class StringAttribute : PropertyAttribute
+    public class StringConfiguration : PropertyConfiguration
     {
         protected const short DEFAULT_MAX_LENGTH = 80;
 
-        public StringAttribute()
+        public StringConfiguration()
             : base()
         {
             this.MinLength = 0;

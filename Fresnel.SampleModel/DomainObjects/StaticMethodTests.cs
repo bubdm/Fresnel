@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.SampleModel
     /// A set of static methods.
     /// These methods will appear when you right click on the Class.
     /// </summary>
-    [ObjectInstance(IsPersistable = false)]
+    [ObjectInstanceConfiguration(IsPersistable = false)]
     public class StaticMethodTests
     {
         private StaticMethodTests()
@@ -78,7 +78,7 @@ namespace Envivo.Fresnel.SampleModel
         /// This method takes 10 seconds to run.
         /// The execution happens on a separate thread.
         /// </summary>
-        [Method(IsAsynchronous = true)]
+        [MethodConfiguration(IsAsynchronous = true)]
         public static void LongRunningAsyncMethod()
         {
             var runFor = TimeSpan.FromSeconds(10);
@@ -96,7 +96,7 @@ namespace Envivo.Fresnel.SampleModel
         /// The execution happens on the same thread (the UI is blocked until the method finishes).
         /// </summary>
         /// <returns></returns>
-        [Method(IsAsynchronous = false)]
+        [MethodConfiguration(IsAsynchronous = false)]
         public static string LongRunningSyncMethod()
         {
             var runFor = TimeSpan.FromSeconds(10);

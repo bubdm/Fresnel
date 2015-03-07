@@ -67,7 +67,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The Categories that this Product belongs to
         /// </summary>
-        [CollectionProperty(CanModifyContents = false,
+        [CollectionPropertyConfiguration(CanModifyContents = false,
             Relationship = ManyRelationship.HasMany)]
         public virtual IList<Category> Categories { get; private set; }
 
@@ -84,7 +84,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// This is from the base class
         /// </summary>
-        [Property(IsVisible = false)]
+        [PropertyConfiguration(IsVisible = false)]
         public virtual string HiddenProperty { get; set; }
 
         /// <summary>

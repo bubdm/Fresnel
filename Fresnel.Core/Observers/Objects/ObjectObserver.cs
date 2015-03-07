@@ -127,13 +127,13 @@ namespace Envivo.Fresnel.Core.Observers
                     var tProp = oProp.Template;
                     if (tProp.IsCollection)
                     {
-                        var relationship = tProp.Attributes.Get<CollectionPropertyAttribute>().Relationship;
+                        var relationship = tProp.Attributes.Get<CollectionPropertyConfiguration>().Relationship;
                         if (relationship != ManyRelationship.OwnsMany)
                             continue;
                     }
                     else
                     {
-                        var relationship = tProp.Attributes.Get<ObjectPropertyAttribute>().Relationship;
+                        var relationship = tProp.Attributes.Get<ObjectPropertyConfiguration>().Relationship;
                         if (relationship != SingleRelationship.OwnsA)
                             continue;
                     }
@@ -146,7 +146,7 @@ namespace Envivo.Fresnel.Core.Observers
             foreach (var oProp in this.OuterProperties)
             {
                 var tProp = oProp.Template;
-                var relationship = tProp.Attributes.Get<ObjectPropertyAttribute>().Relationship;
+                var relationship = tProp.Attributes.Get<ObjectPropertyConfiguration>().Relationship;
                 if (relationship != SingleRelationship.OwnedBy)
                     continue;
 

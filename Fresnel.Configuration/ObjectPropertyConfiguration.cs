@@ -8,11 +8,11 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
-    public class ObjectPropertyAttribute : ObjectPropertyBaseAttribute
+    public class ObjectPropertyConfiguration : ObjectPropertyBaseConfiguration
     {
         private SingleRelationship _Relationship;
 
-        public ObjectPropertyAttribute()
+        public ObjectPropertyConfiguration()
             : base()
         {
             this.Relationship = SingleRelationship.HasA;

@@ -8,9 +8,9 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class TextAttribute : StringAttribute
+    public class TextConfiguration : StringConfiguration
     {
-        public TextAttribute()
+        public TextConfiguration()
             : base()
         {
             this.EditMask = string.Empty;

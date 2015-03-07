@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         private Lazy<MethodTemplateMap> _tMethods;
         private Lazy<MethodTemplateMap> _tStaticMethods;
 
-        private ObjectInstanceAttribute _ObjectInstanceAttr;
+        private ObjectInstanceConfiguration _ObjectInstanceAttr;
         private Lazy<int> _InheritanceDepth;
 
         private DynamicMethodBuilder _DynamicMethodBuilder;
@@ -107,7 +107,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             this.DetermineInterfaces();
 
-            _ObjectInstanceAttr = this.Attributes.Get<ObjectInstanceAttribute>();
+            _ObjectInstanceAttr = this.Attributes.Get<ObjectInstanceConfiguration>();
 
             this.IsVisible = _ObjectInstanceAttr.IsVisible;
         }

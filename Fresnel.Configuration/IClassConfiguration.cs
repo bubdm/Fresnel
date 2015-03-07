@@ -4,43 +4,43 @@ namespace Envivo.Fresnel.Configuration
 {
     public interface IClassConfiguration
     {
-        ObjectInstanceAttribute ObjectInstanceConfiguration { get; }
+        ObjectInstanceConfiguration ObjectInstanceConfiguration { get; }
 
-        ObjectConstructorAttribute ConstructorConfiguration { get; }
+        ObjectConstructorConfiguration ConstructorConfiguration { get; }
 
-        IDictionary<string, PropertyAttribute> PropertyConfigurations { get; }
+        IDictionary<string, PropertyConfiguration> PropertyConfigurations { get; }
 
-        IDictionary<string, MethodAttribute> MethodConfigurations { get; }
+        IDictionary<string, MethodConfiguration> MethodConfigurations { get; }
 
-        IDictionary<string, PropertyAttribute> ParameterConfigurations { get; }
+        IDictionary<string, PropertyConfiguration> ParameterConfigurations { get; }
 
-        IEnumerable<PermissionsAttribute> ClassPermissions { get; }
+        IEnumerable<PermissionsConfiguration> ClassPermissions { get; }
 
         //List<PermissionsAttribute> ConstructorPermissions { get; }
-        IDictionary<string, List<PermissionsAttribute>> PropertyPermissions { get; }
+        IDictionary<string, List<PermissionsConfiguration>> PropertyPermissions { get; }
 
-        IDictionary<string, List<PermissionsAttribute>> MethodPermissions { get; }
+        IDictionary<string, List<PermissionsConfiguration>> MethodPermissions { get; }
 
-        IDictionary<string, List<PermissionsAttribute>> ParameterPermissions { get; }
+        IDictionary<string, List<PermissionsConfiguration>> ParameterPermissions { get; }
 
-        void ConfigureClass(ObjectInstanceAttribute objectInstanceAttribute);
+        void ConfigureClass(ObjectInstanceConfiguration objectInstanceAttribute);
 
-        void ConfigureConstructor(ObjectConstructorAttribute constructorAttribute);
+        void ConfigureConstructor(ObjectConstructorConfiguration constructorAttribute);
 
-        void ConfigureProperty(string propertyName, PropertyAttribute propertyAttribute);
+        void ConfigureProperty(string propertyName, PropertyConfiguration propertyAttribute);
 
-        void ConfigureMethod(string methodName, MethodAttribute methodAttribute);
+        void ConfigureMethod(string methodName, MethodConfiguration methodAttribute);
 
-        void ConfigureParameter(string methodName, string parameterName, PropertyAttribute parameterAttribute);
+        void ConfigureParameter(string methodName, string parameterName, PropertyConfiguration parameterAttribute);
 
-        void AddClassPermissions(PermissionsAttribute classPermissions);
+        void AddClassPermissions(PermissionsConfiguration classPermissions);
 
         //void AddConstructorPermissions(PermissionsAttribute ctorPermissions);
 
-        void AddPropertyPermissions(string propertyName, PermissionsAttribute propertyPermissions);
+        void AddPropertyPermissions(string propertyName, PermissionsConfiguration propertyPermissions);
 
-        void AddMethodPermissions(string methodName, PermissionsAttribute methodPermissions);
+        void AddMethodPermissions(string methodName, PermissionsConfiguration methodPermissions);
 
-        void AddParameterPermissions(string methodName, string parameterName, PermissionsAttribute parameterPermissions);
+        void AddParameterPermissions(string methodName, string parameterName, PermissionsConfiguration parameterPermissions);
     }
 }

@@ -9,7 +9,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// This property should only be available on SubProductA
         /// </summary>
-        [Number(IsCurrency = true)]
+        [NumberConfiguration(IsCurrency = true)]
         public virtual double Discount { get; set; }
 
         /// <summary>

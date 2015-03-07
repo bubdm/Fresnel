@@ -12,40 +12,40 @@ namespace Envivo.Fresnel.Configuration
         where T : class
     {
         private string _DomainClassName = string.Empty;
-        private List<PermissionsAttribute> _ClassPermissions;
+        private List<PermissionsConfiguration> _ClassPermissions;
 
         public ClassConfiguration()
         {
             _DomainClassName = typeof(T).Name;
 
-            this.PropertyConfigurations = new Dictionary<string, PropertyAttribute>();
-            this.MethodConfigurations = new Dictionary<string, MethodAttribute>();
-            this.ParameterConfigurations = new Dictionary<string, PropertyAttribute>();
+            this.PropertyConfigurations = new Dictionary<string, PropertyConfiguration>();
+            this.MethodConfigurations = new Dictionary<string, MethodConfiguration>();
+            this.ParameterConfigurations = new Dictionary<string, PropertyConfiguration>();
 
-            _ClassPermissions = new List<PermissionsAttribute>();
+            _ClassPermissions = new List<PermissionsConfiguration>();
             //this.ConstructorPermissions = new List<PermissionsAttribute>();
-            this.PropertyPermissions = new Dictionary<string, List<PermissionsAttribute>>();
-            this.MethodPermissions = new Dictionary<string, List<PermissionsAttribute>>();
-            this.ParameterPermissions = new Dictionary<string, List<PermissionsAttribute>>();
+            this.PropertyPermissions = new Dictionary<string, List<PermissionsConfiguration>>();
+            this.MethodPermissions = new Dictionary<string, List<PermissionsConfiguration>>();
+            this.ParameterPermissions = new Dictionary<string, List<PermissionsConfiguration>>();
         }
 
         [Browsable(false)]
-        public ObjectInstanceAttribute ObjectInstanceConfiguration { get; private set; }
+        public ObjectInstanceConfiguration ObjectInstanceConfiguration { get; private set; }
 
         [Browsable(false)]
-        public ObjectConstructorAttribute ConstructorConfiguration { get; private set; }
+        public ObjectConstructorConfiguration ConstructorConfiguration { get; private set; }
 
         [Browsable(false)]
-        public IDictionary<string, PropertyAttribute> PropertyConfigurations { get; private set; }
+        public IDictionary<string, PropertyConfiguration> PropertyConfigurations { get; private set; }
 
         [Browsable(false)]
-        public IDictionary<string, MethodAttribute> MethodConfigurations { get; private set; }
+        public IDictionary<string, MethodConfiguration> MethodConfigurations { get; private set; }
 
         [Browsable(false)]
-        public IDictionary<string, PropertyAttribute> ParameterConfigurations { get; private set; }
+        public IDictionary<string, PropertyConfiguration> ParameterConfigurations { get; private set; }
 
         [Browsable(false)]
-        public IEnumerable<PermissionsAttribute> ClassPermissions
+        public IEnumerable<PermissionsConfiguration> ClassPermissions
         {
             get { return _ClassPermissions; }
         }
@@ -54,13 +54,13 @@ namespace Envivo.Fresnel.Configuration
         //public List<PermissionsAttribute> ConstructorPermissions { get; private set; }
 
         [Browsable(false)]
-        public IDictionary<string, List<PermissionsAttribute>> PropertyPermissions { get; private set; }
+        public IDictionary<string, List<PermissionsConfiguration>> PropertyPermissions { get; private set; }
 
         [Browsable(false)]
-        public IDictionary<string, List<PermissionsAttribute>> MethodPermissions { get; private set; }
+        public IDictionary<string, List<PermissionsConfiguration>> MethodPermissions { get; private set; }
 
         [Browsable(false)]
-        public IDictionary<string, List<PermissionsAttribute>> ParameterPermissions { get; private set; }
+        public IDictionary<string, List<PermissionsConfiguration>> ParameterPermissions { get; private set; }
 
         /// <summary>
         /// The class being configured. Use this for identifying class members using LINQ/Lambda expressions.
@@ -71,7 +71,7 @@ namespace Envivo.Fresnel.Configuration
         /// Configures this class using the given attribute
         /// </summary>
         /// <param name="objectInstanceAttribute"></param>
-        public void ConfigureClass(ObjectInstanceAttribute objectInstanceAttribute)
+        public void ConfigureClass(ObjectInstanceConfiguration objectInstanceAttribute)
         {
             if (this.ObjectInstanceConfiguration != null)
             {
@@ -86,7 +86,7 @@ namespace Envivo.Fresnel.Configuration
         /// Configures the default Constructor using the given attribute
         /// </summary>
         /// <param name="constructorAttribute"></param>
-        public void ConfigureConstructor(ObjectConstructorAttribute constructorAttribute)
+        public void ConfigureConstructor(ObjectConstructorConfiguration constructorAttribute)
         {
             if (this.ConstructorConfiguration != null)
             {
@@ -102,7 +102,7 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         /// <param name="propertyName"></param>
         /// <param name="propertyAttribute"></param>
-        public void ConfigureProperty(string propertyName, PropertyAttribute propertyAttribute)
+        public void ConfigureProperty(string propertyName, PropertyConfiguration propertyAttribute)
         {
             var key = propertyName;
             if (this.PropertyConfigurations.Contains(key))
@@ -119,7 +119,7 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         /// <param name="methodName"></param>
         /// <param name="methodAttribute"></param>
-        public void ConfigureMethod(string methodName, MethodAttribute methodAttribute)
+        public void ConfigureMethod(string methodName, MethodConfiguration methodAttribute)
         {
             var key = methodName;
             if (this.MethodConfigurations.Contains(key))
@@ -137,7 +137,7 @@ namespace Envivo.Fresnel.Configuration
         /// <param name="methodName"></param>
         /// <param name="parameterName"></param>
         /// <param name="parameterAttribute"></param>
-        public void ConfigureParameter(string methodName, string parameterName, PropertyAttribute parameterAttribute)
+        public void ConfigureParameter(string methodName, string parameterName, PropertyConfiguration parameterAttribute)
         {
             var key = string.Concat(methodName, "%", parameterName);
             if (this.ParameterConfigurations.Contains(key))
@@ -155,7 +155,7 @@ namespace Envivo.Fresnel.Configuration
         /// Adds the given Permission to this Class. NB: multiple Permissions are supported.
         /// </summary>
         /// <param name="classPermissions"></param>
-        public void AddClassPermissions(PermissionsAttribute classPermissions)
+        public void AddClassPermissions(PermissionsConfiguration classPermissions)
         {
             _ClassPermissions.Add(classPermissions);
         }
@@ -174,12 +174,12 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         /// <param name="propertyName"></param>
         /// <param name="propertyPermissions"></param>
-        public void AddPropertyPermissions(string propertyName, PermissionsAttribute propertyPermissions)
+        public void AddPropertyPermissions(string propertyName, PermissionsConfiguration propertyPermissions)
         {
             var permissionsList = this.PropertyPermissions.TryGetValueOrNull(propertyName);
             if (permissionsList == null)
             {
-                permissionsList = new List<PermissionsAttribute>();
+                permissionsList = new List<PermissionsConfiguration>();
                 this.PropertyPermissions[propertyName] = permissionsList;
             }
             permissionsList.Add(propertyPermissions);
@@ -190,12 +190,12 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         /// <param name="methodName"></param>
         /// <param name="methodPermissions"></param>
-        public void AddMethodPermissions(string methodName, PermissionsAttribute methodPermissions)
+        public void AddMethodPermissions(string methodName, PermissionsConfiguration methodPermissions)
         {
             var permissionsList = this.MethodPermissions.TryGetValueOrNull(methodName);
             if (permissionsList == null)
             {
-                permissionsList = new List<PermissionsAttribute>();
+                permissionsList = new List<PermissionsConfiguration>();
                 this.MethodPermissions[methodName] = permissionsList;
             }
             permissionsList.Add(methodPermissions);
@@ -206,13 +206,13 @@ namespace Envivo.Fresnel.Configuration
         /// </summary>
         /// <param name="methodName"></param>
         /// <param name="methodPermissions"></param>
-        public void AddParameterPermissions(string methodName, string parameterName, PermissionsAttribute parameterPermissions)
+        public void AddParameterPermissions(string methodName, string parameterName, PermissionsConfiguration parameterPermissions)
         {
             var key = string.Concat(methodName, "%", parameterName);
             var permissionsList = this.ParameterPermissions.TryGetValueOrNull(key);
             if (permissionsList == null)
             {
-                permissionsList = new List<PermissionsAttribute>();
+                permissionsList = new List<PermissionsConfiguration>();
                 this.ParameterPermissions[key] = permissionsList;
             }
             permissionsList.Add(parameterPermissions);

@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
     public class PropertyTemplate : BaseMemberTemplate, ISettableMemberTemplate
     {
-        private PropertyAttribute _Attribute;
+        private PropertyConfiguration _Attribute;
         private Lazy<IClassTemplate> _InnerClass;
 
         private DynamicMethodBuilder _DynamicMethodBuilder;
@@ -67,7 +67,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         internal override void FinaliseConstruction()
         {
-            _Attribute = this.Attributes.Get<PropertyAttribute>();
+            _Attribute = this.Attributes.Get<PropertyConfiguration>();
 
             base.FinaliseConstruction();
         }

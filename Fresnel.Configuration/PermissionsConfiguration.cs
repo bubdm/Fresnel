@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Configuration
         AttributeTargets.Constructor | AttributeTargets.Method |
         AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.GenericParameter,
         AllowMultiple = true)]
-    public class PermissionsAttribute : Attribute
+    public class PermissionsConfiguration : Attribute
     {
         /// <summary>
         /// The Role these Permissions apply to

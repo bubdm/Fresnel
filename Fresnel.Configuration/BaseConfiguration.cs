@@ -8,9 +8,9 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable]
     [AttributeUsage(AttributeTargets.All)]
-    public abstract class BaseAttribute : System.Attribute
+    public abstract class BaseConfiguration : System.Attribute
     {
-        public BaseAttribute()
+        public BaseConfiguration()
         {
             this.IsVisible = true;
             this.Name = string.Empty;

@@ -8,9 +8,9 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class DateTimeAttribute : PropertyAttribute
+    public class DateTimeConfiguration : PropertyConfiguration
     {
-        public DateTimeAttribute()
+        public DateTimeConfiguration()
             : base()
         {
             this.CustomFormat = "F";

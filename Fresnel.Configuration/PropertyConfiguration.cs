@@ -8,11 +8,11 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
-    public class PropertyAttribute : MemberAttribute
+    public class PropertyConfiguration : MemberConfiguration
     {
         private bool _IsGeneratedByPersistenceStore;
 
-        public PropertyAttribute()
+        public PropertyConfiguration()
         {
             this.BackingFieldName = string.Empty;
             this.CanRead = true;

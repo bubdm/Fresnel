@@ -8,11 +8,11 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class FilePathAttribute : StringAttribute
+    public class FilePathConfiguration : StringConfiguration
     {
         private bool _IsImage;
 
-        public FilePathAttribute()
+        public FilePathConfiguration()
             : base()
         {
             base.MaxLength = 260;

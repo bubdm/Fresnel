@@ -54,7 +54,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a public Number, but should be hidden in the UI.
         /// </summary>
-        [Number(IsVisible = false)]
+        [NumberConfiguration(IsVisible = false)]
         public virtual int HiddenNumber
         {
             get { return _IntValue; }
@@ -65,7 +65,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This is a Number with a range of -234 to +234.
         /// Values beyond the ranges should not be allowed from the UI.
         /// </summary>
-        [Number(MinValue = -234, MaxValue = 234)]
+        [NumberConfiguration(MinValue = -234, MaxValue = 234)]
         public virtual int NumberWithRange
         {
             get { return _IntValue; }
@@ -80,13 +80,13 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Double that is shown using CurrentCulture.NumberFormat.CurrencyDecimalDigits
         /// </summary>
-        [Number(IsCurrency = true)]
+        [NumberConfiguration(IsCurrency = true)]
         public virtual double DoubleNumber { get; set; }
 
         /// <summary>
         /// This is a Float number shown to 5 decimal places
         /// </summary>
-        [Number(DecimalPlaces = 5)]
+        [NumberConfiguration(DecimalPlaces = 5)]
         public virtual float FloatNumberWithPlaces { get; set; }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a number property with a custom title
         /// </summary>
-        [Property(Name = "This name has been made up")]
+        [PropertyConfiguration(Name = "This name has been made up")]
         internal virtual int CustomNumber
         {
             get { return _IntValue; }

@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Class)]
-    public class CollectionInstanceAttribute : ObjectInstanceAttribute
+    public class CollectionInstanceConfiguration : ObjectInstanceConfiguration
     {
     }
 }

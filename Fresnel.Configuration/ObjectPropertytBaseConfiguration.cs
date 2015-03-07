@@ -8,11 +8,11 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
-    public class ObjectPropertyBaseAttribute : PropertyAttribute
+    public class ObjectPropertyBaseConfiguration : PropertyConfiguration
     {
         private bool _IsShownInline;
 
-        public ObjectPropertyBaseAttribute()
+        public ObjectPropertyBaseConfiguration()
             : base()
         {
             this.CanCreate = true;

@@ -9,11 +9,11 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Enum, AllowMultiple = true)]
-    public class CollectionPropertyAttribute : ObjectPropertyBaseAttribute
+    public class CollectionPropertyConfiguration : ObjectPropertyBaseConfiguration
     {
         private ManyRelationship _Relationship;
 
-        public CollectionPropertyAttribute()
+        public CollectionPropertyConfiguration()
             : base()
         {
             this.Relationship = ManyRelationship.HasMany;

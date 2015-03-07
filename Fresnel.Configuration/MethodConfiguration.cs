@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Method)]
-    public class MethodAttribute : MemberAttribute
+    public class MethodConfiguration : MemberConfiguration
     {
         /// <summary>
         /// Determines whether access to this member can be executed on a separate thread,

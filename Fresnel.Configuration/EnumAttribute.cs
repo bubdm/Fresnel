@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class EnumAttribute : PropertyAttribute
+    public class EnumAttribute : PropertyConfiguration
     {
         /// <summary>
         /// The type of Query Specification that is used to restrict the results shown in the UI

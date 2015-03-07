@@ -9,9 +9,9 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class NumberAttribute : PropertyAttribute
+    public class NumberConfiguration : PropertyConfiguration
     {
-        public NumberAttribute()
+        public NumberConfiguration()
             : base()
         {
             this.DecimalPlaces = (short)CultureInfo.CurrentCulture.NumberFormat.NumberDecimalDigits;

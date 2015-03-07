@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         private Lazy<ParameterTemplateMap> _Parameters;
         private Lazy<RapidMethod> _RapidMethod;
 
-        private MethodAttribute _Attribute;
+        private MethodConfiguration _Attribute;
 
         public MethodTemplate
         (
@@ -45,7 +45,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         internal override void FinaliseConstruction()
         {
-            _Attribute = this.Attributes.Get<MethodAttribute>();
+            _Attribute = this.Attributes.Get<MethodConfiguration>();
 
             base.FinaliseConstruction();
         }

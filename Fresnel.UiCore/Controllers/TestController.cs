@@ -31,14 +31,14 @@ namespace Envivo.Fresnel.UiCore.Controllers
         [HttpGet]
         public IClassTemplate GetTemplate()
         {
-            var tClass = _TemplateCache.GetTemplate(typeof(ObjectInstanceAttribute));
+            var tClass = _TemplateCache.GetTemplate(typeof(ObjectInstanceConfiguration));
             return tClass;
         }
 
         [HttpGet]
         public BaseObjectObserver GetObserver()
         {
-            var instance = new ObjectInstanceAttribute();
+            var instance = new ObjectInstanceConfiguration();
             var observer = _ObserverCache.GetObserver(instance);
             return observer;
         }

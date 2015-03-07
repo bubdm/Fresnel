@@ -17,7 +17,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
         public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var tClass = tProp.InnerClass;
-            var attr = tProp.Attributes.Get<BooleanAttribute>();
+            var attr = tProp.Attributes.Get<BooleanConfiguration>();
 
             targetVM.Info = this.CreateInfoVM(tClass, attr);
         }
@@ -25,12 +25,12 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
         public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             var tClass = tParam.InnerClass;
-            var attr = tParam.Attributes.Get<BooleanAttribute>();
+            var attr = tParam.Attributes.Get<BooleanConfiguration>();
 
             targetVM.Info = this.CreateInfoVM(tClass, attr);
         }
 
-        private ITypeInfo CreateInfoVM(IClassTemplate tClass, BooleanAttribute attr)
+        private ITypeInfo CreateInfoVM(IClassTemplate tClass, BooleanConfiguration attr)
         {
             return new BooleanVM()
             {

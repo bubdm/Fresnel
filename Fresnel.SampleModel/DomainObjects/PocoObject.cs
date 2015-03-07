@@ -48,7 +48,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// This is a normal Boolean
         /// </summary>
-        [Property(Category = "Sort 1")]
+        [PropertyConfiguration(Category = "Sort 1")]
         public bool NormalBoolean { get; set; }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// This enum should be shown as a drop-down list.
         /// </summary>
-        [Property(Category = "Sort 2")]
+        [PropertyConfiguration(Category = "Sort 2")]
         public EnumValues.IndividualOptions EnumValue { get; set; }
 
         /// <summary>

@@ -59,7 +59,7 @@ namespace Envivo.Fresnel.Configuration
 
             if (outerClassConfig != null && outerClassConfig.PropertyConfigurations.Count > 0)
             {
-                PropertyAttribute attribute;
+                PropertyConfiguration attribute;
                 if (outerClassConfig.PropertyConfigurations.TryGetValue(propertyInfo.Name, out attribute))
                 {
                     result.Add(attribute.GetType(), attribute);
@@ -202,7 +202,7 @@ namespace Envivo.Fresnel.Configuration
 
             foreach (var item in attributes)
             {
-                var attr = item as BaseAttribute;
+                var attr = item as BaseConfiguration;
                 if (attr == null)
                     continue;
 
@@ -210,7 +210,7 @@ namespace Envivo.Fresnel.Configuration
                 if (attributesMap.Contains(key))
                     continue;
 
-                attributesMap.Add(key, (BaseAttribute)item);
+                attributesMap.Add(key, (BaseConfiguration)item);
             }
         }
     }

@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         private readonly Type _GuidType = typeof(Guid);
         private readonly Type _IAuditType = typeof(IAudit);
 
-        public PropertyTemplate DetermineIdProperty(ClassTemplate tClass, ObjectInstanceAttribute objectInstanceAttribute)
+        public PropertyTemplate DetermineIdProperty(ClassTemplate tClass, ObjectInstanceConfiguration objectInstanceAttribute)
         {
             var properties = tClass.Properties.Values;
 
@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             if (idProperty == null)
                 return;
 
-            var propertyAttr = idProperty.Attributes.Get<PropertyAttribute>();
+            var propertyAttr = idProperty.Attributes.Get<PropertyConfiguration>();
 
             // Users aren't allowed to change PK values:
             propertyAttr.CanWrite = false;
@@ -53,7 +53,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             propertyAttr.CanPersist = true;
         }
 
-        public PropertyTemplate DetermineVersionProperty(ClassTemplate tClass, ObjectInstanceAttribute objectInstanceAttribute)
+        public PropertyTemplate DetermineVersionProperty(ClassTemplate tClass, ObjectInstanceConfiguration objectInstanceAttribute)
         {
             var versionPropertyName = objectInstanceAttribute.VersionPropertyName;
             var versionProperty = tClass.Properties.Values.FirstOrDefault(p => p.Name.IsSameAs(versionPropertyName, true));
@@ -68,7 +68,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             return null;
         }
 
-        public PropertyTemplate DetermineAuditProperty(ClassTemplate tClass, ObjectInstanceAttribute objectInstanceAttribute)
+        public PropertyTemplate DetermineAuditProperty(ClassTemplate tClass, ObjectInstanceConfiguration objectInstanceAttribute)
         {
             var result = tClass.Properties.Values.FirstOrDefault(p => p.PropertyType.IsDerivedFrom(_IAuditType));
             return result;

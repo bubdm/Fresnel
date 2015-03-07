@@ -148,7 +148,7 @@ namespace Envivo.Fresnel.UiCore
 
             if (value is bool)
             {
-                var attr = oProp.Template.Attributes.Get<BooleanAttribute>();
+                var attr = oProp.Template.Attributes.Get<BooleanConfiguration>();
                 var result = (bool)value ? attr.TrueValue : attr.FalseValue;
                 return result;
             }

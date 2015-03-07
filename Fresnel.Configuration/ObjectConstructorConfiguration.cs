@@ -8,9 +8,9 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Interface)]
-    public class ObjectConstructorAttribute : BaseAttribute
+    public class ObjectConstructorConfiguration : BaseConfiguration
     {
-        public ObjectConstructorAttribute()
+        public ObjectConstructorConfiguration()
             : base()
         {
             this.CanCreate = true;

@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// This property should only be available on SubProductB
         /// </summary>
-        [Number(MinValue = 0, MaxValue = 10000)]
+        [NumberConfiguration(MinValue = 0, MaxValue = 10000)]
         public virtual double Quantity { get; set; }
 
         /// <summary>

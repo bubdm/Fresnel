@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.Configuration
 
     [Serializable()]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
-    public class ObjectInstanceAttribute : BaseAttribute
+    public class ObjectInstanceConfiguration : BaseConfiguration
     {
         private static Dictionary<string, string> s_FrameworkMemberNameMap = CreateFrameworkMemberNameMap();
 
@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.Configuration
         private string _IdPropertyName;
         private string _VersionPropertyName;
 
-        public ObjectInstanceAttribute()
+        public ObjectInstanceConfiguration()
             : base()
         {
             this.IsCreatable = true;
