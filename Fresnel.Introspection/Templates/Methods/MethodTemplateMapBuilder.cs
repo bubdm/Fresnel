@@ -8,13 +8,13 @@ namespace Envivo.Fresnel.Introspection.Templates
     public class MethodTemplateMapBuilder
     {
         private MethodInfoMapBuilder _MethodInfoMapBuilder;
-        private AttributesMapBuilder _AttributesMapBuilder;
+        private ConfigurationMapBuilder _AttributesMapBuilder;
         private MethodTemplateBuilder _MethodTemplateBuilder;
 
         public MethodTemplateMapBuilder
         (
             MethodInfoMapBuilder methodInfoMapBuilder,
-            AttributesMapBuilder attributesMapBuilder,
+            ConfigurationMapBuilder attributesMapBuilder,
             MethodTemplateBuilder methodTemplateBuilder
         )
         {

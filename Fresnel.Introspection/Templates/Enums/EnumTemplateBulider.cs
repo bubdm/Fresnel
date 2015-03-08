@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             _EnumTemplateFactory = enumTemplateFactory;
         }
 
-        public EnumTemplate BuildFor(Type enumType, AttributesMap enumAttributes)
+        public EnumTemplate BuildFor(Type enumType, ConfigurationMap enumAttributes)
         {
             var result = _EnumTemplateFactory();
 

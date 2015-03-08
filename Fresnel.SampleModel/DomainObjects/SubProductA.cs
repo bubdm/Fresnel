@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Configuration;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
@@ -9,7 +10,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// This property should only be available on SubProductA
         /// </summary>
-        [NumberConfiguration(IsCurrency = true)]
+        [DataType(DataType.Currency)]
         public virtual double Discount { get; set; }
 
         /// <summary>

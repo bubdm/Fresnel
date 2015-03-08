@@ -1,120 +1,217 @@
+using Envivo.Fresnel.Utils;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Configuration
 {
+    /// <summary>
+    /// Contains all Attributes for a particular Template. Attributes will be extracted from a ClassConfiguration if provided.
+    /// </summary>
+
     public class ConfigurationMapBuilder
     {
-        public ConfigurationMapBuilder
-        (
-        )
+        public ConfigurationMap BuildFor(Type classType)
         {
+            return this.BuildFor(classType, null);
         }
 
         /// <summary>
-        /// Identifies and caches the Configuration objects from the given assembly.
-        /// Note that the given assembly may contain configurations for _other_ assemblies
+        /// Instantiates and initialises the attributes for the given Object Type
         /// </summary>
-        /// <param name="assembly"></param>
-        public ConfigurationMap BuildFor(Assembly assembly)
+        /// <param name="classType"></param>
+
+        public ConfigurationMap BuildFor(Type classType, IClassConfiguration classConfig)
         {
-            var map = new ConfigurationMap();
+            var result = new ConfigurationMap();
 
-            var publicTypes = assembly.GetExportedTypes();
+            var isCustomConfigurationAvailable = false;
+            if (classConfig != null)
+            {
+                var attribute = classConfig.ObjectInstanceConfiguration;
+                if (attribute != null)
+                {
+                    result.Add(attribute.GetType(), attribute);
+                    attribute.IsConfiguredAtRunTime = true;
+                    isCustomConfigurationAvailable = true;
+                }
+            }
 
-            //for (var i = 0; i < publicTypes.Length; i++)
-            //{
-            //    var type = publicTypes[i];
+            if (isCustomConfigurationAvailable == false)
+            {
+                // Use default values:
+                var defaultAtributes = classType.GetCustomAttributes(true);
+                this.LoadAttributesFrom(defaultAtributes, result);
+            }
 
-            //    if (type.IsInterface || type.IsAbstract)
-            //        continue;
-
-            //    Type objectType;
-            //    try
-            //    {
-            //        Assembly domainAssembly = null;
-
-            //        if (type.IsClassConfiguration(out objectType))
-            //        {
-            //            var classConfig = (IClassConfiguration)Activator.CreateInstance(type);
-            //            // Replace the existing configuration:
-            //            _ClassConfigurationMap[objectType] = classConfig;
-            //        }
-            //        else if (type.IsAssemblyConfiguration(out domainAssembly))
-            //        {
-            //            var assemblyConfig = (IAssemblyConfiguration)Activator.CreateInstance(type);
-            //            // Replace the existing configuration:
-            //            _AssemblyConfigurationMap[domainAssembly] = assemblyConfig;
-            //        }
-            //        else if (type.IsApplicationConfiguration())
-            //        {
-            //            var applicationConfig = (IApplicationConfiguration)Activator.CreateInstance(type);
-            //            // Replace the existing configuration:
-            //            _ApplicationConfiguration = applicationConfig;
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Trace.TraceError(ex.ToString());
-            //    }
-            //}
-
-            this.FixMissingConfigurationsFor(map, assembly);
-
-            return map;
+            return result;
         }
 
-        private void FixMissingConfigurationsFor(ConfigurationMap configurationMap, Assembly assembly)
+        /// <summary>
+        /// Instantiates and initialises the attributes for the given Property
+        /// </summary>
+        /// <param name="propertyInfo"></param>
+        public ConfigurationMap BuildFor(PropertyInfo propertyInfo, IClassConfiguration outerClassConfig)
         {
-            //if (_ApplicationConfiguration == null)
-            //{
-            //    _ApplicationConfiguration = new DefaultApplicationConfiguration();
-            //}
+            var result = new ConfigurationMap();
 
-            ////-----
+            var isCustomConfigurationAvailable = false;
 
-            //IAssemblyConfiguration defaultConfiguration;
-            //if (_IsFrameworkAssemblySpecification.IsSatisfiedBy(assembly.GetName()).Passed)
-            //{
-            //    defaultConfiguration = new DefaultFrameworkAssemblyConfiguration(assembly);
-            //}
-            //else
-            //{
-            //    defaultConfiguration = new DefaultDomainAssemblyConfiguration(assembly);
-            //}
+            if (outerClassConfig != null && outerClassConfig.PropertyConfigurations.Count > 0)
+            {
+                PropertyConfiguration attribute;
+                if (outerClassConfig.PropertyConfigurations.TryGetValue(propertyInfo.Name, out attribute))
+                {
+                    result.Add(attribute.GetType(), attribute);
+                    attribute.IsConfiguredAtRunTime = true;
+                    isCustomConfigurationAvailable = true;
+                }
+            }
 
-            ////-----
-            //var assemblyConfig = this.GetAssemblyConfigurationFor(assembly);
+            if (isCustomConfigurationAvailable == false)
+            {
+                // Use default values:
+                var customAtributes = GetInheritedAttributesFrom(propertyInfo);
+                this.LoadAttributesFrom(customAtributes, result);
+            }
 
-            //if (assemblyConfig == null)
-            //{
-            //    assemblyConfig = defaultConfiguration;
-            //    _AssemblyConfigurationMap.Add(assembly, assemblyConfig);
-            //}
+            return result;
+        }
 
-            //if (assemblyConfig.PersistenceConfig == null)
-            //{
-            //    assemblyConfig.ConfigurePersistence(defaultConfiguration.PersistenceConfig);
-            //}
+        /// <summary>
+        /// Instantiates and initialises the attributes for the given Method
+        /// </summary>
+        /// <param name="methodInfo"></param>
 
-            //if (assemblyConfig.QueryRepositoryConfig == null)
-            //{
-            //    assemblyConfig.ConfigureQueryRepository(defaultConfiguration.QueryRepositoryConfig);
-            //}
+        public ConfigurationMap BuildFor(MethodInfo methodInfo, IClassConfiguration outerClassConfig)
+        {
+            var result = new ConfigurationMap();
 
-            //if (assemblyConfig.PreferencesRepositoryConfig == null)
-            //{
-            //    assemblyConfig.ConfigurePreferencesRepository(defaultConfiguration.PreferencesRepositoryConfig);
-            //}
+            var isCustomConfigurationAvailable = false;
 
-            //if (assemblyConfig.SecurityServiceConfig == null)
-            //{
-            //    assemblyConfig.ConfigureSecurityService(defaultConfiguration.SecurityServiceConfig);
-            //}
+            if (outerClassConfig != null && outerClassConfig.MethodConfigurations.Count > 0)
+            {
+                var attribute = outerClassConfig.MethodConfigurations.TryGetValueOrNull(methodInfo.Name);
+                if (attribute != null)
+                {
+                    result.Add(attribute.GetType(), attribute);
+                    attribute.IsConfiguredAtRunTime = true;
+                    isCustomConfigurationAvailable = true;
+                }
+            }
 
-            //if (assemblyConfig.ExportServiceConfig == null)
-            //{
-            //    assemblyConfig.ConfigureExportService(defaultConfiguration.ExportServiceConfig);
-            //}
+            if (isCustomConfigurationAvailable == false)
+            {
+                // Use default values:
+                var customAtributes = FindAttributesFor(methodInfo);
+                this.LoadAttributesFrom(customAtributes, result);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Instantiates and initialises the attributes for the given Parameter
+        /// </summary>
+        /// <param name="parameterInfo"></param>
+
+        public ConfigurationMap BuildFor(ParameterInfo parameterInfo, IClassConfiguration outerClassConfig)
+        {
+            var result = new ConfigurationMap();
+
+            var isCustomConfigurationAvailable = false;
+
+            if (outerClassConfig != null && outerClassConfig.ParameterConfigurations.Count > 0)
+            {
+                // CODE SMELL: This is tightly coupled with ClassConfiguration.ConfigureParameter:
+                var key = string.Concat(parameterInfo.Member.Name, "%", parameterInfo.Name);
+                var attribute = outerClassConfig.ParameterConfigurations.TryGetValueOrNull(key);
+                if (attribute != null)
+                {
+                    result.Add(attribute.GetType(), attribute);
+                    attribute.IsConfiguredAtRunTime = true;
+                    isCustomConfigurationAvailable = true;
+                }
+            }
+
+            if (isCustomConfigurationAvailable == false)
+            {
+                // Use default values:
+                var defaultAttributes = parameterInfo.GetCustomAttributes(true);
+                this.LoadAttributesFrom(defaultAttributes, result);
+            }
+
+            return result;
+        }
+
+        //-----
+        private object[] GetInheritedAttributesFrom(PropertyInfo propertyInfo)
+        {
+            var allTypes = new List<Type>() { propertyInfo.DeclaringType };
+            allTypes.AddRange(propertyInfo.DeclaringType.GetSuperClasses());
+
+            // We have to traverse the parent hierarchy manually. See http://stackoverflow.com/a/2520064/80369
+            foreach (var type in allTypes)
+            {
+                var matchingProperty = type.GetProperty(propertyInfo.Name, propertyInfo.PropertyType);
+                if (matchingProperty == null)
+                    continue;
+
+                var customAttr = matchingProperty.GetCustomAttributes(false);
+                if (customAttr != null)
+                {
+                    return customAttr;
+                }
+            }
+
+            return null;
+        }
+
+        private object[] FindAttributesFor(MethodInfo methodInfo)
+        {
+            var allTypes = new List<Type>() { methodInfo.DeclaringType };
+            allTypes.AddRange(methodInfo.DeclaringType.GetSuperClasses());
+
+            // We have to traverse the parents manualy. See http://stackoverflow.com/a/2520064/80369
+            foreach (var type in allTypes)
+            {
+                var parameterTypes = new List<Type>();
+                foreach (var paramInfo in methodInfo.GetParameters())
+                {
+                    parameterTypes.Add(paramInfo.ParameterType);
+                }
+
+                var matchingMethod = type.GetMethod(methodInfo.Name, parameterTypes.ToArray());
+                if (matchingMethod == null)
+                    continue;
+
+                var customAttr = matchingMethod.GetCustomAttributes(false);
+                if (customAttr != null)
+                {
+                    return customAttr;
+                }
+            }
+
+            return null;
+        }
+
+        private void LoadAttributesFrom(object[] attributes, ConfigurationMap attributesMap)
+        {
+            if (attributes == null)
+                return;
+
+            foreach (var item in attributes)
+            {
+                var attr = item as BaseConfiguration;
+                if (attr == null)
+                    continue;
+
+                var key = item.GetType();
+                if (attributesMap.Contains(key))
+                    continue;
+
+                attributesMap.Add(key, (BaseConfiguration)item);
+            }
         }
     }
 }

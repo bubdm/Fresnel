@@ -23,7 +23,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             _IsObjectTrackableSpecification = isObjectTrackableSpecification;
         }
 
-        public PropertyTemplate BuildFor(ClassTemplate tOuterClass, PropertyInfo propertyInfo, AttributesMap propertyAttributes)
+        public PropertyTemplate BuildFor(ClassTemplate tOuterClass, PropertyInfo propertyInfo, ConfigurationMap propertyAttributes)
         {
             var result = _PropertyTemplateFactory();
 

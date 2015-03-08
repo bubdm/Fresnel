@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.Miscellaneous
 {
@@ -37,7 +38,7 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
         /// <summary>
         /// This should throw a single exception when the value is set to "Do it!"
         /// </summary>
-        [BooleanConfiguration(TrueValue = "Do it!", FalseValue = "Don't do it!")]
+        [DisplayFormat(DataFormatString = "Do it!|Don't do it!")]
         public virtual bool ThrowExceptionIfTrue
         {
             get { return _Bool; }
@@ -54,7 +55,7 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
         /// <summary>
         /// This should throw a single exception when the value is set to "Do it!"
         /// </summary>
-        [BooleanConfiguration(TrueValue = "Do it!", FalseValue = "Don't do it!")]
+        [DisplayFormat(DataFormatString = "Do it!|Don't do it!")]
         public virtual bool ThrowExceptionIfTrue_Synchronous
         {
             get { return _Bool; }

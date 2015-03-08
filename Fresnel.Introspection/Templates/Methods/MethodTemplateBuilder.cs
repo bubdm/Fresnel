@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             _MethodTemplateFactory = methodTemplateFactory;
         }
 
-        public MethodTemplate BuildFor(ClassTemplate tParent, MethodInfo methodInfo, AttributesMap methodAttributes)
+        public MethodTemplate BuildFor(ClassTemplate tParent, MethodInfo methodInfo, ConfigurationMap methodAttributes)
         {
             var result = _MethodTemplateFactory();
 

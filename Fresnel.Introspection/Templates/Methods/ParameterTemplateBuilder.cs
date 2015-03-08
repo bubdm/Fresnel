@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public TemplateCache TemplateCache { get; set; }
 
-        public ParameterTemplate BuildFor(MethodTemplate tMethod, ParameterInfo paramInfo, AttributesMap parameterAttributes)
+        public ParameterTemplate BuildFor(MethodTemplate tMethod, ParameterInfo paramInfo, ConfigurationMap parameterAttributes)
         {
             var result = _paramterFactory();
 

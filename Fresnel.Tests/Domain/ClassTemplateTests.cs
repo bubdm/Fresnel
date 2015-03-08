@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
 
             var typeToInspect = typeof(SampleModel.BasicTypes.TextValues);
 
@@ -56,7 +56,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
 
             var typeToInspect = typeof(SampleModel.Objects.PocoObject);
 
@@ -81,7 +81,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
 
             var typeToInspect = typeof(SampleModel.Objects.PocoObject);
 
@@ -112,7 +112,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
 
             var typeToInspect = typeof(SampleModel.Objects.PocoObject);
 
@@ -135,7 +135,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
             var createCommand = container.Resolve<CreateObjectCommand>();
 
             var typeToInspect = typeof(SampleModel.Objects.PocoObject);
@@ -158,7 +158,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
             var createCommand = container.Resolve<CreateObjectCommand>();
 
             var typeToInspect = typeof(SampleModel.Objects.DetailObject);
@@ -182,7 +182,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
+            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
             var createCommand = container.Resolve<CreateObjectCommand>();
 
             var typeToInspect = typeof(SampleModel.StaticMethodTests);

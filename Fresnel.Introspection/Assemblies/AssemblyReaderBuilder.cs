@@ -7,13 +7,13 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 {
     public class AssemblyReaderBuilder
     {
-        private ConfigurationMapBuilder _ConfigurationMapBuilder;
+        private AssemblyConfigurationMapBuilder _ConfigurationMapBuilder;
         private Func<AssemblyReader> _AssemblyReaderFactory;
         private AbstractClassTemplateBuilder _AbstractClassTemplateBuilder;
 
         public AssemblyReaderBuilder
         (
-            ConfigurationMapBuilder configurationMapBuilder,
+            AssemblyConfigurationMapBuilder configurationMapBuilder,
             Func<AssemblyReader> assemblyReaderFactory,
             AbstractClassTemplateBuilder abstractClassTemplateBuilder
         )

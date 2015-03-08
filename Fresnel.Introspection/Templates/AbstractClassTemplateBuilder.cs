@@ -6,7 +6,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 {
     public class AbstractClassTemplateBuilder
     {
-        private AttributesMapBuilder _AttributesMapBuilder;
+        private ConfigurationMapBuilder _AttributesMapBuilder;
         private EnumTemplateBulider _EnumTemplateBulider;
         private NonReferenceTemplateBuilder _NonReferenceTemplateBuilder;
         private CollectionTemplateBuilder _CollectionTemplateBuilder;
@@ -14,7 +14,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public AbstractClassTemplateBuilder
         (
-            AttributesMapBuilder attributesMapBuilder,
+            ConfigurationMapBuilder attributesMapBuilder,
             EnumTemplateBulider enumTemplateBulider,
             NonReferenceTemplateBuilder nonReferenceTemplateBuilder,
             CollectionTemplateBuilder collectionTemplateBuilder,

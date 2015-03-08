@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             _CollectionTypeIdentifier = collectionTypeIdentifier;
         }
 
-        public CollectionTemplate BuildFor(Type objectType, AttributesMap collectionAttributes)
+        public CollectionTemplate BuildFor(Type objectType, ConfigurationMap collectionAttributes)
         {
             var result = _CollectionTemplateFactory();
 

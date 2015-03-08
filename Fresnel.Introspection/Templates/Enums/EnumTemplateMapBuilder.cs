@@ -8,12 +8,12 @@ namespace Envivo.Fresnel.Introspection.Templates
     public class EnumTemplateMapBuilder
     {
         private EnumTemplateBulider _EnumTemplateBulider;
-        private AttributesMapBuilder _AttributesMapBuilder;
+        private ConfigurationMapBuilder _AttributesMapBuilder;
 
         public EnumTemplateMapBuilder
         (
             EnumTemplateBulider enumTemplateBulider,
-            AttributesMapBuilder attributesMapBuilder
+            ConfigurationMapBuilder attributesMapBuilder
         )
         {
             _EnumTemplateBulider = enumTemplateBulider;

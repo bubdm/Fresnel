@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             _ClassTemplateFactory = classTemplateFactory;
         }
 
-        public ClassTemplate BuildFor(Type classType, AttributesMap classAttributes)
+        public ClassTemplate BuildFor(Type classType, ConfigurationMap classAttributes)
         {
             var result = _ClassTemplateFactory();
 

@@ -1,43 +1,56 @@
 using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// Contains all configurations associated with an Assembly
+    /// Contains all configurations for a particular Template. Configurations will be extracted from a ClassConfiguration if provided.
     /// </summary>
-    public class ConfigurationMap
+
+    public class ConfigurationMap : Dictionary<Type, BaseConfiguration>
     {
-        private readonly Dictionary<Type, IClassConfiguration> _ClassConfigurationMap = new Dictionary<Type, IClassConfiguration>();
-
         /// <summary>
-        /// The Assembly these configurations belong to
+        /// Returns an attribute that matches the given Configuration type.
+        /// If the configuration doesn't exist, a new one is created and returned
         /// </summary>
-        public Assembly Assembly { get; private set; }
+        /// <param name="configurationType"></param>
 
-        public IApplicationConfiguration tApplicationConfiguration { get; internal set; }
-
-        /// <summary>
-        /// Returns the IAssemblyConfiguration for the given Assembly
-        /// </summary>
-
-        public IAssemblyConfiguration GetAssemblyConfiguration { get; internal set; }
-
-        /// <summary>
-        /// Returns the IAssemblyConfiguration for the given Class
-        /// </summary>
-        /// <param name="classType"></param>
-
-        public IClassConfiguration GetClassConfiguration(Type classType)
+        private BaseConfiguration Get(Type configurationType)
         {
-            return _ClassConfigurationMap.TryGetValueOrNull(classType);
+            // First we'll try to find an exact match:
+            var attr = this.TryGetValueOrNull(configurationType);
+            if (attr != null)
+            {
+                return attr;
+            }
+
+            // That didn't work, so find an entry that is a subclass of the requested type:
+            foreach (var existingConfiguration in this.Values)
+            {
+                if (existingConfiguration.GetType().IsSubclassOf(configurationType))
+                {
+                    // Found it - We'll method it to the dictionary to make it faster to locate next time:
+                    this.Add(configurationType, existingConfiguration);
+                    return existingConfiguration;
+                }
+            }
+
+            // TODO: Replace this the a Builder:
+            // We didn't find anything, so create a default Attribute object with default values:
+            attr = (BaseConfiguration)Activator.CreateInstance(configurationType);
+            this.Add(configurationType, attr);
+            return attr;
         }
 
-        internal void SetClassConfiguration(Type classType, IClassConfiguration configuration)
+        /// <summary>
+        /// Returns an attribute that matches the given Attribute type.
+        /// If the attribute doesn't exist, a new one is created and returned
+        /// </summary>
+        /// <typeparam name="TClass"></typeparam>
+        public T Get<T>() where T : BaseConfiguration
         {
-            _ClassConfigurationMap[classType] = configuration;
+            return (T)this.Get(typeof(T));
         }
     }
 }

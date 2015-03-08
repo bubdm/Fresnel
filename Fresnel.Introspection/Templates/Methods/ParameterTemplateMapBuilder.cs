@@ -6,12 +6,12 @@ namespace Envivo.Fresnel.Introspection.Templates
     public class ParameterTemplateMapBuilder
     {
         private ParameterTemplateBuilder _ParameterTemplateBuilder;
-        private AttributesMapBuilder _AttributesMapBuilder;
+        private ConfigurationMapBuilder _AttributesMapBuilder;
 
         public ParameterTemplateMapBuilder
         (
             ParameterTemplateBuilder parameterTemplateBuilder,
-            AttributesMapBuilder attributesMapBuilder
+            ConfigurationMapBuilder attributesMapBuilder
         )
         {
             _ParameterTemplateBuilder = parameterTemplateBuilder;

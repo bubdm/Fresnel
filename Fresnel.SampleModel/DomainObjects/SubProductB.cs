@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
@@ -11,7 +12,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// This property should only be available on SubProductB
         /// </summary>
-        [NumberConfiguration(MinValue = 0, MaxValue = 10000)]
+        [Range(0, 10000)]
         public virtual double Quantity { get; set; }
 
         /// <summary>

@@ -51,7 +51,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// </summary>
         public Assembly Assembly { get; internal set; }
 
-        public ConfigurationMap ConfigurationMap { get; internal set; }
+        public AssemblyConfigurationMap ConfigurationMap { get; internal set; }
 
         public XmlDocsReader XmlDocReader { get; internal set; }
 
