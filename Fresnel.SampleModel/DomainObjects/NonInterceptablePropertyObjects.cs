@@ -12,12 +12,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual long Version { get; set; }
+        public long Version { get; set; }
 
         /// <summary>
         /// DetailObject MUST have non-virtual members i.e. DynamicProxy must not be able to intercept it

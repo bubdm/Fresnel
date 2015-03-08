@@ -1,6 +1,6 @@
 namespace Envivo.Fresnel.Configuration
 {
-    public enum InputControlTypes
+    public enum UiControlType
     {
         // These map to HTML5 field input types (mostly!)
         None,

@@ -12,17 +12,17 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual long Version { get; set; }
+        public long Version { get; set; }
 
         /// <summary>
         /// Please enter the person's Name
         /// </summary>
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Please enter the person's Age
@@ -35,7 +35,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsValid()
+        public bool IsValid()
         {
             _Errors.Clear();
             // Run through the checks here:

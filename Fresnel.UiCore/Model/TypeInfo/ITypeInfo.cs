@@ -5,6 +5,6 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
     public interface ITypeInfo
     {
-        InputControlTypes PreferredControl { get; set; }
+        UiControlType PreferredControl { get; set; }
     }
 }

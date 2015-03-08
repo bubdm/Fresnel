@@ -40,10 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\HasAttribute.cs" />
+    <Compile Include="Attributes\OwnedByAttribute.cs" />
+    <Compile Include="Attributes\OwnsAttribute.cs" />
+    <Compile Include="Attributes\FilterQuerySpecificationAttribute.cs" />
+    <Compile Include="Attributes\FileDialogAttribute.cs" />
+    <Compile Include="Attributes\UiControlHintAttribute.cs" />
     <Compile Include="Attributes\DecimalPlacesAttribute.cs" />
     <Compile Include="Members\BooleanConfigurationBuilder.cs" />
     <Compile Include="IConfigurationBuilder.cs" />
-    <Compile Include="Members\InputControlTypeEnums.cs" />
+    <Compile Include="Members\UiControlTypeEnums.cs" />
     <Compile Include="AssemblyConfiguration.cs" />
     <Compile Include="Members\BaseConfiguration.cs" />
     <Compile Include="Members\BooleanConfiguration.cs" />

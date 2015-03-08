@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -13,14 +14,14 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This is a path to an existing file.
         /// You can drag a Windows file onto this location.
         /// </summary>
-        [FilePathConfiguration(PreferredInputControl = InputControlTypes.File)]
-        public virtual string NormalFilePath
+        [DataType(DataType.Url)]
+        public string NormalFilePath
         {
             get { return _PathValue; }
             set { _PathValue = value; }
@@ -31,8 +32,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// Clicking the hover button will open an "Open File" dialog at the correct folder.
         /// You can drag a Windows file onto this location.
         /// </summary>
-        [FilePathConfiguration(PreferredInputControl = InputControlTypes.File)]
-        public virtual string OpenFilePath
+        [DataType(DataType.Url)]
+        [Dialog(FileDialogType.OpenFile)]
+        public string OpenFilePath
         {
             get { return _PathValue; }
             set { _PathValue = value; }
@@ -40,11 +42,12 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         /// <summary>
         /// This is a path to a new (non-existent) file.
-        /// Clicking the hover button will open an "Save File" dialog the correct folder.
+        /// Clicking the hover button will open an "Save File" dialog at the correct folder.
         /// You can drag a Windows file onto this location.
         /// </summary>
-        [FilePathConfiguration(PreferredInputControl = InputControlTypes.File)]
-        public virtual string SaveFilePath
+        [DataType(DataType.Url)]
+        [Dialog(FileDialogType.SaveFile)]
+        public string SaveFilePath
         {
             get { return _PathValue; }
             set { _PathValue = value; }
@@ -55,8 +58,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// Clicking the hover button will open an "Open Folder" dialog at the correct folder.
         /// You can drag a Windows folder onto this location.
         /// </summary>
-        [FilePathConfiguration(PreferredInputControl = InputControlTypes.File)]
-        public virtual string FolderPath
+        [DataType(DataType.Url)]
+        [Dialog(FileDialogType.FolderBrowser)]
+        public string FolderPath
         {
             get { return _PathValue; }
             set { _PathValue = value; }
@@ -68,8 +72,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// Clicking the hover button will open an "Open Folder" dialog at the correct folder.
         /// You can drag a Windows image file onto this location.
         /// </summary>
-        [FilePathConfiguration(PreferredInputControl = InputControlTypes.File, IsImage = true)]
-        public virtual string ImageFilePath
+        [DataType(DataType.ImageUrl)]
+        [Dialog(FileDialogType.FolderBrowser)]
+        public string ImageFilePath
         {
             get { return _PathValue; }
             set { _PathValue = value; }
@@ -78,11 +83,12 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a path to a file.
         /// Clicking the hover button will open an "Open Folder" dialog at the correct folder.
-        /// The file dialog will show a 'DOC' filter and 'All files' filter
+        /// The file dialog will show a 'DOC' filter and 'TXT' filter
         /// You can drag a Windows image file onto this location.
         /// </summary>
-        [FilePathConfiguration(PreferredInputControl = InputControlTypes.File, Filter = "DOC files|*.doc|All files (*.*)|*.*")]
-        public virtual string FilePathWithFilter
+        [DataType(DataType.Url)]
+        [Dialog(FileDialogType.OpenFile, Filter = "*.doc|*.txt")]
+        public string FilePathWithFilter
         {
             get { return _PathValue; }
             set { _PathValue = value; }

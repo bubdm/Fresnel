@@ -31,12 +31,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         ///

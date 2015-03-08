@@ -1,3 +1,4 @@
+using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -5,19 +6,19 @@ using System.Reflection;
 
 namespace System.ComponentModel.DataAnnotations
 {
+
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class DecimalPlacesAttribute : Attribute
+    public class UiControlHintAttribute : Attribute
     {
-        public DecimalPlacesAttribute()
+        public UiControlHintAttribute()
         {
-            this.Places = 3;
         }
 
-        public DecimalPlacesAttribute(int places)
+        public UiControlHintAttribute(UiControlType control)
         {
-            this.Places = places;
+            this.PreferredUiControl = control;
         }
 
-        public int Places { get; set; }
+        public UiControlType PreferredUiControl { get; set; }
     }
 }

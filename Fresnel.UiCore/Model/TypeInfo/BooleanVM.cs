@@ -9,7 +9,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
     {
         public string Name { get; set; }
 
-        public InputControlTypes PreferredControl { get; set; }
+        public UiControlType PreferredControl { get; set; }
 
         [DefaultValue(false)]
         public bool IsNullable { get; set; }

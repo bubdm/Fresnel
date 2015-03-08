@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -63,12 +64,12 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This enum should be shown as a drop-down list.
         /// </summary>
-        public virtual IndividualOptions EnumValue
+        public IndividualOptions EnumValue
         {
             get { return _EnumValue; }
             set { _EnumValue = value; }
@@ -79,7 +80,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This enum should be shown as a multi-choice check-list.
         /// </summary>
-        public virtual CombinationOptions EnumSwitches
+        public CombinationOptions EnumSwitches
         {
             get { return _EnumSwitches; }
             set { _EnumSwitches = value; }
@@ -89,18 +90,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This enum should be shown as a drop-down list.
         /// The items are restricted (at run-time) using EnumValuesFilterSpecification
         /// </summary>
-        [Enum(Category = "Enum presentation", ItemFilter = typeof(EnumValuesFilterSpecification))]
-        public virtual IndividualOptions EnumValueDropDown
-        {
-            get { return _EnumValue; }
-            set { _EnumValue = value; }
-        }
-
-        /// <summary>
-        /// This enum should be shown as a Slider
-        /// </summary>
-        [Enum(Category = "Enum presentation", PreferredInputControl = InputControlTypes.Range)]
-        public virtual IndividualOptions EnumSlider
+        [Display(GroupName = "Enum presentation")]
+        [FilterQuerySpecification(typeof(EnumValuesFilterSpecification))]
+        public IndividualOptions EnumValueDropDown
         {
             get { return _EnumValue; }
             set { _EnumValue = value; }
@@ -109,8 +101,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This enum should be shown as a set of Radio Options
         /// </summary>
-        [Enum(Category = "Enum presentation", PreferredInputControl = InputControlTypes.Radio)]
-        public virtual IndividualOptions EnumRadioOptions
+        [Display(GroupName = "Enum presentation")]
+        [UiControlHint(UiControlType.Radio)]
+        public IndividualOptions EnumRadioOptions
         {
             get { return _EnumValue; }
             set { _EnumValue = value; }

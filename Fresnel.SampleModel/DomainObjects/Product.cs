@@ -3,6 +3,7 @@ using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
@@ -16,12 +17,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual long Version { get; internal set; }
+        public long Version { get; internal set; }
 
         /// <summary>
         ///
@@ -67,25 +68,24 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The Categories that this Product belongs to
         /// </summary>
-        [CollectionPropertyConfiguration(CanModifyContents = false,
-            Relationship = ManyRelationship.HasMany)]
+        [Has]
         public virtual IList<Category> Categories { get; private set; }
 
         /// <summary>
         /// The name of this Product
         /// </summary>
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The description for this Product
         /// </summary>
-        public virtual string Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// This is from the base class
         /// </summary>
-        [PropertyConfiguration(IsVisible = false)]
-        public virtual string HiddenProperty { get; set; }
+        [Display(AutoGenerateField = false)]
+        public string HiddenProperty { get; set; }
 
         /// <summary>
         /// This has a custom view
@@ -96,7 +96,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// This should render itself as a button with a Green icon
         /// </summary>
         /// <returns></returns>
-        public virtual bool TestMethod1()
+        public bool TestMethod1()
         {
             return true;
         }
@@ -105,7 +105,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// This should render itself as a button with a Grey icon, which only turns green when the argument is provided
         /// </summary>
         /// <returns></returns>
-        public virtual bool TestMethod2(Category categoryParameter)
+        public bool TestMethod2(Category categoryParameter)
         {
             return true;
         }

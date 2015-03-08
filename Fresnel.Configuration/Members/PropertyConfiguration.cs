@@ -78,6 +78,6 @@ namespace Envivo.Fresnel.Configuration
         /// <summary>
         /// The preferred control for viewing and editing the enum value
         /// </summary>
-        public InputControlTypes PreferredInputControl { get; set; }
+        public UiControlType PreferredInputControl { get; set; }
     }
 }

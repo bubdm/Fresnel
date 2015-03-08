@@ -36,9 +36,9 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
             {
                 Name = "datetime",
                 CustomFormat = attr.CustomFormat,
-                PreferredControl = attr.PreferredInputControl != InputControlTypes.None ?
+                PreferredControl = attr.PreferredInputControl != UiControlType.None ?
                                    attr.PreferredInputControl :
-                                   InputControlTypes.DateTimeLocal
+                                   UiControlType.DateTimeLocal
             };
         }
     }

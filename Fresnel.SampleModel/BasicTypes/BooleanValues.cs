@@ -12,23 +12,23 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This is a normal Boolean
         /// </summary>
-        public virtual bool NormalBoolean { get; set; }
+        public bool NormalBoolean { get; set; }
 
         /// <summary>
         /// This is a Boolean with custom titles
         /// </summary>
         [DisplayFormat(DataFormatString="Clockwise|Anti-Clockwise")]
-        public virtual bool Orientation { get; set; }
+        public bool Orientation { get; set; }
 
         /// <summary>
         /// This is a read-only Boolean
         /// </summary>
-        public virtual bool ReadOnlyBool
+        public bool ReadOnlyBool
         {
             get { return this.NormalBoolean; }
         }

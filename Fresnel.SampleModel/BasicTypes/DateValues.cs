@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -13,13 +14,13 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This is an unformatted Date.
         /// Clicking the down-arrow will reveal the DatePicker dialog.
         /// </summary>
-        public virtual DateTime NormalDate
+        public DateTime NormalDate
         {
             get { return _DateTime; }
             set { _DateTime = value; }
@@ -32,8 +33,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <remarks>
         /// This should ideally show a PropertyGrid instead of a DatePicker
         /// </remarks>
-        [DateTimeConfiguration(PreferredInputControl = InputControlTypes.Time)]
-        public virtual DateTime TimeFormat
+        [DataType(DataType.Time)]
+        public DateTime TimeFormat
         {
             get { return _DateTime; }
             set { _DateTime = value; }
@@ -43,8 +44,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This is a date showing a Date format.
         /// Clicking the down-arrow will reveal the DatePicker dialog.
         /// </summary>
-        [DateTimeConfiguration(PreferredInputControl = InputControlTypes.Date)]
-        public virtual DateTime DateFormat
+        [DataType(DataType.Date)]
+        public DateTime DateFormat
         {
             get { return _DateTime; }
             set { _DateTime = value; }
@@ -53,8 +54,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Date showing a custom format "yyyy MMMM dd (dddd) h:mm tt"
         /// </summary>
-        [DateTimeConfiguration(CustomFormat = "yyyy MMMM dd (dddd) h:mm tt")]
-        public virtual DateTime CustomDateFormat
+        [DisplayFormat(DataFormatString = "yyyy MMMM dd (dddd) h:mm tt")]
+        public DateTime CustomDateFormat
         {
             get { return _DateTime; }
             set { _DateTime = value; }
@@ -63,7 +64,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This date has no setter, so should be read-only
         /// </summary>
-        public virtual DateTime DisabledDateFormat
+        public DateTime DisabledDateFormat
         {
             get { return _DateTime; }
         }
@@ -73,7 +74,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a TimeSpan value, and should be editable using an appropriate editor
         /// </summary>
-        public virtual TimeSpan Timespan
+        public TimeSpan Timespan
         {
             get { return _Timespan; }
             set { _Timespan = value; }

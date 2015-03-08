@@ -13,6 +13,6 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 
         public IEnumerable<EnumItemVM> Items { get; set; }
 
-        public InputControlTypes PreferredControl { get; set; }
+        public UiControlType PreferredControl { get; set; }
     }
 }

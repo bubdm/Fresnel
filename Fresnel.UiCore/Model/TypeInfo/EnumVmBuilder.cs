@@ -49,10 +49,10 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
                 Name = "enum",
                 IsBitwiseEnum = tEnum.IsBitwiseEnum,
                 Items = this.CreateEnumItems(tEnum),
-                PreferredControl = tEnum.IsBitwiseEnum ? InputControlTypes.Checkbox :
-                                   attr.PreferredInputControl != InputControlTypes.None ?
+                PreferredControl = tEnum.IsBitwiseEnum ? UiControlType.Checkbox :
+                                   attr.PreferredInputControl != UiControlType.None ?
                                    attr.PreferredInputControl :
-                                   InputControlTypes.Select
+                                   UiControlType.Select
             };
         }
 

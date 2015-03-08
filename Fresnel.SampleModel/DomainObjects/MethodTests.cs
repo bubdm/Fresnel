@@ -3,6 +3,7 @@ using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.Objects;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -41,7 +42,7 @@ namespace Envivo.Fresnel.SampleModel
         /// It should appear with a 'disabled' icon.
         /// </summary>
         /// <param name="dateTime"></param>
-        public void MethodWithOneParameter([DateTimeConfiguration(PreferredInputControl = InputControlTypes.Date)] DateTime dateTime)
+        public void MethodWithOneParameter([DataType(DataType.Date)] DateTime dateTime)
         {
             Trace.TraceInformation(MethodBase.GetCurrentMethod().Name);
         }
@@ -69,7 +70,7 @@ namespace Envivo.Fresnel.SampleModel
         /// It should appear with a 'ready to invoke' icon.
         /// </summary>
         /// <returns></returns>
-        public virtual string MethodThatReturnsA_String()
+        public string MethodThatReturnsA_String()
         {
             return "This is a string";
         }
@@ -99,29 +100,10 @@ namespace Envivo.Fresnel.SampleModel
 
         /// <summary>
         /// This method takes 10 seconds to run.
-        /// The execution happens on a separate thread.
-        /// This button has a custom icon.
-        /// </summary>
-        [MethodConfiguration(IsAsynchronous = true)]
-        public virtual void LongRunningAsyncMethod()
-        {
-            var runFor = TimeSpan.FromSeconds(10);
-            var runUntil = DateTime.Now.Add(runFor);
-
-            while (DateTime.Now < runUntil)
-            {
-                System.Threading.Thread.Sleep(1000);
-                Trace.TraceInformation("Running...");
-            }
-        }
-
-        /// <summary>
-        /// This method takes 10 seconds to run.
         /// The execution happens on the same thread (the UI is blocked until the method finishes).
         /// </summary>
         /// <returns></returns>
-        [MethodConfiguration(IsAsynchronous = false)]
-        public virtual string LongRunningSyncMethod()
+        public string LongRunningSyncMethod()
         {
             var runFor = TimeSpan.FromSeconds(10);
             var runUntil = DateTime.Now.Add(runFor);
@@ -139,7 +121,7 @@ namespace Envivo.Fresnel.SampleModel
         /// This method can be cancelled by the user at any time.
         /// </summary>
         /// <returns></returns>
-        public virtual string MethodThatSupportsCancellation()
+        public string MethodThatSupportsCancellation()
         {
             var progressArgs = new ProgressEventArgs();
             progressArgs.IsCancellationAllowed = true;

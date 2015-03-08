@@ -36,14 +36,14 @@ namespace Envivo.Fresnel.Tests.Proxies
             var dateTimeOffsetVM = vmBuilder.BuildFor(oObject.Properties["A_DateTimeOffset"]);
 
             // Assert:
-            Assert.AreEqual(InputControlTypes.Radio, boolVM.Info.PreferredControl);
-            Assert.AreEqual(InputControlTypes.Text, charVM.Info.PreferredControl);
-            Assert.AreEqual(InputControlTypes.Text, stringVM.Info.PreferredControl);
-            Assert.AreEqual(InputControlTypes.Number, intVM.Info.PreferredControl);
-            Assert.AreEqual(InputControlTypes.Number, doubleVM.Info.PreferredControl);
-            Assert.AreEqual(InputControlTypes.Number, floatVM.Info.PreferredControl);
-            Assert.AreEqual(InputControlTypes.DateTimeLocal, dateTimeVM.Info.PreferredControl);
-            Assert.AreEqual(InputControlTypes.DateTimeLocal, dateTimeOffsetVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.Radio, boolVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.Text, charVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.Text, stringVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.Number, intVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.Number, doubleVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.Number, floatVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.DateTimeLocal, dateTimeVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.DateTimeLocal, dateTimeOffsetVM.Info.PreferredControl);
         }
 
         [Test]
@@ -67,10 +67,10 @@ namespace Envivo.Fresnel.Tests.Proxies
             var passwordVM = vmBuilder.BuildFor(oObject.Properties["PasswordText"]);
 
             // Assert:
-            Assert.AreEqual(InputControlTypes.Text, charVM.Info.PreferredControl);
-            Assert.AreEqual(InputControlTypes.Text, stringVM.Info.PreferredControl);
-            Assert.AreEqual(InputControlTypes.TextArea, multiLineVM.Info.PreferredControl);
-            Assert.AreEqual(InputControlTypes.Password, passwordVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.Text, charVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.Text, stringVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.TextArea, multiLineVM.Info.PreferredControl);
+            Assert.AreEqual(UiControlType.Password, passwordVM.Info.PreferredControl);
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             {
                 if (prop.Info != null)
                 {
-                    Assert.AreNotEqual(InputControlTypes.None, prop.Info.PreferredControl);
+                    Assert.AreNotEqual(UiControlType.None, prop.Info.PreferredControl);
                 }
             }
         }

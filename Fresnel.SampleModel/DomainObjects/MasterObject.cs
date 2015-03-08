@@ -1,6 +1,7 @@
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
@@ -15,7 +16,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         ///
@@ -63,12 +64,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         ///
         /// </summary>
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual Collection<DetailObject> Children { get; private set; }
+        public virtual IList<DetailObject> Children { get; private set; }
 
         /// <summary>
         ///

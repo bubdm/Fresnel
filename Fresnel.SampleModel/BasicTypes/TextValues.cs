@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
@@ -11,22 +12,22 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This is a normal Char.  It shouldn't allow more than 1 character to be entered.
         /// </summary>
-        public virtual char NormalChar { get; set; }
+        public char NormalChar { get; set; }
 
         /// <summary>
         /// This is a normal Text
         /// </summary>
-        public virtual string NormalText { get; set; }
+        public string NormalText { get; set; }
 
         /// <summary>
         /// This is a Text with a public virtual Getter, but a hidden Setter.
         /// </summary>
-        public virtual string ReadOnlyText
+        public string ReadOnlyText
         {
             get { return this.NormalText; }
             internal set { this.NormalText = value; }
@@ -36,7 +37,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This is a Text with a hidden Getter, but a public virtual Setter.
         /// This should not be visible in the UI.
         /// </summary>
-        public virtual string WriteOnlyText
+        public string WriteOnlyText
         {
             internal get { return this.NormalText; }
             set { this.NormalText = value; }
@@ -45,8 +46,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a public virtual Text, but should be hidden in the UI.
         /// </summary>
-        [TextConfiguration(IsVisible = false)]
-        public virtual string HiddenText
+        [Display(AutoGenerateField = false)]
+        public string HiddenText
         {
             get { return this.NormalText; }
             set { this.NormalText = value; }
@@ -55,8 +56,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a multi-line Text. Use SHIFT-ENTER to move to the next line.
         /// </summary>
-        [TextConfiguration(PreferredInputControl = InputControlTypes.TextArea)]
-        public virtual string MultiLineText
+        [DataType(DataType.MultilineText)]
+        public string MultiLineText
         {
             get { return this.NormalText; }
             set { this.NormalText = value; }
@@ -65,8 +66,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Rich Text Text. Use SHIFT-ENTER to move to the next line.
         /// </summary>
-        [TextConfiguration(PreferredInputControl = InputControlTypes.RichTextArea)]
-        public virtual string RichTextText
+        [DataType(DataType.Html)]
+        public string HtmlText
         {
             get { return this.NormalText; }
             set { this.NormalText = value; }
@@ -75,8 +76,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a password string, and should be shown using asterisks
         /// </summary>
-        [TextConfiguration(PreferredInputControl = InputControlTypes.Password)]
-        public virtual string PasswordText
+        [DataType(DataType.Password)]
+        public string PasswordText
         {
             get { return this.NormalText; }
             set { this.NormalText = value; }
@@ -85,8 +86,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Text that cannot exceed 16 characters
         /// </summary>
-        [TextConfiguration(MaxLength = 16)]
-        public virtual string TextWithMaximumSize
+        [MinLength(8)]
+        public string TextWithMaximumSize
         {
             get { return this.NormalText; }
             set { this.NormalText = value; }
@@ -95,7 +96,8 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Text that must be between 8 and 16 characters in length
         /// </summary>
-        [TextConfiguration(MinLength = 8, MaxLength = 16)]
+        [MinLength(8)]
+        [MaxLength(16)]
         internal virtual string TextWithSize
         {
             get { return this.NormalText; }
@@ -105,21 +107,13 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This will force the string to only allow numbers
         /// </summary>
-        [TextConfiguration(MaxLength = 10, EditMask = @"[0-9]*")]
-        public virtual string EditMaskText
+        [MaxLength(10)]
+        [DisplayFormat(DataFormatString = @"[0-9]*")]
+        public string EditMaskText
         {
             get { return this.NormalText; }
             set { this.NormalText = value; }
         }
 
-        private TextValues _Myself;
-
-        /// <summary>
-        /// This returns a reference to this object
-        /// </summary>
-        public virtual TextValues Myself
-        {
-            get { return this; }
-        }
     }
 }

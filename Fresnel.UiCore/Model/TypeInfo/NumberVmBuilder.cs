@@ -43,10 +43,10 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
                 MaxValue = attr.MaxValue,
                 DecimalPlaces = attr.DecimalPlaces,
                 CurrencySymbol = "",
-                PreferredControl = attr.IsCurrency ? InputControlTypes.Currency :
-                                   attr.PreferredInputControl != InputControlTypes.None ?
+                PreferredControl = attr.IsCurrency ? UiControlType.Currency :
+                                   attr.PreferredInputControl != UiControlType.None ?
                                    attr.PreferredInputControl :
-                                   InputControlTypes.Number
+                                   UiControlType.Number
             };
         }
     }

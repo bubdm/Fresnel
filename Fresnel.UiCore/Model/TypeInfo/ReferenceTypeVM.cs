@@ -8,9 +8,9 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
     {
         public string FullTypeName { get; set; }
 
-        public InputControlTypes PreferredControl
+        public UiControlType PreferredControl
         {
-            get { return InputControlTypes.None; }
+            get { return UiControlType.None; }
             set { }
         }
     }

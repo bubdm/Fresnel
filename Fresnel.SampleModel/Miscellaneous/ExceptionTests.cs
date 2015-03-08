@@ -15,12 +15,12 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This property will thrown an exception when it is read
         /// </summary>
-        public virtual string PropertyWithReadError
+        public string PropertyWithReadError
         {
             get { throw new ApplicationException("This property threw an exception when it was accessed"); }
             set { _PropertyValue = value; }
@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
         /// <summary>
         /// This property will thrown an exception when it is modified
         /// </summary>
-        public virtual string PropertyWithWriteError
+        public string PropertyWithWriteError
         {
             get { return _PropertyValue; }
             set { throw new ApplicationException("This property threw an exception when it was updated"); }
@@ -39,7 +39,7 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
         /// This should throw a single exception when the value is set to "Do it!"
         /// </summary>
         [DisplayFormat(DataFormatString = "Do it!|Don't do it!")]
-        public virtual bool ThrowExceptionIfTrue
+        public bool ThrowExceptionIfTrue
         {
             get { return _Bool; }
             set
@@ -56,7 +56,7 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
         /// This should throw a single exception when the value is set to "Do it!"
         /// </summary>
         [DisplayFormat(DataFormatString = "Do it!|Don't do it!")]
-        public virtual bool ThrowExceptionIfTrue_Synchronous
+        public bool ThrowExceptionIfTrue_Synchronous
         {
             get { return _Bool; }
             set
@@ -73,7 +73,7 @@ namespace Envivo.Fresnel.SampleModel.Miscellaneous
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual string ThrowAnException()
+        public string ThrowAnException()
         {
             throw new ApplicationException("This is a forced exception");
         }

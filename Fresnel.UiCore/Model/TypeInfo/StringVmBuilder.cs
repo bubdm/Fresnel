@@ -38,9 +38,9 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
                 MinLength = attr.MinLength,
                 MaxLength = actualType == typeof(char) ? 1 : attr.MaxLength,
                 EditMask = attr.EditMask,
-                PreferredControl = attr.PreferredInputControl != InputControlTypes.None ?
+                PreferredControl = attr.PreferredInputControl != UiControlType.None ?
                                    attr.PreferredInputControl :
-                                   InputControlTypes.Text
+                                   UiControlType.Text
             };
         }
     }

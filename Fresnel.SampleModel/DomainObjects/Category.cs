@@ -66,12 +66,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The name of this category
         /// </summary>
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The description for this category
         /// </summary>
-        public virtual string Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         ///

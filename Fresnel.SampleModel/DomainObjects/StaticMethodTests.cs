@@ -10,7 +10,6 @@ namespace Envivo.Fresnel.SampleModel
     /// A set of static methods.
     /// These methods will appear when you right click on the Class.
     /// </summary>
-    [ObjectInstanceConfiguration(IsPersistable = false)]
     public class StaticMethodTests
     {
         private StaticMethodTests()
@@ -20,7 +19,7 @@ namespace Envivo.Fresnel.SampleModel
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         /// This method returns no value.
@@ -76,27 +75,9 @@ namespace Envivo.Fresnel.SampleModel
 
         /// <summary>
         /// This method takes 10 seconds to run.
-        /// The execution happens on a separate thread.
-        /// </summary>
-        [MethodConfiguration(IsAsynchronous = true)]
-        public static void LongRunningAsyncMethod()
-        {
-            var runFor = TimeSpan.FromSeconds(10);
-            var runUntil = DateTime.Now.Add(runFor);
-
-            while (DateTime.Now < runUntil)
-            {
-                System.Threading.Thread.Sleep(1000);
-                Trace.TraceInformation("Running...");
-            }
-        }
-
-        /// <summary>
-        /// This method takes 10 seconds to run.
         /// The execution happens on the same thread (the UI is blocked until the method finishes).
         /// </summary>
         /// <returns></returns>
-        [MethodConfiguration(IsAsynchronous = false)]
         public static string LongRunningSyncMethod()
         {
             var runFor = TimeSpan.FromSeconds(10);

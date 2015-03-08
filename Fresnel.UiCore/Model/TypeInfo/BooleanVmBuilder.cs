@@ -38,9 +38,9 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
                 IsNullable = tClass.RealType.IsNullableType(),
                 TrueValue = attr.TrueValue,
                 FalseValue = attr.FalseValue,
-                PreferredControl = attr.PreferredInputControl != InputControlTypes.None ?
+                PreferredControl = attr.PreferredInputControl != UiControlType.None ?
                                    attr.PreferredInputControl :
-                                   InputControlTypes.Radio
+                                   UiControlType.Radio
             };
         }
 

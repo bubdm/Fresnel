@@ -13,12 +13,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual Dictionary<string, PocoObject> Map
+        public Dictionary<string, PocoObject> Map
         {
             get { return _Map; }
             protected set { _Map = value; }

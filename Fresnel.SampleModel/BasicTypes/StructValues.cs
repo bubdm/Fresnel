@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
-        public virtual Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         //        /// <summary>
         //        /// This property will not be visible, because it isn't a Value type
@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This will show a PropertyGrid with X/Y values.
         /// The background colour should change when the control gets focus
         /// </summary>
-        public virtual Point Point { get; set; }
+        public Point Point { get; set; }
 
         //        private Rectangle _Rectangle;
         //
@@ -54,12 +54,12 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This will show a PropertyGrid with a colour selector
         /// </summary>
-        public virtual Color Colour { get; set; }
+        public Color Colour { get; set; }
 
         /// <summary>
         /// This will show a PropertyGrid, but the value cannot be changed
         /// </summary>
-        public virtual Color ReadOnlyColour
+        public Color ReadOnlyColour
         {
             get { return this.Colour; }
         }
@@ -67,11 +67,11 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         ///
         /// </summary>
-        public virtual int[] ArrayOfNumbers { get; set; }
+        public int[] ArrayOfNumbers { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual Color[] ArrayOfColours { get; set; }
+        public Color[] ArrayOfColours { get; set; }
     }
 }

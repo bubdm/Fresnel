@@ -3,6 +3,7 @@ using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.SampleModel.BasicTypes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Windows;
 
 namespace Envivo.Fresnel.SampleModel.Objects
@@ -19,10 +20,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
 
         public PocoObject()
         {
-            //this.NormalText = DateTime.Now.ToShortDateString();
-            //this.NormalDate = DateTime.Now;
-            //this.NormalBoolean = true;
-            //this.RecordId = Environment.TickCount;
         }
 
         public override string ToString()
@@ -48,7 +45,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// This is a normal Boolean
         /// </summary>
-        [PropertyConfiguration(Category = "Sort 1")]
+        [Display(GroupName = "Sort 1")]
         public bool NormalBoolean { get; set; }
 
         /// <summary>
@@ -69,7 +66,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// This enum should be shown as a drop-down list.
         /// </summary>
-        [PropertyConfiguration(Category = "Sort 2")]
+        [Display(GroupName = "Sort 2")]
         public EnumValues.IndividualOptions EnumValue { get; set; }
 
         /// <summary>

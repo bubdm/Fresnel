@@ -11,11 +11,11 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// This property should only be available on SubProductA
         /// </summary>
         [DataType(DataType.Currency)]
-        public virtual double Discount { get; set; }
+        public double Discount { get; set; }
 
         /// <summary>
         /// This is from the derived class
         /// </summary>
-        public virtual new string HiddenProperty { get; set; }
+        public new string HiddenProperty { get; set; }
     }
 }

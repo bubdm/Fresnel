@@ -10,19 +10,19 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         ///
         /// </summary>
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The description for this Product
         /// </summary>
-        public virtual string Description { get; set; }
+        public string Description { get; set; }
 
         public override bool Equals(object obj)
         {
             return this.Equals(obj as Money);
         }
 
-        public virtual bool Equals(Money money)
+        public bool Equals(Money money)
         {
             if (money == null)
                 return false;
