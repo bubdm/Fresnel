@@ -14,13 +14,13 @@ namespace Envivo.Fresnel.Configuration
 
         IDictionary<string, PropertyConfiguration> ParameterConfigurations { get; }
 
-        IEnumerable<PermissionsConfiguration> ClassPermissions { get; }
+        IEnumerable<AuthorisationConfiguration> ClassPermissions { get; }
 
-        IDictionary<string, List<PermissionsConfiguration>> PropertyPermissions { get; }
+        IDictionary<string, List<AuthorisationConfiguration>> PropertyPermissions { get; }
 
-        IDictionary<string, List<PermissionsConfiguration>> MethodPermissions { get; }
+        IDictionary<string, List<AuthorisationConfiguration>> MethodPermissions { get; }
 
-        IDictionary<string, List<PermissionsConfiguration>> ParameterPermissions { get; }
+        IDictionary<string, List<AuthorisationConfiguration>> ParameterPermissions { get; }
 
         void ConfigureClass(ObjectInstanceConfiguration objectInstanceAttribute);
 
@@ -32,12 +32,12 @@ namespace Envivo.Fresnel.Configuration
 
         void ConfigureParameter(string methodName, string parameterName, PropertyConfiguration parameterAttribute);
 
-        void AddClassPermissions(PermissionsConfiguration classPermissions);
+        void AddClassPermissions(AuthorisationConfiguration classPermissions);
 
-        void AddPropertyPermissions(string propertyName, PermissionsConfiguration propertyPermissions);
+        void AddPropertyPermissions(string propertyName, AuthorisationConfiguration propertyPermissions);
 
-        void AddMethodPermissions(string methodName, PermissionsConfiguration methodPermissions);
+        void AddMethodPermissions(string methodName, AuthorisationConfiguration methodPermissions);
 
-        void AddParameterPermissions(string methodName, string parameterName, PermissionsConfiguration parameterPermissions);
+        void AddParameterPermissions(string methodName, string parameterName, AuthorisationConfiguration parameterPermissions);
     }
 }

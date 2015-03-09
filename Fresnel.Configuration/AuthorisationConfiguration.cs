@@ -5,7 +5,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Attributes for providing static Authorisation
     /// </summary>
-    public class PermissionsConfiguration
+    public class AuthorisationConfiguration
     {
         /// <summary>
         /// The Role these Permissions apply to
@@ -20,50 +20,55 @@ namespace Envivo.Fresnel.Configuration
         /// <summary>
         /// The operations allowed for the named Role/User
         /// </summary>
-        public Allow AllowedOperations { get; set; }
+        public AllowTypes AllowedOperations { get; set; }
     }
 
     [Flags]
-    public enum Allow
+    public enum AllowTypes
     {
         /// <summary>
         /// No permissions
         /// </summary>
-        None = 0,
+        None,
 
         /// <summary>
         /// Allow Create
         /// </summary>
-        Create = 1,
+        Create,
 
         /// <summary>
         /// Allow Read
         /// </summary>
-        Read = 2,
+        Read,
 
         /// <summary>
         /// Allow Write
         /// </summary>
-        Write = 4,
+        Write,
 
         /// <summary>
         /// Allow Add to a List or Collection
         /// </summary>
-        Add = 8,
+        Add,
 
         /// <summary>
         /// Allow Remove from a List or Collection
         /// </summary>
-        Remove = 16,
+        Remove,
+
+        /// <summary>
+        /// Allow the item to be cleared
+        /// </summary>
+        Clear,
 
         /// <summary>
         /// Allow Method Invoke
         /// </summary>
-        Invoke = 32,
+        Invoke,
 
         /// <summary>
         /// Allow All operations
         /// </summary>
-        All = 255
+        All
     }
 }

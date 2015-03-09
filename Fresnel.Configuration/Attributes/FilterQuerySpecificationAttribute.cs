@@ -16,9 +16,9 @@ namespace System.ComponentModel.DataAnnotations
         {
         }
 
-        public FilterQuerySpecificationAttribute(Type SpecificationType)
+        public FilterQuerySpecificationAttribute(Type specificationType)
         {
-            this.SpecificationType = SpecificationType;
+            this.SpecificationType = specificationType;
         }
 
         public Type SpecificationType { get; set; }
