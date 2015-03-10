@@ -46,7 +46,7 @@
     <Compile Include="Commands\SetBackingFieldCommand.cs" />
     <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Commands\GetPropertyCommand.cs" />
-    <Compile Include="Configuration\ConfigurationMap.cs" />
+    <Compile Include="Configuration\ConfigurationResolver.cs" />
     <Compile Include="Configuration\ConfigurationMapBuilder.cs" />
     <Compile Include="Configuration\AssemblyConfigurationMap.cs">
       <SubType>Code</SubType>

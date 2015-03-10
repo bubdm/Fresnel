@@ -8,9 +8,10 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Contains all configurations for a particular Template. Configurations will be extracted from a ClassConfiguration if provided.
     /// </summary>
-    public class ConfigurationMap : Dictionary<Type, BaseConfiguration>
+    public class ConfigurationMap
     {
         private IEnumerable<IConfigurationBuilder> _ConfigurationBuilders;
+        private Dictionary<Type, Attribute> _KnownAttributes = new Dictionary<Type, Attribute>();
 
         public ConfigurationMap
             (
@@ -18,20 +19,35 @@ namespace Envivo.Fresnel.Configuration
             )
         {
             _ConfigurationBuilders = configurationBuilders;
-            this.Attributes = new Attribute[0];
         }
 
-        public IEnumerable<Attribute> Attributes { get; set; }
+        /// <summary>
+        /// Returns an attribute that matches the given Attribute type.
+        /// If the attribute doesn't exist, a new one is created and returned
+        /// </summary>
+        /// <typeparam name="TAttribute"></typeparam>
+        public TAttribute Get<TAttribute>()
+            where TAttribute : Attribute
+        {
+            return (TAttribute)this.Get(typeof(TAttribute), null);
+        }
+
+        public TAttribute Get<TAttribute, TClass>()
+            where TAttribute : Attribute
+        {
+            return (TAttribute)this.Get(typeof(TAttribute), typeof(TClass));
+        }
+
 
         /// <summary>
         /// Returns an attribute that matches the given Configuration type.
         /// If the configuration doesn't exist, a new one is created and returned
         /// </summary>
-        /// <param name="configurationType"></param>
-        private BaseConfiguration Get(Type configurationType)
+        /// <param name="attributeType"></param>
+        private Attribute Get(Type attributeType, Type classType)
         {
             // First we'll try to find an exact match:
-            var config = this.TryGetValueOrNull(configurationType);
+            var config = _KnownAttributes.TryGetValueOrNull(attributeType);
             if (config != null)
             {
                 return config;
@@ -49,21 +65,11 @@ namespace Envivo.Fresnel.Configuration
             //}
 
             // We didn't find anything, so create a default Attribute object with default values:
-            var configBuilder = _ConfigurationBuilders.Single(c => c.GetType().GenericTypeArguments.First() == configurationType);
-            config = configBuilder.BuildFrom(this.Attributes);
+            var configBuilder = _ConfigurationBuilders.Single(c => c.GetType().GenericTypeArguments.First() == attributeType);
+            config = configBuilder.BuildFrom(_KnownAttributes.Values);
 
-            this.Add(configurationType, config);
+            this.Add(attributeType, config);
             return config;
-        }
-
-        /// <summary>
-        /// Returns an attribute that matches the given Attribute type.
-        /// If the attribute doesn't exist, a new one is created and returned
-        /// </summary>
-        /// <typeparam name="TClass"></typeparam>
-        public T Get<T>() where T : BaseConfiguration
-        {
-            return (T)this.Get(typeof(T));
         }
     }
 }

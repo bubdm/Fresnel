@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Envivo.Fresnel.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,198 +14,180 @@ namespace Envivo.Fresnel.Configuration
         where T : class
     {
         private string _DomainClassName = string.Empty;
-        private List<AuthorisationConfiguration> _ClassPermissions;
+
+        private List<Attribute> _ClassAttributes = new List<Attribute>();
+        private List<Attribute> _ConstructorAttributes = new List<Attribute>();
+        private Dictionary<string, IEnumerable<Attribute>> _PropertyAttributes = new Dictionary<string, IEnumerable<Attribute>>();
+        private Dictionary<string, IEnumerable<Attribute>> _MethodAttributes = new Dictionary<string, IEnumerable<Attribute>>();
+        private Dictionary<string, IEnumerable<Attribute>> _ParameterAttributes = new Dictionary<string, IEnumerable<Attribute>>();
+
+        private List<Attribute> _ClassPermissions = new List<Attribute>();
+        private List<Attribute> _ConstructorPermissions = new List<Attribute>();
+        private Dictionary<string, IEnumerable<Attribute>> _PropertyPermissions = new Dictionary<string, IEnumerable<Attribute>>();
+        private Dictionary<string, IEnumerable<Attribute>> _MethodPermissions = new Dictionary<string, IEnumerable<Attribute>>();
+        private Dictionary<string, IEnumerable<Attribute>> _ParameterPermissions = new Dictionary<string, IEnumerable<Attribute>>();
 
         public ClassConfiguration()
         {
             _DomainClassName = typeof(T).Name;
-
-            this.PropertyConfigurations = new Dictionary<string, PropertyConfiguration>();
-            this.MethodConfigurations = new Dictionary<string, MethodConfiguration>();
-            this.ParameterConfigurations = new Dictionary<string, PropertyConfiguration>();
-
-            _ClassPermissions = new List<AuthorisationConfiguration>();
-            //this.ConstructorPermissions = new List<PermissionsAttribute>();
-            this.PropertyPermissions = new Dictionary<string, List<AuthorisationConfiguration>>();
-            this.MethodPermissions = new Dictionary<string, List<AuthorisationConfiguration>>();
-            this.ParameterPermissions = new Dictionary<string, List<AuthorisationConfiguration>>();
         }
 
-        [Browsable(false)]
-        public ObjectInstanceConfiguration ObjectInstanceConfiguration { get; private set; }
+        public IEnumerable<Attribute> ClassAttributes
+        {
+            get { return _ClassAttributes; }
+        }
 
-        [Browsable(false)]
-        public ObjectConstructorConfiguration ConstructorConfiguration { get; private set; }
+        public IEnumerable<Attribute> ConstructorAttributes
+        {
+            get { return _ConstructorAttributes; }
+        }
 
-        [Browsable(false)]
-        public IDictionary<string, PropertyConfiguration> PropertyConfigurations { get; private set; }
+        public IDictionary<string, IEnumerable<Attribute>> PropertyAttributes
+        {
+            get { return _PropertyAttributes; }
+        }
 
-        [Browsable(false)]
-        public IDictionary<string, MethodConfiguration> MethodConfigurations { get; private set; }
+        public IDictionary<string, IEnumerable<Attribute>> MethodAttributes
+        {
+            get { return _MethodAttributes; }
+        }
 
-        [Browsable(false)]
-        public IDictionary<string, PropertyConfiguration> ParameterConfigurations { get; private set; }
+        public IDictionary<string, IEnumerable<Attribute>> ParameterAttributes
+        {
+            get { return _ParameterAttributes; }
+        }
 
-        [Browsable(false)]
-        public IEnumerable<AuthorisationConfiguration> ClassPermissions
+        public IEnumerable<Attribute> ClassPermissions
         {
             get { return _ClassPermissions; }
         }
 
-        [Browsable(false)]
-        public IDictionary<string, List<AuthorisationConfiguration>> PropertyPermissions { get; private set; }
-
-        [Browsable(false)]
-        public IDictionary<string, List<AuthorisationConfiguration>> MethodPermissions { get; private set; }
-
-        [Browsable(false)]
-        public IDictionary<string, List<AuthorisationConfiguration>> ParameterPermissions { get; private set; }
-
-        /// <summary>
-        /// The class being configured. Use this for identifying class members using LINQ/Lambda expressions.
-        /// </summary>
-        public T ClassType { get; private set; }
-
-        /// <summary>
-        /// Configures this class using the given attribute
-        /// </summary>
-        /// <param name="objectInstanceAttribute"></param>
-        public void ConfigureClass(ObjectInstanceConfiguration objectInstanceAttribute)
+        public IDictionary<string, IEnumerable<Attribute>> PropertyPermissionAttributes
         {
-            if (this.ObjectInstanceConfiguration != null)
+            get { return _PropertyPermissions; }
+        }
+
+        public IDictionary<string, IEnumerable<Attribute>> MethodPermissionAttributes
+        {
+            get { return _MethodPermissions; }
+        }
+
+        public IDictionary<string, IEnumerable<Attribute>> ParameterPermissionAttributes
+        {
+            get { return _ParameterPermissions; }
+        }
+
+        public void ConfigureClass(IEnumerable<Attribute> classAttributes)
+        {
+            if (_ClassAttributes.Any())
             {
                 var msg = string.Concat("Cannot have multiple configurations for class ", _DomainClassName);
                 throw new ConfigurationException(msg);
             }
 
-            this.ObjectInstanceConfiguration = objectInstanceAttribute;
+            _ClassAttributes = classAttributes.ToList();
         }
 
-        /// <summary>
-        /// Configures the default Constructor using the given attribute
-        /// </summary>
-        /// <param name="constructorAttribute"></param>
-        public void ConfigureConstructor(ObjectConstructorConfiguration constructorAttribute)
+        public void ConfigureConstructor(IEnumerable<Attribute> constructorAttributes)
         {
-            if (this.ConstructorConfiguration != null)
+            if (_ConstructorAttributes.Any())
             {
                 var msg = string.Concat("Cannot have multiple configurations for constructor on ", _DomainClassName);
                 throw new ConfigurationException(msg);
             }
 
-            this.ConstructorConfiguration = constructorAttribute;
+            _ConstructorAttributes = constructorAttributes.ToList();
         }
 
-        /// <summary>
-        /// Configures the Property using the given Attribute
-        /// </summary>
-        /// <param name="propertyName"></param>
-        /// <param name="propertyAttribute"></param>
-        public void ConfigureProperty(string propertyName, PropertyConfiguration propertyAttribute)
+        public void ConfigureProperty(string propertyName, IEnumerable<Attribute> propertyAttributes)
         {
             var key = propertyName;
-            if (this.PropertyConfigurations.Contains(key))
+            if (_PropertyAttributes.Contains(key))
             {
                 var msg = string.Concat("Cannot have multiple configurations for property ", _DomainClassName, ".", propertyName);
                 throw new ConfigurationException(msg);
             }
 
-            this.PropertyConfigurations.Add(key, propertyAttribute);
+            _PropertyAttributes.Add(key, propertyAttributes);
         }
 
-        /// <summary>
-        /// Configures the Method using the given attribute
-        /// </summary>
-        /// <param name="methodName"></param>
-        /// <param name="methodAttribute"></param>
-        public void ConfigureMethod(string methodName, MethodConfiguration methodAttribute)
+        public void ConfigureMethod(string methodName, IEnumerable<Attribute> methodAttributes)
         {
             var key = methodName;
-            if (this.MethodConfigurations.Contains(key))
+            if (_MethodAttributes.Contains(key))
             {
                 var msg = string.Concat("Cannot have multiple configurations for method ", _DomainClassName, ".", methodName);
                 throw new ConfigurationException(msg);
             }
 
-            this.MethodConfigurations.Add(key, methodAttribute);
+            _MethodAttributes.Add(key, methodAttributes);
         }
 
-        /// <summary>
-        /// Configures the Parameter using the given attribute
-        /// </summary>
-        /// <param name="methodName"></param>
-        /// <param name="parameterName"></param>
-        /// <param name="parameterAttribute"></param>
-        public void ConfigureParameter(string methodName, string parameterName, PropertyConfiguration parameterAttribute)
+        public void ConfigureParameter(string methodName, string parameterName, IEnumerable<Attribute> parameterAttributes)
         {
             var key = string.Concat(methodName, "%", parameterName);
-            if (this.ParameterConfigurations.Contains(key))
+            if (_ParameterAttributes.Contains(key))
             {
                 var msg = string.Concat("Cannot have multiple configurations for parameter ", _DomainClassName, ".", methodName, "(", parameterName, ")");
                 throw new ConfigurationException(msg);
             }
 
-            this.ParameterConfigurations.Add(key, parameterAttribute);
+            _ParameterAttributes.Add(key, parameterAttributes);
         }
 
-        //-----
-
-        /// <summary>
-        /// Adds the given Permission to this Class. NB: multiple Permissions are supported.
-        /// </summary>
-        /// <param name="classPermissions"></param>
-        public void AddClassPermissions(AuthorisationConfiguration classPermissions)
+        public void AddClassPermissions(IEnumerable<Attribute> classPermissions)
         {
-            _ClassPermissions.Add(classPermissions);
+            _ClassPermissions.AddRange(classPermissions);
         }
 
-        /// <summary>
-        /// Adds the given Permission to the named Property. NB: multiple Permissions are supported.
-        /// </summary>
-        /// <param name="propertyName"></param>
-        /// <param name="propertyPermissions"></param>
-        public void AddPropertyPermissions(string propertyName, AuthorisationConfiguration propertyPermissions)
+        public void AddPropertyPermissions(string propertyName, IEnumerable<Attribute> propertyPermissionAttributes)
         {
-            var permissionsList = this.PropertyPermissions.TryGetValueOrNull(propertyName);
+            var permissionsList = _PropertyPermissions.TryGetValueOrNull(propertyName);
             if (permissionsList == null)
             {
-                permissionsList = new List<AuthorisationConfiguration>();
-                this.PropertyPermissions[propertyName] = permissionsList;
+                permissionsList = propertyPermissionAttributes;
             }
-            permissionsList.Add(propertyPermissions);
+            else
+            {
+                var extendedList = permissionsList.ToList();
+                extendedList.AddRange(propertyPermissionAttributes);
+                permissionsList = extendedList;
+            }
+            _PropertyPermissions[propertyName] = permissionsList;
         }
 
-        /// <summary>
-        /// Adds the given Permission to the named Method. NB: multiple Permissions are supported.
-        /// </summary>
-        /// <param name="methodName"></param>
-        /// <param name="methodPermissions"></param>
-        public void AddMethodPermissions(string methodName, AuthorisationConfiguration methodPermissions)
+        public void AddMethodPermissions(string methodName, IEnumerable<Attribute> methodPermissionAttributes)
         {
-            var permissionsList = this.MethodPermissions.TryGetValueOrNull(methodName);
+            var permissionsList = _MethodPermissions.TryGetValueOrNull(methodName);
             if (permissionsList == null)
             {
-                permissionsList = new List<AuthorisationConfiguration>();
-                this.MethodPermissions[methodName] = permissionsList;
+                permissionsList = methodPermissionAttributes;
             }
-            permissionsList.Add(methodPermissions);
+            else
+            {
+                var extendedList = permissionsList.ToList();
+                extendedList.AddRange(methodPermissionAttributes);
+                permissionsList = extendedList;
+            }
+            _PropertyPermissions[methodName] = permissionsList;
         }
 
-        /// <summary>
-        /// Adds the given Permission to the named Method and Parameter. NB: multiple Permissions are supported.
-        /// </summary>
-        /// <param name="methodName"></param>
-        /// <param name="methodPermissions"></param>
-        public void AddParameterPermissions(string methodName, string parameterName, AuthorisationConfiguration parameterPermissions)
+        public void AddParameterPermissions(string methodName, string parameterName, IEnumerable<Attribute> parameterPermissionAttributes)
         {
             var key = string.Concat(methodName, "%", parameterName);
-            var permissionsList = this.ParameterPermissions.TryGetValueOrNull(key);
+
+            var permissionsList = _ParameterPermissions.TryGetValueOrNull(key);
             if (permissionsList == null)
             {
-                permissionsList = new List<AuthorisationConfiguration>();
-                this.ParameterPermissions[key] = permissionsList;
+                permissionsList = parameterPermissionAttributes;
             }
-            permissionsList.Add(parameterPermissions);
+            else
+            {
+                var extendedList = permissionsList.ToList();
+                extendedList.AddRange(parameterPermissionAttributes);
+                permissionsList = extendedList;
+            }
+            _ParameterPermissions[key] = permissionsList;
         }
     }
 }

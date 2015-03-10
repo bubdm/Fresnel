@@ -1,43 +1,46 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Configuration
 {
     public interface IClassConfiguration
     {
-        ObjectInstanceConfiguration ObjectInstanceConfiguration { get; }
+        IEnumerable<Attribute> ClassAttributes { get; }
 
-        ObjectConstructorConfiguration ConstructorConfiguration { get; }
+        IEnumerable<Attribute> ConstructorAttributes { get; }
 
-        IDictionary<string, PropertyConfiguration> PropertyConfigurations { get; }
+        IDictionary<string, IEnumerable<Attribute>> PropertyAttributes { get; }
 
-        IDictionary<string, MethodConfiguration> MethodConfigurations { get; }
+        IDictionary<string, IEnumerable<Attribute>> MethodAttributes { get; }
 
-        IDictionary<string, PropertyConfiguration> ParameterConfigurations { get; }
+        IDictionary<string, IEnumerable<Attribute>> ParameterAttributes { get; }
 
-        IEnumerable<AuthorisationConfiguration> ClassPermissions { get; }
 
-        IDictionary<string, List<AuthorisationConfiguration>> PropertyPermissions { get; }
+        IEnumerable<Attribute> ClassPermissions { get; }
 
-        IDictionary<string, List<AuthorisationConfiguration>> MethodPermissions { get; }
+        IDictionary<string, IEnumerable<Attribute>> PropertyPermissionAttributes { get; }
 
-        IDictionary<string, List<AuthorisationConfiguration>> ParameterPermissions { get; }
+        IDictionary<string, IEnumerable<Attribute>> MethodPermissionAttributes { get; }
 
-        void ConfigureClass(ObjectInstanceConfiguration objectInstanceAttribute);
+        IDictionary<string, IEnumerable<Attribute>> ParameterPermissionAttributes { get; }
 
-        void ConfigureConstructor(ObjectConstructorConfiguration constructorAttribute);
 
-        void ConfigureProperty(string propertyName, PropertyConfiguration propertyAttribute);
+        void ConfigureClass(IEnumerable<Attribute> classAttributes);
 
-        void ConfigureMethod(string methodName, MethodConfiguration methodAttribute);
+        void ConfigureConstructor(IEnumerable<Attribute> constructorAttributes);
 
-        void ConfigureParameter(string methodName, string parameterName, PropertyConfiguration parameterAttribute);
+        void ConfigureProperty(string propertyName, IEnumerable<Attribute> propertyAttributes);
 
-        void AddClassPermissions(AuthorisationConfiguration classPermissions);
+        void ConfigureMethod(string methodName, IEnumerable<Attribute> methodAttributes);
 
-        void AddPropertyPermissions(string propertyName, AuthorisationConfiguration propertyPermissions);
+        void ConfigureParameter(string methodName, string parameterName, IEnumerable<Attribute> parameterAttributes);
 
-        void AddMethodPermissions(string methodName, AuthorisationConfiguration methodPermissions);
+        void AddClassPermissions(IEnumerable<Attribute> classPermissions);
 
-        void AddParameterPermissions(string methodName, string parameterName, AuthorisationConfiguration parameterPermissions);
+        void AddPropertyPermissions(string propertyName, IEnumerable<Attribute> propertyPermissionAttributes);
+
+        void AddMethodPermissions(string methodName, IEnumerable<Attribute> methodPermissionAttributes);
+
+        void AddParameterPermissions(string methodName, string parameterName, IEnumerable<Attribute> parameterPermissionAttributes);
     }
 }

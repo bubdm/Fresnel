@@ -5,7 +5,7 @@ namespace Envivo.Fresnel.Configuration
 {
     public interface IConfigurationBuilder
     {
-        BaseConfiguration BuildFrom(IEnumerable<Attribute> attributes);
+        Attribute BuildFrom(IEnumerable<Attribute> templateAttributes, Type parentClass);
     }
 
 }
