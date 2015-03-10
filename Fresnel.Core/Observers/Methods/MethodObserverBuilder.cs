@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.Core.Observers
         {
             var tClass = oParent.Template;
 
-            var attr = tClass.Attributes.Get<ObjectInstanceConfiguration>();
+            var attr = tClass.Configurations.Get<ObjectInstanceConfiguration>();
             if (attr.HideAllMethods)
                 return null;
 

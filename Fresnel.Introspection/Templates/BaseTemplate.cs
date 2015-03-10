@@ -36,7 +36,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// All custom Attributes defined for this Template. Values from ClassConfigurations are accessible here.
         /// </summary>
         [JsonIgnore]
-        public ConfigurationMap Attributes { get; internal set; }
+        public ConfigurationMap Configurations { get; internal set; }
 
         public XmlComments XmlComments
         {

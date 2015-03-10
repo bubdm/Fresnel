@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             if (idProperty == null)
                 return;
 
-            var propertyAttr = idProperty.Attributes.Get<PropertyConfiguration>();
+            var propertyAttr = idProperty.Configurations.Get<PropertyConfiguration>();
 
             // Users aren't allowed to change PK values:
             propertyAttr.CanWrite = false;

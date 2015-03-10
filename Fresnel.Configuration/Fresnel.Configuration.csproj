@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Attributes\CanModifyAttribute.cs" />
     <Compile Include="Attributes\CanAddAttribute.cs" />
-    <Compile Include="Attributes\CanRemovedAttribute.cs" />
+    <Compile Include="Attributes\CanRemoveAttribute.cs" />
     <Compile Include="Attributes\CanReadAttribute.cs" />
     <Compile Include="Attributes\CanCreateAttribute.cs" />
     <Compile Include="Attributes\HasAttribute.cs" />
@@ -50,8 +50,10 @@
     <Compile Include="Attributes\OwnsAttribute.cs" />
     <Compile Include="Attributes\FilterQuerySpecificationAttribute.cs" />
     <Compile Include="Attributes\FileDialogAttribute.cs" />
+    <Compile Include="Attributes\BackingFieldAttribute.cs" />
     <Compile Include="Attributes\UiControlHintAttribute.cs" />
     <Compile Include="Attributes\DecimalPlacesAttribute.cs" />
+    <Compile Include="Members\CollectionPropertyConfigurationBuilder.cs" />
     <Compile Include="Members\BooleanConfigurationBuilder.cs" />
     <Compile Include="IConfigurationBuilder.cs" />
     <Compile Include="Members\UiControlTypeEnums.cs" />

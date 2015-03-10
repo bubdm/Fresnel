@@ -13,6 +13,11 @@ namespace Envivo.Fresnel.Configuration
         }
 
         /// <summary>
+        /// The format used to display the member's value/content
+        /// </summary>
+        public string DisplayFormat { get; set; }
+
+        /// <summary>
         /// The category under which this member will appear
         /// </summary>
         /// <value></value>

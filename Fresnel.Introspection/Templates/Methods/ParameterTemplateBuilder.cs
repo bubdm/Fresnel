@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.OuterMethod = tMethod;
             result.ParameterInfo = paramInfo;
             result.ParameterType = paramInfo.ParameterType;
-            result.Attributes = parameterAttributes;
+            result.Configurations = parameterAttributes;
             result.Name = paramInfo.Name.IsEmpty() ?
                             paramInfo.Position.ToString() :
                             paramInfo.Name;

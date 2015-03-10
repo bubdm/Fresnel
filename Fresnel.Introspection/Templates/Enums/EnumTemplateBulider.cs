@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.Name = result.RealType.Name;
             result.FriendlyName = result.RealType.Name.CreateFriendlyName();
             result.FullName = result.RealType.FullName;
-            result.Attributes = enumAttributes;
+            result.Configurations = enumAttributes;
 
             result.IsBitwiseEnum = result.RealType.GetCustomAttributes(typeof(FlagsAttribute), true).Any();
 

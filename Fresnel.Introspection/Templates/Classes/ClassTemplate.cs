@@ -107,7 +107,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             this.DetermineInterfaces();
 
-            _ObjectInstanceAttr = this.Attributes.Get<ObjectInstanceConfiguration>();
+            _ObjectInstanceAttr = this.Configurations.Get<ObjectInstanceConfiguration>();
 
             this.IsVisible = _ObjectInstanceAttr.IsVisible;
         }

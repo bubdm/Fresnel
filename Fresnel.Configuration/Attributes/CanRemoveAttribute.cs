@@ -8,7 +8,7 @@ namespace System.ComponentModel.DataAnnotations
 {
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class CanRemovedAttribute : Attribute
+    public class CanRemoveAttribute : Attribute
     {
         
     }

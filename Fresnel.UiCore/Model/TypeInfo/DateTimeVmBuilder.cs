@@ -18,14 +18,14 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 
         public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
-            var attr = tProp.Attributes.Get<DateTimeConfiguration>();
+            var attr = tProp.Configurations.Get<DateTimeConfiguration>();
 
             targetVM.Info = this.CreateInfoVM(attr);
         }
 
         public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
-            var attr = tParam.Attributes.Get<DateTimeConfiguration>();
+            var attr = tParam.Configurations.Get<DateTimeConfiguration>();
 
             targetVM.Info = this.CreateInfoVM(attr);
         }

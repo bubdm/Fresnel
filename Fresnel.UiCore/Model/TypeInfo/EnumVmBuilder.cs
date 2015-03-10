@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
         public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var tEnum = (EnumTemplate)tProp.InnerClass;
-            var attr = tProp.Attributes.Get<EnumAttribute>();
+            var attr = tProp.Configurations.Get<EnumAttribute>();
 
             targetVM.Info = this.CreateInfoVM(tEnum, attr);
         }
@@ -37,7 +37,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
         public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             var tEnum = (EnumTemplate)tParam.InnerClass;
-            var attr = tParam.Attributes.Get<EnumAttribute>();
+            var attr = tParam.Configurations.Get<EnumAttribute>();
 
             targetVM.Info = this.CreateInfoVM(tEnum, attr);
         }

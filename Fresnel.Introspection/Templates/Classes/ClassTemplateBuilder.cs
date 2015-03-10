@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.Name = result.RealType.Name;
             result.FriendlyName = result.RealType.Name.CreateFriendlyName();
             result.FullName = result.RealType.FullName;
-            result.Attributes = classAttributes;
+            result.Configurations = classAttributes;
 
             result.FinaliseConstruction();
 

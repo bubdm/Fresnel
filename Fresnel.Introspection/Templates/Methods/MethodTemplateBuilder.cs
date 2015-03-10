@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.FullName = string.Concat(methodInfo.ReflectedType.Namespace, ".",
                                             methodInfo.ReflectedType.Name, ".",
                                             methodInfo.Name);
-            result.Attributes = methodAttributes;
+            result.Configurations = methodAttributes;
 
             result.FinaliseConstruction();
 

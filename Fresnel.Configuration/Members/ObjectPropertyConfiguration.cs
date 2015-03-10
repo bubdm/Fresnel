@@ -7,45 +7,79 @@ namespace Envivo.Fresnel.Configuration
     /// </summary>
     public class ObjectPropertyConfiguration : ObjectPropertyBaseConfiguration
     {
-        private SingleRelationship _Relationship;
+        private bool _IsAggregateRelationship;
+        private bool _IsCompositeRelationship;
+        private bool _IsParentRelationship;
 
         public ObjectPropertyConfiguration()
             : base()
         {
-            this.Relationship = SingleRelationship.HasA;
+            this.IsAggregateRelationship = true;
         }
 
         /// <summary>
-        /// Determines the relationship between the parent Object and this property's Object.
-        /// The default relationship is "HasA".
+        /// Determines if the property has an Aggregate relationship with the contents
         /// </summary>
         /// <value></value>
-        public SingleRelationship Relationship
+        public bool IsAggregateRelationship
         {
-            get { return _Relationship; }
+            get { return _IsAggregateRelationship; }
             set
             {
-                _Relationship = value;
-
-                switch (value)
+                _IsAggregateRelationship = value;
+                if (value)
                 {
-                    case SingleRelationship.OwnedBy:
-                    case SingleRelationship.HasA:
-                        this.CanCreate = false;
-                        this.CanExpandContents = false;
-                        break;
-
-                    case SingleRelationship.OwnsA:
-                        this.CanExpandContents = true;
-                        this.CanCreate = true;
-                        break;
+                    _IsCompositeRelationship = false;
+                    _IsParentRelationship = false;
+                    this.CanCreate = true;
+                    this.CanExpandContents = true;
                 }
             }
         }
 
         /// <summary>
-        /// The type of Query Specification that is used to populate a selection list
+        /// Determines if the property has a Composite Aggregate relationship with the contents
         /// </summary>
-        public Type LookupListFilter { get; set; }
+        /// <value></value>
+        public bool IsCompositeRelationship
+        {
+            get { return _IsCompositeRelationship; }
+            set
+            {
+                _IsCompositeRelationship = value;
+                if (value)
+                {
+                    _IsAggregateRelationship = false;
+                    _IsParentRelationship = false;
+                    this.CanCreate = false;
+                    this.CanExpandContents = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines if the class is the parent of the property contents
+        /// </summary>
+        /// <value></value>
+        public bool IsParentRelationship
+        {
+            get { return _IsParentRelationship; }
+            set
+            {
+                _IsParentRelationship = value;
+                if (value)
+                {
+                    _IsAggregateRelationship = false;
+                    _IsCompositeRelationship = false;
+                    this.CanCreate = false;
+                    this.CanExpandContents = false;
+                }
+            }
+        }
+
+        ///// <summary>
+        ///// The type of Query Specification that is used to populate a selection list
+        ///// </summary>
+        //public Type LookupListFilter { get; set; }
     }
 }

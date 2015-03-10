@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         string FriendlyName { get; }
 
-        ConfigurationMap Attributes { get; }
+        ConfigurationMap Configurations { get; }
 
         XmlComments XmlComments { get; }
 

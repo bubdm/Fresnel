@@ -26,7 +26,7 @@ namespace Envivo.Fresnel.Core.Permissions
                 assertions.AddFailure(tClass.Name + " is an abstract/base type");
             }
 
-            var classAttr = tClass.Attributes.Get<ObjectInstanceConfiguration>();
+            var classAttr = tClass.Configurations.Get<ObjectInstanceConfiguration>();
             if (!classAttr.IsCreatable)
             {
                 assertions.AddFailure(tClass.Name + " has not been configured for creation");

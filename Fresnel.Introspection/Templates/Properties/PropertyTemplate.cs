@@ -67,7 +67,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         internal override void FinaliseConstruction()
         {
-            _Attribute = this.Attributes.Get<PropertyConfiguration>();
+            _Attribute = this.Configurations.Get<PropertyConfiguration>();
 
             base.FinaliseConstruction();
         }

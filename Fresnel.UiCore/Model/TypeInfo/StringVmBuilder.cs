@@ -17,7 +17,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
         public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var tClass = tProp.InnerClass;
-            var attr = tProp.Attributes.Get<TextConfiguration>();
+            var attr = tProp.Configurations.Get<TextConfiguration>();
 
             targetVM.Info = this.CreateInfoVM(attr, actualType);
         }
@@ -25,7 +25,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
         public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             var tClass = tParam.InnerClass;
-            var attr = tParam.Attributes.Get<TextConfiguration>();
+            var attr = tParam.Configurations.Get<TextConfiguration>();
 
             targetVM.Info = this.CreateInfoVM(attr, actualType);
         }

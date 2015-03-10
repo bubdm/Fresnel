@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.Core.Observers
             {
                 // If the Property isn't marked as 'lazy loaded', we need to make sure it is loaded immediately:
                 var tProp = this.Template;
-                this.IsLazyLoadPending = tProp.Attributes.Get<ObjectPropertyBaseConfiguration>().IsLazyLoaded;
+                this.IsLazyLoadPending = tProp.Configurations.Get<ObjectPropertyBaseConfiguration>().IsLazyLoaded;
             }
             else
             {

@@ -23,11 +23,11 @@ namespace Envivo.Fresnel.Introspection.Templates
             _IsObjectTrackableSpecification = isObjectTrackableSpecification;
         }
 
-        public PropertyTemplate BuildFor(ClassTemplate tOuterClass, PropertyInfo propertyInfo, ConfigurationMap propertyAttributes)
+        public PropertyTemplate BuildFor(ClassTemplate tOuterClass, PropertyInfo propertyInfo, ConfigurationMap configMap)
         {
             var result = _PropertyTemplateFactory();
 
-            result.Attributes = propertyAttributes;
+            result.Configurations = configMap;
             result.OuterClass = tOuterClass;
             result.PropertyInfo = propertyInfo;
             result.PropertyType = propertyInfo.PropertyType;
@@ -39,14 +39,14 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             this.CheckPropertyType(result);
 
-            var propertyAttr = result.Attributes.Get<PropertyConfiguration>();
+            var propertyConfig = result.Configurations.Get<PropertyConfiguration>();
 
             // If the Property name starts with "Parent", we'll treat it as a parent:
-            if (!propertyAttr.IsConfiguredAtRunTime && result.FriendlyName.StartsWith("Parent "))
+            if (!propertyConfig.IsConfiguredAtRunTime && result.FriendlyName.StartsWith("Parent "))
             {
-                var attr = result.Attributes.Get<ObjectPropertyConfiguration>();
-                attr.Relationship = SingleRelationship.OwnedBy;
-                result.IsParentRelationship = true;
+                var objectPropConfig = result.Configurations.Get<ObjectPropertyConfiguration>();
+                objectPropConfig.IsParentRelationship = true;
+                result.IsParentRelationship = objectPropConfig.IsParentRelationship;
             }
 
             result.FinaliseConstruction();
@@ -76,16 +76,16 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsCollection = true;
                 tProp.IsReferenceType = true;
 
-                var attr = tProp.Attributes.Get<CollectionPropertyConfiguration>();
-                tProp.CanCreate = attr.CanCreate;
-                tProp.CanAdd = attr.CanAdd;
-                tProp.CanRemove = attr.CanRemove;
+                var collectionPropConfig = tProp.Configurations.Get<CollectionPropertyConfiguration>();
+                tProp.CanCreate = collectionPropConfig.CanCreate;
+                tProp.CanAdd = collectionPropConfig.CanAdd;
+                tProp.CanRemove = collectionPropConfig.CanRemove;
 
-                tProp.IsCompositeRelationship = (attr.Relationship == ManyRelationship.OwnsMany);
-                tProp.IsAggregateRelationship = (attr.Relationship == ManyRelationship.HasMany);
+                tProp.IsCompositeRelationship = collectionPropConfig.IsCompositeRelationship;
+                tProp.IsAggregateRelationship = collectionPropConfig.IsAggregateRelationship;
 
                 // We don't want modifications to the list to affect the parent:
-                attr.UseOptimisticLock = false;
+                collectionPropConfig.UseOptimisticLock = false;
 
                 //tProp.BackingFieldName = attr.BackingFieldName;
                 return;
@@ -96,8 +96,8 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsValueObject = true;
                 tProp.IsReferenceType = true;
 
-                var attr = tProp.Attributes.Get<ObjectPropertyConfiguration>();
-                attr.Relationship = SingleRelationship.OwnsA;
+                var objectPropConfig = tProp.Configurations.Get<ObjectPropertyConfiguration>();
+                objectPropConfig.IsCompositeRelationship = true;
                 tProp.IsCompositeRelationship = true;
             }
 
@@ -106,22 +106,22 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsDomainObject = true;
                 tProp.IsReferenceType = true;
 
-                var attr = tProp.Attributes.Get<ObjectPropertyConfiguration>();
-                tProp.CanCreate = attr.CanCreate;
+                var objectPropConfig = tProp.Configurations.Get<ObjectPropertyConfiguration>();
+                tProp.CanCreate = objectPropConfig.CanCreate;
 
-                tProp.IsCompositeRelationship = (attr.Relationship == SingleRelationship.OwnsA);
-                tProp.IsAggregateRelationship = (attr.Relationship == SingleRelationship.HasA);
-                tProp.IsParentRelationship = (attr.Relationship == SingleRelationship.OwnedBy);
+                tProp.IsCompositeRelationship = objectPropConfig.IsCompositeRelationship;
+                tProp.IsAggregateRelationship = objectPropConfig.IsAggregateRelationship;
+                tProp.IsParentRelationship = objectPropConfig.IsParentRelationship;
             }
 
             // If the Property name starts with "Parent", we'll treat it as a parent:
-            var propertyAttr = tProp.Attributes.Get<PropertyConfiguration>();
-            if (!propertyAttr.IsConfiguredAtRunTime &&
+            var propertyConfig = tProp.Configurations.Get<PropertyConfiguration>();
+            if (!propertyConfig.IsConfiguredAtRunTime &&
                 tProp.FriendlyName.StartsWith("Parent "))
             {
-                var attr = tProp.Attributes.Get<ObjectPropertyConfiguration>();
-                attr.Relationship = SingleRelationship.OwnedBy;
-                tProp.IsParentRelationship = true;
+                var objectPropConfig = tProp.Configurations.Get<ObjectPropertyConfiguration>();
+                objectPropConfig.IsParentRelationship = true;
+                tProp.IsParentRelationship = objectPropConfig.IsParentRelationship;
             }
         }
     }

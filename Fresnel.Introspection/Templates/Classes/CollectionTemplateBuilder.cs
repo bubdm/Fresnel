@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.FriendlyName = result.RealType.Name.CreateFriendlyName();
             result.FullName = result.RealType.FullName;
             result.ElementType = _CollectionTypeIdentifier.DetermineItemType(result.RealType);
-            result.Attributes = collectionAttributes;
+            result.Configurations = collectionAttributes;
 
             result.FinaliseConstruction();
 

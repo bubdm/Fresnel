@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.Core
             {
                 // This prevents bi-dir links to parents from being added to the list:
                 var tProp = oProp.Template;
-                if (tProp.Attributes.Get<ObjectPropertyConfiguration>().Relationship == SingleRelationship.OwnedBy)
+                if (tProp.Configurations.Get<ObjectPropertyConfiguration>().IsParentRelationship)
                     continue;
 
                 var oPropertyOwner = oProp.OuterObject;

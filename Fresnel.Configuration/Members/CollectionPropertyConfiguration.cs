@@ -5,47 +5,60 @@ namespace Envivo.Fresnel.Configuration
     /// </summary>
     public class CollectionPropertyConfiguration : ObjectPropertyBaseConfiguration
     {
-        private ManyRelationship _Relationship;
+        private bool _IsAggregateRelationship;
+        private bool _IsCompositeRelationship;
 
         public CollectionPropertyConfiguration()
             : base()
         {
-            this.Relationship = ManyRelationship.HasMany;
+            this.IsCompositeRelationship = false;
+            this.IsAggregateRelationship = true;
             this.CanExpandContents = true;
 
             this.CanAdd = true;
             this.CanRemove = true;
-            this.HasUniqueItems = true;
-            this.InlineColumnNames = new string[] { };
+            //this.HasUniqueItems = true;
+            //this.InlineColumnNames = new string[] { };
         }
 
         /// <summary>
-        /// Determines the relationship between the parent Object and the Domain Objects within the Collection.
-        /// The default relationship is "HasMany".
+        /// Determines if the property has an Aggregate relationship with the contents
         /// </summary>
         /// <value></value>
-        public ManyRelationship Relationship
+        public bool IsAggregateRelationship
         {
-            get { return _Relationship; }
+            get { return _IsAggregateRelationship; }
             set
             {
-                _Relationship = value;
-
-                switch (value)
+                _IsAggregateRelationship = value;
+                if (value)
                 {
-                    case ManyRelationship.HasMany:
-                        this.CanCreate = false;
-                        this.CanExpandContents = false;
-                        this.CanAdd = true;
-                        this.CanRemove = true;
-                        break;
+                    _IsCompositeRelationship = false;
+                    this.CanCreate = true;
+                    this.CanExpandContents = true;
+                    this.CanAdd = false;
+                    this.CanRemove = true;
+                }
+            }
+        }
 
-                    case ManyRelationship.OwnsMany:
-                        this.CanCreate = true;
-                        this.CanExpandContents = true;
-                        this.CanAdd = false;
-                        this.CanRemove = true;
-                        break;
+        /// <summary>
+        /// Determines if the property has a Composite Aggregate relationship with the contents
+        /// </summary>
+        /// <value></value>
+        public bool IsCompositeRelationship
+        {
+            get { return _IsCompositeRelationship; }
+            set
+            {
+                _IsCompositeRelationship = value;
+                if (value)
+                {
+                    _IsAggregateRelationship = false;
+                    this.CanCreate = false;
+                    this.CanExpandContents = false;
+                    this.CanAdd = true;
+                    this.CanRemove = true;
                 }
             }
         }
@@ -64,15 +77,15 @@ namespace Envivo.Fresnel.Configuration
         /// <value></value>
         public bool CanRemove { get; set; }
 
-        /// <summary>
-        /// Determines if a Domain Object can be added to the Collection multiple times
-        /// </summary>
-        public bool HasUniqueItems { get; set; }
+        ///// <summary>
+        ///// Determines if a Domain Object can be added to the Collection multiple times
+        ///// </summary>
+        //public bool HasUniqueItems { get; set; }
 
-        /// <summary>
-        /// A list of Property names that are shown when displayed in-line.
-        /// Used in conjunction with IsShownInline.
-        /// </summary>
-        public string[] InlineColumnNames { get; set; }
+        ///// <summary>
+        ///// A list of Property names that are shown when displayed in-line.
+        ///// Used in conjunction with IsShownInline.
+        ///// </summary>
+        //public string[] InlineColumnNames { get; set; }
     }
 }

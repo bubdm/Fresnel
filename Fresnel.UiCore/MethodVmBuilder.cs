@@ -34,7 +34,7 @@ namespace Envivo.Fresnel.UiCore
                 InternalName = oMethod.Template.Name,
                 Description = oMethod.Template.XmlComments.Summary,
                 Parameters = this.CreateParametersFor(oMethod),
-                IsAsync = oMethod.Template.Attributes.Get<MethodConfiguration>().IsAsynchronous,
+                IsAsync = oMethod.Template.Configurations.Get<MethodConfiguration>().IsAsynchronous,
                 IsVisible = !oMethod.Template.IsFrameworkMember && oMethod.Template.IsVisible,
             };
 
