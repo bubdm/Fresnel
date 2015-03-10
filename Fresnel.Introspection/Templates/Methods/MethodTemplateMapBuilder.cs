@@ -8,17 +8,17 @@ namespace Envivo.Fresnel.Introspection.Templates
     public class MethodTemplateMapBuilder
     {
         private MethodInfoMapBuilder _MethodInfoMapBuilder;
-        private ConfigurationMapBuilder _AttributesMapBuilder;
+        private ConfigurationMapBuilder _ConfigurationMapBuilder;
         private MethodTemplateBuilder _MethodTemplateBuilder;
 
         public MethodTemplateMapBuilder
         (
             MethodInfoMapBuilder methodInfoMapBuilder,
-            ConfigurationMapBuilder attributesMapBuilder,
+            ConfigurationMapBuilder configurationMapBuilder,
             MethodTemplateBuilder methodTemplateBuilder
         )
         {
-            _AttributesMapBuilder = attributesMapBuilder;
+            _ConfigurationMapBuilder = configurationMapBuilder;
             _MethodInfoMapBuilder = methodInfoMapBuilder;
             _MethodTemplateBuilder = methodTemplateBuilder;
         }
@@ -36,7 +36,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             foreach (var method in methodInfoMap.Values)
             {
-                var methodAttributes = _AttributesMapBuilder.BuildFor(method, tClass.Configuration);
+                var methodAttributes = _ConfigurationMapBuilder.BuildFor(method, tClass.Configuration);
                 var tMethod = _MethodTemplateBuilder.BuildFor(tClass, method, methodAttributes);
 
                 if (results.ContainsKey(tMethod.Name))

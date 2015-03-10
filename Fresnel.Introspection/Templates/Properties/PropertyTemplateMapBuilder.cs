@@ -6,18 +6,18 @@ namespace Envivo.Fresnel.Introspection.Templates
     public class PropertyTemplateMapBuilder
     {
         private PropertyInfoMapBuilder _PropertyInfoMapBuilder;
-        private ConfigurationMapBuilder _AttributesMapBuilder;
+        private ConfigurationMapBuilder _ConfigurationMapBuilder;
         private PropertyTemplateBuilder _PropertyTemplateBuilder;
 
         public PropertyTemplateMapBuilder
         (
             PropertyInfoMapBuilder propertyInfoMapBuilder,
-            ConfigurationMapBuilder attributesMapBuilder,
+            ConfigurationMapBuilder configurationMapBuilder,
             PropertyTemplateBuilder propertyTemplateBuilder
         )
         {
             _PropertyInfoMapBuilder = propertyInfoMapBuilder;
-            _AttributesMapBuilder = attributesMapBuilder;
+            _ConfigurationMapBuilder = configurationMapBuilder;
             _PropertyTemplateBuilder = propertyTemplateBuilder;
         }
 
@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                     // Ignore properties that cannot be accessed:
                     continue;
 
-                var propertyAttributes = _AttributesMapBuilder.BuildFor(prop, tClass.Configuration);
+                var propertyAttributes = _ConfigurationMapBuilder.BuildFor(prop, tClass.Configuration);
                 var tProp = _PropertyTemplateBuilder.BuildFor(tClass, prop, propertyAttributes);
                 tProp.AssemblyReader = tClass.AssemblyReader;
                 results.Add(tProp.Name, tProp);

@@ -6,16 +6,16 @@ namespace Envivo.Fresnel.Introspection.Templates
     public class ParameterTemplateMapBuilder
     {
         private ParameterTemplateBuilder _ParameterTemplateBuilder;
-        private ConfigurationMapBuilder _AttributesMapBuilder;
+        private ConfigurationMapBuilder _ConfigurationMapBuilder;
 
         public ParameterTemplateMapBuilder
         (
             ParameterTemplateBuilder parameterTemplateBuilder,
-            ConfigurationMapBuilder attributesMapBuilder
+            ConfigurationMapBuilder configurationMapBuilder
         )
         {
             _ParameterTemplateBuilder = parameterTemplateBuilder;
-            _AttributesMapBuilder = attributesMapBuilder;
+            _ConfigurationMapBuilder = configurationMapBuilder;
         }
 
         public ParameterTemplateMap BuildFor(MethodTemplate tMethod)
@@ -24,7 +24,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             foreach (var parameter in tMethod.MethodInfo.GetParameters())
             {
-                var paramterAttributes = _AttributesMapBuilder.BuildFor(parameter, tMethod.OuterClass.Configuration);
+                var paramterAttributes = _ConfigurationMapBuilder.BuildFor(parameter, tMethod.OuterClass.Configuration);
                 var tParameter = _ParameterTemplateBuilder.BuildFor(tMethod, parameter, paramterAttributes);
                 results.Add(tParameter.Name, tParameter);
             }

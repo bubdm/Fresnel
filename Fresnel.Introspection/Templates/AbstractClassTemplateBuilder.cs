@@ -6,7 +6,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 {
     public class AbstractClassTemplateBuilder
     {
-        private ConfigurationMapBuilder _AttributesMapBuilder;
+        private ConfigurationMapBuilder _ConfigurationMapBuilder;
         private EnumTemplateBulider _EnumTemplateBulider;
         private NonReferenceTemplateBuilder _NonReferenceTemplateBuilder;
         private CollectionTemplateBuilder _CollectionTemplateBuilder;
@@ -14,14 +14,14 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public AbstractClassTemplateBuilder
         (
-            ConfigurationMapBuilder attributesMapBuilder,
+            ConfigurationMapBuilder configurationMapBuilder,
             EnumTemplateBulider enumTemplateBulider,
             NonReferenceTemplateBuilder nonReferenceTemplateBuilder,
             CollectionTemplateBuilder collectionTemplateBuilder,
             ClassTemplateBuilder classTemplateBuilder
         )
         {
-            _AttributesMapBuilder = attributesMapBuilder;
+            _ConfigurationMapBuilder = configurationMapBuilder;
             _EnumTemplateBulider = enumTemplateBulider;
             _NonReferenceTemplateBuilder = nonReferenceTemplateBuilder;
             _CollectionTemplateBuilder = collectionTemplateBuilder;
@@ -38,7 +38,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             IClassTemplate result = null;
 
-            var attributes = _AttributesMapBuilder.BuildFor(objectType, classConfiguration);
+            var attributes = _ConfigurationMapBuilder.BuildFor(objectType, classConfiguration);
 
             if (objectType.IsEnum)
             {

@@ -19,14 +19,14 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
+            var configurationMapBuilder = container.Resolve<ConfigurationMapBuilder>();
 
             var typeToInspect = typeof(SampleModel.BasicTypes.TextValues);
 
-            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+            var configMap = configurationMapBuilder.BuildFor(typeToInspect);
 
             // Act:
-            var template = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+            var template = classTemplateBuilder.BuildFor(typeToInspect, configMap);
 
             // Assert:
             Assert.IsNotNull(template);
@@ -56,14 +56,14 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
+            var configurationMapBuilder = container.Resolve<ConfigurationMapBuilder>();
 
             var typeToInspect = typeof(SampleModel.Objects.PocoObject);
 
-            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+            var configMap = configurationMapBuilder.BuildFor(typeToInspect);
 
             // Act:
-            var template = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+            var template = classTemplateBuilder.BuildFor(typeToInspect, configMap);
 
             // Assert:
             Assert.AreNotEqual(0, template.Properties.Count());
@@ -81,14 +81,14 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
+            var configurationMapBuilder = container.Resolve<ConfigurationMapBuilder>();
 
             var typeToInspect = typeof(SampleModel.Objects.PocoObject);
 
-            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+            var configMap = configurationMapBuilder.BuildFor(typeToInspect);
 
             // Act:
-            var template = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+            var template = classTemplateBuilder.BuildFor(typeToInspect, configMap);
 
             // Assert:
             Assert.AreNotEqual(0, template.Methods.Count());
@@ -112,14 +112,14 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
+            var configurationMapBuilder = container.Resolve<ConfigurationMapBuilder>();
 
             var typeToInspect = typeof(SampleModel.Objects.PocoObject);
 
-            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+            var configMap = configurationMapBuilder.BuildFor(typeToInspect);
 
             // Act:
-            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, configMap);
             var collectionPropertyTemplate = classTemplate.Properties["ChildObjects"];
 
             // Assert:
@@ -135,13 +135,13 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
+            var configurationMapBuilder = container.Resolve<ConfigurationMapBuilder>();
             var createCommand = container.Resolve<CreateObjectCommand>();
 
             var typeToInspect = typeof(SampleModel.Objects.PocoObject);
-            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+            var configMap = configurationMapBuilder.BuildFor(typeToInspect);
 
-            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, configMap);
 
             // Act:
             var newInstance = createCommand.Invoke(classTemplate);
@@ -158,13 +158,13 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
+            var configurationMapBuilder = container.Resolve<ConfigurationMapBuilder>();
             var createCommand = container.Resolve<CreateObjectCommand>();
 
             var typeToInspect = typeof(SampleModel.Objects.DetailObject);
-            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+            var configMap = configurationMapBuilder.BuildFor(typeToInspect);
 
-            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, configMap);
 
             // Act:
             var master = new SampleModel.Objects.MasterObject();
@@ -182,13 +182,13 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
 
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
-            var attributesMapBuilder = container.Resolve<ConfigurationMapBuilder>();
+            var configurationMapBuilder = container.Resolve<ConfigurationMapBuilder>();
             var createCommand = container.Resolve<CreateObjectCommand>();
 
             var typeToInspect = typeof(SampleModel.StaticMethodTests);
-            var attributes = attributesMapBuilder.BuildFor(typeToInspect);
+            var configMap = configurationMapBuilder.BuildFor(typeToInspect);
 
-            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributes);
+            var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, configMap);
 
             // Assert:
             Assert.Throws(typeof(IntrospectionException),
