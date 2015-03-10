@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Utils;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -11,6 +12,16 @@ namespace Envivo.Fresnel.Configuration
 
     public class ConfigurationMapBuilder
     {
+        private Func<ConfigurationMap> _ConfigurationMapFactory;
+
+        public ConfigurationMapBuilder
+            (
+            Func<ConfigurationMap> configurationMapFactory
+            )
+        {
+            _ConfigurationMapFactory = configurationMapFactory;
+        }
+
         public ConfigurationMap BuildFor(Type classType)
         {
             return this.BuildFor(classType, null);
@@ -20,19 +31,18 @@ namespace Envivo.Fresnel.Configuration
         /// Instantiates and initialises the attributes for the given Object Type
         /// </summary>
         /// <param name="classType"></param>
-
         public ConfigurationMap BuildFor(Type classType, IClassConfiguration classConfig)
         {
-            var result = new ConfigurationMap();
+            var result = _ConfigurationMapFactory();
 
             var isCustomConfigurationAvailable = false;
             if (classConfig != null)
             {
-                var attribute = classConfig.ObjectInstanceConfiguration;
-                if (attribute != null)
+                var config = classConfig.ObjectInstanceConfiguration;
+                if (config != null)
                 {
-                    result.Add(attribute.GetType(), attribute);
-                    attribute.IsConfiguredAtRunTime = true;
+                    result.Add(config.GetType(), config);
+                    config.IsConfiguredAtRunTime = true;
                     isCustomConfigurationAvailable = true;
                 }
             }
@@ -40,8 +50,7 @@ namespace Envivo.Fresnel.Configuration
             if (isCustomConfigurationAvailable == false)
             {
                 // Use default values:
-                var defaultAtributes = classType.GetCustomAttributes(true);
-                this.LoadAttributesFrom(defaultAtributes, result);
+                result.Attributes = classType.GetCustomAttributes(true).Cast<Attribute>();
             }
 
             return result;
@@ -53,7 +62,7 @@ namespace Envivo.Fresnel.Configuration
         /// <param name="propertyInfo"></param>
         public ConfigurationMap BuildFor(PropertyInfo propertyInfo, IClassConfiguration outerClassConfig)
         {
-            var result = new ConfigurationMap();
+            var result = _ConfigurationMapFactory();
 
             var isCustomConfigurationAvailable = false;
 
@@ -71,8 +80,7 @@ namespace Envivo.Fresnel.Configuration
             if (isCustomConfigurationAvailable == false)
             {
                 // Use default values:
-                var customAtributes = GetInheritedAttributesFrom(propertyInfo);
-                this.LoadAttributesFrom(customAtributes, result);
+                result.Attributes = GetInheritedAttributesFrom(propertyInfo);
             }
 
             return result;
@@ -82,10 +90,9 @@ namespace Envivo.Fresnel.Configuration
         /// Instantiates and initialises the attributes for the given Method
         /// </summary>
         /// <param name="methodInfo"></param>
-
         public ConfigurationMap BuildFor(MethodInfo methodInfo, IClassConfiguration outerClassConfig)
         {
-            var result = new ConfigurationMap();
+            var result = _ConfigurationMapFactory();
 
             var isCustomConfigurationAvailable = false;
 
@@ -103,8 +110,7 @@ namespace Envivo.Fresnel.Configuration
             if (isCustomConfigurationAvailable == false)
             {
                 // Use default values:
-                var customAtributes = FindAttributesFor(methodInfo);
-                this.LoadAttributesFrom(customAtributes, result);
+                result.Attributes  = GetInheritedAttributesFrom(methodInfo);
             }
 
             return result;
@@ -114,10 +120,9 @@ namespace Envivo.Fresnel.Configuration
         /// Instantiates and initialises the attributes for the given Parameter
         /// </summary>
         /// <param name="parameterInfo"></param>
-
         public ConfigurationMap BuildFor(ParameterInfo parameterInfo, IClassConfiguration outerClassConfig)
         {
-            var result = new ConfigurationMap();
+            var result = _ConfigurationMapFactory();
 
             var isCustomConfigurationAvailable = false;
 
@@ -137,15 +142,14 @@ namespace Envivo.Fresnel.Configuration
             if (isCustomConfigurationAvailable == false)
             {
                 // Use default values:
-                var defaultAttributes = parameterInfo.GetCustomAttributes(true);
-                this.LoadAttributesFrom(defaultAttributes, result);
+                result.Attributes = parameterInfo.GetCustomAttributes(true).Cast<Attribute>();
             }
 
             return result;
         }
 
         //-----
-        private object[] GetInheritedAttributesFrom(PropertyInfo propertyInfo)
+        private IEnumerable<Attribute> GetInheritedAttributesFrom(PropertyInfo propertyInfo)
         {
             var allTypes = new List<Type>() { propertyInfo.DeclaringType };
             allTypes.AddRange(propertyInfo.DeclaringType.GetSuperClasses());
@@ -157,7 +161,7 @@ namespace Envivo.Fresnel.Configuration
                 if (matchingProperty == null)
                     continue;
 
-                var customAttr = matchingProperty.GetCustomAttributes(false);
+                var customAttr = matchingProperty.GetCustomAttributes(false).Cast<Attribute>();
                 if (customAttr != null)
                 {
                     return customAttr;
@@ -167,7 +171,7 @@ namespace Envivo.Fresnel.Configuration
             return null;
         }
 
-        private object[] FindAttributesFor(MethodInfo methodInfo)
+        private IEnumerable<Attribute> GetInheritedAttributesFrom(MethodInfo methodInfo)
         {
             var allTypes = new List<Type>() { methodInfo.DeclaringType };
             allTypes.AddRange(methodInfo.DeclaringType.GetSuperClasses());
@@ -185,7 +189,7 @@ namespace Envivo.Fresnel.Configuration
                 if (matchingMethod == null)
                     continue;
 
-                var customAttr = matchingMethod.GetCustomAttributes(false);
+                var customAttr = matchingMethod.GetCustomAttributes(false).Cast<Attribute>();
                 if (customAttr != null)
                 {
                     return customAttr;
@@ -195,23 +199,5 @@ namespace Envivo.Fresnel.Configuration
             return null;
         }
 
-        private void LoadAttributesFrom(object[] attributes, ConfigurationMap attributesMap)
-        {
-            if (attributes == null)
-                return;
-
-            foreach (var item in attributes)
-            {
-                var attr = item as BaseConfiguration;
-                if (attr == null)
-                    continue;
-
-                var key = item.GetType();
-                if (attributesMap.Contains(key))
-                    continue;
-
-                attributesMap.Add(key, (BaseConfiguration)item);
-            }
-        }
     }
 }

@@ -2,16 +2,17 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Envivo.Fresnel.Utils;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Configuration
 {
     /// <summary>
-    /// Configuration for a Boolean Property
+    /// Configuration for a Boolean member
     /// </summary>
-    public class BooleanConfigurationBuilder : IConfigurationBuilder<BooleanConfiguration>
+    public class BooleanConfigurationBuilder : IConfigurationBuilder
     {
 
-        public BooleanConfiguration BuildFrom(Attribute[] attributes)
+        public BaseConfiguration BuildFrom(IEnumerable<Attribute> attributes)
         {
             var result = new BooleanConfiguration();
 

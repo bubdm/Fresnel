@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Configuration
 {
-    public interface IConfigurationBuilder<T>
-        where T: BaseConfiguration
+    public interface IConfigurationBuilder
     {
-        T BuildFrom(Attribute[] attributes);
+        BaseConfiguration BuildFrom(IEnumerable<Attribute> attributes);
     }
+
 }
