@@ -16,18 +16,18 @@ namespace Envivo.Fresnel.Configuration
         {
             var result = new BooleanConfiguration();
 
-            var attr = attributes.OfType<DisplayFormatAttribute>().SingleOrDefault();
-            if (attr == null)
+            var displayFormat = attributes.OfType<DisplayFormatAttribute>().SingleOrDefault();
+            if (displayFormat == null)
             {
                 return result;
             }
 
-            if (attr.DataFormatString.IsEmpty())
+            if (displayFormat.DataFormatString.IsEmpty())
             {
                 return result;
             }
 
-            var parts = attr.DataFormatString.Split('|');
+            var parts = displayFormat.DataFormatString.Split('|');
             if (parts.Length > 0)
             {
                 result.TrueValue = parts.First();
