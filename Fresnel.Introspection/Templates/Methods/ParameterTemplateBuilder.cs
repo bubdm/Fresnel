@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public TemplateCache TemplateCache { get; set; }
 
-        public ParameterTemplate BuildFor(MethodTemplate tMethod, ParameterInfo paramInfo, ConfigurationMap parameterAttributes)
+        public ParameterTemplate BuildFor(MethodTemplate tMethod, ParameterInfo paramInfo, AttributesMap parameterAttributes)
         {
             var result = _paramterFactory();
 
@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.OuterMethod = tMethod;
             result.ParameterInfo = paramInfo;
             result.ParameterType = paramInfo.ParameterType;
-            result.Configurations = parameterAttributes;
+            result.Attributes = parameterAttributes;
             result.Name = paramInfo.Name.IsEmpty() ?
                             paramInfo.Position.ToString() :
                             paramInfo.Name;

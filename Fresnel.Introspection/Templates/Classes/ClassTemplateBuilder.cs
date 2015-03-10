@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             _ClassTemplateFactory = classTemplateFactory;
         }
 
-        public ClassTemplate BuildFor(Type classType, ConfigurationMap classAttributes)
+        public ClassTemplate BuildFor(Type classType, AttributesMap classAttributes)
         {
             var result = _ClassTemplateFactory();
 
@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.Name = result.RealType.Name;
             result.FriendlyName = result.RealType.Name.CreateFriendlyName();
             result.FullName = result.RealType.FullName;
-            result.Configurations = classAttributes;
+            result.Attributes = classAttributes;
 
             result.FinaliseConstruction();
 

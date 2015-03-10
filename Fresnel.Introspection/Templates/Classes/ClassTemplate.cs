@@ -2,6 +2,8 @@ using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Utils;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
@@ -22,7 +24,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         private Lazy<MethodTemplateMap> _tMethods;
         private Lazy<MethodTemplateMap> _tStaticMethods;
 
-        private ObjectInstanceConfiguration _ObjectInstanceAttr;
         private Lazy<int> _InheritanceDepth;
 
         private DynamicMethodBuilder _DynamicMethodBuilder;
@@ -83,15 +84,15 @@ namespace Envivo.Fresnel.Introspection.Templates
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _IdProperty = new Lazy<PropertyTemplate>(
-                                () => _TrackingPropertiesIdentifier.DetermineIdProperty(this, _ObjectInstanceAttr),
+                                () => _TrackingPropertiesIdentifier.DetermineIdProperty(this),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _VersionProperty = new Lazy<PropertyTemplate>(
-                                () => _TrackingPropertiesIdentifier.DetermineVersionProperty(this, _ObjectInstanceAttr),
+                                () => _TrackingPropertiesIdentifier.DetermineVersionProperty(this),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _AuditProperty = new Lazy<PropertyTemplate>(
-                                () => _TrackingPropertiesIdentifier.DetermineAuditProperty(this, _ObjectInstanceAttr),
+                                () => _TrackingPropertiesIdentifier.DetermineAuditProperty(this),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _XmlComments = new Lazy<XmlComments>(
@@ -107,8 +108,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             this.DetermineInterfaces();
 
-            _ObjectInstanceAttr = this.Configurations.Get<ObjectInstanceConfiguration>();
-            this.IsVisible = _ObjectInstanceAttr.IsVisible;
+            this.IsVisible = this.Attributes.Get<IsVisibleAttribute>() != null;
         }
 
         private void CreateNames()
@@ -182,7 +182,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             get
             {
-                return _ObjectInstanceAttr.IsPersistable &&
+                return this.Attributes.Get<NotPersistedAttribute>() != null &&
                         this.IdProperty != null;
             }
         }
@@ -285,7 +285,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             get
             {
-                return _ObjectInstanceAttr.IsCreatable &&
+                return this.Attributes.Get<CanCreateAttribute>() != null &&
                         !this.RealType.IsAbstract &&
                         _Constructors.Value.Any();
             }

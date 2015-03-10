@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             _EnumTemplateFactory = enumTemplateFactory;
         }
 
-        public EnumTemplate BuildFor(Type enumType, ConfigurationMap enumAttributes)
+        public EnumTemplate BuildFor(Type enumType, AttributesMap enumAttributes)
         {
             var result = _EnumTemplateFactory();
 
@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.Name = result.RealType.Name;
             result.FriendlyName = result.RealType.Name.CreateFriendlyName();
             result.FullName = result.RealType.FullName;
-            result.Configurations = enumAttributes;
+            result.Attributes = enumAttributes;
 
             result.IsBitwiseEnum = result.RealType.GetCustomAttributes(typeof(FlagsAttribute), true).Any();
 

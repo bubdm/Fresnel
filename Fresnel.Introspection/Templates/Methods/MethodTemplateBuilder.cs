@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             _MethodTemplateFactory = methodTemplateFactory;
         }
 
-        public MethodTemplate BuildFor(ClassTemplate tParent, MethodInfo methodInfo, ConfigurationMap methodAttributes)
+        public MethodTemplate BuildFor(ClassTemplate tParent, MethodInfo methodInfo, AttributesMap methodAttributes)
         {
             var result = _MethodTemplateFactory();
 
@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.FullName = string.Concat(methodInfo.ReflectedType.Namespace, ".",
                                             methodInfo.ReflectedType.Name, ".",
                                             methodInfo.Name);
-            result.Configurations = methodAttributes;
+            result.Attributes = methodAttributes;
 
             result.FinaliseConstruction();
 

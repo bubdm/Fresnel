@@ -8,16 +8,16 @@ namespace Envivo.Fresnel.Introspection.Templates
     public class EnumTemplateMapBuilder
     {
         private EnumTemplateBulider _EnumTemplateBulider;
-        private ConfigurationMapBuilder _ConfigurationMapBuilder;
+        private AttributesMapBuilder _AttributesMapBuilder;
 
         public EnumTemplateMapBuilder
         (
             EnumTemplateBulider enumTemplateBulider,
-            ConfigurationMapBuilder configurationMapBuilder
+            AttributesMapBuilder attributesMapBuilder
         )
         {
             _EnumTemplateBulider = enumTemplateBulider;
-            _ConfigurationMapBuilder = configurationMapBuilder;
+            _AttributesMapBuilder = attributesMapBuilder;
         }
 
         public EnumTemplateMap BuildFrom(ClassTemplate tClass, IClassConfiguration classConfiguration)
@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             {
                 if (nestedType.IsEnum)
                 {
-                    var enumAttributes = _ConfigurationMapBuilder.BuildFor(nestedType, tClass.Configuration);
+                    var enumAttributes = _AttributesMapBuilder.BuildFor(nestedType, tClass.Configuration);
                     var tEnum = _EnumTemplateBulider.BuildFor(nestedType, enumAttributes);
                     results.Add(nestedType, tEnum);
                 }

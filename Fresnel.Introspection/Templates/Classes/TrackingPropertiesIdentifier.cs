@@ -2,6 +2,8 @@ using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Utils;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Envivo.Fresnel.Introspection.Templates
@@ -11,17 +13,18 @@ namespace Envivo.Fresnel.Introspection.Templates
         private readonly Type _GuidType = typeof(Guid);
         private readonly Type _IAuditType = typeof(IAudit);
 
-        public PropertyTemplate DetermineIdProperty(ClassTemplate tClass, ObjectInstanceConfiguration objectInstanceAttribute)
+        public PropertyTemplate DetermineIdProperty(ClassTemplate tClass)
         {
             var properties = tClass.Properties.Values;
 
             // See if the Id property has been explicitly stated:
-            var idPropertyName = objectInstanceAttribute.IdPropertyName;
+            // Find a Guid property that has a [Key] attribute:
             var idProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
-                                                            p.Name.IsSameAs(idPropertyName, true));
+                                                            p.Attributes.Get<KeyAttribute>().Value != null);
 
             // Look for a GUID property that starts or ends in "ID".
             // Possible matches are "Id", "ID", "RecordID", "RecordId", etc
+            var idPropertyName = "ID";
             if (idProperty == null)
             {
                 idProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
@@ -44,31 +47,32 @@ namespace Envivo.Fresnel.Introspection.Templates
             if (idProperty == null)
                 return;
 
-            var propertyAttr = idProperty.Configurations.Get<PropertyConfiguration>();
-
             // Users aren't allowed to change PK values:
-            propertyAttr.CanWrite = false;
-
-            // PK values must be persisted:
-            propertyAttr.CanPersist = true;
+            idProperty.Attributes.Remove<CanModifyAttribute>();
         }
 
-        public PropertyTemplate DetermineVersionProperty(ClassTemplate tClass, ObjectInstanceConfiguration objectInstanceAttribute)
+        public PropertyTemplate DetermineVersionProperty(ClassTemplate tClass)
         {
-            var versionPropertyName = objectInstanceAttribute.VersionPropertyName;
-            var versionProperty = tClass.Properties.Values.FirstOrDefault(p => p.Name.IsSameAs(versionPropertyName, true));
-            if (versionProperty != null && versionProperty.IsNonReference)
+            var properties = tClass.Properties.Values;
+
+            // Find a Guid property that has a [ConcurrencyCheck] attribute:
+            var versionProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
+                                                                 p.Attributes.Get<ConcurrencyCheckAttribute>() != null);
+
+            var isMatch = versionProperty != null &&
+                          versionProperty.PropertyType.IsNonReference() &&
+                          (versionProperty.PropertyType == typeof(Int32) ||
+                          versionProperty.PropertyType == typeof(Int64));
+
+            if (isMatch)
             {
-                if (versionProperty.PropertyType == typeof(Int64))
-                {
-                    return versionProperty;
-                }
+                return versionProperty;
             }
 
             return null;
         }
 
-        public PropertyTemplate DetermineAuditProperty(ClassTemplate tClass, ObjectInstanceConfiguration objectInstanceAttribute)
+        public PropertyTemplate DetermineAuditProperty(ClassTemplate tClass)
         {
             var result = tClass.Properties.Values.FirstOrDefault(p => p.PropertyType.IsDerivedFrom(_IAuditType));
             return result;

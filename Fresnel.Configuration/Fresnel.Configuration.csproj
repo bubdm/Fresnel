@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Attributes\CanDrillDownAttribute.cs" />
     <Compile Include="Attributes\DisplayInlineAttribute.cs" />
+    <Compile Include="Attributes\NotPersistedAttribute.cs" />
     <Compile Include="Attributes\HiddenMembersAttribute .cs" />
     <Compile Include="Attributes\ForcePessimisticLockingAttribute.cs" />
     <Compile Include="Attributes\AllowPessimisticLockingAttribute.cs" />

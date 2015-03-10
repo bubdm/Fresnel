@@ -6,23 +6,19 @@ using System.Reflection;
 
 namespace Envivo.Fresnel.Configuration
 {
-    /// <summary>
-    /// Contains all Attributes for a particular Template. Attributes will be extracted from a ClassConfiguration if provided.
-    /// </summary>
-
-    public class ConfigurationMapBuilder
+    public class AttributesMapBuilder
     {
-        private Func<ConfigurationMap> _ConfigurationMapFactory;
+        private Func<AttributesMap> _AttributesMapFactory;
 
-        public ConfigurationMapBuilder
+        public AttributesMapBuilder
             (
-            Func<ConfigurationMap> configurationMapFactory
+            Func<AttributesMap> attributesMapFactory
             )
         {
-            _ConfigurationMapFactory = configurationMapFactory;
+            _AttributesMapFactory = attributesMapFactory;
         }
 
-        public ConfigurationMap BuildFor(Type classType)
+        public AttributesMap BuildFor(Type classType)
         {
             return this.BuildFor(classType, null);
         }
@@ -31,26 +27,26 @@ namespace Envivo.Fresnel.Configuration
         /// Instantiates and initialises the attributes for the given Object Type
         /// </summary>
         /// <param name="classType"></param>
-        public ConfigurationMap BuildFor(Type classType, IClassConfiguration classConfig)
+        public AttributesMap BuildFor(Type classType, IClassConfiguration classConfig)
         {
-            var result = _ConfigurationMapFactory();
+            var result = _AttributesMapFactory();
 
             var isCustomConfigurationAvailable = false;
             if (classConfig != null)
             {
-                var config = classConfig.ObjectInstanceConfiguration;
-                if (config != null)
+                var attributes = classConfig.ClassAttributes;
+                if (attributes != null)
                 {
-                    result.Add(config.GetType(), config);
-                    config.IsConfiguredAtRunTime = true;
-                    isCustomConfigurationAvailable = true;
+                    isCustomConfigurationAvailable = attributes.Any();
+                    result.AddRange(attributes, true);
                 }
             }
 
             if (isCustomConfigurationAvailable == false)
             {
                 // Use default values:
-                result.Attributes = classType.GetCustomAttributes(true).Cast<Attribute>();
+                var attributes = classType.GetCustomAttributes(true).Cast<Attribute>();
+                result.AddRange(attributes, false);
             }
 
             return result;
@@ -60,27 +56,27 @@ namespace Envivo.Fresnel.Configuration
         /// Instantiates and initialises the attributes for the given Property
         /// </summary>
         /// <param name="propertyInfo"></param>
-        public ConfigurationMap BuildFor(PropertyInfo propertyInfo, IClassConfiguration outerClassConfig)
+        public AttributesMap BuildFor(PropertyInfo propertyInfo, IClassConfiguration outerClassConfig)
         {
-            var result = _ConfigurationMapFactory();
+            var result = _AttributesMapFactory();
 
             var isCustomConfigurationAvailable = false;
 
-            if (outerClassConfig != null && outerClassConfig.PropertyConfigurations.Count > 0)
+            if (outerClassConfig != null && outerClassConfig.PropertyAttributes.Any())
             {
-                PropertyConfiguration attribute;
-                if (outerClassConfig.PropertyConfigurations.TryGetValue(propertyInfo.Name, out attribute))
+                var attributes = outerClassConfig.PropertyAttributes.TryGetValueOrNull(propertyInfo.Name);
+                if (attributes != null)
                 {
-                    result.Add(attribute.GetType(), attribute);
-                    attribute.IsConfiguredAtRunTime = true;
-                    isCustomConfigurationAvailable = true;
+                    isCustomConfigurationAvailable = attributes.Any();
+                    result.AddRange(attributes, true);
                 }
             }
 
             if (isCustomConfigurationAvailable == false)
             {
                 // Use default values:
-                result.Attributes = GetInheritedAttributesFrom(propertyInfo);
+                var attributes = GetInheritedAttributesFrom(propertyInfo);
+                result.AddRange(attributes, false);
             }
 
             return result;
@@ -90,27 +86,27 @@ namespace Envivo.Fresnel.Configuration
         /// Instantiates and initialises the attributes for the given Method
         /// </summary>
         /// <param name="methodInfo"></param>
-        public ConfigurationMap BuildFor(MethodInfo methodInfo, IClassConfiguration outerClassConfig)
+        public AttributesMap BuildFor(MethodInfo methodInfo, IClassConfiguration outerClassConfig)
         {
-            var result = _ConfigurationMapFactory();
+            var result = _AttributesMapFactory();
 
             var isCustomConfigurationAvailable = false;
 
-            if (outerClassConfig != null && outerClassConfig.MethodConfigurations.Count > 0)
+            if (outerClassConfig != null && outerClassConfig.MethodAttributes.Any())
             {
-                var attribute = outerClassConfig.MethodConfigurations.TryGetValueOrNull(methodInfo.Name);
-                if (attribute != null)
+                var attributes = outerClassConfig.MethodAttributes.TryGetValueOrNull(methodInfo.Name);
+                if (attributes != null)
                 {
-                    result.Add(attribute.GetType(), attribute);
-                    attribute.IsConfiguredAtRunTime = true;
-                    isCustomConfigurationAvailable = true;
+                    isCustomConfigurationAvailable = attributes.Any();
+                    result.AddRange(attributes, true);
                 }
             }
 
             if (isCustomConfigurationAvailable == false)
             {
                 // Use default values:
-                result.Attributes  = GetInheritedAttributesFrom(methodInfo);
+                var attributes = GetInheritedAttributesFrom(methodInfo);
+                result.AddRange(attributes, false);
             }
 
             return result;
@@ -120,29 +116,29 @@ namespace Envivo.Fresnel.Configuration
         /// Instantiates and initialises the attributes for the given Parameter
         /// </summary>
         /// <param name="parameterInfo"></param>
-        public ConfigurationMap BuildFor(ParameterInfo parameterInfo, IClassConfiguration outerClassConfig)
+        public AttributesMap BuildFor(ParameterInfo parameterInfo, IClassConfiguration outerClassConfig)
         {
-            var result = _ConfigurationMapFactory();
+            var result = _AttributesMapFactory();
 
             var isCustomConfigurationAvailable = false;
 
-            if (outerClassConfig != null && outerClassConfig.ParameterConfigurations.Count > 0)
+            if (outerClassConfig != null && outerClassConfig.ParameterAttributes.Count > 0)
             {
                 // CODE SMELL: This is tightly coupled with ClassConfiguration.ConfigureParameter:
                 var key = string.Concat(parameterInfo.Member.Name, "%", parameterInfo.Name);
-                var attribute = outerClassConfig.ParameterConfigurations.TryGetValueOrNull(key);
-                if (attribute != null)
+                var attributes = outerClassConfig.ParameterAttributes.TryGetValueOrNull(key);
+                if (attributes != null)
                 {
-                    result.Add(attribute.GetType(), attribute);
-                    attribute.IsConfiguredAtRunTime = true;
-                    isCustomConfigurationAvailable = true;
+                    isCustomConfigurationAvailable = attributes.Any();
+                    result.AddRange(attributes, true);
                 }
             }
 
             if (isCustomConfigurationAvailable == false)
             {
                 // Use default values:
-                result.Attributes = parameterInfo.GetCustomAttributes(true).Cast<Attribute>();
+                var attributes = parameterInfo.GetCustomAttributes(true).Cast<Attribute>();
+                result.AddRange(attributes, false);
             }
 
             return result;

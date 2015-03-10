@@ -1,6 +1,7 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Utils;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
@@ -23,11 +24,11 @@ namespace Envivo.Fresnel.Introspection.Templates
             _IsObjectTrackableSpecification = isObjectTrackableSpecification;
         }
 
-        public PropertyTemplate BuildFor(ClassTemplate tOuterClass, PropertyInfo propertyInfo, ConfigurationMap configMap)
+        public PropertyTemplate BuildFor(ClassTemplate tOuterClass, PropertyInfo propertyInfo, AttributesMap configMap)
         {
             var result = _PropertyTemplateFactory();
 
-            result.Configurations = configMap;
+            result.Attributes = configMap;
             result.OuterClass = tOuterClass;
             result.PropertyInfo = propertyInfo;
             result.PropertyType = propertyInfo.PropertyType;
@@ -39,14 +40,15 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             this.CheckPropertyType(result);
 
-            var propertyConfig = result.Configurations.Get<PropertyConfiguration>();
+            var displayAttr = result.Attributes.Get<DisplayAttribute>();
 
             // If the Property name starts with "Parent", we'll treat it as a parent:
-            if (!propertyConfig.IsConfiguredAtRunTime && result.FriendlyName.StartsWith("Parent "))
+            if (displayAttr == null && result.FriendlyName.StartsWith("Parent "))
             {
-                var objectPropConfig = result.Configurations.Get<ObjectPropertyConfiguration>();
-                objectPropConfig.IsParentRelationship = true;
-                result.IsParentRelationship = objectPropConfig.IsParentRelationship;
+                result.Attributes.Remove<OwnsAttribute>();
+                result.Attributes.Remove<HasAttribute>();
+                result.Attributes.Add(typeof(OwnedByAttribute), new OwnedByAttribute(), true);
+                result.IsParentRelationship = true;
             }
 
             result.FinaliseConstruction();
@@ -76,16 +78,15 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsCollection = true;
                 tProp.IsReferenceType = true;
 
-                var collectionPropConfig = tProp.Configurations.Get<CollectionPropertyConfiguration>();
-                tProp.CanCreate = collectionPropConfig.CanCreate;
-                tProp.CanAdd = collectionPropConfig.CanAdd;
-                tProp.CanRemove = collectionPropConfig.CanRemove;
+                tProp.CanCreate = tProp.Attributes.Get<CanCreateAttribute>() != null;
+                tProp.CanAdd = tProp.Attributes.Get<CanAddAttribute>() != null;
+                tProp.CanRemove = tProp.Attributes.Get<CanRemoveAttribute>() != null;
 
-                tProp.IsCompositeRelationship = collectionPropConfig.IsCompositeRelationship;
-                tProp.IsAggregateRelationship = collectionPropConfig.IsAggregateRelationship;
+                tProp.IsCompositeRelationship = tProp.Attributes.Get<OwnsAttribute>() != null;
+                tProp.IsAggregateRelationship = tProp.Attributes.Get<HasAttribute>() != null;
 
                 // We don't want modifications to the list to affect the parent:
-                collectionPropConfig.UseOptimisticLock = false;
+                //TODO collectionPropConfig.UseOptimisticLock = false;
 
                 //tProp.BackingFieldName = attr.BackingFieldName;
                 return;
@@ -96,9 +97,9 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsValueObject = true;
                 tProp.IsReferenceType = true;
 
-                var objectPropConfig = tProp.Configurations.Get<ObjectPropertyConfiguration>();
-                objectPropConfig.IsCompositeRelationship = true;
-                tProp.IsCompositeRelationship = true;
+                tProp.IsCompositeRelationship = tProp.Attributes.Get<OwnsAttribute>() != null;
+                tProp.Attributes.Remove<OwnedByAttribute>();
+                tProp.Attributes.Remove<HasAttribute>();
             }
 
             if (propertyType.IsTrackable())
@@ -106,23 +107,23 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsDomainObject = true;
                 tProp.IsReferenceType = true;
 
-                var objectPropConfig = tProp.Configurations.Get<ObjectPropertyConfiguration>();
-                tProp.CanCreate = objectPropConfig.CanCreate;
+                tProp.CanCreate = tProp.Attributes.Get<CanCreateAttribute>() != null;
 
-                tProp.IsCompositeRelationship = objectPropConfig.IsCompositeRelationship;
-                tProp.IsAggregateRelationship = objectPropConfig.IsAggregateRelationship;
-                tProp.IsParentRelationship = objectPropConfig.IsParentRelationship;
+                tProp.IsCompositeRelationship = tProp.Attributes.Get<OwnsAttribute>() != null;
+                tProp.IsAggregateRelationship = tProp.Attributes.Get<HasAttribute>() != null;
+                tProp.IsParentRelationship = tProp.Attributes.Get<OwnedByAttribute>() != null;
             }
 
             // If the Property name starts with "Parent", we'll treat it as a parent:
-            var propertyConfig = tProp.Configurations.Get<PropertyConfiguration>();
-            if (!propertyConfig.IsConfiguredAtRunTime &&
-                tProp.FriendlyName.StartsWith("Parent "))
+            var displayAttr = tProp.Attributes.Get<DisplayAttribute>();
+            if (displayAttr == null && tProp.FriendlyName.StartsWith("Parent "))
             {
-                var objectPropConfig = tProp.Configurations.Get<ObjectPropertyConfiguration>();
-                objectPropConfig.IsParentRelationship = true;
-                tProp.IsParentRelationship = objectPropConfig.IsParentRelationship;
+                tProp.Attributes.Remove<OwnsAttribute>();
+                tProp.Attributes.Remove<HasAttribute>();
+                tProp.Attributes.Add(typeof(OwnedByAttribute), new OwnedByAttribute(), true);
+                tProp.IsParentRelationship = true;
             }
+
         }
     }
 }

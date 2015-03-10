@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             _CollectionTypeIdentifier = collectionTypeIdentifier;
         }
 
-        public CollectionTemplate BuildFor(Type objectType, ConfigurationMap collectionAttributes)
+        public CollectionTemplate BuildFor(Type objectType, AttributesMap collectionAttributes)
         {
             var result = _CollectionTemplateFactory();
 
@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.FriendlyName = result.RealType.Name.CreateFriendlyName();
             result.FullName = result.RealType.FullName;
             result.ElementType = _CollectionTypeIdentifier.DetermineItemType(result.RealType);
-            result.Configurations = collectionAttributes;
+            result.Attributes = collectionAttributes;
 
             result.FinaliseConstruction();
 

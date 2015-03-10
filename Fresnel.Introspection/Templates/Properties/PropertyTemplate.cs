@@ -2,6 +2,7 @@ using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Utils;
 using Newtonsoft.Json;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
@@ -12,7 +13,10 @@ namespace Envivo.Fresnel.Introspection.Templates
 
     public class PropertyTemplate : BaseMemberTemplate, ISettableMemberTemplate
     {
-        private PropertyConfiguration _Attribute;
+        public bool _CanRead;
+        public bool _CanWrite;
+        public bool _IsNotPersisted;
+
         private Lazy<IClassTemplate> _InnerClass;
 
         private DynamicMethodBuilder _DynamicMethodBuilder;
@@ -67,7 +71,9 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         internal override void FinaliseConstruction()
         {
-            _Attribute = this.Configurations.Get<PropertyConfiguration>();
+            _CanRead = this.Attributes.Get<CanReadAttribute>() != null;
+            _CanWrite = this.Attributes.Get<CanModifyAttribute>() != null;
+            _IsNotPersisted = this.Attributes.Get<NotPersistedAttribute>() != null;
 
             base.FinaliseConstruction();
         }
@@ -244,7 +250,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             // This logic ensures that the propery is read-able, and there is a Public 'getter' method:
             get
             {
-                return _Attribute.CanRead &&
+                return _CanRead &&
                         this.PropertyInfo.CanRead &&
                         (this.PropertyInfo.GetGetMethod(false) != null);
             }
@@ -258,7 +264,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             // This logic ensures that the propery is write-able, and there is a Public 'setter' method:
             get
             {
-                return _Attribute.CanWrite &&
+                return _CanWrite &&
                         this.PropertyInfo.CanWrite &&
                         (this.PropertyInfo.GetSetMethod(false) != null);
             }
@@ -284,7 +290,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         public bool CanPersist
         {
-            get { return _Attribute.CanPersist; }
+            get { return !_IsNotPersisted; }
         }
 
         /// <summary>

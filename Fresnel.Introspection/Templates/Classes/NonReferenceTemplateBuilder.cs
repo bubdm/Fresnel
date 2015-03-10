@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             _NonReferenceTemplateFactory = nonReferenceTemplateFactory;
         }
 
-        public NonReferenceTemplate BuildFor(Type objectType, ConfigurationMap attributes)
+        public NonReferenceTemplate BuildFor(Type objectType, AttributesMap attributes)
         {
             var result = _NonReferenceTemplateFactory();
 
@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.Name = result.RealType.Name;
             result.FriendlyName = result.RealType.Name.CreateFriendlyName();
             result.FullName = result.RealType.FullName;
-            result.Configurations = attributes;
+            result.Attributes = attributes;
 
             return result;
         }

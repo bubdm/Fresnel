@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using Newtonsoft.Json;
+using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -32,18 +33,18 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             base.FinaliseConstruction();
 
-            this.IsVisible = this.Configurations.Get<IsVisibleAttribute>() != null;
+            this.IsVisible = this.Attributes.Get<IsVisibleAttribute>() != null;
 
             // We don't want hidden members to be visible:
             var memberName = this.Name;
-            var hiddenMembers = this.OuterClass.Configurations.Get<HiddenMembersAttribute>();
+            var hiddenMembers = (HiddenMembersAttribute)this.OuterClass.Attributes.Get<HiddenMembersAttribute>().Value;
             if (hiddenMembers.Contains(memberName))
             {
                 this.IsVisible = false;
             }
 
             // We also don't want framework members to be visible:
-            if (attr.HasFrameworkMemberCalled(memberName))
+            if (hiddenMembers.ContainsFrameworkMember(memberName))
             {
                 this.IsVisible = false;
                 this.IsFrameworkMember = true;

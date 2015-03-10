@@ -32,6 +32,7 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -46,8 +47,8 @@
     <Compile Include="Commands\SetBackingFieldCommand.cs" />
     <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Commands\GetPropertyCommand.cs" />
-    <Compile Include="Configuration\ConfigurationResolver.cs" />
-    <Compile Include="Configuration\ConfigurationMapBuilder.cs" />
+    <Compile Include="Configuration\AttributesMap.cs" />
+    <Compile Include="Configuration\AttributesMapBuilder.cs" />
     <Compile Include="Configuration\AssemblyConfigurationMap.cs">
       <SubType>Code</SubType>
     </Compile>

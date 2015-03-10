@@ -1,6 +1,7 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Utils;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -51,8 +52,12 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         private bool IsCustomProperty(PropertyTemplate tProperty, FieldInfo field)
         {
-            var attr = tProperty.Configurations.Get<PropertyConfiguration>();
-            return field.Name.IsSameAs(attr.BackingFieldName);
+            var attr = tProperty.Attributes.Get<BackingFieldAttribute>();
+            if (attr != null)
+            {
+                return ((BackingFieldAttribute)attr.Value).Name.IsSameAs(field.Name);
+            }
+            return false;
         }
 
         private bool IsAutoProperty(PropertyTemplate tProperty, FieldInfo field)
