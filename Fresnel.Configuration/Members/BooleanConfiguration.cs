@@ -3,7 +3,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Configuration for a Boolean Property
     /// </summary>
-    public class BooleanConfiguration : PropertyConfiguration
+    public class BooleanConfiguration : BaseConfiguration
     {
         public BooleanConfiguration()
             : base()

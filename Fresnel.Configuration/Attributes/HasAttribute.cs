@@ -7,11 +7,11 @@ using System.Reflection;
 namespace System.ComponentModel.DataAnnotations
 {
     /// <summary>
-    /// This object is related to (Aggregate relationship) the property's contents
+    /// This object is related to the property's content/s (aka Aggregation). Deleting this object will not affect these contents.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class HasAttribute : Attribute
     {
-
+        
     }
 }

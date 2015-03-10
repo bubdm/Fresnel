@@ -3,7 +3,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Configuration for a Text (i.e. String) Property
     /// </summary>
-    public class TextConfiguration : StringConfiguration
+    public class TextConfiguration : BaseConfiguration
     {
         public TextConfiguration()
             : base()

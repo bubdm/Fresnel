@@ -3,7 +3,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Configuration for a DateTime Property
     /// </summary>
-    public class DateTimeConfiguration : PropertyConfiguration
+    public class DateTimeConfiguration : BaseConfiguration
     {
         public DateTimeConfiguration()
             : base()

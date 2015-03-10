@@ -3,7 +3,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Configuration for a class Method
     /// </summary>
-    public class MethodConfiguration : MemberConfiguration
+    public class MethodConfiguration : BaseConfiguration
     {
         /// <summary>
         /// Determines whether access to this member can be executed on a separate thread,

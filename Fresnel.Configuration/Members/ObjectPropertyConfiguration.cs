@@ -5,7 +5,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Configuration for a Domain Object Property
     /// </summary>
-    public class ObjectPropertyConfiguration : ObjectPropertyBaseConfiguration
+    public class ObjectPropertyConfiguration : BaseConfiguration
     {
         private bool _IsAggregateRelationship;
         private bool _IsCompositeRelationship;
@@ -31,8 +31,8 @@ namespace Envivo.Fresnel.Configuration
                 {
                     _IsCompositeRelationship = false;
                     _IsParentRelationship = false;
-                    this.CanCreate = true;
-                    this.CanExpandContents = true;
+                    //this.CanCreate = true;
+                    //this.CanExpandContents = true;
                 }
             }
         }
@@ -51,8 +51,8 @@ namespace Envivo.Fresnel.Configuration
                 {
                     _IsAggregateRelationship = false;
                     _IsParentRelationship = false;
-                    this.CanCreate = false;
-                    this.CanExpandContents = true;
+                    //this.CanCreate = false;
+                    //this.CanExpandContents = true;
                 }
             }
         }
@@ -71,8 +71,8 @@ namespace Envivo.Fresnel.Configuration
                 {
                     _IsAggregateRelationship = false;
                     _IsCompositeRelationship = false;
-                    this.CanCreate = false;
-                    this.CanExpandContents = false;
+                    //this.CanCreate = false;
+                    //this.CanExpandContents = false;
                 }
             }
         }

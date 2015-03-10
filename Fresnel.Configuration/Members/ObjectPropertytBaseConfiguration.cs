@@ -5,7 +5,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Configuration for a Domain Object or List Property
     /// </summary>
-    public class ObjectPropertyBaseConfiguration : PropertyConfiguration
+    public class ObjectPropertyBaseConfiguration : BaseConfiguration
     {
         private bool _IsShownInline;
 

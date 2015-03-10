@@ -7,7 +7,7 @@ using System.Reflection;
 namespace System.ComponentModel.DataAnnotations
 {
 
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class CanCreateAttribute : Attribute
     {
         

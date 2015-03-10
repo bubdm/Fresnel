@@ -40,19 +40,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\CanDrillDownAttribute.cs" />
+    <Compile Include="Attributes\DisplayInlineAttribute.cs" />
+    <Compile Include="Attributes\HiddenMembersAttribute .cs" />
+    <Compile Include="Attributes\ForcePessimisticLockingAttribute.cs" />
+    <Compile Include="Attributes\AllowPessimisticLockingAttribute.cs" />
+    <Compile Include="Attributes\DisplayOrderAttribute.cs" />
+    <Compile Include="Attributes\IsImmutableAttribute.cs" />
+    <Compile Include="Attributes\IsLazyLoadedAttribute.cs" />
+    <Compile Include="Attributes\InvocationAttrbute.cs" />
+    <Compile Include="Attributes\CanClearAttribute.cs" />
+    <Compile Include="Attributes\OwnedByAttribute.cs" />
+    <Compile Include="Attributes\BooleanFalseValueAttribute.cs" />
+    <Compile Include="Attributes\HasAttribute.cs" />
+    <Compile Include="Attributes\OwnsAttribute.cs" />
     <Compile Include="Attributes\CanModifyAttribute.cs" />
     <Compile Include="Attributes\CanAddAttribute.cs" />
+    <Compile Include="Attributes\WriteOnceAttribute.cs" />
     <Compile Include="Attributes\CanRemoveAttribute.cs" />
     <Compile Include="Attributes\CanReadAttribute.cs" />
     <Compile Include="Attributes\CanCreateAttribute.cs" />
-    <Compile Include="Attributes\HasAttribute.cs" />
-    <Compile Include="Attributes\OwnedByAttribute.cs" />
-    <Compile Include="Attributes\OwnsAttribute.cs" />
+    <Compile Include="Attributes\BooleanTrueValueAttribute.cs" />
     <Compile Include="Attributes\FilterQuerySpecificationAttribute.cs" />
     <Compile Include="Attributes\FileDialogAttribute.cs" />
     <Compile Include="Attributes\BackingFieldAttribute.cs" />
     <Compile Include="Attributes\UiControlHintAttribute.cs" />
     <Compile Include="Attributes\DecimalPlacesAttribute.cs" />
+    <Compile Include="Members\AttributeWrapper.cs" />
     <Compile Include="Members\CollectionPropertyConfigurationBuilder.cs" />
     <Compile Include="Members\BooleanConfigurationBuilder.cs" />
     <Compile Include="IConfigurationBuilder.cs" />

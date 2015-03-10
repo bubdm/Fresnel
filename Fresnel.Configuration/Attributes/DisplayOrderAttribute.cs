@@ -7,9 +7,8 @@ using System.Reflection;
 namespace System.ComponentModel.DataAnnotations
 {
 
-    [AttributeUsage(AttributeTargets.Property)]
-    public class CanRemoveAttribute : Attribute
+    public class DisplayOrderAttribute : Attribute
     {
-
+        public IEnumerable<string> PropertyNames { get; set; }
     }
 }

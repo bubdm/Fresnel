@@ -8,8 +8,8 @@ namespace System.ComponentModel.DataAnnotations
 {
 
     [AttributeUsage(AttributeTargets.Property)]
-    public class CanRemoveAttribute : Attribute
+    public class DisplayInlineAttribute : Attribute
     {
-
+        
     }
 }

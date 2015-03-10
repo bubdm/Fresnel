@@ -7,8 +7,8 @@ using System.Reflection;
 namespace System.ComponentModel.DataAnnotations
 {
 
-    [AttributeUsage(AttributeTargets.Property)]
-    public class CanRemoveAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
+    public class IsLazyLoadedAttribute : Attribute
     {
 
     }

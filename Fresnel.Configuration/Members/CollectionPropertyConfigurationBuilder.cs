@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.Configuration
             var backingField = attributes.OfType<BackingFieldAttribute>().SingleOrDefault();
             if (backingField != null)
             {
-                result.BackingFieldName = backingField.Name;
+                //result.BackingFieldName = backingField.Name;
             }
 
             var canAdd = attributes.OfType<CanAddAttribute>().SingleOrDefault();

@@ -3,7 +3,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Configuration for a Property
     /// </summary>
-    public class PropertyConfiguration : MemberConfiguration
+    public class PropertyConfiguration : BaseConfiguration
     {
         private bool _IsGeneratedByPersistenceStore;
 

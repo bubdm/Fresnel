@@ -3,7 +3,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Configuration for a Collection Property
     /// </summary>
-    public class CollectionPropertyConfiguration : ObjectPropertyBaseConfiguration
+    public class CollectionPropertyConfiguration : BaseConfiguration
     {
         private bool _IsAggregateRelationship;
         private bool _IsCompositeRelationship;
@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.Configuration
         {
             this.IsCompositeRelationship = false;
             this.IsAggregateRelationship = true;
-            this.CanExpandContents = true;
+            //this.CanExpandContents = true;
 
             this.CanAdd = true;
             this.CanRemove = true;
@@ -34,8 +34,8 @@ namespace Envivo.Fresnel.Configuration
                 if (value)
                 {
                     _IsCompositeRelationship = false;
-                    this.CanCreate = true;
-                    this.CanExpandContents = true;
+                    //this.CanCreate = true;
+                    //this.CanExpandContents = true;
                     this.CanAdd = false;
                     this.CanRemove = true;
                 }
@@ -55,8 +55,8 @@ namespace Envivo.Fresnel.Configuration
                 if (value)
                 {
                     _IsAggregateRelationship = false;
-                    this.CanCreate = false;
-                    this.CanExpandContents = false;
+                    //this.CanCreate = false;
+                    //this.CanExpandContents = false;
                     this.CanAdd = true;
                     this.CanRemove = true;
                 }

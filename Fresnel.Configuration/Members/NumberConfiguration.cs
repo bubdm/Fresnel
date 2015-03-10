@@ -5,7 +5,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Configuration for a Number Property
     /// </summary>
-    public class NumberConfiguration : PropertyConfiguration
+    public class NumberConfiguration : BaseConfiguration
     {
         public NumberConfiguration()
             : base()

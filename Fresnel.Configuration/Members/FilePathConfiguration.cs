@@ -3,15 +3,15 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Configuration for a string Property that represents a file (or folder) Path
     /// </summary>
-    public class FilePathConfiguration : StringConfiguration
+    public class FilePathConfiguration : BaseConfiguration
     {
         private bool _IsImage;
 
         public FilePathConfiguration()
             : base()
         {
-            base.MaxLength = 260;
-            this.IsImage = false;
+            //base.MaxLength = 260;
+            //this.IsImage = false;
             //this.DialogType = FileDialogType.None;
         }
 

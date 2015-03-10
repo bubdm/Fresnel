@@ -3,7 +3,7 @@ namespace Envivo.Fresnel.Configuration
     /// <summary>
     /// Configuration for a String Property
     /// </summary>
-    public class StringConfiguration : PropertyConfiguration
+    public class StringConfiguration : BaseConfiguration
     {
         protected const short DEFAULT_MAX_LENGTH = 80;
 
