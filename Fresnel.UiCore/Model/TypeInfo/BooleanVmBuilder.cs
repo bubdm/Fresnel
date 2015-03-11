@@ -4,6 +4,7 @@ using Envivo.Fresnel.UiCore.Model;
 
 using Envivo.Fresnel.Utils;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
@@ -17,30 +18,34 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
         public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var tClass = tProp.InnerClass;
-            var attr = tProp.Configurations.Get<BooleanConfiguration>();
 
-            targetVM.Info = this.CreateInfoVM(tClass, attr);
+            targetVM.Info = this.CreateInfoVM(tProp.Attributes, tClass.RealType);
         }
 
         public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             var tClass = tParam.InnerClass;
-            var attr = tParam.Configurations.Get<BooleanConfiguration>();
-
-            targetVM.Info = this.CreateInfoVM(tClass, attr);
+            
+            targetVM.Info = this.CreateInfoVM(tParam.Attributes, tClass.RealType);
         }
 
-        private ITypeInfo CreateInfoVM(IClassTemplate tClass, BooleanConfiguration attr)
+        private ITypeInfo CreateInfoVM(AttributesMap attributesMap, Type actualType)
         {
+            var displayBoolean = attributesMap.Get<DisplayBooleanAttribute>();
+
+            var preferredControl = attributesMap.Get<UiControlHintAttribute>().PreferredUiControl;
+            if (preferredControl == UiControlType.None)
+            {
+                preferredControl = UiControlType.Radio;
+            }
+
             return new BooleanVM()
             {
                 Name = "boolean",
-                IsNullable = tClass.RealType.IsNullableType(),
-                TrueValue = attr.TrueValue,
-                FalseValue = attr.FalseValue,
-                PreferredControl = attr.PreferredInputControl != UiControlType.None ?
-                                   attr.PreferredInputControl :
-                                   UiControlType.Radio
+                IsNullable = actualType.IsNullableType(),
+                TrueValue = displayBoolean.TrueName,
+                FalseValue = displayBoolean.FalseName,
+                PreferredControl = preferredControl
             };
         }
 

@@ -2,9 +2,9 @@
 using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Model;
-
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
@@ -29,30 +29,34 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
         public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var tEnum = (EnumTemplate)tProp.InnerClass;
-            var attr = tProp.Configurations.Get<EnumAttribute>();
-
-            targetVM.Info = this.CreateInfoVM(tEnum, attr);
+            targetVM.Info = this.CreateInfoVM(tProp.Attributes, tEnum);
         }
 
         public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             var tEnum = (EnumTemplate)tParam.InnerClass;
-            var attr = tParam.Configurations.Get<EnumAttribute>();
-
-            targetVM.Info = this.CreateInfoVM(tEnum, attr);
+            targetVM.Info = this.CreateInfoVM(tParam.Attributes, tEnum);
         }
 
-        private ITypeInfo CreateInfoVM(EnumTemplate tEnum, EnumAttribute attr)
+        private ITypeInfo CreateInfoVM(AttributesMap attributesMap, EnumTemplate tEnum)
         {
+            var preferredControl = attributesMap.Get<UiControlHintAttribute>().PreferredUiControl;
+
+            if (tEnum.IsBitwiseEnum)
+            {
+                preferredControl = UiControlType.Checkbox;
+            }
+            else if (preferredControl == UiControlType.None)
+            {
+                preferredControl = UiControlType.Select;
+            }
+
             return new EnumVM()
             {
                 Name = "enum",
                 IsBitwiseEnum = tEnum.IsBitwiseEnum,
                 Items = this.CreateEnumItems(tEnum),
-                PreferredControl = tEnum.IsBitwiseEnum ? UiControlType.Checkbox :
-                                   attr.PreferredInputControl != UiControlType.None ?
-                                   attr.PreferredInputControl :
-                                   UiControlType.Select
+                PreferredControl = preferredControl,
             };
         }
 

@@ -3,6 +3,7 @@ using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Model;
 
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
@@ -21,32 +22,37 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 
         public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
-            var attr = tProp.Configurations.Get<NumberConfiguration>();
-
-            targetVM.Info = this.CreateInfoVM(attr);
-
+            targetVM.Info = this.CreateInfoVM(tProp.Attributes);
         }
 
         public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
-            var attr = tParam.Configurations.Get<NumberConfiguration>();
-
-            targetVM.Info = this.CreateInfoVM(attr);
+            targetVM.Info = this.CreateInfoVM(tParam.Attributes);
         }
 
-        private ITypeInfo CreateInfoVM(NumberConfiguration attr)
+        private ITypeInfo CreateInfoVM(AttributesMap attributesMap)
         {
+            var range = attributesMap.Get<RangeAttribute>();
+            var decimalPlaces = attributesMap.Get<DecimalPlacesAttribute>();
+            var dataType = attributesMap.Get<DataTypeAttribute>();
+
+            var preferredControl = attributesMap.Get<UiControlHintAttribute>().PreferredUiControl;
+            if (dataType.DataType == DataType.Currency)
+            {
+                preferredControl = UiControlType.Currency;
+            }
+            else if (preferredControl == UiControlType.None)
+            {
+                preferredControl = UiControlType.Number;
+            }
+
             return new NumberVM()
             {
                 Name = "number",
-                MinValue = attr.MinValue,
-                MaxValue = attr.MaxValue,
-                DecimalPlaces = attr.DecimalPlaces,
-                CurrencySymbol = "",
-                PreferredControl = attr.IsCurrency ? UiControlType.Currency :
-                                   attr.PreferredInputControl != UiControlType.None ?
-                                   attr.PreferredInputControl :
-                                   UiControlType.Number
+                MinValue = Convert.ToInt32(range.Minimum),
+                MaxValue = Convert.ToInt32(range.Maximum),
+                DecimalPlaces = decimalPlaces.Places,
+                PreferredControl = preferredControl
             };
         }
     }

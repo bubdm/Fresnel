@@ -8,6 +8,7 @@ using Envivo.Fresnel.UiCore.Model.TypeInfo;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Envivo.Fresnel.UiCore
@@ -148,8 +149,8 @@ namespace Envivo.Fresnel.UiCore
 
             if (value is bool)
             {
-                var attr = oProp.Template.Configurations.Get<BooleanConfiguration>();
-                var result = (bool)value ? attr.TrueValue : attr.FalseValue;
+                var displayBoolean = oProp.Template.Attributes.Get<DisplayBooleanAttribute>();
+                var result = (bool)value ? displayBoolean.TrueName : displayBoolean.FalseName;
                 return result;
             }
 

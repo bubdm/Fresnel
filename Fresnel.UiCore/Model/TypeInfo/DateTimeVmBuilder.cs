@@ -3,6 +3,7 @@ using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Model;
 
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
@@ -18,27 +19,28 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 
         public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
         {
-            var attr = tProp.Configurations.Get<DateTimeConfiguration>();
-
-            targetVM.Info = this.CreateInfoVM(attr);
+            targetVM.Info = this.CreateInfoVM(tProp.Attributes);
         }
 
         public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
         {
-            var attr = tParam.Configurations.Get<DateTimeConfiguration>();
-
-            targetVM.Info = this.CreateInfoVM(attr);
+            targetVM.Info = this.CreateInfoVM(tParam.Attributes);
         }
 
-        private ITypeInfo CreateInfoVM(DateTimeConfiguration attr)
+        private ITypeInfo CreateInfoVM(AttributesMap attributesMap)
         {
+            var displayFormat = attributesMap.Get<DisplayFormatAttribute>();
+            var preferredControl = attributesMap.Get<UiControlHintAttribute>().PreferredUiControl;
+            if (preferredControl == UiControlType.None)
+            {
+                preferredControl = UiControlType.DateTimeLocal;
+            }
+
             return new DateTimeVM()
             {
                 Name = "datetime",
-                CustomFormat = attr.CustomFormat,
-                PreferredControl = attr.PreferredInputControl != UiControlType.None ?
-                                   attr.PreferredInputControl :
-                                   UiControlType.DateTimeLocal
+                CustomFormat = displayFormat.DataFormatString,
+                PreferredControl = preferredControl
             };
         }
     }

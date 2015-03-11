@@ -3,6 +3,7 @@ using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Http;
 
 namespace Envivo.Fresnel.UiCore.Controllers
@@ -31,14 +32,14 @@ namespace Envivo.Fresnel.UiCore.Controllers
         [HttpGet]
         public IClassTemplate GetTemplate()
         {
-            var tClass = _TemplateCache.GetTemplate(typeof(ObjectInstanceConfiguration));
+            var tClass = _TemplateCache.GetTemplate(typeof(VisibilityAttribute));
             return tClass;
         }
 
         [HttpGet]
         public BaseObjectObserver GetObserver()
         {
-            var instance = new ObjectInstanceConfiguration();
+            var instance = new VisibilityAttribute();
             var observer = _ObserverCache.GetObserver(instance);
             return observer;
         }
