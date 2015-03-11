@@ -8,6 +8,11 @@ namespace Envivo.Fresnel.Configuration
 {
     public class DisplayBooleanAttributeBuilder : IMissingAttributeBuilder
     {
+        public bool CanHandle(Type attributeType)
+        {
+            return attributeType == typeof(DisplayBooleanAttribute);
+        }
+
         public Attribute BuildFrom(IEnumerable<Attribute> templateAttributes, Type parentClass)
         {
             var result = new DisplayBooleanAttribute();

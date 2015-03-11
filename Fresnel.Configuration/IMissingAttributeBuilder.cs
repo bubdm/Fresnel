@@ -8,6 +8,8 @@ namespace Envivo.Fresnel.Configuration
     /// </summary>
     public interface IMissingAttributeBuilder
     {
+        bool CanHandle(Type attributeType);
+
         Attribute BuildFrom(IEnumerable<Attribute> templateAttributes, Type parentClass);
     }
 

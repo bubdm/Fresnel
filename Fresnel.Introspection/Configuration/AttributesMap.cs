@@ -57,11 +57,11 @@ namespace Envivo.Fresnel.Configuration
             var classType = typeof(TAttribute);
             return this.GetEntry(attributeType, classType);
         }
-        
+
         public void Add(Type key, Attribute attribute, bool isConfiguredAtRunTime)
         {
-            var wrapper = new AttributeEntry(attribute, isConfiguredAtRunTime);
-            _AttributeEntries[key] = wrapper;
+            var newEntry = new AttributeEntry(attribute, isConfiguredAtRunTime);
+            _AttributeEntries[key] = newEntry;
         }
 
         public void AddRange(IEnumerable<Attribute> attributes, bool isConfiguredAtRunTime)
@@ -87,34 +87,23 @@ namespace Envivo.Fresnel.Configuration
             }
 
             // See if we've got a Builder that can create one:
-            var attributeBuilder = _AttributeBuilders
-                                        .SingleOrDefault(a => a.GetType()
-                                                               .GetGenericArguments()
-                                                               .FirstOrDefault() == attributeType);
+            var attributeBuilder = _AttributeBuilders.SingleOrDefault(a => a.CanHandle(attributeType));
             if (attributeBuilder != null)
             {
                 var allKnownAttributes = _AttributeEntries.Values.Select(e => e.Value).ToArray();
                 var defaultAttr = attributeBuilder.BuildFrom(allKnownAttributes, classType);
-                this.Add(attributeType, defaultAttr, false);
+                result = new AttributeEntry(defaultAttr, false);
+                _AttributeEntries[attributeType] = result;
+                return result;
             }
-
-            //// That didn't work, so find an entry that is a subclass of the requested type:
-            //foreach (var existingConfiguration in this.Values)
-            //{
-            //    if (existingConfiguration.GetType().IsSubclassOf(configurationType))
-            //    {
-            //        // Found it - We'll method it to the dictionary to make it faster to locate next time:
-            //        this.Add(configurationType, existingConfiguration);
-            //        return existingConfiguration;
-            //    }
-            //}
 
             // We didn't find anything, so create a default Attribute object with default values:
             var defaultCtor = attributeType.GetConstructor(Type.EmptyTypes);
             if (defaultCtor != null)
             {
                 var defaultAttr = (Attribute)defaultCtor.Invoke(null);
-                this.Add(attributeType, defaultAttr, false);
+                result = new AttributeEntry(defaultAttr, false);
+                _AttributeEntries[attributeType] = result;
             }
 
             return result;

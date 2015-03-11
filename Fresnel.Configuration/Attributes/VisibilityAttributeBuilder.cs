@@ -8,6 +8,11 @@ namespace Envivo.Fresnel.Configuration
 {
     public class VisibilityAttributeBuilder : IMissingAttributeBuilder
     {
+        public bool CanHandle(Type attributeType)
+        {
+            return attributeType == typeof(VisibilityAttribute);
+        }
+
         public Attribute BuildFrom(IEnumerable<Attribute> templateAttributes, Type parentClass)
         {
             var result = new VisibilityAttribute()
