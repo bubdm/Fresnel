@@ -43,8 +43,8 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
             {
                 Name = "boolean",
                 IsNullable = actualType.IsNullableType(),
-                TrueValue = displayBoolean.TrueName,
-                FalseValue = displayBoolean.FalseName,
+                TrueValue = displayBoolean.TrueValue,
+                FalseValue = displayBoolean.FalseValue,
                 PreferredControl = preferredControl
             };
         }

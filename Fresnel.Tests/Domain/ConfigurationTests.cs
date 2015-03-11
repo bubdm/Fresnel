@@ -25,15 +25,17 @@ namespace Envivo.Fresnel.Tests.Domain
             var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.BasicTypes.BooleanValues>();
 
             // Act:
-            var tMethod1 = tClass.Methods["NormalBoolean"];
-            var tMethod2 = tClass.Methods["Orientation"];
+            var tMethod1 = tClass.Properties["NormalBoolean"];
+            var tMethod2 = tClass.Properties["Orientation"];
 
             // Assert:
-            Assert.AreEqual("Yes", tMethod1.Attributes.Get<DisplayBooleanAttribute>().TrueName);
-            Assert.AreEqual("No", tMethod1.Attributes.Get<DisplayBooleanAttribute>().FalseName);
+            var booleanAttrForMethod1 = tMethod1.Attributes.Get<DisplayBooleanAttribute>();
+            Assert.AreEqual("Yes", booleanAttrForMethod1.TrueValue);
+            Assert.AreEqual("No", booleanAttrForMethod1.FalseValue);
 
-            Assert.AreEqual("Clockwise", tMethod2.Attributes.Get<DisplayBooleanAttribute>().TrueName);
-            Assert.AreEqual("Anti-Clockwise", tMethod2.Attributes.Get<DisplayBooleanAttribute>().FalseName);
+            var booleanAttrForMethod2 = tMethod2.Attributes.Get<DisplayBooleanAttribute>();
+            Assert.AreEqual("Clockwise", booleanAttrForMethod2.TrueValue);
+            Assert.AreEqual("Anti-Clockwise", booleanAttrForMethod2.FalseValue);
 
         }
 

@@ -15,12 +15,12 @@ namespace System.ComponentModel.DataAnnotations
     {
         public DisplayBooleanAttribute()
         {
-            this.TrueName = "Yes";
-            this.FalseName = "Yes";
+            this.TrueValue = "Yes";
+            this.FalseValue = "No";
         }
 
-        public string TrueName { get; set; }
+        public string TrueValue { get; set; }
 
-        public string FalseName { get; set; }
+        public string FalseValue { get; set; }
     }
 }

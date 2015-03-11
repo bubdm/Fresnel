@@ -150,7 +150,7 @@ namespace Envivo.Fresnel.UiCore
             if (value is bool)
             {
                 var displayBoolean = oProp.Template.Attributes.Get<DisplayBooleanAttribute>();
-                var result = (bool)value ? displayBoolean.TrueName : displayBoolean.FalseName;
+                var result = (bool)value ? displayBoolean.TrueValue : displayBoolean.FalseValue;
                 return result;
             }
 
