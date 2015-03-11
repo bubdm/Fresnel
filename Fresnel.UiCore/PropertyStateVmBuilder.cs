@@ -19,16 +19,23 @@ namespace Envivo.Fresnel.UiCore
         private CanGetPropertyPermission _CanGetPropertyPermission;
         private CanSetPropertyPermission _CanSetPropertyPermission;
 
+        private BooleanValueFormatter _BooleanValueFormatter;
+        private DateTimeValueFormatter _DateTimeValueFormatter;
+
         public PropertyStateVmBuilder
             (
             CanCreatePermission canCreatePermission,
             CanGetPropertyPermission canGetPropertyPermission,
-            CanSetPropertyPermission canSetPropertyPermission
+            CanSetPropertyPermission canSetPropertyPermission,
+            BooleanValueFormatter booleanValueFormatter,
+            DateTimeValueFormatter dateTimeValueFormatter
             )
         {
             _CanCreatePermission = canCreatePermission;
             _CanGetPropertyPermission = canGetPropertyPermission;
             _CanSetPropertyPermission = canSetPropertyPermission;
+            _BooleanValueFormatter = booleanValueFormatter;
+            _DateTimeValueFormatter = dateTimeValueFormatter;
         }
 
         public ValueStateVM BuildFor(BasePropertyObserver oProp)
@@ -44,7 +51,20 @@ namespace Envivo.Fresnel.UiCore
                 {
                     // TODO: Use the GetPropertyCommand, in case the property should be hidden:
                     var realValue = oProp.Template.GetProperty(oProp.OuterObject.RealObject);
-                    result.Value = realValue;
+
+                    if (realValue is bool)
+                    {
+                        result.Value = _BooleanValueFormatter.GetValue((bool)realValue);
+                    }
+                    else if (realValue is DateTime)
+                    {
+                        result.Value = _DateTimeValueFormatter.GetValue((DateTime)realValue);
+                    }
+                    else
+                    {
+                        result.Value = realValue;
+                    }
+
                     result.FriendlyValue = this.CreateFriendlyValue(oProp, realValue);
 
                     // Hack:
@@ -149,9 +169,12 @@ namespace Envivo.Fresnel.UiCore
 
             if (value is bool)
             {
-                var displayBoolean = oProp.Template.Attributes.Get<DisplayBooleanAttribute>();
-                var result = (bool)value ? displayBoolean.TrueValue : displayBoolean.FalseValue;
-                return result;
+                return _BooleanValueFormatter.GetFriendlyValue((bool)value, oProp.Template.Attributes);
+            }
+
+            if (value is DateTime)
+            {
+                return _DateTimeValueFormatter.GetFriendlyValue((DateTime)value, oProp.Template.Attributes);
             }
 
             var propertyType = oProp.Template.PropertyType;
