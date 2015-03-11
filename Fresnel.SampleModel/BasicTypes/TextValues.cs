@@ -99,7 +99,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// </summary>
         [MinLength(8)]
         [MaxLength(16)]
-        internal virtual string TextWithSize
+        public virtual string TextWithSize
         {
             get { return this.NormalText; }
             set { this.NormalText = value; }
