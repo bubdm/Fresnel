@@ -4,23 +4,23 @@ namespace Envivo.Fresnel.Configuration
 
     public class AttributeEntry
     {
-        public AttributeEntry(Attribute attribute, bool isConfiguredAtRunTime)
-        {
-            this.IsConfiguredAtRunTime = isConfiguredAtRunTime;
-            this.Value = attribute;
-        }
-
         /// <summary>
         /// Determines if the Attribute values were provided by the consumer (i.e. we're NOT using default values)
         /// </summary>
-        public bool IsConfiguredAtRunTime { get; private set; }
+        public bool IsConfiguredAtRunTime { get; set; }
 
-        public Attribute Value { get; private set; }
+        /// <summary>
+        /// Returns TRUE if the Attribute was declared in the original code
+        /// </summary>
+        public bool WasDeclaredInCode { get; set; }
+
+        public Attribute Value { get; set; }
 
         public TAttribute ValueAs<TAttribute>()
             where TAttribute : Attribute
         {
             return (TAttribute)Value;
         }
+
     }
 }

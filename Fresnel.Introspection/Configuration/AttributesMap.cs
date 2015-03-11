@@ -60,7 +60,11 @@ namespace Envivo.Fresnel.Configuration
 
         public void Add(Type key, Attribute attribute, bool isConfiguredAtRunTime)
         {
-            var newEntry = new AttributeEntry(attribute, isConfiguredAtRunTime);
+            var newEntry = new AttributeEntry()
+            {
+                Value = attribute,
+                IsConfiguredAtRunTime = isConfiguredAtRunTime
+            };
             _AttributeEntries[key] = newEntry;
         }
 
@@ -92,7 +96,12 @@ namespace Envivo.Fresnel.Configuration
             {
                 var allKnownAttributes = _AttributeEntries.Values.Select(e => e.Value).ToArray();
                 var defaultAttr = attributeBuilder.BuildFrom(allKnownAttributes, classType);
-                result = new AttributeEntry(defaultAttr, false);
+                result = new AttributeEntry()
+                {
+                    Value = defaultAttr,
+                    IsConfiguredAtRunTime = true,
+                    WasDeclaredInCode = false,
+                };
                 _AttributeEntries[attributeType] = result;
                 return result;
             }
@@ -102,7 +111,12 @@ namespace Envivo.Fresnel.Configuration
             if (defaultCtor != null)
             {
                 var defaultAttr = (Attribute)defaultCtor.Invoke(null);
-                result = new AttributeEntry(defaultAttr, false);
+                result = new AttributeEntry()
+                {
+                    Value = defaultAttr,
+                    IsConfiguredAtRunTime = true,
+                    WasDeclaredInCode = false,
+                };
                 _AttributeEntries[attributeType] = result;
             }
 
