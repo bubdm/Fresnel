@@ -40,36 +40,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\CanDrillDownAttribute.cs" />
+    <Compile Include="Attributes\AllowedOperationsAttribute.cs" />
+    <Compile Include="Attributes\VisibilityAttributeBuilder.cs" />
+    <Compile Include="Attributes\DisplayBooleanAttributeBuilder.cs" />
+    <Compile Include="Attributes\DisplayBooleanAttribute.cs" />
+    <Compile Include="Attributes\UiDrillDownAttribute.cs" />
     <Compile Include="Attributes\DisplayInlineAttribute.cs" />
-    <Compile Include="Attributes\NotPersistedAttribute.cs" />
+    <Compile Include="Attributes\PersistableAttribute.cs" />
     <Compile Include="Attributes\HiddenMembersAttribute .cs" />
-    <Compile Include="Attributes\ForcePessimisticLockingAttribute.cs" />
-    <Compile Include="Attributes\AllowPessimisticLockingAttribute.cs" />
+    <Compile Include="Attributes\PessimisticLockingAttribute.cs" />
     <Compile Include="Attributes\DisplayOrderAttribute.cs" />
-    <Compile Include="Attributes\IsImmutableAttribute.cs" />
-    <Compile Include="Attributes\IsVisibleAttribute.cs" />
-    <Compile Include="Attributes\IsLazyLoadedAttribute.cs" />
+    <Compile Include="Attributes\VisibilityAttribute.cs" />
+    <Compile Include="Attributes\LazyLoadAttribute.cs" />
     <Compile Include="Attributes\InvocationAttrbute.cs" />
-    <Compile Include="Attributes\CanClearAttribute.cs" />
-    <Compile Include="Attributes\OwnedByAttribute.cs" />
-    <Compile Include="Attributes\BooleanFalseValueAttribute.cs" />
-    <Compile Include="Attributes\HasAttribute.cs" />
-    <Compile Include="Attributes\OwnsAttribute.cs" />
-    <Compile Include="Attributes\CanModifyAttribute.cs" />
-    <Compile Include="Attributes\CanAddAttribute.cs" />
+    <Compile Include="Attributes\RelationshipAttribute.cs" />
+    <Compile Include="Attributes\RelationshipTypeEnum.cs" />
     <Compile Include="Attributes\WriteOnceAttribute.cs" />
-    <Compile Include="Attributes\CanRemoveAttribute.cs" />
-    <Compile Include="Attributes\CanReadAttribute.cs" />
-    <Compile Include="Attributes\CanCreateAttribute.cs" />
-    <Compile Include="Attributes\BooleanTrueValueAttribute.cs" />
     <Compile Include="Attributes\FilterQuerySpecificationAttribute.cs" />
-    <Compile Include="Attributes\FileDialogAttribute.cs" />
+    <Compile Include="Attributes\DialogAttribute.cs" />
     <Compile Include="Attributes\BackingFieldAttribute.cs" />
     <Compile Include="Attributes\UiControlHintAttribute.cs" />
     <Compile Include="Attributes\DecimalPlacesAttribute.cs" />
-    <Compile Include="AttributeWrapper.cs" />
-    <Compile Include="IConfigurationBuilder.cs" />
+    <Compile Include="AttributeEntry.cs" />
     <Compile Include="AssemblyConfiguration.cs" />
     <Compile Include="ClassConfiguration.cs" />
     <Compile Include="ConfigurationTypeExtensions.cs" />
@@ -78,10 +70,11 @@
     <Compile Include="IAssemblyConfiguration.cs" />
     <Compile Include="IClassConfiguration.cs" />
     <Compile Include="AuthorisationConfiguration.cs" />
-    <Compile Include="Attributes\FilePathDialogType.cs">
+    <Compile Include="Attributes\DialogType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Attributes\UiControlTypeEnums.cs" />
+    <Compile Include="Attributes\UiControlTypeEnum.cs" />
+    <Compile Include="IMissingAttributeBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

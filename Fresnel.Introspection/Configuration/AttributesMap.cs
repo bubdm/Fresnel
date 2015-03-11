@@ -2,6 +2,7 @@ using Envivo.Fresnel.Utils;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Envivo.Fresnel.Configuration
 {
@@ -10,40 +11,57 @@ namespace Envivo.Fresnel.Configuration
     /// </summary>
     public class AttributesMap
     {
-        private IEnumerable<IConfigurationBuilder> _ConfigurationBuilders;
-        private Dictionary<Type, AttributeWrapper> _KnownAttributes = new Dictionary<Type, AttributeWrapper>();
+        private IEnumerable<IMissingAttributeBuilder> _AttributeBuilders;
+        private Dictionary<Type, AttributeEntry> _AttributeEntries = new Dictionary<Type, AttributeEntry>();
 
         public AttributesMap
             (
-            IEnumerable<IConfigurationBuilder> configurationBuilders
+            IEnumerable<IMissingAttributeBuilder> attributeBuilders
             )
         {
-            _ConfigurationBuilders = configurationBuilders;
+            _AttributeBuilders = attributeBuilders;
         }
 
+
         /// <summary>
-        /// Returns an attribute that matches the given Attribute type.
+        /// Returns an entry for the attribute that matches the given Attribute type.
         /// If the attribute doesn't exist, a new one is created and returned
         /// </summary>
         /// <typeparam name="TAttribute"></typeparam>
-        public AttributeWrapper Get<TAttribute>()
+        public TAttribute Get<TAttribute>()
             where TAttribute : Attribute
         {
-            return this.Get(typeof(TAttribute), null);
+            var entry = this.GetEntry(typeof(TAttribute), null);
+            return (TAttribute)entry.Value;
         }
 
-        public AttributeWrapper Get<TAttribute, TClass>()
+        public TAttribute Get<TAttribute, TClass>()
             where TAttribute : Attribute
         {
             var attributeType = typeof(TAttribute);
             var classType = typeof(TAttribute);
-            return this.Get(attributeType, classType);
+
+            var entry = this.GetEntry(typeof(TAttribute), classType);
+            return (TAttribute)entry.Value;
         }
 
+        /// <summary>
+        /// Returns the entry for the requested Attribute
+        /// </summary>
+        /// <typeparam name="TAttribute"></typeparam>
+        /// <returns></returns>
+        public AttributeEntry GetEntry<TAttribute>()
+            where TAttribute : Attribute
+        {
+            var attributeType = typeof(TAttribute);
+            var classType = typeof(TAttribute);
+            return this.GetEntry(attributeType, classType);
+        }
+        
         public void Add(Type key, Attribute attribute, bool isConfiguredAtRunTime)
         {
-            var wrapper = new AttributeWrapper(attribute, isConfiguredAtRunTime);
-            _KnownAttributes[key] = wrapper;
+            var wrapper = new AttributeEntry(attribute, isConfiguredAtRunTime);
+            _AttributeEntries[key] = wrapper;
         }
 
         public void AddRange(IEnumerable<Attribute> attributes, bool isConfiguredAtRunTime)
@@ -59,13 +77,25 @@ namespace Envivo.Fresnel.Configuration
         /// If the configuration doesn't exist, a new one is created and returned
         /// </summary>
         /// <param name="attributeType"></param>
-        private AttributeWrapper Get(Type attributeType, Type classType)
+        private AttributeEntry GetEntry(Type attributeType, Type classType)
         {
             // First we'll try to find an exact match:
-            var result = _KnownAttributes.TryGetValueOrNull(attributeType);
+            var result = _AttributeEntries.TryGetValueOrNull(attributeType);
             if (result != null)
             {
                 return result;
+            }
+
+            // See if we've got a Builder that can create one:
+            var attributeBuilder = _AttributeBuilders
+                                        .SingleOrDefault(a => a.GetType()
+                                                               .GetGenericArguments()
+                                                               .FirstOrDefault() == attributeType);
+            if (attributeBuilder != null)
+            {
+                var allKnownAttributes = _AttributeEntries.Values.Select(e => e.Value).ToArray();
+                var defaultAttr = attributeBuilder.BuildFrom(allKnownAttributes, classType);
+                this.Add(attributeType, defaultAttr, false);
             }
 
             //// That didn't work, so find an entry that is a subclass of the requested type:
@@ -79,21 +109,24 @@ namespace Envivo.Fresnel.Configuration
             //    }
             //}
 
-            //// We didn't find anything, so create a default Attribute object with default values:
-            //var configBuilder = _ConfigurationBuilders.Single(c => c.GetType().GenericTypeArguments.First() == attributeType);
-            //result = configBuilder.BuildFrom(_KnownAttributes.Values);
+            // We didn't find anything, so create a default Attribute object with default values:
+            var defaultCtor = attributeType.GetConstructor(Type.EmptyTypes);
+            if (defaultCtor != null)
+            {
+                var defaultAttr = (Attribute)defaultCtor.Invoke(null);
+                this.Add(attributeType, defaultAttr, false);
+            }
 
-            //this.Add(attributeType, result);
             return result;
         }
 
         public void Remove<TAttribute>()
         {
             var attributeType = typeof(TAttribute);
-            var config = _KnownAttributes.TryGetValueOrNull(attributeType);
+            var config = _AttributeEntries.TryGetValueOrNull(attributeType);
             if (config != null)
             {
-                _KnownAttributes.Remove(attributeType);
+                _AttributeEntries.Remove(attributeType);
             }
         }
 

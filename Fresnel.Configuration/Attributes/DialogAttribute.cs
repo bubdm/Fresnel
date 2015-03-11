@@ -14,12 +14,12 @@ namespace System.ComponentModel.DataAnnotations
         {
         }
 
-        public DialogAttribute(FileDialogType dialogType)
+        public DialogAttribute(DialogType dialogType)
         {
             this.DialogType = dialogType;
         }
 
-        public FileDialogType DialogType { get; set; }
+        public DialogType DialogType { get; set; }
 
         public string Filter { get; set; }
     }

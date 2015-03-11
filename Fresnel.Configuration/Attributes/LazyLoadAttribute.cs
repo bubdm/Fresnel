@@ -8,8 +8,13 @@ namespace System.ComponentModel.DataAnnotations
 {
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
-    public class IsVisibleAttribute : Attribute
+    public class LazyLoadAttribute : Attribute
     {
+        public LazyLoadAttribute()
+        {
+            this.IsEnabled = true;
+        }
 
+        public bool IsEnabled { get; set; }
     }
 }

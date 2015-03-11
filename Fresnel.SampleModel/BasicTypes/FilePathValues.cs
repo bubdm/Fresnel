@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can drag a Windows file onto this location.
         /// </summary>
         [DataType(DataType.Url)]
-        [Dialog(FileDialogType.OpenFile)]
+        [Dialog(DialogType.OpenFile)]
         public string OpenFilePath
         {
             get { return _PathValue; }
@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can drag a Windows file onto this location.
         /// </summary>
         [DataType(DataType.Url)]
-        [Dialog(FileDialogType.SaveFile)]
+        [Dialog(DialogType.SaveFile)]
         public string SaveFilePath
         {
             get { return _PathValue; }
@@ -59,7 +59,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can drag a Windows folder onto this location.
         /// </summary>
         [DataType(DataType.Url)]
-        [Dialog(FileDialogType.FolderBrowser)]
+        [Dialog(DialogType.FolderBrowser)]
         public string FolderPath
         {
             get { return _PathValue; }
@@ -73,7 +73,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can drag a Windows image file onto this location.
         /// </summary>
         [DataType(DataType.ImageUrl)]
-        [Dialog(FileDialogType.FolderBrowser)]
+        [Dialog(DialogType.FolderBrowser)]
         public string ImageFilePath
         {
             get { return _PathValue; }
@@ -87,7 +87,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// You can drag a Windows image file onto this location.
         /// </summary>
         [DataType(DataType.Url)]
-        [Dialog(FileDialogType.OpenFile, Filter = "*.doc|*.txt")]
+        [Dialog(DialogType.OpenFile, Filter = "*.doc|*.txt")]
         public string FilePathWithFilter
         {
             get { return _PathValue; }

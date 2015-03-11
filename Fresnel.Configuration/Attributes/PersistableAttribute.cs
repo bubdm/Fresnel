@@ -6,10 +6,14 @@ using System.Reflection;
 
 namespace System.ComponentModel.DataAnnotations
 {
-
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
-    public class IsImmutableAttribute : Attribute
+    public class PersistableAttribute : Attribute
     {
+        public PersistableAttribute()
+        {
+            this.IsAllowed = true;
+        }
 
+        public bool IsAllowed { get; set; }
     }
 }

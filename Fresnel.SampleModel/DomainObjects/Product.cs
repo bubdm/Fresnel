@@ -68,7 +68,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The Categories that this Product belongs to
         /// </summary>
-        [Has]
+        [Relationship(RelationshipType.Has)]
         public virtual IList<Category> Categories { get; private set; }
 
         /// <summary>

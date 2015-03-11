@@ -2,9 +2,9 @@ using System;
 namespace Envivo.Fresnel.Configuration
 {
 
-    public class AttributeWrapper
+    public class AttributeEntry
     {
-        public AttributeWrapper(Attribute attribute, bool isConfiguredAtRunTime)
+        public AttributeEntry(Attribute attribute, bool isConfiguredAtRunTime)
         {
             this.IsConfiguredAtRunTime = isConfiguredAtRunTime;
             this.Value = attribute;
@@ -17,7 +17,7 @@ namespace Envivo.Fresnel.Configuration
 
         public Attribute Value { get; private set; }
 
-        public TAttribute GetValue<TAttribute>()
+        public TAttribute ValueAs<TAttribute>()
             where TAttribute : Attribute
         {
             return (TAttribute)Value;

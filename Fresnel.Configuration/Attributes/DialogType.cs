@@ -1,6 +1,6 @@
 namespace Envivo.Fresnel.Configuration
 {
-    public enum FileDialogType
+    public enum DialogType
     {
         /// <summary>
         /// A dialog is not shown

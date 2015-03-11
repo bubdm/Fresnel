@@ -40,14 +40,13 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             this.CheckPropertyType(result);
 
-            var displayAttr = result.Attributes.Get<DisplayAttribute>();
+            var displayAttr = result.Attributes.GetEntry<DisplayAttribute>();
 
             // If the Property name starts with "Parent", we'll treat it as a parent:
             if (displayAttr == null && result.FriendlyName.StartsWith("Parent "))
             {
-                result.Attributes.Remove<OwnsAttribute>();
-                result.Attributes.Remove<HasAttribute>();
-                result.Attributes.Add(typeof(OwnedByAttribute), new OwnedByAttribute(), true);
+                var relationshipAttr = result.Attributes.Get<RelationshipAttribute>();
+                relationshipAttr.Type = RelationshipType.OwnedBy;
                 result.IsParentRelationship = true;
             }
 
@@ -59,6 +58,9 @@ namespace Envivo.Fresnel.Introspection.Templates
         private void CheckPropertyType(PropertyTemplate tProp)
         {
             var propertyType = tProp.PropertyType;
+
+            var allowedOperationsAttr = tProp.Attributes.Get<AllowedOperationsAttribute>();
+            var relationshipAttr = tProp.Attributes.Get<RelationshipAttribute>();
 
             var check = _IsObjectTrackableSpecification.IsSatisfiedBy(propertyType);
             if (check.Failed &&
@@ -78,12 +80,12 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsCollection = true;
                 tProp.IsReferenceType = true;
 
-                tProp.CanCreate = tProp.Attributes.Get<CanCreateAttribute>() != null;
-                tProp.CanAdd = tProp.Attributes.Get<CanAddAttribute>() != null;
-                tProp.CanRemove = tProp.Attributes.Get<CanRemoveAttribute>() != null;
+                tProp.CanCreate = allowedOperationsAttr.CanCreate;
+                tProp.CanAdd = allowedOperationsAttr.CanAdd;
+                tProp.CanRemove = allowedOperationsAttr.CanRemove;
 
-                tProp.IsCompositeRelationship = tProp.Attributes.Get<OwnsAttribute>() != null;
-                tProp.IsAggregateRelationship = tProp.Attributes.Get<HasAttribute>() != null;
+                tProp.IsCompositeRelationship = relationshipAttr.Type == RelationshipType.Owns;
+                tProp.IsAggregateRelationship = relationshipAttr.Type == RelationshipType.Has;
 
                 // We don't want modifications to the list to affect the parent:
                 //TODO collectionPropConfig.UseOptimisticLock = false;
@@ -97,9 +99,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsValueObject = true;
                 tProp.IsReferenceType = true;
 
-                tProp.IsCompositeRelationship = tProp.Attributes.Get<OwnsAttribute>() != null;
-                tProp.Attributes.Remove<OwnedByAttribute>();
-                tProp.Attributes.Remove<HasAttribute>();
+                tProp.IsCompositeRelationship = relationshipAttr.Type == RelationshipType.Owns;
             }
 
             if (propertyType.IsTrackable())
@@ -107,20 +107,18 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsDomainObject = true;
                 tProp.IsReferenceType = true;
 
-                tProp.CanCreate = tProp.Attributes.Get<CanCreateAttribute>() != null;
+                tProp.CanCreate = allowedOperationsAttr.CanCreate;
 
-                tProp.IsCompositeRelationship = tProp.Attributes.Get<OwnsAttribute>() != null;
-                tProp.IsAggregateRelationship = tProp.Attributes.Get<HasAttribute>() != null;
-                tProp.IsParentRelationship = tProp.Attributes.Get<OwnedByAttribute>() != null;
+                tProp.IsCompositeRelationship = relationshipAttr.Type == RelationshipType.Owns;
+                tProp.IsAggregateRelationship = relationshipAttr.Type == RelationshipType.Has;
+                tProp.IsParentRelationship = relationshipAttr.Type == RelationshipType.OwnedBy;
             }
 
             // If the Property name starts with "Parent", we'll treat it as a parent:
-            var displayAttr = tProp.Attributes.Get<DisplayAttribute>();
+            var displayAttr = tProp.Attributes.GetEntry<DisplayAttribute>();
             if (displayAttr == null && tProp.FriendlyName.StartsWith("Parent "))
             {
-                tProp.Attributes.Remove<OwnsAttribute>();
-                tProp.Attributes.Remove<HasAttribute>();
-                tProp.Attributes.Add(typeof(OwnedByAttribute), new OwnedByAttribute(), true);
+                relationshipAttr.Type = RelationshipType.OwnedBy;
                 tProp.IsParentRelationship = true;
             }
 

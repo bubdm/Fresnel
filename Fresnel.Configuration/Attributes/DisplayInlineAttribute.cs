@@ -10,6 +10,7 @@ namespace System.ComponentModel.DataAnnotations
     [AttributeUsage(AttributeTargets.Property)]
     public class DisplayInlineAttribute : Attribute
     {
-        
+        public bool IsAllowed { get; set; }
+
     }
 }

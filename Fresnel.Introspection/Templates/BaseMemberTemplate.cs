@@ -33,11 +33,11 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             base.FinaliseConstruction();
 
-            this.IsVisible = this.Attributes.Get<IsVisibleAttribute>() != null;
+            this.IsVisible = this.Attributes.Get<VisibilityAttribute>().IsAllowed;
 
             // We don't want hidden members to be visible:
             var memberName = this.Name;
-            var hiddenMembers = (HiddenMembersAttribute)this.OuterClass.Attributes.Get<HiddenMembersAttribute>().Value;
+            var hiddenMembers = (HiddenMembersAttribute)this.OuterClass.Attributes.GetEntry<HiddenMembersAttribute>().Value;
             if (hiddenMembers.Contains(memberName))
             {
                 this.IsVisible = false;

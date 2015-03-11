@@ -52,7 +52,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         private bool IsCustomProperty(PropertyTemplate tProperty, FieldInfo field)
         {
-            var attr = tProperty.Attributes.Get<BackingFieldAttribute>();
+            var attr = tProperty.Attributes.GetEntry<BackingFieldAttribute>();
             if (attr != null)
             {
                 return ((BackingFieldAttribute)attr.Value).Name.IsSameAs(field.Name);

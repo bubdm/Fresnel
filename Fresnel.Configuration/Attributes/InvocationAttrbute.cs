@@ -12,11 +12,12 @@ namespace System.ComponentModel.DataAnnotations
     {
         public InvocationAttrbute()
         {
+            this.PromptForUnsavedChanges = true;
         }
 
-        public InvocationAttrbute(string name)
+        public InvocationAttrbute(bool mustPrompt)
         {
-            this.PromptForUnsavedChanges = false;
+            this.PromptForUnsavedChanges = mustPrompt;
         }
 
         public bool PromptForUnsavedChanges { get; set; }

@@ -7,9 +7,9 @@ using System.Reflection;
 namespace System.ComponentModel.DataAnnotations
 {
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
-    public class IsLazyLoadedAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Property)]
+    public class UiDrillDownAttribute : Attribute
     {
-
+        public bool IsAllowed { get; set; }
     }
 }

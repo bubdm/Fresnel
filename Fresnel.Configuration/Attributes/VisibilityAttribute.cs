@@ -7,12 +7,10 @@ using System.Reflection;
 namespace System.ComponentModel.DataAnnotations
 {
 
-    /// <summary>
-    /// The given property may only be edited once. After saving, it can no longer be modified.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class WriteOnceAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Parameter)]
+    public class VisibilityAttribute : Attribute
     {
+
         public bool IsAllowed { get; set; }
 
     }

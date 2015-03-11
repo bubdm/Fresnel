@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Introspection.Templates
     {
         public bool _CanRead;
         public bool _CanWrite;
-        public bool _IsNotPersisted;
+        public bool _IsPersisted;
 
         private Lazy<IClassTemplate> _InnerClass;
 
@@ -71,9 +71,11 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         internal override void FinaliseConstruction()
         {
-            _CanRead = this.Attributes.Get<CanReadAttribute>() != null;
-            _CanWrite = this.Attributes.Get<CanModifyAttribute>() != null;
-            _IsNotPersisted = this.Attributes.Get<NotPersistedAttribute>() != null;
+            var allowOperationsAttr = this.Attributes.Get<AllowedOperationsAttribute>();
+
+            _CanRead = allowOperationsAttr.CanRead;
+            _CanWrite = allowOperationsAttr.CanModify;
+            _IsPersisted = this.Attributes.Get<PersistableAttribute>().IsAllowed;
 
             base.FinaliseConstruction();
         }
@@ -290,7 +292,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         public bool CanPersist
         {
-            get { return !_IsNotPersisted; }
+            get { return _IsPersisted; }
         }
 
         /// <summary>

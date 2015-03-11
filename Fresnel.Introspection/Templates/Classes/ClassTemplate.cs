@@ -17,6 +17,9 @@ namespace Envivo.Fresnel.Introspection.Templates
         private readonly string[] _AbstractTypePrefixes = { "Abstract ", "Base ", "I " };
         private readonly string[] _AbstractTypeSuffixes = { " Base" };
 
+        private bool _CanCreate;
+        private bool _CanPersist;
+
         private Lazy<RapidCtor> _RapidCtor;
         private Lazy<ConstructorInfo[]> _Constructors;
         private Lazy<FieldInfoMap> _Fields;
@@ -108,7 +111,9 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             this.DetermineInterfaces();
 
-            this.IsVisible = this.Attributes.Get<IsVisibleAttribute>() != null;
+            this.IsVisible = this.Attributes.Get<VisibilityAttribute>().IsAllowed;
+            _CanCreate = this.Attributes.Get<AllowedOperationsAttribute>().CanCreate;
+            _CanPersist = this.Attributes.Get<PersistableAttribute>().IsAllowed;
         }
 
         private void CreateNames()
@@ -182,7 +187,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             get
             {
-                return this.Attributes.Get<NotPersistedAttribute>() != null &&
+                return this.Attributes.Get<PersistableAttribute>().IsAllowed &&
                         this.IdProperty != null;
             }
         }
@@ -285,7 +290,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             get
             {
-                return this.Attributes.Get<CanCreateAttribute>() != null &&
+                return _CanCreate &&
                         !this.RealType.IsAbstract &&
                         _Constructors.Value.Any();
             }
