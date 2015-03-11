@@ -1133,9 +1133,9 @@ var FresnelApp;
         blockUIConfig.resetOnException = true;
     });
     // See http://aboutcode.net/2013/07/27/json-date-parsing-angularjs.html
-    // and http://stackoverflow.com/a/3143231/80369
+    // and http://stackoverflow.com/a/8270148/80369
     // TODO: Refactor the Date conversion into a self-contained object:
-    var regexIso8601 = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/;
+    var regexIso8601 = /^(\d{4}\-\d\d\-\d\d([tT][\d:\.]*)?)([zZ]|([+\-])(\d\d):?(\d\d))?$/;
     function convertDateStringsToDates(input) {
         // Ignore things that aren't objects.
         if (typeof input !== "object")
