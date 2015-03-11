@@ -50,7 +50,9 @@ namespace Envivo.Fresnel.Bootstrap
 
                 typeof(Fresnel.UiCore.Model.TypeInfo.DataTypeToUiControlMapper),
                 typeof(Fresnel.UiCore.Model.TypeInfo.BooleanVmBuilder),
+                typeof(Fresnel.UiCore.Model.TypeInfo.BooleanValueFormatter),
                 typeof(Fresnel.UiCore.Model.TypeInfo.DateTimeVmBuilder),
+                typeof(Fresnel.UiCore.Model.TypeInfo.DateTimeValueFormatter),
                 typeof(Fresnel.UiCore.Model.TypeInfo.EnumVmBuilder),
                 typeof(Fresnel.UiCore.Model.TypeInfo.NumberVmBuilder),
                 typeof(Fresnel.UiCore.Model.TypeInfo.StringVmBuilder),
