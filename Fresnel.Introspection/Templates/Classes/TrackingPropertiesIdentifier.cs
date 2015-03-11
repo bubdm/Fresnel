@@ -37,31 +37,16 @@ namespace Envivo.Fresnel.Introspection.Templates
                                                             p.Name.EndsWith(idPropertyName, StringComparison.OrdinalIgnoreCase));
             }
 
-            this.FixIdPropertyAttributes(idProperty);
-
+            // Users aren't allowed to change the property's value:
+            this.PreventModificationsTo(idProperty);
             return idProperty;
-        }
-
-        private void FixIdPropertyAttributes(PropertyTemplate idProperty)
-        {
-            if (idProperty == null)
-                return;
-
-            // Users aren't allowed to change PK values:
-            idProperty.IsVisible = false;
-
-            var allowOperations = idProperty.Attributes.Get<AllowedOperationsAttribute>();
-            allowOperations.CanModify = false;
-
-            var persistable = idProperty.Attributes.Get<PersistableAttribute>();
-            persistable.IsAllowed = false;
         }
 
         public PropertyTemplate DetermineVersionProperty(ClassTemplate tClass)
         {
             var properties = tClass.Properties.Values;
 
-            // Find a Guid property that has a [ConcurrencyCheck] attribute:
+            // Find a property that has a [ConcurrencyCheck] attribute:
             var versionProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
                                                                  p.Attributes.GetEntry<ConcurrencyCheckAttribute>() != null);
 
@@ -72,10 +57,27 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             if (isMatch)
             {
+                // Users aren't allowed to change the property's value:
+                this.PreventModificationsTo(versionProperty);
                 return versionProperty;
             }
 
             return null;
+        }
+
+        private void PreventModificationsTo(PropertyTemplate tProp)
+        {
+            if (tProp == null)
+                return;
+
+            tProp.IsVisible = false;
+            tProp.IsFrameworkMember = true;
+
+            var allowedOperations = tProp.Attributes.Get<AllowedOperationsAttribute>();
+            allowedOperations.CanModify = false;
+
+            var persistable = tProp.Attributes.Get<PersistableAttribute>();
+            persistable.IsAllowed = false;
         }
 
         public PropertyTemplate DetermineAuditProperty(ClassTemplate tClass)
