@@ -34,8 +34,13 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
             var minLength = attributesMap.Get<MinLengthAttribute>();
             var maxLength = attributesMap.Get<MaxLengthAttribute>();
             var displayFormat = attributesMap.Get<DisplayFormatAttribute>();
+            var dataType = attributesMap.Get<DataTypeAttribute>();
             var preferredControl = attributesMap.Get<UiControlHintAttribute>().PreferredUiControl;
-            if (preferredControl == UiControlType.None)
+            if (dataType.DataType == DataType.MultilineText)
+            {
+                preferredControl = UiControlType.TextArea;
+            }
+            else if (preferredControl == UiControlType.None)
             {
                 preferredControl = UiControlType.Text;
             }
