@@ -8,17 +8,20 @@ namespace Envivo.Fresnel.Introspection.Templates
         private PropertyInfoMapBuilder _PropertyInfoMapBuilder;
         private AttributesMapBuilder _AttributesMapBuilder;
         private PropertyTemplateBuilder _PropertyTemplateBuilder;
+        private TrackingPropertiesIdentifier _TrackingPropertiesIdentifier;
 
         public PropertyTemplateMapBuilder
         (
             PropertyInfoMapBuilder propertyInfoMapBuilder,
             AttributesMapBuilder attributesMapBuilder,
-            PropertyTemplateBuilder propertyTemplateBuilder
+            PropertyTemplateBuilder propertyTemplateBuilder,
+            TrackingPropertiesIdentifier trackingPropertiesIdentifier
         )
         {
             _PropertyInfoMapBuilder = propertyInfoMapBuilder;
             _AttributesMapBuilder = attributesMapBuilder;
             _PropertyTemplateBuilder = propertyTemplateBuilder;
+            _TrackingPropertiesIdentifier = trackingPropertiesIdentifier;
         }
 
         public PropertyTemplateMap BuildFor(ClassTemplate tClass)
@@ -38,6 +41,11 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.AssemblyReader = tClass.AssemblyReader;
                 results.Add(tProp.Name, tProp);
             }
+
+            // HACK: This forces these properties to have the correct Visibility/Persistence configuration:
+            _TrackingPropertiesIdentifier.DetermineIdProperty(results.Values);
+            _TrackingPropertiesIdentifier.DetermineVersionProperty(results.Values);
+            _TrackingPropertiesIdentifier.DetermineAuditProperty(results.Values);
 
             return new PropertyTemplateMap(results);
         }

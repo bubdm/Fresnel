@@ -13,14 +13,14 @@ namespace Envivo.Fresnel.Introspection.Templates
         private readonly Type _GuidType = typeof(Guid);
         private readonly Type _IAuditType = typeof(IAudit);
 
-        public PropertyTemplate DetermineIdProperty(ClassTemplate tClass)
+        public PropertyTemplate DetermineIdProperty(IEnumerable<PropertyTemplate> properties)
         {
-            var properties = tClass.Properties.Values;
+            //var properties = tClass.Properties.Values;
 
             // See if the Id property has been explicitly stated:
             // Find a Guid property that has a [Key] attribute:
             var idProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
-                                                            p.Attributes.GetEntry<KeyAttribute>().WasDeclaredInCode);
+                                                            p.Attributes.GetEntry<KeyAttribute>().Source == AttributeSource.Decoration);
 
             // Look for a GUID property that starts or ends in "ID".
             // Possible matches are "Id", "ID", "RecordID", "RecordId", etc
@@ -42,20 +42,17 @@ namespace Envivo.Fresnel.Introspection.Templates
             return idProperty;
         }
 
-        public PropertyTemplate DetermineVersionProperty(ClassTemplate tClass)
+        public PropertyTemplate DetermineVersionProperty(IEnumerable<PropertyTemplate> properties)
         {
-            var properties = tClass.Properties.Values;
+            //var properties = tClass.Properties.Values;
 
             // Find a property that has a [ConcurrencyCheck] attribute:
-            var versionProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
-                                                                 p.Attributes.GetEntry<ConcurrencyCheckAttribute>() != null);
+            var versionProperty = properties.FirstOrDefault(p => p.Attributes.GetEntry<ConcurrencyCheckAttribute>().Source == AttributeSource.Decoration &&
+                                                                 p.PropertyType.IsNonReference() &&
+                                                                 (p.PropertyType == typeof(Int32) ||
+                                                                  p.PropertyType == typeof(Int64)));
 
-            var isMatch = versionProperty != null &&
-                          versionProperty.PropertyType.IsNonReference() &&
-                          (versionProperty.PropertyType == typeof(Int32) ||
-                          versionProperty.PropertyType == typeof(Int64));
-
-            if (isMatch)
+            if (versionProperty != null)
             {
                 // Users aren't allowed to change the property's value:
                 this.PreventModificationsTo(versionProperty);
@@ -75,14 +72,13 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             var allowedOperations = tProp.Attributes.Get<AllowedOperationsAttribute>();
             allowedOperations.CanModify = false;
-
-            var persistable = tProp.Attributes.Get<PersistableAttribute>();
-            persistable.IsAllowed = false;
         }
 
-        public PropertyTemplate DetermineAuditProperty(ClassTemplate tClass)
+        public PropertyTemplate DetermineAuditProperty(IEnumerable<PropertyTemplate> properties)
         {
-            var result = tClass.Properties.Values.FirstOrDefault(p => p.PropertyType.IsDerivedFrom(_IAuditType));
+            //var properties = tClass.Properties.Values;
+
+            var result = properties.FirstOrDefault(p => p.PropertyType.IsDerivedFrom(_IAuditType));
             return result;
         }
     }

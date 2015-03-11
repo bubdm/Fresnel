@@ -87,15 +87,15 @@ namespace Envivo.Fresnel.Introspection.Templates
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _IdProperty = new Lazy<PropertyTemplate>(
-                                () => _TrackingPropertiesIdentifier.DetermineIdProperty(this),
+                                () => _TrackingPropertiesIdentifier.DetermineIdProperty(this.Properties.Values),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _VersionProperty = new Lazy<PropertyTemplate>(
-                                () => _TrackingPropertiesIdentifier.DetermineVersionProperty(this),
+                                () => _TrackingPropertiesIdentifier.DetermineVersionProperty(this.Properties.Values),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _AuditProperty = new Lazy<PropertyTemplate>(
-                                () => _TrackingPropertiesIdentifier.DetermineAuditProperty(this),
+                                () => _TrackingPropertiesIdentifier.DetermineAuditProperty(this.Properties.Values),
                                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
             _XmlComments = new Lazy<XmlComments>(
