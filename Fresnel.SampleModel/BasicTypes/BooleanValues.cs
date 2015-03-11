@@ -12,6 +12,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
+        [Key]
         public Guid ID { get; set; }
 
         /// <summary>

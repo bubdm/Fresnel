@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Windows;
 using System.Windows.Media;
 
@@ -22,6 +23,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
+        [Key]
         public Guid ID { get; set; }
 
         //        /// <summary>

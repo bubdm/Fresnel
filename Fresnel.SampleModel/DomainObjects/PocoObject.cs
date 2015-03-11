@@ -30,11 +30,13 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
+        [Key]
         public Guid ID { get; set; }
 
         /// <summary>
         ///
         /// </summary>
+        [ConcurrencyCheck]
         public long Version { get; set; }
 
         /// <summary>

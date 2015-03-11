@@ -1,10 +1,12 @@
 using Envivo.Fresnel.Configuration;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.BasicTypes
 {
     public class MultiType
     {
+        [Key]
         public Guid ID { get; set; }
 
         public bool A_Boolean { get; set; }

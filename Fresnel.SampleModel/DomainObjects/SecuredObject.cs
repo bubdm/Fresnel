@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Permissions;
 
 namespace Envivo.Fresnel.SampleModel.Objects
@@ -12,6 +13,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// The unique ID for this entity
         /// </summary>
+        [Key]
         public Guid ID { get; set; }
 
         /// <summary>
