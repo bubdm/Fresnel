@@ -13,9 +13,8 @@ namespace Envivo.Fresnel.Introspection.Templates
 
     public class PropertyTemplate : BaseMemberTemplate, ISettableMemberTemplate
     {
-        public bool _CanRead;
-        public bool _CanWrite;
-        public bool _IsPersisted;
+        public AllowedOperationsAttribute _AllowedOperations;
+        public PersistableAttribute _Persistable;
 
         private Lazy<IClassTemplate> _InnerClass;
 
@@ -71,11 +70,8 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         internal override void FinaliseConstruction()
         {
-            var allowOperationsAttr = this.Attributes.Get<AllowedOperationsAttribute>();
-
-            _CanRead = allowOperationsAttr.CanRead;
-            _CanWrite = allowOperationsAttr.CanModify;
-            _IsPersisted = this.Attributes.Get<PersistableAttribute>().IsAllowed;
+            _AllowedOperations = this.Attributes.Get<AllowedOperationsAttribute>();
+            _Persistable = this.Attributes.Get<PersistableAttribute>();
 
             base.FinaliseConstruction();
         }
@@ -252,7 +248,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             // This logic ensures that the propery is read-able, and there is a Public 'getter' method:
             get
             {
-                return _CanRead &&
+                return _AllowedOperations.CanRead &&
                         this.PropertyInfo.CanRead &&
                         (this.PropertyInfo.GetGetMethod(false) != null);
             }
@@ -266,7 +262,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             // This logic ensures that the propery is write-able, and there is a Public 'setter' method:
             get
             {
-                return _CanWrite &&
+                return _AllowedOperations.CanModify &&
                         this.PropertyInfo.CanWrite &&
                         (this.PropertyInfo.GetSetMethod(false) != null);
             }
@@ -292,7 +288,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         public bool CanPersist
         {
-            get { return _IsPersisted; }
+            get { return _Persistable.IsAllowed; }
         }
 
         /// <summary>

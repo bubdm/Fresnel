@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             // See if the Id property has been explicitly stated:
             // Find a Guid property that has a [Key] attribute:
             var idProperty = properties.FirstOrDefault(p => p.PropertyType == _GuidType &&
-                                                            p.Attributes.GetEntry<KeyAttribute>().Value != null);
+                                                            p.Attributes.GetEntry<KeyAttribute>().WasDeclaredInCode);
 
             // Look for a GUID property that starts or ends in "ID".
             // Possible matches are "Id", "ID", "RecordID", "RecordId", etc
@@ -48,8 +48,13 @@ namespace Envivo.Fresnel.Introspection.Templates
                 return;
 
             // Users aren't allowed to change PK values:
-            var allowOperationsAttr = (AllowedOperationsAttribute)idProperty.Attributes.GetEntry<AllowedOperationsAttribute>().Value;
-            allowOperationsAttr.CanModify = false;
+            idProperty.IsVisible = false;
+
+            var allowOperations = idProperty.Attributes.Get<AllowedOperationsAttribute>();
+            allowOperations.CanModify = false;
+
+            var persistable = idProperty.Attributes.Get<PersistableAttribute>();
+            persistable.IsAllowed = false;
         }
 
         public PropertyTemplate DetermineVersionProperty(ClassTemplate tClass)
