@@ -58,21 +58,21 @@ namespace Envivo.Fresnel.Configuration
             return this.GetEntry(attributeType, classType);
         }
 
-        public void Add(Type key, Attribute attribute, bool isConfiguredAtRunTime)
+        public void Add(Type key, Attribute attribute, AttributeSource source)
         {
             var newEntry = new AttributeEntry()
             {
                 Value = attribute,
-                IsConfiguredAtRunTime = isConfiguredAtRunTime
+                Source = source
             };
             _AttributeEntries[key] = newEntry;
         }
 
-        public void AddRange(IEnumerable<Attribute> attributes, bool isConfiguredAtRunTime)
+        public void AddRange(IEnumerable<Attribute> attributes, AttributeSource source)
         {
             foreach (var attr in attributes)
             {
-                this.Add(attr.GetType(), attr, isConfiguredAtRunTime);
+                this.Add(attr.GetType(), attr, source);
             }
         }
 
@@ -99,8 +99,7 @@ namespace Envivo.Fresnel.Configuration
                 result = new AttributeEntry()
                 {
                     Value = defaultAttr,
-                    IsConfiguredAtRunTime = true,
-                    WasDeclaredInCode = false,
+                    Source =  AttributeSource.RunTime
                 };
                 _AttributeEntries[attributeType] = result;
                 return result;
@@ -114,8 +113,7 @@ namespace Envivo.Fresnel.Configuration
                 result = new AttributeEntry()
                 {
                     Value = defaultAttr,
-                    IsConfiguredAtRunTime = true,
-                    WasDeclaredInCode = false,
+                    Source = AttributeSource.RunTime
                 };
                 _AttributeEntries[attributeType] = result;
             }

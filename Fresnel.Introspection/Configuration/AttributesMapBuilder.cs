@@ -38,7 +38,7 @@ namespace Envivo.Fresnel.Configuration
                 if (attributes != null)
                 {
                     isCustomConfigurationAvailable = attributes.Any();
-                    result.AddRange(attributes, true);
+                    result.AddRange(attributes, AttributeSource.ConfigurationClass);
                 }
             }
 
@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.Configuration
             {
                 // Use default values:
                 var attributes = classType.GetCustomAttributes(true).Cast<Attribute>();
-                result.AddRange(attributes, false);
+                result.AddRange(attributes, AttributeSource.Decoration);
             }
 
             return result;
@@ -68,7 +68,7 @@ namespace Envivo.Fresnel.Configuration
                 if (attributes != null)
                 {
                     isCustomConfigurationAvailable = attributes.Any();
-                    result.AddRange(attributes, true);
+                    result.AddRange(attributes, AttributeSource.ConfigurationClass);
                 }
             }
 
@@ -76,7 +76,7 @@ namespace Envivo.Fresnel.Configuration
             {
                 // Use default values:
                 var attributes = GetInheritedAttributesFrom(propertyInfo);
-                result.AddRange(attributes, false);
+                result.AddRange(attributes, AttributeSource.Decoration);
             }
 
             return result;
@@ -98,7 +98,7 @@ namespace Envivo.Fresnel.Configuration
                 if (attributes != null)
                 {
                     isCustomConfigurationAvailable = attributes.Any();
-                    result.AddRange(attributes, true);
+                    result.AddRange(attributes, AttributeSource.ConfigurationClass);
                 }
             }
 
@@ -106,7 +106,7 @@ namespace Envivo.Fresnel.Configuration
             {
                 // Use default values:
                 var attributes = GetInheritedAttributesFrom(methodInfo);
-                result.AddRange(attributes, false);
+                result.AddRange(attributes, AttributeSource.Decoration);
             }
 
             return result;
@@ -130,7 +130,7 @@ namespace Envivo.Fresnel.Configuration
                 if (attributes != null)
                 {
                     isCustomConfigurationAvailable = attributes.Any();
-                    result.AddRange(attributes, true);
+                    result.AddRange(attributes, AttributeSource.ConfigurationClass);
                 }
             }
 
@@ -138,7 +138,7 @@ namespace Envivo.Fresnel.Configuration
             {
                 // Use default values:
                 var attributes = parameterInfo.GetCustomAttributes(true).Cast<Attribute>();
-                result.AddRange(attributes, false);
+                result.AddRange(attributes, AttributeSource.Decoration);
             }
 
             return result;
