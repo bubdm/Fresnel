@@ -34,6 +34,10 @@ namespace Envivo.Fresnel.Bootstrap
 
                 typeof(Fresnel.Configuration.DisplayBooleanAttributeBuilder),
                 typeof(Fresnel.Configuration.VisibilityAttributeBuilder),
+                typeof(Fresnel.Configuration.RangeAttributeBuilder),
+                typeof(Fresnel.Configuration.DataTypeAttributeBuilder),
+                typeof(Fresnel.Configuration.MinLengthAttributeBuilder),
+                typeof(Fresnel.Configuration.MaxLengthAttributeBuilder),
             };
         }
 

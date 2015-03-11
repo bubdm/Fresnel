@@ -41,8 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\AllowedOperationsAttribute.cs" />
-    <Compile Include="Attributes\VisibilityAttributeBuilder.cs" />
-    <Compile Include="Attributes\DisplayBooleanAttributeBuilder.cs" />
+    <Compile Include="AttributeBuilders\MaxLengthAttributeBuilder.cs" />
+    <Compile Include="AttributeBuilders\MinLengthAttributeBuilder.cs" />
+    <Compile Include="AttributeBuilders\DataTypeAttributeBuilder.cs" />
+    <Compile Include="AttributeBuilders\RangeAttributeBuilder.cs" />
+    <Compile Include="AttributeBuilders\VisibilityAttributeBuilder.cs" />
+    <Compile Include="AttributeBuilders\DisplayBooleanAttributeBuilder.cs" />
     <Compile Include="Attributes\DisplayBooleanAttribute.cs" />
     <Compile Include="Attributes\UiDrillDownAttribute.cs" />
     <Compile Include="Attributes\DisplayInlineAttribute.cs" />
@@ -74,7 +78,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Attributes\UiControlTypeEnum.cs" />
-    <Compile Include="IMissingAttributeBuilder.cs" />
+    <Compile Include="AttributeBuilders\IMissingAttributeBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

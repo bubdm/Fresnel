@@ -31,8 +31,8 @@ namespace Envivo.Fresnel.Configuration
             var parts = displayFormat.DataFormatString.Split('|');
             if (parts.Length > 0)
             {
-                result.TrueName = parts.First();
-                result.FalseName = parts.Last();
+                result.TrueValue = parts.First();
+                result.FalseValue = parts.Last();
             }
 
             return result;
