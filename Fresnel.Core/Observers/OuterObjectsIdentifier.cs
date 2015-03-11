@@ -2,6 +2,7 @@ using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Utils;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.Core
 {
@@ -43,7 +44,8 @@ namespace Envivo.Fresnel.Core
             {
                 // This prevents bi-dir links to parents from being added to the list:
                 var tProp = oProp.Template;
-                if (tProp.Configurations.Get<ObjectPropertyConfiguration>().IsParentRelationship)
+                var relationship = tProp.Attributes.Get<RelationshipAttribute>();
+                if (relationship.Type == RelationshipType.OwnedBy)
                     continue;
 
                 var oPropertyOwner = oProp.OuterObject;

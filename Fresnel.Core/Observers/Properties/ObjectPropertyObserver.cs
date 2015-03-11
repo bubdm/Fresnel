@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection.Templates;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -33,7 +34,9 @@ namespace Envivo.Fresnel.Core.Observers
             {
                 // If the Property isn't marked as 'lazy loaded', we need to make sure it is loaded immediately:
                 var tProp = this.Template;
-                this.IsLazyLoadPending = tProp.Configurations.Get<ObjectPropertyBaseConfiguration>().IsLazyLoaded;
+
+                var lazyLoad = tProp.Attributes.Get<LazyLoadAttribute>();
+                this.IsLazyLoadPending = lazyLoad.IsEnabled;
             }
             else
             {

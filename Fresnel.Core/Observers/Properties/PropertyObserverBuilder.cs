@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection.Templates;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -12,8 +13,8 @@ namespace Envivo.Fresnel.Core.Observers
 
             var tClass = oParent.Template;
 
-            var attr = tClass.Configurations.Get<ObjectInstanceConfiguration>();
-            if (attr.HideAllProperties)
+            var visibility = tClass.Attributes.Get<VisibilityAttribute>();
+            if (!visibility.IsAllowed)
                 return null;
 
             BasePropertyObserver oProperty;

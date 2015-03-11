@@ -2,6 +2,7 @@
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.Core.Permissions
 {
@@ -26,8 +27,8 @@ namespace Envivo.Fresnel.Core.Permissions
                 assertions.AddFailure(tClass.Name + " is an abstract/base type");
             }
 
-            var classAttr = tClass.Configurations.Get<ObjectInstanceConfiguration>();
-            if (!classAttr.IsCreatable)
+            var allowedOperations = tClass.Attributes.Get<AllowedOperationsAttribute>();
+            if (!allowedOperations.CanCreate)
             {
                 assertions.AddFailure(tClass.Name + " has not been configured for creation");
             }

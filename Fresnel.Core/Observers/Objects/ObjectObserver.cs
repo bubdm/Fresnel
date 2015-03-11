@@ -4,6 +4,7 @@ using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
 using Newtonsoft.Json;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.Core.Observers
 {
@@ -125,20 +126,11 @@ namespace Envivo.Fresnel.Core.Observers
                 foreach (var oProp in oCollection.OuterProperties)
                 {
                     var tProp = oProp.Template;
-                    if (tProp.IsCollection)
+                    var relationship = tProp.Attributes.Get<RelationshipAttribute>();
+                    if (relationship.Type == RelationshipType.Owns)
                     {
-                        var collectionPropConfig = tProp.Configurations.Get<ObjectPropertyConfiguration>();
-                        if (!collectionPropConfig.IsCompositeRelationship)
-                            continue;
+                        return true;
                     }
-                    else
-                    {
-                        var objectPropConfig = tProp.Configurations.Get<ObjectPropertyConfiguration>();
-                        if (!objectPropConfig.IsCompositeRelationship)
-                            continue;
-                    }
-
-                    return true;
                 }
             }
 
@@ -146,11 +138,11 @@ namespace Envivo.Fresnel.Core.Observers
             foreach (var oProp in this.OuterProperties)
             {
                 var tProp = oProp.Template;
-                var objectPropConfig = tProp.Configurations.Get<ObjectPropertyConfiguration>();
-                if (!objectPropConfig.IsParentRelationship)
-                    continue;
-
-                return true;
+                var relationship = tProp.Attributes.Get<RelationshipAttribute>();
+                if (relationship.Type == RelationshipType.OwnedBy)
+                {
+                    return true;
+                }
             }
 
             return false;

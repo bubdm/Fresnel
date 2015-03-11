@@ -2,6 +2,7 @@
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.Core.Permissions
 {
@@ -22,8 +23,8 @@ namespace Envivo.Fresnel.Core.Permissions
                 assertions.AddFailure(tProperty.Name + " does not have a getter");
             }
 
-            var propertyAttr = tProperty.Configurations.Get<PropertyConfiguration>();
-            if (!propertyAttr.CanRead)
+            var allowedOperations = tProperty.Attributes.Get<AllowedOperationsAttribute>();
+            if (!allowedOperations.CanRead)
             {
                 assertions.AddFailure(tProperty.Name + " has not been configured for reading");
             }
