@@ -59,6 +59,7 @@ namespace Envivo.Fresnel.Bootstrap
 
         private void RegisterMandatoryModules(ContainerBuilder builder)
         {
+            builder.RegisterModule<ConfigurationDependencies>();
             builder.RegisterModule<IntrospectionDependencies>();
             builder.RegisterModule<CoreDependencies>();
             builder.RegisterModule<UiCoreDependencies>();

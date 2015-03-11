@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContainerFactory.cs" />
+    <Compile Include="ConfigurationDependencies.cs" />
     <Compile Include="CoreDependencies.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -61,6 +62,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fresnel.Configuration\Fresnel.Configuration.csproj">
+      <Project>{b3122093-8ebb-423b-a4ed-951752690288}</Project>
+      <Name>Fresnel.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fresnel.Core\Fresnel.Core.csproj">
       <Project>{06b6fc1c-5e9d-442a-a643-2eb1a6a53809}</Project>
       <Name>Fresnel.Core</Name>
