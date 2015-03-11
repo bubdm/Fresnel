@@ -53,6 +53,13 @@ namespace Envivo.Fresnel.UiCore.Commands
                             _ObserverCache.GetValueObserver(request.NonReferenceValue.ToStringOrNull(), oProp.Template.PropertyType) :
                             _ObserverCache.GetObserver(null, oProp.Template.PropertyType);
 
+                if (oProp.Template.IsNonReference &&
+                    !oProp.Template.IsNullableType &&
+                    request.NonReferenceValue == null)
+                {
+                    throw new UiCoreException("Please provide a valid value for " + oProp.Template.FriendlyName);
+                }
+
                 var previousValue = oProp.PreviousValue;
                 _SetPropertyCommand.Invoke(oProp, oValue);
 
