@@ -9,6 +9,16 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
     public class StringVmBuilder : IPropertyVmBuilder
     {
+        private DataTypeToUiControlMapper _DataTypeToUiControlMapper;
+
+        public StringVmBuilder
+            (
+            DataTypeToUiControlMapper dataTypeToUiControlMapper
+            )
+        {
+            _DataTypeToUiControlMapper = dataTypeToUiControlMapper;
+        }
+
         public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
             return actualType == typeof(char) ||
@@ -36,11 +46,11 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
             var displayFormat = attributesMap.Get<DisplayFormatAttribute>();
             var dataType = attributesMap.Get<DataTypeAttribute>();
             var preferredControl = attributesMap.Get<UiControlHintAttribute>().PreferredUiControl;
-            if (dataType.DataType == DataType.MultilineText)
+            if (preferredControl == UiControlType.None)
             {
-                preferredControl = UiControlType.TextArea;
+                preferredControl = _DataTypeToUiControlMapper.Convert(dataType.DataType);
             }
-            else if (preferredControl == UiControlType.None)
+            if (preferredControl == UiControlType.None)
             {
                 preferredControl = UiControlType.Text;
             }

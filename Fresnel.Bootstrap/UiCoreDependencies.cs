@@ -48,6 +48,7 @@ namespace Envivo.Fresnel.Bootstrap
                 typeof(Fresnel.UiCore.Model.Classes.ClassItemBuilder),
                 typeof(Fresnel.UiCore.Model.Classes.NamespacesBuilder),
 
+                typeof(Fresnel.UiCore.Model.TypeInfo.DataTypeToUiControlMapper),
                 typeof(Fresnel.UiCore.Model.TypeInfo.BooleanVmBuilder),
                 typeof(Fresnel.UiCore.Model.TypeInfo.DateTimeVmBuilder),
                 typeof(Fresnel.UiCore.Model.TypeInfo.EnumVmBuilder),

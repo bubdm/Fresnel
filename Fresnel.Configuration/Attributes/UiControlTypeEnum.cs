@@ -7,17 +7,20 @@ namespace Envivo.Fresnel.Configuration
 
         Text,
         TextArea,
-        RichTextArea,
+        Html,
         Password,
         Email,
         Search,
         Telephone,
+        PostalCode,
         Url,
+        Image,
         Radio,
         Checkbox,
         Date,
         DateTimeLocal,
         Time,
+        TimeDuration,
         Month,
         Week,
         Color,
@@ -25,6 +28,7 @@ namespace Envivo.Fresnel.Configuration
         Currency,
         Range,
         File,
-        Select
+        Select,
+        Upload,
     }
 }

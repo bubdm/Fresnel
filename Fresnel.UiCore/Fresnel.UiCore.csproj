@@ -59,6 +59,7 @@
     <Compile Include="Commands\SearchRequest.cs" />
     <Compile Include="Commands\CreateAndSetPropertyRequest.cs" />
     <Compile Include="Model\SearchResultsVM.cs" />
+    <Compile Include="Model\TypeInfo\DataTypeToUiControlMapper.cs" />
     <Compile Include="Model\TypeInfo\ReferenceTypeVM.cs" />
     <Compile Include="SearchResultsVmBuilder.cs" />
     <Compile Include="AbstractParameterVmBuilder.cs" />
