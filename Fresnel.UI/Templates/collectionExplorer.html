@@ -25,7 +25,7 @@
                 <thead>
                     <tr>
                         <th>&nbsp;</th> <!--Icon-->
-                        <th ng-repeat="prop in oCol.ElementProperties" st-sort="{{prop.InternalName}}" title="{{prop.Description}}">{{prop.Name}}</th>
+                        <th ng-repeat="elementProp in oCol.ElementProperties" st-sort="Properties[{{elementProp.Index}}.State.FriendlyValue" title="{{elementProp.Description}}">{{elementProp.Name}}</th>
                         <th>&nbsp;</th> <!--Buttons-->
                     </tr>
                 </thead>
