@@ -146,10 +146,10 @@ module FresnelApp {
             });
         }
 
-        loadNextPage(request: SearchRequest, results: SearchResultsVM, searchPromise: ng.IPromise<any>) {
+        loadNextPage(request: SearchRequest, results: SearchResultsVM, searchPromise: any) {
             request.PageNumber++;
 
-            searchPromise.then((promiseResult) => {
+            searchPromise().then((promiseResult) => {
                 var response = promiseResult.data;
                 var newSearchResults: SearchResultsVM = response.Result;
 

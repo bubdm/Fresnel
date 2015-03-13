@@ -6,7 +6,9 @@ var FresnelApp;
             $scope.explorer = explorer;
             $scope.results = explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
-            $scope.searchAction = fresnelService.searchObjects($scope.request);
+            $scope.searchAction = function () {
+                return fresnelService.searchObjects($scope.request);
+            };
             // TODO: Determine which FresnelService.Search() method to use:
             // $scope.searchPromise = fresnelService.SearchPropertyObjects($scope.request);
             // $scope.searchPromise = fresnelService.SearchParameterObjects($scope.request);
@@ -42,7 +44,9 @@ var FresnelApp;
             $scope.results = $scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
             $scope.results.AllowMultiSelect = false;
-            $scope.searchAction = fresnelService.searchObjects($scope.request);
+            $scope.searchAction = function () {
+                return fresnelService.searchObjects($scope.request);
+            };
             // This allows Smart-Table to handle the st-safe-src properly:
             $scope.results.DisplayItems = [].concat($scope.results.Items);
             $scope.openNewExplorer = function (obj) {
@@ -170,7 +174,7 @@ var FresnelApp;
         };
         SearchService.prototype.loadNextPage = function (request, results, searchPromise) {
             request.PageNumber++;
-            searchPromise.then(function (promiseResult) {
+            searchPromise().then(function (promiseResult) {
                 var response = promiseResult.data;
                 var newSearchResults = response.Result;
                 // Append the new items to the exist results:

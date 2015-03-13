@@ -4,7 +4,7 @@
 
         explorer: Explorer;
 
-        searchAction: ng.IPromise<any>;
+        searchAction: any;
 
         request: SearchRequest;
 

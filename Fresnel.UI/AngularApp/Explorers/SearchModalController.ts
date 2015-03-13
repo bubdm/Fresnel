@@ -21,7 +21,9 @@
             $scope.results = <SearchResultsVM>explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
 
-            $scope.searchAction = fresnelService.searchObjects(<SearchObjectsRequest>$scope.request);
+            $scope.searchAction = function () {
+                return fresnelService.searchObjects(<SearchObjectsRequest>$scope.request);
+            };
             // TODO: Determine which FresnelService.Search() method to use:
             // $scope.searchPromise = fresnelService.SearchPropertyObjects($scope.request);
             // $scope.searchPromise = fresnelService.SearchParameterObjects($scope.request);

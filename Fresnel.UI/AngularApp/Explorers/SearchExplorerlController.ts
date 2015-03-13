@@ -18,7 +18,9 @@
             $scope.results = <SearchResultsVM>$scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
             $scope.results.AllowMultiSelect = false;
-            $scope.searchAction = fresnelService.searchObjects(<SearchObjectsRequest>$scope.request);
+            $scope.searchAction = function () {
+                return fresnelService.searchObjects(<SearchObjectsRequest>$scope.request);
+            };
 
             // This allows Smart-Table to handle the st-safe-src properly:
             $scope.results.DisplayItems = [].concat($scope.results.Items);
