@@ -203,7 +203,7 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // Assert:
             // All of the text properties are bound to the same value:
-            Assert.AreEqual(7, setResult.Modifications.PropertyChanges.Count());
+            Assert.AreEqual(8, setResult.Modifications.PropertyChanges.Count());
         }
 
         [Test]
