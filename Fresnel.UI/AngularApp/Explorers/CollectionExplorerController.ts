@@ -38,7 +38,12 @@
                     if (response.Passed) {
                         var latestObj = response.ReturnValue;
                         var existingObj = appService.identityMap.getObject(obj.ID);
-                        appService.identityMap.mergeObjects(existingObj, latestObj);
+                        if (existingObj == null) {
+                            appService.identityMap.addObject(latestObj);
+                        }
+                        else {
+                            appService.identityMap.mergeObjects(existingObj, latestObj);
+                        }
                         $rootScope.$broadcast(UiEventType.ExplorerOpen, latestObj);
                     }
                 });

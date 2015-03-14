@@ -49,32 +49,11 @@ namespace Envivo.Fresnel.UiCore.Commands
                 if (!_PersistenceService.IsTypeRecognised(classType))
                     throw new UiCoreException(string.Concat(_PersistenceService.GetType().Name, " does not recognise ", tClass.FriendlyName));
 
-                var maxLimit = request.PageSize + 1;
-
-                IEnumerable objects = null;
-                if (request.OrderBy != null && request.OrderBy.Any())
-                {
-                    var orderBy = string.Join(",", request.OrderBy);
-                    objects = _PersistenceService
-                                    .GetObjects(classType)
-                                    .OrderBy(orderBy)
-                                    .Skip(request.PageSize * request.PageNumber)
-                                    .Take(maxLimit);
-                }
-                else
-                {
-                    var orderBy = tClass.Properties.First().Value.Name;
-                    objects = _PersistenceService
-                                    .GetObjects(classType)
-                                    .OrderBy(orderBy)
-                                    .Skip(request.PageSize * request.PageNumber)
-                                    .Take(maxLimit);
-                }
-
+                var objects = this.FetchObjects(request, tClass);
                 var areMoreItemsAvailable = objects.Count() > request.PageSize;
 
                 // Only return back the number of items actually requested:
-                var results = new List<object>(objects.Cast<object>().Take(request.PageSize));
+                var results = objects.ToList<object>().Take(request.PageSize);
                 var oColl = (CollectionObserver)_ObserverCache.GetObserver(results, results.GetType());
                 var result = _SearchResultsVmBuilder.BuildForCollection(oColl, tClass);
                 result.AreMoreAvailable = areMoreItemsAvailable;
@@ -84,7 +63,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     IsSuccess = true,
                     OccurredAt = _Clock.Now,
-                    Text = string.Concat("Returned ", results.Count, " ", tClass.FriendlyName, " instances (", areMoreItemsAvailable ? "more are" : "no more", " available)")
+                    Text = string.Concat("Returned ", results.Count(), " ", tClass.FriendlyName, " instances (", areMoreItemsAvailable ? "more are" : "no more", " available)")
                 };
 
                 return new SearchResponse()
@@ -110,6 +89,76 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Messages = new MessageVM[] { errorVM }
                 };
             }
+        }
+
+        private IQueryable FetchObjects(SearchObjectsRequest request, ClassTemplate tClass)
+        {
+            IQueryable results;
+
+            var maxLimit = request.PageSize + 1;
+            var rowsToSkip = request.PageSize * request.PageNumber;
+            var classType = tClass.RealType;
+
+            if (request.OrderBy.IsEmpty())
+            {
+                request.OrderBy = tClass.Properties.First().Value.Name;
+                request.IsDescendingOrder = true;
+            }
+
+            if (request.IsDescendingOrder)
+            {
+                var orderBy = string.Concat(request.OrderBy, " DESC");
+                var where = string.Concat(request.OrderBy, " != null");
+                results = _PersistenceService
+                                .GetObjects(classType)
+                                .OrderBy(orderBy)
+                                .Where(where)
+                                .Skip(rowsToSkip)
+                                .Take(maxLimit);
+
+                var matches = results.ToList<object>();
+                if (matches.Count < maxLimit)
+                {
+                    // We may have rows will NULL values, so include those too:
+                    var nullMatches = _PersistenceService
+                                        .GetObjects(classType)
+                                        .Where(string.Concat(request.OrderBy, " == null"))
+                                        .OrderBy(orderBy)
+                                        .Take(maxLimit - matches.Count)
+                                        .ToList<object>();
+
+                    matches.AddRange(nullMatches);
+                    results = matches.AsQueryable();
+                }
+            }
+            else
+            {
+                var orderBy = string.Concat(request.OrderBy, " ASC");
+                var where = string.Concat(request.OrderBy, " != null");
+                results = _PersistenceService
+                                .GetObjects(classType)
+                                .Where(where)
+                                .OrderBy(orderBy)
+                                .Skip(rowsToSkip)
+                                .Take(maxLimit);
+
+                var matches = results.ToList<object>();
+                if (matches.Count < maxLimit)
+                {
+                    // We may have rows will NULL values, so include those too:
+                    var nullMatches = _PersistenceService
+                                        .GetObjects(classType)
+                                        .Where(string.Concat(request.OrderBy, " == null"))
+                                        .OrderBy(orderBy)
+                                        .Take(maxLimit - matches.Count)
+                                        .ToList<object>();
+
+                    matches.AddRange(nullMatches);
+                    results = matches.AsQueryable();
+                }
+            }
+
+            return results;
         }
     }
 }

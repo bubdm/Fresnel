@@ -76,6 +76,7 @@
                 SearchType: fullyQualifiedName,
                 SearchFilters: null,
                 OrderBy: null,
+                IsDescendingOrder: false,
                 PageNumber: 1,
                 PageSize: 100
             };
@@ -89,6 +90,7 @@
                 PropertyName: prop.InternalName,
                 SearchFilters: null,
                 OrderBy: null,
+                IsDescendingOrder: false,
                 PageNumber: 1,
                 PageSize: 100
             };
@@ -103,6 +105,7 @@
                 ParameterName: param.InternalName,
                 SearchFilters: null,
                 OrderBy: null,
+                IsDescendingOrder: false,
                 PageNumber: 1,
                 PageSize: 100
             };

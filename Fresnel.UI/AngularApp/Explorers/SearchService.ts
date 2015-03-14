@@ -120,7 +120,7 @@ module FresnelApp {
                     this.rootScope.$broadcast(UiEventType.ModalClosed, modal);
                 });
             });
- }
+        }
 
         showSearchForParameter(param: ParameterVM, onSelectionConfirmed) {
         }
@@ -140,7 +140,12 @@ module FresnelApp {
                 if (response.Passed) {
                     var latestObj = response.ReturnValue;
                     var existingObj = this.appService.identityMap.getObject(obj.ID);
-                    this.appService.identityMap.mergeObjects(existingObj, latestObj);
+                    if (existingObj == null) {
+                        this.appService.identityMap.addObject(latestObj);
+                    }
+                    else {
+                        this.appService.identityMap.mergeObjects(existingObj, latestObj);
+                    }
                     $rootScope.$broadcast(UiEventType.ExplorerOpen, latestObj);
                 }
             });
@@ -159,6 +164,8 @@ module FresnelApp {
                 for (var i = 0; i < newSearchResults.Items.length; i++) {
                     existingSearchResults.Items.push(newSearchResults.Items[i]);
                 }
+
+                results.DisplayItems = [].concat(results.Items);
             });
         }
 

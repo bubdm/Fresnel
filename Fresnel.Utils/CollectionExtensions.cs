@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Envivo.Fresnel.Utils
 {
@@ -67,6 +68,19 @@ namespace Envivo.Fresnel.Utils
             {
                 collection.Clear();
             }
+        }
+
+        public static List <T> ToList<T>(this IQueryable queryable)
+        {
+            var result = new List<T>();
+
+            var enumerator = queryable.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                result.Add((T)enumerator.Current);
+            }
+
+            return result;
         }
     }
 }

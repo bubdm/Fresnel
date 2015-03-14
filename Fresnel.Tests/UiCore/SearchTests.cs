@@ -46,5 +46,33 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(10, searchResponse.Result.ElementProperties.Count());
         }
 
+        [Test]
+        public void ShouldSearchForObjectsInAscendingOrder()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var controller = container.Resolve<ToolboxController>();
+
+            // Act:
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(PocoObject).FullName,
+                OrderBy = "NormalText",
+                IsDescendingOrder = false,
+                PageSize = 100
+            };
+
+            var searchResponse = controller.SearchObjects(searchRequest);
+
+            // Assert:
+            Assert.IsTrue(searchResponse.Passed);
+            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+        }
+
     }
 }

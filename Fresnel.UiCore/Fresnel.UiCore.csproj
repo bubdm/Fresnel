@@ -38,7 +38,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Linq.Dynamic">
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Linq.Dynamic.1.0.4\lib\net40\System.Linq.Dynamic.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -76,7 +78,6 @@
     <Compile Include="Commands\SaveChangesCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Model\SearchResultItemVM.cs" />
-    <Compile Include="Model\SearchVM.cs" />
     <Compile Include="Model\ParameterVM.cs" />
     <Compile Include="Model\PropertyVM.cs" />
     <Compile Include="PropertyStateVmBuilder.cs" />

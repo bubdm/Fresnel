@@ -91,7 +91,8 @@ declare module FresnelApp {
     /** Generated from Envivo.Fresnel.UiCore.Commands.SearchRequest **/
     export interface SearchRequest {
         SearchFilters: any;
-        OrderBy: any;
+        OrderBy: string;
+        IsDescendingOrder: boolean;
         PageSize: number;
         PageNumber: number;
     }
@@ -210,15 +211,6 @@ declare module FresnelApp {
         OriginalRequest: FresnelApp.SearchRequest;
         AreMoreAvailable: boolean;
         AllowMultiSelect: boolean;
-    }
-    /** Generated from Envivo.Fresnel.UiCore.Model.SearchVM **/
-    export interface SearchVM extends FresnelApp.BaseViewModel {
-        SearchType: string;
-        Properties: any;
-        SearchFilters: any;
-        OrderBy: any;
-        SearchResults: any;
-        SelectedItems: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.SessionVM **/
     export interface SessionVM {

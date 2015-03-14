@@ -41,6 +41,7 @@ var FresnelApp;
     // Used to control the interactions within an open Search form
     var SearchExplorerController = (function () {
         function SearchExplorerController($rootScope, $scope, fresnelService, searchService) {
+            this.scope = $scope;
             $scope.results = $scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
             $scope.results.AllowMultiSelect = false;
@@ -51,6 +52,27 @@ var FresnelApp;
             $scope.results.DisplayItems = [].concat($scope.results.Items);
             $scope.openNewExplorer = function (obj) {
                 searchService.openNewExplorer(obj, $rootScope);
+            };
+            $scope.stTablePipe = function (tableState) {
+                var predicate = tableState.sort.predicate;
+                var orderBy;
+                if (predicate) {
+                    var index1 = predicate.indexOf("[");
+                    var index2 = predicate.indexOf("]");
+                    var propertyIndex = predicate.substr(index1 + 1, index2 - index1 - 1);
+                    orderBy = $scope.results.ElementProperties[propertyIndex].InternalName;
+                }
+                $scope.request.PageNumber = 0;
+                $scope.request.OrderBy = orderBy;
+                $scope.request.IsDescendingOrder = tableState.sort.reverse;
+                $scope.searchAction().then(function (promiseResult) {
+                    var response = promiseResult.data;
+                    // Replace the existing search results:
+                    $scope.results.Items = response.Result.Items;
+                    // This allows Smart-Table to handle the st-safe-src properly:
+                    $scope.results.DisplayItems = [].concat($scope.results.Items);
+                    tableState.pagination.numberOfPages = 50;
+                });
             };
             $scope.loadNextPage = function () {
                 searchService.loadNextPage($scope.request, $scope.results, $scope.searchAction);
@@ -167,7 +189,12 @@ var FresnelApp;
                 if (response.Passed) {
                     var latestObj = response.ReturnValue;
                     var existingObj = _this.appService.identityMap.getObject(obj.ID);
-                    _this.appService.identityMap.mergeObjects(existingObj, latestObj);
+                    if (existingObj == null) {
+                        _this.appService.identityMap.addObject(latestObj);
+                    }
+                    else {
+                        _this.appService.identityMap.mergeObjects(existingObj, latestObj);
+                    }
                     $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, latestObj);
                 }
             });
@@ -182,6 +209,7 @@ var FresnelApp;
                 for (var i = 0; i < newSearchResults.Items.length; i++) {
                     existingSearchResults.Items.push(newSearchResults.Items[i]);
                 }
+                results.DisplayItems = [].concat(results.Items);
             });
         };
         SearchService.$inject = [
@@ -377,7 +405,12 @@ var FresnelApp;
                     if (response.Passed) {
                         var latestObj = response.ReturnValue;
                         var existingObj = appService.identityMap.getObject(obj.ID);
-                        appService.identityMap.mergeObjects(existingObj, latestObj);
+                        if (existingObj == null) {
+                            appService.identityMap.addObject(latestObj);
+                        }
+                        else {
+                            appService.identityMap.mergeObjects(existingObj, latestObj);
+                        }
                         $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, latestObj);
                     }
                 });
@@ -715,6 +748,7 @@ var FresnelApp;
                 SearchType: fullyQualifiedName,
                 SearchFilters: null,
                 OrderBy: null,
+                IsDescendingOrder: false,
                 PageNumber: 1,
                 PageSize: 100
             };
@@ -726,6 +760,7 @@ var FresnelApp;
                 PropertyName: prop.InternalName,
                 SearchFilters: null,
                 OrderBy: null,
+                IsDescendingOrder: false,
                 PageNumber: 1,
                 PageSize: 100
             };
@@ -738,6 +773,7 @@ var FresnelApp;
                 ParameterName: param.InternalName,
                 SearchFilters: null,
                 OrderBy: null,
+                IsDescendingOrder: false,
                 PageNumber: 1,
                 PageSize: 100
             };
