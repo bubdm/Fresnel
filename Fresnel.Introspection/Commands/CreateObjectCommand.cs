@@ -41,7 +41,7 @@ namespace Envivo.Fresnel.Introspection.Commands
             }
 
             // Try using the IoC container:
-            var result = this.CreateObjectUsingFactory(tClass, constructorArg);
+            var result = this.CreateObjectUsingIoCFactory(tClass, constructorArg);
 
             if (result == null && constructorArg != null)
             {
@@ -68,7 +68,7 @@ namespace Envivo.Fresnel.Introspection.Commands
             return result;
         }
 
-        private object CreateObjectUsingFactory(ClassTemplate tClass, object constructorArg)
+        private object CreateObjectUsingIoCFactory(ClassTemplate tClass, object constructorArg)
         {
             if (constructorArg == null)
             {

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Domain\ConfigurationTests.cs" />
     <Compile Include="Domain\ChangeTrackingTests.cs" />
+    <Compile Include="Domain\ObjectCreationTests.cs" />
     <Compile Include="Domain\XmlDocReadingTests.cs" />
     <Compile Include="Domain\NamespaceHierarchyBuilderTests.cs" />
     <Compile Include="Domain\CollectionObserverTests.cs" />

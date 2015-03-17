@@ -2,6 +2,7 @@
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Persistence;
 using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.Utils;
 using System;
@@ -12,7 +13,6 @@ namespace Envivo.Fresnel.UiCore.Commands
     {
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
-        private IPersistenceService _PersistenceService;
         private CreateObjectCommand _CreateObjectCommand;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private IClock _Clock;
@@ -21,7 +21,6 @@ namespace Envivo.Fresnel.UiCore.Commands
             (
             TemplateCache templateCache,
             ObserverCache observerCache,
-            IPersistenceService persistenceService,
             CreateObjectCommand createObjectCommand,
             AbstractObjectVmBuilder objectVMBuilder,
             IClock clock
@@ -29,7 +28,6 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
-            _PersistenceService = persistenceService;
             _CreateObjectCommand = createObjectCommand;
             _ObjectVMBuilder = objectVMBuilder;
             _Clock = clock;
@@ -44,17 +42,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     return null;
 
                 var classType = tClass.RealType;
-
-                object newObject = null;
-                if (_PersistenceService.IsTypeRecognised(classType))
-                {
-                    newObject = _PersistenceService.CreateObject(classType);
-                }
-
-                var oObject = newObject != null ?
-                                _ObserverCache.GetObserver(newObject, classType) :
-                                _CreateObjectCommand.Invoke(classType, null);
-
+                var oObject = _CreateObjectCommand.Invoke(classType, null);
                 var vm = _ObjectVMBuilder.BuildFor(oObject);
 
                 return new CreateCommandResponse()

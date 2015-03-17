@@ -76,7 +76,6 @@
     <Compile Include="Permissions\CanSetPropertyPermission.cs" />
     <Compile Include="Permissions\CanGetPropertyPermission.cs" />
     <Compile Include="Permissions\CanCreatePermission.cs" />
-    <Compile Include="Persistence\IPersistenceService.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="UserSession.cs" />
     <Compile Include="ChangeTracking\CollectionTracker.cs" />

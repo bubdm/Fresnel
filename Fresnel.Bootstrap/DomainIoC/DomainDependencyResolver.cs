@@ -16,9 +16,12 @@ namespace Envivo.Fresnel.Bootstrap.DomainIoC
             _ComponentContext = componentContext;
         }
 
-        public object Resolve(Type classType)
+        public object Resolve(Type dependencyType)
         {
-            var result = _ComponentContext.Resolve(classType);
+            if (!_ComponentContext.IsRegistered(dependencyType))
+                return null;
+
+            var result = _ComponentContext.Resolve(dependencyType);
             return result;
         }
     }
