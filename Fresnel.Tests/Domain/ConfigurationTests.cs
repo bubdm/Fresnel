@@ -55,10 +55,10 @@ namespace Envivo.Fresnel.Tests.Domain
             var tTextWithSize = tClass.Properties["TextWithSize"];
 
             // Assert:
-            Assert.AreEqual(true, tReadOnlyText.Attributes.Get<VisibilityAttribute>().IsAllowed);
-            Assert.AreEqual(false, tHiddenText.Attributes.Get<VisibilityAttribute>().IsAllowed);
+            Assert.IsTrue(tReadOnlyText.Attributes.Get<VisibilityAttribute>().IsAllowed);
+            Assert.IsFalse(tHiddenText.Attributes.Get<VisibilityAttribute>().IsAllowed);
 
-            Assert.AreEqual(DataType.Custom, tReadOnlyText.Attributes.Get<DataTypeAttribute>().DataType);
+            Assert.AreEqual(DataType.Text, tReadOnlyText.Attributes.Get<DataTypeAttribute>().DataType);
             Assert.AreEqual(DataType.MultilineText, tMultiLine.Attributes.Get<DataTypeAttribute>().DataType);
             Assert.AreEqual(DataType.Password, tPassword.Attributes.Get<DataTypeAttribute>().DataType);
 
@@ -93,7 +93,44 @@ namespace Envivo.Fresnel.Tests.Domain
         [Test]
         public void ShouldBuildConfigurationForNumberProperty()
         {
-            throw new NotImplementedException();
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+
+            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.BasicTypes.NumberValues>();
+
+            // Act:
+            var tNormalNumber = tClass.Properties["NormalNumber"];
+            var tHiddenNumber = tClass.Properties["HiddenNumber"];
+            var tNumberWithRange = tClass.Properties["NumberWithRange"];
+            var tDoubleNumber = tClass.Properties["DoubleNumber"];
+            var tFloatNumberWithPlaces = tClass.Properties["FloatNumberWithPlaces"];
+
+            // Assert:
+            Assert.IsFalse(tHiddenNumber.Attributes.Get<VisibilityAttribute>().IsAllowed);
+
+            var rangeAttr = tNumberWithRange.Attributes.Get<System.ComponentModel.DataAnnotations.RangeAttribute>();
+            Assert.AreEqual(-234, rangeAttr.Minimum);
+            Assert.AreEqual(234, rangeAttr.Maximum);
+
+            Assert.AreEqual(DataType.Currency, tDoubleNumber.Attributes.Get<DataTypeAttribute>().DataType);
+            Assert.AreEqual(5, tFloatNumberWithPlaces.Attributes.Get<DecimalPlacesAttribute>().Places);
+        }
+
+        [Test]
+        public void ShouldIdentifyPersitenceConfiguration()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+
+            // Act:
+            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.Objects.PocoObject>();
+
+            // Assert:
+            Assert.IsTrue(tClass.IsPersistable);
+            Assert.AreEqual("ID", tClass.IdProperty.Name);
+            Assert.AreEqual("Version", tClass.VersionProperty.Name);
         }
 
     }
