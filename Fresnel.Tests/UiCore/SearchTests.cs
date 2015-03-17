@@ -72,7 +72,66 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Assert:
             Assert.IsTrue(searchResponse.Passed);
             Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+
+            // All nulls should appear after the text values:
+            var textValues = searchResponse.Result.Items
+                                    .Select(i => i.Properties.Single(p => p.InternalName == "NormalText").State.Value)
+                                    .Cast<string>()
+                                    .ToList();
+
+            var indexOfFirstNull = textValues.IndexOf(null);
+            var nonNullValues = textValues.GetRange(0, indexOfFirstNull);
+
+            for (var i = 1; i < nonNullValues.Count; i++)
+            {
+                var previousValue = nonNullValues[i - 1];
+                var currentValue = nonNullValues[i];
+                Assert.LessOrEqual(previousValue, currentValue);
+            }
         }
 
+        [Test]
+        public void ShouldSearchForObjectsInDecendingOrder()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var controller = container.Resolve<ToolboxController>();
+
+            // Act:
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(PocoObject).FullName,
+                OrderBy = "NormalText",
+                IsDescendingOrder = true,
+                PageSize = 100
+            };
+
+            var searchResponse = controller.SearchObjects(searchRequest);
+
+            // Assert:
+            Assert.IsTrue(searchResponse.Passed);
+            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+
+            // All nulls should appear after the text values:
+            var textValues = searchResponse.Result.Items
+                                    .Select(i => i.Properties.Single(p => p.InternalName == "NormalText").State.Value)
+                                    .Cast<string>()
+                                    .ToList();
+
+            var indexOfFirstNull = textValues.IndexOf(null);
+            var nonNullValues = textValues.GetRange(0, indexOfFirstNull);
+
+            for (var i = 1; i < nonNullValues.Count; i++)
+            {
+                var previousValue = nonNullValues[i - 1];
+                var currentValue = nonNullValues[i];
+                Assert.GreaterOrEqual(previousValue, currentValue);
+            }
+        }
     }
 }
