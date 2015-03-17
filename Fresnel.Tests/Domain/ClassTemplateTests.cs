@@ -5,6 +5,7 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Commands;
 using Envivo.Fresnel.Introspection.Templates;
 using NUnit.Framework;
+using System;
 using System.Linq;
 
 namespace Envivo.Fresnel.Tests.Domain
@@ -207,13 +208,14 @@ namespace Envivo.Fresnel.Tests.Domain
             var typeToCreate = typeof(SampleModel.Objects.DependencyAwareObject);
             var tClass = (ClassTemplate)templateCache.GetTemplate(typeToCreate);
 
+            var nameToInject = "Test " + Environment.TickCount.ToString();
+
             // Act:
-            var newInstance = (SampleModel.Objects.DependencyAwareObject)createCommand.Invoke(tClass, "test");
+            var newInstance = (SampleModel.Objects.DependencyAwareObject)createCommand.Invoke(tClass, nameToInject);
 
             // Assert:
             Assert.IsNotNull(newInstance);
-            Assert.IsNotNull(newInstance.PocoObject);
-            Assert.AreEqual("test", newInstance.Name);
+            Assert.AreEqual(nameToInject, newInstance.Name);
         }
     }
 }

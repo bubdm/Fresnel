@@ -1,4 +1,3 @@
-using Envivo.Fresnel.Core.Persistence;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.Objects;
 using System;
@@ -17,6 +16,9 @@ namespace Envivo.Sample.Model.Factories
         public PocoObject Create()
         {
             var newObject = _PersistenceService.CreateObject<PocoObject>();
+            if (newObject == null)
+                return null;
+
             newObject.ID = Guid.NewGuid();
             newObject.NormalText = "This was created using PocoObjectFactory.Create()";
 
@@ -26,6 +28,9 @@ namespace Envivo.Sample.Model.Factories
         public PocoObject Create(PocoObject parent)
         {
             var newObject = this.Create();
+            if (newObject == null)
+                return null;
+
             newObject.ID = Guid.NewGuid();
             newObject.NormalText = "This was created using PocoObjectFactory.Create(parent)";
 
