@@ -30,7 +30,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             var searchRequest = new SearchObjectsRequest()
             {
                 SearchType = typeof(PocoObject).FullName,
-                PageSize = 100
+                PageSize = 100,
+                PageNumber = 1
             };
 
             var searchResponse = controller.SearchObjects(searchRequest);
@@ -64,7 +65,8 @@ namespace Envivo.Fresnel.Tests.Proxies
                 SearchType = typeof(PocoObject).FullName,
                 OrderBy = "NormalText",
                 IsDescendingOrder = false,
-                PageSize = 100
+                PageSize = 100,
+                PageNumber = 1
             };
 
             var searchResponse = controller.SearchObjects(searchRequest);
@@ -108,7 +110,8 @@ namespace Envivo.Fresnel.Tests.Proxies
                 SearchType = typeof(PocoObject).FullName,
                 OrderBy = "NormalText",
                 IsDescendingOrder = true,
-                PageSize = 100
+                PageSize = 100,
+                PageNumber = 1
             };
 
             var searchResponse = controller.SearchObjects(searchRequest);

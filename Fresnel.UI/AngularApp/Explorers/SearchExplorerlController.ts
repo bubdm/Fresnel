@@ -43,7 +43,8 @@
                     var propertyIndex = predicate.substr(index1 + 1, index2 - index1 - 1);
                     orderBy = $scope.results.ElementProperties[propertyIndex].InternalName;
                 }
-                $scope.request.PageNumber = 0;
+                // Changing the order means we start from the beginning again:
+                $scope.request.PageNumber = 1;
                 $scope.request.OrderBy = orderBy;
                 $scope.request.IsDescendingOrder = tableState.sort.reverse;
 

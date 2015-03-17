@@ -95,8 +95,14 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             IQueryable results;
 
+            if (request.PageNumber < 1)
+                throw new UiCoreException("The Page number must be at least 1");
+
+            if (request.PageSize < 1)
+                throw new UiCoreException("The Page Size must be at least 1");
+
             var maxLimit = request.PageSize + 1;
-            var rowsToSkip = request.PageSize * request.PageNumber;
+            var rowsToSkip = request.PageSize * (request.PageNumber - 1);
             var classType = tClass.RealType;
 
             if (request.OrderBy.IsEmpty())
