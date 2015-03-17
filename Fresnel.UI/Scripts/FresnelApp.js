@@ -60,7 +60,11 @@ var FresnelApp;
                     var index1 = predicate.indexOf("[");
                     var index2 = predicate.indexOf("]");
                     var propertyIndex = predicate.substr(index1 + 1, index2 - index1 - 1);
-                    orderBy = $scope.results.ElementProperties[propertyIndex].InternalName;
+                    // Sorting on a Collection property doesn't make sense, so don't allow it:
+                    var sortProp = $scope.results.ElementProperties[propertyIndex];
+                    if (sortProp.IsCollection)
+                        return;
+                    orderBy = sortProp.InternalName;
                 }
                 // Changing the order means we start from the beginning again:
                 $scope.request.PageNumber = 1;

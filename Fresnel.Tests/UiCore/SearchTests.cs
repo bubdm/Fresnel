@@ -136,5 +136,35 @@ namespace Envivo.Fresnel.Tests.Proxies
                 Assert.GreaterOrEqual(previousValue, currentValue);
             }
         }
+
+
+        [Test]
+        public void ShouldPreventOrderingByCollections()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var controller = container.Resolve<ToolboxController>();
+
+            // Act:
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(PocoObject).FullName,
+                OrderBy = "ChildObjects",
+                IsDescendingOrder = false,
+                PageSize = 100,
+                PageNumber = 1
+            };
+
+            var searchResponse = controller.SearchObjects(searchRequest);
+
+            // Assert:
+            Assert.IsFalse(searchResponse.Passed);
+            Assert.IsNull(searchResponse.Result);
+        }
     }
 }

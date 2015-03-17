@@ -45,6 +45,7 @@ namespace Envivo.Fresnel.UiCore
                 Description = tProp.XmlComments.Summary,
                 IsRequired = tProp.IsNonReference && !tProp.IsNullableType,
                 IsVisible = !tProp.IsFrameworkMember && tProp.IsVisible,
+                IsCollection = tProp.IsCollection,
             };
 
             if (tProp.IsDomainObject)

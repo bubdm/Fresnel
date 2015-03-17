@@ -38,7 +38,8 @@ namespace Envivo.Fresnel.UiCore
                 Name = tParam.FriendlyName,
                 InternalName = tParam.Name,
                 Description = tParam.XmlComments.Summary,
-                State = this.CreateStateFor(tParam)
+                State = this.CreateStateFor(tParam),
+                IsCollection = tParam.IsCollection,
             };
 
             paramVM.IsNonReference = tParam.IsNonReference;

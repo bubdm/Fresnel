@@ -93,7 +93,17 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private IQueryable FetchObjects(SearchObjectsRequest request, ClassTemplate tClass)
         {
-            IQueryable results;
+            IQueryable results = null;
+
+            if (request.OrderBy.IsEmpty())
+            {
+                request.OrderBy = tClass.Properties.First().Value.Name;
+                request.IsDescendingOrder = true;
+            }
+
+            var tProp = tClass.Properties[request.OrderBy];
+            if (tProp.IsCollection)
+                throw new UiCoreException("Sorting by Collection properties is not allowed");
 
             if (request.PageNumber < 1)
                 throw new UiCoreException("The Page number must be at least 1");
@@ -104,12 +114,6 @@ namespace Envivo.Fresnel.UiCore.Commands
             var maxLimit = request.PageSize + 1;
             var rowsToSkip = request.PageSize * (request.PageNumber - 1);
             var classType = tClass.RealType;
-
-            if (request.OrderBy.IsEmpty())
-            {
-                request.OrderBy = tClass.Properties.First().Value.Name;
-                request.IsDescendingOrder = true;
-            }
 
             if (request.IsDescendingOrder)
             {
