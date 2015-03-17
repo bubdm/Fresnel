@@ -8,6 +8,7 @@ using Envivo.Fresnel.Core.Persistence;
 using System.Data.Entity.Core;
 using System.Linq.Expressions;
 using System.Data.Entity;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Fresnel.SampleModel.Persistence
 {

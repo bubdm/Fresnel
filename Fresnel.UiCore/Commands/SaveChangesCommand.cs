@@ -1,5 +1,6 @@
 ﻿using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Persistence;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.Utils;
 using System;
