@@ -32,7 +32,12 @@ module FresnelApp {
             if (modifications == null)
                 return;
 
-            // 1: Add new objects:
+            this.mergeNewObjects(modifications);
+            this.mergePropertyChanges(modifications);
+            this.mergeRemovals(modifications);
+        }
+
+        private mergeNewObjects(modifications: ModificationsVM) {
             for (var i = 0; i < modifications.NewObjects.length; i++) {
                 var item: ObjectVM = modifications.NewObjects[i];
                 var existingItem = this.getObject(item.ID);
@@ -53,8 +58,9 @@ module FresnelApp {
                     collection.Items.push(element);
                 }
             }
+        }
 
-            // 2: Apply modifications:
+        private mergePropertyChanges(modifications: ModificationsVM) {
             for (var i = 0; i < modifications.PropertyChanges.length; i++) {
                 var propertyChange = modifications.PropertyChanges[i];
 
@@ -80,8 +86,9 @@ module FresnelApp {
 
                 prop.State.Value = newPropertyValue;
             }
+        }
 
-            // 3: Perform removals:
+        private mergeRemovals(modifications: ModificationsVM) {
             for (var i = 0; i < modifications.CollectionRemovals.length; i++) {
                 var removal = modifications.CollectionRemovals[i];
                 var collection = <CollectionVM>this.getObject(removal.CollectionId);
@@ -98,7 +105,7 @@ module FresnelApp {
         mergeObjects(existingObj: ObjectVM, newObj: ObjectVM) {
             // NB: We have to be selective, otherwise the Angular bindings will break:
 
-            if (!existingObj.Properties) {
+            if (!existingObj.Properties || existingObj.Properties.length == 0) {
                 existingObj.Properties = newObj.Properties;
             }
             else {
@@ -107,7 +114,7 @@ module FresnelApp {
                 }
             }
 
-            if (!existingObj.Methods) {
+            if (!existingObj.Methods || existingObj.Methods.length == 0) {
                 existingObj.Methods = newObj.Methods;
             }
             else {
