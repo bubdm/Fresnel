@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.Configuration
             return attributeType == typeof(MaxLengthAttribute);
         }
 
-        public Attribute BuildFrom(IEnumerable<Attribute> templateAttributes, Type parentClass)
+        public Attribute BuildFrom(Type parentClass, Type templateType, IEnumerable<Attribute> templateAttributes)
         {
             var result = new MaxLengthAttribute(2000);
             return result;

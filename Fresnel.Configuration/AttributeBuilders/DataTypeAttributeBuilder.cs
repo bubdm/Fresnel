@@ -13,10 +13,22 @@ namespace Envivo.Fresnel.Configuration
             return attributeType == typeof(DataTypeAttribute);
         }
 
-        public Attribute BuildFrom(IEnumerable<Attribute> templateAttributes, Type parentClass)
+        public Attribute BuildFrom(Type parentClass, Type templateType, IEnumerable<Attribute> templateAttributes)
         {
-            var result = new DataTypeAttribute("");
-            return result;
+            switch (Type.GetTypeCode(templateType))
+            {
+                case TypeCode.Char:
+                case TypeCode.String:
+                    return new DataTypeAttribute(DataType.Text);
+
+                case TypeCode.DateTime:
+                    return new DataTypeAttribute(DataType.DateTime);
+            }
+
+            if (templateType == typeof(TimeSpan))
+                return new DataTypeAttribute(DataType.Duration);
+
+            return new DataTypeAttribute("");
         }
     }
 }

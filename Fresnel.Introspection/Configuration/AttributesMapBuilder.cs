@@ -30,6 +30,7 @@ namespace Envivo.Fresnel.Configuration
         public AttributesMap BuildFor(Type classType, IClassConfiguration classConfig)
         {
             var result = _AttributesMapFactory();
+            result.TemplateType = classType;
 
             var isCustomConfigurationAvailable = false;
             if (classConfig != null)
@@ -59,6 +60,7 @@ namespace Envivo.Fresnel.Configuration
         public AttributesMap BuildFor(PropertyInfo propertyInfo, IClassConfiguration outerClassConfig)
         {
             var result = _AttributesMapFactory();
+            result.TemplateType = propertyInfo.PropertyType;
 
             var isCustomConfigurationAvailable = false;
 
@@ -119,6 +121,7 @@ namespace Envivo.Fresnel.Configuration
         public AttributesMap BuildFor(ParameterInfo parameterInfo, IClassConfiguration outerClassConfig)
         {
             var result = _AttributesMapFactory();
+            result.TemplateType = parameterInfo.ParameterType;
 
             var isCustomConfigurationAvailable = false;
 

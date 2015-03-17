@@ -22,6 +22,10 @@ namespace Envivo.Fresnel.Configuration
             _AttributeBuilders = attributeBuilders;
         }
 
+        /// <summary>
+        /// The Type that the Attributes are resolved from
+        /// </summary>
+        public Type TemplateType { get; set; }
 
         /// <summary>
         /// Returns an entry for the attribute that matches the given Attribute type.
@@ -31,7 +35,7 @@ namespace Envivo.Fresnel.Configuration
         public TAttribute Get<TAttribute>()
             where TAttribute : Attribute
         {
-            var entry = this.GetEntry(typeof(TAttribute), null);
+            var entry = this.GetEntry(null, this.TemplateType, typeof(TAttribute));
             return (TAttribute)entry.Value;
         }
 
@@ -41,7 +45,7 @@ namespace Envivo.Fresnel.Configuration
             var attributeType = typeof(TAttribute);
             var classType = typeof(TAttribute);
 
-            var entry = this.GetEntry(typeof(TAttribute), classType);
+            var entry = this.GetEntry(classType, this.TemplateType, typeof(TAttribute));
             return (TAttribute)entry.Value;
         }
 
@@ -55,7 +59,7 @@ namespace Envivo.Fresnel.Configuration
         {
             var attributeType = typeof(TAttribute);
             var classType = typeof(TAttribute);
-            return this.GetEntry(attributeType, classType);
+            return this.GetEntry(classType, this.TemplateType, attributeType);
         }
 
         public void Add(Type key, Attribute attribute, AttributeSource source)
@@ -81,7 +85,7 @@ namespace Envivo.Fresnel.Configuration
         /// If the configuration doesn't exist, a new one is created and returned
         /// </summary>
         /// <param name="attributeType"></param>
-        private AttributeEntry GetEntry(Type attributeType, Type classType)
+        private AttributeEntry GetEntry(Type classType, Type templateType, Type attributeType)
         {
             // First we'll try to find an exact match:
             var result = _AttributeEntries.TryGetValueOrNull(attributeType);
@@ -95,11 +99,11 @@ namespace Envivo.Fresnel.Configuration
             if (attributeBuilder != null)
             {
                 var allKnownAttributes = _AttributeEntries.Values.Select(e => e.Value).ToArray();
-                var defaultAttr = attributeBuilder.BuildFrom(allKnownAttributes, classType);
+                var defaultAttr = attributeBuilder.BuildFrom(classType, templateType, allKnownAttributes);
                 result = new AttributeEntry()
                 {
                     Value = defaultAttr,
-                    Source =  AttributeSource.RunTime
+                    Source = AttributeSource.RunTime
                 };
                 _AttributeEntries[attributeType] = result;
                 return result;

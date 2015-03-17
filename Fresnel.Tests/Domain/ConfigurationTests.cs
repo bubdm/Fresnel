@@ -66,11 +66,28 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual(16, tTextWithSize.Attributes.Get<MaxLengthAttribute>().Length);
         }
 
-
         [Test]
         public void ShouldBuildConfigurationForDateTimeProperty()
         {
-            throw new NotImplementedException();
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+
+            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.BasicTypes.DateValues>();
+
+            // Act:
+            var tNormalDate = tClass.Properties["NormalDate"];
+            var tTimeFormat = tClass.Properties["TimeFormat"];
+            var tDateFormat = tClass.Properties["DateFormat"];
+            var tCustomDateFormat = tClass.Properties["CustomDateFormat"];
+            var tTimespan = tClass.Properties["Timespan"];
+
+            // Assert:
+            Assert.AreEqual(DataType.DateTime, tNormalDate.Attributes.Get<DataTypeAttribute>().DataType);
+            Assert.AreEqual(DataType.Time, tTimeFormat.Attributes.Get<DataTypeAttribute>().DataType);
+            Assert.AreEqual(DataType.Date, tDateFormat.Attributes.Get<DataTypeAttribute>().DataType);
+            Assert.AreEqual(DataType.DateTime, tCustomDateFormat.Attributes.Get<DataTypeAttribute>().DataType);
+            Assert.AreEqual(DataType.Duration, tTimespan.Attributes.Get<DataTypeAttribute>().DataType);
         }
 
         [Test]

@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.Configuration
     {
         bool CanHandle(Type attributeType);
 
-        Attribute BuildFrom(IEnumerable<Attribute> templateAttributes, Type parentClass);
+        Attribute BuildFrom(Type parentClass, Type templateType, IEnumerable<Attribute> templateAttributes);
     }
 
 }

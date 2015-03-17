@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.Configuration
             return attributeType == typeof(RangeAttribute);
         }
 
-        public Attribute BuildFrom(IEnumerable<Attribute> templateAttributes, Type parentClass)
+        public Attribute BuildFrom(Type parentClass, Type templateType, IEnumerable<Attribute> templateAttributes)
         {
             var result = new RangeAttribute(int.MinValue, int.MaxValue);
             return result;
