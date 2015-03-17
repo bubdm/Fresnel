@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a normal Number
         /// </summary>
-        public virtual int NormalNumber
+        public int NormalNumber
         {
             get { return _IntValue; }
             set { _IntValue = value; }
@@ -37,7 +37,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Number with a public Getter, but a hidden Setter.
         /// </summary>
-        public virtual int ReadOnlyNumber
+        public int ReadOnlyNumber
         {
             get { return _IntValue; }
             internal set { _IntValue = value; }
@@ -47,7 +47,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This is a Number with a hidden Getter, but a public Setter.
         /// This should not be visible in the UI.
         /// </summary>
-        public virtual int WriteOnlyNumber
+        public int WriteOnlyNumber
         {
             internal get { return _IntValue; }
             set { _IntValue = value; }
@@ -57,7 +57,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// This is a public Number, but should be hidden in the UI.
         /// </summary>
         [Display(AutoGenerateField = false)]
-        public virtual int HiddenNumber
+        public int HiddenNumber
         {
             get { return _IntValue; }
             set { _IntValue = value; }
@@ -68,7 +68,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// Values beyond the ranges should not be allowed from the UI.
         /// </summary>
         [Range(-234, 234)]
-        public virtual int NumberWithRange
+        public int NumberWithRange
         {
             get { return _IntValue; }
             set { _IntValue = value; }
@@ -77,24 +77,24 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Float number
         /// </summary>
-        public virtual float FloatNumber { get; set; }
+        public float FloatNumber { get; set; }
 
         /// <summary>
         /// This is a Double that is shown using CurrentCulture.NumberFormat.CurrencyDecimalDigits
         /// </summary>
         [DataType(DataType.Currency)]
-        public virtual double DoubleNumber { get; set; }
+        public double DoubleNumber { get; set; }
 
         /// <summary>
         /// This is a Float number shown to 5 decimal places
         /// </summary>
         [DecimalPlaces(5)]
-        public virtual float FloatNumberWithPlaces { get; set; }
+        public float FloatNumberWithPlaces { get; set; }
 
         /// <summary>
         /// This is a normal Decimal Number
         /// </summary>
-        public virtual decimal DecimalNumber { get; set; }
+        public decimal DecimalNumber { get; set; }
 
         /// <summary>
         /// This is a number property with a custom title
