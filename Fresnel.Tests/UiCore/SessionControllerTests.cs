@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using Envivo.Fresnel.Bootstrap;
+using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.SampleModel.Objects;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;

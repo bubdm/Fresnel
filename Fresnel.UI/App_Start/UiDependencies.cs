@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Autofac.Integration.Mvc;
 using Envivo.Fresnel.UI.Controllers;
 
-namespace Envivo.Fresnel.Bootstrap
+namespace Envivo.Fresnel.CompositionRoot
 {
     public class UiDependencies : Module
     {

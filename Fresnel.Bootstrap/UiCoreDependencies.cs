@@ -2,7 +2,7 @@
 using Envivo.Fresnel.Utils;
 using System;
 
-namespace Envivo.Fresnel.Bootstrap
+namespace Envivo.Fresnel.CompositionRoot
 {
     public class UiCoreDependencies : Module
     {

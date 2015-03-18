@@ -3,7 +3,7 @@ using Envivo.Fresnel.Introspection.IoC;
 using System;
 using System.Linq;
 
-namespace Envivo.Fresnel.Bootstrap.DomainIoC
+namespace Envivo.Fresnel.CompositionRoot.DomainIoC
 {
     public class DomainObjectFactory : IDomainObjectFactory
     {

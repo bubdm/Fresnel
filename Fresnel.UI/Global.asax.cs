@@ -7,7 +7,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
-using Envivo.Fresnel.Bootstrap;
+using Envivo.Fresnel.CompositionRoot;
 using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;

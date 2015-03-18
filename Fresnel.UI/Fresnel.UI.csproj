@@ -1086,9 +1086,9 @@
     <TypeScriptCompile Include="AngularApp\Bootstrapper.ts" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fresnel.Bootstrap\Fresnel.Bootstrap.csproj">
+    <ProjectReference Include="..\Fresnel.Bootstrap\Fresnel.CompositionRoot.csproj">
       <Project>{5d50ab72-1e6a-4930-8a70-4dd940ecbeb0}</Project>
-      <Name>Fresnel.Bootstrap</Name>
+      <Name>Fresnel.CompositionRoot</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fresnel.Core\Fresnel.Core.csproj">
       <Project>{06b6fc1c-5e9d-442a-a643-2eb1a6a53809}</Project>

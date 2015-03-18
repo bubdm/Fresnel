@@ -2,7 +2,7 @@
 using Envivo.Fresnel.Introspection.IoC;
 using System;
 
-namespace Envivo.Fresnel.Bootstrap.DomainIoC
+namespace Envivo.Fresnel.CompositionRoot.DomainIoC
 {
     public class DomainDependencyRegistrar : IDomainDependencyRegistrar
     {

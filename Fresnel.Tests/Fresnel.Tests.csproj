@@ -84,9 +84,9 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fresnel.Bootstrap\Fresnel.Bootstrap.csproj">
+    <ProjectReference Include="..\Fresnel.Bootstrap\Fresnel.CompositionRoot.csproj">
       <Project>{5d50ab72-1e6a-4930-8a70-4dd940ecbeb0}</Project>
-      <Name>Fresnel.Bootstrap</Name>
+      <Name>Fresnel.CompositionRoot</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fresnel.Configuration\Fresnel.Configuration.csproj">
       <Project>{b3122093-8ebb-423b-a4ed-951752690288}</Project>

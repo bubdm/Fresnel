@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using System;
 
-namespace Envivo.Fresnel.Bootstrap
+namespace Envivo.Fresnel.CompositionRoot
 {
     public class IntrospectionDependencies : Module
     {

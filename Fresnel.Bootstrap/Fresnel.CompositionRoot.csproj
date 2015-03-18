@@ -7,8 +7,8 @@
     <ProjectGuid>{5D50AB72-1E6A-4930-8A70-4DD940ECBEB0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Envivo.Fresnel.Bootstrap</RootNamespace>
-    <AssemblyName>Fresnel.Bootstrap</AssemblyName>
+    <RootNamespace>Envivo.Fresnel.CompositionRoot</RootNamespace>
+    <AssemblyName>Fresnel.CompositionRoot</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

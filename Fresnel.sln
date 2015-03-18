@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.Tests", "Fresnel.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.Utils", "Fresnel.Utils\Fresnel.Utils.csproj", "{3BA54D1E-0D73-4C83-A3C7-5FD199E0F468}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.Bootstrap", "Fresnel.Bootstrap\Fresnel.Bootstrap.csproj", "{5D50AB72-1E6A-4930-8A70-4DD940ECBEB0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.CompositionRoot", "Fresnel.Bootstrap\Fresnel.CompositionRoot.csproj", "{5D50AB72-1E6A-4930-8A70-4DD940ECBEB0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fresnel.Introspection", "Fresnel.Introspection\Fresnel.Introspection.csproj", "{F7873FCB-7EAC-4A75-9B7C-E4EF646C9960}"
 EndProject

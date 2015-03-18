@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using Envivo.Fresnel.Bootstrap;
+using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
 using NUnit.Framework;

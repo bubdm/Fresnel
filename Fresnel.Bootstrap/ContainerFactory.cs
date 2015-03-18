@@ -4,7 +4,7 @@ using Envivo.Fresnel.Introspection.IoC;
 
 using System.Collections.Generic;
 
-namespace Envivo.Fresnel.Bootstrap
+namespace Envivo.Fresnel.CompositionRoot
 {
     public class ContainerFactory
     {
