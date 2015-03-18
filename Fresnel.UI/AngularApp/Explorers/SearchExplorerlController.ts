@@ -8,6 +8,7 @@
             '$scope',
             'fresnelService',
             'searchService',
+            'appService',
             'blockUI'];
 
         private scope: ISearchScope;
@@ -17,6 +18,7 @@
             $scope: ISearchScope,
             fresnelService: IFresnelService,
             searchService: SearchService,
+            appService: AppService,
             blockUI: any) {
 
             this.scope = $scope;
@@ -62,7 +64,25 @@
                     var response = promiseResult.data;
 
                     // Replace the existing search results:
-                    $scope.results.Items = response.Result.Items;
+                    var itemCount = response.Result.Items.length;
+                    var itemsToBind: ObjectVM[] = [itemCount];
+
+                    // If an object already exists in the IdentityMap, 
+                    // we need to ensure that the new results don't overwrite it:
+                    for (var i = 0; i < itemCount; i++) {
+                        var latestObj: ObjectVM = response.Result.Items[i];
+                        var existingObj = appService.identityMap.getObject(latestObj.ID);
+                        if (existingObj == null) {
+                            appService.identityMap.addObject(latestObj);
+                            itemsToBind[i] = latestObj;
+                        }
+                        else {
+                            appService.identityMap.mergeObjects(existingObj, latestObj);
+                            itemsToBind[i] = existingObj;
+                        }
+                    }
+
+                    $scope.results.Items = itemsToBind;
 
                     // This allows Smart-Table to handle the st-safe-src properly:
                     $scope.results.DisplayItems = [].concat($scope.results.Items);

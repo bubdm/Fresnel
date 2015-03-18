@@ -105,19 +105,33 @@ module FresnelApp {
         mergeObjects(existingObj: ObjectVM, newObj: ObjectVM) {
             // NB: We have to be selective, otherwise the Angular bindings will break:
 
-            if (!existingObj.Properties || existingObj.Properties.length == 0) {
+            var doesExistingObjHaveProperties = (existingObj.Properties != null) && (existingObj.Properties.length > 0);
+            var doesNewObjHaveProperties = (newObj.Properties != null) && (newObj.Properties.length > 0);
+            var doObjectsHaveSameProperties = doesExistingObjHaveProperties && doesNewObjHaveProperties && (existingObj.Properties.length == newObj.Properties.length);
+
+            if (doesExistingObjHaveProperties) {
+                // Do nothing:
+            }
+            else if (!doesExistingObjHaveProperties && doesNewObjHaveProperties) {
                 existingObj.Properties = newObj.Properties;
             }
-            else {
+            else if (doObjectsHaveSameProperties) {
                 for (var i = 0; i < existingObj.Properties.length; i++) {
                     this.extendDeep(existingObj.Properties[i], newObj.Properties[i]);
                 }
             }
 
-            if (!existingObj.Methods || existingObj.Methods.length == 0) {
+            var doesExistingObjHaveMethods = (existingObj.Methods != null) && (existingObj.Methods.length > 0);
+            var doesNewObjHaveMethods = (newObj.Methods != null) && (newObj.Methods.length > 0);
+            var doObjectsHaveSameMethods = doesExistingObjHaveMethods && doesNewObjHaveMethods && (existingObj.Methods.length == newObj.Methods.length);
+
+            if (doesExistingObjHaveMethods) {
+                // Do nothing:
+            }
+            else if (!doesExistingObjHaveMethods && doesNewObjHaveMethods) {
                 existingObj.Methods = newObj.Methods;
             }
-            else {
+            else if (doObjectsHaveSameMethods) {
                 for (var i = 0; i < existingObj.Methods.length; i++) {
                     this.extendDeep(existingObj.Methods[i], newObj.Methods[i]);
                 }

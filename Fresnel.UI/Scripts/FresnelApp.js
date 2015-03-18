@@ -40,7 +40,7 @@ var FresnelApp;
 (function (FresnelApp) {
     // Used to control the interactions within an open Search form
     var SearchExplorerController = (function () {
-        function SearchExplorerController($rootScope, $scope, fresnelService, searchService, blockUI) {
+        function SearchExplorerController($rootScope, $scope, fresnelService, searchService, appService, blockUI) {
             this.scope = $scope;
             $scope.results = $scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
@@ -74,7 +74,21 @@ var FresnelApp;
                 $scope.searchAction().then(function (promiseResult) {
                     var response = promiseResult.data;
                     // Replace the existing search results:
-                    $scope.results.Items = response.Result.Items;
+                    var itemCount = response.Result.Items.length;
+                    var itemsToBind = [itemCount];
+                    for (var i = 0; i < itemCount; i++) {
+                        var latestObj = response.Result.Items[i];
+                        var existingObj = appService.identityMap.getObject(latestObj.ID);
+                        if (existingObj == null) {
+                            appService.identityMap.addObject(latestObj);
+                            itemsToBind[i] = latestObj;
+                        }
+                        else {
+                            appService.identityMap.mergeObjects(existingObj, latestObj);
+                            itemsToBind[i] = existingObj;
+                        }
+                    }
+                    $scope.results.Items = itemsToBind;
                     // This allows Smart-Table to handle the st-safe-src properly:
                     $scope.results.DisplayItems = [].concat($scope.results.Items);
                     tableState.pagination.numberOfPages = 50;
@@ -91,6 +105,7 @@ var FresnelApp;
             '$scope',
             'fresnelService',
             'searchService',
+            'appService',
             'blockUI'
         ];
         return SearchExplorerController;
@@ -1235,18 +1250,28 @@ var FresnelApp;
         };
         IdentityMap.prototype.mergeObjects = function (existingObj, newObj) {
             // NB: We have to be selective, otherwise the Angular bindings will break:
-            if (!existingObj.Properties || existingObj.Properties.length == 0) {
+            var doesExistingObjHaveProperties = (existingObj.Properties != null) && (existingObj.Properties.length > 0);
+            var doesNewObjHaveProperties = (newObj.Properties != null) && (newObj.Properties.length > 0);
+            var doObjectsHaveSameProperties = doesExistingObjHaveProperties && doesNewObjHaveProperties && (existingObj.Properties.length == newObj.Properties.length);
+            if (doesExistingObjHaveProperties) {
+            }
+            else if (!doesExistingObjHaveProperties && doesNewObjHaveProperties) {
                 existingObj.Properties = newObj.Properties;
             }
-            else {
+            else if (doObjectsHaveSameProperties) {
                 for (var i = 0; i < existingObj.Properties.length; i++) {
                     this.extendDeep(existingObj.Properties[i], newObj.Properties[i]);
                 }
             }
-            if (!existingObj.Methods || existingObj.Methods.length == 0) {
+            var doesExistingObjHaveMethods = (existingObj.Methods != null) && (existingObj.Methods.length > 0);
+            var doesNewObjHaveMethods = (newObj.Methods != null) && (newObj.Methods.length > 0);
+            var doObjectsHaveSameMethods = doesExistingObjHaveMethods && doesNewObjHaveMethods && (existingObj.Methods.length == newObj.Methods.length);
+            if (doesExistingObjHaveMethods) {
+            }
+            else if (!doesExistingObjHaveMethods && doesNewObjHaveMethods) {
                 existingObj.Methods = newObj.Methods;
             }
-            else {
+            else if (doObjectsHaveSameMethods) {
                 for (var i = 0; i < existingObj.Methods.length; i++) {
                     this.extendDeep(existingObj.Methods[i], newObj.Methods[i]);
                 }
