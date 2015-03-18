@@ -87,7 +87,7 @@
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="image/avatar3.png" class="img-circle" alt="User Image" />
+                        <img src="image/avatar04.png" class="img-circle" alt="User Image" />
                     </div>
                     <div class="pull-left info">
                         <p>Hello, {{session.UserName}}</p>
@@ -127,7 +127,7 @@
             <!-- Main content -->
             <section class="content workbenchContainer">
 
-                <div ng-controller="workbenchController">
+                <div id="workbench" ng-controller="workbenchController">
                     <div ng-repeat="explorer in visibleExplorers" class="explorerPanel animate">
                         <div ng-controller="explorerController">
                             <div ng-if="explorer.__meta.IsSearchResults">
