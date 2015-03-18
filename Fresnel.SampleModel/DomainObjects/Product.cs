@@ -67,6 +67,15 @@ namespace Envivo.Fresnel.SampleModel.Objects
             e.Item.Products.Remove(this);
         }
 
+        public override string ToString()
+        {
+            var type = this.GetType();
+
+            return type.Assembly.IsDynamic ?
+                    type.BaseType.Name :
+                    type.Name;
+        }
+
         /// <summary>
         /// The Categories that this Product belongs to
         /// </summary>
