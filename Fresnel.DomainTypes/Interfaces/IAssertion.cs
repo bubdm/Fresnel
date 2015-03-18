@@ -44,8 +44,6 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// Returns the warning message (if any)
         /// </summary>
         string WarningReason { get; }
-
-        IEnumerable<IAssertion> ToEnumerable();
     }
 
     public interface IAssertion<T> : IAssertion

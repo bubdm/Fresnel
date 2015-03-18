@@ -184,17 +184,5 @@ namespace Envivo.Fresnel.DomainTypes
             return result;
         }
 
-        public IEnumerable<IAssertion> ToEnumerable()
-        {
-            if (InnerAssertion != null)
-            {
-                return InnerAssertion.ToEnumerable();
-            }
-            else
-            {
-                var results = new List<IAssertion>() { this };
-                return results;
-            }
-        }
     }
 }
