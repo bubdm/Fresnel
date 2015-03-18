@@ -9,6 +9,7 @@ module FresnelApp {
             'appService',
             'explorerService',
             'requestBuilder',
+            'blockUI',
             '$modal'];
 
         private rootScope: ng.IRootScopeService;
@@ -16,6 +17,7 @@ module FresnelApp {
         private appService: AppService;
         private explorerService: ExplorerService;
         private requestBuilder: RequestBuilder;
+        private blockUI: any;
         private modal: ng.ui.bootstrap.IModalService;
 
         constructor(
@@ -24,6 +26,7 @@ module FresnelApp {
             appService: AppService,
             explorerService: ExplorerService,
             requestBuilder: RequestBuilder,
+            blockUI: any,
             $modal: ng.ui.bootstrap.IModalService) {
 
             this.rootScope = $rootScope;
@@ -31,6 +34,7 @@ module FresnelApp {
             this.appService = appService;
             this.explorerService = explorerService;
             this.requestBuilder = requestBuilder;
+            this.blockUI = blockUI;
             this.modal = $modal;
         }
 
@@ -39,6 +43,7 @@ module FresnelApp {
             var searchPromise = this.fresnelService.searchObjects(request);
 
             // TODO: Open the modal _before_ the search is executed:
+            this.blockUI.start("Searching for data...");
 
             searchPromise.then((promiseResult) => {
                 var response = promiseResult.data;
@@ -74,6 +79,7 @@ module FresnelApp {
 
                 modal.result.finally(() => {
                     this.rootScope.$broadcast(UiEventType.ModalClosed, modal);
+                    this.blockUI.stop();
                 });
             });
         }
@@ -83,6 +89,7 @@ module FresnelApp {
             var searchPromise = this.fresnelService.searchPropertyObjects(request);
 
             // TODO: Open the modal _before_ the search is executed:
+            this.blockUI.start("Searching for data...");
 
             searchPromise.then((promiseResult) => {
                 var response = promiseResult.data;
@@ -118,6 +125,7 @@ module FresnelApp {
 
                 modal.result.finally(() => {
                     this.rootScope.$broadcast(UiEventType.ModalClosed, modal);
+                    this.blockUI.stop();
                 });
             });
         }
@@ -154,6 +162,8 @@ module FresnelApp {
         loadNextPage(request: SearchRequest, results: SearchResultsVM, searchPromise: any) {
             request.PageNumber++;
 
+            this.blockUI.start("Loading more data...");
+
             searchPromise().then((promiseResult) => {
                 var response = promiseResult.data;
                 var newSearchResults: SearchResultsVM = response.Result;
@@ -166,7 +176,11 @@ module FresnelApp {
                 }
 
                 results.DisplayItems = [].concat(results.Items);
+            })
+                .finally(() => {
+                this.blockUI.stop();
             });
+
         }
 
     }

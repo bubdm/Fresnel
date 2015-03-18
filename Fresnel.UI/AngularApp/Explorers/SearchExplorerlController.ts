@@ -7,7 +7,8 @@
             '$rootScope',
             '$scope',
             'fresnelService',
-            'searchService'];
+            'searchService',
+            'blockUI'];
 
         private scope: ISearchScope;
 
@@ -15,7 +16,8 @@
             $rootScope: ng.IRootScopeService,
             $scope: ISearchScope,
             fresnelService: IFresnelService,
-            searchService: SearchService) {
+            searchService: SearchService,
+            blockUI: any) {
 
             this.scope = $scope;
 
@@ -54,6 +56,8 @@
                 $scope.request.OrderBy = orderBy;
                 $scope.request.IsDescendingOrder = tableState.sort.reverse;
 
+                blockUI.start("Sorting data...");
+
                 $scope.searchAction().then((promiseResult) => {
                     var response = promiseResult.data;
 
@@ -64,6 +68,9 @@
                     $scope.results.DisplayItems = [].concat($scope.results.Items);
 
                     tableState.pagination.numberOfPages = 50;
+                })
+                    .finally(() => {
+                    blockUI.stop();
                 });
             };
 

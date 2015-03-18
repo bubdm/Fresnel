@@ -40,7 +40,7 @@ var FresnelApp;
 (function (FresnelApp) {
     // Used to control the interactions within an open Search form
     var SearchExplorerController = (function () {
-        function SearchExplorerController($rootScope, $scope, fresnelService, searchService) {
+        function SearchExplorerController($rootScope, $scope, fresnelService, searchService, blockUI) {
             this.scope = $scope;
             $scope.results = $scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
@@ -70,6 +70,7 @@ var FresnelApp;
                 $scope.request.PageNumber = 1;
                 $scope.request.OrderBy = orderBy;
                 $scope.request.IsDescendingOrder = tableState.sort.reverse;
+                blockUI.start("Sorting data...");
                 $scope.searchAction().then(function (promiseResult) {
                     var response = promiseResult.data;
                     // Replace the existing search results:
@@ -77,6 +78,8 @@ var FresnelApp;
                     // This allows Smart-Table to handle the st-safe-src properly:
                     $scope.results.DisplayItems = [].concat($scope.results.Items);
                     tableState.pagination.numberOfPages = 50;
+                }).finally(function () {
+                    blockUI.stop();
                 });
             };
             $scope.loadNextPage = function () {
@@ -87,7 +90,8 @@ var FresnelApp;
             '$rootScope',
             '$scope',
             'fresnelService',
-            'searchService'
+            'searchService',
+            'blockUI'
         ];
         return SearchExplorerController;
     })();
@@ -96,12 +100,13 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var SearchService = (function () {
-        function SearchService($rootScope, fresnelService, appService, explorerService, requestBuilder, $modal) {
+        function SearchService($rootScope, fresnelService, appService, explorerService, requestBuilder, blockUI, $modal) {
             this.rootScope = $rootScope;
             this.fresnelService = fresnelService;
             this.appService = appService;
             this.explorerService = explorerService;
             this.requestBuilder = requestBuilder;
+            this.blockUI = blockUI;
             this.modal = $modal;
         }
         SearchService.prototype.showSearchForCollection = function (coll, onSelectionConfirmed) {
@@ -109,6 +114,7 @@ var FresnelApp;
             var request = this.requestBuilder.buildSearchObjectsRequest(coll.ElementType);
             var searchPromise = this.fresnelService.searchObjects(request);
             // TODO: Open the modal _before_ the search is executed:
+            this.blockUI.start("Searching for data...");
             searchPromise.then(function (promiseResult) {
                 var response = promiseResult.data;
                 var searchResults = response.Result;
@@ -139,6 +145,7 @@ var FresnelApp;
                 });
                 modal.result.finally(function () {
                     _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
+                    _this.blockUI.stop();
                 });
             });
         };
@@ -147,6 +154,7 @@ var FresnelApp;
             var request = this.requestBuilder.buildSearchPropertyRequest(prop);
             var searchPromise = this.fresnelService.searchPropertyObjects(request);
             // TODO: Open the modal _before_ the search is executed:
+            this.blockUI.start("Searching for data...");
             searchPromise.then(function (promiseResult) {
                 var response = promiseResult.data;
                 var searchResults = response.Result;
@@ -177,6 +185,7 @@ var FresnelApp;
                 });
                 modal.result.finally(function () {
                     _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
+                    _this.blockUI.stop();
                 });
             });
         };
@@ -205,7 +214,9 @@ var FresnelApp;
             });
         };
         SearchService.prototype.loadNextPage = function (request, results, searchPromise) {
+            var _this = this;
             request.PageNumber++;
+            this.blockUI.start("Loading more data...");
             searchPromise().then(function (promiseResult) {
                 var response = promiseResult.data;
                 var newSearchResults = response.Result;
@@ -215,6 +226,8 @@ var FresnelApp;
                     existingSearchResults.Items.push(newSearchResults.Items[i]);
                 }
                 results.DisplayItems = [].concat(results.Items);
+            }).finally(function () {
+                _this.blockUI.stop();
             });
         };
         SearchService.$inject = [
@@ -223,6 +236,7 @@ var FresnelApp;
             'appService',
             'explorerService',
             'requestBuilder',
+            'blockUI',
             '$modal'
         ];
         return SearchService;
@@ -801,78 +815,175 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var FresnelService = (function () {
-        function FresnelService($http) {
+        function FresnelService($http, blockUi) {
             this.http = $http;
+            this.blockUI = blockUi;
         }
         FresnelService.prototype.getSession = function () {
+            var _this = this;
+            this.blockUI.start("Starting your session...");
             var uri = "api/Session/GetSession";
-            return this.http.get(uri);
+            var promise = this.http.get(uri);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.getClassHierarchy = function () {
+            var _this = this;
+            this.blockUI.start("Setting up toolbox...");
             var uri = "api/Toolbox/GetClassHierarchy";
-            return this.http.get(uri);
+            var promise = this.http.get(uri);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.createObject = function (fullyQualifiedName) {
+            var _this = this;
+            this.blockUI.start("Creating new object...");
             var uri = "api/Toolbox/Create";
             var arg = "=" + fullyQualifiedName;
             var config = {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
             };
-            return this.http.post(uri, arg, config);
+            var promise = this.http.post(uri, arg, config);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.getObject = function (request) {
+            var _this = this;
+            this.blockUI.start("Retrieving object...");
             var uri = "api/Explorer/GetObject";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.getProperty = function (request) {
+            var _this = this;
+            this.blockUI.start("Loading property...");
             var uri = "api/Explorer/GetObjectProperty";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.createAndSetProperty = function (request) {
+            var _this = this;
+            this.blockUI.start("Creating new object...");
             var uri = "api/Explorer/CreateAndSetProperty";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.setProperty = function (request) {
+            var _this = this;
+            this.blockUI.start("Setting property value...");
             var uri = "api/Explorer/SetProperty";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.invokeMethod = function (request) {
+            var _this = this;
+            this.blockUI.start("Performing action...");
             var uri = "api/Explorer/InvokeMethod";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.addNewItemToCollection = function (request) {
+            var _this = this;
+            this.blockUI.start("Adding new item to collection...");
             var uri = "api/Explorer/AddNewItemToCollection";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.addItemsToCollection = function (request) {
+            var _this = this;
+            this.blockUI.start("Adding items to collection...");
             var uri = "api/Explorer/AddItemsToCollection";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.removeItemFromCollection = function (request) {
+            var _this = this;
+            this.blockUI.start("Removing item from collection...");
             var uri = "api/Explorer/RemoveItemFromCollection";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.cleanupSession = function () {
+            var _this = this;
+            this.blockUI.start("Cleaning up your workbench...");
             var uri = "api/Session/CleanUp";
-            return this.http.get(uri);
+            var promise = this.http.get(uri);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.saveChanges = function (request) {
+            var _this = this;
+            this.blockUI.start("Saving all changes...");
             var uri = "api/Explorer/SaveChanges";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.searchObjects = function (request) {
+            var _this = this;
+            this.blockUI.start("Searching for data...");
             var uri = "api/Toolbox/SearchObjects";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.searchPropertyObjects = function (request) {
+            var _this = this;
+            this.blockUI.start("Searching for data...");
             var uri = "api/Toolbox/SearchPropertyObjects";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
         FresnelService.prototype.searchParameterObjects = function (request) {
+            var _this = this;
+            this.blockUI.start("Searching for data...");
             var uri = "api/Toolbox/SearchParameterObjects";
-            return this.http.post(uri, request);
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
         };
-        FresnelService.$inject = ['$http'];
+        FresnelService.$inject = ['$http', 'blockUI'];
         return FresnelService;
     })();
     FresnelApp.FresnelService = FresnelService;
@@ -1189,6 +1300,7 @@ var FresnelApp;
         blockUIConfig.message = 'Please wait...';
         blockUIConfig.delay = 250;
         blockUIConfig.resetOnException = true;
+        blockUIConfig.autoBlock = false;
     });
     // See http://aboutcode.net/2013/07/27/json-date-parsing-angularjs.html
     // and http://stackoverflow.com/a/8270148/80369

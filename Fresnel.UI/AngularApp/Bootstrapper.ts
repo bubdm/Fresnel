@@ -32,6 +32,7 @@
         blockUIConfig.message = 'Please wait...';
         blockUIConfig.delay = 250;
         blockUIConfig.resetOnException = true;
+        blockUIConfig.autoBlock = false;
     });
 
     // See http://aboutcode.net/2013/07/27/json-date-parsing-angularjs.html
