@@ -26,10 +26,10 @@ body.block-ui > .block-ui-container, .block-ui-main > .block-ui-container {
   overflow: hidden;
   opacity: 0;
   filter: alpha(opacity=00);
-  cursor: wait;
 }
 
 .block-ui-active > .block-ui-container {
+  cursor: wait;
   height: 100%;
 }
 
