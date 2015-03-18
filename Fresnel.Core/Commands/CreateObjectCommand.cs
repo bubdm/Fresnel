@@ -55,7 +55,8 @@ namespace Envivo.Fresnel.Core.Commands
             // 3) Try the class constructors
 
             var newInstance = this.CreateObjectUsingDomainFactory(tClass, args);
-            if (newInstance == null)
+            if (newInstance == null &&
+                _PersistenceService.IsTypeRecognised(classType))
             {
                 newInstance = _PersistenceService.CreateObject(classType);
             }
