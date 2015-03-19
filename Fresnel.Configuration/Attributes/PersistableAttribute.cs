@@ -9,11 +9,6 @@ namespace System.ComponentModel.DataAnnotations
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
     public class PersistableAttribute : Attribute
     {
-        public PersistableAttribute()
-        {
-            this.IsAllowed = true;
-        }
-
         public bool IsAllowed { get; set; }
     }
 }

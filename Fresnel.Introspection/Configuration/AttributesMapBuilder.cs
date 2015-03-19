@@ -150,6 +150,8 @@ namespace Envivo.Fresnel.Configuration
         //-----
         private IEnumerable<Attribute> GetInheritedAttributesFrom(PropertyInfo propertyInfo)
         {
+            var results = new List<Attribute>();
+
             var allTypes = new List<Type>() { propertyInfo.DeclaringType };
             allTypes.AddRange(propertyInfo.DeclaringType.GetSuperClasses());
 
@@ -160,18 +162,20 @@ namespace Envivo.Fresnel.Configuration
                 if (matchingProperty == null)
                     continue;
 
-                var customAttr = matchingProperty.GetCustomAttributes(false).Cast<Attribute>();
-                if (customAttr != null)
+                var customAttrs = matchingProperty.GetCustomAttributes(false).Cast<Attribute>();
+                if (customAttrs != null)
                 {
-                    return customAttr;
+                    results.AddRange(customAttrs);
                 }
             }
 
-            return null;
+            return results;
         }
 
         private IEnumerable<Attribute> GetInheritedAttributesFrom(MethodInfo methodInfo)
         {
+            var results = new List<Attribute>();
+
             var allTypes = new List<Type>() { methodInfo.DeclaringType };
             allTypes.AddRange(methodInfo.DeclaringType.GetSuperClasses());
 
@@ -188,14 +192,14 @@ namespace Envivo.Fresnel.Configuration
                 if (matchingMethod == null)
                     continue;
 
-                var customAttr = matchingMethod.GetCustomAttributes(false).Cast<Attribute>();
-                if (customAttr != null)
+                var customAttrs = matchingMethod.GetCustomAttributes(false).Cast<Attribute>();
+                if (customAttrs != null)
                 {
-                    return customAttr;
+                    results.AddRange(customAttrs);
                 }
             }
 
-            return null;
+            return results;
         }
 
     }

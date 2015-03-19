@@ -133,5 +133,40 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.AreEqual("Version", tClass.VersionProperty.Name);
         }
 
+
+        [Test]
+        public void ShouldIdentifyNonPersistableClasses()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+
+            // Act:
+            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.MethodTests>();
+
+            // Assert:
+            Assert.IsFalse(tClass.IsPersistable);
+            Assert.IsNotNull(tClass.IdProperty);
+            Assert.IsNull(tClass.VersionProperty);
+        }
+
+        [Test]
+        public void ShouldRespectConfigurationFromSuperClasses()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+
+            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.Objects.SubProductA>();
+
+            // Act:
+            var tHidden = tClass.Properties["HiddenProperty"];
+
+            // Assert:
+            Assert.IsFalse(tHidden.IsVisible);
+            Assert.IsFalse(tHidden.Attributes.Get<VisibilityAttribute>().IsAllowed);
+        }
+
+
     }
 }

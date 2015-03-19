@@ -49,6 +49,15 @@ namespace Envivo.Fresnel.Configuration
             return (TAttribute)entry.Value;
         }
 
+        public TAttribute Get<TAttribute>(Type classType)
+            where TAttribute : Attribute
+        {
+            var attributeType = typeof(TAttribute);
+
+            var entry = this.GetEntry(classType, this.TemplateType, typeof(TAttribute));
+            return (TAttribute)entry.Value;
+        }
+
         /// <summary>
         /// Returns the entry for the requested Attribute
         /// </summary>

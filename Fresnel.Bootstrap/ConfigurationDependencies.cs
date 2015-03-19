@@ -38,6 +38,7 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.Configuration.DataTypeAttributeBuilder),
                 typeof(Fresnel.Configuration.MinLengthAttributeBuilder),
                 typeof(Fresnel.Configuration.MaxLengthAttributeBuilder),
+                typeof(Fresnel.Configuration.PersistableAttributeBuilder),
             };
         }
 

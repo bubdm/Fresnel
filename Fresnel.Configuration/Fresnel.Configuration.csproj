@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeBuilders\PersistableAttributeBuilder.cs" />
     <Compile Include="AttributeSourceEnum.cs" />
     <Compile Include="Attributes\AllowedOperationsAttribute.cs" />
     <Compile Include="AttributeBuilders\MaxLengthAttributeBuilder.cs" />

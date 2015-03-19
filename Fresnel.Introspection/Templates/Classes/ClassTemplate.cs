@@ -18,7 +18,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         private readonly string[] _AbstractTypeSuffixes = { " Base" };
 
         private bool _CanCreate;
-        private bool _CanPersist;
 
         private Lazy<RapidCtor> _RapidCtor;
         private Lazy<ConstructorInfo[]> _Constructors;
@@ -113,7 +112,6 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             this.IsVisible = this.Attributes.Get<VisibilityAttribute>().IsAllowed;
             _CanCreate = this.Attributes.Get<AllowedOperationsAttribute>().CanCreate;
-            _CanPersist = this.Attributes.Get<PersistableAttribute>().IsAllowed;
         }
 
         private void CreateNames()
@@ -187,8 +185,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             get
             {
-                return this.Attributes.Get<PersistableAttribute>().IsAllowed &&
-                        this.IdProperty != null;
+                return this.IdProperty != null &&
+                        this.IdProperty.Attributes.GetEntry<KeyAttribute>().Source != AttributeSource.RunTime;
             }
         }
 
