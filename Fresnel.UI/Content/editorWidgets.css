@@ -1,0 +1,27 @@
+.Text, .TextArea, .Html, .Password, .Email, .Search, .Url, .File, .Range, {
+    min-width: 200px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Date, .DateTimeLocal, .Color, .Radio, .Checkbox {
+    min-width: 150px;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Number, .Currency, .Password, .Telephone, .PostalCode, .Time, .TimeDuration {
+    min-width: 100px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Month, .Week, .Select, .Upload {
+    min-width: 75px;
+    max-width: 75px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

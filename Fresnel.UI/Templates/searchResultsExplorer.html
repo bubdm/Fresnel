@@ -13,11 +13,18 @@
 
         <div class="collectionExplorerPanelBody">
             <!-- NB: Use st-safe-src to ensure collection is watched -->
-            <table id="collectionGrid_{{oCol.ID}}" st-table="oCol.DisplayItems" st-safe-src="oCol.Items" st-pipe="stTablePipe" class="table table-striped collectionRowText fullWidth">
+            <table id="collectionGrid_{{oCol.ID}}" 
+                   st-table="oCol.DisplayItems" 
+                   st-safe-src="oCol.Items" 
+                   st-pipe="stTablePipe" 
+                   class="table table-striped collectionRowText fullWidth">
                 <thead>
                     <tr>
                         <th>&nbsp;</th> <!--Common-->
-                        <th ng-repeat="elementProp in oCol.ElementProperties" st-sort="Properties[{{elementProp.Index}}].State.FriendlyValue" st-skip-natural="true" title="{{elementProp.Description}}">{{elementProp.Name}}</th>
+                        <th ng-repeat="elementProp in oCol.ElementProperties"
+                            st-sort="Properties[{{elementProp.Index}}].State.FriendlyValue"
+                            st-skip-natural="true"
+                            title="{{elementProp.Description}}">{{elementProp.Name}}</th>
                         <th>&nbsp;</th> <!--Buttons-->
                     </tr>
                 </thead>
@@ -29,8 +36,8 @@
                         </td>
                         <td ng-repeat="elementProp in oCol.ElementProperties"
                             ng-init="prop = item.Properties[elementProp.Index]"
-                            title="{{prop.State.FriendlyValue}}">
-                            {{prop.State.FriendlyValue}}
+                            title="{{prop.State.FriendlyValue}}"
+                            class="{{prop.Info.PreferredControl}}">{{prop.State.FriendlyValue}}
                         </td>
                         <td>
                             <button ng-click="openNewExplorer(item)"
