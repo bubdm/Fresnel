@@ -27,7 +27,7 @@
         }
 
         getClassHierarchy(): ng.IPromise<any> {
-            this.blockUI.start("Setting up toolbox...");
+            this.blockUI.start("Setting up Library...");
 
             var uri = "api/Toolbox/GetClassHierarchy";
             var promise = this.http.get(uri);
