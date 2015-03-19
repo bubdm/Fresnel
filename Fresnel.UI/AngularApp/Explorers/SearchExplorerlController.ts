@@ -67,19 +67,11 @@
                     var itemCount = response.Result.Items.length;
                     var itemsToBind: ObjectVM[] = [itemCount];
 
-                    // If an object already exists in the IdentityMap, 
-                    // we need to ensure that the new results don't overwrite it:
+                    // If an object already exists in the IdentityMap we need to reuse it:
                     for (var i = 0; i < itemCount; i++) {
                         var latestObj: ObjectVM = response.Result.Items[i];
                         var existingObj = appService.identityMap.getObject(latestObj.ID);
-                        if (existingObj == null) {
-                            appService.identityMap.addObject(latestObj);
-                            itemsToBind[i] = latestObj;
-                        }
-                        else {
-                            appService.identityMap.mergeObjects(existingObj, latestObj);
-                            itemsToBind[i] = existingObj;
-                        }
+                        itemsToBind[i] = existingObj != null ? existingObj : latestObj;
                     }
 
                     $scope.results.Items = itemsToBind;
