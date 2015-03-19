@@ -129,11 +129,11 @@ var FresnelApp;
             var request = this.requestBuilder.buildSearchObjectsRequest(coll.ElementType);
             var searchPromise = this.fresnelService.searchObjects(request);
             // TODO: Open the modal _before_ the search is executed:
-            this.blockUI.start("Searching for data...");
             searchPromise.then(function (promiseResult) {
                 var response = promiseResult.data;
                 var searchResults = response.Result;
                 searchResults.OriginalRequest = request;
+                searchResults.AllowSelection = true;
                 searchResults.AllowMultiSelect = true;
                 var searchExplorer = _this.explorerService.addExplorer(searchResults);
                 var options = {
@@ -173,6 +173,7 @@ var FresnelApp;
             searchPromise.then(function (promiseResult) {
                 var response = promiseResult.data;
                 var searchResults = response.Result;
+                searchResults.AllowSelection = true;
                 searchResults.AllowMultiSelect = prop.IsCollection;
                 searchResults.OriginalRequest = request;
                 var searchExplorer = _this.explorerService.addExplorer(searchResults);
@@ -582,6 +583,8 @@ var FresnelApp;
                 promise.then(function (promiseResult) {
                     var response = promiseResult.data;
                     var searchResults = response.Result;
+                    searchResults.AllowSelection = true;
+                    searchResults.AllowMultiSelect = prop.IsCollection;
                     // Set the callback when the user confirms the selection:
                     searchResults.OnSelectionConfirmed = function (items) {
                         if (items.length == 1) {
@@ -846,7 +849,7 @@ var FresnelApp;
         };
         FresnelService.prototype.getClassHierarchy = function () {
             var _this = this;
-            this.blockUI.start("Setting up toolbox...");
+            this.blockUI.start("Setting up Library...");
             var uri = "api/Toolbox/GetClassHierarchy";
             var promise = this.http.get(uri);
             promise.finally(function () {
@@ -1093,8 +1096,11 @@ var FresnelApp;
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                     if (response.Passed) {
-                        response.Result.IsSearchResults = true;
-                        response.Result.OriginalRequest = request;
+                        var searchResults = response.Result;
+                        searchResults.IsSearchResults = true;
+                        searchResults.OriginalRequest = request;
+                        searchResults.AllowSelection = false;
+                        searchResults.AllowMultiSelect = false;
                         appService.identityMap.addObject(response.Result);
                         $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.Result);
                     }

@@ -117,6 +117,8 @@ module FresnelApp {
                     var response = promiseResult.data;
 
                     var searchResults = response.Result;
+                    searchResults.AllowSelection = true;
+                    searchResults.AllowMultiSelect = prop.IsCollection;
 
                     // Set the callback when the user confirms the selection:
                     searchResults.OnSelectionConfirmed = function (items: ObjectVM[]) {

@@ -58,8 +58,12 @@
                     $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     if (response.Passed) {
-                        response.Result.IsSearchResults = true;
-                        response.Result.OriginalRequest = request;
+                        var searchResults: SearchResultsVM = response.Result;
+
+                        searchResults.IsSearchResults = true;
+                        searchResults.OriginalRequest = request;
+                        searchResults.AllowSelection = false;
+                        searchResults.AllowMultiSelect = false;
 
                         appService.identityMap.addObject(response.Result);
                         $rootScope.$broadcast(UiEventType.ExplorerOpen, response.Result);

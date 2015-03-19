@@ -24,7 +24,7 @@
                 <tbody>
                     <tr ng-repeat="item in oCol.DisplayItems">
                         <td title="{{item.Type}}">
-                            <input type="checkbox" class="" ng-show="oCol.AllowMultiSelect" ng-model="item.IsSelected" />
+                            <input type="checkbox" class="" ng-show="oCol.AllowSelection" ng-model="item.IsSelected" />
                             <span class="classItemIcon {{item.Type}}-Icon"></span>
                         </td>
                         <td ng-repeat="elementProp in oCol.ElementProperties"
@@ -51,6 +51,7 @@
         <div class="collectionFooter">
             <div class="pull-left">
                 <button ng-click="$close(oCol)"
+                        ng-show="results.AllowSelection"
                         title="Use the selected items"
                         class="btn btn-sm btn-default">
                     Use selected items

@@ -43,12 +43,11 @@ module FresnelApp {
             var searchPromise = this.fresnelService.searchObjects(request);
 
             // TODO: Open the modal _before_ the search is executed:
-            this.blockUI.start("Searching for data...");
-
             searchPromise.then((promiseResult) => {
                 var response = promiseResult.data;
                 var searchResults: SearchResultsVM = response.Result;
                 searchResults.OriginalRequest = request;
+                searchResults.AllowSelection = true;
                 searchResults.AllowMultiSelect = true;
                 var searchExplorer = this.explorerService.addExplorer(searchResults);
 
@@ -94,6 +93,7 @@ module FresnelApp {
             searchPromise.then((promiseResult) => {
                 var response = promiseResult.data;
                 var searchResults: SearchResultsVM = response.Result;
+                searchResults.AllowSelection = true;
                 searchResults.AllowMultiSelect = prop.IsCollection;
                 searchResults.OriginalRequest = request;
                 var searchExplorer = this.explorerService.addExplorer(searchResults);

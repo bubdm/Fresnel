@@ -13,6 +13,8 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public bool AreMoreAvailable { get; set; }
 
+        public bool AllowSelection { get; set; }
+
         public bool AllowMultiSelect { get; set; }
 
     }
