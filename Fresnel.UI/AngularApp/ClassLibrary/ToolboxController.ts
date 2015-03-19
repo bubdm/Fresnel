@@ -1,7 +1,7 @@
 ﻿module FresnelApp {
 
     export class ToolboxController {
-        public classHierarchy: ClassItem[];
+        public classHierarchy: Namespace[];
 
         static $inject = [
             '$rootScope',

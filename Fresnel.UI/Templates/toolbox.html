@@ -1,8 +1,14 @@
 ﻿<!--NB: The 'sidebar-menu' class must be applied here, and not on the parent container -->
-<ul class="sidebar-menu" ng-controller="toolboxController" class-library>
-
+<!-- search form -->
+<ul ng-controller="toolboxController" class="sidebar-menu" class-library>
     <li>
         <a href=""><i class="fa fa-list"></i> <span>Library</span></a>
+    </li>
+
+    <li>
+        <div class="sidebar-form input-group">
+            <input type="text" class="form-control" ng-model="classNameFilter" placeholder="Search..." />
+        </div>
     </li>
 
     <li ng-repeat="namespace in classHierarchy" href="" class="treeview">
@@ -12,7 +18,7 @@
         </a>
 
         <ul class="treeview-menu">
-            <li ng-repeat="item in namespace.Classes" class="active classItem">
+            <li ng-repeat="item in namespace.Classes | filter:classNameFilter" class="active classItem">
                 <div class="">
 
                     <div class="btn-group" ng-show="item.IsVisible">
