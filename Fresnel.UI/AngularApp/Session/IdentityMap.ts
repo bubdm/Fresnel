@@ -109,10 +109,7 @@ module FresnelApp {
             var doesNewObjHaveProperties = (newObj.Properties != null) && (newObj.Properties.length > 0);
             var doObjectsHaveSameProperties = doesExistingObjHaveProperties && doesNewObjHaveProperties && (existingObj.Properties.length == newObj.Properties.length);
 
-            if (doesExistingObjHaveProperties) {
-                // Do nothing:
-            }
-            else if (!doesExistingObjHaveProperties && doesNewObjHaveProperties) {
+            if (!doesExistingObjHaveProperties && doesNewObjHaveProperties) {
                 existingObj.Properties = newObj.Properties;
             }
             else if (doObjectsHaveSameProperties) {
@@ -125,10 +122,7 @@ module FresnelApp {
             var doesNewObjHaveMethods = (newObj.Methods != null) && (newObj.Methods.length > 0);
             var doObjectsHaveSameMethods = doesExistingObjHaveMethods && doesNewObjHaveMethods && (existingObj.Methods.length == newObj.Methods.length);
 
-            if (doesExistingObjHaveMethods) {
-                // Do nothing:
-            }
-            else if (!doesExistingObjHaveMethods && doesNewObjHaveMethods) {
+            if (!doesExistingObjHaveMethods && doesNewObjHaveMethods) {
                 existingObj.Methods = newObj.Methods;
             }
             else if (doObjectsHaveSameMethods) {
