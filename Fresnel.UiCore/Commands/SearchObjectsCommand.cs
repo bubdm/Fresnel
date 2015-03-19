@@ -98,7 +98,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
             if (request.OrderBy.IsEmpty())
             {
-                request.OrderBy = tClass.Properties.First().Value.Name;
+                request.OrderBy = tClass.Properties.Values.First(p => p.IsNonReference).Name;
                 request.IsDescendingOrder = true;
             }
 
