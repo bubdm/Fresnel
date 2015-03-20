@@ -1,4 +1,4 @@
-.Text, .TextArea, .Html, .Password, .Email, .Search, .Url, .File, .Range, {
+.Text, .TextArea, .Html, .Password, .Email, .Search, .Url, .File, .Range {
     min-width: 200px;
     max-width: 200px;
     overflow: hidden;
