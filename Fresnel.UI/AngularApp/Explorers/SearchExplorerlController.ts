@@ -71,7 +71,14 @@
                     for (var i = 0; i < itemCount; i++) {
                         var latestObj: ObjectVM = response.Result.Items[i];
                         var existingObj = appService.identityMap.getObject(latestObj.ID);
-                        itemsToBind[i] = existingObj != null ? existingObj : latestObj;
+                        if (existingObj == null) {
+                            appService.identityMap.addObject(latestObj);
+                            itemsToBind[i] = latestObj;
+                        }
+                        else {
+                            appService.identityMap.mergeObjects(existingObj, latestObj);
+                            itemsToBind[i] = existingObj;
+                        }
                     }
 
                     $scope.results.Items = itemsToBind;
