@@ -40,7 +40,7 @@
                 ObjectID: prop.ObjectID,
                 PropertyName: prop.InternalName,
                 NonReferenceValue: prop.State.Value,
-                ReferenceValueId: null
+                ReferenceValueId: prop.State.ReferenceValueID
             };
 
             return request;
