@@ -16,6 +16,8 @@
 
         setProperty(request: SetPropertyRequest): ng.IPromise<any>;
 
+        setParameter(request: SetParameterRequest): ng.IPromise<any>;
+
         invokeMethod(request: InvokeMethodRequest): ng.IPromise<any>;
 
         addNewItemToCollection(request: CollectionAddNewRequest): ng.IPromise<any>;

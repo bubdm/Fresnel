@@ -51,44 +51,60 @@ module FresnelApp {
                 searchResults.AllowSelection = true;
                 searchResults.AllowMultiSelect = true;
 
-                // Ensure that we re-use any objects that are already cached:
-                var bindableItems = this.mergeSearchResults(searchResults);
-                searchResults.Items = bindableItems;
-
-                // This allows Smart-Table to handle the st-safe-src properly:
-                searchResults.DisplayItems = [].concat(bindableItems);
-
-                var searchExplorer = this.explorerService.addExplorer(searchResults);
-
-                var modalOptions = this.createModalOptions(searchExplorer);
-                modalOptions.templateUrl = '/Templates/searchResultsExplorer.html';
-
-                var modal = this.modal.open(modalOptions);
-                this.rootScope.$broadcast(UiEventType.ModalOpened, modal);
-
-                this.blockUI.stop();
-
-                modal.result.then(() => {
-                    var selectedItems = $.grep(searchResults.Items, function (o: SearchResultItemVM) {
-                        return o.IsSelected;
-                    });
-                    if (selectedItems.length > 0) {
-                        onSelectionConfirmed(selectedItems);
-                    }
-                });
-
-                modal.result.finally(() => {
-                    this.rootScope.$broadcast(UiEventType.ModalClosed, modal);
-                });
+                this.showSearchResultsModal(searchResults, onSelectionConfirmed);
             });
         }
 
-        showSearchForParameter(param: ParameterVM, onSelectionConfirmed) {
+        showSearchForParameter(method: MethodVM, param: ParameterVM, onSelectionConfirmed) {
+            this.blockUI.start("Searching for data...");
+
+            var request = this.requestBuilder.buildSearchParameterRequest(method, param);
+            var searchPromise = this.fresnelService.searchParameterObjects(request);
+
+            searchPromise.then((promiseResult) => {
+                var response = promiseResult.data;
+                var searchResults: SearchResultsVM = response.Result;
+                searchResults.OriginalRequest = request;
+                searchResults.AllowSelection = true;
+                searchResults.AllowMultiSelect = true;
+               
+                this.showSearchResultsModal(searchResults, onSelectionConfirmed);
+            });
+        }
+
+        private showSearchResultsModal(searchResults: SearchResultsVM, onSelectionConfirmed) {
+            // Ensure that we re-use any objects that are already cached:
+            var bindableItems = this.mergeSearchResults(searchResults);
+            searchResults.Items = bindableItems;
+
+            // This allows Smart-Table to handle the st-safe-src properly:
+            searchResults.DisplayItems = [].concat(bindableItems);
+
+            var searchExplorer = this.explorerService.addExplorer(searchResults);
+
+            var modalOptions = this.createModalOptions(searchExplorer);
+            var modal = this.modal.open(modalOptions);
+            this.rootScope.$broadcast(UiEventType.ModalOpened, modal);
+
+            this.blockUI.stop();
+
+            modal.result.then(() => {
+                var selectedItems = $.grep(searchResults.Items, function (o: SearchResultItemVM) {
+                    return o.IsSelected;
+                });
+                if (selectedItems.length > 0) {
+                    onSelectionConfirmed(selectedItems);
+                }
+            });
+
+            modal.result.finally(() => {
+                this.rootScope.$broadcast(UiEventType.ModalClosed, modal);
+            });
         }
 
         private createModalOptions(searchExplorer: Explorer): ng.ui.bootstrap.IModalSettings {
             var options: ng.ui.bootstrap.IModalSettings = {
-                templateUrl: '',
+                templateUrl: '/Templates/searchResultsExplorer.html',
                 controller: 'searchModalController',
                 backdrop: 'static',
                 size: 'lg',

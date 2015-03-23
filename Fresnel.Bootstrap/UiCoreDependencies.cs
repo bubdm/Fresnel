@@ -37,12 +37,14 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.UiCore.Commands.GetPropertyCommand),
                 typeof(Fresnel.UiCore.Commands.CreateAndSetPropertyCommand),
                 typeof(Fresnel.UiCore.Commands.SetPropertyCommand),
+                typeof(Fresnel.UiCore.Commands.SetParameterCommand),
                 typeof(Fresnel.UiCore.Commands.InvokeMethodCommand),
                 typeof(Fresnel.UiCore.Commands.CollectionAddCommand),
                 typeof(Fresnel.UiCore.Commands.CollectionRemoveCommand),
                 typeof(Fresnel.UiCore.Commands.SaveChangesCommand),
                 typeof(Fresnel.UiCore.Commands.SearchObjectsCommand),
                 typeof(Fresnel.UiCore.Commands.SearchPropertyCommand),
+                typeof(Fresnel.UiCore.Commands.SearchParameterCommand),
 
                 typeof(Fresnel.UiCore.Model.Changes.ModificationsVmBuilder),
 

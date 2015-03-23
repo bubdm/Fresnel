@@ -10,6 +10,7 @@ module FresnelApp {
             'fresnelService',
             'appService',
             'explorerService',
+            'searchService',
             'requestBuilder',
             'explorer',
             'method'];
@@ -20,6 +21,7 @@ module FresnelApp {
             fresnelService: IFresnelService,
             appService: AppService,
             explorerService: ExplorerService,
+            searchService: SearchService,
             requestBuilder: RequestBuilder,
             explorer: Explorer,
             method: MethodVM) {
@@ -69,6 +71,48 @@ module FresnelApp {
             $scope.isBitwiseEnumPropertySet = function (param: ParameterVM, enumValue: number) {
                 return (param.State.Value & enumValue) != 0;
             }
+
+            $scope.associate = function (param: ParameterVM) {
+                var onSelectionConfirmed = function (selectedItems) {
+                    if (selectedItems.length == 1) {
+                        var selectedItem = selectedItems[0];
+                        param.State.ReferenceValueID = selectedItem.ID;
+                        
+                        // NB: We can't call the setProperty() function, as a digest is already running.
+                        //     Hence the need to in-line the code here:
+                        var obj = $scope.explorer.__meta;
+                        var method = $scope.method;
+                        var request = requestBuilder.buildSetParameterRequest(obj, method, param);
+                        var promise = fresnelService.setParameter(request);
+
+                        promise.then((promiseResult) => {
+                            var response = promiseResult.data;
+                            param.Error = response.Passed ? "" : response.Messages[0].Text;
+
+                            $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+                        });
+                    }
+                };
+
+                searchService.showSearchForParameter(method, param, onSelectionConfirmed);
+            }
+
+            $scope.addExistingItems = function (param: ParameterVM, coll: CollectionVM) {
+
+                var onSelectionConfirmed = function (selectedItems) {
+                    // TODO
+
+                    //var request = requestBuilder.buildAddItemsRequest(coll, selectedItems);
+                    //var promise = fresnelService.addItemsToCollection(request);
+                    //promise.then((promiseResult) => {
+                    //    var response = promiseResult.data;
+
+                    //    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+                    //});
+                };
+
+                searchService.showSearchForParameter(method, param, onSelectionConfirmed);
+            };
 
             $scope.close = function (explorer: Explorer) {
                 // The scope is automatically augmented with the $dismiss() method

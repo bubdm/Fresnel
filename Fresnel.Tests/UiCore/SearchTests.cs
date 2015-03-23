@@ -169,6 +169,40 @@ namespace Envivo.Fresnel.Tests.Proxies
 
 
         [Test]
+        public void ShouldSeachForObjectPropertyObjects()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var toolboxController = container.Resolve<ToolboxController>();
+            var explorerController = container.Resolve<ExplorerController>();
+
+            // Act:
+            var createResponse = toolboxController.Create(typeof(Category).FullName);
+
+            var searchRequest = new SearchPropertyRequest()
+            {
+                ObjectID = createResponse.NewObject.ID,
+                PropertyName = "Money",
+                OrderBy = "",
+                IsDescendingOrder = true,
+                PageSize = 100,
+                PageNumber = 1
+            };
+
+            var searchResponse = explorerController.SearchPropertyObjects(searchRequest);
+
+            // Assert:
+            Assert.IsTrue(searchResponse.Passed);
+            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+            Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(Money).Name));
+        }
+
+        [Test]
         public void ShouldSeachForCollectionPropertyObjects()
         {
             // Arrange:
@@ -182,18 +216,12 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var searchRequest = new SearchObjectsRequest()
-            {
-                SearchType = typeof(PocoObject).FullName,
-                PageSize = 10,
-                PageNumber = 1
-            };
-            var searchResponse = toolboxController.SearchObjects(searchRequest);
+            var createResponse = toolboxController.Create(typeof(PocoObject).FullName);
 
             // Act:
-            var searchRequest2 = new SearchPropertyRequest()
+            var searchRequest = new SearchPropertyRequest()
             {
-                ObjectID = searchResponse.Result.Items.First().ID,
+                ObjectID = createResponse.NewObject.ID,
                 PropertyName = "ChildObjects",
                 OrderBy = "",
                 IsDescendingOrder = true,
@@ -201,12 +229,87 @@ namespace Envivo.Fresnel.Tests.Proxies
                 PageNumber = 1
             };
 
-            var searchResponse2 = explorerController.SearchPropertyObjects(searchRequest2);
+            var searchResponse = explorerController.SearchPropertyObjects(searchRequest);
 
             // Assert:
-            Assert.IsTrue(searchResponse2.Passed);
-            Assert.AreNotEqual(0, searchResponse2.Result.Items.Count());
-            Assert.IsTrue(searchResponse2.Result.Items.All(i => i.Type == typeof(PocoObject).Name));
+            Assert.IsTrue(searchResponse.Passed);
+            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+            Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(PocoObject).Name));
+        }
+
+
+        [Test]
+        public void ShouldSeachForObjectParameterObjects()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var toolboxController = container.Resolve<ToolboxController>();
+            var explorerController = container.Resolve<ExplorerController>();
+
+            // Act:
+            var classType = typeof(Fresnel.SampleModel.MethodTests);
+            var createResponse = toolboxController.Create(classType.FullName);
+
+            // Act:
+            var searchRequest = new SearchParameterRequest()
+            {
+                ObjectID = createResponse.NewObject.ID,
+                MethodName = "MethodWithObjectParameters",
+                ParameterName = "category",
+                OrderBy = "",
+                IsDescendingOrder = true,
+                PageSize = 100,
+                PageNumber = 1
+            };
+
+            var searchResponse = explorerController.SearchParameterObjects(searchRequest);
+
+            // Assert:
+            Assert.IsTrue(searchResponse.Passed);
+            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+            Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(Category).Name));
+        }
+
+        [Test]
+        public void ShouldSeachForCollectionParameterObjects()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var toolboxController = container.Resolve<ToolboxController>();
+            var explorerController = container.Resolve<ExplorerController>();
+
+            // Act:
+            var classType = typeof(Fresnel.SampleModel.MethodTests);
+            var createResponse = toolboxController.Create(classType.FullName);
+
+            // Act:
+            var searchRequest = new SearchParameterRequest()
+            {
+                ObjectID = createResponse.NewObject.ID,
+                MethodName = "MethodWithObjectParameters",
+                ParameterName = "pocos",
+                OrderBy = "",
+                IsDescendingOrder = true,
+                PageSize = 100,
+                PageNumber = 1
+            };
+
+            var searchResponse = explorerController.SearchParameterObjects(searchRequest);
+
+            // Assert:
+            Assert.IsTrue(searchResponse.Passed);
+            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+            Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(PocoObject).Name));
         }
 
     }

@@ -3,6 +3,7 @@ using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.Objects;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Reflection;
@@ -54,13 +55,18 @@ namespace Envivo.Fresnel.SampleModel
         /// <param name="aString">This should accept a String</param>
         /// <param name="aNumber">This should accept an Integer</param>
         /// <param name="aDate">This should accept a Date</param>
-        /// /// <param name="category">This should accept a Category</param>
         public string MethodWithValueParameters(string aString, int aNumber, DateTime aDate)
         {
             return MethodBase.GetCurrentMethod().Name;
         }
 
-        public string MethodWithObjectParameters(string aString, int aNumber, DateTime aDate)
+        /// <summary>
+        /// This method accepts objects as parameters, and will open a dialog.
+        /// </summary>
+        /// <param name="category">This should allow ONE Category to be chosen</param>
+        /// <param name="pocos">This should allow ONE or MORE PocoObjects to be chosen</param>
+        /// <returns></returns>
+        public string MethodWithObjectParameters(Category category, IEnumerable<PocoObject> pocos)
         {
             return MethodBase.GetCurrentMethod().Name;
         }

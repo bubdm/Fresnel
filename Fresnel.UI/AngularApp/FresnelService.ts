@@ -108,6 +108,19 @@
             return promise;
         }
 
+        setParameter(request: SetParameterRequest): ng.IPromise<any> {
+            this.blockUI.start("Setting parameter value...");
+
+            var uri = "api/Explorer/SetParameter";
+            var promise = this.http.post(uri, request);
+
+            promise.finally(() => {
+                this.blockUI.stop();
+            });
+
+            return promise;
+        }
+
         invokeMethod(request: InvokeMethodRequest): ng.IPromise<any> {
             this.blockUI.start("Performing action...");
 

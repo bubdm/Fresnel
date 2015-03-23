@@ -100,6 +100,15 @@ declare module FresnelApp {
     export interface SearchResponse extends FresnelApp.BaseCommandResponse {
         Result: FresnelApp.SearchResultsVM;
     }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.SetParameterRequest **/
+    export interface SetParameterRequest {
+        ObjectID: any;
+        MethodName: string;
+        ParameterName: string;
+        NonReferenceValue: any;
+        ReferenceValueId: any;
+        ReferenceValueIds: any;
+    }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SetPropertyRequest **/
     export interface SetPropertyRequest {
         ObjectID: any;
@@ -132,8 +141,6 @@ declare module FresnelApp {
     export interface PropertyChangeVM {
         ObjectId: any;
         PropertyName: string;
-        NonReferenceValue: any;
-        ReferenceValueId?: any;
         State: FresnelApp.ValueStateVM;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Classes.ClassItem **/

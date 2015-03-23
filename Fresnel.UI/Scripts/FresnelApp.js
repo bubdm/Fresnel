@@ -136,35 +136,50 @@ var FresnelApp;
                 searchResults.OriginalRequest = request;
                 searchResults.AllowSelection = true;
                 searchResults.AllowMultiSelect = true;
-                // Ensure that we re-use any objects that are already cached:
-                var bindableItems = _this.mergeSearchResults(searchResults);
-                searchResults.Items = bindableItems;
-                // This allows Smart-Table to handle the st-safe-src properly:
-                searchResults.DisplayItems = [].concat(bindableItems);
-                var searchExplorer = _this.explorerService.addExplorer(searchResults);
-                var modalOptions = _this.createModalOptions(searchExplorer);
-                modalOptions.templateUrl = '/Templates/searchResultsExplorer.html';
-                var modal = _this.modal.open(modalOptions);
-                _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalOpened, modal);
-                _this.blockUI.stop();
-                modal.result.then(function () {
-                    var selectedItems = $.grep(searchResults.Items, function (o) {
-                        return o.IsSelected;
-                    });
-                    if (selectedItems.length > 0) {
-                        onSelectionConfirmed(selectedItems);
-                    }
-                });
-                modal.result.finally(function () {
-                    _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
-                });
+                _this.showSearchResultsModal(searchResults, onSelectionConfirmed);
             });
         };
-        SearchService.prototype.showSearchForParameter = function (param, onSelectionConfirmed) {
+        SearchService.prototype.showSearchForParameter = function (method, param, onSelectionConfirmed) {
+            var _this = this;
+            this.blockUI.start("Searching for data...");
+            var request = this.requestBuilder.buildSearchParameterRequest(method, param);
+            var searchPromise = this.fresnelService.searchParameterObjects(request);
+            searchPromise.then(function (promiseResult) {
+                var response = promiseResult.data;
+                var searchResults = response.Result;
+                searchResults.OriginalRequest = request;
+                searchResults.AllowSelection = true;
+                searchResults.AllowMultiSelect = true;
+                _this.showSearchResultsModal(searchResults, onSelectionConfirmed);
+            });
+        };
+        SearchService.prototype.showSearchResultsModal = function (searchResults, onSelectionConfirmed) {
+            var _this = this;
+            // Ensure that we re-use any objects that are already cached:
+            var bindableItems = this.mergeSearchResults(searchResults);
+            searchResults.Items = bindableItems;
+            // This allows Smart-Table to handle the st-safe-src properly:
+            searchResults.DisplayItems = [].concat(bindableItems);
+            var searchExplorer = this.explorerService.addExplorer(searchResults);
+            var modalOptions = this.createModalOptions(searchExplorer);
+            var modal = this.modal.open(modalOptions);
+            this.rootScope.$broadcast(FresnelApp.UiEventType.ModalOpened, modal);
+            this.blockUI.stop();
+            modal.result.then(function () {
+                var selectedItems = $.grep(searchResults.Items, function (o) {
+                    return o.IsSelected;
+                });
+                if (selectedItems.length > 0) {
+                    onSelectionConfirmed(selectedItems);
+                }
+            });
+            modal.result.finally(function () {
+                _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
+            });
         };
         SearchService.prototype.createModalOptions = function (searchExplorer) {
             var options = {
-                templateUrl: '',
+                templateUrl: '/Templates/searchResultsExplorer.html',
                 controller: 'searchModalController',
                 backdrop: 'static',
                 size: 'lg',
@@ -255,7 +270,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var MethodController = (function () {
-        function MethodController($rootScope, $scope, fresnelService, appService, explorerService, requestBuilder, explorer, method) {
+        function MethodController($rootScope, $scope, fresnelService, appService, explorerService, searchService, requestBuilder, explorer, method) {
             $scope.explorer = explorer;
             $scope.method = method;
             method.ParametersSetByUser = [];
@@ -292,6 +307,38 @@ var FresnelApp;
             $scope.isBitwiseEnumPropertySet = function (param, enumValue) {
                 return (param.State.Value & enumValue) != 0;
             };
+            $scope.associate = function (param) {
+                var onSelectionConfirmed = function (selectedItems) {
+                    if (selectedItems.length == 1) {
+                        var selectedItem = selectedItems[0];
+                        param.State.ReferenceValueID = selectedItem.ID;
+                        // NB: We can't call the setProperty() function, as a digest is already running.
+                        //     Hence the need to in-line the code here:
+                        var obj = $scope.explorer.__meta;
+                        var method = $scope.method;
+                        var request = requestBuilder.buildSetParameterRequest(obj, method, param);
+                        var promise = fresnelService.setParameter(request);
+                        promise.then(function (promiseResult) {
+                            var response = promiseResult.data;
+                            param.Error = response.Passed ? "" : response.Messages[0].Text;
+                            $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
+                        });
+                    }
+                };
+                searchService.showSearchForParameter(method, param, onSelectionConfirmed);
+            };
+            $scope.addExistingItems = function (param, coll) {
+                var onSelectionConfirmed = function (selectedItems) {
+                    // TODO
+                    //var request = requestBuilder.buildAddItemsRequest(coll, selectedItems);
+                    //var promise = fresnelService.addItemsToCollection(request);
+                    //promise.then((promiseResult) => {
+                    //    var response = promiseResult.data;
+                    //    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+                    //});
+                };
+                searchService.showSearchForParameter(method, param, onSelectionConfirmed);
+            };
             $scope.close = function (explorer) {
                 // The scope is automatically augmented with the $dismiss() method
                 // See http://angular-ui.github.io/bootstrap/#/modal
@@ -305,6 +352,7 @@ var FresnelApp;
             'fresnelService',
             'appService',
             'explorerService',
+            'searchService',
             'requestBuilder',
             'explorer',
             'method'
@@ -717,6 +765,17 @@ var FresnelApp;
     var RequestBuilder = (function () {
         function RequestBuilder() {
         }
+        RequestBuilder.prototype.buildSetParameterRequest = function (obj, method, param) {
+            var request = {
+                ObjectID: obj.ID,
+                MethodName: method.InternalName,
+                ParameterName: param.InternalName,
+                NonReferenceValue: param.State.Value,
+                ReferenceValueId: param.State.ReferenceValueID,
+                ReferenceValueIds: null
+            };
+            return request;
+        };
         RequestBuilder.prototype.buildMethodInvokeRequest = function (method) {
             var request = {
                 ObjectID: method.ObjectID,
@@ -897,6 +956,16 @@ var FresnelApp;
             var _this = this;
             this.blockUI.start("Setting property value...");
             var uri = "api/Explorer/SetProperty";
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
+        };
+        FresnelService.prototype.setParameter = function (request) {
+            var _this = this;
+            this.blockUI.start("Setting parameter value...");
+            var uri = "api/Explorer/SetParameter";
             var promise = this.http.post(uri, request);
             promise.finally(function () {
                 _this.blockUI.stop();

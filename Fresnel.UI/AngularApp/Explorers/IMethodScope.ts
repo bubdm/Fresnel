@@ -14,6 +14,10 @@
 
         isBitwiseEnumPropertySet(param: ParameterVM, enumValue: number): boolean
 
+        associate(param: ParameterVM);
+
+        addExistingItems(collectionParam: ParameterVM, coll: CollectionVM);
+
         close(explorer: Explorer);
     }
 

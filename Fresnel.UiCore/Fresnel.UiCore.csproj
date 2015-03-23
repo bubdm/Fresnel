@@ -56,11 +56,14 @@
     <Compile Include="Commands\CollectionAddNewRequest.cs" />
     <Compile Include="Commands\CreateAndSetPropertyResponse.cs" />
     <Compile Include="Commands\CreateAndSetPropertyCommand.cs" />
+    <Compile Include="Commands\SearchParameterCommand.cs" />
     <Compile Include="Commands\SearchPropertyCommand.cs" />
     <Compile Include="Commands\SearchParameterRequest.cs" />
     <Compile Include="Commands\SearchPropertyRequest.cs" />
     <Compile Include="Commands\SearchRequest.cs" />
     <Compile Include="Commands\CreateAndSetPropertyRequest.cs" />
+    <Compile Include="Commands\SetParameterCommand.cs" />
+    <Compile Include="Commands\SetParameterRequest.cs" />
     <Compile Include="Model\SearchResultsVM.cs" />
     <Compile Include="Model\TypeInfo\DateTimeValueFormatter.cs" />
     <Compile Include="Model\TypeInfo\BooleanValueFormatter.cs" />

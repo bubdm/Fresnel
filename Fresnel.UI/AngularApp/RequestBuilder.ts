@@ -2,6 +2,18 @@
 
     export class RequestBuilder {
 
+        buildSetParameterRequest(obj: ObjectVM, method: MethodVM, param: ParameterVM) {
+            var request: SetParameterRequest = {
+                ObjectID: obj.ID,
+                MethodName: method.InternalName,
+                ParameterName: param.InternalName,
+                NonReferenceValue: param.State.Value,
+                ReferenceValueId: param.State.ReferenceValueID,
+                ReferenceValueIds: null
+            };
+
+            return request;
+        }
 
         buildMethodInvokeRequest(method: MethodVM) {
             var request: InvokeMethodRequest = {
@@ -112,6 +124,7 @@
 
             return request;
         }
+
         buildAddItemsRequest(coll: CollectionVM, itemsToAdd: ObjectVM[]) {
             var elementIDs = itemsToAdd.map(function (o) { return o.ID });
 
