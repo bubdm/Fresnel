@@ -66,6 +66,7 @@ var FresnelApp;
                 $scope.searchAction().then(function (promiseResult) {
                     var response = promiseResult.data;
                     var newSearchResults = response.Result;
+                    // Ensure that we re-use any objects that are already cached:
                     var bindableItems = searchService.mergeSearchResults(newSearchResults);
                     // This allows Smart-Table to handle the st-safe-src properly:
                     $scope.results.Items = bindableItems;
@@ -124,7 +125,7 @@ var FresnelApp;
             this.blockUI = blockUI;
             this.modal = $modal;
         }
-        SearchService.prototype.showSearchForProperty = function (prop, coll, onSelectionConfirmed) {
+        SearchService.prototype.showSearchForProperty = function (prop, onSelectionConfirmed) {
             var _this = this;
             this.blockUI.start("Searching for data...");
             var request = this.requestBuilder.buildSearchPropertyRequest(prop);
@@ -135,6 +136,11 @@ var FresnelApp;
                 searchResults.OriginalRequest = request;
                 searchResults.AllowSelection = true;
                 searchResults.AllowMultiSelect = true;
+                // Ensure that we re-use any objects that are already cached:
+                var bindableItems = _this.mergeSearchResults(searchResults);
+                searchResults.Items = bindableItems;
+                // This allows Smart-Table to handle the st-safe-src properly:
+                searchResults.DisplayItems = [].concat(bindableItems);
                 var searchExplorer = _this.explorerService.addExplorer(searchResults);
                 var modalOptions = _this.createModalOptions(searchExplorer);
                 modalOptions.templateUrl = '/Templates/searchResultsExplorer.html';
@@ -200,7 +206,7 @@ var FresnelApp;
             searchPromise().then(function (promiseResult) {
                 var response = promiseResult.data;
                 var newSearchResults = response.Result;
-                // Append the new items to the exist results:
+                // Ensure that we re-use any objects that are already cached:
                 var bindableItems = _this.mergeSearchResults(newSearchResults);
                 for (var i = 0; i < bindableItems.length; i++) {
                     existingSearchResults.Items.push(bindableItems[i]);
@@ -212,13 +218,13 @@ var FresnelApp;
             });
         };
         SearchService.prototype.mergeSearchResults = function (searchResults) {
-            // Replace the existing search results:
             var itemCount = searchResults.Items.length;
             var bindableItems = [itemCount];
             var identityMap = this.appService.identityMap;
             for (var i = 0; i < itemCount; i++) {
                 var latestObj = searchResults.Items[i];
                 var existingObj = identityMap.getObject(latestObj.ID);
+                var itemToBind = existingObj == null ? latestObj : existingObj;
                 if (existingObj == null) {
                     identityMap.addObject(latestObj);
                     bindableItems[i] = latestObj;
@@ -227,6 +233,7 @@ var FresnelApp;
                     identityMap.mergeObjects(existingObj, latestObj);
                     bindableItems[i] = existingObj;
                 }
+                bindableItems[i].IsSelected = false;
             }
             // Return the results, but now re-using any objects from the IdentityMap:
             return bindableItems;
@@ -459,7 +466,7 @@ var FresnelApp;
                         $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                     });
                 };
-                searchService.showSearchForProperty(prop, coll, onSelectionConfirmed);
+                searchService.showSearchForProperty(prop, onSelectionConfirmed);
             };
             $scope.removeItem = function (prop, obj) {
                 var request = {
@@ -490,7 +497,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ExplorerController = (function () {
-        function ExplorerController($rootScope, $scope, fresnelService, requestBuilder, appService, explorerService, $modal) {
+        function ExplorerController($rootScope, $scope, fresnelService, requestBuilder, appService, searchService, explorerService, $modal) {
             $scope.invoke = function (method) {
                 if (method.Parameters.length == 0) {
                     var request = requestBuilder.buildMethodInvokeRequest(method);
@@ -563,24 +570,23 @@ var FresnelApp;
                 });
             };
             $scope.associate = function (prop) {
-                var request = requestBuilder.buildSearchPropertyRequest(prop);
-                var promise = fresnelService.searchPropertyObjects(request);
-                promise.then(function (promiseResult) {
-                    var response = promiseResult.data;
-                    var searchResults = response.Result;
-                    searchResults.AllowSelection = true;
-                    searchResults.AllowMultiSelect = prop.IsCollection;
-                    // Set the callback when the user confirms the selection:
-                    searchResults.OnSelectionConfirmed = function (items) {
-                        if (items.length == 1) {
-                            var selectedItem = items[0];
-                            prop.State.ReferenceValueID = selectedItem.ID;
-                            // Send the request to the server:
-                            $scope.setProperty(prop);
-                        }
-                    };
-                    $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, searchResults);
-                });
+                var onSelectionConfirmed = function (selectedItems) {
+                    if (selectedItems.length == 1) {
+                        var selectedItem = selectedItems[0];
+                        prop.State.ReferenceValueID = selectedItem.ID;
+                        // NB: We can't call the setProperty() function, as a digest is already running.
+                        //     Hence the need to in-line the code here:
+                        var request = requestBuilder.buildSetPropertyRequest(prop);
+                        var promise = fresnelService.setProperty(request);
+                        promise.then(function (promiseResult) {
+                            var response = promiseResult.data;
+                            prop.Error = response.Passed ? "" : response.Messages[0].Text;
+                            appService.identityMap.merge(response.Modifications);
+                            $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
+                        });
+                    }
+                };
+                searchService.showSearchForProperty(prop, onSelectionConfirmed);
             };
             $scope.disassociate = function (prop) {
                 // If we have a *transient* explorer already open for the property's value, 
@@ -665,6 +671,7 @@ var FresnelApp;
             'fresnelService',
             'requestBuilder',
             'appService',
+            'searchService',
             'explorerService',
             '$modal'
         ];
@@ -742,7 +749,7 @@ var FresnelApp;
                 ObjectID: prop.ObjectID,
                 PropertyName: prop.InternalName,
                 NonReferenceValue: prop.State.Value,
-                ReferenceValueId: null
+                ReferenceValueId: prop.State.ReferenceValueID
             };
             return request;
         };
@@ -1206,11 +1213,11 @@ var FresnelApp;
                     continue;
                 }
                 var newPropertyValue = null;
-                if (propertyChange.ReferenceValueId != null) {
-                    newPropertyValue = this.getObject(propertyChange.ReferenceValueId);
+                if (propertyChange.State.ReferenceValueId != null) {
+                    newPropertyValue = this.getObject(propertyChange.State.ReferenceValueId);
                 }
                 else {
-                    newPropertyValue = propertyChange.NonReferenceValue;
+                    newPropertyValue = propertyChange.State.Value;
                 }
                 var prop = $.grep(existingItem.Properties, function (e) {
                     return e.InternalName == propertyChange.PropertyName;

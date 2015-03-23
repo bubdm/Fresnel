@@ -64,24 +64,28 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
             {
                 ObjectId = oProperty.OuterObject.ID,
                 PropertyName = oProperty.Template.Name,
+                State = _PropertyStateVmBuilder.BuildFor(oProperty)
             };
 
             if (oProperty.Template.IsNonReference)
             {
-                result.NonReferenceValue = propertyChange.NewValue;
+                result.State.Value = propertyChange.NewValue;
 
                 // HACK:
                 if (oProperty.Template.PropertyType.IsEnum)
                 {
-                    result.NonReferenceValue = (int)result.NonReferenceValue;
+                    result.State.Value = (int)result.State.Value;
                 }
+            }
+            else if (propertyChange.NewValue != null)
+            {
+                var oObj = _ObserverCache.GetObserver(propertyChange.NewValue, oProperty.Template.PropertyType);
+                result.State.ReferenceValueID = oObj.ID;
             }
             else
             {
-                result.ReferenceValueId = _ObserverCache.GetObserver(propertyChange.NewValue, oProperty.Template.PropertyType).ID;
+                result.State.FriendlyValue = "";
             }
-
-            result.State = _PropertyStateVmBuilder.BuildFor(oProperty);
 
             return result;
         }

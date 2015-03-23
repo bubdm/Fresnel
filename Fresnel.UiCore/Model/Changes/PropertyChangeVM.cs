@@ -11,10 +11,6 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
 
         public string PropertyName { get; set; }
 
-        public object NonReferenceValue { get; set; }
-
-        public Guid? ReferenceValueId { get; set; }
-
         public ValueStateVM State { get; set; }
 
     }

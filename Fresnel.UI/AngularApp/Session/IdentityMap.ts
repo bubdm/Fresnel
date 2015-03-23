@@ -79,12 +79,11 @@ module FresnelApp {
                 }
 
                 var newPropertyValue = null;
-
-                if (propertyChange.ReferenceValueId != null) {
-                    newPropertyValue = this.getObject(propertyChange.ReferenceValueId);
+                if (propertyChange.State.ReferenceValueId != null) {
+                    newPropertyValue = this.getObject(propertyChange.State.ReferenceValueId);
                 }
                 else {
-                    newPropertyValue = propertyChange.NonReferenceValue;
+                    newPropertyValue = propertyChange.State.Value;
                 }
 
                 var prop: PropertyVM = $.grep(existingItem.Properties, function (e: PropertyVM) {

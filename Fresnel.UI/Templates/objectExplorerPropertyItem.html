@@ -84,6 +84,10 @@
                         <div ng-include="'/Templates/Editors/collectionInteractions.html'"></div>
                     </div>
                     <div ng-switch-default>
+                        <input type="text"
+                               class="form-control input-sm"
+                               ng-model="prop.State.FriendlyValue"
+                               ng-disabled="true" />
                         <div ng-include="'/Templates/Editors/objectInteractions.html'"></div>
                     </div>
                 </div>
