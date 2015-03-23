@@ -10,6 +10,7 @@ module FresnelApp {
             'fresnelService',
             'requestBuilder',
             'appService',
+            'searchService',
             'explorerService',
             '$modal'];
 
@@ -19,6 +20,7 @@ module FresnelApp {
             fresnelService: IFresnelService,
             requestBuilder: RequestBuilder,
             appService: AppService,
+            searchService: SearchService,
             explorerService: ExplorerService,
             $modal: ng.ui.bootstrap.IModalService) {
 
@@ -110,28 +112,27 @@ module FresnelApp {
             }
 
             $scope.associate = function (prop: PropertyVM) {
-                var request = requestBuilder.buildSearchPropertyRequest(prop);
-                var promise = fresnelService.searchPropertyObjects(request);
+                var onSelectionConfirmed = function (selectedItems) {
+                    if (selectedItems.length == 1) {
+                        var selectedItem = selectedItems[0];
+                        prop.State.ReferenceValueID = selectedItem.ID;
+                        
+                        // NB: We can't call the setProperty() function, as a digest is already running.
+                        //     Hence the need to in-line the code here:
+                        var request = requestBuilder.buildSetPropertyRequest(prop);
+                        var promise = fresnelService.setProperty(request);
 
-                promise.then((promiseResult) => {
-                    var response = promiseResult.data;
+                        promise.then((promiseResult) => {
+                            var response = promiseResult.data;
+                            prop.Error = response.Passed ? "" : response.Messages[0].Text;
 
-                    var searchResults = response.Result;
-                    searchResults.AllowSelection = true;
-                    searchResults.AllowMultiSelect = prop.IsCollection;
-
-                    // Set the callback when the user confirms the selection:
-                    searchResults.OnSelectionConfirmed = function (items: ObjectVM[]) {
-                        if (items.length == 1) {
-                            var selectedItem = items[0];
-                            prop.State.ReferenceValueID = selectedItem.ID;
-                            // Send the request to the server:
-                            $scope.setProperty(prop);
-                        }
+                            appService.identityMap.merge(response.Modifications);
+                            $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+                        });
                     }
+                };
 
-                    $rootScope.$broadcast(UiEventType.ExplorerOpen, searchResults);
-                });
+                searchService.showSearchForProperty(prop, onSelectionConfirmed);
             }
 
             $scope.disassociate = function (prop: PropertyVM) {
