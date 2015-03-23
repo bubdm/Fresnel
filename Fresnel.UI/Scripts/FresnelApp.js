@@ -40,7 +40,7 @@ var FresnelApp;
 (function (FresnelApp) {
     // Used to control the interactions within an open Search form
     var SearchExplorerController = (function () {
-        function SearchExplorerController($rootScope, $scope, fresnelService, searchService, appService, blockUI) {
+        function SearchExplorerController($rootScope, $scope, fresnelService, searchService, smartTablePredicateService, appService, blockUI) {
             this.scope = $scope;
             $scope.results = $scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
@@ -54,43 +54,22 @@ var FresnelApp;
                 searchService.openNewExplorer(obj, $rootScope);
             };
             $scope.stTablePipe = function (tableState) {
-                var predicate = tableState.sort.predicate;
-                var orderBy;
-                if (predicate) {
-                    var index1 = predicate.indexOf("[");
-                    var index2 = predicate.indexOf("]");
-                    var propertyIndex = predicate.substr(index1 + 1, index2 - index1 - 1);
-                    // Sorting on a Collection property doesn't make sense, so don't allow it:
-                    var sortProp = $scope.results.ElementProperties[propertyIndex];
-                    if (sortProp.IsCollection)
-                        return;
-                    orderBy = sortProp.InternalName;
-                }
+                // Sorting on an Object/Collection property doesn't make sense, so don't allow it:
+                var sortProperty = smartTablePredicateService.getSortProperty(tableState, $scope.results.ElementProperties);
+                if (sortProperty == null || !sortProperty.IsNonReference)
+                    return;
                 // Changing the order means we start from the beginning again:
                 $scope.request.PageNumber = 1;
-                $scope.request.OrderBy = orderBy;
+                $scope.request.OrderBy = sortProperty.InternalName;
                 $scope.request.IsDescendingOrder = tableState.sort.reverse;
-                blockUI.start("Sorting data...");
+                blockUI.start("Sorting by " + sortProperty.Name + "...");
                 $scope.searchAction().then(function (promiseResult) {
                     var response = promiseResult.data;
-                    // Replace the existing search results:
-                    var itemCount = response.Result.Items.length;
-                    var itemsToBind = [itemCount];
-                    for (var i = 0; i < itemCount; i++) {
-                        var latestObj = response.Result.Items[i];
-                        var existingObj = appService.identityMap.getObject(latestObj.ID);
-                        if (existingObj == null) {
-                            appService.identityMap.addObject(latestObj);
-                            itemsToBind[i] = latestObj;
-                        }
-                        else {
-                            appService.identityMap.mergeObjects(existingObj, latestObj);
-                            itemsToBind[i] = existingObj;
-                        }
-                    }
-                    $scope.results.Items = itemsToBind;
+                    var newSearchResults = response.Result;
+                    var bindableItems = searchService.mergeSearchResults(newSearchResults);
                     // This allows Smart-Table to handle the st-safe-src properly:
-                    $scope.results.DisplayItems = [].concat($scope.results.Items);
+                    $scope.results.Items = bindableItems;
+                    $scope.results.DisplayItems = [].concat(bindableItems);
                     tableState.pagination.numberOfPages = 50;
                 }).finally(function () {
                     blockUI.stop();
@@ -105,12 +84,33 @@ var FresnelApp;
             '$scope',
             'fresnelService',
             'searchService',
+            'smartTablePredicateService',
             'appService',
             'blockUI'
         ];
         return SearchExplorerController;
     })();
     FresnelApp.SearchExplorerController = SearchExplorerController;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
+    var SmartTablePredicateService = (function () {
+        function SmartTablePredicateService() {
+        }
+        SmartTablePredicateService.prototype.getSortProperty = function (tableState, collectionProperties) {
+            var predicate = tableState.sort.predicate;
+            if (predicate) {
+                var index1 = predicate.indexOf("[");
+                var index2 = predicate.indexOf("]");
+                var propertyIndex = predicate.substr(index1 + 1, index2 - index1 - 1);
+                var sortProp = collectionProperties[propertyIndex];
+                return sortProp;
+            }
+            return null;
+        };
+        return SmartTablePredicateService;
+    })();
+    FresnelApp.SmartTablePredicateService = SmartTablePredicateService;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
@@ -124,11 +124,11 @@ var FresnelApp;
             this.blockUI = blockUI;
             this.modal = $modal;
         }
-        SearchService.prototype.showSearchForCollection = function (coll, onSelectionConfirmed) {
+        SearchService.prototype.showSearchForProperty = function (prop, coll, onSelectionConfirmed) {
             var _this = this;
-            var request = this.requestBuilder.buildSearchObjectsRequest(coll.ElementType);
-            var searchPromise = this.fresnelService.searchObjects(request);
-            // TODO: Open the modal _before_ the search is executed:
+            this.blockUI.start("Searching for data...");
+            var request = this.requestBuilder.buildSearchPropertyRequest(prop);
+            var searchPromise = this.fresnelService.searchPropertyObjects(request);
             searchPromise.then(function (promiseResult) {
                 var response = promiseResult.data;
                 var searchResults = response.Result;
@@ -136,20 +136,11 @@ var FresnelApp;
                 searchResults.AllowSelection = true;
                 searchResults.AllowMultiSelect = true;
                 var searchExplorer = _this.explorerService.addExplorer(searchResults);
-                var options = {
-                    templateUrl: '/Templates/searchResultsExplorer.html',
-                    controller: 'searchModalController',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        // These objects will be injected into the SearchController's ctor:
-                        explorer: function () {
-                            return searchExplorer;
-                        }
-                    }
-                };
-                var modal = _this.modal.open(options);
+                var modalOptions = _this.createModalOptions(searchExplorer);
+                modalOptions.templateUrl = '/Templates/searchResultsExplorer.html';
+                var modal = _this.modal.open(modalOptions);
                 _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalOpened, modal);
+                _this.blockUI.stop();
                 modal.result.then(function () {
                     var selectedItems = $.grep(searchResults.Items, function (o) {
                         return o.IsSelected;
@@ -160,52 +151,25 @@ var FresnelApp;
                 });
                 modal.result.finally(function () {
                     _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
-                    _this.blockUI.stop();
-                });
-            });
-        };
-        SearchService.prototype.showSearchForProperty = function (prop, onSelectionConfirmed) {
-            var _this = this;
-            var request = this.requestBuilder.buildSearchPropertyRequest(prop);
-            var searchPromise = this.fresnelService.searchPropertyObjects(request);
-            // TODO: Open the modal _before_ the search is executed:
-            this.blockUI.start("Searching for data...");
-            searchPromise.then(function (promiseResult) {
-                var response = promiseResult.data;
-                var searchResults = response.Result;
-                searchResults.AllowSelection = true;
-                searchResults.AllowMultiSelect = prop.IsCollection;
-                searchResults.OriginalRequest = request;
-                var searchExplorer = _this.explorerService.addExplorer(searchResults);
-                var options = {
-                    templateUrl: '/Templates/searchResultsExplorer.html',
-                    controller: 'searchModalController',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        // These objects will be injected into the SearchController's ctor:
-                        explorer: function () {
-                            return searchExplorer;
-                        }
-                    }
-                };
-                var modal = _this.modal.open(options);
-                _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalOpened, modal);
-                modal.result.then(function () {
-                    var selectedItems = $.grep(searchResults.Items, function (o) {
-                        return o.IsSelected;
-                    });
-                    if (selectedItems.length > 0) {
-                        onSelectionConfirmed(selectedItems);
-                    }
-                });
-                modal.result.finally(function () {
-                    _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
-                    _this.blockUI.stop();
                 });
             });
         };
         SearchService.prototype.showSearchForParameter = function (param, onSelectionConfirmed) {
+        };
+        SearchService.prototype.createModalOptions = function (searchExplorer) {
+            var options = {
+                templateUrl: '',
+                controller: 'searchModalController',
+                backdrop: 'static',
+                size: 'lg',
+                resolve: {
+                    // These objects will be injected into the SearchController's ctor:
+                    explorer: function () {
+                        return searchExplorer;
+                    }
+                }
+            };
+            return options;
         };
         SearchService.prototype.openNewExplorer = function (obj, $rootScope) {
             var _this = this;
@@ -229,7 +193,7 @@ var FresnelApp;
                 }
             });
         };
-        SearchService.prototype.loadNextPage = function (request, results, searchPromise) {
+        SearchService.prototype.loadNextPage = function (request, existingSearchResults, searchPromise) {
             var _this = this;
             request.PageNumber++;
             this.blockUI.start("Loading more data...");
@@ -237,14 +201,35 @@ var FresnelApp;
                 var response = promiseResult.data;
                 var newSearchResults = response.Result;
                 // Append the new items to the exist results:
-                var existingSearchResults = results;
-                for (var i = 0; i < newSearchResults.Items.length; i++) {
-                    existingSearchResults.Items.push(newSearchResults.Items[i]);
+                var bindableItems = _this.mergeSearchResults(newSearchResults);
+                for (var i = 0; i < bindableItems.length; i++) {
+                    existingSearchResults.Items.push(bindableItems[i]);
                 }
-                results.DisplayItems = [].concat(results.Items);
+                // This allows Smart-Table to handle the st-safe-src properly:
+                existingSearchResults.DisplayItems = [].concat(bindableItems);
             }).finally(function () {
                 _this.blockUI.stop();
             });
+        };
+        SearchService.prototype.mergeSearchResults = function (searchResults) {
+            // Replace the existing search results:
+            var itemCount = searchResults.Items.length;
+            var bindableItems = [itemCount];
+            var identityMap = this.appService.identityMap;
+            for (var i = 0; i < itemCount; i++) {
+                var latestObj = searchResults.Items[i];
+                var existingObj = identityMap.getObject(latestObj.ID);
+                if (existingObj == null) {
+                    identityMap.addObject(latestObj);
+                    bindableItems[i] = latestObj;
+                }
+                else {
+                    identityMap.mergeObjects(existingObj, latestObj);
+                    bindableItems[i] = existingObj;
+                }
+            }
+            // Return the results, but now re-using any objects from the IdentityMap:
+            return bindableItems;
         };
         SearchService.$inject = [
             '$rootScope',
@@ -450,7 +435,7 @@ var FresnelApp;
                     }
                 });
             };
-            $scope.addNewItem = function (itemType) {
+            $scope.addNewItem = function (prop, itemType) {
                 var request = {
                     CollectionID: collection.ID,
                     ElementTypeName: itemType,
@@ -464,7 +449,7 @@ var FresnelApp;
                     //$rootScope.$broadcast(UiEventType.ExplorerOpen, newObject);             
                 });
             };
-            $scope.addExistingItems = function (coll) {
+            $scope.addExistingItems = function (prop, coll) {
                 var onSelectionConfirmed = function (selectedItems) {
                     var request = requestBuilder.buildAddItemsRequest(coll, selectedItems);
                     var promise = fresnelService.addItemsToCollection(request);
@@ -474,9 +459,9 @@ var FresnelApp;
                         $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                     });
                 };
-                searchService.showSearchForCollection(coll, onSelectionConfirmed);
+                searchService.showSearchForProperty(prop, coll, onSelectionConfirmed);
             };
-            $scope.removeItem = function (obj) {
+            $scope.removeItem = function (prop, obj) {
                 var request = {
                     CollectionID: collection.ID,
                     ElementID: obj.ID
@@ -578,8 +563,8 @@ var FresnelApp;
                 });
             };
             $scope.associate = function (prop) {
-                var request = requestBuilder.buildSearchObjectsRequest(prop.Info.FullTypeName);
-                var promise = fresnelService.searchObjects(request);
+                var request = requestBuilder.buildSearchPropertyRequest(prop);
+                var promise = fresnelService.searchPropertyObjects(request);
                 promise.then(function (promiseResult) {
                     var response = promiseResult.data;
                     var searchResults = response.Result;
@@ -972,33 +957,18 @@ var FresnelApp;
             return promise;
         };
         FresnelService.prototype.searchObjects = function (request) {
-            var _this = this;
-            this.blockUI.start("Searching for data...");
             var uri = "api/Toolbox/SearchObjects";
             var promise = this.http.post(uri, request);
-            promise.finally(function () {
-                _this.blockUI.stop();
-            });
             return promise;
         };
         FresnelService.prototype.searchPropertyObjects = function (request) {
-            var _this = this;
-            this.blockUI.start("Searching for data...");
-            var uri = "api/Toolbox/SearchPropertyObjects";
+            var uri = "api/Explorer/SearchPropertyObjects";
             var promise = this.http.post(uri, request);
-            promise.finally(function () {
-                _this.blockUI.stop();
-            });
             return promise;
         };
         FresnelService.prototype.searchParameterObjects = function (request) {
-            var _this = this;
-            this.blockUI.start("Searching for data...");
-            var uri = "api/Toolbox/SearchParameterObjects";
+            var uri = "api/Explorer/SearchParameterObjects";
             var promise = this.http.post(uri, request);
-            promise.finally(function () {
-                _this.blockUI.stop();
-            });
             return promise;
         };
         FresnelService.$inject = ['$http', 'blockUI'];
@@ -1180,6 +1150,14 @@ var FresnelApp;
         };
         IdentityMap.prototype.addObject = function (obj) {
             this.objectMap[obj.ID] = obj;
+            // Optimisation: By default, the Properties don't have the ObjectID set
+            // So we have to do it here:
+            if (obj.Properties) {
+                for (var i = 0; i < obj.Properties.length; i++) {
+                    var prop = obj.Properties[i];
+                    prop.ObjectID = obj.ID;
+                }
+            }
             var isCollection = obj.hasOwnProperty("IsCollection");
             if (isCollection) {
                 var coll = obj;
@@ -1318,7 +1296,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var requires = ['blockUI', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table', 'ui.bootstrap'];
-    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).service("requestBuilder", FresnelApp.RequestBuilder).service("searchService", FresnelApp.SearchService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("methodController", FresnelApp.MethodController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).controller("searchExplorerController", FresnelApp.SearchExplorerController).controller("searchModalController", FresnelApp.SearchModalController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
+    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).service("requestBuilder", FresnelApp.RequestBuilder).service("searchService", FresnelApp.SearchService).service("smartTablePredicateService", FresnelApp.SmartTablePredicateService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("methodController", FresnelApp.MethodController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).controller("searchExplorerController", FresnelApp.SearchExplorerController).controller("searchModalController", FresnelApp.SearchModalController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);
             return responseData;

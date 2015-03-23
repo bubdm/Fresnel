@@ -1,4 +1,4 @@
-﻿<div ng-init="oCol = explorer.__meta">
+﻿<div ng-init="oCol = explorer.__meta;">
 
     <div id="explorer_{{oCol.ID}}" object-explorer block-ui class="modalDialog container-fluid box box-solid box-primary">
 
@@ -13,10 +13,10 @@
 
         <div class="collectionExplorerPanelBody">
             <!-- NB: Use st-safe-src to ensure collection is watched -->
-            <table id="collectionGrid_{{oCol.ID}}" 
-                   st-table="oCol.DisplayItems" 
-                   st-safe-src="oCol.Items" 
-                   st-pipe="stTablePipe" 
+            <table id="collectionGrid_{{oCol.ID}}"
+                   st-table="oCol.DisplayItems"
+                   st-safe-src="oCol.Items"
+                   st-pipe="stTablePipe"
                    class="table table-striped collectionRowText fullWidth">
                 <thead>
                     <tr>
@@ -37,7 +37,8 @@
                         <td ng-repeat="elementProp in oCol.ElementProperties"
                             ng-init="prop = item.Properties[elementProp.Index]"
                             title="{{prop.State.FriendlyValue}}"
-                            class="{{prop.Info.PreferredControl}}">{{prop.State.FriendlyValue}}
+                            class="{{prop.Info.PreferredControl}}">
+                            {{prop.State.FriendlyValue}}
                         </td>
                         <td>
                             <button ng-click="openNewExplorer(item)"

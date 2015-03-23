@@ -2,11 +2,11 @@
 
     export interface ICollectionScope extends IExplorerScope {
 
-        addNewItem(itemType: string);
+        addNewItem(prop: PropertyVM, itemType: string);
 
-        addExistingItems(obj: ObjectVM);
+        addExistingItems(prop: PropertyVM, obj: ObjectVM);
 
-        removeItem(obj: ObjectVM);
+        removeItem(prop: PropertyVM, obj: ObjectVM);
 
     }
 

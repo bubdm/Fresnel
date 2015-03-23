@@ -110,8 +110,8 @@ module FresnelApp {
             }
 
             $scope.associate = function (prop: PropertyVM) {
-                var request = requestBuilder.buildSearchObjectsRequest(prop.Info.FullTypeName);
-                var promise = fresnelService.searchObjects(request);
+                var request = requestBuilder.buildSearchPropertyRequest(prop);
+                var promise = fresnelService.searchPropertyObjects(request);
 
                 promise.then((promiseResult) => {
                     var response = promiseResult.data;

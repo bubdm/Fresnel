@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Linq;
+using System;
 
 namespace Envivo.Fresnel.UiCore.Controllers
 {
@@ -15,6 +16,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         private CollectionAddCommand _CollectionAddCommand;
         private CollectionRemoveCommand _CollectionRemoveCommand;
         private SaveChangesCommand _SaveChangesCommand;
+        private SearchPropertyCommand _SearchPropertyCommand;
 
         public ExplorerController
             (
@@ -29,6 +31,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
             _CollectionAddCommand = commands.OfType<CollectionAddCommand>().Single(); ;
             _CollectionRemoveCommand = commands.OfType<CollectionRemoveCommand>().Single(); ;
             _SaveChangesCommand = commands.OfType<SaveChangesCommand>().Single();
+            _SearchPropertyCommand = commands.OfType<SearchPropertyCommand>().Single();
         }
 
         [HttpPost]
@@ -102,5 +105,16 @@ namespace Envivo.Fresnel.UiCore.Controllers
             return result;
         }
 
+        public SearchResponse SearchPropertyObjects(SearchPropertyRequest id)
+        {
+            var fullyQualifiedName = id;
+            var result = _SearchPropertyCommand.Invoke(id);
+            return result;
+        }
+
+        public SearchResponse SearchParameterObjects(SearchParameterRequest id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

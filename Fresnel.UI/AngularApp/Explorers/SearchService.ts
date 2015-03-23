@@ -38,11 +38,12 @@ module FresnelApp {
             this.modal = $modal;
         }
 
-        showSearchForCollection(coll: CollectionVM, onSelectionConfirmed) {
-            var request = this.requestBuilder.buildSearchObjectsRequest(coll.ElementType);
-            var searchPromise = this.fresnelService.searchObjects(request);
+        showSearchForProperty(prop: PropertyVM, coll: CollectionVM, onSelectionConfirmed) {
+            this.blockUI.start("Searching for data...");
 
-            // TODO: Open the modal _before_ the search is executed:
+            var request = this.requestBuilder.buildSearchPropertyRequest(prop);
+            var searchPromise = this.fresnelService.searchPropertyObjects(request);
+
             searchPromise.then((promiseResult) => {
                 var response = promiseResult.data;
                 var searchResults: SearchResultsVM = response.Result;
@@ -51,21 +52,13 @@ module FresnelApp {
                 searchResults.AllowMultiSelect = true;
                 var searchExplorer = this.explorerService.addExplorer(searchResults);
 
-                var options: ng.ui.bootstrap.IModalSettings = {
-                    templateUrl: '/Templates/searchResultsExplorer.html',
-                    controller: 'searchModalController',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        // These objects will be injected into the SearchController's ctor:
-                        explorer: function () {
-                            return searchExplorer;
-                        }
-                    }
-                }
+                var modalOptions = this.createModalOptions(searchExplorer);
+                modalOptions.templateUrl = '/Templates/searchResultsExplorer.html';
 
-                var modal = this.modal.open(options);
+                var modal = this.modal.open(modalOptions);
                 this.rootScope.$broadcast(UiEventType.ModalOpened, modal);
+
+                this.blockUI.stop();
 
                 modal.result.then(() => {
                     var selectedItems = $.grep(searchResults.Items, function (o: SearchResultItemVM) {
@@ -78,54 +71,6 @@ module FresnelApp {
 
                 modal.result.finally(() => {
                     this.rootScope.$broadcast(UiEventType.ModalClosed, modal);
-                    this.blockUI.stop();
-                });
-            });
-        }
-
-        showSearchForProperty(prop: PropertyVM, onSelectionConfirmed) {
-            var request = this.requestBuilder.buildSearchPropertyRequest(prop);
-            var searchPromise = this.fresnelService.searchPropertyObjects(request);
-
-            // TODO: Open the modal _before_ the search is executed:
-            this.blockUI.start("Searching for data...");
-
-            searchPromise.then((promiseResult) => {
-                var response = promiseResult.data;
-                var searchResults: SearchResultsVM = response.Result;
-                searchResults.AllowSelection = true;
-                searchResults.AllowMultiSelect = prop.IsCollection;
-                searchResults.OriginalRequest = request;
-                var searchExplorer = this.explorerService.addExplorer(searchResults);
-
-                var options: ng.ui.bootstrap.IModalSettings = {
-                    templateUrl: '/Templates/searchResultsExplorer.html',
-                    controller: 'searchModalController',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        // These objects will be injected into the SearchController's ctor:
-                        explorer: function () {
-                            return searchExplorer;
-                        }
-                    }
-                }
-
-                var modal = this.modal.open(options);
-                this.rootScope.$broadcast(UiEventType.ModalOpened, modal);
-
-                modal.result.then(() => {
-                    var selectedItems = $.grep(searchResults.Items, function (o: SearchResultItemVM) {
-                        return o.IsSelected;
-                    });
-                    if (selectedItems.length > 0) {
-                        onSelectionConfirmed(selectedItems);
-                    }
-                });
-
-                modal.result.finally(() => {
-                    this.rootScope.$broadcast(UiEventType.ModalClosed, modal);
-                    this.blockUI.stop();
                 });
             });
         }
@@ -133,8 +78,24 @@ module FresnelApp {
         showSearchForParameter(param: ParameterVM, onSelectionConfirmed) {
         }
 
-        openNewExplorer(obj: ObjectVM, $rootScope: ng.IScope) {
+        private createModalOptions(searchExplorer: Explorer): ng.ui.bootstrap.IModalSettings {
+            var options: ng.ui.bootstrap.IModalSettings = {
+                templateUrl: '',
+                controller: 'searchModalController',
+                backdrop: 'static',
+                size: 'lg',
+                resolve: {
+                    // These objects will be injected into the SearchController's ctor:
+                    explorer: function () {
+                        return searchExplorer;
+                    }
+                }
+            }
 
+            return options;
+        }
+
+        openNewExplorer(obj: ObjectVM, $rootScope: ng.IScope) {
             // As the collection only contains a lightweight object, we need to fetch one with more detail:
             var request = this.requestBuilder.buildGetObjectRequest(obj);
             var promise = this.fresnelService.getObject(request);
@@ -159,7 +120,7 @@ module FresnelApp {
             });
         }
 
-        loadNextPage(request: SearchRequest, results: SearchResultsVM, searchPromise: any) {
+        loadNextPage(request: SearchRequest, existingSearchResults: SearchResultsVM, searchPromise: any) {
             request.PageNumber++;
 
             this.blockUI.start("Loading more data...");
@@ -169,18 +130,42 @@ module FresnelApp {
                 var newSearchResults: SearchResultsVM = response.Result;
 
                 // Append the new items to the exist results:
-                var existingSearchResults = results;
+                var bindableItems = this.mergeSearchResults(newSearchResults);
 
-                for (var i = 0; i < newSearchResults.Items.length; i++) {
-                    existingSearchResults.Items.push(newSearchResults.Items[i]);
+                for (var i = 0; i < bindableItems.length; i++) {
+                    existingSearchResults.Items.push(bindableItems[i]);
                 }
 
-                results.DisplayItems = [].concat(results.Items);
+                // This allows Smart-Table to handle the st-safe-src properly:
+                existingSearchResults.DisplayItems = [].concat(bindableItems);
             })
                 .finally(() => {
                 this.blockUI.stop();
             });
+        }
 
+        mergeSearchResults(searchResults: SearchResultsVM): ObjectVM[] {
+            // Replace the existing search results:
+            var itemCount = searchResults.Items.length;
+            var bindableItems: ObjectVM[] = [itemCount];
+            var identityMap = this.appService.identityMap;
+
+            // If an object already exists in the IdentityMap we need to reuse it:
+            for (var i = 0; i < itemCount; i++) {
+                var latestObj: ObjectVM = searchResults.Items[i];
+                var existingObj = identityMap.getObject(latestObj.ID);
+                if (existingObj == null) {
+                    identityMap.addObject(latestObj);
+                    bindableItems[i] = latestObj;
+                }
+                else {
+                    identityMap.mergeObjects(existingObj, latestObj);
+                    bindableItems[i] = existingObj;
+                }
+            }
+
+            // Return the results, but now re-using any objects from the IdentityMap:
+            return bindableItems;
         }
 
     }

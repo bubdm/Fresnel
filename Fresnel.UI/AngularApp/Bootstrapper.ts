@@ -11,6 +11,7 @@
         .service("fresnelService", FresnelApp.FresnelService)
         .service("requestBuilder", FresnelApp.RequestBuilder)
         .service("searchService", FresnelApp.SearchService)
+        .service("smartTablePredicateService", FresnelApp.SmartTablePredicateService)
         .controller("appController", FresnelApp.AppController)
         .controller("toolboxController", FresnelApp.ToolboxController)
         .controller("workbenchController", FresnelApp.WorkbenchController)

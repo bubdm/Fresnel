@@ -187,41 +187,20 @@
         }
 
         searchObjects(request: SearchObjectsRequest): ng.IPromise<any> {
-            this.blockUI.start("Searching for data...");
-
             var uri = "api/Toolbox/SearchObjects";
             var promise = this.http.post(uri, request);
-
-            promise.finally(() => {
-                this.blockUI.stop();
-            });
-
             return promise;
         }
 
         searchPropertyObjects(request: SearchPropertyRequest): ng.IPromise<any> {
-            this.blockUI.start("Searching for data...");
-
-            var uri = "api/Toolbox/SearchPropertyObjects";
+            var uri = "api/Explorer/SearchPropertyObjects";
             var promise = this.http.post(uri, request);
-
-            promise.finally(() => {
-                this.blockUI.stop();
-            });
-
             return promise;
         }
 
         searchParameterObjects(request: SearchParameterRequest): ng.IPromise<any> {
-            this.blockUI.start("Searching for data...");
-
-            var uri = "api/Toolbox/SearchParameterObjects";
+            var uri = "api/Explorer/SearchParameterObjects";
             var promise = this.http.post(uri, request);
-
-            promise.finally(() => {
-                this.blockUI.stop();
-            });
-
             return promise;
         }
 

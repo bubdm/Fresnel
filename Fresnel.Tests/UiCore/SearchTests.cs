@@ -166,5 +166,49 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsFalse(searchResponse.Passed);
             Assert.IsNull(searchResponse.Result);
         }
+
+
+        [Test]
+        public void ShouldSeachForCollectionPropertyObjects()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var toolboxController = container.Resolve<ToolboxController>();
+            var explorerController = container.Resolve<ExplorerController>();
+
+            // Act:
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(PocoObject).FullName,
+                PageSize = 10,
+                PageNumber = 1
+            };
+            var searchResponse = toolboxController.SearchObjects(searchRequest);
+
+            // Act:
+            var searchRequest2 = new SearchPropertyRequest()
+            {
+                ObjectID = searchResponse.Result.Items.First().ID,
+                PropertyName = "ChildObjects",
+                OrderBy = "",
+                IsDescendingOrder = true,
+                PageSize = 100,
+                PageNumber = 1
+            };
+
+            var searchResponse2 = explorerController.SearchPropertyObjects(searchRequest2);
+
+            // Assert:
+            Assert.IsTrue(searchResponse2.Passed);
+            Assert.AreNotEqual(0, searchResponse2.Result.Items.Count());
+            Assert.IsTrue(searchResponse2.Result.Items.All(i => i.Type == typeof(PocoObject).Name));
+        }
+
     }
+
 }

@@ -49,7 +49,7 @@
                 });
             }
 
-            $scope.addNewItem = function (itemType: string) {
+            $scope.addNewItem = function (prop: PropertyVM, itemType: string) {
                 var request: CollectionAddNewRequest = {
                     CollectionID: collection.ID,
                     ElementTypeName: itemType,
@@ -69,7 +69,7 @@
 
             };
 
-            $scope.addExistingItems = function (coll: CollectionVM) {
+            $scope.addExistingItems = function (prop: PropertyVM, coll: CollectionVM) {
 
                 var onSelectionConfirmed = function (selectedItems) {
                     var request = requestBuilder.buildAddItemsRequest(coll, selectedItems);
@@ -82,10 +82,10 @@
                     });
                 };
 
-                searchService.showSearchForCollection(coll, onSelectionConfirmed);
+                searchService.showSearchForProperty(prop, coll, onSelectionConfirmed);
             };
 
-            $scope.removeItem = function (obj: ObjectVM) {
+            $scope.removeItem = function (prop: PropertyVM, obj: ObjectVM) {
                 var request: CollectionRemoveRequest = {
                     CollectionID: collection.ID,
                     ElementID: obj.ID

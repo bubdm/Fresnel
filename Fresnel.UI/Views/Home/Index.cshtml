@@ -121,16 +121,16 @@
 
                 <div id="workbench" ng-controller="workbenchController">
                     <div ng-repeat="explorer in visibleExplorers" class="explorerPanel animate">
-                        <div ng-controller="explorerController">
-                            <div ng-if="explorer.__meta.IsSearchResults">
+                        <div ng-controller="explorerController" ng-init="oObj = explorer.__meta;">
+                            <div ng-if="oObj.IsSearchResults">
                                 <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
                                 <div ng-controller="searchExplorerController" ng-include="'/Templates/searchResultsExplorer.html'"></div>
                             </div>
-                            <div ng-if="!explorer.__meta.IsSearchResults && explorer.__meta.IsCollection">
+                            <div ng-if="!oObj.IsSearchResults && oObj.IsCollection">
                                 <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
                                 <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'"></div>
                             </div>
-                            <div ng-if="!explorer.__meta.IsCollection">
+                            <div ng-if="!oObj.IsCollection">
                                 <div ng-include=" '/Templates/objectExplorer.html' "></div>
                             </div>
                         </div>

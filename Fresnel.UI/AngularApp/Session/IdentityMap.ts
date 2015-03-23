@@ -14,6 +14,15 @@ module FresnelApp {
         addObject(obj: ObjectVM) {
             this.objectMap[obj.ID] = obj;
 
+            // Optimisation: By default, the Properties don't have the ObjectID set
+            // So we have to do it here:
+            if (obj.Properties) {
+                for (var i = 0; i < obj.Properties.length; i++) {
+                    var prop: PropertyVM = obj.Properties[i];
+                    prop.ObjectID = obj.ID;
+                }
+            }
+
             var isCollection = obj.hasOwnProperty("IsCollection");
             if (isCollection) {
                 var coll = <CollectionVM>obj;
