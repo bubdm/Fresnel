@@ -30,5 +30,10 @@ namespace Envivo.Fresnel.SampleModel.Objects
             return string.Equals(this.Name, money.Name) &&
                    string.Equals(this.Description, money.Description);
         }
+
+        public override string ToString()
+        {
+            return this.Name ?? typeof(Money).Name;
+        }
     }
 }
