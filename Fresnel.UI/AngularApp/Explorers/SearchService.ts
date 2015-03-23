@@ -38,7 +38,7 @@ module FresnelApp {
             this.modal = $modal;
         }
 
-        showSearchForProperty(prop: PropertyVM, coll: CollectionVM, onSelectionConfirmed) {
+        showSearchForProperty(prop: PropertyVM, onSelectionConfirmed) {
             this.blockUI.start("Searching for data...");
 
             var request = this.requestBuilder.buildSearchPropertyRequest(prop);
@@ -50,6 +50,14 @@ module FresnelApp {
                 searchResults.OriginalRequest = request;
                 searchResults.AllowSelection = true;
                 searchResults.AllowMultiSelect = true;
+
+                // Ensure that we re-use any objects that are already cached:
+                var bindableItems = this.mergeSearchResults(searchResults);
+                searchResults.Items = bindableItems;
+
+                // This allows Smart-Table to handle the st-safe-src properly:
+                searchResults.DisplayItems = [].concat(bindableItems);
+
                 var searchExplorer = this.explorerService.addExplorer(searchResults);
 
                 var modalOptions = this.createModalOptions(searchExplorer);
@@ -129,9 +137,10 @@ module FresnelApp {
                 var response = promiseResult.data;
                 var newSearchResults: SearchResultsVM = response.Result;
 
-                // Append the new items to the exist results:
+                // Ensure that we re-use any objects that are already cached:
                 var bindableItems = this.mergeSearchResults(newSearchResults);
 
+                // Append the new items to the exist results:
                 for (var i = 0; i < bindableItems.length; i++) {
                     existingSearchResults.Items.push(bindableItems[i]);
                 }
@@ -145,23 +154,26 @@ module FresnelApp {
         }
 
         mergeSearchResults(searchResults: SearchResultsVM): ObjectVM[] {
-            // Replace the existing search results:
             var itemCount = searchResults.Items.length;
-            var bindableItems: ObjectVM[] = [itemCount];
+            var bindableItems: SearchResultItemVM[] = [itemCount];
             var identityMap = this.appService.identityMap;
 
             // If an object already exists in the IdentityMap we need to reuse it:
             for (var i = 0; i < itemCount; i++) {
-                var latestObj: ObjectVM = searchResults.Items[i];
+                var latestObj = searchResults.Items[i];
                 var existingObj = identityMap.getObject(latestObj.ID);
+
+                var itemToBind = existingObj == null ? latestObj : existingObj;
                 if (existingObj == null) {
                     identityMap.addObject(latestObj);
                     bindableItems[i] = latestObj;
                 }
                 else {
                     identityMap.mergeObjects(existingObj, latestObj);
-                    bindableItems[i] = existingObj;
+                    bindableItems[i] = <SearchResultItemVM>existingObj;
                 }
+
+                bindableItems[i].IsSelected = false;
             }
 
             // Return the results, but now re-using any objects from the IdentityMap:

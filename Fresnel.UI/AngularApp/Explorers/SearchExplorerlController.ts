@@ -56,6 +56,7 @@
                     var response = promiseResult.data;
                     var newSearchResults: SearchResultsVM = response.Result;
 
+                    // Ensure that we re-use any objects that are already cached:
                     var bindableItems = searchService.mergeSearchResults(newSearchResults);
 
                     // This allows Smart-Table to handle the st-safe-src properly:

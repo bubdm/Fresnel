@@ -82,7 +82,7 @@
                     });
                 };
 
-                searchService.showSearchForProperty(prop, coll, onSelectionConfirmed);
+                searchService.showSearchForProperty(prop, onSelectionConfirmed);
             };
 
             $scope.removeItem = function (prop: PropertyVM, obj: ObjectVM) {
