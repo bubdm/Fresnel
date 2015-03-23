@@ -72,6 +72,8 @@ namespace Envivo.Fresnel.UiCore.Commands
 
                 var infoText = thisPropertyChange == null ?
                                 "Nothing was changed" :
+                                request.ReferenceValueId != Guid.Empty ?
+                                string.Concat(oProp.Template.FriendlyName, " changed to ", thisPropertyChange.State.FriendlyValue) :
                                 request.NonReferenceValue == null ?
                                 string.Concat(oProp.Template.FriendlyName, " was cleared") :
                                 string.Concat(oProp.Template.FriendlyName, " changed to ", thisPropertyChange.State.FriendlyValue);
