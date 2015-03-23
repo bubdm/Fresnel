@@ -41,15 +41,9 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var oObj = _ObserverCache.GetObserverById(request.ObjectID);
                 var tProp = ((ClassTemplate)oObj.Template).Properties[request.PropertyName];
 
-                Type searchType = null;
-                if (tProp.IsCollection)
-                {
-                    searchType = ((CollectionTemplate)tProp.InnerClass).ElementType;
-                }
-                else
-                {
-                    searchType = tProp.PropertyType;
-                }
+                var searchType = tProp.IsCollection ?
+                                 ((CollectionTemplate)tProp.InnerClass).ElementType :
+                                 tProp.PropertyType;
 
                 var subRequest = new SearchObjectsRequest()
                 {
