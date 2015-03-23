@@ -48,6 +48,33 @@ namespace Envivo.Fresnel.Tests.Persistence
         }
 
         [Test]
+        public void ShouldCreateSampleData()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var persistenceService = container.Resolve<IPersistenceService>();
+
+            // Act:
+            for (var i = 0; i < 5; i++)
+            {
+                var category = (Category)persistenceService.CreateObject(typeof(Category));
+                category.ID = Guid.NewGuid();
+                category.Name = "Category " + Environment.TickCount.ToString();
+
+                var money = (Category)persistenceService.CreateObject(typeof(Category));
+                category.ID = Guid.NewGuid();
+                category.Name = "Money " + Environment.TickCount.ToString();
+
+                var savedChanges = persistenceService.SaveChanges();
+            }
+        }
+
+        [Test]
         public void ShouldModifyChildCollection()
         {
             // Arrange:
