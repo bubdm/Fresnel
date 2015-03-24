@@ -1260,6 +1260,7 @@ var FresnelApp;
                 return;
             this.mergeNewObjects(modifications);
             this.mergePropertyChanges(modifications);
+            this.mergeObjectTitleChanges(modifications);
             this.mergeRemovals(modifications);
             this.mergeParameterChanges(modifications);
         };
@@ -1284,6 +1285,18 @@ var FresnelApp;
                 if (collection != null) {
                     collection.Items.push(element);
                 }
+            }
+        };
+        IdentityMap.prototype.mergeObjectTitleChanges = function (modifications) {
+            if (!modifications.ObjectTitleChanges)
+                return;
+            for (var i = 0; i < modifications.ObjectTitleChanges.length; i++) {
+                var titleChange = modifications.ObjectTitleChanges[i];
+                var existingItem = this.getObject(titleChange.ObjectId);
+                if (existingItem == null) {
+                    continue;
+                }
+                existingItem.Name = titleChange.Title;
             }
         };
         IdentityMap.prototype.mergePropertyChanges = function (modifications) {

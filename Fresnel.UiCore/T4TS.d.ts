@@ -133,9 +133,15 @@ declare module FresnelApp {
     export interface ModificationsVM {
         NewObjects: any;
         PropertyChanges: any;
+        ObjectTitleChanges: any;
         CollectionAdditions: any;
         CollectionRemovals: any;
         MethodParameterChanges: any;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.Changes.ObjectTitleChangeVM **/
+    export interface ObjectTitleChangeVM {
+        ObjectId: any;
+        Title: string;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Changes.ParameterChangeVM **/
     export interface ParameterChangeVM {

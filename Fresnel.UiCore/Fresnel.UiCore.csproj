@@ -65,6 +65,7 @@
     <Compile Include="Commands\SetParameterCommand.cs" />
     <Compile Include="Commands\SetParameterRequest.cs" />
     <Compile Include="Model\Changes\ParameterChangeVM.cs" />
+    <Compile Include="Model\Changes\ObjectTitleChangeVM.cs" />
     <Compile Include="Model\SearchResultsVM.cs" />
     <Compile Include="Model\TypeInfo\DateTimeValueFormatter.cs" />
     <Compile Include="Model\TypeInfo\BooleanValueFormatter.cs" />

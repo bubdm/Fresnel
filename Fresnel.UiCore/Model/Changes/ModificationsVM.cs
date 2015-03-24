@@ -12,6 +12,8 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
 
         public IEnumerable<PropertyChangeVM> PropertyChanges { get; set; }
 
+        public IEnumerable<ObjectTitleChangeVM> ObjectTitleChanges { get; set; }
+
         public IEnumerable<CollectionElementVM> CollectionAdditions { get; set; }
 
         public IEnumerable<CollectionElementVM> CollectionRemovals { get; set; }

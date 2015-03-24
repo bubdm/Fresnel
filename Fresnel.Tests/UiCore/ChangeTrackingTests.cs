@@ -179,6 +179,37 @@ namespace Envivo.Fresnel.Tests.Proxies
         }
 
         [Test]
+        public void ShouldReturnObjectTitleModifications()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var templateCache = container.Resolve<TemplateCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.Objects.DependencyAwareObject).Assembly);
+
+            // Act:
+            var obj = container.Resolve<SampleModel.Objects.DependencyAwareObject>();
+            obj.ID = Guid.NewGuid();
+            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+
+            var request = new SetPropertyRequest()
+            {
+                ObjectID = obj.ID,
+                PropertyName = "Name",
+                NonReferenceValue = "Test " + Environment.TickCount.ToString()
+            };
+
+            var setResult = controller.SetProperty(request);
+
+            // Assert:
+            Assert.AreEqual(1, setResult.Modifications.ObjectTitleChanges.Count());
+            Assert.AreEqual(request.NonReferenceValue, setResult.Modifications.ObjectTitleChanges.First().Title);
+        }
+
+        [Test]
         public void ShouldDetectIntraPropertyCalls()
         {
             // Arrange:

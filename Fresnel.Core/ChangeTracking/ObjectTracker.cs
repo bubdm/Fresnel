@@ -14,6 +14,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         private OuterObjectsIdentifier _OuterObjectsIdentifier;
         protected ObjectObserver _oObject;
         private ObjectPropertiesTracker _ObjectPropertiesTracker;
+        private ObjectTitleTracker _ObjectTitleTracker;
         private ObjectCreation _ObjectCreation;
 
         private Dictionary<Guid, ObjectObserver> _oDirtyObjectGraph = new Dictionary<Guid, ObjectObserver>();
@@ -41,6 +42,9 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             _ObjectPropertiesTracker = new ObjectPropertiesTracker(_oObject);
             _ObjectPropertiesTracker.DetermineInitialState();
+
+            _ObjectTitleTracker = new ObjectTitleTracker(_oObject);
+            _ObjectTitleTracker.DetermineInitialState();
 
             _ObjectCreation = new ObjectCreation()
             {
@@ -93,6 +97,8 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             {
                 _HasLocalChanges = true;
             }
+
+            _ObjectTitleTracker.DetectChanges();
         }
 
         /// <summary>
@@ -212,6 +218,12 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             return results;
         }
 
+        public IEnumerable<ObjectTitleChange> GetTitleChangesSince(long startedAt)
+        {
+            var results = _ObjectTitleTracker.GetChangesSince(startedAt);
+            return results;
+        }
+
         public virtual void Dispose()
         {
             _oObject = null;
@@ -221,6 +233,9 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             _ObjectPropertiesTracker.DisposeSafely();
             _ObjectPropertiesTracker = null;
+
+            _ObjectTitleTracker.DisposeSafely();
+            _ObjectTitleTracker = null;
         }
     }
 }

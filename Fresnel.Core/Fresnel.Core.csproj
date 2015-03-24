@@ -56,7 +56,9 @@
     <Compile Include="ChangeTracking\ObjectCreation.cs" />
     <Compile Include="ChangeTracking\ObjectPropertiesTracker.cs" />
     <Compile Include="ChangeTracking\ObjectTracker.cs" />
+    <Compile Include="ChangeTracking\ObjectTitleChange.cs" />
     <Compile Include="ChangeTracking\PropertyChange.cs" />
+    <Compile Include="ChangeTracking\ObjectTitleTracker.cs" />
     <Compile Include="ChangeTracking\PropertyChangeTracker.cs" />
     <Compile Include="Commands\CloneObjectCommand.cs" />
     <Compile Include="Commands\CreateObjectCommand.cs" />

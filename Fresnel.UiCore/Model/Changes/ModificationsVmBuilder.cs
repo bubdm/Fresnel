@@ -38,6 +38,10 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
                                     .SelectMany(o => o.ChangeTracker.GetPropertyChangesSince(startedAt))
                                     .ToArray();
 
+            var objectTitleChanges = observers
+                                    .SelectMany(o => o.ChangeTracker.GetTitleChangesSince(startedAt))
+                                    .ToArray();
+
             var collectionAdds = observers
                                     .OfType<CollectionObserver>()
                                     .SelectMany(c => c.ChangeTracker.GetCollectionAdditionsSince(startedAt))
@@ -52,6 +56,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
             {
                 NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)),
                 PropertyChanges = propertyChanges.Select(c => CreatePropertyChange(c)),
+                ObjectTitleChanges = objectTitleChanges.Select(c => CreateTitleChange(c)),
                 CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c)),
                 CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c)),
             };
@@ -111,6 +116,16 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
                 result.State.ReferenceValueID = null;
             }
 
+            return result;
+        }
+
+        private ObjectTitleChangeVM CreateTitleChange(ObjectTitleChange titleChange)
+        {
+            var result = new ObjectTitleChangeVM()
+            {
+                ObjectId = titleChange.ObjectObserver.ID,
+                Title = titleChange.NewValue
+            };
             return result;
         }
 
