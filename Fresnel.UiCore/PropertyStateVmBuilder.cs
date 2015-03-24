@@ -15,10 +15,12 @@ namespace Envivo.Fresnel.UiCore
 {
     public class PropertyStateVmBuilder
     {
+
         private CanCreatePermission _CanCreatePermission;
         private CanGetPropertyPermission _CanGetPropertyPermission;
         private CanSetPropertyPermission _CanSetPropertyPermission;
 
+        private ObserverCache _ObserverCache;
         private BooleanValueFormatter _BooleanValueFormatter;
         private DateTimeValueFormatter _DateTimeValueFormatter;
 
@@ -27,6 +29,7 @@ namespace Envivo.Fresnel.UiCore
             CanCreatePermission canCreatePermission,
             CanGetPropertyPermission canGetPropertyPermission,
             CanSetPropertyPermission canSetPropertyPermission,
+            ObserverCache observerCache,
             BooleanValueFormatter booleanValueFormatter,
             DateTimeValueFormatter dateTimeValueFormatter
             )
@@ -34,6 +37,7 @@ namespace Envivo.Fresnel.UiCore
             _CanCreatePermission = canCreatePermission;
             _CanGetPropertyPermission = canGetPropertyPermission;
             _CanSetPropertyPermission = canSetPropertyPermission;
+            _ObserverCache = observerCache;
             _BooleanValueFormatter = booleanValueFormatter;
             _DateTimeValueFormatter = dateTimeValueFormatter;
         }
@@ -52,7 +56,16 @@ namespace Envivo.Fresnel.UiCore
                     // TODO: Use the GetPropertyCommand, in case the property should be hidden:
                     var realValue = oProp.Template.GetProperty(oProp.OuterObject.RealObject);
 
-                    if (realValue is bool)
+                    if (realValue == null)
+                    {
+                        result.Value = realValue;
+                    }
+                    else if (oProp is ObjectPropertyObserver)
+                    {
+                        var oValue = _ObserverCache.GetObserver(realValue, oProp.Template.PropertyType);
+                        result.ReferenceValueID = oValue.ID;
+                    }
+                    else if (realValue is bool)
                     {
                         result.Value = _BooleanValueFormatter.GetValue((bool)realValue);
                     }
@@ -81,24 +94,25 @@ namespace Envivo.Fresnel.UiCore
 
             if (oProp.Template.IsDomainObject)
             {
-                result.Create = this.BuildCreate(oProp, result.Value);
+                result.Create = this.BuildCreate(oProp, result);
             }
 
-            result.Clear = this.BuildClear(oProp, result.Value);
+            result.Clear = this.BuildClear(oProp, result);
 
             if (oProp.Template.IsCollection)
             {
-                result.Add = this.BuildAdd(oProp, result.Value);
+                result.Add = this.BuildAdd(oProp, result);
             }
 
             return result;
         }
 
-        private InteractionPoint BuildCreate(BasePropertyObserver oProp, object propertyValue)
+        private InteractionPoint BuildCreate(BasePropertyObserver oProp, ValueStateVM valueState)
         {
             var result = new InteractionPoint();
 
-            if (propertyValue == null)
+            var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
+            if (isNull)
             {
                 var createCheck = _CanCreatePermission.IsSatisfiedBy((ClassTemplate)oProp.Template.InnerClass);
                 result.IsEnabled = createCheck.Passed;
@@ -138,25 +152,28 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint BuildClear(BasePropertyObserver oProp, object propertyValue)
+        private InteractionPoint BuildClear(BasePropertyObserver oProp, ValueStateVM valueState)
         {
             var tProp = oProp.Template;
+            var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
+
             var result = new InteractionPoint()
             {
                 IsEnabled = tProp.CanWrite &&
-                             propertyValue != null &&
+                             !isNull &&
                              (!tProp.IsNonReference || tProp.IsNullableType),
             };
             return result;
         }
 
-        private InteractionPoint BuildAdd(BasePropertyObserver oProp, object propertyValue)
+        private InteractionPoint BuildAdd(BasePropertyObserver oProp, ValueStateVM valueState)
         {
             var tProp = oProp.Template;
+            var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
             var result = new InteractionPoint()
             {
                 IsEnabled = tProp.CanAdd &&
-                            propertyValue != null &&
+                            !isNull &&
                             tProp.IsCollection
             };
             return result;
@@ -197,35 +214,5 @@ namespace Envivo.Fresnel.UiCore
             return value == null ? null : value.ToString();
         }
 
-        //private string ConvertToJavascriptType(Type type)
-        //{
-        //    switch (type.Name.ToLower())
-        //    {
-        //        case "boolean":
-        //            return "boolean";
-
-        //        case "datetime":
-        //        case "datetimeoffset":
-        //            return "date";
-
-        //        case "decimal":
-        //        case "double":
-        //        case "single":
-        //        case "int32":
-        //        case "uint32":
-        //        case "int64":
-        //        case "uint64":
-        //        case "int16":
-        //        case "uint16":
-        //            return "number";
-
-        //        case "string":
-        //        case "char":
-        //            return "string";
-
-        //        default:
-        //            return "object";
-        //    }
-        //}
     }
 }
