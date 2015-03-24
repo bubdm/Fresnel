@@ -1,8 +1,3 @@
-//.################################################
-//# Copyright © 2006-2011 Evolving Software Ltd   #
-//# Author: Vijay Patel                           #
-//################################################'
-
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;

@@ -1,12 +1,6 @@
 ﻿using Autofac;
 using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Introspection.Assemblies;
-
-//  Author:
-//       Vijay Patel
-//
-// Copyright (c) 2014 Vijay Patel
-//
 using NUnit.Framework;
 using System.Linq;
 
