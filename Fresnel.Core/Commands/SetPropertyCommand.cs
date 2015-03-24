@@ -1,5 +1,6 @@
 ﻿using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Observers;
+using System;
 
 namespace Envivo.Fresnel.Core.Commands
 {
@@ -36,6 +37,7 @@ namespace Envivo.Fresnel.Core.Commands
             //    this.ErrorMessage = check.FailureReason;
             //    return;
             //}
+            this.PerformValidations(oProperty, oValue);
 
             var oOuterObject = oProperty.OuterObject;
 
@@ -60,6 +62,14 @@ namespace Envivo.Fresnel.Core.Commands
             {
                 _ObserverCacheSynchroniser.SyncAll();
             }
+        }
+
+        private void PerformValidations(BasePropertyObserver oProperty, BaseObjectObserver oValue)
+        {
+            var attributes = oProperty.Template.Attributes;
+            var exception = attributes.RunValidationsFor(oValue.RealObject);
+            if (exception != null)
+                throw exception;
         }
     }
 }

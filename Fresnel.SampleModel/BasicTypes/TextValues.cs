@@ -85,9 +85,9 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         }
 
         /// <summary>
-        /// This is a Text that cannot exceed 16 characters
+        /// This is a Text that must be at most 8 characters
         /// </summary>
-        [MinLength(8)]
+        [MaxLength(8)]
         public string TextWithMaximumSize
         {
             get { return this.NormalText; }
@@ -97,7 +97,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
         /// <summary>
         /// This is a Text that must be between 8 and 16 characters in length
         /// </summary>
-        [MinLength(8)]
+        [MinLength(8, ErrorMessage = "Please provide a value greater than 8 characters")]
         [MaxLength(16)]
         public virtual string TextWithSize
         {

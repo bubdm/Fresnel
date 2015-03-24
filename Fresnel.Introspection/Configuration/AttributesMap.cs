@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.Configuration
 {
@@ -142,6 +143,31 @@ namespace Envivo.Fresnel.Configuration
             {
                 _AttributeEntries.Remove(attributeType);
             }
+        }
+
+
+        public Exception RunValidationsFor(object value)
+        {
+            var exceptions = new List<Exception>();
+
+            var validatableAttributes = _AttributeEntries.Values
+                                        .Select(e => e.Value)
+                                        .Where(a => a.GetType().IsSubclassOf(typeof(ValidationAttribute)))
+                                        .Where(a => a.GetType() != typeof(DataTypeAttribute))
+                                        .Cast<ValidationAttribute>()
+                                        .ToList();
+
+            foreach (var validation in validatableAttributes)
+            {
+                if (!validation.IsValid(value))
+                {
+                    exceptions.Add(new ValidationException(validation.ErrorMessage, validation, value));
+                }
+            }
+
+            return exceptions.Any() ?
+                new AggregateException(exceptions) :
+                null;
         }
 
     }

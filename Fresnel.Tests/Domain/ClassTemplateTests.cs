@@ -192,8 +192,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributesMap);
 
             // Assert:
-            Assert.Throws(typeof(IntrospectionException),
-                        () => createCommand.Invoke(classTemplate));
+            Assert.Throws<IntrospectionException>(() => createCommand.Invoke(classTemplate));
         }
 
         [Test]
