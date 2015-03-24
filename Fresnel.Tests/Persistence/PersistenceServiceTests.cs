@@ -66,9 +66,9 @@ namespace Envivo.Fresnel.Tests.Persistence
                 category.ID = Guid.NewGuid();
                 category.Name = "Category " + Environment.TickCount.ToString();
 
-                var money = (Category)persistenceService.CreateObject(typeof(Category));
-                category.ID = Guid.NewGuid();
-                category.Name = "Money " + Environment.TickCount.ToString();
+                var money = (Money)persistenceService.CreateObject(typeof(Money));
+                money.ID = Guid.NewGuid();
+                money.Name = "Money " + Environment.TickCount.ToString();
 
                 var savedChanges = persistenceService.SaveChanges();
             }
