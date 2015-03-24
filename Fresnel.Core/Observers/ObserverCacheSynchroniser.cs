@@ -40,7 +40,9 @@ namespace Envivo.Fresnel.Core.Observers
             }
 
             // Now we can scan:
-            foreach (var oObject in this.ObserverCache.GetAllObservers())
+            // NB: We need to pull back the list first, to prevent "Collection was modified" exceptions:
+            var allObservers = this.ObserverCache.GetAllObservers().ToList();
+            foreach (var oObject in allObservers)
             {
                 this.Sync(oObject);
             }
