@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.Tests.Domain
             // Act:
             var exception = Assert.Throws<AggregateException>(() => setCommand.Invoke(oProp, oInvalidValue));
             var minLengthException = exception.InnerExceptions.First();
-            Assert.IsTrue(minLengthException.Message.Contains("8 chars"));
+            Assert.IsTrue(minLengthException.Message.Contains("8 char"));
         }
 
         [Test]
