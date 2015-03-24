@@ -152,6 +152,8 @@ module FresnelApp {
             searchPromise().then((promiseResult) => {
                 var response = promiseResult.data;
                 var newSearchResults: SearchResultsVM = response.Result;
+                if (newSearchResults.Items.length == 0)
+                    return;
 
                 // Ensure that we re-use any objects that are already cached:
                 var bindableItems = this.mergeSearchResults(newSearchResults);
@@ -162,7 +164,7 @@ module FresnelApp {
                 }
 
                 // This allows Smart-Table to handle the st-safe-src properly:
-                existingSearchResults.DisplayItems = [].concat(bindableItems);
+                existingSearchResults.DisplayItems = [].concat(existingSearchResults.Items);
             })
                 .finally(() => {
                 this.blockUI.stop();

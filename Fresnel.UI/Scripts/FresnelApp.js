@@ -221,13 +221,15 @@ var FresnelApp;
             searchPromise().then(function (promiseResult) {
                 var response = promiseResult.data;
                 var newSearchResults = response.Result;
+                if (newSearchResults.Items.length == 0)
+                    return;
                 // Ensure that we re-use any objects that are already cached:
                 var bindableItems = _this.mergeSearchResults(newSearchResults);
                 for (var i = 0; i < bindableItems.length; i++) {
                     existingSearchResults.Items.push(bindableItems[i]);
                 }
                 // This allows Smart-Table to handle the st-safe-src properly:
-                existingSearchResults.DisplayItems = [].concat(bindableItems);
+                existingSearchResults.DisplayItems = [].concat(existingSearchResults.Items);
             }).finally(function () {
                 _this.blockUI.stop();
             });
@@ -1119,7 +1121,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
-        function ToolboxController($rootScope, $scope, fresnelService, requestBuilder, appService) {
+        function ToolboxController($rootScope, $scope, fresnelService, requestBuilder, appService, blockUI) {
             $scope.loadClassHierarchy = function () {
                 var _this = this;
                 var promise = fresnelService.getClassHierarchy();
@@ -1146,6 +1148,7 @@ var FresnelApp;
             $scope.searchObjects = function (fullyQualifiedName) {
                 var request = requestBuilder.buildSearchObjectsRequest(fullyQualifiedName);
                 var promise = fresnelService.searchObjects(request);
+                blockUI.start("Searching for data...");
                 promise.then(function (promiseResult) {
                     var response = promiseResult.data;
                     appService.identityMap.merge(response.Modifications);
@@ -1159,6 +1162,8 @@ var FresnelApp;
                         appService.identityMap.addObject(response.Result);
                         $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.Result);
                     }
+                }).finally(function () {
+                    blockUI.stop();
                 });
             };
             // This will run when the page loads:
@@ -1171,7 +1176,8 @@ var FresnelApp;
             '$scope',
             'fresnelService',
             'requestBuilder',
-            'appService'
+            'appService',
+            'blockUI'
         ];
         return ToolboxController;
     })();
