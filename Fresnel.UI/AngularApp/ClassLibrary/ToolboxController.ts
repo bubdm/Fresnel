@@ -8,14 +8,16 @@
             '$scope',
             'fresnelService',
             'requestBuilder',
-            'appService'];
+            'appService',
+            'blockUI'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
             $scope: IToolboxControllerScope,
             fresnelService: IFresnelService,
             requestBuilder: RequestBuilder,
-            appService: AppService) {
+            appService: AppService,
+            blockUI: any) {
 
             $scope.loadClassHierarchy = function () {
                 var promise = fresnelService.getClassHierarchy();
@@ -51,6 +53,8 @@
                 var request = requestBuilder.buildSearchObjectsRequest(fullyQualifiedName);
                 var promise = fresnelService.searchObjects(request);
 
+                blockUI.start("Searching for data...");
+
                 promise.then((promiseResult) => {
                     var response = promiseResult.data;
 
@@ -68,6 +72,9 @@
                         appService.identityMap.addObject(response.Result);
                         $rootScope.$broadcast(UiEventType.ExplorerOpen, response.Result);
                     }
+                })
+                    .finally(() => {
+                    blockUI.stop();
                 });
             }
 
