@@ -106,7 +106,8 @@ namespace Envivo.Fresnel.Core.Observers
 
             if (oProperty.PreviousValue != null)
             {
-                var oPreviousValue = this.ObserverCache.GetObserver(oProperty.PreviousValue);
+                var itemType = _RealTypeResolver.GetRealType(oProperty.PreviousValue);
+                var oPreviousValue = this.ObserverCache.GetObserver(oProperty.PreviousValue, itemType);
 
                 var isDifferent = !(object.Equals(oValue.RealObject, oPreviousValue.RealObject));
                 if (isDifferent)
