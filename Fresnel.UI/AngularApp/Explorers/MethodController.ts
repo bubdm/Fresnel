@@ -31,6 +31,12 @@ module FresnelApp {
 
             method.ParametersSetByUser = [];
 
+            for (var i = 0; i < method.Parameters.length; i++) {
+                var param: ParameterVM = method.Parameters[i];
+                param.State.Value = null;
+                param.State.ReferenceValueID = null;
+            }
+
             $scope.invoke = function (method: MethodVM) {
                 var request = requestBuilder.buildMethodInvokeRequest(method);
                 var promise = fresnelService.invokeMethod(request);
@@ -49,18 +55,12 @@ module FresnelApp {
             }
 
             $scope.setProperty = function (param: ParameterVM) {
-                // Find the parameter, and set it's value:
-                // If it's an Object, set the ReferenceValueID
-                if (!param.IsNonReference) {
-                    param.State.ReferenceValueID = param.State.Value.ID;
-                }
+                // BUG: This is to prevent 'digest' model changes accidentally triggering server code:
+                // See https://github.com/angular/angular.js/issues/9867
+                if ($scope.$$phase == "$digest")
+                    return;
 
-                var matches = $.grep(method.ParametersSetByUser, function (e) {
-                    return e == param;
-                });
-                if (matches.length == 0) {
-                    method.ParametersSetByUser.push(param);
-                }
+                $scope.setParameterOnServer(param);
             }
 
             $scope.setBitwiseEnumProperty = function (param: ParameterVM, enumValue: number) {
@@ -77,24 +77,36 @@ module FresnelApp {
                     if (selectedItems.length == 1) {
                         var selectedItem = selectedItems[0];
                         param.State.ReferenceValueID = selectedItem.ID;
-                        
-                        // NB: We can't call the setProperty() function, as a digest is already running.
-                        //     Hence the need to in-line the code here:
-                        var obj = $scope.explorer.__meta;
-                        var method = $scope.method;
-                        var request = requestBuilder.buildSetParameterRequest(obj, method, param);
-                        var promise = fresnelService.setParameter(request);
 
-                        promise.then((promiseResult) => {
-                            var response = promiseResult.data;
-                            param.Error = response.Passed ? "" : response.Messages[0].Text;
-
-                            $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
-                        });
+                        $scope.setParameterOnServer(param);
                     }
                 };
 
                 searchService.showSearchForParameter(method, param, onSelectionConfirmed);
+            }
+
+            $scope.setParameterOnServer = function (param: ParameterVM) {
+                var obj = $scope.explorer.__meta;
+                var method = $scope.method;
+                var request = requestBuilder.buildSetParameterRequest(obj, method, param);
+                var promise = fresnelService.setParameter(request);
+
+                promise.then((promiseResult) => {
+                    var response = promiseResult.data;
+                    param.Error = response.Passed ? "" : response.Messages[0].Text;
+
+                    if (response.Passed) {
+                        // Track which parameters have been set by the user:
+                        var index = method.ParametersSetByUser.indexOf(param);
+                        if (index > -1) {
+                            method.ParametersSetByUser.splice(index, 1);
+                        }
+                        method.ParametersSetByUser.push(param);
+                    }
+
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+                });
             }
 
             $scope.addExistingItems = function (param: ParameterVM, coll: CollectionVM) {
@@ -107,6 +119,7 @@ module FresnelApp {
                     //promise.then((promiseResult) => {
                     //    var response = promiseResult.data;
 
+                    //    appService.identityMap.merge(response.Modifications);
                     //    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
                     //});
                 };

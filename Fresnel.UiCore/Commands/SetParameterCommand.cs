@@ -79,6 +79,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 };
                 return new GenericResponse()
                 {
+                    Modifications = _ModificationsBuilder.BuildFrom(oMethod, oParam),
                     Passed = true,
                     Messages = new MessageVM[] { infoVM }
                 };

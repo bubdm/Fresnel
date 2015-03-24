@@ -44,9 +44,13 @@ module FresnelApp {
             this.mergeNewObjects(modifications);
             this.mergePropertyChanges(modifications);
             this.mergeRemovals(modifications);
+            this.mergeParameterChanges(modifications);
         }
 
         private mergeNewObjects(modifications: ModificationsVM) {
+            if (!modifications.NewObjects)
+                return;
+
             for (var i = 0; i < modifications.NewObjects.length; i++) {
                 var item: ObjectVM = modifications.NewObjects[i];
                 var existingItem = this.getObject(item.ID);
@@ -60,7 +64,7 @@ module FresnelApp {
             }
 
             for (var i = 0; i < modifications.CollectionAdditions.length; i++) {
-                var addition = modifications.CollectionAdditions[i];
+                var addition: CollectionElementVM = modifications.CollectionAdditions[i];
                 var collection = <CollectionVM>this.getObject(addition.CollectionId);
                 var element = this.getObject(addition.ElementId);
                 if (collection != null) {
@@ -70,20 +74,15 @@ module FresnelApp {
         }
 
         private mergePropertyChanges(modifications: ModificationsVM) {
+            if (!modifications.PropertyChanges)
+                return;
+
             for (var i = 0; i < modifications.PropertyChanges.length; i++) {
-                var propertyChange = modifications.PropertyChanges[i];
+                var propertyChange: PropertyChangeVM = modifications.PropertyChanges[i];
 
                 var existingItem = this.getObject(propertyChange.ObjectId);
                 if (existingItem == null) {
                     continue;
-                }
-
-                var newPropertyValue = null;
-                if (propertyChange.State.ReferenceValueId != null) {
-                    newPropertyValue = this.getObject(propertyChange.State.ReferenceValueId);
-                }
-                else {
-                    newPropertyValue = propertyChange.State.Value;
                 }
 
                 var prop: PropertyVM = $.grep(existingItem.Properties, function (e: PropertyVM) {
@@ -92,11 +91,23 @@ module FresnelApp {
 
                 this.extendDeep(prop.State, propertyChange.State);
 
+                // Finally, we can set the property value:
+                var newPropertyValue = null;
+                if (propertyChange.State.ReferenceValueID != null) {
+                    newPropertyValue = this.getObject(propertyChange.State.ReferenceValueID);
+                }
+                else {
+                    newPropertyValue = propertyChange.State.Value;
+                }
+
                 prop.State.Value = newPropertyValue;
             }
         }
 
         private mergeRemovals(modifications: ModificationsVM) {
+            if (!modifications.CollectionRemovals)
+                return;
+
             for (var i = 0; i < modifications.CollectionRemovals.length; i++) {
                 var removal = modifications.CollectionRemovals[i];
                 var collection = <CollectionVM>this.getObject(removal.CollectionId);
@@ -107,6 +118,41 @@ module FresnelApp {
                         collection.Items.splice(index, 1);
                     }
                 }
+            }
+        }
+
+        private mergeParameterChanges(modifications: ModificationsVM) {
+            if (!modifications.MethodParameterChanges)
+                return;
+
+            for (var i = 0; i < modifications.MethodParameterChanges.length; i++) {
+                var parameterChange: ParameterChangeVM = modifications.MethodParameterChanges[i];
+
+                var existingItem = this.getObject(parameterChange.ObjectId);
+                if (existingItem == null) {
+                    continue;
+                }
+
+                var method: MethodVM = $.grep(existingItem.Methods, function (e: MethodVM) {
+                    return e.InternalName == parameterChange.MethodName;
+                }, false)[0];
+
+                var param: ParameterVM = $.grep(method.Parameters, function (e: ParameterVM) {
+                    return e.InternalName == parameterChange.ParameterName;
+                }, false)[0];
+
+                this.extendDeep(param.State, parameterChange.State);
+
+                // Finally, we can set the parameter value:
+                var paramValue = null;
+                if (parameterChange.State.ReferenceValueID != null) {
+                    paramValue = this.getObject(parameterChange.State.ReferenceValueID);
+                }
+                else {
+                    paramValue = parameterChange.State.Value;
+                }
+
+                param.State.Value = paramValue;
             }
         }
 

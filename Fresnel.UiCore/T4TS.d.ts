@@ -107,7 +107,6 @@ declare module FresnelApp {
         ParameterName: string;
         NonReferenceValue: any;
         ReferenceValueId: any;
-        ReferenceValueIds: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SetPropertyRequest **/
     export interface SetPropertyRequest {
@@ -136,6 +135,14 @@ declare module FresnelApp {
         PropertyChanges: any;
         CollectionAdditions: any;
         CollectionRemovals: any;
+        MethodParameterChanges: any;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.Changes.ParameterChangeVM **/
+    export interface ParameterChangeVM {
+        ObjectId: any;
+        MethodName: string;
+        ParameterName: string;
+        State: FresnelApp.ValueStateVM;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Changes.PropertyChangeVM **/
     export interface PropertyChangeVM {

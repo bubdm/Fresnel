@@ -255,7 +255,6 @@ namespace Envivo.Fresnel.Tests.Proxies
             var classType = typeof(Fresnel.SampleModel.MethodTests);
             var createResponse = toolboxController.Create(classType.FullName);
 
-            // Act:
             var searchRequest = new SearchParameterRequest()
             {
                 ObjectID = createResponse.NewObject.ID,
@@ -292,7 +291,6 @@ namespace Envivo.Fresnel.Tests.Proxies
             var classType = typeof(Fresnel.SampleModel.MethodTests);
             var createResponse = toolboxController.Create(classType.FullName);
 
-            // Act:
             var searchRequest = new SearchParameterRequest()
             {
                 ObjectID = createResponse.NewObject.ID,

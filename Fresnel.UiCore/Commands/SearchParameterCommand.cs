@@ -4,6 +4,7 @@ using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Model;
+using Envivo.Fresnel.UiCore.Model.Changes;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Collections;
@@ -38,10 +39,10 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             try
             {
-                var oObj = _ObserverCache.GetObserverById(request.ObjectID);
-                var tClass = (ClassTemplate)oObj.Template;
-                var tMethod = tClass.Methods[request.MethodName];
-                var tParam = tMethod.Parameters[request.ParameterName];
+                var oObj = (ObjectObserver)_ObserverCache.GetObserverById(request.ObjectID);
+                var oMethod = oObj.Methods[request.MethodName];
+                var oParam = oMethod.Parameters[request.ParameterName];
+                var tParam = oParam.Template;
 
                 var searchType = tParam.IsCollection ?
                                  ((CollectionTemplate)tParam.InnerClass).ElementType :

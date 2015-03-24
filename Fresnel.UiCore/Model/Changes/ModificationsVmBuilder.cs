@@ -10,17 +10,20 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
     {
         private AbstractObjectVmBuilder _AbstractObjectVMBuilder;
         private PropertyStateVmBuilder _PropertyStateVmBuilder;
+        private ParameterStateVmBuilder _ParameterStateVmBuilder;
         private ObserverCache _ObserverCache;
 
         public ModificationsVmBuilder
             (
             AbstractObjectVmBuilder abstractObjectVMBuilder,
-            PropertyStateVmBuilder _propertyStateVmBuilder,
+            PropertyStateVmBuilder propertyStateVmBuilder,
+            ParameterStateVmBuilder parameterStateVmBuilder,
             ObserverCache observerCache
             )
         {
             _AbstractObjectVMBuilder = abstractObjectVMBuilder;
-            _PropertyStateVmBuilder = _propertyStateVmBuilder;
+            _PropertyStateVmBuilder = propertyStateVmBuilder;
+            _ParameterStateVmBuilder = parameterStateVmBuilder;
             _ObserverCache = observerCache;
         }
 
@@ -56,6 +59,24 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
             return result;
         }
 
+        public ModificationsVM BuildFrom(MethodObserver oMethod, ParameterObserver oParam)
+        {
+            var parameterChange = new ParameterChangeVM()
+            {
+                ObjectId = oMethod.OuterObject.ID,
+                MethodName = oMethod.Template.Name,
+                ParameterName = oParam.Template.Name,
+                State = _ParameterStateVmBuilder.BuildFor(oParam)
+            };
+
+            var result = new ModificationsVM()
+            {
+                MethodParameterChanges = new ParameterChangeVM[] { parameterChange }
+            };
+
+            return result;
+        }
+
         private PropertyChangeVM CreatePropertyChange(PropertyChange propertyChange)
         {
             var oProperty = propertyChange.Property;
@@ -67,6 +88,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
                 State = _PropertyStateVmBuilder.BuildFor(oProperty)
             };
 
+            // As the s
             if (oProperty.Template.IsNonReference)
             {
                 result.State.Value = propertyChange.NewValue;
@@ -85,6 +107,8 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
             else
             {
                 result.State.FriendlyValue = "";
+                result.State.Value = null;
+                result.State.ReferenceValueID = null;
             }
 
             return result;

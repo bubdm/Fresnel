@@ -274,6 +274,11 @@ var FresnelApp;
             $scope.explorer = explorer;
             $scope.method = method;
             method.ParametersSetByUser = [];
+            for (var i = 0; i < method.Parameters.length; i++) {
+                var param = method.Parameters[i];
+                param.State.Value = null;
+                param.State.ReferenceValueID = null;
+            }
             $scope.invoke = function (method) {
                 var request = requestBuilder.buildMethodInvokeRequest(method);
                 var promise = fresnelService.invokeMethod(request);
@@ -288,17 +293,11 @@ var FresnelApp;
                 });
             };
             $scope.setProperty = function (param) {
-                // Find the parameter, and set it's value:
-                // If it's an Object, set the ReferenceValueID
-                if (!param.IsNonReference) {
-                    param.State.ReferenceValueID = param.State.Value.ID;
-                }
-                var matches = $.grep(method.ParametersSetByUser, function (e) {
-                    return e == param;
-                });
-                if (matches.length == 0) {
-                    method.ParametersSetByUser.push(param);
-                }
+                // BUG: This is to prevent 'digest' model changes accidentally triggering server code:
+                // See https://github.com/angular/angular.js/issues/9867
+                if ($scope.$$phase == "$digest")
+                    return;
+                $scope.setParameterOnServer(param);
             };
             $scope.setBitwiseEnumProperty = function (param, enumValue) {
                 param.State.Value = param.State.Value ^ enumValue;
@@ -312,20 +311,30 @@ var FresnelApp;
                     if (selectedItems.length == 1) {
                         var selectedItem = selectedItems[0];
                         param.State.ReferenceValueID = selectedItem.ID;
-                        // NB: We can't call the setProperty() function, as a digest is already running.
-                        //     Hence the need to in-line the code here:
-                        var obj = $scope.explorer.__meta;
-                        var method = $scope.method;
-                        var request = requestBuilder.buildSetParameterRequest(obj, method, param);
-                        var promise = fresnelService.setParameter(request);
-                        promise.then(function (promiseResult) {
-                            var response = promiseResult.data;
-                            param.Error = response.Passed ? "" : response.Messages[0].Text;
-                            $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
-                        });
+                        $scope.setParameterOnServer(param);
                     }
                 };
                 searchService.showSearchForParameter(method, param, onSelectionConfirmed);
+            };
+            $scope.setParameterOnServer = function (param) {
+                var obj = $scope.explorer.__meta;
+                var method = $scope.method;
+                var request = requestBuilder.buildSetParameterRequest(obj, method, param);
+                var promise = fresnelService.setParameter(request);
+                promise.then(function (promiseResult) {
+                    var response = promiseResult.data;
+                    param.Error = response.Passed ? "" : response.Messages[0].Text;
+                    if (response.Passed) {
+                        // Track which parameters have been set by the user:
+                        var index = method.ParametersSetByUser.indexOf(param);
+                        if (index > -1) {
+                            method.ParametersSetByUser.splice(index, 1);
+                        }
+                        method.ParametersSetByUser.push(param);
+                    }
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
+                });
             };
             $scope.addExistingItems = function (param, coll) {
                 var onSelectionConfirmed = function (selectedItems) {
@@ -334,6 +343,7 @@ var FresnelApp;
                     //var promise = fresnelService.addItemsToCollection(request);
                     //promise.then((promiseResult) => {
                     //    var response = promiseResult.data;
+                    //    appService.identityMap.merge(response.Modifications);
                     //    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
                     //});
                 };
@@ -772,7 +782,6 @@ var FresnelApp;
                 ParameterName: param.InternalName,
                 NonReferenceValue: param.State.Value,
                 ReferenceValueId: param.State.ReferenceValueID,
-                ReferenceValueIds: null
             };
             return request;
         };
@@ -1252,8 +1261,11 @@ var FresnelApp;
             this.mergeNewObjects(modifications);
             this.mergePropertyChanges(modifications);
             this.mergeRemovals(modifications);
+            this.mergeParameterChanges(modifications);
         };
         IdentityMap.prototype.mergeNewObjects = function (modifications) {
+            if (!modifications.NewObjects)
+                return;
             for (var i = 0; i < modifications.NewObjects.length; i++) {
                 var item = modifications.NewObjects[i];
                 var existingItem = this.getObject(item.ID);
@@ -1275,27 +1287,32 @@ var FresnelApp;
             }
         };
         IdentityMap.prototype.mergePropertyChanges = function (modifications) {
+            if (!modifications.PropertyChanges)
+                return;
             for (var i = 0; i < modifications.PropertyChanges.length; i++) {
                 var propertyChange = modifications.PropertyChanges[i];
                 var existingItem = this.getObject(propertyChange.ObjectId);
                 if (existingItem == null) {
                     continue;
                 }
-                var newPropertyValue = null;
-                if (propertyChange.State.ReferenceValueId != null) {
-                    newPropertyValue = this.getObject(propertyChange.State.ReferenceValueId);
-                }
-                else {
-                    newPropertyValue = propertyChange.State.Value;
-                }
                 var prop = $.grep(existingItem.Properties, function (e) {
                     return e.InternalName == propertyChange.PropertyName;
                 }, false)[0];
                 this.extendDeep(prop.State, propertyChange.State);
+                // Finally, we can set the property value:
+                var newPropertyValue = null;
+                if (propertyChange.State.ReferenceValueID != null) {
+                    newPropertyValue = this.getObject(propertyChange.State.ReferenceValueID);
+                }
+                else {
+                    newPropertyValue = propertyChange.State.Value;
+                }
                 prop.State.Value = newPropertyValue;
             }
         };
         IdentityMap.prototype.mergeRemovals = function (modifications) {
+            if (!modifications.CollectionRemovals)
+                return;
             for (var i = 0; i < modifications.CollectionRemovals.length; i++) {
                 var removal = modifications.CollectionRemovals[i];
                 var collection = this.getObject(removal.CollectionId);
@@ -1306,6 +1323,33 @@ var FresnelApp;
                         collection.Items.splice(index, 1);
                     }
                 }
+            }
+        };
+        IdentityMap.prototype.mergeParameterChanges = function (modifications) {
+            if (!modifications.MethodParameterChanges)
+                return;
+            for (var i = 0; i < modifications.MethodParameterChanges.length; i++) {
+                var parameterChange = modifications.MethodParameterChanges[i];
+                var existingItem = this.getObject(parameterChange.ObjectId);
+                if (existingItem == null) {
+                    continue;
+                }
+                var method = $.grep(existingItem.Methods, function (e) {
+                    return e.InternalName == parameterChange.MethodName;
+                }, false)[0];
+                var param = $.grep(method.Parameters, function (e) {
+                    return e.InternalName == parameterChange.ParameterName;
+                }, false)[0];
+                this.extendDeep(param.State, parameterChange.State);
+                // Finally, we can set the parameter value:
+                var paramValue = null;
+                if (parameterChange.State.ReferenceValueID != null) {
+                    paramValue = this.getObject(parameterChange.State.ReferenceValueID);
+                }
+                else {
+                    paramValue = parameterChange.State.Value;
+                }
+                param.State.Value = paramValue;
             }
         };
         IdentityMap.prototype.mergeObjects = function (existingObj, newObj) {

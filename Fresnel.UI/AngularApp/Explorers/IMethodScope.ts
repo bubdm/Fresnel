@@ -18,6 +18,8 @@
 
         addExistingItems(collectionParam: ParameterVM, coll: CollectionVM);
 
+        setParameterOnServer(param: ParameterVM);
+
         close(explorer: Explorer);
     }
 

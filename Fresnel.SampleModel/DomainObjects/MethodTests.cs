@@ -66,7 +66,7 @@ namespace Envivo.Fresnel.SampleModel
         /// <param name="category">This should allow ONE Category to be chosen</param>
         /// <param name="pocos">This should allow ONE or MORE PocoObjects to be chosen</param>
         /// <returns></returns>
-        public string MethodWithObjectParameters(Category category, IEnumerable<PocoObject> pocos)
+        public string MethodWithObjectParameters(Category category)
         {
             return MethodBase.GetCurrentMethod().Name;
         }

@@ -241,36 +241,5 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsFalse(poco.ChildObjects.Contains(child));
         }
 
-
-        [Test]
-        public void ShouldInvokeMethodWithMultipleParameters()
-        {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-            var obj = new SampleModel.MethodTests();
-            obj.ID = Guid.NewGuid();
-            var oObject = (ObjectObserver)observerCache.GetObserver(obj);
-
-            // Act:
-            var request = new InvokeMethodRequest()
-            {
-                ObjectID = obj.ID,
-                MethodName = "MethodWithValueParameters",
-                Parameters = new SettableMemberVM[] { 
-                    new SettableMemberVM(){ InternalName = "aString", State = new ValueStateVM() { Value = "123"} },
-                    new SettableMemberVM(){ InternalName = "aNumber", State = new ValueStateVM() { Value = 123} },
-                    new SettableMemberVM(){ InternalName = "aDate", State = new ValueStateVM() { Value = DateTime.Now} },
-                 }
-            };
-
-            var response = controller.InvokeMethod(request);
-
-            // Assert:
-            Assert.IsTrue(response.Passed);
-
-        }
     }
 }

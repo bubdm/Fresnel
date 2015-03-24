@@ -9,7 +9,6 @@
                 ParameterName: param.InternalName,
                 NonReferenceValue: param.State.Value,
                 ReferenceValueId: param.State.ReferenceValueID,
-                ReferenceValueIds: null
             };
 
             return request;

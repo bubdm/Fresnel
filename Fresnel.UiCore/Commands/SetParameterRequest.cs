@@ -16,7 +16,5 @@ namespace Envivo.Fresnel.UiCore.Commands
         public object NonReferenceValue { get; set; }
 
         public Guid ReferenceValueId { get; set; }
-
-        public IEnumerable<Guid> ReferenceValueIds { get; set; }
     }
 }
