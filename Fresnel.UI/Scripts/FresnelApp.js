@@ -239,6 +239,7 @@ var FresnelApp;
                 }
                 // This allows Smart-Table to handle the st-safe-src properly:
                 existingSearchResults.DisplayItems = [].concat(existingSearchResults.Items);
+                existingSearchResults.AreMoreAvailable = newSearchResults.AreMoreAvailable;
             }).finally(function () {
                 _this.blockUI.stop();
             });
@@ -405,7 +406,8 @@ var FresnelApp;
                     var explorerRow = (parentExplorer == undefined || parentExplorer == null) ? null : parentExplorer.ParentRow;
                     if (explorerRow == undefined || explorerRow == null) {
                         explorerRow = {
-                            Explorers: []
+                            Explorers: [],
+                            ColourIndex: $scope.visibleRows.length % 8
                         };
                         $scope.visibleRows.push(explorerRow);
                     }

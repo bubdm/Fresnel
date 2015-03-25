@@ -165,6 +165,7 @@ module FresnelApp {
 
                 // This allows Smart-Table to handle the st-safe-src properly:
                 existingSearchResults.DisplayItems = [].concat(existingSearchResults.Items);
+                existingSearchResults.AreMoreAvailable = newSearchResults.AreMoreAvailable;
             })
                 .finally(() => {
                 this.blockUI.stop();
