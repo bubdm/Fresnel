@@ -4,6 +4,7 @@
 
         Explorers: Explorer[];
 
+        ColourIndex: number;
     }
 
 }

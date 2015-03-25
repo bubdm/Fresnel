@@ -20,9 +20,43 @@ a.disabled {
 }
 
 .explorerRow {
-    white-space: normal; /* This restores the text wrapping from the workbenchContainer */
-    float: none;
-    display: block;
+    display: inline-block;
+}
+
+.rowColour0 {
+    background-color: #F5A9A9;
+}
+
+.rowColour1 {
+    background-color: #F3E2A9;
+}
+
+.rowColour2 {
+    background-color: #D0F5A9;
+}
+
+.rowColour3 {
+    background-color: #A9F5BC;
+}
+
+.rowColour4 {
+    background-color: #A9F5F2;
+}
+
+.rowColour5 {
+    background-color: #A9BCF5;
+}
+
+.rowColour6 {
+    background-color: #D0A9F5;
+}
+
+.rowColour7 {
+    background-color: #F5A9E1;
+}
+
+.rowColour8 {
+    background-color: #E6E6E6;
 }
 
 .explorerToolbar {

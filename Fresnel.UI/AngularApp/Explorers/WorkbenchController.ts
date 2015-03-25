@@ -37,7 +37,8 @@
 
                     if (explorerRow == undefined || explorerRow == null) {
                         explorerRow = {
-                            Explorers: []
+                            Explorers: [],
+                            ColourIndex: $scope.visibleRows.length % 8
                         };
                         $scope.visibleRows.push(explorerRow);
                     }
