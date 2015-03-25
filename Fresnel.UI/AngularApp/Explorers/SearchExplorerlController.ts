@@ -36,7 +36,7 @@
             $scope.results.DisplayItems = [].concat($scope.results.Items);
 
             $scope.openNewExplorer = function (obj: ObjectVM) {
-                searchService.openNewExplorer(obj, $rootScope);
+                searchService.openNewExplorer(obj, $rootScope, $scope.explorer);
             }
 
             $scope.stTablePipe = function (tableState) {

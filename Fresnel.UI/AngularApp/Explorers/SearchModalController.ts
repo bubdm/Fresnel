@@ -29,7 +29,7 @@
             // $scope.searchPromise = fresnelService.SearchParameterObjects($scope.request);
 
             $scope.openNewExplorer = function (obj: ObjectVM) {
-                searchService.openNewExplorer(obj, $rootScope);
+                searchService.openNewExplorer(obj, $rootScope, $scope.explorer);
             }
 
             $scope.loadNextPage = function () {

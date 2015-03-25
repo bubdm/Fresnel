@@ -1,5 +1,14 @@
 var FresnelApp;
 (function (FresnelApp) {
+    var ExplorerRow = (function () {
+        function ExplorerRow() {
+        }
+        return ExplorerRow;
+    })();
+    FresnelApp.ExplorerRow = ExplorerRow;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     // Used to control the interactions within an open Search form
     var SearchModalController = (function () {
         function SearchModalController($rootScope, $scope, fresnelService, searchService, explorer) {
@@ -13,7 +22,7 @@ var FresnelApp;
             // $scope.searchPromise = fresnelService.SearchPropertyObjects($scope.request);
             // $scope.searchPromise = fresnelService.SearchParameterObjects($scope.request);
             $scope.openNewExplorer = function (obj) {
-                searchService.openNewExplorer(obj, $rootScope);
+                searchService.openNewExplorer(obj, $rootScope, $scope.explorer);
             };
             $scope.loadNextPage = function () {
                 searchService.loadNextPage($scope.request, $scope.results, $scope.searchAction);
@@ -51,7 +60,7 @@ var FresnelApp;
             // This allows Smart-Table to handle the st-safe-src properly:
             $scope.results.DisplayItems = [].concat($scope.results.Items);
             $scope.openNewExplorer = function (obj) {
-                searchService.openNewExplorer(obj, $rootScope);
+                searchService.openNewExplorer(obj, $rootScope, $scope.explorer);
             };
             $scope.stTablePipe = function (tableState) {
                 // Sorting on an Object/Collection property doesn't make sense, so don't allow it:
@@ -192,7 +201,7 @@ var FresnelApp;
             };
             return options;
         };
-        SearchService.prototype.openNewExplorer = function (obj, $rootScope) {
+        SearchService.prototype.openNewExplorer = function (obj, $rootScope, parentExplorer) {
             var _this = this;
             // As the collection only contains a lightweight object, we need to fetch one with more detail:
             var request = this.requestBuilder.buildGetObjectRequest(obj);
@@ -210,7 +219,7 @@ var FresnelApp;
                     else {
                         _this.appService.identityMap.mergeObjects(existingObj, latestObj);
                     }
-                    $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, latestObj);
+                    $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, latestObj, parentExplorer);
                 }
             });
         };
@@ -290,7 +299,7 @@ var FresnelApp;
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                     if (response.ResultObject) {
-                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.ResultObject);
+                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.ResultObject, $scope.explorer);
                     }
                 });
             };
@@ -377,8 +386,8 @@ var FresnelApp;
 (function (FresnelApp) {
     var WorkbenchController = (function () {
         function WorkbenchController($rootScope, $scope, fresnelService, appService, explorerService) {
-            $scope.visibleExplorers = [];
-            $scope.$on(FresnelApp.UiEventType.ExplorerOpen, function (event, obj) {
+            $scope.visibleRows = [];
+            $scope.$on(FresnelApp.UiEventType.ExplorerOpen, function (event, obj, parentExplorer) {
                 if (!obj)
                     return;
                 // Re-use the existing object, so that any bindings aren't lost:
@@ -389,18 +398,50 @@ var FresnelApp;
                 else {
                     appService.identityMap.addObject(obj);
                 }
-                var explorer = explorerService.getExplorer(obj.ID);
-                if (explorer == null) {
-                    explorer = explorerService.addExplorer(obj);
-                    $scope.visibleExplorers.push(explorer);
+                var newExplorer = explorerService.getExplorer(obj.ID);
+                if (newExplorer == null) {
+                    newExplorer = explorerService.addExplorer(obj);
+                    // Determine which row to put the new Explorer in:
+                    var explorerRow = (parentExplorer == undefined || parentExplorer == null) ? null : parentExplorer.ParentRow;
+                    if (explorerRow == undefined || explorerRow == null) {
+                        explorerRow = {
+                            Explorers: []
+                        };
+                        $scope.visibleRows.push(explorerRow);
+                    }
+                    // Determine the position of the new Explorer in it's row:
+                    var panelIndex = explorerRow.Explorers.indexOf(parentExplorer);
+                    var isPanelInserted = false;
+                    if (panelIndex > -1) {
+                        var newIndex = panelIndex + 1;
+                        if (newIndex != explorerRow.Explorers.length) {
+                            explorerRow.Explorers.splice(panelIndex + 1, 0, newExplorer);
+                            isPanelInserted = true;
+                        }
+                    }
+                    if (!isPanelInserted) {
+                        explorerRow.Explorers.push(newExplorer);
+                    }
+                    newExplorer.ParentRow = explorerRow;
+                    newExplorer.ParentExplorer = parentExplorer;
                 }
             });
             $scope.$on(FresnelApp.UiEventType.ExplorerClose, function (event, explorer) {
-                var index = $scope.visibleExplorers.indexOf(explorer);
-                if (index > -1) {
-                    $scope.visibleExplorers.splice(index, 1);
+                var parentRow = explorer.ParentRow;
+                var panelIndex = parentRow.Explorers.indexOf(explorer);
+                if (panelIndex > -1) {
+                    parentRow.Explorers.splice(panelIndex, 1);
+                    // Dispose of the Explorer:
                     explorerService.remove(explorer);
-                    if ($scope.visibleExplorers.length == 0) {
+                    explorer.ParentRow = null;
+                    explorer.ParentExplorer = null;
+                    // Determine if the row needs to disappear:
+                    if (parentRow.Explorers.length == 0) {
+                        var rowIndex = $scope.visibleRows.indexOf(parentRow);
+                        $scope.visibleRows.splice(rowIndex, 1);
+                    }
+                    // Clean up the Session if necessary:
+                    if ($scope.visibleRows.length == 0) {
                         var promise = fresnelService.cleanupSession();
                         promise.then(function (promiseResult) {
                             var response = promiseResult.data;
@@ -498,7 +539,7 @@ var FresnelApp;
                         else {
                             appService.identityMap.mergeObjects(existingObj, latestObj);
                         }
-                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, latestObj);
+                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, latestObj, $scope.explorer);
                     }
                 });
             };
@@ -568,7 +609,7 @@ var FresnelApp;
                         appService.identityMap.merge(response.Modifications);
                         $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                         if (response.ResultObject) {
-                            $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.ResultObject);
+                            $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.ResultObject, $scope.explorer);
                         }
                     });
                 }
@@ -625,7 +666,7 @@ var FresnelApp;
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                     if (response.Passed) {
-                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.NewObject);
+                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.NewObject, $scope.explorer);
                     }
                 });
             };
@@ -693,7 +734,7 @@ var FresnelApp;
                 $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerClose, explorer);
             };
             $scope.openNewExplorer = function (obj) {
-                $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, obj);
+                $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, obj, $scope.explorer);
             };
             $scope.openNewExplorerForProperty = function (prop) {
                 var request = requestBuilder.buildGetPropertyRequest(prop);
@@ -711,7 +752,7 @@ var FresnelApp;
                             obj = existingObj;
                         }
                         obj.OuterProperty = prop;
-                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, obj);
+                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, obj, $scope.explorer);
                     }
                 });
             };
@@ -754,7 +795,7 @@ var FresnelApp;
                     $location.hash(elementID);
                     $anchorScroll();
                 }, 0);
-                //scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
+                //scope.$watchCollection('visibleRows', function (newVal, oldVal) {
                 //    ////bootstrap WYSIHTML5 - text editor
                 //    //$(".textarea").wysihtml5();
                 //})

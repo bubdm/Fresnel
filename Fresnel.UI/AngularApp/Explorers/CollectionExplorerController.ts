@@ -44,7 +44,7 @@
                         else {
                             appService.identityMap.mergeObjects(existingObj, latestObj);
                         }
-                        $rootScope.$broadcast(UiEventType.ExplorerOpen, latestObj);
+                        $rootScope.$broadcast(UiEventType.ExplorerOpen, latestObj, $scope.explorer);
                     }
                 });
             }

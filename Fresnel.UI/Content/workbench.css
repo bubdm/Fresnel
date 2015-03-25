@@ -19,6 +19,12 @@ a.disabled {
     white-space: nowrap; /* This allows ExplorerPanels to be aligned horzxontally, but breaks intenal text wrapping  */
 }
 
+.explorerRow {
+    white-space: normal; /* This restores the text wrapping from the workbenchContainer */
+    float: none;
+    display: block;
+}
+
 .explorerToolbar {
     background-color: ActiveCaption;
     color: WindowText;

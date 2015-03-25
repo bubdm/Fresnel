@@ -49,7 +49,7 @@ module FresnelApp {
                     $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     if (response.ResultObject) {
-                        $rootScope.$broadcast(UiEventType.ExplorerOpen, response.ResultObject);
+                        $rootScope.$broadcast(UiEventType.ExplorerOpen, response.ResultObject, $scope.explorer);
                     }
                 });
             }

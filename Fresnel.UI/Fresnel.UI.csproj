@@ -1047,6 +1047,7 @@
       <Link>AngularApp\T4TS.d.ts</Link>
     </TypeScriptCompile>
     <TypeScriptCompile Include="AngularApp\ClassLibrary\IToolboxScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\ExplorerRow.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ISearchScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\IMethodScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ICollectionScope.ts" />

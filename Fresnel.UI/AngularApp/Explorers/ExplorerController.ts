@@ -37,7 +37,7 @@ module FresnelApp {
                         $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                         if (response.ResultObject) {
-                            $rootScope.$broadcast(UiEventType.ExplorerOpen, response.ResultObject);
+                            $rootScope.$broadcast(UiEventType.ExplorerOpen, response.ResultObject, $scope.explorer);
                         }
                     });
                 }
@@ -106,7 +106,7 @@ module FresnelApp {
                     $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     if (response.Passed) {
-                        $rootScope.$broadcast(UiEventType.ExplorerOpen, response.NewObject);
+                        $rootScope.$broadcast(UiEventType.ExplorerOpen, response.NewObject, $scope.explorer);
                     }
                 });
             }
@@ -194,7 +194,7 @@ module FresnelApp {
             }
 
             $scope.openNewExplorer = function (obj: ObjectVM) {
-                $rootScope.$broadcast(UiEventType.ExplorerOpen, obj);
+                $rootScope.$broadcast(UiEventType.ExplorerOpen, obj, $scope.explorer);
             }
 
             $scope.openNewExplorerForProperty = function (prop: PropertyVM) {
@@ -217,7 +217,7 @@ module FresnelApp {
 
                         obj.OuterProperty = prop;
 
-                        $rootScope.$broadcast(UiEventType.ExplorerOpen, obj);
+                        $rootScope.$broadcast(UiEventType.ExplorerOpen, obj, $scope.explorer);
                     }
                 });
             }

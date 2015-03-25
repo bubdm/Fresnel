@@ -119,7 +119,7 @@ module FresnelApp {
             return options;
         }
 
-        openNewExplorer(obj: ObjectVM, $rootScope: ng.IScope) {
+        openNewExplorer(obj: ObjectVM, $rootScope: ng.IScope, parentExplorer: Explorer) {
             // As the collection only contains a lightweight object, we need to fetch one with more detail:
             var request = this.requestBuilder.buildGetObjectRequest(obj);
             var promise = this.fresnelService.getObject(request);
@@ -139,7 +139,7 @@ module FresnelApp {
                     else {
                         this.appService.identityMap.mergeObjects(existingObj, latestObj);
                     }
-                    $rootScope.$broadcast(UiEventType.ExplorerOpen, latestObj);
+                    $rootScope.$broadcast(UiEventType.ExplorerOpen, latestObj, parentExplorer);
                 }
             });
         }

@@ -2,7 +2,7 @@
 
     export interface IWorkbenchScope extends ng.IScope {
 
-        visibleExplorers: Explorer[];
+        visibleRows: ExplorerRow[];
     }
 
 }

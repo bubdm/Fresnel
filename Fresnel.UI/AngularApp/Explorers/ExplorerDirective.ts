@@ -20,7 +20,7 @@
                     $anchorScroll();
                 }, 0);
 
-                //scope.$watchCollection('visibleExplorers', function (newVal, oldVal) {
+                //scope.$watchCollection('visibleRows', function (newVal, oldVal) {
 
                 //    ////bootstrap WYSIHTML5 - text editor
                 //    //$(".textarea").wysihtml5();
