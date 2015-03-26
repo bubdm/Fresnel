@@ -205,6 +205,31 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="image\.DS_Store" />
+    <None Include="Licenses\AdminLTE.LICENSE" />
+    <Content Include="Scripts\angular-inform\angular-inform.css.map" />
+    <Content Include="Scripts\angular-inform\angular-inform.js.map" />
+    <Content Include="Scripts\angular-inform\angular-inform.min.js.map" />
+    <Content Include="Scripts\angular-inform\README.md" />
+    <Content Include="Scripts\angular-block-ui\angular-block-ui.css.map" />
+    <Content Include="Scripts\angular-block-ui\angular-block-ui.js.map" />
+    <Content Include="Scripts\angular-block-ui\angular-block-ui.min.js.map" />
+    <Content Include="Scripts\angular-block-ui\README.md" />
+    <Content Include="Scripts\errors.json" />
+    <Content Include="Scripts\angular-touch.min.js.map" />
+    <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-resource.min.js.map" />
+    <Content Include="Scripts\angular-messages.min.js.map" />
+    <Content Include="Scripts\angular-loader.min.js.map" />
+    <Content Include="Scripts\angular-cookies.min.js.map" />
+    <Content Include="Scripts\angular-aria.min.js.map" />
+    <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-et.js" />
@@ -948,20 +973,6 @@
     <Content Include="Scripts\i18n\angular-locale_zh.js" />
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="image\.DS_Store" />
-    <None Include="Licenses\AdminLTE.LICENSE" />
-    <Content Include="Scripts\angular-inform\angular-inform.css.map" />
-    <Content Include="Scripts\angular-inform\angular-inform.js.map" />
-    <Content Include="Scripts\angular-inform\angular-inform.min.js.map" />
-    <Content Include="Scripts\angular-inform\README.md" />
-    <Content Include="Scripts\angular-block-ui\angular-block-ui.css.map" />
-    <Content Include="Scripts\angular-block-ui\angular-block-ui.js.map" />
-    <Content Include="Scripts\angular-block-ui\angular-block-ui.min.js.map" />
-    <Content Include="Scripts\angular-block-ui\README.md" />
-    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\ng-dock.js" />
@@ -1013,20 +1024,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
-    <Content Include="packages.config" />
-    <Content Include="Scripts\angular.min.js.map" />
-    <Content Include="Scripts\version.json" />
-    <Content Include="Scripts\errors.json" />
-    <Content Include="Scripts\angular-touch.min.js.map" />
-    <Content Include="Scripts\angular-sanitize.min.js.map" />
-    <Content Include="Scripts\angular-route.min.js.map" />
-    <Content Include="Scripts\angular-resource.min.js.map" />
-    <Content Include="Scripts\angular-messages.min.js.map" />
-    <Content Include="Scripts\angular-loader.min.js.map" />
-    <Content Include="Scripts\angular-cookies.min.js.map" />
-    <Content Include="Scripts\angular-aria.min.js.map" />
-    <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\jquery-2.1.1.min.map" />
+    <Content Include="Scripts\version.json" />
     <None Include="Views\Home\index.cshtml" />
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
