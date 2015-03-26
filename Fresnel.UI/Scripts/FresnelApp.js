@@ -468,8 +468,13 @@ var FresnelApp;
             this.templateCache = $templateCache;
         }
         ExplorerService.prototype.addExplorer = function (obj) {
-            var explorer = new FresnelApp.Explorer();
-            explorer.__meta = obj;
+            var explorer = {
+                __meta: obj,
+                ParentRow: null,
+                ParentExplorer: null,
+                IsMaximised: true,
+                CustomTemplateUrl: null,
+            };
             this.CheckForCustomTemplate(explorer);
             this.attachMembers(explorer);
             this.explorers[obj.ID] = explorer;

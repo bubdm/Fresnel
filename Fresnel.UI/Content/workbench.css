@@ -74,6 +74,23 @@ a.disabled {
     resize: both;
 }
 
+.collapsedExplorerPanel {
+    max-width: 32px;
+    min-height: 200px;
+    max-height: 200px;
+}
+
+.collapsedExplorerTitle {
+    margin-top:0px;
+    max-width: 134px;
+    transform: rotate(-90deg);
+    transform-origin: 80px 75px;
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    display:inline-block;
+}
+
 .objectExplorerPanelBody {
     overflow-x: hidden;
     overflow-y: auto;

@@ -14,8 +14,13 @@
         }
 
         addExplorer(obj: ObjectVM): Explorer {
-            var explorer = new Explorer();
-            explorer.__meta = obj;
+            var explorer: Explorer = {
+                __meta: obj,
+                ParentRow: null,
+                ParentExplorer: null,
+                IsMaximised: true,
+                CustomTemplateUrl: null,
+            };
             this.CheckForCustomTemplate(explorer);
 
             this.attachMembers(explorer);

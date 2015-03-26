@@ -124,16 +124,24 @@
                         <div class="explorerRow rowColour{{row.ColourIndex}}">
                             <div ng-repeat="explorer in row.Explorers" class="explorerPanel">
                                 <div ng-controller="explorerController" ng-init="oObj = explorer.__meta;">
-                                    <div ng-if="oObj.IsSearchResults">
-                                        <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
-                                        <div ng-controller="searchExplorerController" ng-include="'/Templates/searchResultsExplorer.html'"></div>
+
+                                    <div class="collapsedExplorerPanel box box-tools box-primary" ng-show="!explorer.IsMaximised">
+                                        <button class="btn btn-primary btn-sm" ng-click="maximise(explorer)"><i class="fa fa-expand"></i></button>
+                                        <span class="collapsedExplorerTitle box-title">{{ oObj.OuterProperty.Name ? oObj.OuterProperty.Name : oObj.Name }}</span>
                                     </div>
-                                    <div ng-if="!oObj.IsSearchResults && oObj.IsCollection">
-                                        <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
-                                        <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'"></div>
-                                    </div>
-                                    <div ng-if="!oObj.IsCollection">
-                                        <div ng-include=" '/Templates/objectExplorer.html' "></div>
+
+                                    <div ng-show="explorer.IsMaximised">
+                                        <div ng-if="oObj.IsSearchResults">
+                                            <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
+                                            <div ng-controller="searchExplorerController" ng-include="'/Templates/searchResultsExplorer.html'"></div>
+                                        </div>
+                                        <div ng-if="!oObj.IsSearchResults && oObj.IsCollection">
+                                            <!-- NB: This controller will inherit the contents of the parent ExplorerController -->
+                                            <div ng-controller="collectionExplorerController" ng-include="'/Templates/collectionExplorer.html'"></div>
+                                        </div>
+                                        <div ng-if="!oObj.IsCollection">
+                                            <div ng-include=" '/Templates/objectExplorer.html' "></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
