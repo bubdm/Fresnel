@@ -215,6 +215,8 @@ module FresnelApp {
                             obj = existingObj;
                         }
 
+                        // TODO: Using obj.OuterProperty has a limitation. Two objects may refer to the same object.
+                        //       So the OuterProperty needs to be attached to the Explorer, NOT the Object itself:
                         obj.OuterProperty = prop;
 
                         $rootScope.$broadcast(UiEventType.ExplorerOpen, obj, $scope.explorer);
