@@ -65,8 +65,8 @@ a.disabled {
 }
 
 .explorerPanel {
-    padding: 0px !important;
-    margin: 4px !important;
+    padding: 0px;
+    margin: 4px;
     min-height: 200px;
     display: inline-block;
     vertical-align: top;
