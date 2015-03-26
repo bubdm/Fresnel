@@ -6,5 +6,5 @@
     <button class="btn btn-primary btn-sm" ng-click="refresh(explorer)"><i class="fa fa-refresh"></i></button>
     <button class="btn btn-primary btn-sm" ng-show="explorer.IsMaximised" ng-click="minimise(explorer)"><i class="fa fa-compress"></i></button>
     <button class="btn btn-primary btn-sm" ng-show="!explorer.IsMaximised" ng-click=" maximise(explorer)"><i class="fa fa-expand"></i></button>
-    <button class="btn btn-primary btn-sm" ng-click="close(explorer)"><i class="fa fa-close"></i></button>
+    <button class="btn btn-primary btn-sm" ng-click="close(explorer)" id="explorerRightAnchor_{{oObj.ID}}"><i class="fa fa-close"></i></button>
 </div>

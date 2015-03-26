@@ -7,24 +7,28 @@
         $anchorScroll: ng.IAnchorScrollService
         ): ng.IDirective {
         return {
+            // Scroll to the new panel:
             link: function (scope: IExplorerScope, elem: JQuery, attributes: ng.IAttributes) {
-                // Scroll to the new panel:
 
-                // We're using a delay so that the element is rendered before we inspect it:
+                // We're using a delay so that the element is rendered before we inspect it.
+                // The delay must be longer than the animation used to render the element (see animations.css):
+                var delay = 501;
+
                 // See http://stackoverflow.com/a/20156250/80369
                 $timeout(function () {
                     var explorer = scope.explorer;
 
+                    // If the panel fits in the view, it's right side should be completely visible:
+                    var rightAnchorID = "explorerRightAnchor_" + explorer.__meta.ID;
+                    $location.hash(rightAnchorID);
+                    $anchorScroll();
+
+                    // If the panel is wider than the container, make sure it's left side is visible:
                     var elementID = "explorer_" + explorer.__meta.ID;
                     $location.hash(elementID);
                     $anchorScroll();
-                }, 0);
 
-                //scope.$watchCollection('visibleRows', function (newVal, oldVal) {
-
-                //    ////bootstrap WYSIHTML5 - text editor
-                //    //$(".textarea").wysihtml5();
-                //})
+                }, 1000);
             }
 
         }
