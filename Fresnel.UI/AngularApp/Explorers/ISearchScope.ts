@@ -15,6 +15,12 @@
 
         loadNextPage();
 
+        // Functions for setting Search Filters:
+        setProperty(prop: PropertyVM);
+        setBitwiseEnumProperty(prop: PropertyVM, enumValue: number);
+        applyFilters();
+        resetFilters();
+
         close(explorer: Explorer);
     }
 

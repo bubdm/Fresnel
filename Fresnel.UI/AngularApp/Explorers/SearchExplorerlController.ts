@@ -74,6 +74,31 @@
                 searchService.loadNextPage($scope.request, $scope.results, $scope.searchAction);
             }
 
+            $scope.setProperty = function (prop: PropertyVM) {
+                // Do nothing - we'll send the values to the server when the Search button is clicked
+                // (otherwise the parent controller's setProperty() will kick in and fail.
+            }
+
+            $scope.setBitwiseEnumProperty = function (prop: PropertyVM, enumValue: number) {
+                if (!prop.State.Value || prop.State.Value == null) {
+                    // Set a default so we can filp the bits afterwards:
+                    prop.State.Value = 0;
+                }
+                prop.State.Value = prop.State.Value ^ enumValue;
+            }
+
+            $scope.applyFilters = function () {
+                // Look inside the Collection's ElementProperties
+
+            }
+
+            $scope.resetFilters = function () {
+                var oCol = <CollectionVM>$scope.explorer.__meta;
+                for (var i = 0; i < oCol.ElementProperties.length; i++) {
+                    oCol.ElementProperties[i].State.Value = null;
+                }
+            }
+
         }
 
 

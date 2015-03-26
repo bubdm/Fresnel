@@ -48,6 +48,11 @@
                         </th> <!--Common-->
                         <th ng-repeat='prop in oCol.ElementProperties' ng-include="'/Templates/searchFilterItem.html'"></th>
                         <th class="">
+                            <button ng-click="resetFilters()"
+                                    title="Reset all filters"
+                                    class="btn btn-xs btn-default">
+                                <i class="glyphicon glyphicon-refresh"></i>
+                            </button>
                             <button ng-click="applyFilters()"
                                     title="Search for items"
                                     class="btn btn-xs btn-default">
