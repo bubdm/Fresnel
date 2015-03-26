@@ -44,17 +44,18 @@
                     }
 
                     // Determine the position of the new Explorer in it's row:
-                    var panelIndex = explorerRow.Explorers.indexOf(parentExplorer);
+                    var parentPanelIndex = explorerRow.Explorers.indexOf(parentExplorer);
                     var isPanelInserted = false;
-                    if (panelIndex > -1) {
-                        var newIndex = panelIndex + 1;
-                        if (newIndex != explorerRow.Explorers.length) {
-                            explorerRow.Explorers.splice(panelIndex + 1, 0, newExplorer);
+                    if (parentPanelIndex > -1) {
+                        var insertIndex = parentPanelIndex + 1;
+                        if (insertIndex != explorerRow.Explorers.length) {
+                            explorerRow.Explorers.splice(insertIndex, 0, newExplorer);
                             isPanelInserted = true;
                         }
                     }
 
                     if (!isPanelInserted) {
+                        // Shove it on the end:
                         explorerRow.Explorers.push(newExplorer);
                     }
 
