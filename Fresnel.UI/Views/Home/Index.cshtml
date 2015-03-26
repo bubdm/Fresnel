@@ -122,7 +122,7 @@
                 <div id="workbench" ng-controller="workbenchController">
                     <div ng-repeat="row in visibleRows" class="animate">
                         <div class="explorerRow rowColour{{row.ColourIndex}}">
-                            <div ng-repeat="explorer in row.Explorers" class="explorerPanel animate">
+                            <div ng-repeat="explorer in row.Explorers" class="explorerPanel">
                                 <div ng-controller="explorerController" ng-init="oObj = explorer.__meta;">
                                     <div ng-if="oObj.IsSearchResults">
                                         <!-- NB: This controller will inherit the contents of the parent ExplorerController -->

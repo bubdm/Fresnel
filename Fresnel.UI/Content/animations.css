@@ -1,8 +1,11 @@
 ﻿/* the 'active' style is the end point for the animation */
 
-.animate.ng-enter,
-.animate.ng-leave,
-.animate.ng-move
+.explorerRow.ng-enter,
+.explorerRow.ng-leave,
+.explorerRow.ng-move,
+.explorerPanel.ng-enter,
+.explorerPanel.ng-leave,
+.explorerPanel.ng-move
  {
     -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
     -moz-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
@@ -10,22 +13,43 @@
     transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
 }
 
-.animate.ng-enter {
+.explorerRow.ng-enter {
+    opacity: 0;
+    margin-top: -50px;
+}
+
+.explorerRow.ng-enter.ng-enter-active {
+    opacity: 1;
+    margin-top: 0px;
+}
+
+.explorerRow.ng-leave {
+    opacity: 1;
+    margin-top: 0px;
+}
+
+.explorerRow.ng-leave.ng-leave-active {
+    opacity: 0;
+    margin-top: -600px;
+}
+
+
+.explorerPanel.ng-enter {
     opacity: 0;
     margin-left: -50px;
 }
 
-.animate.ng-enter.ng-enter-active {
+.explorerPanel.ng-enter.ng-enter-active {
     opacity: 1;
     margin-left: 0px;
 }
 
-.animate.ng-leave {
+.explorerPanel.ng-leave {
     opacity: 1;
     margin-left: 0px;
 }
 
-.animate.ng-leave.ng-leave-active {
+.explorerPanel.ng-leave.ng-leave-active {
     opacity: 0;
     margin-left: -600px;
 }
