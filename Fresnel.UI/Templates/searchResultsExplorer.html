@@ -1,6 +1,13 @@
 ﻿<div ng-init="oCol = explorer.__meta;">
 
-    <div id="explorer_{{oCol.ID}}" object-explorer block-ui class="modalDialog container-fluid box box-solid box-primary">
+    <div ng-show="!explorer.IsMaximised" class="collapsedExplorerPanel box box-tools box-primary">
+        <button class="btn btn-primary btn-sm" ng-click="maximise(explorer)"><i class="fa fa-expand"></i></button>
+        <span class="collapsedExplorerTitle box-title">
+            Search results (showing {{ oCol.Items.length }})
+        </span>
+    </div>
+
+    <div id="explorer_{{oCol.ID}}" ng-show="explorer.IsMaximised" object-explorer block-ui class="modalDialog container-fluid box box-solid box-primary">
 
         <div class="box-header">
             <span class="explorerItemIcon fa fa-folder-open-o"> </span>
@@ -8,7 +15,7 @@
                 Search results (showing {{ oCol.Items.length }})
             </span>
 
-            <div ng-include="'/Templates/dialogToolbar.html'"></div>
+            <div ng-include="'/Templates/searchResultsToolbar.html'"></div>
         </div>
 
         <div class="collectionExplorerPanelBody">

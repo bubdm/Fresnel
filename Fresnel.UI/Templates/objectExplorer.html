@@ -1,6 +1,13 @@
 ﻿<ng-form name="explorerForm" role="form" class="" ng-init="oObj = explorer.__meta;">
 
-    <div id="explorer_{{oObj.ID}}" object-explorer block-ui class="container-fluid box box-solid box-primary" ng-class="{'explorerPanelNormalSize' : explorer.IsMaximised}">
+    <div ng-show="!explorer.IsMaximised" class="collapsedExplorerPanel box box-tools box-primary">
+        <button class="btn btn-primary btn-sm" ng-click="maximise(explorer)"><i class="fa fa-expand"></i></button>
+        <span class="collapsedExplorerTitle box-title">
+            {{ oObj.OuterProperty.Name ? oObj.OuterProperty.Name : oObj.Name }}
+        </span>
+    </div>
+
+    <div id="explorer_{{oObj.ID}}" ng-show="explorer.IsMaximised" object-explorer block-ui class="container-fluid box box-solid box-primary" ng-class="{'explorerPanelNormalSize' : explorer.IsMaximised}">
 
         <div class="box-header">
             <span class="explorerItemIcon {{oObj.Type}}-Icon"> </span>
