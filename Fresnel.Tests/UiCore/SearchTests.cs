@@ -274,41 +274,41 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(Category).Name));
         }
 
-        [Test]
-        public void ShouldSeachForCollectionParameterObjects()
-        {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
+        //[Test]
+        //public void ShouldSeachForCollectionParameterObjects()
+        //{
+        //    // Arrange:
+        //    var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+        //    var container = new ContainerFactory().Build(customDependencyModules);
 
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+        //    var engine = container.Resolve<Core.Engine>();
+        //    engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
 
-            var toolboxController = container.Resolve<ToolboxController>();
-            var explorerController = container.Resolve<ExplorerController>();
+        //    var toolboxController = container.Resolve<ToolboxController>();
+        //    var explorerController = container.Resolve<ExplorerController>();
 
-            // Act:
-            var classType = typeof(Fresnel.SampleModel.MethodTests);
-            var createResponse = toolboxController.Create(classType.FullName);
+        //    // Act:
+        //    var classType = typeof(Fresnel.SampleModel.MethodTests);
+        //    var createResponse = toolboxController.Create(classType.FullName);
 
-            var searchRequest = new SearchParameterRequest()
-            {
-                ObjectID = createResponse.NewObject.ID,
-                MethodName = "MethodWithObjectParameters",
-                ParameterName = "pocos",
-                OrderBy = "",
-                IsDescendingOrder = true,
-                PageSize = 100,
-                PageNumber = 1
-            };
+        //    var searchRequest = new SearchParameterRequest()
+        //    {
+        //        ObjectID = createResponse.NewObject.ID,
+        //        MethodName = "MethodWithObjectParameters",
+        //        ParameterName = "pocos",
+        //        OrderBy = "",
+        //        IsDescendingOrder = true,
+        //        PageSize = 100,
+        //        PageNumber = 1
+        //    };
 
-            var searchResponse = explorerController.SearchParameterObjects(searchRequest);
+        //    var searchResponse = explorerController.SearchParameterObjects(searchRequest);
 
-            // Assert:
-            Assert.IsTrue(searchResponse.Passed);
-            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
-            Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(PocoObject).Name));
-        }
+        //    // Assert:
+        //    Assert.IsTrue(searchResponse.Passed);
+        //    Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+        //    Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(PocoObject).Name));
+        //}
 
     }
 
