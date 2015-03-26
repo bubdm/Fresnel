@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-            var vmBuilder = container.Resolve<AbstractPropertyVmBuilder>();
+            var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
             var obj = new SampleModel.BasicTypes.MultiType();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
@@ -52,7 +52,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-            var vmBuilder = container.Resolve<AbstractPropertyVmBuilder>();
+            var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
             var textValues = new SampleModel.BasicTypes.TextValues();
             var oObject = (ObjectObserver)observerCache.GetObserver(textValues);
@@ -79,7 +79,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-            var vmBuilder = container.Resolve<AbstractPropertyVmBuilder>();
+            var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
             var obj = new SampleModel.BasicTypes.EnumValues();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);

@@ -34,6 +34,27 @@
                             title="{{elementProp.Description}}">{{elementProp.Name}}</th>
                         <th>&nbsp;</th> <!--Buttons-->
                     </tr>
+                    <tr>
+                        <th class="">
+                            <button ng-click="showFilterView()"
+                                    class="btn btn-xs btn-default">
+                                <i class="glyphicon glyphicon-collapse-down">
+                                </i>
+                            </button>
+                            <button ng-click="hideFilterView()"
+                                    class="btn btn-xs btn-default">
+                                <i class="glyphicon glyphicon-collapse-up"></i>
+                            </button>
+                        </th> <!--Common-->
+                        <th ng-repeat='prop in oCol.ElementProperties' ng-include="'/Templates/searchFilterItem.html'"></th>
+                        <th class="">
+                            <button ng-click="applyFilters()"
+                                    title="Search for items"
+                                    class="btn btn-xs btn-default">
+                                <i class="glyphicon glyphicon-play"></i>
+                            </button>
+                        </th> <!--Buttons-->
+                    </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in oCol.DisplayItems">
@@ -68,16 +89,16 @@
                 <button ng-click="$close(oCol)"
                         ng-show="results.AllowSelection"
                         title="Use the selected items"
-                        class="btn btn-sm btn-default">
-                    Use selected items
+                        class="btn btn-xs btn-default">
+                    <i class="glyphicon glyphicon-ok"></i>
                 </button>
             </div>
             <div class="pull-right">
                 <button ng-disabled="!results.AreMoreAvailable"
                         ng-click="loadNextPage()"
                         title="Fetch more items"
-                        class="btn btn-sm btn-default">
-                    More...
+                        class="btn btn-xs btn-default">
+                    <i class="glyphicon glyphicons-more"></i>
                 </button>
             </div>
         </div>

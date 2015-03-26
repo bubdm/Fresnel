@@ -99,7 +99,8 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
                 result.State.Value = propertyChange.NewValue;
 
                 // HACK:
-                if (oProperty.Template.PropertyType.IsEnum)
+                if (oProperty.Template.PropertyType.IsEnum &&
+                    result.State.Value != null)
                 {
                     result.State.Value = (int)result.State.Value;
                 }

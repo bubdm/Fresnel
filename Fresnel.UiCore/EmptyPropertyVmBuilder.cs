@@ -11,23 +11,20 @@ using System.Linq;
 
 namespace Envivo.Fresnel.UiCore
 {
-    public class AbstractPropertyVmBuilder
+    public class EmptyPropertyVmBuilder
     {
         private IEnumerable<IPropertyVmBuilder> _Builders;
         private UnknownVmBuilder _UnknownVmBuilder;
-        private PropertyStateVmBuilder _PropertyStateVmBuilder;
         private ClassHierarchyBuilder _ClassHierarchyBuilder;
 
-        public AbstractPropertyVmBuilder
+        public EmptyPropertyVmBuilder
             (
             IEnumerable<IPropertyVmBuilder> builders,
-            PropertyStateVmBuilder propertyStateVmBuilder,
             ClassHierarchyBuilder classHierarchyBuilder
             )
         {
             _Builders = builders;
             _UnknownVmBuilder = builders.OfType<UnknownVmBuilder>().Single();
-            _PropertyStateVmBuilder = propertyStateVmBuilder;
             _ClassHierarchyBuilder = classHierarchyBuilder;
         }
 
@@ -45,6 +42,8 @@ namespace Envivo.Fresnel.UiCore
                 Description = tProp.XmlComments.Summary,
                 IsRequired = tProp.IsNonReference && !tProp.IsNullableType,
                 IsVisible = !tProp.IsFrameworkMember && tProp.IsVisible,
+                IsNonReference = tProp.IsNonReference,
+                IsObject = !tProp.IsNonReference && !tProp.IsCollection,
                 IsCollection = tProp.IsCollection,
             };
 
@@ -62,52 +61,5 @@ namespace Envivo.Fresnel.UiCore
             return propVM;
         }
 
-        public SettableMemberVM BuildFor(BasePropertyObserver oProp)
-        {
-            var tProp = oProp.Template;
-            var objectProp = oProp as ObjectPropertyObserver;
-
-            var propVM = this.BuildFor(tProp);
-            propVM.ObjectID = oProp.OuterObject.ID;
-            propVM.IsLoaded = objectProp != null ? objectProp.IsLazyLoaded : true;
-            propVM.IsNonReference = oProp.Template.IsNonReference;
-            propVM.IsCollection = oProp.Template.IsCollection;
-            propVM.IsObject = !propVM.IsNonReference && !propVM.IsCollection;
-
-            propVM.State = _PropertyStateVmBuilder.BuildFor(oProp);
-
-            return propVM;
-        }
-
-        //private string ConvertToJavascriptType(Type type)
-        //{
-        //    switch (type.Name.ToLower())
-        //    {
-        //        case "boolean":
-        //            return "boolean";
-
-        //        case "datetime":
-        //        case "datetimeoffset":
-        //            return "date";
-
-        //        case "decimal":
-        //        case "double":
-        //        case "single":
-        //        case "int32":
-        //        case "uint32":
-        //        case "int64":
-        //        case "uint64":
-        //        case "int16":
-        //        case "uint16":
-        //            return "number";
-
-        //        case "string":
-        //        case "char":
-        //            return "string";
-
-        //        default:
-        //            return "object";
-        //    }
-        //}
     }
 }

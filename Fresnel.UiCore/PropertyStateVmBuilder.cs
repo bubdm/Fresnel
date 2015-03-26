@@ -44,25 +44,47 @@ namespace Envivo.Fresnel.UiCore
 
         public ValueStateVM BuildFor(BasePropertyObserver oProp)
         {
+            Exception getPropertyException = null;
+            object realValue = null;
+
+            var tProp = oProp.Template;
+
+            try
+            {
+                // TODO: Use the GetPropertyCommand, in case the property should be hidden:
+                realValue = tProp.GetProperty(oProp.OuterObject.RealObject);
+            }
+            catch (Exception ex)
+            {
+                getPropertyException = ex;
+            }
+
+            var result = this.BuildFor(tProp, realValue);
+            if (getPropertyException != null)
+            {
+                result.Get.Error = getPropertyException.Message;
+            }
+            return result;
+        }
+
+        public ValueStateVM BuildFor(PropertyTemplate tProp, object realValue)
+        {
             var result = new ValueStateVM();
 
-            result.Get = this.BuildGet(oProp);
-            result.Set = this.BuildSet(oProp);
+            result.Get = this.BuildGet(tProp);
+            result.Set = this.BuildSet(tProp);
 
             if (result.Get.IsEnabled)
             {
                 try
                 {
-                    // TODO: Use the GetPropertyCommand, in case the property should be hidden:
-                    var realValue = oProp.Template.GetProperty(oProp.OuterObject.RealObject);
-
                     if (realValue == null)
                     {
                         result.Value = realValue;
                     }
-                    else if (oProp is ObjectPropertyObserver)
+                    else if (!tProp.IsNonReference)
                     {
-                        var oValue = _ObserverCache.GetObserver(realValue, oProp.Template.PropertyType);
+                        var oValue = _ObserverCache.GetObserver(realValue, tProp.PropertyType);
                         result.ReferenceValueID = oValue.ID;
                     }
                     else if (realValue is bool)
@@ -78,10 +100,11 @@ namespace Envivo.Fresnel.UiCore
                         result.Value = realValue;
                     }
 
-                    result.FriendlyValue = this.CreateFriendlyValue(oProp, realValue);
+                    result.FriendlyValue = this.CreateFriendlyValue(tProp, realValue);
 
                     // Hack:
-                    if (oProp.Template.PropertyType.IsEnum)
+                    if (tProp.PropertyType.IsEnum &&
+                        realValue != null)
                     {
                         result.Value = (int)result.Value;
                     }
@@ -92,29 +115,29 @@ namespace Envivo.Fresnel.UiCore
                 }
             }
 
-            if (oProp.Template.IsDomainObject)
+            if (tProp.IsDomainObject)
             {
-                result.Create = this.BuildCreate(oProp, result);
+                result.Create = this.BuildCreate(tProp, result);
             }
 
-            result.Clear = this.BuildClear(oProp, result);
+            result.Clear = this.BuildClear(tProp, result);
 
-            if (oProp.Template.IsCollection)
+            if (tProp.IsCollection)
             {
-                result.Add = this.BuildAdd(oProp, result);
+                result.Add = this.BuildAdd(tProp, result);
             }
 
             return result;
         }
 
-        private InteractionPoint BuildCreate(BasePropertyObserver oProp, ValueStateVM valueState)
+        private InteractionPoint BuildCreate(PropertyTemplate tProp, ValueStateVM valueState)
         {
             var result = new InteractionPoint();
 
             var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
             if (isNull)
             {
-                var createCheck = _CanCreatePermission.IsSatisfiedBy((ClassTemplate)oProp.Template.InnerClass);
+                var createCheck = _CanCreatePermission.IsSatisfiedBy((ClassTemplate)tProp.InnerClass);
                 result.IsEnabled = createCheck.Passed;
                 result.Error = createCheck.FailureReason;
             }
@@ -128,9 +151,9 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint BuildGet(BasePropertyObserver oProp)
+        private InteractionPoint BuildGet(PropertyTemplate tProp)
         {
-            var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(oProp);
+            var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(tProp);
 
             var result = new InteractionPoint()
             {
@@ -140,7 +163,7 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint BuildSet(BasePropertyObserver oProp)
+        private InteractionPoint BuildSet(PropertyTemplate oProp)
         {
             var setCheck = _CanSetPropertyPermission.IsSatisfiedBy(oProp);
 
@@ -152,9 +175,8 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint BuildClear(BasePropertyObserver oProp, ValueStateVM valueState)
+        private InteractionPoint BuildClear(PropertyTemplate tProp, ValueStateVM valueState)
         {
-            var tProp = oProp.Template;
             var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
 
             var result = new InteractionPoint()
@@ -166,9 +188,8 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint BuildAdd(BasePropertyObserver oProp, ValueStateVM valueState)
+        private InteractionPoint BuildAdd(PropertyTemplate tProp, ValueStateVM valueState)
         {
-            var tProp = oProp.Template;
             var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
             var result = new InteractionPoint()
             {
@@ -179,25 +200,28 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private string CreateFriendlyValue(BasePropertyObserver oProp, object value)
+        private string CreateFriendlyValue(PropertyTemplate tProp, object value)
         {
-            if (oProp.Template.IsCollection)
+            if (value == null)
+                return "";
+
+            if (tProp.IsCollection)
                 return "...";
 
             if (value is bool)
             {
-                return _BooleanValueFormatter.GetFriendlyValue((bool)value, oProp.Template.Attributes);
+                return _BooleanValueFormatter.GetFriendlyValue((bool)value, tProp.Attributes);
             }
 
             if (value is DateTime)
             {
-                return _DateTimeValueFormatter.GetFriendlyValue((DateTime)value, oProp.Template.Attributes);
+                return _DateTimeValueFormatter.GetFriendlyValue((DateTime)value, tProp.Attributes);
             }
 
-            var propertyType = oProp.Template.PropertyType;
+            var propertyType = tProp.PropertyType;
             if (propertyType.IsEnum)
             {
-                if (((EnumTemplate)oProp.Template.InnerClass).IsBitwiseEnum)
+                if (((EnumTemplate)tProp.InnerClass).IsBitwiseEnum)
                 {
                     var enumValue = Enum.ToObject(propertyType, value);
                     return (int)enumValue == 0 ?

@@ -2,17 +2,17 @@
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.Templates;
 using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.Core.Permissions
 {
-    public class CanSetPropertyPermission : ISpecification<BasePropertyObserver>
+    public class CanSetPropertyPermission : ISpecification<PropertyTemplate>
     {
-        public IAssertion IsSatisfiedBy(BasePropertyObserver oProperty)
+        public IAssertion IsSatisfiedBy(PropertyTemplate tProperty)
         {
             var assertions = new AssertionSet();
-            var tProperty = oProperty.Template;
-
+            
             if (!tProperty.PropertyInfo.CanWrite)
             {
                 assertions.AddFailure(tProperty.Name + " cannot be written to");

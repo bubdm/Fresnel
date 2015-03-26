@@ -66,7 +66,8 @@ namespace Envivo.Fresnel.UiCore
                 result.FriendlyValue = this.CreateFriendlyValue(oParam, realValue);
 
                 // Hack:
-                if (oParam.Template.ParameterType.IsEnum)
+                if (oParam.Template.ParameterType.IsEnum &&
+                    realValue != null)
                 {
                     result.Value = (int)result.Value;
                 }

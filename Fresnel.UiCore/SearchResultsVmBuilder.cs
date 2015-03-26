@@ -12,19 +12,22 @@ namespace Envivo.Fresnel.UiCore
         private RealTypeResolver _RealTypeResolver;
         private ObserverCache _ObserverCache;
         private ClassHierarchyBuilder _ClassHierarchyBuilder;
-        private AbstractPropertyVmBuilder _PropertyVmBuilder;
+        private SearchFilterPropertyVmBuilder _SearchFilterPropertyVmBuilder;
+        private PropertyVmBuilder _PropertyVmBuilder;
 
         public SearchResultsVmBuilder
             (
             RealTypeResolver realTypeResolver,
             ObserverCache observerCache,
             ClassHierarchyBuilder classHierarchyBuilder,
-            AbstractPropertyVmBuilder propertyVmBuilder
+            SearchFilterPropertyVmBuilder searchFilterPropertyVmBuilder,
+            PropertyVmBuilder propertyVmBuilder
             )
         {
             _RealTypeResolver = realTypeResolver;
             _ObserverCache = observerCache;
             _ClassHierarchyBuilder = classHierarchyBuilder;
+            _SearchFilterPropertyVmBuilder = searchFilterPropertyVmBuilder;
             _PropertyVmBuilder = propertyVmBuilder;
         }
 
@@ -38,7 +41,7 @@ namespace Envivo.Fresnel.UiCore
             var elementProperties = new List<SettableMemberVM>();
             foreach (var prop in allKnownProperties)
             {
-                var propVM = _PropertyVmBuilder.BuildFor(prop);
+                var propVM = _SearchFilterPropertyVmBuilder.BuildFor(prop);
                 propVM.Index = elementProperties.Count;
                 elementProperties.Add(propVM);
             }

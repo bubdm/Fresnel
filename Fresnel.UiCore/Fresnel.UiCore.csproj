@@ -72,6 +72,8 @@
     <Compile Include="Model\TypeInfo\DataTypeToUiControlMapper.cs" />
     <Compile Include="Model\TypeInfo\ReferenceTypeVM.cs" />
     <Compile Include="ParameterStateVmBuilder.cs" />
+    <Compile Include="EmptyPropertyVmBuilder.cs" />
+    <Compile Include="SearchFilterPropertyVmBuilder.cs" />
     <Compile Include="SearchResultsVmBuilder.cs" />
     <Compile Include="AbstractParameterVmBuilder.cs" />
     <Compile Include="Commands\CollectionRemoveCommand.cs" />
@@ -134,7 +136,7 @@
     <Compile Include="Controllers\ToolboxController.cs" />
     <Compile Include="Model\Changes\ModificationsVM.cs" />
     <Compile Include="Model\BaseViewModel.cs" />
-    <Compile Include="AbstractPropertyVmBuilder.cs" />
+    <Compile Include="PropertyVmBuilder.cs" />
     <Compile Include="Model\CollectionVM.cs" />
     <Compile Include="AbstractObjectVmBuilder.cs" />
     <Compile Include="Model\MethodVM.cs" />
