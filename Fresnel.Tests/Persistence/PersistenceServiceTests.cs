@@ -20,32 +20,6 @@ namespace Envivo.Fresnel.Tests.Persistence
     [TestFixture()]
     public class PersistenceServiceTests
     {
-       
-        [Test]
-        public void ShouldCreateCompleteAggregate()
-        {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
-
-            var persistenceService = container.Resolve<IPersistenceService>();
-
-            var pocoType = typeof(PocoObject);
-
-            // Act:
-            var poco = (PocoObject)persistenceService.CreateObject(pocoType);
-            poco.ID = Guid.NewGuid();
-            poco.AddSomeChildObjects();
-
-            var savedChanges = persistenceService.SaveChanges();
-
-            // Assert:
-            Assert.IsNotNull(poco);
-            Assert.IsTrue(savedChanges > 1);
-        }
 
         [Test]
         public void ShouldCreateSampleData()
@@ -75,6 +49,32 @@ namespace Envivo.Fresnel.Tests.Persistence
         }
 
         [Test]
+        public void ShouldCreateCompleteAggregate()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var persistenceService = container.Resolve<IPersistenceService>();
+
+            var pocoType = typeof(PocoObject);
+
+            // Act:
+            var poco = (PocoObject)persistenceService.CreateObject(pocoType);
+            poco.ID = Guid.NewGuid();
+            poco.AddSomeChildObjects();
+
+            var savedChanges = persistenceService.SaveChanges();
+
+            // Assert:
+            Assert.IsNotNull(poco);
+            Assert.IsTrue(savedChanges > 1);
+        }
+
+        [Test]
         public void ShouldModifyChildCollection()
         {
             // Arrange:
@@ -91,6 +91,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             // Act:
             var poco = (PocoObject)persistenceService.CreateObject(pocoType);
             poco.ID = Guid.NewGuid();
+            poco.EnumSwitches = SampleModel.BasicTypes.CombinationOptions.Ham | SampleModel.BasicTypes.CombinationOptions.Cheese;
             poco.AddSomeChildObjects();
 
             // Step 1:
