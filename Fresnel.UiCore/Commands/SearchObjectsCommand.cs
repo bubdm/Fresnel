@@ -116,60 +116,89 @@ namespace Envivo.Fresnel.UiCore.Commands
             var rowsToSkip = request.PageSize * (request.PageNumber - 1);
             var classType = tClass.RealType;
 
-            if (request.IsDescendingOrder)
+            var orderBy = request.IsDescendingOrder ?
+                            string.Concat(request.OrderBy, " DESC") :
+                            string.Concat(request.OrderBy, " ASC ");
+
+            var where = this.BuildWhereClause(request, tClass);
+            results = _PersistenceService
+                            .GetObjects(classType)
+                            .OrderBy(orderBy)
+                            .Where(where)
+                            .Skip(rowsToSkip)
+                            .Take(maxLimit);
+
+            var matches = results.ToList<object>();
+            if (matches.Count < maxLimit)
             {
-                var orderBy = string.Concat(request.OrderBy, " DESC");
-                var where = string.Concat(request.OrderBy, " != null");
-                results = _PersistenceService
-                                .GetObjects(classType)
-                                .OrderBy(orderBy)
-                                .Where(where)
-                                .Skip(rowsToSkip)
-                                .Take(maxLimit);
+                // We may have rows with NULL values, so include those too:
+                var nullMatches = _PersistenceService
+                                    .GetObjects(classType)
+                                    .Where(string.Concat(request.OrderBy, " == null"))
+                                    .OrderBy(orderBy)
+                                    .Take(maxLimit - matches.Count)
+                                    .ToList<object>();
 
-                var matches = results.ToList<object>();
-                if (matches.Count < maxLimit)
-                {
-                    // We may have rows will NULL values, so include those too:
-                    var nullMatches = _PersistenceService
-                                        .GetObjects(classType)
-                                        .Where(string.Concat(request.OrderBy, " == null"))
-                                        .OrderBy(orderBy)
-                                        .Take(maxLimit - matches.Count)
-                                        .ToList<object>();
-
-                    matches.AddRange(nullMatches);
-                    results = matches.AsQueryable();
-                }
-            }
-            else
-            {
-                var orderBy = string.Concat(request.OrderBy, " ASC");
-                var where = string.Concat(request.OrderBy, " != null");
-                results = _PersistenceService
-                                .GetObjects(classType)
-                                .Where(where)
-                                .OrderBy(orderBy)
-                                .Skip(rowsToSkip)
-                                .Take(maxLimit);
-
-                var matches = results.ToList<object>();
-                if (matches.Count < maxLimit)
-                {
-                    // We may have rows will NULL values, so include those too:
-                    var nullMatches = _PersistenceService
-                                        .GetObjects(classType)
-                                        .Where(string.Concat(request.OrderBy, " == null"))
-                                        .OrderBy(orderBy)
-                                        .Take(maxLimit - matches.Count)
-                                        .ToList<object>();
-
-                    matches.AddRange(nullMatches);
-                    results = matches.AsQueryable();
-                }
+                matches.AddRange(nullMatches);
+                results = matches.AsQueryable();
             }
 
             return results;
         }
+
+        private string BuildWhereClause(SearchRequest request, ClassTemplate tClass)
+        {
+            var parts = new List<string>();
+
+            if (request.SearchFilters != null)
+            {
+                foreach (var filter in request.SearchFilters)
+                {
+                    // Make sure we recognise the PropertyName:
+                    var tProp = tClass.Properties[filter.PropertyName];
+
+                    var where = this.BuildWhereClauseItem(tProp, filter.FilterValue);
+                    parts.Add(where);
+                }
+            }
+
+            if (request.OrderBy != null)
+            {
+                parts.Add(string.Concat(request.OrderBy, " != null"));
+            }
+
+            return string.Join(" AND ", parts);
+        }
+
+        private string BuildWhereClauseItem(PropertyTemplate tProp, object filterValue)
+        {
+            switch (Type.GetTypeCode(tProp.PropertyType))
+            {
+                case TypeCode.String:
+                case TypeCode.Char:
+                    return string.Concat(tProp.Name, @".Contains(""", filterValue, @""")");
+
+                case TypeCode.DateTime:
+                    var dateValue = Convert.ToDateTime(filterValue);
+                    var startOfDay = dateValue.Date;
+                    var endOfDay = startOfDay.AddDays(1);
+                    var minValue = this.createDynamicLinqCompatibleValue(startOfDay);
+                    var maxValue = this.createDynamicLinqCompatibleValue(endOfDay);
+
+                    //return string.Format(@"({0} >= {1} AND {0} < {2})", tProp.Name, minValue, maxValue);
+                    return string.Format(@"({0} >= {1})", tProp.Name, minValue, maxValue);
+
+                default:
+                    return string.Concat(tProp.Name, " == ", filterValue);
+            }
+        }
+
+        private string createDynamicLinqCompatibleValue(DateTime value)
+        {
+            //var result = "DateTime(" + value.ToString("yyyy, MM, dd, HH, mm, ss, fff") + ")";
+            var result = "DateTime(" + value.ToString("yyyy, MM, dd") + ")";
+            return result;
+        }
+
     }
 }

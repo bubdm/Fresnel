@@ -7,7 +7,7 @@ namespace Envivo.Fresnel.UiCore.Commands
     [TypeScriptInterface]
     public class SearchRequest
     {
-        public IEnumerable<string> SearchFilters { get; set; }
+        public IEnumerable<SearchFilter> SearchFilters { get; set; }
 
         public string OrderBy { get; set; }
 
@@ -16,5 +16,13 @@ namespace Envivo.Fresnel.UiCore.Commands
         public int PageSize { get; set; }
 
         public int PageNumber { get; set; }
+    }
+
+    [TypeScriptInterface]
+    public class SearchFilter
+    {
+        public string PropertyName { get; set; }
+
+        public object FilterValue { get; set; }
     }
 }

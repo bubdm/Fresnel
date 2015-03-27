@@ -100,12 +100,25 @@ var FresnelApp;
                 prop.State.Value = prop.State.Value ^ enumValue;
             };
             $scope.applyFilters = function () {
-                // Look inside the Collection's ElementProperties
+                var searchFilters = [];
+                var searchResults = $scope.explorer.__meta;
+                for (var i = 0; i < searchResults.ElementProperties.length; i++) {
+                    var elementProperty = searchResults.ElementProperties[i];
+                    if (elementProperty.State.Value) {
+                        var newFilter = {
+                            PropertyName: elementProperty.InternalName,
+                            FilterValue: elementProperty.State.Value
+                        };
+                        searchFilters.push(newFilter);
+                    }
+                }
+                $scope.request.SearchFilters = searchFilters;
+                searchService.loadFilteredResults($scope.request, $scope.results, $scope.searchAction);
             };
             $scope.resetFilters = function () {
-                var oCol = $scope.explorer.__meta;
-                for (var i = 0; i < oCol.ElementProperties.length; i++) {
-                    oCol.ElementProperties[i].State.Value = null;
+                var searchResults = $scope.explorer.__meta;
+                for (var i = 0; i < searchResults.ElementProperties.length; i++) {
+                    searchResults.ElementProperties[i].State.Value = null;
                 }
             };
         }
@@ -264,9 +277,28 @@ var FresnelApp;
                 _this.blockUI.stop();
             });
         };
+        SearchService.prototype.loadFilteredResults = function (request, existingSearchResults, searchPromise) {
+            var _this = this;
+            this.blockUI.start("Filtering data...");
+            searchPromise().then(function (promiseResult) {
+                var response = promiseResult.data;
+                var newSearchResults = response.Result;
+                // Ensure that we re-use any objects that are already cached:
+                var bindableItems = _this.mergeSearchResults(newSearchResults);
+                // Replace the existing items:
+                existingSearchResults.Items = bindableItems;
+                // This allows Smart-Table to handle the st-safe-src properly:
+                existingSearchResults.DisplayItems = [].concat(existingSearchResults.Items);
+                existingSearchResults.AreMoreAvailable = newSearchResults.AreMoreAvailable;
+            }).finally(function () {
+                _this.blockUI.stop();
+            });
+        };
+        /// Merges the Search Results into the IdentityMap, 
+        /// and returns a list of Objects ready for binding to the view
         SearchService.prototype.mergeSearchResults = function (searchResults) {
             var itemCount = searchResults.Items.length;
-            var bindableItems = [itemCount];
+            var bindableItems = [];
             var identityMap = this.appService.identityMap;
             for (var i = 0; i < itemCount; i++) {
                 var latestObj = searchResults.Items[i];

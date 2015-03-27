@@ -88,14 +88,29 @@
             }
 
             $scope.applyFilters = function () {
-                // Look inside the Collection's ElementProperties
+                var searchFilters: SearchFilter[] = [];
 
+                var searchResults = <SearchResultsVM>$scope.explorer.__meta;
+                for (var i = 0; i < searchResults.ElementProperties.length; i++) {
+                    var elementProperty: PropertyVM = searchResults.ElementProperties[i];
+                    if (elementProperty.State.Value) {
+                        var newFilter: SearchFilter = {
+                            PropertyName: elementProperty.InternalName,
+                            FilterValue: elementProperty.State.Value
+                        };
+                        searchFilters.push(newFilter);
+                    }
+                }
+
+                $scope.request.SearchFilters = searchFilters;
+
+                searchService.loadFilteredResults($scope.request, $scope.results, $scope.searchAction);
             }
 
             $scope.resetFilters = function () {
-                var oCol = <CollectionVM>$scope.explorer.__meta;
-                for (var i = 0; i < oCol.ElementProperties.length; i++) {
-                    oCol.ElementProperties[i].State.Value = null;
+                var searchResults = <SearchResultsVM>$scope.explorer.__meta;
+                for (var i = 0; i < searchResults.ElementProperties.length; i++) {
+                    searchResults.ElementProperties[i].State.Value = null;
                 }
             }
 

@@ -4,8 +4,11 @@ using Envivo.Fresnel.SampleModel.Objects;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Model;
+using Envivo.Fresnel.Utils;
 using Fresnel.SampleModel.Persistence;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Envivo.Fresnel.Tests.Proxies
@@ -237,7 +240,6 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(PocoObject).Name));
         }
 
-
         [Test]
         public void ShouldSeachForObjectParameterObjects()
         {
@@ -309,6 +311,94 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
         //    Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(PocoObject).Name));
         //}
+
+        [Test]
+        public void ShouldFilterTextProperties()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var toolboxController = container.Resolve<ToolboxController>();
+            var explorerController = container.Resolve<ExplorerController>();
+
+            // Act:
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(PocoObject).FullName,
+                PageSize = 100,
+                PageNumber = 1
+            };
+
+            var filterPropertyName = "NormalText";
+            var filterValue = "test";
+            var searchFilters = new List<SearchFilter>()
+            {
+                new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
+            };
+            searchRequest.SearchFilters = searchFilters;
+
+            var searchResponse = toolboxController.SearchObjects(searchRequest);
+
+            // Assert:
+            Assert.IsTrue(searchResponse.Passed);
+            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+
+            var columnValues = searchResponse.Result.Items
+                            .Select(i => i.Properties.Single(p => p.InternalName.IsSameAs(filterPropertyName)).State.Value)
+                            .Where(t => t != null)
+                            .Cast<string>()
+                            .ToList();
+
+            Assert.IsTrue(columnValues.All(t => t.Contains(filterValue)));
+        }
+
+        [Test]
+        public void ShouldFilterBooleanProperties()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var toolboxController = container.Resolve<ToolboxController>();
+            var explorerController = container.Resolve<ExplorerController>();
+
+            // Act:
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(PocoObject).FullName,
+                PageSize = 100,
+                PageNumber = 1
+            };
+
+            var filterPropertyName = "NormalBoolean";
+            var filterValue = true;
+            var searchFilters = new List<SearchFilter>()
+            {
+                new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
+            };
+            searchRequest.SearchFilters = searchFilters;
+
+            var searchResponse = toolboxController.SearchObjects(searchRequest);
+
+            // Assert:
+            Assert.IsTrue(searchResponse.Passed);
+            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+
+            var columnValues = searchResponse.Result.Items
+                            .Select(i => i.Properties.Single(p => p.InternalName.IsSameAs(filterPropertyName)).State.Value)
+                            .Where(t => t != null)
+                            .Cast<bool>()
+                            .ToList();
+
+            Assert.IsTrue(columnValues.All(t => t == filterValue));
+        }
 
     }
 

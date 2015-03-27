@@ -67,7 +67,7 @@ module FresnelApp {
                 searchResults.OriginalRequest = request;
                 searchResults.AllowSelection = true;
                 searchResults.AllowMultiSelect = true;
-               
+
                 this.showSearchResultsModal(searchResults, onSelectionConfirmed);
             });
         }
@@ -172,9 +172,33 @@ module FresnelApp {
             });
         }
 
+        loadFilteredResults(request: SearchRequest, existingSearchResults: SearchResultsVM, searchPromise: any) {
+            this.blockUI.start("Filtering data...");
+
+            searchPromise().then((promiseResult) => {
+                var response = promiseResult.data;
+                var newSearchResults: SearchResultsVM = response.Result;
+
+                // Ensure that we re-use any objects that are already cached:
+                var bindableItems = this.mergeSearchResults(newSearchResults);
+
+                // Replace the existing items:
+                existingSearchResults.Items = bindableItems;
+
+                // This allows Smart-Table to handle the st-safe-src properly:
+                existingSearchResults.DisplayItems = [].concat(existingSearchResults.Items);
+                existingSearchResults.AreMoreAvailable = newSearchResults.AreMoreAvailable;
+            })
+                .finally(() => {
+                this.blockUI.stop();
+            });
+        }
+
+        /// Merges the Search Results into the IdentityMap, 
+        /// and returns a list of Objects ready for binding to the view
         mergeSearchResults(searchResults: SearchResultsVM): ObjectVM[] {
             var itemCount = searchResults.Items.length;
-            var bindableItems: SearchResultItemVM[] = [itemCount];
+            var bindableItems: SearchResultItemVM[] = [];
             var identityMap = this.appService.identityMap;
 
             // If an object already exists in the IdentityMap we need to reuse it:

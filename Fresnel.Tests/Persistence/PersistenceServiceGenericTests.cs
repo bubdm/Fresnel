@@ -36,6 +36,8 @@ namespace Envivo.Fresnel.Tests.Persistence
             var poco = persistenceService.CreateObject<PocoObject>();
             poco.ID = Guid.NewGuid();
             poco.AddSomeChildObjects();
+            poco.NormalBoolean = true;
+            poco.NormalText = "Created at " + Environment.TickCount.ToString();
 
             var savedChanges = persistenceService.SaveChanges();
 

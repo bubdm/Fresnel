@@ -96,6 +96,11 @@ declare module FresnelApp {
         PageSize: number;
         PageNumber: number;
     }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.SearchFilter **/
+    export interface SearchFilter {
+        PropertyName: string;
+        FilterValue: any;
+    }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SearchResponse **/
     export interface SearchResponse extends FresnelApp.BaseCommandResponse {
         Result: FresnelApp.SearchResultsVM;
