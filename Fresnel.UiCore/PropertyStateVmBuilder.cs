@@ -195,7 +195,8 @@ namespace Envivo.Fresnel.UiCore
             {
                 IsEnabled = tProp.CanAdd &&
                             !isNull &&
-                            tProp.IsCollection
+                            tProp.IsCollection &&
+                            ((CollectionTemplate)tProp.InnerClass).HasAddMethods
             };
             return result;
         }

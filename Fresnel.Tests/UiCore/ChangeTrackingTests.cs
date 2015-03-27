@@ -2,6 +2,7 @@
 using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.SampleModel.Objects;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Model;
@@ -55,7 +56,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.AreEqual(3, invokeResult2.Modifications.CollectionAdditions.Count());
             Assert.AreEqual(3, invokeResult3.Modifications.CollectionAdditions.Count());
         }
-
+    
         [Test]
         public void ShouldReturnNewlyCreatedObservers()
         {

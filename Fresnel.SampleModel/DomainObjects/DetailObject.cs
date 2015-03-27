@@ -66,7 +66,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         ///
         /// </summary>
-        public virtual IList<DetailObject> MoreChildren { get; private set; }
+        public virtual ICollection<DetailObject> MoreChildren { get; private set; }
 
         /// <summary>
         ///

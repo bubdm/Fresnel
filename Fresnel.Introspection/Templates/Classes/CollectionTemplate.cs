@@ -136,6 +136,22 @@ namespace Envivo.Fresnel.Introspection.Templates
         }
 
         /// <summary>
+        /// Returns TRUE if the Collection has any Add() methods
+        /// </summary>
+        public bool HasAddMethods
+        {
+            get { return _AddMethods.Value.Any(); }
+        }
+        
+        /// <summary>
+        /// Returns TRUE if the Collection has any Remove() methods
+        /// </summary>
+        public bool HasRemoveMethods
+        {
+            get { return _RemoveMethods.Value.Any(); }
+        }
+
+        /// <summary>
         /// Determines if the Collection has an 'Add()' method which accepts the given ElementType
         /// </summary>
         internal bool ContainsAddFor(Type realItemType)
@@ -280,6 +296,5 @@ namespace Envivo.Fresnel.Introspection.Templates
             //    return false;
             //}
         }
-
     }
 }

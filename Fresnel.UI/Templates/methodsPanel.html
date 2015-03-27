@@ -3,12 +3,14 @@
     <!-- Collection specific buttons: -->
     <button class="btn btn-default methodItem"
             ng-show="oCol.IsCollection"
+            ng-disabled="!oObj.OuterProperty.State.Clear.IsEnabled"
             ng-click="addNewItem(oObj.OuterProperty, oCol.ElementType)"
             title="Create a new item in this list">
         <i class="fa fa-plus-square"></i> Create
     </button>
     <button class="btn btn-default methodItem"
             ng-show="oCol.IsCollection"
+            ng-disabled="!oObj.OuterProperty.State.Add.IsEnabled"
             ng-click="addExistingItems(oObj.OuterProperty, oCol)"
             title="Add existing item/s to this list">
         <i class="fa fa-plus"></i> Add
