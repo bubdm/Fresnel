@@ -90,8 +90,8 @@ var FresnelApp;
                 searchService.loadNextPage($scope.request, $scope.results, $scope.searchAction);
             };
             $scope.setProperty = function (prop) {
-                // Do nothing - we'll send the values to the server when the Search button is clicked
-                // (otherwise the parent controller's setProperty() will kick in and fail.
+                // Update the search results immedately:
+                $scope.applyFilters();
             };
             $scope.setBitwiseEnumProperty = function (prop, enumValue) {
                 if (!prop.State.Value || prop.State.Value == null) {
@@ -99,6 +99,8 @@ var FresnelApp;
                     prop.State.Value = 0;
                 }
                 prop.State.Value = prop.State.Value ^ enumValue;
+                // Update the search results immedately:
+                $scope.applyFilters();
             };
             $scope.applyFilters = function () {
                 var searchFilters = [];

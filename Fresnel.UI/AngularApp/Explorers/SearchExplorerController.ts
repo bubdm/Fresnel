@@ -76,8 +76,8 @@
             }
 
             $scope.setProperty = function (prop: PropertyVM) {
-                // Do nothing - we'll send the values to the server when the Search button is clicked
-                // (otherwise the parent controller's setProperty() will kick in and fail.
+                // Update the search results immedately:
+                $scope.applyFilters();
             }
 
             $scope.setBitwiseEnumProperty = function (prop: PropertyVM, enumValue: number) {
@@ -86,6 +86,9 @@
                     prop.State.Value = 0;
                 }
                 prop.State.Value = prop.State.Value ^ enumValue;
+
+                // Update the search results immedately:
+                $scope.applyFilters();
             }
 
             $scope.applyFilters = function () {
