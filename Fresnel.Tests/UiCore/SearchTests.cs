@@ -399,7 +399,52 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             Assert.IsTrue(columnValues.All(t => t == filterValue));
         }
+        
+        [Test]
+        public void ShouldFilterDateTimeProperties()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
 
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            var toolboxController = container.Resolve<ToolboxController>();
+            var explorerController = container.Resolve<ExplorerController>();
+
+            // Act:
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(PocoObject).FullName,
+                PageSize = 100,
+                PageNumber = 1
+            };
+
+            var filterPropertyName = "NormalDate";
+            var filterValue = new DateTime(2015, 03, 23);
+            var searchFilters = new List<SearchFilter>()
+            {
+                new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
+            };
+            searchRequest.SearchFilters = searchFilters;
+
+            var searchResponse = toolboxController.SearchObjects(searchRequest);
+
+            // Assert:
+            Assert.IsTrue(searchResponse.Passed);
+            Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
+
+            var columnValues = searchResponse.Result.Items
+                            .Select(i => i.Properties.Single(p => p.InternalName.IsSameAs(filterPropertyName)).State.Value)
+                            .Where(v => v != null)
+                            .Select(v => DateTime.Parse(v.ToStringOrNull()))
+                            .Cast<DateTime>()
+                            .ToList();
+
+            Assert.IsTrue(columnValues.All(t => t.Date == filterValue));
+        }
     }
+
 
 }

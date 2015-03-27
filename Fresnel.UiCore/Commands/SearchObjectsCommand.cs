@@ -120,11 +120,12 @@ namespace Envivo.Fresnel.UiCore.Commands
                             string.Concat(request.OrderBy, " DESC") :
                             string.Concat(request.OrderBy, " ASC ");
 
-            var where = this.BuildWhereClause(request, tClass);
+            var whereClause = this.BuildWhereClauseString(request, tClass);
+            var whereParams = this.BuildWhereClauseParameters(request, tClass);
             results = _PersistenceService
                             .GetObjects(classType)
                             .OrderBy(orderBy)
-                            .Where(where)
+                            .Where(whereClause, whereParams)
                             .Skip(rowsToSkip)
                             .Take(maxLimit);
 
@@ -146,18 +147,19 @@ namespace Envivo.Fresnel.UiCore.Commands
             return results;
         }
 
-        private string BuildWhereClause(SearchRequest request, ClassTemplate tClass)
+        private string BuildWhereClauseString(SearchRequest request, ClassTemplate tClass)
         {
             var parts = new List<string>();
 
             if (request.SearchFilters != null)
             {
+                var parameterPosition = 0;
                 foreach (var filter in request.SearchFilters)
                 {
                     // Make sure we recognise the PropertyName:
                     var tProp = tClass.Properties[filter.PropertyName];
 
-                    var where = this.BuildWhereClauseItem(tProp, filter.FilterValue);
+                    var where = this.BuildWhereClauseForProperty(tProp, ref parameterPosition);
                     parts.Add(where);
                 }
             }
@@ -170,34 +172,68 @@ namespace Envivo.Fresnel.UiCore.Commands
             return string.Join(" AND ", parts);
         }
 
-        private string BuildWhereClauseItem(PropertyTemplate tProp, object filterValue)
+        private string BuildWhereClauseForProperty(PropertyTemplate tProp, ref int parameterPosition)
         {
             switch (Type.GetTypeCode(tProp.PropertyType))
             {
                 case TypeCode.String:
                 case TypeCode.Char:
-                    return string.Concat(tProp.Name, @".Contains(""", filterValue, @""")");
+                    {
+                        var result = string.Concat("(", tProp.Name, " != null AND ",
+                                                        tProp.Name, @".Contains(@", parameterPosition++, ")",
+                                                   ")");
+                        return result;
+                    }
 
+                case TypeCode.DateTime:
+                    {
+                        var result = string.Concat("(", tProp.Name, " >= @", parameterPosition++, " AND ", 
+                                                        tProp.Name, " < @", parameterPosition++, 
+                                                   ")");
+                        return result;
+                    }
+
+                default:
+                    {
+                        var result = string.Concat(tProp.Name, " == @", parameterPosition++);
+                        return result;
+                    }
+            }
+        }
+
+        private object[] BuildWhereClauseParameters(SearchRequest request, ClassTemplate tClass)
+        {
+            var results = new List<object>();
+
+            if (request.SearchFilters != null)
+            {
+                foreach (var filter in request.SearchFilters)
+                {
+                    // Make sure we recognise the PropertyName:
+                    var tProp = tClass.Properties[filter.PropertyName];
+
+                    var propertyParams = this.BuildParametersForProperty(tProp, filter.FilterValue);
+                    results.AddRange(propertyParams);
+                }
+            }
+
+            return results.ToArray();
+        }
+
+        private IEnumerable<object> BuildParametersForProperty(PropertyTemplate tProp, object filterValue)
+        {
+            switch (Type.GetTypeCode(tProp.PropertyType))
+            {
                 case TypeCode.DateTime:
                     var dateValue = Convert.ToDateTime(filterValue);
                     var startOfDay = dateValue.Date;
                     var endOfDay = startOfDay.AddDays(1);
-                    var minValue = this.createDynamicLinqCompatibleValue(startOfDay);
-                    var maxValue = this.createDynamicLinqCompatibleValue(endOfDay);
-
-                    //return string.Format(@"({0} >= {1} AND {0} < {2})", tProp.Name, minValue, maxValue);
-                    return string.Format(@"({0} >= {1})", tProp.Name, minValue, maxValue);
+                    return new List<object>() { startOfDay, endOfDay };
 
                 default:
-                    return string.Concat(tProp.Name, " == ", filterValue);
+                    var value = Convert.ChangeType(filterValue, tProp.PropertyType);
+                    return new List<object>() { value };
             }
-        }
-
-        private string createDynamicLinqCompatibleValue(DateTime value)
-        {
-            //var result = "DateTime(" + value.ToString("yyyy, MM, dd, HH, mm, ss, fff") + ")";
-            var result = "DateTime(" + value.ToString("yyyy, MM, dd") + ")";
-            return result;
         }
 
     }
