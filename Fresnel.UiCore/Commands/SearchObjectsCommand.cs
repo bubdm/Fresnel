@@ -174,6 +174,15 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private string BuildWhereClauseForProperty(PropertyTemplate tProp, ref int parameterPosition)
         {
+            if (tProp.PropertyType.IsEnum && ((EnumTemplate)tProp.InnerClass).IsBitwiseEnum)
+            {
+                // See http://stackoverflow.com/a/10193218/80369 for explanation:
+                var result = string.Concat("(", tProp.Name, " != null AND ((",
+                                                tProp.Name, " % @", parameterPosition++, " >= @", parameterPosition++, "))",
+                                           ")");
+                return result;
+            }
+
             switch (Type.GetTypeCode(tProp.PropertyType))
             {
                 case TypeCode.String:
@@ -187,8 +196,8 @@ namespace Envivo.Fresnel.UiCore.Commands
 
                 case TypeCode.DateTime:
                     {
-                        var result = string.Concat("(", tProp.Name, " >= @", parameterPosition++, " AND ", 
-                                                        tProp.Name, " < @", parameterPosition++, 
+                        var result = string.Concat("(", tProp.Name, " >= @", parameterPosition++, " AND ",
+                                                        tProp.Name, " < @", parameterPosition++,
                                                    ")");
                         return result;
                     }
@@ -222,11 +231,20 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private IEnumerable<object> BuildParametersForProperty(PropertyTemplate tProp, object filterValue)
         {
-            if (tProp.PropertyType.IsEnum &&
-                filterValue != null)
+            if (tProp.PropertyType.IsEnum)
             {
-                var typedValue = Enum.Parse(tProp.PropertyType, filterValue.ToStringOrNull(), true);
-                filterValue = typedValue;
+                if (((EnumTemplate)tProp.InnerClass).IsBitwiseEnum)
+                {
+                    // See http://stackoverflow.com/a/10193218/80369 for explanation:
+                    var flagValue = Convert.ToInt32(filterValue);
+                    var modulus = (int)Math.Pow(2, flagValue);
+                    return new List<object>() { modulus, flagValue };
+                }
+                else
+                {
+                    var typedValue = Enum.Parse(tProp.PropertyType, filterValue.ToStringOrNull(), true);
+                    filterValue = typedValue;
+                }
             }
 
             switch (Type.GetTypeCode(tProp.PropertyType))
