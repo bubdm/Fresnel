@@ -24,39 +24,39 @@ a.disabled {
 }
 
 .rowColour0 {
-    background-color: #F5A9A9;
+    background-color: #E6E6E6;
 }
 
 .rowColour1 {
-    background-color: #F3E2A9;
-}
-
-.rowColour2 {
-    background-color: #D0F5A9;
-}
-
-.rowColour3 {
-    background-color: #A9F5BC;
-}
-
-.rowColour4 {
-    background-color: #A9F5F2;
-}
-
-.rowColour5 {
     background-color: #A9BCF5;
 }
 
-.rowColour6 {
+.rowColour2 {
+    background-color: #A9F5F2;
+}
+
+.rowColour3 {
     background-color: #D0A9F5;
 }
 
+.rowColour4 {
+    background-color: #F3E2A9;
+}
+
+.rowColour5 {
+    background-color: #D0F5A9;
+}
+
+.rowColour6 {
+    background-color: #F5A9A9;
+}
+
 .rowColour7 {
-    background-color: #F5A9E1;
+    background-color: #A9F5BC;
 }
 
 .rowColour8 {
-    background-color: #E6E6E6;
+    background-color: #F5A9E1;
 }
 
 .explorerToolbar {
@@ -81,14 +81,14 @@ a.disabled {
 }
 
 .collapsedExplorerTitle {
-    margin-top:0px;
+    margin-top: 0px;
     max-width: 134px;
     transform: rotate(-90deg);
     transform-origin: 80px 75px;
     overflow: hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
-    display:inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
 }
 
 .objectExplorerPanelBody {
