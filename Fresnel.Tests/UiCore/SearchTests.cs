@@ -422,7 +422,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             };
 
             var filterPropertyName = "NormalDate";
-            var filterValue = new DateTime(2015, 03, 23);
+            var filterValue = DateTime.Now;
             var searchFilters = new List<SearchFilter>()
             {
                 new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
@@ -442,7 +442,7 @@ namespace Envivo.Fresnel.Tests.Proxies
                             .Cast<DateTime>()
                             .ToList();
 
-            Assert.IsTrue(columnValues.All(t => t.Date == filterValue));
+            Assert.IsTrue(columnValues.All(t => t.Date == filterValue.Date));
         }
 
         [Test]
