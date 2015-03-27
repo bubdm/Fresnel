@@ -222,6 +222,13 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private IEnumerable<object> BuildParametersForProperty(PropertyTemplate tProp, object filterValue)
         {
+            if (tProp.PropertyType.IsEnum &&
+                filterValue != null)
+            {
+                var typedValue = Enum.Parse(tProp.PropertyType, filterValue.ToStringOrNull(), true);
+                filterValue = typedValue;
+            }
+
             switch (Type.GetTypeCode(tProp.PropertyType))
             {
                 case TypeCode.DateTime:
