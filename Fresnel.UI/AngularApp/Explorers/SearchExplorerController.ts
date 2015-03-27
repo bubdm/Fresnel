@@ -25,6 +25,7 @@
 
             this.scope = $scope;
 
+            $scope.isSearchVisible = false;
             $scope.results = <SearchResultsVM>$scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
             $scope.results.AllowMultiSelect = false;

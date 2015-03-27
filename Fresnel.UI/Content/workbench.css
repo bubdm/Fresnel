@@ -163,6 +163,11 @@ a.disabled {
     height: 775px;
 }
 
+.searchFilterRow {
+    vertical-align: top;
+    display: inline-block;
+}
+
 @media screen and (min-width: 927px) {
 
     .explorerPanelNormalSize {

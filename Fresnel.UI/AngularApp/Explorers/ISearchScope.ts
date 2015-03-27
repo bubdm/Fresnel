@@ -16,6 +16,7 @@
         loadNextPage();
 
         // Functions for setting Search Filters:
+        isSearchVisible: boolean;
         setProperty(prop: PropertyVM);
         setBitwiseEnumProperty(prop: PropertyVM, enumValue: number);
         applyFilters();

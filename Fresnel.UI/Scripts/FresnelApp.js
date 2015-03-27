@@ -51,6 +51,7 @@ var FresnelApp;
     var SearchExplorerController = (function () {
         function SearchExplorerController($rootScope, $scope, fresnelService, searchService, smartTablePredicateService, appService, blockUI) {
             this.scope = $scope;
+            $scope.isSearchVisible = false;
             $scope.results = $scope.explorer.__meta;
             $scope.request = $scope.results.OriginalRequest;
             $scope.results.AllowMultiSelect = false;
