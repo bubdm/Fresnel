@@ -1,9 +1,10 @@
 ﻿
 <div class="box-tools pull-right" ng-init="oObj = explorer.__meta;">
     <button class="btn btn-primary btn-sm"
+            ng-init="dirtyState = oObj.DirtyState"
             ng-click="save(oObj)"
-            ng-class="{ 'alert-default' : oObj.IsDirty || oObj.HasDirtyChildren }"
-            ng-disabled="!(oObj.IsDirty || !oObj.HasDirtyChildren)"
+            ng-class="{ 'alert-default' : dirtyState.IsDirty || dirtyState.HasDirtyChildren }"
+            ng-disabled="!dirtyState.IsDirty && !dirtyState.HasDirtyChildren"
             tooltip="prop.Tooltip">
         <i class=" fa fa-save"></i>
     </button>

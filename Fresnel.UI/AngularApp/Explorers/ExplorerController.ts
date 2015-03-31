@@ -12,7 +12,7 @@ module FresnelApp {
             'appService',
             'searchService',
             'explorerService',
-            'saveCommand',
+            'saveService',
             '$modal'];
 
         constructor(
@@ -23,7 +23,7 @@ module FresnelApp {
             appService: AppService,
             searchService: SearchService,
             explorerService: ExplorerService,
-            saveCommand: SaveCommand,
+            saveService: SaveService,
             $modal: ng.ui.bootstrap.IModalService) {
 
             $scope.invoke = function (method: MethodVM) {
@@ -144,7 +144,7 @@ module FresnelApp {
                 if (prop.State.Value) {
                     var propertyObjectValue = appService.identityMap.getObject(prop.State.Value.ID);
 
-                    if (propertyObjectValue.IsTransient) {
+                    if (propertyObjectValue.DirtyState.IsTransient) {
                         transientExplorer = explorerService.getExplorer(propertyObjectValue.ID);
                     }
                 }
@@ -192,17 +192,17 @@ module FresnelApp {
             $scope.close = function (explorer: Explorer) {
                 var obj = explorer.__meta;
 
-                if (!saveCommand.isRequiredFor(obj)) {
+                if (!saveService.isRequiredFor(obj)) {
                     // Just close the window:
                     $rootScope.$broadcast(UiEventType.ExplorerClose, explorer);
                     return;
                 }
 
                 // See what the user wants to do:
-                var promise = saveCommand.askUser(obj);
+                var promise = saveService.askUser(obj);
                 promise.then((isSaveRequested) => {
                     if (isSaveRequested) {
-                        promise = saveCommand.invoke(obj);
+                        promise = saveService.invoke(obj);
                     }
                     promise.finally(() => {
                         $rootScope.$broadcast(UiEventType.ExplorerClose, explorer);
@@ -242,7 +242,7 @@ module FresnelApp {
             }
 
             $scope.save = function (obj: ObjectVM) {
-                saveCommand.invoke(obj);
+                saveService.invoke(obj);
             }
 
         }

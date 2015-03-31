@@ -1055,7 +1055,7 @@
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerRow.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ISaveScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\SaveController.ts" />
-    <TypeScriptCompile Include="AngularApp\Explorers\SaveCommand.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\SaveService.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ISearchScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\IMethodScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ICollectionScope.ts" />

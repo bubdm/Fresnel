@@ -1,6 +1,6 @@
 ﻿module FresnelApp {
 
-    export class SaveCommand {
+    export class SaveService {
 
         static $inject = [
             '$rootScope',
@@ -37,7 +37,7 @@
             if (!obj.IsPersistable)
                 return false;
 
-            return (obj.IsDirty || obj.HasDirtyChildren);
+            return (obj.DirtyState.IsDirty || obj.DirtyState.HasDirtyChildren);
         }
 
         public askUser(obj: ObjectVM): ng.IPromise<any> {
@@ -68,14 +68,31 @@
             var promise = this.fresnelService.saveChanges(request);
 
             promise.then((promiseResult) => {
-                var response = promiseResult.data;
+                var response: SaveChangesResponse = promiseResult.data;
 
                 this.appService.identityMap.merge(response.Modifications);
                 this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
+                this.resetDirtyFlags(response.SavedObjects);
             });
 
             return promise;
         }
-    }
 
+        private resetDirtyFlags(savedObjects: ObjectVM[]) {
+            if (!savedObjects)
+                return;
+
+            var identityMap = this.appService.identityMap;
+
+            for (var i = 0; i < savedObjects.length; i++) {
+                var obj = savedObjects[i];
+                var existingObj = identityMap.getObject(obj.ID);
+                if (existingObj != null) {
+                    identityMap.mergeObjects(existingObj, obj);
+                }
+            }
+        }
+
+    }
 }

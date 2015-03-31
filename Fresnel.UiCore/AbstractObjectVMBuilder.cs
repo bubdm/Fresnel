@@ -81,9 +81,7 @@ namespace Envivo.Fresnel.UiCore
                 Methods = this.CreateMethods(oCollection),
                 Items = this.CreateItems(oCollection, allKnownProperties),
 
-                IsTransient = oCollection.ChangeTracker.IsTransient,
-                IsPersistent = oCollection.ChangeTracker.IsPersistent,
-                IsDirty = oCollection.ChangeTracker.IsDirty,
+                DirtyState = this.CreateDirtyState(oCollection),
             };
 
             this.TrimRedundantContentFrom(result);
@@ -142,10 +140,7 @@ namespace Envivo.Fresnel.UiCore
                 Methods = this.CreateMethods(oObject),
 
                 IsPersistable = oObject.Template.IsPersistable,
-                IsTransient = oObject.ChangeTracker.IsTransient,
-                IsPersistent = oObject.ChangeTracker.IsPersistent,
-                IsDirty = oObject.ChangeTracker.IsDirty,
-                HasDirtyChildren = oObject.ChangeTracker.HasDirtyObjectGraph,
+                DirtyState = this.CreateDirtyState(oObject),
             };
 
             return result;
@@ -206,6 +201,17 @@ namespace Envivo.Fresnel.UiCore
         //    };
         //    return result;
         //}
+
+        private DirtyStateVM CreateDirtyState(ObjectObserver oObject)
+        {
+            return new DirtyStateVM()
+            {
+                IsTransient = oObject.ChangeTracker.IsTransient,
+                IsPersistent = oObject.ChangeTracker.IsPersistent,
+                IsDirty = oObject.ChangeTracker.IsDirty,
+                HasDirtyChildren = oObject.ChangeTracker.HasDirtyObjectGraph,
+            };
+        }
 
     }
 }

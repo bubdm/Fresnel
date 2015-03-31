@@ -111,7 +111,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public GenericResponse SaveChanges([FromBody]SaveChangesRequest id)
+        public SaveChangesResponse SaveChanges([FromBody]SaveChangesRequest id)
         {
             var result = _SaveChangesCommand.Invoke(id);
             return result;

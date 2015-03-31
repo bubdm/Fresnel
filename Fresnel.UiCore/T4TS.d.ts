@@ -73,6 +73,10 @@ declare module FresnelApp {
     export interface SaveChangesRequest {
         ObjectID: any;
     }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.SaveChangesResponse **/
+    export interface SaveChangesResponse extends FresnelApp.BaseCommandResponse {
+        SavedObjects: FresnelApp.ObjectVM[];
+    }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SearchObjectsRequest **/
     export interface SearchObjectsRequest extends FresnelApp.SearchRequest {
         SearchType: string;
@@ -142,6 +146,7 @@ declare module FresnelApp {
         CollectionAdditions: any;
         CollectionRemovals: any;
         MethodParameterChanges: any;
+        SavedObjects: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Changes.ObjectTitleChangeVM **/
     export interface ObjectTitleChangeVM {
@@ -185,6 +190,13 @@ declare module FresnelApp {
         Items: any;
         DisplayItems: any;
     }
+    /** Generated from Envivo.Fresnel.UiCore.Model.DirtyStateVM **/
+    export interface DirtyStateVM {
+        IsTransient: boolean;
+        IsPersistent: boolean;
+        IsDirty: boolean;
+        HasDirtyChildren: boolean;
+    }
     /** Generated from Envivo.Fresnel.UiCore.Model.InteractionPoint **/
     export interface InteractionPoint extends FresnelApp.BaseViewModel {
         CommandUri: string;
@@ -217,10 +229,7 @@ declare module FresnelApp {
         Properties: any;
         Methods: any;
         IsPersistable: boolean;
-        IsTransient: boolean;
-        IsPersistent: boolean;
-        IsDirty: boolean;
-        HasDirtyChildren: boolean;
+        DirtyState: FresnelApp.DirtyStateVM;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.ParameterVM **/
     export interface ParameterVM extends FresnelApp.SettableMemberVM {
