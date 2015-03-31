@@ -273,6 +273,28 @@ var FresnelApp;
             this.blockUI = blockUI;
             this.modal = $modal;
         }
+        SearchService.prototype.searchForObjects = function (fullyQualifiedName) {
+            var _this = this;
+            var request = this.requestBuilder.buildSearchObjectsRequest(fullyQualifiedName);
+            var promise = this.fresnelService.searchObjects(request);
+            this.blockUI.start("Searching for data...");
+            promise.then(function (promiseResult) {
+                var response = promiseResult.data;
+                _this.appService.identityMap.merge(response.Modifications);
+                _this.rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
+                if (response.Passed) {
+                    var searchResults = response.Result;
+                    searchResults.IsSearchResults = true;
+                    searchResults.OriginalRequest = request;
+                    searchResults.AllowSelection = false;
+                    searchResults.AllowMultiSelect = false;
+                    _this.appService.identityMap.addObject(response.Result);
+                    _this.rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.Result);
+                }
+            }).finally(function () {
+                _this.blockUI.stop();
+            });
+        };
         SearchService.prototype.showSearchForProperty = function (prop, onSelectionConfirmed) {
             var _this = this;
             this.blockUI.start("Searching for data...");
@@ -1350,7 +1372,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
-        function ToolboxController($rootScope, $scope, fresnelService, requestBuilder, appService, blockUI) {
+        function ToolboxController($rootScope, $scope, fresnelService, requestBuilder, appService, searchService, blockUI) {
             $scope.loadClassHierarchy = function () {
                 var _this = this;
                 var promise = fresnelService.getClassHierarchy();
@@ -1375,25 +1397,7 @@ var FresnelApp;
                 });
             };
             $scope.searchObjects = function (fullyQualifiedName) {
-                var request = requestBuilder.buildSearchObjectsRequest(fullyQualifiedName);
-                var promise = fresnelService.searchObjects(request);
-                blockUI.start("Searching for data...");
-                promise.then(function (promiseResult) {
-                    var response = promiseResult.data;
-                    appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
-                    if (response.Passed) {
-                        var searchResults = response.Result;
-                        searchResults.IsSearchResults = true;
-                        searchResults.OriginalRequest = request;
-                        searchResults.AllowSelection = false;
-                        searchResults.AllowMultiSelect = false;
-                        appService.identityMap.addObject(response.Result);
-                        $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.Result);
-                    }
-                }).finally(function () {
-                    blockUI.stop();
-                });
+                searchService.searchForObjects(fullyQualifiedName);
             };
             // This will run when the page loads:
             angular.element(document).ready(function () {
@@ -1406,6 +1410,7 @@ var FresnelApp;
             'fresnelService',
             'requestBuilder',
             'appService',
+            'searchService',
             'blockUI'
         ];
         return ToolboxController;

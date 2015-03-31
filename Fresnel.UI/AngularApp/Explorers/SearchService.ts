@@ -38,6 +38,35 @@ module FresnelApp {
             this.modal = $modal;
         }
 
+        searchForObjects(fullyQualifiedName: string) {
+            var request = this.requestBuilder.buildSearchObjectsRequest(fullyQualifiedName);
+            var promise = this.fresnelService.searchObjects(request);
+
+            this.blockUI.start("Searching for data...");
+
+            promise.then((promiseResult) => {
+                var response = promiseResult.data;
+
+                this.appService.identityMap.merge(response.Modifications);
+                this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
+                if (response.Passed) {
+                    var searchResults: SearchResultsVM = response.Result;
+
+                    searchResults.IsSearchResults = true;
+                    searchResults.OriginalRequest = request;
+                    searchResults.AllowSelection = false;
+                    searchResults.AllowMultiSelect = false;
+
+                    this.appService.identityMap.addObject(response.Result);
+                    this.rootScope.$broadcast(UiEventType.ExplorerOpen, response.Result);
+                }
+            })
+                .finally(() => {
+                this.blockUI.stop();
+            });
+        }
+
         showSearchForProperty(prop: PropertyVM, onSelectionConfirmed) {
             this.blockUI.start("Searching for data...");
 

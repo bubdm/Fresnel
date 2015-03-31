@@ -9,6 +9,7 @@
             'fresnelService',
             'requestBuilder',
             'appService',
+            'searchService',
             'blockUI'];
 
         constructor(
@@ -17,6 +18,7 @@
             fresnelService: IFresnelService,
             requestBuilder: RequestBuilder,
             appService: AppService,
+            searchService: SearchService,
             blockUI: any) {
 
             $scope.loadClassHierarchy = function () {
@@ -50,32 +52,7 @@
             }
 
             $scope.searchObjects = function (fullyQualifiedName: string) {
-                var request = requestBuilder.buildSearchObjectsRequest(fullyQualifiedName);
-                var promise = fresnelService.searchObjects(request);
-
-                blockUI.start("Searching for data...");
-
-                promise.then((promiseResult) => {
-                    var response = promiseResult.data;
-
-                    appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
-
-                    if (response.Passed) {
-                        var searchResults: SearchResultsVM = response.Result;
-
-                        searchResults.IsSearchResults = true;
-                        searchResults.OriginalRequest = request;
-                        searchResults.AllowSelection = false;
-                        searchResults.AllowMultiSelect = false;
-
-                        appService.identityMap.addObject(response.Result);
-                        $rootScope.$broadcast(UiEventType.ExplorerOpen, response.Result);
-                    }
-                })
-                    .finally(() => {
-                    blockUI.stop();
-                });
+                searchService.searchForObjects(fullyQualifiedName);
             }
 
             // This will run when the page loads:
