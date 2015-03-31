@@ -977,6 +977,7 @@
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\ng-dock.js" />
     <Content Include="Scripts\angular-smart-table\smart-table.min.js" />
+    <Content Include="Templates\saveDialog.html" />
     <Content Include="Templates\searchFilterItem.html" />
     <Content Include="Templates\searchResultsToolbar.html" />
     <Content Include="Templates\searchResultsExplorer.html" />
@@ -1052,6 +1053,9 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="AngularApp\ClassLibrary\IToolboxScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerRow.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\ISaveScope.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\SaveController.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\SaveCommand.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ISearchScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\IMethodScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ICollectionScope.ts" />

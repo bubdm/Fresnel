@@ -12,6 +12,7 @@ module FresnelApp {
             'appService',
             'searchService',
             'explorerService',
+            'saveCommand',
             '$modal'];
 
         constructor(
@@ -22,6 +23,7 @@ module FresnelApp {
             appService: AppService,
             searchService: SearchService,
             explorerService: ExplorerService,
+            saveCommand: SaveCommand,
             $modal: ng.ui.bootstrap.IModalService) {
 
             $scope.invoke = function (method: MethodVM) {
@@ -188,9 +190,24 @@ module FresnelApp {
             }
 
             $scope.close = function (explorer: Explorer) {
-                // TODO: Check for dirty status
+                var obj = explorer.__meta;
 
-                $rootScope.$broadcast(UiEventType.ExplorerClose, explorer);
+                if (!saveCommand.isRequiredFor(obj)) {
+                    // Just close the window:
+                    $rootScope.$broadcast(UiEventType.ExplorerClose, explorer);
+                    return;
+                }
+
+                // See what the user wants to do:
+                var promise = saveCommand.askUser(obj);
+                promise.then((isSaveRequested) => {
+                    if (isSaveRequested) {
+                        promise = saveCommand.invoke(obj);
+                    }
+                    promise.finally(() => {
+                        $rootScope.$broadcast(UiEventType.ExplorerClose, explorer);
+                    });
+                });
             }
 
             $scope.openNewExplorer = function (obj: ObjectVM) {
@@ -225,15 +242,7 @@ module FresnelApp {
             }
 
             $scope.save = function (obj: ObjectVM) {
-                var request = requestBuilder.buildSaveChangesRequest(obj);
-                var promise = fresnelService.saveChanges(request);
-
-                promise.then((promiseResult) => {
-                    var response = promiseResult.data;
-
-                    appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
-                });
+                saveCommand.invoke(obj);
             }
 
         }

@@ -83,7 +83,7 @@ namespace Envivo.Fresnel.UiCore
 
                 IsTransient = oCollection.ChangeTracker.IsTransient,
                 IsPersistent = oCollection.ChangeTracker.IsPersistent,
-                IsModified = oCollection.ChangeTracker.IsDirty,
+                IsDirty = oCollection.ChangeTracker.IsDirty,
             };
 
             this.TrimRedundantContentFrom(result);
@@ -141,9 +141,11 @@ namespace Envivo.Fresnel.UiCore
                 Properties = this.CreateProperties(oObject),
                 Methods = this.CreateMethods(oObject),
 
+                IsPersistable = oObject.Template.IsPersistable,
                 IsTransient = oObject.ChangeTracker.IsTransient,
                 IsPersistent = oObject.ChangeTracker.IsPersistent,
-                IsModified = oObject.ChangeTracker.IsDirty,
+                IsDirty = oObject.ChangeTracker.IsDirty,
+                HasDirtyChildren = oObject.ChangeTracker.HasDirtyObjectGraph,
             };
 
             return result;

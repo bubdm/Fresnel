@@ -1,0 +1,25 @@
+﻿<ng-form name="saveDialog" role="form" block-ui class="">
+
+    <div block-ui class="container-fluid box box-solid box-primary">
+
+        <div class="box-header">
+            <span class="box-title">Save changes?</span>
+        </div>
+
+        <h4 class="text-center">Save all changes before closing this window?</h4>
+
+        <div class="box-footer text-right">
+            <button class="btn btn-primary"
+                    ng-click="yes()">
+                <i class="fa fa-check"></i> Yes</button>
+
+            <button class="btn btn-default"
+                    ng-click="no()">
+                <i class="fa fa-close"></i> No</button>
+
+            <button class="btn btn-default"
+                    ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+
+</ng-form>
