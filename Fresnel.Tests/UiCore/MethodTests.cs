@@ -37,10 +37,10 @@ namespace Envivo.Fresnel.Tests.Proxies
             {
                 ObjectID = obj.ID,
                 MethodName = "MethodWithValueParameters",
-                Parameters = new SettableMemberVM[] { 
-                    new SettableMemberVM(){ InternalName = "aString", State = new ValueStateVM() { Value = "123"} },
-                    new SettableMemberVM(){ InternalName = "aNumber", State = new ValueStateVM() { Value = 123} },
-                    new SettableMemberVM(){ InternalName = "aDate", State = new ValueStateVM() { Value = DateTime.Now} },
+                Parameters = new ParameterVM[] { 
+                    new ParameterVM(){ InternalName = "aString", State = new ValueStateVM() { Value = "123"} },
+                    new ParameterVM(){ InternalName = "aNumber", State = new ValueStateVM() { Value = 123} },
+                    new ParameterVM(){ InternalName = "aDate", State = new ValueStateVM() { Value = DateTime.Now} },
                  }
             };
 

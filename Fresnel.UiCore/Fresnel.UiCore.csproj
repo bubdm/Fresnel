@@ -121,7 +121,7 @@
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="MethodVmBuilder.cs" />
     <Compile Include="Model\TypeInfo\EnumItemVM.cs" />
-    <Compile Include="Model\TypeInfo\IPropertyVmBuilder.cs" />
+    <Compile Include="Model\TypeInfo\ISettableVmBuilder.cs" />
     <Compile Include="Model\TypeInfo\BooleanVmBuilder.cs" />
     <Compile Include="Model\TypeInfo\EnumVmBuilder.cs" />
     <Compile Include="Model\TypeInfo\ObjectSelectionVmBuilder.cs" />

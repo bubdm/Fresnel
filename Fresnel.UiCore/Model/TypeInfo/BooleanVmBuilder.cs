@@ -8,21 +8,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
-    public class BooleanVmBuilder : IPropertyVmBuilder
+    public class BooleanVmBuilder : ISettableVmBuilder
     {
         public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
             return actualType == typeof(bool);
         }
 
-        public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
+        public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var tClass = tProp.InnerClass;
 
             targetVM.Info = this.CreateInfoVM(tProp.Attributes, tClass.RealType);
         }
 
-        public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
+        public void Populate(ParameterVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             var tClass = tParam.InnerClass;
             

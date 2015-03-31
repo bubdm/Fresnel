@@ -13,13 +13,13 @@ namespace Envivo.Fresnel.UiCore
 {
     public class EmptyPropertyVmBuilder
     {
-        private IEnumerable<IPropertyVmBuilder> _Builders;
+        private IEnumerable<ISettableVmBuilder> _Builders;
         private UnknownVmBuilder _UnknownVmBuilder;
         private ClassHierarchyBuilder _ClassHierarchyBuilder;
 
         public EmptyPropertyVmBuilder
             (
-            IEnumerable<IPropertyVmBuilder> builders,
+            IEnumerable<ISettableVmBuilder> builders,
             ClassHierarchyBuilder classHierarchyBuilder
             )
         {
@@ -28,14 +28,14 @@ namespace Envivo.Fresnel.UiCore
             _ClassHierarchyBuilder = classHierarchyBuilder;
         }
 
-        public SettableMemberVM BuildFor(PropertyTemplate tProp)
+        public PropertyVM BuildFor(PropertyTemplate tProp)
         {
             var valueType = tProp.InnerClass.RealType;
             var actualType = valueType.IsNullableType() ?
                                valueType.GetGenericArguments()[0] :
                                valueType;
 
-            var propVM = new SettableMemberVM()
+            var propVM = new PropertyVM()
             {
                 Name = tProp.FriendlyName,
                 InternalName = tProp.Name,

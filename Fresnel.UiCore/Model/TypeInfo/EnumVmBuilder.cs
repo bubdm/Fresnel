@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
-    public class EnumVmBuilder : IPropertyVmBuilder
+    public class EnumVmBuilder : ISettableVmBuilder
     {
         private IDomainDependencyResolver _DomainDependencyResolver;
 
@@ -26,13 +26,13 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
             return actualType.IsEnum;
         }
 
-        public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
+        public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var tEnum = (EnumTemplate)tProp.InnerClass;
             targetVM.Info = this.CreateInfoVM(tProp.Attributes, tEnum);
         }
 
-        public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
+        public void Populate(ParameterVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             var tEnum = (EnumTemplate)tParam.InnerClass;
             targetVM.Info = this.CreateInfoVM(tParam.Attributes, tEnum);

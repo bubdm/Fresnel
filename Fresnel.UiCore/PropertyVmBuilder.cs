@@ -13,13 +13,13 @@ namespace Envivo.Fresnel.UiCore
 {
     public class PropertyVmBuilder
     {
-        private IEnumerable<IPropertyVmBuilder> _Builders;
+        private IEnumerable<ISettableVmBuilder> _Builders;
         private EmptyPropertyVmBuilder _EmptyPropertyVmBuilder;
         private PropertyStateVmBuilder _PropertyStateVmBuilder;
 
         public PropertyVmBuilder
             (
-            IEnumerable<IPropertyVmBuilder> builders,
+            IEnumerable<ISettableVmBuilder> builders,
             EmptyPropertyVmBuilder emptyPropertyVmBuilder,
             PropertyStateVmBuilder propertyStateVmBuilder
             )
@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.UiCore
             _PropertyStateVmBuilder = propertyStateVmBuilder;
         }
 
-        public SettableMemberVM BuildFor(BasePropertyObserver oProp)
+        public PropertyVM BuildFor(BasePropertyObserver oProp)
         {
             var tProp = oProp.Template;
             var objectProp = oProp as ObjectPropertyObserver;

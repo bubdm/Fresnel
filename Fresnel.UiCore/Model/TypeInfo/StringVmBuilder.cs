@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
-    public class StringVmBuilder : IPropertyVmBuilder
+    public class StringVmBuilder : ISettableVmBuilder
     {
         private DataTypeToUiControlMapper _DataTypeToUiControlMapper;
 
@@ -25,14 +25,14 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
                    actualType == typeof(string);
         }
 
-        public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
+        public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             var tClass = tProp.InnerClass;
 
             targetVM.Info = this.CreateInfoVM(tProp.Attributes, actualType);
         }
 
-        public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
+        public void Populate(ParameterVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             var tClass = tParam.InnerClass;
 

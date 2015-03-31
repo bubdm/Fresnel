@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
-    public class NumberVmBuilder : IPropertyVmBuilder
+    public class NumberVmBuilder : ISettableVmBuilder
     {
         public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
@@ -20,12 +20,12 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
                    actualType == typeof(byte);
         }
 
-        public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
+        public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             targetVM.Info = this.CreateInfoVM(tProp.Attributes);
         }
 
-        public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
+        public void Populate(ParameterVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             targetVM.Info = this.CreateInfoVM(tParam.Attributes);
         }

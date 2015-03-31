@@ -5,18 +5,18 @@ using System;
 
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
-    public class UnknownVmBuilder : IPropertyVmBuilder
+    public class UnknownVmBuilder : ISettableVmBuilder
     {
         public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
             return false;
         }
 
-        public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
+        public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
         {   
         }
 
-        public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
+        public void Populate(ParameterVM targetVM, ParameterTemplate tParam, Type actualType)
         {
         }
     }

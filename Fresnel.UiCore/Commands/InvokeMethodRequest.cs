@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         public string MethodName { get; set; }
 
-        public IEnumerable<SettableMemberVM> Parameters { get; set; }
+        public IEnumerable<ParameterVM> Parameters { get; set; }
 
     }
 }

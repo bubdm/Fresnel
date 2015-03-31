@@ -5,14 +5,14 @@ using System;
 
 namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
-    public class ObjectSelectionVmBuilder : IPropertyVmBuilder
+    public class ObjectSelectionVmBuilder : ISettableVmBuilder
     {
         public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
             return template.IsDomainObject;
         }
 
-        public void Populate(SettableMemberVM targetVM, PropertyTemplate tProp, Type actualType)
+        public void Populate(PropertyVM targetVM, PropertyTemplate tProp, Type actualType)
         {
             targetVM.Info = new ReferenceTypeVM()
             {
@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
             };
         }
 
-        public void Populate(SettableMemberVM targetVM, ParameterTemplate tParam, Type actualType)
+        public void Populate(ParameterVM targetVM, ParameterTemplate tParam, Type actualType)
         {
             targetVM.Info = new ReferenceTypeVM()
             {
