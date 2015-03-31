@@ -55,7 +55,8 @@ namespace Envivo.Fresnel.UiCore
                 IsVisible = oCollection.Template.IsVisible,
                 ElementProperties = elementProperties,
                 Properties = this.CreateProperties(oCollection),
-                Items = this.CreateItems(oCollection, allKnownProperties)
+                Items = this.CreateItems(oCollection, allKnownProperties),
+                DirtyState = this.CreateDirtyState(oCollection),
             };
 
             return result;
@@ -91,7 +92,9 @@ namespace Envivo.Fresnel.UiCore
                 Name = title,
                 Type = oObject.Template.RealType.Name,
                 IsVisible = oObject.Template.IsVisible,
+                IsPersistable = oObject.Template.IsPersistable,
                 Properties = this.CreateProperties(oObject),
+                DirtyState = this.CreateDirtyState(oObject),
             };
 
             return result;
@@ -113,5 +116,15 @@ namespace Envivo.Fresnel.UiCore
             return properties;
         }
 
+        private DirtyStateVM CreateDirtyState(ObjectObserver oObject)
+        {
+            return new DirtyStateVM()
+            {
+                IsTransient = oObject.ChangeTracker.IsTransient,
+                IsPersistent = oObject.ChangeTracker.IsPersistent,
+                IsDirty = oObject.ChangeTracker.IsDirty,
+                HasDirtyChildren = oObject.ChangeTracker.HasDirtyObjectGraph,
+            };
+        }
     }
 }

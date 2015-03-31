@@ -84,6 +84,9 @@ module FresnelApp {
 
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
+                    var obj = appService.identityMap.getObject(prop.ObjectID);
+                    obj.DirtyState.IsDirty = true;
                 });
             }
 
@@ -106,6 +109,9 @@ module FresnelApp {
 
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
+                    var obj = appService.identityMap.getObject(prop.ObjectID);
+                    obj.DirtyState.IsDirty = true;
 
                     if (response.Passed) {
                         $rootScope.$broadcast(UiEventType.ExplorerOpen, response.NewObject, $scope.explorer);
@@ -130,6 +136,9 @@ module FresnelApp {
 
                             appService.identityMap.merge(response.Modifications);
                             $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
+                            var obj = appService.identityMap.getObject(prop.ObjectID);
+                            obj.DirtyState.IsDirty = true;
                         });
                     }
                 };
@@ -161,6 +170,9 @@ module FresnelApp {
 
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
+                    var obj = appService.identityMap.getObject(prop.ObjectID);
+                    obj.DirtyState.IsDirty = true;
 
                     if (transientExplorer) {
                         $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerClose, transientExplorer);

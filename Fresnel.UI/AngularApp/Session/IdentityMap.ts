@@ -173,36 +173,6 @@ module FresnelApp {
             }
         }
 
-        //mergeObjects(existingObj: ObjectVM, newObj: ObjectVM) {
-        //    // NB: We have to be selective, otherwise the Angular bindings will break:
-
-        //    var doesExistingObjHaveProperties = (existingObj.Properties != null) && (existingObj.Properties.length > 0);
-        //    var doesNewObjHaveProperties = (newObj.Properties != null) && (newObj.Properties.length > 0);
-        //    var doObjectsHaveSameProperties = doesExistingObjHaveProperties && doesNewObjHaveProperties && (existingObj.Properties.length == newObj.Properties.length);
-
-        //    if (!doesExistingObjHaveProperties && doesNewObjHaveProperties) {
-        //        existingObj.Properties = newObj.Properties;
-        //    }
-        //    else if (doObjectsHaveSameProperties) {
-        //        for (var i = 0; i < existingObj.Properties.length; i++) {
-        //            this.extendDeep(existingObj.Properties[i], newObj.Properties[i]);
-        //        }
-        //    }
-
-        //    var doesExistingObjHaveMethods = (existingObj.Methods != null) && (existingObj.Methods.length > 0);
-        //    var doesNewObjHaveMethods = (newObj.Methods != null) && (newObj.Methods.length > 0);
-        //    var doObjectsHaveSameMethods = doesExistingObjHaveMethods && doesNewObjHaveMethods && (existingObj.Methods.length == newObj.Methods.length);
-
-        //    if (!doesExistingObjHaveMethods && doesNewObjHaveMethods) {
-        //        existingObj.Methods = newObj.Methods;
-        //    }
-        //    else if (doObjectsHaveSameMethods) {
-        //        for (var i = 0; i < existingObj.Methods.length; i++) {
-        //            this.extendDeep(existingObj.Methods[i], newObj.Methods[i]);
-        //        }
-        //    }
-        //}
-
         mergeObjects(existingObj: ObjectVM, newObj: ObjectVM) {
             var doesExistingObjHaveProperties = (existingObj.Properties != null) && (existingObj.Properties.length > 0);
             var doesNewObjHaveProperties = (newObj.Properties != null) && (newObj.Properties.length > 0);
@@ -230,7 +200,12 @@ module FresnelApp {
                 }
             }
 
-            this.extendDeep(existingObj.DirtyState, newObj.DirtyState);
+            if (!existingObj.DirtyState && newObj.DirtyState) {
+                existingObj.DirtyState == newObj.DirtyState;
+            }
+            else {
+                this.extendDeep(existingObj.DirtyState, newObj.DirtyState);
+            }
         }
 
         extendDeep(destination, source) {
