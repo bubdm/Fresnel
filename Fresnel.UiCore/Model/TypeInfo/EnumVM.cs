@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 
         public bool IsBitwiseEnum { get; set; }
 
-        public IEnumerable<EnumItemVM> Items { get; set; }
+        public EnumItemVM[] Items { get; set; }
 
         public UiControlType PreferredControl { get; set; }
     }

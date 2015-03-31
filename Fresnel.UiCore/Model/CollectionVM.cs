@@ -10,10 +10,10 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public string ElementType { get; set; }
 
-        public IEnumerable<PropertyVM> ElementProperties { get; set; }
+        public PropertyVM[] ElementProperties { get; set; }
 
-        public IEnumerable<ObjectVM> Items { get; set; }
+        public ObjectVM[] Items { get; set; }
 
-        public IEnumerable<ObjectVM> DisplayItems { get; set; }
+        public ObjectVM[] DisplayItems { get; set; }
     }
 }

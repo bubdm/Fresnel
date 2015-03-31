@@ -75,11 +75,11 @@ namespace Envivo.Fresnel.UiCore
                 Type = oCollection.Template.RealType.Name,
                 ElementType = tElement.RealType.FullName,
                 IsVisible = oCollection.Template.IsVisible,
-                ElementProperties = elementProperties,
+                ElementProperties = elementProperties.ToArray(),
                 Description = oCollection.Template.XmlComments.Summary,
-                Properties = this.CreateProperties(oCollection),
-                Methods = this.CreateMethods(oCollection),
-                Items = this.CreateItems(oCollection, allKnownProperties),
+                Properties = this.CreateProperties(oCollection).ToArray(),
+                Methods = this.CreateMethods(oCollection).ToArray(),
+                Items = this.CreateItems(oCollection, allKnownProperties).ToArray(),
 
                 DirtyState = this.CreateDirtyState(oCollection),
             };
@@ -136,8 +136,8 @@ namespace Envivo.Fresnel.UiCore
                 Type = oObject.Template.RealType.Name,
                 IsVisible = oObject.Template.IsVisible,
                 Description = oObject.Template.XmlComments.Summary,
-                Properties = this.CreateProperties(oObject),
-                Methods = this.CreateMethods(oObject),
+                Properties = this.CreateProperties(oObject).ToArray(),
+                Methods = this.CreateMethods(oObject).ToArray(),
 
                 IsPersistable = oObject.Template.IsPersistable,
                 DirtyState = this.CreateDirtyState(oObject),

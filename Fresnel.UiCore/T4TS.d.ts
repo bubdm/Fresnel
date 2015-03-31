@@ -7,7 +7,7 @@ declare module FresnelApp {
     export interface BaseCommandResponse {
         Passed: boolean;
         Failed: boolean;
-        Messages: any;
+        Messages: FresnelApp.MessageVM[];
         Modifications: FresnelApp.ModificationsVM;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionAddNewRequest **/
@@ -63,7 +63,7 @@ declare module FresnelApp {
     export interface InvokeMethodRequest {
         ObjectID: any;
         MethodName: string;
-        Parameters: any;
+        Parameters: FresnelApp.ParameterVM[];
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.InvokeMethodResponse **/
     export interface InvokeMethodResponse extends FresnelApp.BaseCommandResponse {
@@ -94,7 +94,7 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SearchRequest **/
     export interface SearchRequest {
-        SearchFilters: any;
+        SearchFilters: FresnelApp.SearchFilter[];
         OrderBy: string;
         IsDescendingOrder: boolean;
         PageSize: number;
@@ -140,13 +140,13 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Changes.ModificationsVM **/
     export interface ModificationsVM {
-        NewObjects: any;
-        PropertyChanges: any;
-        ObjectTitleChanges: any;
-        CollectionAdditions: any;
-        CollectionRemovals: any;
-        MethodParameterChanges: any;
-        SavedObjects: any;
+        NewObjects: FresnelApp.ObjectVM[];
+        PropertyChanges: FresnelApp.PropertyChangeVM[];
+        ObjectTitleChanges: FresnelApp.ObjectTitleChangeVM[];
+        CollectionAdditions: FresnelApp.CollectionElementVM[];
+        CollectionRemovals: FresnelApp.CollectionElementVM[];
+        MethodParameterChanges: FresnelApp.ParameterChangeVM[];
+        SavedObjects: FresnelApp.ObjectVM[];
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Changes.ObjectTitleChangeVM **/
     export interface ObjectTitleChangeVM {
@@ -186,9 +186,9 @@ declare module FresnelApp {
     export interface CollectionVM extends FresnelApp.ObjectVM {
         IsCollection: boolean;
         ElementType: string;
-        ElementProperties: any;
-        Items: any;
-        DisplayItems: any;
+        ElementProperties: FresnelApp.PropertyVM[];
+        Items: FresnelApp.ObjectVM[];
+        DisplayItems: FresnelApp.ObjectVM[];
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.DirtyStateVM **/
     export interface DirtyStateVM {
@@ -218,16 +218,16 @@ declare module FresnelApp {
         ObjectID?: any;
         Index: number;
         InternalName: string;
-        Parameters: any;
-        ParametersSetByUser: any;
+        Parameters: FresnelApp.ParameterVM[];
+        ParametersSetByUser: FresnelApp.ParameterVM[];
         IsAsync: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.ObjectVM **/
     export interface ObjectVM extends FresnelApp.BaseViewModel {
         ID: any;
         Type: string;
-        Properties: any;
-        Methods: any;
+        Properties: FresnelApp.PropertyVM[];
+        Methods: FresnelApp.MethodVM[];
         IsPersistable: boolean;
         DirtyState: FresnelApp.DirtyStateVM;
     }
@@ -253,7 +253,7 @@ declare module FresnelApp {
     export interface SessionVM {
         UserName: string;
         LogonTime: string;
-        Messages: any;
+        Messages: FresnelApp.MessageVM[];
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.SettableMemberVM **/
     export interface SettableMemberVM extends FresnelApp.BaseViewModel {
@@ -292,7 +292,7 @@ declare module FresnelApp {
     export interface EnumVM {
         Name: string;
         IsBitwiseEnum: boolean;
-        Items: any;
+        Items: FresnelApp.EnumItemVM[];
         PreferredControl: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.TypeInfo.NullVM **/

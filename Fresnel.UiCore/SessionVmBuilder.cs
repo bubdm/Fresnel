@@ -2,6 +2,7 @@
 using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.Utils;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Envivo.Fresnel.UiCore
@@ -38,7 +39,7 @@ namespace Envivo.Fresnel.UiCore
             {
                 UserName = Environment.UserName,
                 LogonTime = _Clock.Now,
-                Messages = this.CreateInfoMessages(),
+                Messages = this.CreateInfoMessages().ToArray(),
             };
             return result;
         }

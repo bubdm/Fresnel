@@ -209,7 +209,7 @@ module FresnelApp {
                 var itemToBind = existingObj == null ? latestObj : existingObj;
                 if (existingObj == null) {
                     identityMap.addObject(latestObj);
-                    bindableItems[i] = latestObj;
+                    bindableItems[i] = <SearchResultItemVM>latestObj;
                 }
                 else {
                     identityMap.mergeObjects(existingObj, latestObj);

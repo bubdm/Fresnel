@@ -14,9 +14,9 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public string InternalName { get; set; }
 
-        public IEnumerable<ParameterVM> Parameters { get; set; }
+        public ParameterVM[] Parameters { get; set; }
 
-        public IEnumerable<ParameterVM> ParametersSetByUser { get; set; }
+        public ParameterVM[] ParametersSetByUser { get; set; }
 
         [DefaultValue(false)]
         public bool IsAsync { get; set; }

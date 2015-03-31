@@ -12,9 +12,9 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public string Type { get; set; }
 
-        public IEnumerable<PropertyVM> Properties { get; set; }
+        public PropertyVM[] Properties { get; set; }
 
-        public IEnumerable<MethodVM> Methods { get; set; }
+        public MethodVM[] Methods { get; set; }
 
         /// <summary>
         /// Determines if the Object can be saved to a data store

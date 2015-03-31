@@ -144,7 +144,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     Passed = true,
                     Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
-                    Messages = messages
+                    Messages = messages.ToArray()
                 };
             }
             catch (Exception ex)

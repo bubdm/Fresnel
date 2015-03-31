@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         [DefaultValue(false)]
         public bool Failed { get; set; }
 
-        public IEnumerable<MessageVM> Messages { get; set; }
+        public MessageVM[] Messages { get; set; }
 
         /// <summary>
         /// Any modifications to other Objects that occurred as part of the operation

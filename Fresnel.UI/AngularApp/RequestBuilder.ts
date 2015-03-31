@@ -23,7 +23,7 @@
 
             for (var i = 0; i < method.Parameters.length; i++) {
                 var param = method.Parameters[i];
-                var requestParam = {
+                var requestParam: any = {
                     InternalName: param.InternalName,
                     State: {
                         Value: param.State.Value,

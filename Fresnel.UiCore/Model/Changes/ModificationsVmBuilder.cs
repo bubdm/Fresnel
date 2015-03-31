@@ -54,11 +54,11 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
 
             var result = new ModificationsVM()
             {
-                NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)),
-                PropertyChanges = propertyChanges.Select(c => CreatePropertyChange(c)),
-                ObjectTitleChanges = objectTitleChanges.Select(c => CreateTitleChange(c)),
-                CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c)),
-                CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c)),
+                NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)).ToArray(),
+                PropertyChanges = propertyChanges.Select(c => CreatePropertyChange(c)).ToArray(),
+                ObjectTitleChanges = objectTitleChanges.Select(c => CreateTitleChange(c)).ToArray(),
+                CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c)).ToArray(),
+                CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c)).ToArray(),
             };
 
             return result;

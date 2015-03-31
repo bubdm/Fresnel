@@ -4,7 +4,7 @@ module FresnelApp {
 
     export class IdentityMap {
 
-        private objectMap: any[] = [];
+        private objectMap: ObjectVM[] = [];
 
         getObject(key: string): ObjectVM {
             var item = this.objectMap[key];

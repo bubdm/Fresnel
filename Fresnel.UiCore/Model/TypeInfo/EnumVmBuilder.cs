@@ -55,7 +55,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
             {
                 Name = "enum",
                 IsBitwiseEnum = tEnum.IsBitwiseEnum,
-                Items = this.CreateEnumItems(tEnum),
+                Items = this.CreateEnumItems(tEnum).ToArray(),
                 PreferredControl = preferredControl,
             };
         }

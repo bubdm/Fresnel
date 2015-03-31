@@ -53,9 +53,9 @@ namespace Envivo.Fresnel.UiCore
                 Type = oCollection.Template.RealType.Name,
                 ElementType = tElement.RealType.FullName,
                 IsVisible = oCollection.Template.IsVisible,
-                ElementProperties = elementProperties,
-                Properties = this.CreateProperties(oCollection),
-                Items = this.CreateItems(oCollection, allKnownProperties),
+                ElementProperties = elementProperties.ToArray(),
+                Properties = this.CreateProperties(oCollection).ToArray(),
+                Items = this.CreateItems(oCollection, allKnownProperties).ToArray(),
                 DirtyState = this.CreateDirtyState(oCollection),
             };
 
@@ -93,7 +93,7 @@ namespace Envivo.Fresnel.UiCore
                 Type = oObject.Template.RealType.Name,
                 IsVisible = oObject.Template.IsVisible,
                 IsPersistable = oObject.Template.IsPersistable,
-                Properties = this.CreateProperties(oObject),
+                Properties = this.CreateProperties(oObject).ToArray(),
                 DirtyState = this.CreateDirtyState(oObject),
             };
 

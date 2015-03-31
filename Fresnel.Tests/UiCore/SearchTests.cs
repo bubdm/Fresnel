@@ -339,7 +339,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             {
                 new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
             };
-            searchRequest.SearchFilters = searchFilters;
+            searchRequest.SearchFilters = searchFilters.ToArray();
 
             var searchResponse = toolboxController.SearchObjects(searchRequest);
 
@@ -383,7 +383,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             {
                 new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
             };
-            searchRequest.SearchFilters = searchFilters;
+            searchRequest.SearchFilters = searchFilters.ToArray();
 
             var searchResponse = toolboxController.SearchObjects(searchRequest);
 
@@ -427,7 +427,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             {
                 new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
             };
-            searchRequest.SearchFilters = searchFilters;
+            searchRequest.SearchFilters = searchFilters.ToArray();
 
             var searchResponse = toolboxController.SearchObjects(searchRequest);
 
@@ -472,7 +472,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             {
                 new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
             };
-            searchRequest.SearchFilters = searchFilters;
+            searchRequest.SearchFilters = searchFilters.ToArray();
 
             var searchResponse = toolboxController.SearchObjects(searchRequest);
 

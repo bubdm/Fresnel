@@ -4,7 +4,7 @@
 
         identityMap: IdentityMap;
 
-        mergeMessages(messages: any, target: SessionVM) {
+        mergeMessages(messages: MessageVM[], target: SessionVM) {
             for (var i = 0; i < messages.length; i++) {
                 target.Messages.push(messages[i]);
             }
