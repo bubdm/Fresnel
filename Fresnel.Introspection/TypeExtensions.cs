@@ -21,6 +21,7 @@ namespace Envivo.Fresnel.Introspection
         static private Type IFactoryType = typeof(IFactory<>);
         static private Type IRepositoryType = typeof(IRepository<>);
         static private Type IDomainServiceType = typeof(IDomainService);
+        static private Type IQuerySpecificationType = typeof(IQuerySpecification<>);
 
         //static private Type IPresenterType = typeof(UI.IPresenterInfrastructureService<>);
         static private Type IDataErrorInfoType = typeof(IDataErrorInfo);
@@ -136,6 +137,16 @@ namespace Envivo.Fresnel.Introspection
         public static bool IsDomainService(this Type type)
         {
             return type.IsDerivedFrom(IDomainServiceType);
+        }
+
+        /// <summary>
+        /// Determines if the given type implements IQuerySpecificationType
+        /// </summary>
+        /// <param name="type"></param>
+
+        public static bool IsQuerySpecification(this Type type)
+        {
+            return type.IsDerivedFrom(IQuerySpecificationType);
         }
 
         ///// <summary>

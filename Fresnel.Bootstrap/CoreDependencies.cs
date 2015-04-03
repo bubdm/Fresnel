@@ -84,6 +84,7 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.Core.Commands.SetParameterCommand),
                 typeof(Fresnel.Core.Commands.SetPropertyCommand),
                 typeof(Fresnel.Core.Commands.SaveObjectCommand),
+                typeof(Fresnel.Core.Commands.SearchCommand),
 
                 typeof(Fresnel.Core.Persistence.NullPersistenceService),
 

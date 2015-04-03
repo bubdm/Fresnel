@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
@@ -10,7 +11,15 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// <summary>
         /// Returns a set of results
         /// </summary>
+        IQueryable<TResult> GetResults();
+    }
 
-        IEnumerable<TResult> GetResults();
+    public interface IQuerySpecification<TRequestor, TResult> : IQuerySpecification<TResult>
+        where TRequestor : class
+    {
+        /// <summary>
+        /// Returns a set of results
+        /// </summary>
+        IQueryable<TResult> GetResults(TRequestor requestor);
     }
 }

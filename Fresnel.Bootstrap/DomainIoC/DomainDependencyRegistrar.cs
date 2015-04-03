@@ -22,6 +22,7 @@ namespace Envivo.Fresnel.CompositionRoot.DomainIoC
             builder
                 .RegisterTypes(domainDependencyTypes)
                 .AsImplementedInterfaces()
+                .AsSelf()
                 .InstancePerLifetimeScope()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 

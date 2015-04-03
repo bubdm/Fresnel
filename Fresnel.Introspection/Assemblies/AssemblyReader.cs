@@ -159,7 +159,8 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             var dependencyTypes = publicTypes
                                     .Where(t => t.IsFactory() ||
                                                 t.IsRepository() ||
-                                                t.IsDomainService())
+                                                t.IsDomainService() ||
+                                                t.IsQuerySpecification())
                                     .ToArray();
 
             _DomainDependencyRegistrar.RegisterTypes(dependencyTypes);

@@ -35,6 +35,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
         /// <summary>
         /// This property should have an item created by the injected factory
         /// </summary>
+        [FilterQuerySpecification(SpecificationType = typeof(PocoFilterQuerySpecification))]
         public virtual PocoObject PocoObject { get; set; }
 
         /// <summary>

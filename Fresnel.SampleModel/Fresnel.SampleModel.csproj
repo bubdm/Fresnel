@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicTypes\MultiType.cs" />
+    <Compile Include="DomainObjects\PocoFilterQuerySpecification.cs" />
     <Compile Include="DomainObjects\DependencyAwareObject.cs" />
     <Compile Include="Factories\CategoryFactory.cs" />
     <Compile Include="Factories\MasterObjectFactory.cs" />

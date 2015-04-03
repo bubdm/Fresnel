@@ -59,6 +59,7 @@
     <Compile Include="Domain\PropertyTemplateTests.cs" />
     <Compile Include="Domain\CollectionTemplateTests.cs" />
     <Compile Include="Persistence\PersistenceServiceGenericTests.cs" />
+    <Compile Include="Persistence\SearchTests.cs" />
     <Compile Include="Persistence\PersistenceServiceTests.cs" />
     <Compile Include="UiCore\MethodTests.cs" />
     <Compile Include="UiCore\EditorIdentifierTests.cs">
