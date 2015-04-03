@@ -1,7 +1,7 @@
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.Objects;
 
-namespace Envivo.Sample.Model.Factories
+namespace Envivo.SampleModel.Factories
 {
     public class MasterObjectFactory : IFactory<MasterObject>
     {
