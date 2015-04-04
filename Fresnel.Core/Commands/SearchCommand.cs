@@ -40,6 +40,8 @@ namespace Envivo.Fresnel.Core.Commands
 
         public IQueryable Search(ClassTemplate tClass)
         {
+            this.CheckIfTypeIsRecognised(tClass.RealType);
+
             return _PersistenceService.GetObjects(tClass.RealType);
         }
 
@@ -51,6 +53,8 @@ namespace Envivo.Fresnel.Core.Commands
             var searchType = oProp.Template.IsCollection ?
                                 ((CollectionTemplate)oProp.Template.InnerClass).ElementType :
                                 oProp.Template.PropertyType;
+
+            this.CheckIfTypeIsRecognised(searchType);
 
             var results = this.GetResults(querySpecification, oParent) ??
                           _PersistenceService.GetObjects(searchType);
@@ -66,6 +70,8 @@ namespace Envivo.Fresnel.Core.Commands
                                 ((CollectionTemplate)oParam.Template.InnerClass).ElementType :
                                 oParam.Template.ParameterType;
 
+            this.CheckIfTypeIsRecognised(searchType);
+
             var results = this.GetResults(querySpecification, oParent) ??
                           _PersistenceService.GetObjects(searchType);
             return results;
@@ -79,6 +85,12 @@ namespace Envivo.Fresnel.Core.Commands
 
             var querySpec = _DomainDependencyResolver.Resolve(querySpecType);
             return querySpec;
+        }
+
+        private void CheckIfTypeIsRecognised(Type classType)
+        {
+            if (!_PersistenceService.IsTypeRecognised(classType))
+                throw new CoreException(string.Concat(_PersistenceService.GetType().Name, " does not recognise ", classType.FullName));
         }
 
         private IQueryable GetResults(object querySpecification, ObjectObserver oParent)

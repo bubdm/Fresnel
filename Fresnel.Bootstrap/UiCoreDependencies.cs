@@ -45,6 +45,7 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.UiCore.Commands.SearchObjectsCommand),
                 typeof(Fresnel.UiCore.Commands.SearchPropertyCommand),
                 typeof(Fresnel.UiCore.Commands.SearchParameterCommand),
+                typeof(Fresnel.UiCore.Commands.SearchResultsFilterApplier),
 
                 typeof(Fresnel.UiCore.Model.Changes.ModificationsVmBuilder),
 

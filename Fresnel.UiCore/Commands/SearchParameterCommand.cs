@@ -1,4 +1,5 @@
-﻿using Envivo.Fresnel.Core.Observers;
+﻿using Envivo.Fresnel.Core.Commands;
+using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Persistence;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
@@ -16,22 +17,31 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class SearchParameterCommand : ICommand
     {
+        private RealTypeResolver _RealTypeResolver;
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
-        private SearchObjectsCommand _SearchObjectsCommand;
+        private SearchResultsVmBuilder _SearchResultsVmBuilder;
+        private SearchCommand _SearchCommand;
+        private SearchResultsFilterApplier _SearchResultsFilterApplier;
         private IClock _Clock;
 
         public SearchParameterCommand
             (
+            RealTypeResolver realTypeResolver,
             TemplateCache templateCache,
             ObserverCache observerCache,
-            SearchObjectsCommand searchObjectsCommand,
+            SearchResultsVmBuilder searchResultsVmBuilder,
+            SearchCommand searchCommand,
+            SearchResultsFilterApplier searchResultsFilterApplier,
             IClock clock
         )
         {
+            _RealTypeResolver = realTypeResolver;
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
-            _SearchObjectsCommand = searchObjectsCommand;
+            _SearchResultsVmBuilder = searchResultsVmBuilder;
+            _SearchCommand = searchCommand;
+            _SearchResultsFilterApplier = searchResultsFilterApplier;
             _Clock = clock;
         }
 
@@ -48,18 +58,31 @@ namespace Envivo.Fresnel.UiCore.Commands
                                  ((CollectionTemplate)tParam.InnerClass).ElementType :
                                  tParam.ParameterType;
 
-                var subRequest = new SearchObjectsRequest()
+                var tClass = (ClassTemplate)_TemplateCache.GetTemplate(searchType);
+
+                var objects = this.FetchObjects(request, oParam, tClass);
+                var areMoreItemsAvailable = objects.Count() > request.PageSize;
+
+                // Only return back the number of items actually requested:
+                var results = objects.ToList<object>().Take(request.PageSize);
+                var oColl = (CollectionObserver)_ObserverCache.GetObserver(results, results.GetType());
+                var result = _SearchResultsVmBuilder.BuildForCollection(oColl, tClass);
+                result.AreMoreAvailable = areMoreItemsAvailable;
+
+                // Done:
+                var infoVM = new MessageVM()
                 {
-                    SearchType = searchType.FullName,
-                    OrderBy = request.OrderBy,
-                    SearchFilters = request.SearchFilters,
-                    IsDescendingOrder = request.IsDescendingOrder,
-                    PageNumber = request.PageNumber,
-                    PageSize = request.PageSize,
+                    IsSuccess = true,
+                    OccurredAt = _Clock.Now,
+                    Text = string.Concat("Returned ", results.Count(), " ", tClass.FriendlyName, " instances (", areMoreItemsAvailable ? "more are" : "no more", " available)")
                 };
 
-                var result = _SearchObjectsCommand.Invoke(subRequest);
-                return result;
+                return new SearchResponse()
+                {
+                    Passed = true,
+                    Result = result,
+                    Messages = new MessageVM[] { infoVM }
+                };
             }
             catch (Exception ex)
             {
@@ -78,6 +101,14 @@ namespace Envivo.Fresnel.UiCore.Commands
                 };
             }
         }
+
+        private IQueryable FetchObjects(SearchRequest request, ParameterObserver oParam, ClassTemplate tElement)
+        {
+            var results = _SearchCommand.Search(oParam);
+            var filteredResults = _SearchResultsFilterApplier.ApplyFilter(request, results, tElement);
+            return filteredResults;
+        }
+
 
     }
 }
