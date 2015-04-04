@@ -75,6 +75,9 @@ module FresnelApp {
 
             searchPromise.then((promiseResult) => {
                 var response = promiseResult.data;
+
+                this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
                 var searchResults: SearchResultsVM = response.Result;
                 searchResults.OriginalRequest = request;
                 searchResults.AllowSelection = true;
@@ -92,6 +95,9 @@ module FresnelApp {
 
             searchPromise.then((promiseResult) => {
                 var response = promiseResult.data;
+
+                this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
                 var searchResults: SearchResultsVM = response.Result;
                 searchResults.OriginalRequest = request;
                 searchResults.AllowSelection = true;
@@ -180,6 +186,9 @@ module FresnelApp {
 
             searchPromise().then((promiseResult) => {
                 var response = promiseResult.data;
+
+                this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
                 var newSearchResults: SearchResultsVM = response.Result;
                 if (newSearchResults.Items.length == 0)
                     return;
@@ -206,6 +215,9 @@ module FresnelApp {
 
             searchPromise().then((promiseResult) => {
                 var response = promiseResult.data;
+
+                this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
                 var newSearchResults: SearchResultsVM = response.Result;
 
                 // Ensure that we re-use any objects that are already cached:

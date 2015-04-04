@@ -302,6 +302,7 @@ var FresnelApp;
             var searchPromise = this.fresnelService.searchPropertyObjects(request);
             searchPromise.then(function (promiseResult) {
                 var response = promiseResult.data;
+                _this.rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                 var searchResults = response.Result;
                 searchResults.OriginalRequest = request;
                 searchResults.AllowSelection = true;
@@ -316,6 +317,7 @@ var FresnelApp;
             var searchPromise = this.fresnelService.searchParameterObjects(request);
             searchPromise.then(function (promiseResult) {
                 var response = promiseResult.data;
+                _this.rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                 var searchResults = response.Result;
                 searchResults.OriginalRequest = request;
                 searchResults.AllowSelection = true;
@@ -390,6 +392,7 @@ var FresnelApp;
             this.blockUI.start("Loading more data...");
             searchPromise().then(function (promiseResult) {
                 var response = promiseResult.data;
+                _this.rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                 var newSearchResults = response.Result;
                 if (newSearchResults.Items.length == 0)
                     return;
@@ -410,6 +413,7 @@ var FresnelApp;
             this.blockUI.start("Filtering data...");
             searchPromise().then(function (promiseResult) {
                 var response = promiseResult.data;
+                _this.rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                 var newSearchResults = response.Result;
                 // Ensure that we re-use any objects that are already cached:
                 var bindableItems = _this.mergeSearchResults(newSearchResults);
