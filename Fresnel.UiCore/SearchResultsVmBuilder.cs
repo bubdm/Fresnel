@@ -1,9 +1,12 @@
 ﻿using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Model;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
+using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.UiCore
 {
@@ -31,8 +34,13 @@ namespace Envivo.Fresnel.UiCore
             _PropertyVmBuilder = propertyVmBuilder;
         }
 
-        public SearchResultsVM BuildForCollection(CollectionObserver oCollection, ClassTemplate tElement)
+        public SearchResultsVM BuildFor(IQueryable searchResults, ClassTemplate tElement, SearchRequest originalRequest)
         {
+            // Only return back the number of items actually requested:
+            var resultsPage = searchResults.ToList<object>().Take(originalRequest.PageSize);
+
+            var oCollection = (CollectionObserver)_ObserverCache.GetObserver(resultsPage, resultsPage.GetType());
+
             var allKnownProperties = _ClassHierarchyBuilder
                                         .GetProperties(tElement)
                                         .Where(p => !p.IsFrameworkMember &&
@@ -56,6 +64,8 @@ namespace Envivo.Fresnel.UiCore
                 ElementProperties = elementProperties.ToArray(),
                 Properties = this.CreateProperties(oCollection).ToArray(),
                 Items = this.CreateItems(oCollection, allKnownProperties).ToArray(),
+                AreMoreAvailable = searchResults.Count() > originalRequest.PageSize,
+
                 DirtyState = this.CreateDirtyState(oCollection),
             };
 

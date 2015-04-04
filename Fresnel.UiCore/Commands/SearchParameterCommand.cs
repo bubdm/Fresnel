@@ -60,21 +60,16 @@ namespace Envivo.Fresnel.UiCore.Commands
 
                 var tClass = (ClassTemplate)_TemplateCache.GetTemplate(searchType);
 
-                var objects = this.FetchObjects(request, oParam, tClass);
-                var areMoreItemsAvailable = objects.Count() > request.PageSize;
+                var searchResults = this.FetchObjects(request, oParam, tClass);
 
-                // Only return back the number of items actually requested:
-                var results = objects.ToList<object>().Take(request.PageSize);
-                var oColl = (CollectionObserver)_ObserverCache.GetObserver(results, results.GetType());
-                var result = _SearchResultsVmBuilder.BuildForCollection(oColl, tClass);
-                result.AreMoreAvailable = areMoreItemsAvailable;
+                var result = _SearchResultsVmBuilder.BuildFor(searchResults, tClass, request);
 
                 // Done:
                 var infoVM = new MessageVM()
                 {
                     IsSuccess = true,
                     OccurredAt = _Clock.Now,
-                    Text = string.Concat("Returned ", results.Count(), " ", tClass.FriendlyName, " instances (", areMoreItemsAvailable ? "more are" : "no more", " available)")
+                    Text = string.Concat("Returned ", result.Items.Count(), " ", tClass.FriendlyName, " instances (", result.AreMoreAvailable ? "more are" : "no more", " available)")
                 };
 
                 return new SearchResponse()
@@ -104,11 +99,10 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private IQueryable FetchObjects(SearchRequest request, ParameterObserver oParam, ClassTemplate tElement)
         {
-            var results = _SearchCommand.Search(oParam);
-            var filteredResults = _SearchResultsFilterApplier.ApplyFilter(request, results, tElement);
+            var searchResults = _SearchCommand.Search(oParam);
+            var filteredResults = _SearchResultsFilterApplier.ApplyFilter(request, searchResults, tElement);
             return filteredResults;
         }
-
 
     }
 }
