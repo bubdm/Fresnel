@@ -48,8 +48,7 @@ namespace Envivo.Fresnel.Core.Commands
             var checkResult = _ConsistencyCheckCommand.Check(observersToPersist);
             if (checkResult.Failed)
             {
-                var alLExceptions = checkResult.FailureException.FlattenAll();
-                return ActionResult<ObjectObserver[]>.Fail(null, new AggregateException(alLExceptions));
+                return ActionResult<ObjectObserver[]>.Fail(null, checkResult.FailureException);
             }
 
             // Now save:
