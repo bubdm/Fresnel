@@ -138,8 +138,8 @@ namespace Envivo.Fresnel.UiCore
             if (isNull)
             {
                 var createCheck = _CanCreatePermission.IsSatisfiedBy((ClassTemplate)tProp.InnerClass);
-                result.IsEnabled = createCheck.Passed;
-                result.Error = createCheck.FailureReason;
+                result.IsEnabled = createCheck == null;
+                result.Error = result.IsEnabled ? null : createCheck.Flatten().Message;
             }
             else
             {
@@ -157,8 +157,8 @@ namespace Envivo.Fresnel.UiCore
 
             var result = new InteractionPoint()
             {
-                IsEnabled = getCheck.Passed,
-                Error = getCheck.FailureReason,
+                IsEnabled = getCheck == null,
+                Error = getCheck == null ? null : getCheck.Flatten().Message,
             };
             return result;
         }
@@ -169,8 +169,8 @@ namespace Envivo.Fresnel.UiCore
 
             var result = new InteractionPoint()
             {
-                IsEnabled = setCheck.Passed,
-                Error = setCheck.FailureReason,
+                IsEnabled = setCheck == null,
+                Error = setCheck == null ? null : setCheck.Flatten().Message
             };
             return result;
         }

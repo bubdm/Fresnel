@@ -1,6 +1,7 @@
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
+using System.ComponentModel;
 
 namespace Envivo.Fresnel.Introspection.Templates
 {
@@ -12,18 +13,18 @@ namespace Envivo.Fresnel.Introspection.Templates
     {
         private readonly Type _IAuditType = typeof(IAudit);
 
-        public IAssertion IsSatisfiedBy(Type sender)
+        public AggregateException IsSatisfiedBy(Type sender)
         {
             foreach (var prop in sender.GetProperties())
             {
                 if (prop.PropertyType == _IAuditType)
                 {
-                    return Assertion.Pass();
+                    return null;
                 }
             }
 
             var msg = string.Concat(sender.GetType().Name, " does not have a property of type IAudit");
-            return Assertion.FailWithWarning(msg);
+            return new AggregateException(new WarningException(msg));
         }
     }
 }

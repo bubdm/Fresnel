@@ -58,7 +58,7 @@ namespace Envivo.Fresnel.Core
         //   throw new NotImplementedException();
         //}
 
-        public IAssertion Save(params object[] objects)
+        public Exception Save(params object[] objects)
         {
             // Defer to a SaveCommand
             throw new NotImplementedException();

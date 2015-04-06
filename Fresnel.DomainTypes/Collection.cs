@@ -10,7 +10,6 @@ namespace Envivo.Fresnel.DomainTypes
     /// <summary>
     /// A collection of Domain Objects
     /// </summary>
-    [Serializable]
     public partial class Collection<T> : IList<T>,
                                          IListAdapter<T>,
                                          INotifyCollectionChanges<T>,

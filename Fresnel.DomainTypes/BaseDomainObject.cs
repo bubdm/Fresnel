@@ -8,13 +8,12 @@ using System.Text;
 namespace Envivo.Fresnel.DomainTypes
 {
     /// <summary>
-    /// Any object within a Domain that ha unique identity.
+    /// Any object within a Domain that has unique identity.
     /// It may be necessary to override Equals() so that comparisons are made by ID.
     /// </summary>
     [Serializable]
     public abstract partial class BaseDomainObject : IDomainObject,
                                                      INotifyPropertyChanged,
-                                                     IDataErrorInfo,
                                                      IValidatable,
                                                      IDisposable
     {

@@ -9,8 +9,8 @@ namespace Envivo.Fresnel.DomainTypes
     /// (2) Enforce rules for the entire cluster of objects
     /// (3) Provide a suitable locking point for Domain Objects in a mult-user environment
     /// </summary>
-    [Serializable]
     public abstract partial class BaseAggregateRoot : BaseDomainObject, IAggregateRoot
     {
+
     }
 }

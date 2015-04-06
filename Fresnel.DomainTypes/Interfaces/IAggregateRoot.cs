@@ -1,4 +1,6 @@
-﻿namespace Envivo.Fresnel.DomainTypes.Interfaces
+﻿using System;
+
+namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
     /// <summary>
     /// An Entity that groups closely related objects with complex associations. Aggregates Roots are used to
@@ -8,5 +10,6 @@
     /// </summary>
     public interface IAggregateRoot : IEntity
     {
+
     }
 }

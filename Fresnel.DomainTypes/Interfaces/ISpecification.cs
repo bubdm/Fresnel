@@ -1,4 +1,5 @@
-﻿namespace Envivo.Fresnel.DomainTypes.Interfaces
+﻿using System;
+namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
     /// <summary>
     /// Encapsulates a test to be made against a Domain Object
@@ -10,7 +11,6 @@
         /// Returns TRUE if this specification is met by the given Domain Object
         /// </summary>
         /// <param name="obj"></param>
-
-        IAssertion IsSatisfiedBy(T obj);
+        AggregateException IsSatisfiedBy(T obj);
     }
 }

@@ -6,7 +6,6 @@ namespace Envivo.Fresnel.DomainTypes
     /// <summary>
     /// Used to apply a pessimistic lock to an Aggregate Root
     /// </summary>
-    [Serializable]
     public class AggregateLock : IAggregateLock
     {
         /// <summary>

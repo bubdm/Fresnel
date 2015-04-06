@@ -38,7 +38,11 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             tracker.DetectChanges();
         }
 
-        public IAssertion DetectChanges()
+        /// <summary>
+        /// Scans all properties for changes, and returns TRUE if changes were detected
+        /// </summary>
+        /// <returns></returns>
+        public bool DetectChanges()
         {
             if (_PropertyTrackerMap.Count > 0)
             {
@@ -48,12 +52,8 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 }
             }
 
-            if (_PropertyTrackerMap.Values.Any(t => t.HasChanges))
-            {
-                return Assertion.Pass();
-            }
-
-            return Assertion.Fail("No changes detected");
+            var areChangesDetected = _PropertyTrackerMap.Values.Any(t => t.HasChanges);
+            return areChangesDetected;
         }
 
         public void Reset()

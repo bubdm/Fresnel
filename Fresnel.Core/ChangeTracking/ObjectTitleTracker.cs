@@ -53,7 +53,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             get { return object.Equals(this.PreviousValue, this.LatestValue) == false; }
         }
 
-        internal IAssertion DetectChanges()
+        internal bool DetectChanges()
         {
             var veryLatestValue = _oObject.RealObject.ToStringOrNull();
 
@@ -68,7 +68,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             this.PreviousValue = this.LatestValue;
             this.LatestValue = veryLatestValue;
-            return Assertion.Pass();
+            return (this.PreviousValue != this.LatestValue);
         }
 
         internal void Reset()

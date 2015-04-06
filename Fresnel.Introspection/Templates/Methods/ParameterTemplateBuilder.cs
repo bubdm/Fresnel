@@ -50,8 +50,8 @@ namespace Envivo.Fresnel.Introspection.Templates
         private void CheckParameterType(ParameterTemplate tParameter)
         {
             var paramType = tParameter.ParameterType;
-            var check = _IsObjectTrackableSpecification.IsSatisfiedBy(paramType);
-            if (check.Passed)
+            var exceptions = _IsObjectTrackableSpecification.IsSatisfiedBy(paramType);
+            if (exceptions == null)
             {
                 tParameter.IsDomainObject = true;
                 tParameter.IsValueObject = paramType.IsValueObject();

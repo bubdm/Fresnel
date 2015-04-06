@@ -1,5 +1,6 @@
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace Envivo.Fresnel.SampleModel.Objects
@@ -90,5 +91,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
         {
             return true;
         }
+
     }
 }

@@ -6,7 +6,6 @@ namespace Envivo.Fresnel.DomainTypes
     /// <summary>
     /// Tracks simple create/update/delete statistics for a Domain Object
     /// </summary>
-    [Serializable]
     public class Audit : IAudit
     {
         public virtual IDomainObject DomainObject { get; set; }

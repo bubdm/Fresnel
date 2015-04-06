@@ -93,11 +93,12 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         public virtual void DetectChanges()
         {
             if (_ObjectPropertiesTracker != null &&
-                _ObjectPropertiesTracker.DetectChanges().Passed)
+                _ObjectPropertiesTracker.DetectChanges())
             {
                 _HasLocalChanges = true;
             }
 
+            // TODO: Should this update _HasLocalChanges if the Title has changed?
             _ObjectTitleTracker.DetectChanges();
         }
 

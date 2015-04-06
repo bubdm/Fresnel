@@ -10,8 +10,6 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         /// <summary>
         /// Returns TRUE if the Domain Object is in a valid state. The Error property provides details of actual problems.
         /// </summary>
-        /// <param name="obj"></param>
-
         bool IsValid();
     }
 }

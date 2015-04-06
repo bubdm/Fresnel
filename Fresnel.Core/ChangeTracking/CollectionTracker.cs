@@ -99,7 +99,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             base.DetectChanges();
 
             if (_CollectionItemsTracker != null &&
-                _CollectionItemsTracker.DetectChanges().Passed)
+                _CollectionItemsTracker.DetectChanges() == null)
             {
                 // What to do here?
 

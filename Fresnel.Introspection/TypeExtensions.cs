@@ -184,7 +184,7 @@ namespace Envivo.Fresnel.Introspection
         public static bool IsTrackable(this Type objectType)
         {
             bool isValid = (objectType.DeclaringType == null) &&
-                                   s_IsObjectTrackableSpecification.IsSatisfiedBy(objectType).Passed;
+                                   s_IsObjectTrackableSpecification.IsSatisfiedBy(objectType) == null;
 
             return isValid;
         }
@@ -198,7 +198,7 @@ namespace Envivo.Fresnel.Introspection
         {
             bool isValid = (objectType.DeclaringType == null) &&
                            (objectType.GetConstructor(Type.EmptyTypes) != null) &&
-                           s_IsObjectAuditableSpecification.IsSatisfiedBy(objectType).Passed;
+                           s_IsObjectAuditableSpecification.IsSatisfiedBy(objectType) == null;
 
             return isValid;
         }
@@ -211,7 +211,7 @@ namespace Envivo.Fresnel.Introspection
         public static bool IsValidatable(this Type objectType)
         {
             bool isValid = (objectType.DeclaringType == null) &&
-                           s_IsObjectValidatableSpecification.IsSatisfiedBy(objectType).Passed;
+                           s_IsObjectValidatableSpecification.IsSatisfiedBy(objectType) == null;
 
             return isValid;
         }

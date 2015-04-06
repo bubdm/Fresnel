@@ -8,7 +8,6 @@ namespace Envivo.Fresnel.DomainTypes
     /// Each Domain Event is unique and should NOT be treated as a Value Object.
     /// However, Domain Events should be immutable to avoid the risk of corruption.
     /// </summary>
-    [Serializable]
     public abstract partial class BaseDomainEvent : BaseDomainObject, IDomainEvent
     {
         public virtual DateTime OccurredAt { get; set; }

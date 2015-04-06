@@ -63,7 +63,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             var relationshipAttr = tProp.Attributes.Get<RelationshipAttribute>();
 
             var check = _IsObjectTrackableSpecification.IsSatisfiedBy(propertyType);
-            if (check.Failed &&
+            if (check != null &&
                 propertyType.IsNonReference())
             {
                 tProp.IsNonReference = true;

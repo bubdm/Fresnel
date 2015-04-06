@@ -1,6 +1,7 @@
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Envivo.Fresnel.Introspection.Templates
@@ -14,10 +15,10 @@ namespace Envivo.Fresnel.Introspection.Templates
         private readonly Type _GuidType = typeof(Guid);
         private readonly string _IdSearchText = "Id";
 
-        public IAssertion IsSatisfiedBy(Type classType)
+        public AggregateException IsSatisfiedBy(Type classType)
         {
             if (classType.IsEntity() || classType.IsValueObject())
-                return Assertion.Pass();
+                return null;
 
             var properties = classType.GetProperties();
 
@@ -32,10 +33,10 @@ namespace Envivo.Fresnel.Introspection.Templates
             }
 
             if (idProperty != null)
-                return Assertion.Pass();
+                return null;
 
             var msg = string.Concat(classType.Name, " is not a Trackable domain object. Consider implementing a DomainTypes interface, or adding a Guid ID property.");
-            return Assertion.FailWithWarning(msg);
+            return new AggregateException(new WarningException(msg));
         }
     }
 }

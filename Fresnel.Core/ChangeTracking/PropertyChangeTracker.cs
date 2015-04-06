@@ -51,7 +51,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             get { return object.Equals(this.PreviousValue, this.LatestValue) == false; }
         }
 
-        internal IAssertion DetectChanges()
+        internal Exception DetectChanges()
         {
             // Don't access Properties that haven't been lazy loaded yet:
             var oObjectProperty = _oProperty as ObjectPropertyObserver;
@@ -60,7 +60,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 oObjectProperty.OuterObject.Template.IsPersistable &&
                 oObjectProperty.IsLazyLoadPending)
             {
-                return Assertion.Fail("Property hasn't been lazy-loaded");
+                return new CoreException("Property hasn't been lazy-loaded");
             }
 
             object veryLatestValue = null;
@@ -71,12 +71,12 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             catch (Exception ex)
             {
                 // The property getter might throw an exception:
-                return Assertion.Fail(ex);
+                return ex;
             }
 
             if (object.Equals(this.LatestValue, veryLatestValue))
             {
-                return Assertion.Fail("No changes detected");
+                return new CoreException("No changes detected");
             }
 
             var latestChange = new PropertyChange
@@ -90,7 +90,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             this.PreviousValue = this.LatestValue;
             this.LatestValue = veryLatestValue;
-            return Assertion.Pass();
+            return null;
         }
 
         internal void Reset()

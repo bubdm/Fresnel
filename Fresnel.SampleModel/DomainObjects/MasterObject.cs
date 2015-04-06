@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
     //[Permissions(User = "Vij", AllowedOperations = Allow.Read)]
     //[Permissions(Role = "User", AllowedOperations = Allow.Read)]
     //[Permissions(Role = "Administrator", AllowedOperations = Allow.All)]
-    public class MasterObject
+    public class MasterObject : IAggregateRoot
     {
         /// <summary>
         /// The unique ID for this entity
@@ -80,6 +80,12 @@ namespace Envivo.Fresnel.SampleModel.Objects
         public override string ToString()
         {
             return this.Name;
+        }
+
+        public AggregateException IsConsistent()
+        {
+            // TODO: Add checks here
+            return null;
         }
     }
 }

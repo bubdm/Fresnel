@@ -51,7 +51,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             this.LatestItems = _oCollection.GetItems().Cast<object>().ToArray();
         }
 
-        internal IAssertion DetectChanges()
+        internal Exception DetectChanges()
         {
             var veryLatestItems = _oCollection.GetItems().Cast<object>();
 
@@ -64,7 +64,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
             if (!addedItems.Any() && !removedItems.Any())
             {
-                return Assertion.Fail("The collection has not changed");
+                return new CoreException("The collection has not changed");
             }
 
             var addedChanges = addedItems.Select(a => new CollectionAdd()
@@ -83,7 +83,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             });
             _Removals.AddRange(removedChanges);
 
-            return Assertion.Pass();
+            return null;
         }
 
         public void Reset()

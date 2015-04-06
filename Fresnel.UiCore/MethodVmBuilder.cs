@@ -36,16 +36,9 @@ namespace Envivo.Fresnel.UiCore
                 Parameters = this.CreateParametersFor(oMethod).ToArray(),
                 //IsAsync = oMethod.Template.Configurations.Get<MethodConfiguration>().IsAsynchronous,
                 IsVisible = !oMethod.Template.IsFrameworkMember && oMethod.Template.IsVisible,
+                IsEnabled = invokeCheck == null,
+                Error = invokeCheck == null ? null : invokeCheck.Flatten().Message
             };
-
-            if (invokeCheck.Passed)
-            {
-                methodVM.IsEnabled = true;
-            }
-            else
-            {
-                methodVM.Error = invokeCheck.FailureReason;
-            }
 
             return methodVM;
         }

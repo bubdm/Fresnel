@@ -6,7 +6,6 @@ namespace Envivo.Fresnel.DomainTypes
     /// <summary>
     /// An object within a Domain that has unique identity.
     /// </summary>
-    [Serializable]
     public abstract partial class BaseEntity : BaseDomainObject, IEntity
     {
         public override bool Equals(object obj)

@@ -1,16 +1,15 @@
 ﻿using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
+using System;
 
 namespace Envivo.Fresnel.Core.Permissions
 {
     public class CanInvokeMethodPermission : ISpecification<MethodObserver>
     {
-        public IAssertion IsSatisfiedBy(MethodObserver oMethod)
+        public AggregateException IsSatisfiedBy(MethodObserver oMethod)
         {
-            var assertions = new AssertionSet();
-
-            return assertions;
+            return null; 
         }
     }
 }
