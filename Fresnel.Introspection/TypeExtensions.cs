@@ -13,123 +13,13 @@ namespace Envivo.Fresnel.Introspection
         private static IsObjectAuditableSpecification s_IsObjectAuditableSpecification = new IsObjectAuditableSpecification();
         private static IsObjectValidatableSpecification s_IsObjectValidatableSpecification = new IsObjectValidatableSpecification();
 
-        static private Type IEntityType = typeof(IEntity);
-        static private Type IValueObjectType = typeof(IValueObject);
-        static private Type IAggregateRootType = typeof(IAggregateRoot);
-        static private Type IListAdapterType = typeof(IListAdapter<>);
+        static public Type IQuerySpecificationType = typeof(IQuerySpecification<>);
+        static public Type IConsistencyCheckType = typeof(IConsistencyCheck<>);
 
-        static private Type IFactoryType = typeof(IFactory<>);
-        static private Type IRepositoryType = typeof(IRepository<>);
-        static private Type IDomainServiceType = typeof(IDomainService);
-        static private Type IQuerySpecificationType = typeof(IQuerySpecification<>);
-        static private Type IConsistencyCheckType = typeof(IConsistencyCheck<>);
-
-        static private Type IDataErrorInfoType = typeof(IDataErrorInfo);
-
-        static internal Type IGenericDictionary = typeof(IDictionary<,>);
-        static internal Type IGenericCollection = typeof(ICollection<>);
-        static internal Type IGenericEnumerable = typeof(IEnumerable<>);
-
-        /// <summary>
-        /// Determines if the given type implements IEntity
-        /// </summary>
-        /// <param name="type"></param>
-        /// <remarks>The value is determined if the Object implements the IEntity interface</remarks>
-        public static bool IsEntity(this Type type)
-        {
-            return type.IsDerivedFrom(IEntityType);
-        }
-
-        /// <summary>
-        /// Determines if the given type implements ICollectionAdapter
-        /// </summary>
-        /// <param name="type"></param>
-        /// <remarks>The value is determined if the Object implements the IListAdapterType interface</remarks>
-        public static bool IsListAdapter(this Type type)
-        {
-            return type.IsDerivedFrom(IListAdapterType);
-        }
-
-        /// <summary>
-        /// Determines if the given type implements IValueObject. It is NOTHING to do with IsValueType()!
-        /// </summary>
-        /// <param name="type"></param>
-        /// <remarks>The value is determined if the Object implements the IValueObject interface</remarks>
-        public static bool IsValueObject(this Type type)
-        {
-            return type.IsDerivedFrom(IValueObjectType);
-        }
-
-        /// <summary>
-        /// Determines if the given type implements IAggregateRoot
-        /// </summary>
-        /// <param name="type"></param>
-        /// <remarks>The value is determined if the Object implements the IAggregateRoot interface</remarks>
-        public static bool IsAggregateRoot(this Type type)
-        {
-            return type.IsDerivedFrom(IAggregateRootType);
-        }
-
-        /// <summary>
-        /// Determines if the given type implements IFactory
-        /// </summary>
-        /// <param name="type"></param>
-        public static bool IsFactory(this Type type)
-        {
-            return type.IsDerivedFrom(IFactoryType);
-        }
-
-        /// <summary>
-        /// Determines if the given type implements IFactory
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="realObjectType">The type of Object created by the factory</param>
-        public static bool IsFactory(this Type type, out Type objectType)
-        {
-            objectType = null;
-
-            if (type.IsFactory())
-            {
-                objectType = Fresnel.Utils.TypeExtensions.GetInterfaceGenericType(type, IFactoryType);
-            }
-
-            return (objectType != null);
-        }
-
-        /// <summary>
-        /// Determines if the given type implements IRepository
-        /// </summary>
-        /// <param name="type"></param>
-        public static bool IsRepository(this Type type)
-        {
-            return type.IsDerivedFrom(IRepositoryType);
-        }
-
-        /// <summary>
-        /// Determines if the given type implements IRepository
-        /// </summary>
-        /// <param name="type">The type of Object created by the Repository</param>
-        public static bool IsRepository(this Type type, out Type objectType)
-        {
-            objectType = null;
-
-            if (type.IsRepository())
-            {
-                objectType = Fresnel.Utils.TypeExtensions.GetInterfaceGenericType(type, IRepositoryType);
-            }
-
-            return (objectType != null);
-        }
-
-        /// <summary>
-        /// Determines if the given type implements IDomainService
-        /// </summary>
-        /// <param name="type"></param>
-        public static bool IsDomainService(this Type type)
-        {
-            return type.IsDerivedFrom(IDomainServiceType);
-        }
-
+        static public Type IGenericDictionary = typeof(IDictionary<,>);
+        static public Type IGenericCollection = typeof(ICollection<>);
+        static public Type IGenericEnumerable = typeof(IEnumerable<>);
+        
         /// <summary>
         /// Returns TRUE if the given type can be tracked by the framework
         /// </summary>
@@ -167,12 +57,5 @@ namespace Envivo.Fresnel.Introspection
             return isValid;
         }
 
-        /// Determines if the given type implements IDataErrorInfo
-        /// </summary>
-        /// <param name="type"></param>
-        public static bool IsDataErrorInfo(this Type type)
-        {
-            return type.IsDerivedFrom(IDataErrorInfoType);
-        }
     }
 }

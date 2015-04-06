@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Reflection;
@@ -54,7 +55,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             if (exceptions == null)
             {
                 tParameter.IsDomainObject = true;
-                tParameter.IsValueObject = paramType.IsValueObject();
+                tParameter.IsValueObject = paramType.IsDerivedFrom<IValueObject>();
             }
 
             if (paramType.IsCollection())

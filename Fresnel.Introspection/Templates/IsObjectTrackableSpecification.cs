@@ -1,5 +1,6 @@
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.Utils;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -17,7 +18,8 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         public AggregateException IsSatisfiedBy(Type classType)
         {
-            if (classType.IsEntity() || classType.IsValueObject())
+            if (classType.IsDerivedFrom<IEntity>() ||
+                classType.IsDerivedFrom<IValueObject>())
                 return null;
 
             var properties = classType.GetProperties();

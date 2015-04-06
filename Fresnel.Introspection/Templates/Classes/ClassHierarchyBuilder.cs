@@ -1,3 +1,4 @@
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.Utils;
 using System.Collections.Generic;
@@ -148,7 +149,7 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             foreach (var iFace in tRootClass.RealType.GetInterfaces())
             {
-                if (iFace.IsTrackable() || iFace.IsValueObject())
+                if (iFace.IsTrackable() || iFace.IsDerivedFrom<IValueObject>())
                 {
                     var tInterface = (ClassTemplate)_TemplateCache.GetTemplate(iFace);
                     results.Add(tInterface);

@@ -1,8 +1,10 @@
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
@@ -151,12 +153,12 @@ namespace Envivo.Fresnel.Introspection.Templates
 
         private void DetermineInterfaces()
         {
-            this.IsEntity = this.RealType.IsEntity();
-            this.IsValueObject = this.RealType.IsValueObject();
-            this.IsAggregateRoot = this.RealType.IsAggregateRoot();
+            this.IsEntity = this.RealType.IsDerivedFrom<IEntity>();
+            this.IsValueObject = this.RealType.IsDerivedFrom<IValueObject>();
+            this.IsAggregateRoot = this.RealType.IsDerivedFrom<IAggregateRoot>();
             this.IsCloneable = this.RealType.IsDerivedFrom<ICloneable>();
 
-            this.HasErrorInfo = this.RealType.IsDataErrorInfo();
+            this.HasErrorInfo = this.RealType.IsDerivedFrom<IDataErrorInfo>();
             this.IsValidatable = this.RealType.IsValidatable();
         }
 

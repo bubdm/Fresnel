@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Utils;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -94,7 +95,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                 return;
             }
 
-            if (propertyType.IsValueObject())
+            if (propertyType.IsDerivedFrom<IValueObject>())
             {
                 tProp.IsValueObject = true;
                 tProp.IsReferenceType = true;
