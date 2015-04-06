@@ -82,10 +82,5 @@ namespace Envivo.Fresnel.SampleModel.Objects
             return this.Name;
         }
 
-        public AggregateException IsConsistent()
-        {
-            // TODO: Add checks here
-            return null;
-        }
     }
 }

@@ -61,6 +61,7 @@
     <Compile Include="ChangeTracking\ObjectTitleTracker.cs" />
     <Compile Include="ChangeTracking\PropertyChangeTracker.cs" />
     <Compile Include="Commands\CloneObjectCommand.cs" />
+    <Compile Include="Commands\ConsistencyCheckCommand.cs" />
     <Compile Include="Commands\SearchCommand.cs" />
     <Compile Include="Commands\SaveObjectCommand.cs" />
     <Compile Include="Commands\CreateObjectCommand.cs" />

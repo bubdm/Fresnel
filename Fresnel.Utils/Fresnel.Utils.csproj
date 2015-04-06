@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="ActionResult_T.cs" />
     <Compile Include="ActionResult.cs" />
+    <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="SettableClock.cs" />
     <Compile Include="SystemClock.cs" />

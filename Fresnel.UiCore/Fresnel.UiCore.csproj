@@ -66,6 +66,7 @@
     <Compile Include="Commands\CreateAndSetPropertyRequest.cs" />
     <Compile Include="Commands\SetParameterCommand.cs" />
     <Compile Include="Commands\SetParameterRequest.cs" />
+    <Compile Include="ExceptionMessagesBuilder.cs" />
     <Compile Include="Model\Changes\ParameterChangeVM.cs" />
     <Compile Include="Model\Changes\ObjectTitleChangeVM.cs" />
     <Compile Include="Model\SearchResultsVM.cs" />

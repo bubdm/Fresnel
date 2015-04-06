@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
@@ -25,8 +26,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         private XmlDocument _ClassStructureXml = new XmlDocument();
 
         private AbstractClassTemplateBuilder _AbstractClassTemplateBuilder;
-
-        //public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Creates and caches Class Templates for the given Assembly
@@ -57,8 +56,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         public bool IsFrameworkAssembly { get; internal set; }
 
-        //public bool AreInfrastructureServicesEnabled { get; private set; }
-
         /// <summary>
         /// Returns TRUE if Domain Classes were found in this Assembly (as opposed to Infrastructure Service classes)
         /// </summary>
@@ -71,7 +68,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// An XML representation of the class structure of the Domain Assembly
         /// </summary>
         /// <value>An XmlDocument containing the class structure</value>
-
         public XmlDocument ClassStructureXml
         {
             get { return _ClassStructureXml; }
@@ -81,7 +77,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// Returns the codebase of the Assembly as a file path (not a URI)
         /// </summary>
         /// <param name="assembly"></param>
-
         public string GetAssemblyLocation()
         {
             var path = this.Assembly.CodeBase.Replace(@"file:///", string.Empty);
@@ -154,22 +149,11 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             InitialiseDomainDependencies(publicTypes);
         }
 
-        private void InitialiseDomainDependencies(Type[] publicTypes)
-        {
-            var dependencyTypes = publicTypes
-                                    .Where(t => t.IsFactory() ||
-                                                t.IsRepository() ||
-                                                t.IsDomainService() ||
-                                                t.IsQuerySpecification())
-                                    .ToArray();
-
-            _DomainDependencyRegistrar.RegisterTypes(dependencyTypes);
-        }
-
         private void InitialiseDomainClasses(Type[] publicTypes)
         {
             var domainClasses = publicTypes
-                                    .Where(t => t.IsTrackable())
+                                    .Where(t => !t.IsInterface &&
+                                                t.IsTrackable())
                                     .ToArray();
 
             _DomainClassRegistrar.RegisterTypes(domainClasses);
@@ -178,6 +162,20 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             {
                 var tClass = this.CreateAndCacheTemplate(type);
             }
+        }
+
+        private void InitialiseDomainDependencies(Type[] publicTypes)
+        {
+            var dependencyTypes = publicTypes
+                                    .Where(t => t.IsDerivedFrom(typeof(IFactory<>)) ||
+                                                t.IsDerivedFrom(typeof(IRepository<>)) ||
+                                                t.IsDerivedFrom(typeof(IDomainService)) ||
+                                                t.IsDerivedFrom(typeof(IQuerySpecification<>)) ||
+                                                t.IsDerivedFrom(typeof(IConsistencyCheck<>))
+                                                )
+                                    .ToArray();
+
+            _DomainDependencyRegistrar.RegisterTypes(dependencyTypes);
         }
 
         public void Dispose()

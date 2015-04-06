@@ -10,8 +10,12 @@ namespace Envivo.Fresnel.Utils
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="expression"></param>
-
         public static string NameOf<T>(Expression<Func<T>> expression)
+        {
+            return GetName(expression as LambdaExpression);
+        }
+
+        public static string NameOf<T>(Expression<Func<T, object>> expression)
         {
             return GetName(expression as LambdaExpression);
         }

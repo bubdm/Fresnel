@@ -89,12 +89,12 @@ namespace Envivo.Fresnel.Core.Commands
 
         private object GetQuerySpecification(AttributesMap attributes)
         {
-            var querySpecType = attributes.Get<FilterQuerySpecificationAttribute>().SpecificationType;
-            if (querySpecType == null)
+            var querySpecificationType = attributes.Get<FilterQuerySpecificationAttribute>().SpecificationType;
+            if (querySpecificationType == null)
                 return null;
 
-            var querySpec = _DomainDependencyResolver.Resolve(querySpecType);
-            return querySpec;
+            var querySpecification = _DomainDependencyResolver.Resolve(querySpecificationType);
+            return querySpecification;
         }
 
         private void CheckIfTypeIsRecognised(Type classType)

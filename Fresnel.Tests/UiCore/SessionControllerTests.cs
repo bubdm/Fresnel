@@ -86,6 +86,38 @@ namespace Envivo.Fresnel.Tests.Proxies
         }
 
         [Test]
+        public void ShouldReportFailedConsistencyChecks()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var sessionController = container.Resolve<SessionController>();
+            var toolboxController = container.Resolve<ToolboxController>();
+            var explorerController = container.Resolve<ExplorerController>();
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+
+            // Act:
+            // Start a new session:
+            var session = sessionController.GetSession();
+
+            // Try to save an inconsistent object:
+            var createResponse = toolboxController.Create("Envivo.Fresnel.SampleModel.Objects.Money");
+
+            var saveRequest = new SaveChangesRequest()
+            {
+                ObjectID = createResponse.NewObject.ID,
+            };
+            var saveResponse = explorerController.SaveChanges(saveRequest);
+
+            // Assert:
+            Assert.IsFalse(saveResponse.Passed);
+            Assert.AreEqual(2, saveResponse.Messages.Length);
+        }
+
+        [Test]
         public void ShouldCleanupSession()
         {
             // Arrange:

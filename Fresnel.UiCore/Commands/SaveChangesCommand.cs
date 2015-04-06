@@ -16,6 +16,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ObserverCache _ObserverCache;
         private SaveObjectCommand _SaveObjectCommand;
         private AbstractObjectVmBuilder _ObjectVmBuilder;
+        private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
         public SaveChangesCommand
@@ -23,12 +24,14 @@ namespace Envivo.Fresnel.UiCore.Commands
             ObserverCache observerCache,
             SaveObjectCommand saveObjectCommand,
             AbstractObjectVmBuilder objectVmBuilder,
+            ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
         )
         {
             _ObserverCache = observerCache;
             _SaveObjectCommand = saveObjectCommand;
             _ObjectVmBuilder = objectVmBuilder;
+            _ExceptionMessagesBuilder = exceptionMessagesBuilder;
             _Clock = clock;
         }
 
@@ -42,9 +45,14 @@ namespace Envivo.Fresnel.UiCore.Commands
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
-                var savedObservers = _SaveObjectCommand.Invoke(oObject);
-                var savedItemCount = savedObservers.Count();
+                var saveAction = _SaveObjectCommand.Invoke(oObject);
+                if (saveAction.Failed)
+                {
+                    throw saveAction.FailureException;
+                }
 
+                var savedObservers = saveAction.Result;
+                var savedItemCount = savedObservers.Count();
                 var savedObjectVMs = savedObservers.Select(o => _ObjectVmBuilder.BuildFor(o)).ToArray();
 
                 // Done:
@@ -65,18 +73,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
-                var errorVM = new MessageVM()
-                {
-                    IsError = true,
-                    OccurredAt = _Clock.Now,
-                    Text = ex.Message,
-                    Detail = ex.ToString(),
-                };
+                var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
 
                 return new SaveChangesResponse()
                 {
                     Failed = true,
-                    Messages = new MessageVM[] { errorVM }
+                    Messages = errorVMs
                 };
             }
         }

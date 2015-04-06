@@ -63,6 +63,7 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.UiCore.Model.TypeInfo.ObjectSelectionVmBuilder),
                 typeof(Fresnel.UiCore.Model.TypeInfo.UnknownVmBuilder),
 
+                typeof(Fresnel.UiCore.ExceptionMessagesBuilder),
                 typeof(Fresnel.UiCore.SessionVmBuilder),
             };
         }
