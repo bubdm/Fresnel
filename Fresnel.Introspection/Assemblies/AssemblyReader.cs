@@ -20,7 +20,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
     public class AssemblyReader : IDisposable
     {
         private IDomainClassRegistrar _DomainClassRegistrar;
-        private IDomainDependencyRegistrar _DomainDependencyRegistrar;
 
         private Dictionary<Type, IClassTemplate> _TemplateMap = new Dictionary<Type, IClassTemplate>();
         private XmlDocument _ClassStructureXml = new XmlDocument();
@@ -35,13 +34,10 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         public AssemblyReader
         (
             IDomainClassRegistrar domainClassRegistrar,
-            IDomainDependencyRegistrar domainDependencyRegistrar,
             AbstractClassTemplateBuilder abstractClassTemplateBuilder
         )
         {
             _DomainClassRegistrar = domainClassRegistrar;
-            _DomainDependencyRegistrar = domainDependencyRegistrar;
-
             _AbstractClassTemplateBuilder = abstractClassTemplateBuilder;
         }
 
@@ -145,12 +141,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         {
             var publicTypes = this.Assembly.GetExportedTypes();
 
-            InitialiseDomainClasses(publicTypes);
-            InitialiseDomainDependencies(publicTypes);
-        }
-
-        private void InitialiseDomainClasses(Type[] publicTypes)
-        {
             var domainClasses = publicTypes
                                     .Where(t => !t.IsInterface &&
                                                 t.IsTrackable())
@@ -162,20 +152,6 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             {
                 var tClass = this.CreateAndCacheTemplate(type);
             }
-        }
-
-        private void InitialiseDomainDependencies(Type[] publicTypes)
-        {
-            var dependencyTypes = publicTypes
-                                    .Where(t => t.IsDerivedFrom(typeof(IFactory<>)) ||
-                                                t.IsDerivedFrom(typeof(IRepository<>)) ||
-                                                t.IsDerivedFrom(typeof(IDomainService)) ||
-                                                t.IsDerivedFrom(typeof(IQuerySpecification<>)) ||
-                                                t.IsDerivedFrom(typeof(IConsistencyCheck<>))
-                                                )
-                                    .ToArray();
-
-            _DomainDependencyRegistrar.RegisterTypes(dependencyTypes);
         }
 
         public void Dispose()

@@ -1,6 +1,10 @@
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Utils;
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Assemblies
@@ -10,17 +14,20 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         private AssemblyConfigurationMapBuilder _ConfigurationMapBuilder;
         private Func<AssemblyReader> _AssemblyReaderFactory;
         private AbstractClassTemplateBuilder _AbstractClassTemplateBuilder;
+        private IDomainDependencyRegistrar _DomainDependencyRegistrar;
 
         public AssemblyReaderBuilder
         (
             AssemblyConfigurationMapBuilder configurationMapBuilder,
             Func<AssemblyReader> assemblyReaderFactory,
-            AbstractClassTemplateBuilder abstractClassTemplateBuilder
+            AbstractClassTemplateBuilder abstractClassTemplateBuilder,
+            IDomainDependencyRegistrar domainDependencyRegistrar
         )
         {
             _ConfigurationMapBuilder = configurationMapBuilder;
             _AssemblyReaderFactory = assemblyReaderFactory;
             _AbstractClassTemplateBuilder = abstractClassTemplateBuilder;
+            _DomainDependencyRegistrar = domainDependencyRegistrar;
         }
 
         public AssemblyReader BuildFor(Assembly domainAssembly, bool isSystemAssembly)
@@ -35,7 +42,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             reader.IsFrameworkAssembly = isSystemAssembly;
 
             this.Initialise(reader);
-
+            this.InitialiseDomainDependencies(domainAssembly);
             reader.XmlDocReader.InitialiseFrom(reader);
 
             return reader;
@@ -45,17 +52,29 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         {
             if (reader.IsFrameworkAssembly)
             {
-                //reader.AreInfrastructureServicesEnabled = false;
             }
             else
             {
                 // We need to ensure that all top-level Domain Classes are recognised:
                 reader.PreLoadClassTemplates();
-
-                //this.AreInfrastructureServicesEnabled = areInfrastructureServicesEnabled;
             }
-
-            //_ClassStructureXml = new ClassStructureBuilder(_Assembly).GetClassStructureXml();
         }
+
+        private void InitialiseDomainDependencies(Assembly domainAssembly)
+        {
+            var publicTypes = domainAssembly.GetExportedTypes();
+
+            var dependencyTypes = publicTypes
+                                    .Where(t => t.IsDerivedFrom(typeof(IFactory<>)) ||
+                                                t.IsDerivedFrom(typeof(IRepository<>)) ||
+                                                t.IsDerivedFrom(typeof(IDomainService)) ||
+                                                t.IsDerivedFrom(typeof(IQuerySpecification<>)) ||
+                                                t.IsDerivedFrom(typeof(IConsistencyCheck<>))
+                                                )
+                                    .ToArray();
+
+            _DomainDependencyRegistrar.RegisterTypes(dependencyTypes);
+        }
+
     }
 }
