@@ -146,7 +146,7 @@ namespace Envivo.Fresnel.Configuration
         }
 
 
-        public Exception RunValidationsFor(object value)
+        public ActionResult RunValidationsFor(object value)
         {
             var exceptions = new List<Exception>();
 
@@ -166,8 +166,8 @@ namespace Envivo.Fresnel.Configuration
             }
 
             return exceptions.Any() ?
-                new AggregateException(exceptions) :
-                null;
+                ActionResult.Fail(new AggregateException(exceptions)) :
+                ActionResult.Pass;
         }
 
     }

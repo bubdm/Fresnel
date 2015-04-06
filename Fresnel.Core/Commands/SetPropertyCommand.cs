@@ -67,9 +67,9 @@ namespace Envivo.Fresnel.Core.Commands
         private void PerformValidations(BasePropertyObserver oProperty, BaseObjectObserver oValue)
         {
             var attributes = oProperty.Template.Attributes;
-            var exception = attributes.RunValidationsFor(oValue.RealObject);
-            if (exception != null)
-                throw exception;
+            var validations = attributes.RunValidationsFor(oValue.RealObject);
+            if (validations.Failed)
+                throw validations.FailureException;
         }
     }
 }
