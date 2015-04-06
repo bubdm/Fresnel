@@ -77,6 +77,16 @@ namespace Envivo.Fresnel.Core.Commands
             return results;
         }
 
+        public IQueryable Search(Type querySpecificationType, ObjectObserver oRequestor)
+        {
+            var querySpecification = _DomainDependencyResolver.Resolve(querySpecificationType);
+            if (querySpecification == null)
+                return null;
+
+            var results = this.GetResults(querySpecification, oRequestor);
+            return results;
+        }
+
         private object GetQuerySpecification(AttributesMap attributes)
         {
             var querySpecType = attributes.Get<FilterQuerySpecificationAttribute>().SpecificationType;
