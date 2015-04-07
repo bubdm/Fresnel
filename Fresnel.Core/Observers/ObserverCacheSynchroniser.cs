@@ -56,7 +56,10 @@ namespace Envivo.Fresnel.Core.Observers
                     continue;
 
                 var value = oProp.Template.GetProperty(oObject.RealObject);
-                var valueType = _RealTypeResolver.GetRealType(value);
+                var valueType = value != null ?
+                                _RealTypeResolver.GetRealType(value) :
+                                oProp.Template.PropertyType;
+
                 var oValue = this.ObserverCache.GetObserver(value, valueType);
 
                 this.Sync(oProp, oValue);
