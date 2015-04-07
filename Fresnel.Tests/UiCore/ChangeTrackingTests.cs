@@ -133,7 +133,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var templateCache = container.Resolve<TemplateCache>();
             var controller = container.Resolve<ExplorerController>();
 
-            var poco = new SampleModel.BasicTypes.MultiType();
+            var poco = new SampleModel.TestTypes.MultiType();
             var oObject = observerCache.GetObserver(poco) as ObjectObserver;
 
             // Act:
@@ -189,10 +189,10 @@ namespace Envivo.Fresnel.Tests.Proxies
             var controller = container.Resolve<ExplorerController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.Objects.DependencyAwareObject).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.ObjectWithCtorInjection).Assembly);
 
             // Act:
-            var obj = container.Resolve<SampleModel.Objects.DependencyAwareObject>();
+            var obj = container.Resolve<SampleModel.TestTypes.ObjectWithCtorInjection>();
             obj.ID = Guid.NewGuid();
             var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 
@@ -219,7 +219,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var templateCache = container.Resolve<TemplateCache>();
             var controller = container.Resolve<ExplorerController>();
 
-            var poco = new SampleModel.BasicTypes.TextValues();
+            var poco = new SampleModel.TestTypes.TextValues();
             poco.ID = Guid.NewGuid();
             var oObject = observerCache.GetObserver(poco) as ObjectObserver;
 

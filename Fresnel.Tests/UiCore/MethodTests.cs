@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var controller = container.Resolve<ExplorerController>();
 
-            var obj = new SampleModel.MethodTests();
+            var obj = new SampleModel.TestTypes.MethodSamples();
             obj.ID = Guid.NewGuid();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
@@ -60,12 +60,12 @@ namespace Envivo.Fresnel.Tests.Proxies
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
 
-            var obj = new SampleModel.MethodTests();
+            var obj = new SampleModel.TestTypes.MethodSamples();
             obj.ID = Guid.NewGuid();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
-            var classType = typeof(Fresnel.SampleModel.MethodTests);
+            var classType = typeof(SampleModel.TestTypes.MethodSamples);
             var createResponse = toolboxController.Create(classType.FullName);
 
             var methodName = "MethodWithObjectParameters";

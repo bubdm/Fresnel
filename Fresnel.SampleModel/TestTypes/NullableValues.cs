@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Envivo.Fresnel.SampleModel.BasicTypes
+namespace Envivo.Fresnel.SampleModel.TestTypes
 {
     /// <summary>
     /// A set of primitive Nullable properties.

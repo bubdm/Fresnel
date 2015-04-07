@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
@@ -54,7 +54,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
@@ -87,7 +87,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
@@ -120,7 +120,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 

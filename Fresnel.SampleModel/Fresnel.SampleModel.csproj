@@ -37,10 +37,11 @@
     <Reference Include="PresentationCore" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasicTypes\MultiType.cs" />
+    <Compile Include="TestTypes\InternalClass.cs" />
+    <Compile Include="TestTypes\MultiType.cs" />
     <Compile Include="DomainObjects\MoneyConsistencyCheck.cs" />
     <Compile Include="DomainObjects\PocoFilterQuerySpecification.cs" />
-    <Compile Include="DomainObjects\DependencyAwareObject.cs" />
+    <Compile Include="TestTypes\ObjectWithCtorInjection.cs" />
     <Compile Include="Factories\CategoryFactory.cs" />
     <Compile Include="Factories\MasterObjectFactory.cs" />
     <Compile Include="Factories\PocoObjectFactory.cs" />
@@ -65,30 +66,28 @@
     <Compile Include="Northwind\Supplier.cs" />
     <Compile Include="Northwind\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Miscellaneous\ExceptionTests.cs" />
-    <Compile Include="BasicTypes\BooleanValues.cs" />
-    <Compile Include="BasicTypes\DateValues.cs" />
-    <Compile Include="BasicTypes\EnumValues.cs" />
-    <Compile Include="BasicTypes\EnumValuesFilterSpecification.cs" />
-    <Compile Include="BasicTypes\NullableValues.cs" />
-    <Compile Include="BasicTypes\NumberValues.cs" />
-    <Compile Include="BasicTypes\StructValues.cs" />
-    <Compile Include="BasicTypes\TextValues.cs" />
+    <Compile Include="TestTypes\ExceptionTests.cs" />
+    <Compile Include="TestTypes\BooleanValues.cs" />
+    <Compile Include="TestTypes\DateValues.cs" />
+    <Compile Include="TestTypes\EnumValues.cs" />
+    <Compile Include="TestTypes\EnumValuesFilterSpecification.cs" />
+    <Compile Include="TestTypes\NullableValues.cs" />
+    <Compile Include="TestTypes\NumberValues.cs" />
+    <Compile Include="TestTypes\StructValues.cs" />
+    <Compile Include="TestTypes\TextValues.cs" />
     <Compile Include="DomainObjects\Category.cs" />
     <Compile Include="DomainObjects\DetailObject.cs" />
     <Compile Include="DomainObjects\MasterObject.cs" />
-    <Compile Include="DomainObjects\MethodTests.cs" />
+    <Compile Include="TestTypes\MethodSamples.cs" />
     <Compile Include="DomainObjects\Money.cs" />
     <Compile Include="DomainObjects\NonInterceptablePropertyObjects.cs" />
     <Compile Include="DomainObjects\PocoObject.cs" />
     <Compile Include="DomainObjects\Product.cs" />
     <Compile Include="DomainObjects\SecuredObject.cs" />
-    <Compile Include="DomainObjects\StaticMethodTests.cs" />
     <Compile Include="DomainObjects\SubProductA.cs" />
     <Compile Include="DomainObjects\SubProductB.cs" />
     <Compile Include="DomainObjects\UnsupportedTypes.cs" />
     <Compile Include="DomainObjects\ValidationExample.cs" />
-    <Compile Include="Interfaces\IDummy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />
@@ -103,6 +102,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasicTypes\FilePathValues.cs" />
+    <Compile Include="TestTypes\FilePathValues.cs" />
   </ItemGroup>
 </Project>

@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var controller = container.Resolve<SessionController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var now = DateTime.Now;
 
@@ -50,7 +50,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             // Act:
             // Start a new session:
@@ -97,7 +97,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             // Act:
             // Start a new session:
@@ -129,7 +129,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             // Act:
             // Start a new session:

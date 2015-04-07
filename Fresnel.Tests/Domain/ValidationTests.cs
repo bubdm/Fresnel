@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var observerCache = container.Resolve<ObserverCache>();
             var setCommand = container.Resolve<SetPropertyCommand>();
 
-            var obj = new SampleModel.BasicTypes.TextValues();
+            var obj = new SampleModel.TestTypes.TextValues();
             var oObj = (ObjectObserver)observerCache.GetObserver(obj);
 
             var oProp = oObj.Properties["TextWithSize"];
@@ -42,7 +42,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var observerCache = container.Resolve<ObserverCache>();
             var setCommand = container.Resolve<SetPropertyCommand>();
 
-            var obj = new SampleModel.BasicTypes.NumberValues();
+            var obj = new SampleModel.TestTypes.NumberValues();
             var oObj = (ObjectObserver)observerCache.GetObserver(obj);
 
             var oProp = oObj.Properties["NumberWithRange"];

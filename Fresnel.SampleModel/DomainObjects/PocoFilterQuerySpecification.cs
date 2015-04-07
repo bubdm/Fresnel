@@ -1,4 +1,5 @@
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.SampleModel.TestTypes;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Linq;
 namespace Envivo.Fresnel.SampleModel.Objects
 {
 
-    public class PocoFilterQuerySpecification : IQuerySpecification<DependencyAwareObject, PocoObject>
+    public class PocoFilterQuerySpecification : IQuerySpecification<ObjectWithCtorInjection, PocoObject>
     {
         private IPersistenceService _PersistenceService;
 
@@ -20,7 +21,7 @@ namespace Envivo.Fresnel.SampleModel.Objects
             return this.GetResults(null);
         }
 
-        public IQueryable<PocoObject> GetResults(DependencyAwareObject requestor)
+        public IQueryable<PocoObject> GetResults(ObjectWithCtorInjection requestor)
         {
             // If we wanted, we could use the requestor as part of the query clause:
 

@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
@@ -56,7 +56,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
@@ -82,7 +82,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
@@ -91,7 +91,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             // Act:
             var poco = (PocoObject)persistenceService.CreateObject(pocoType);
             poco.ID = Guid.NewGuid();
-            poco.EnumSwitches = SampleModel.BasicTypes.CombinationOptions.Ham | SampleModel.BasicTypes.CombinationOptions.Cheese;
+            poco.EnumSwitches = SampleModel.TestTypes.CombinationOptions.Ham | SampleModel.TestTypes.CombinationOptions.Cheese;
             poco.AddSomeChildObjects();
 
             // Step 1:
@@ -118,7 +118,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
@@ -148,7 +148,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var dummyText = "This is a test " + DateTime.Now.ToString();
 

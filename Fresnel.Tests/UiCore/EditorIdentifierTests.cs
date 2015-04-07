@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
-            var obj = new SampleModel.BasicTypes.MultiType();
+            var obj = new SampleModel.TestTypes.MultiType();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
@@ -54,7 +54,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
-            var textValues = new SampleModel.BasicTypes.TextValues();
+            var textValues = new SampleModel.TestTypes.TextValues();
             var oObject = (ObjectObserver)observerCache.GetObserver(textValues);
 
             // Act:
@@ -81,7 +81,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
-            var obj = new SampleModel.BasicTypes.EnumValues();
+            var obj = new SampleModel.TestTypes.EnumValues();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
@@ -135,7 +135,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<AbstractObjectVmBuilder>();
 
-            var obj = new SampleModel.MethodTests();
+            var obj = new SampleModel.TestTypes.MethodSamples();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:

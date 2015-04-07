@@ -52,12 +52,12 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var observerCache = container.Resolve<ObserverCache>();
             var searchCommand = container.Resolve<SearchCommand>();
 
-            var obj = container.Resolve<SampleModel.Objects.DependencyAwareObject>();
+            var obj = container.Resolve<SampleModel.TestTypes.ObjectWithCtorInjection>();
             var oObj = (ObjectObserver)observerCache.GetObserver(obj);
             var oProp = oObj.Properties["PocoObject"];
 
@@ -80,7 +80,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var observerCache = container.Resolve<ObserverCache>();
             var searchCommand = container.Resolve<SearchCommand>();

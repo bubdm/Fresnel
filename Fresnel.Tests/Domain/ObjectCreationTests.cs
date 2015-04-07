@@ -78,7 +78,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build(customDependencyModules);
             var createCommand = container.Resolve<CreateObjectCommand>();
 
-            var classType = typeof(SampleModel.Objects.DependencyAwareObject);
+            var classType = typeof(SampleModel.TestTypes.ObjectWithCtorInjection);
             var testName = "Test " + DateTime.Now.Ticks.ToString();
 
             // Act:
@@ -87,7 +87,7 @@ namespace Envivo.Fresnel.Tests.Domain
             // Assert:
             Assert.IsNotNull(oObject);
 
-            var newObject = (SampleModel.Objects.DependencyAwareObject)oObject.RealObject;
+            var newObject = (SampleModel.TestTypes.ObjectWithCtorInjection)oObject.RealObject;
             Assert.AreEqual(testName, newObject.Name);
         }
 

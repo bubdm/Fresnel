@@ -2,7 +2,7 @@ using Envivo.Fresnel.Configuration;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Envivo.Fresnel.SampleModel.Miscellaneous
+namespace Envivo.Fresnel.SampleModel.TestTypes
 {
     /// <summary>
     /// A set of Exception handling

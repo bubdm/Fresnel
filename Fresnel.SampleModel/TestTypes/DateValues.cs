@@ -2,7 +2,7 @@ using Envivo.Fresnel.Configuration;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Envivo.Fresnel.SampleModel.BasicTypes
+namespace Envivo.Fresnel.SampleModel.TestTypes
 {
     /// <summary>
     /// A set of Date properties
@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         /// <summary>
         /// This is an unformatted Date.
-        /// Clicking the down-arrow will reveal the DatePicker dialog.
+        /// Clicking the down-arrow will reveal the appropriate editor control.
         /// </summary>
         public DateTime NormalDate
         {
@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         /// <summary>
         /// This is a date showing a Time format.
-        /// Clicking the down-arrow will reveal the DatePicker dialog.
+        /// Clicking the down-arrow will reveal the appropriate editor control.
         /// </summary>
         /// <remarks>
         /// This should ideally show a PropertyGrid instead of a DatePicker
@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.SampleModel.BasicTypes
 
         /// <summary>
         /// This is a date showing a Date format.
-        /// Clicking the down-arrow will reveal the DatePicker dialog.
+        /// Clicking the down-arrow will reveal the appropriate editor control.
         /// </summary>
         [DataType(DataType.Date)]
         public DateTime DateFormat

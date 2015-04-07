@@ -2,7 +2,7 @@ using Envivo.Fresnel.DomainTypes.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Envivo.Fresnel.SampleModel.BasicTypes
+namespace Envivo.Fresnel.SampleModel.TestTypes
 {
     /// <summary>
     ///

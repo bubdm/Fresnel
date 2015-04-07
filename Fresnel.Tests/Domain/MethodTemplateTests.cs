@@ -38,7 +38,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
             var methodCommand = container.Resolve<InvokeMethodCommand>();
 
-            var domainObject = new SampleModel.MethodTests();
+            var domainObject = new SampleModel.TestTypes.MethodSamples();
 
             // Act:
             var result = methodCommand.Invoke(domainObject, "MethodThatReturnsA_String", null);
@@ -56,7 +56,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
             var methodCommand = container.Resolve<InvokeMethodCommand>();
 
-            var domainObject = new SampleModel.MethodTests();
+            var domainObject = new SampleModel.TestTypes.MethodSamples();
 
             var classTemplate = (ClassTemplate)templateCache.GetTemplate(domainObject.GetType());
             var tMethod = classTemplate.Methods["MethodWithOneParameter"];

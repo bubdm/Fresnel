@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.BasicTypes.BooleanValues>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.TestTypes.BooleanValues>();
 
             // Act:
             var tNormalBool = tClass.Properties["NormalBoolean"];
@@ -45,7 +45,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.BasicTypes.TextValues>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.TestTypes.TextValues>();
 
             // Act:
             var tReadOnlyText = tClass.Properties["ReadOnlyText"];
@@ -73,7 +73,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.BasicTypes.DateValues>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.TestTypes.DateValues>();
 
             // Act:
             var tNormalDate = tClass.Properties["NormalDate"];
@@ -97,7 +97,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.BasicTypes.NumberValues>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.TestTypes.NumberValues>();
 
             // Act:
             var tNormalNumber = tClass.Properties["NormalNumber"];
@@ -142,7 +142,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
 
             // Act:
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.MethodTests>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.TestTypes.MethodSamples>();
 
             // Assert:
             Assert.IsFalse(tClass.IsPersistable);

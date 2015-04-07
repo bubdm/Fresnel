@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Windows;
 using System.Windows.Media;
 
-namespace Envivo.Fresnel.SampleModel.BasicTypes
+namespace Envivo.Fresnel.SampleModel.TestTypes
 {
     /// <summary>
     /// A set of Struct properties

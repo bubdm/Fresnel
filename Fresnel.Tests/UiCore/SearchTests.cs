@@ -25,7 +25,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var controller = container.Resolve<ToolboxController>();
 
@@ -58,7 +58,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var controller = container.Resolve<ToolboxController>();
 
@@ -103,7 +103,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var controller = container.Resolve<ToolboxController>();
 
@@ -149,7 +149,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var controller = container.Resolve<ToolboxController>();
 
@@ -179,7 +179,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
@@ -213,7 +213,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
@@ -248,13 +248,13 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var classType = typeof(Fresnel.SampleModel.MethodTests);
+            var classType = typeof(Fresnel.SampleModel.TestTypes.MethodSamples);
             var createResponse = toolboxController.Create(classType.FullName);
 
             var searchRequest = new SearchParameterRequest()
@@ -284,13 +284,13 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    var container = new ContainerFactory().Build(customDependencyModules);
 
         //    var engine = container.Resolve<Core.Engine>();
-        //    engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+        //    engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
         //    var toolboxController = container.Resolve<ToolboxController>();
         //    var explorerController = container.Resolve<ExplorerController>();
 
         //    // Act:
-        //    var classType = typeof(Fresnel.SampleModel.MethodTests);
+        //    var classType = typeof(Fresnel.SampleModel.BasicTypes.MethodSamples);
         //    var createResponse = toolboxController.Create(classType.FullName);
 
         //    var searchRequest = new SearchParameterRequest()
@@ -320,7 +320,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
@@ -364,7 +364,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
@@ -408,7 +408,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
@@ -453,7 +453,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
@@ -467,7 +467,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             };
 
             var filterPropertyName = "EnumSwitches";
-            var filterValue = SampleModel.BasicTypes.CombinationOptions.Cheese;
+            var filterValue = SampleModel.TestTypes.CombinationOptions.Cheese;
             var searchFilters = new List<SearchFilter>()
             {
                 new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
@@ -482,8 +482,8 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             var columnValues = searchResponse.Result.Items
                             .Select(i => i.Properties.Single(p => p.InternalName.IsSameAs(filterPropertyName)).State.Value)
-                            .Select(v => Enum.Parse(typeof(SampleModel.BasicTypes.CombinationOptions), v.ToStringOrNull()))
-                            .Cast<SampleModel.BasicTypes.CombinationOptions>()
+                            .Select(v => Enum.Parse(typeof(SampleModel.TestTypes.CombinationOptions), v.ToStringOrNull()))
+                            .Cast<SampleModel.TestTypes.CombinationOptions>()
                             .ToList();
 
             Assert.IsTrue(columnValues.All(v => (v & filterValue) != 0));

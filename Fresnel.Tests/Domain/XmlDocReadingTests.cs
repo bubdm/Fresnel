@@ -16,7 +16,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var typeToInspect = typeof(SampleModel.BasicTypes.TextValues);
+            var typeToInspect = typeof(SampleModel.TestTypes.TextValues);
 
             // Act:
             var tClass = (ClassTemplate)templateCache.GetTemplate(typeToInspect);
@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var typeToInspect = typeof(SampleModel.BasicTypes.TextValues);
+            var typeToInspect = typeof(SampleModel.TestTypes.TextValues);
 
             // Act:
             var tClass = (ClassTemplate)templateCache.GetTemplate(typeToInspect);
@@ -51,7 +51,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var typeToInspect = typeof(SampleModel.MethodTests);
+            var typeToInspect = typeof(SampleModel.TestTypes.MethodSamples);
 
             // Act:
             var tClass = (ClassTemplate)templateCache.GetTemplate(typeToInspect);
@@ -70,7 +70,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var typeToInspect = typeof(SampleModel.MethodTests);
+            var typeToInspect = typeof(SampleModel.TestTypes.MethodSamples);
 
             // Act:
             var tClass = (ClassTemplate)templateCache.GetTemplate(typeToInspect);

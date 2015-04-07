@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
             var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
 
-            var typeToInspect = typeof(SampleModel.BasicTypes.TextValues);
+            var typeToInspect = typeof(SampleModel.TestTypes.TextValues);
 
             var attributesMap = attributesMapBuilder.BuildFor(typeToInspect);
 
@@ -39,7 +39,7 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             var container = new ContainerFactory().Build();
 
-            var typeToInspect = typeof(SampleModel.BasicTypes.TextValues);
+            var typeToInspect = typeof(SampleModel.TestTypes.TextValues);
 
             var templateCache = container.Resolve<TemplateCache>();
 
@@ -186,7 +186,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
             var createCommand = container.Resolve<CreateObjectCommand>();
 
-            var typeToInspect = typeof(SampleModel.StaticMethodTests);
+            var typeToInspect = typeof(SampleModel.TestTypes.ClassWithHiddenCtor);
             var attributesMap = attributesMapBuilder.BuildFor(typeToInspect);
 
             var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributesMap);
@@ -204,13 +204,13 @@ namespace Envivo.Fresnel.Tests.Domain
 
             var createCommand = container.Resolve<CreateObjectCommand>();
 
-            var typeToCreate = typeof(SampleModel.Objects.DependencyAwareObject);
+            var typeToCreate = typeof(SampleModel.TestTypes.ObjectWithCtorInjection);
             var tClass = (ClassTemplate)templateCache.GetTemplate(typeToCreate);
 
             var nameToInject = "Test " + Environment.TickCount.ToString();
 
             // Act:
-            var newInstance = (SampleModel.Objects.DependencyAwareObject)createCommand.Invoke(tClass, nameToInject);
+            var newInstance = (SampleModel.TestTypes.ObjectWithCtorInjection)createCommand.Invoke(tClass, nameToInject);
 
             // Assert:
             Assert.IsNotNull(newInstance);

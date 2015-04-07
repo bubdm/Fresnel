@@ -1,21 +1,22 @@
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.SampleModel.Objects;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Envivo.Fresnel.SampleModel.Objects
+namespace Envivo.Fresnel.SampleModel.TestTypes
 {
     /// <summary>
     /// This object has dependencies automatically injected into it
     /// </summary>
-    public class DependencyAwareObject
+    public class ObjectWithCtorInjection
     {
-        public DependencyAwareObject(IFactory<PocoObject> pocoFactory)
+        public ObjectWithCtorInjection(IFactory<PocoObject> pocoFactory)
         {
             this.PocoObject = pocoFactory.Create();
             this.Name = "This name is provided by default";
         }
 
-        public DependencyAwareObject(IFactory<PocoObject> pocoFactory, string name)
+        public ObjectWithCtorInjection(IFactory<PocoObject> pocoFactory, string name)
         {
             this.PocoObject = pocoFactory.Create();
             this.Name = name;

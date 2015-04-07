@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var controller = container.Resolve<ToolboxController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             // Act:
             var results = controller.GetClassHierarchy();
@@ -38,7 +38,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var controller = container.Resolve<ToolboxController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.Objects.DependencyAwareObject).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.ObjectWithCtorInjection).Assembly);
 
             // Act:
             var response = controller.Create("Envivo.Fresnel.SampleModel.Objects.DependencyAwareObject");
@@ -56,7 +56,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.IDummy).Assembly);
+            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
 
             var controller = container.Resolve<ToolboxController>();
 
