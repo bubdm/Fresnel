@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Utils;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -41,7 +42,11 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         private void CreateNamespaceNodesFor(Assembly domainAssembly, HierarchyNode rootNode)
         {
-            var classes = domainAssembly.GetExportedTypes();
+            var classes = domainAssembly
+                            .GetExportedTypes()
+                            .OrderBy(t => t.FullName)
+                            .ToArray();
+
             for (var i = 0; i < classes.Length; i++)
             {
                 var classType = classes[i];
@@ -93,7 +98,11 @@ namespace Envivo.Fresnel.Introspection.Assemblies
         /// <remarks></remarks>
         private void CreateNodesFor(Assembly domainAssembly, HierarchyNode rootNode)
         {
-            var classes = domainAssembly.GetExportedTypes();
+            var classes = domainAssembly
+                            .GetExportedTypes()
+                            .OrderBy(t => t.FullName)
+                            .ToArray();
+
             for (var i = 0; i < classes.Length; i++)
             {
                 if (classes[i].IsTrackable() == false)
