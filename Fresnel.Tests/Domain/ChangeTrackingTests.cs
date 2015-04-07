@@ -18,11 +18,11 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
 
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
+            var person = new SampleModel.Northwind.Person();
+            person.ID = Guid.NewGuid();
 
             // Act:
-            var observer = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
+            var observer = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
 
             // Assert:
             Assert.IsFalse(observer.ChangeTracker.IsDirty);
@@ -36,11 +36,11 @@ namespace Envivo.Fresnel.Tests.Domain
             var observerCache = container.Resolve<ObserverCache>();
             var setCommand = container.Resolve<SetPropertyCommand>();
 
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
+            var person = new SampleModel.Northwind.Person();
+            person.ID = Guid.NewGuid();
 
-            var oObject = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
-            var oProp = oObject.Properties["NormalText"];
+            var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+            var oProp = oObject.Properties["FirstName"];
             var oValue = observerCache.GetObserver("1234", typeof(string));
 
             // Act:
@@ -58,12 +58,12 @@ namespace Envivo.Fresnel.Tests.Domain
             var createCommand = container.Resolve<CreateObjectCommand>();
 
             // Act:
-            var pocoType = typeof(SampleModel.Objects.PocoObject);
-            var oObject = createCommand.Invoke(pocoType, null);
+            var personType = typeof(SampleModel.Northwind.Person);
+            var oObject = createCommand.Invoke(personType, null);
 
             // Assert:
             Assert.IsNotNull(oObject);
-            Assert.IsInstanceOf<SampleModel.Objects.PocoObject>(oObject.RealObject);
+            Assert.IsInstanceOf<SampleModel.Northwind.Person>(oObject.RealObject);
         }
 
         [Test]
@@ -75,23 +75,23 @@ namespace Envivo.Fresnel.Tests.Domain
             var getCommand = container.Resolve<GetPropertyCommand>();
             var addCommand = container.Resolve<AddToCollectionCommand>();
 
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
+            var person = new SampleModel.Northwind.Person();
+            person.ID = Guid.NewGuid();
 
-            var oObject = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
-            var oProp = oObject.Properties["ChildObjects"];
+            var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+            var oProp = oObject.Properties["Roles"];
             var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Act:
-            var newItem = new SampleModel.Objects.PocoObject();
-            newItem.ID = Guid.NewGuid();
-            var oNewItem = (ObjectObserver)observerCache.GetObserver(newItem, newItem.GetType());
+            var newRole = new SampleModel.Northwind.Employee();
+            newRole.ID = Guid.NewGuid();
+            var oNewRole = (ObjectObserver)observerCache.GetObserver(newRole, newRole.GetType());
 
-            var result = addCommand.Invoke(oCollection, oNewItem);
+            var result = addCommand.Invoke(oCollection, oNewRole);
 
             // Assert:
-            Assert.IsTrue(oNewItem.ChangeTracker.IsDirty);
-            Assert.IsTrue(oNewItem.ChangeTracker.IsMarkedForAddition);
+            Assert.IsTrue(oNewRole.ChangeTracker.IsDirty);
+            Assert.IsTrue(oNewRole.ChangeTracker.IsMarkedForAddition);
             Assert.IsTrue(oCollection.ChangeTracker.IsDirty);
             Assert.IsTrue(oObject.ChangeTracker.HasDirtyObjectGraph);
         }
@@ -105,17 +105,19 @@ namespace Envivo.Fresnel.Tests.Domain
             var getCommand = container.Resolve<GetPropertyCommand>();
             var removeCommand = container.Resolve<RemoveFromCollectionCommand>();
 
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
+            var person = new SampleModel.Northwind.Person();
+            person.ID = Guid.NewGuid();
 
-            poco.AddSomeChildObjects();
+            person.Roles.Add(new SampleModel.Northwind.Employee());
+            person.Roles.Add(new SampleModel.Northwind.Customer());
+            person.Roles.Add(new SampleModel.Northwind.Supplier());
 
-            var oObject = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
-            var oProp = oObject.Properties["ChildObjects"];
+            var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+            var oProp = oObject.Properties["Roles"];
             var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Act:
-            var childObject = poco.ChildObjects.Last();
+            var childObject = person.Roles.Last();
             var oChildObject = (ObjectObserver)observerCache.GetObserver(childObject, childObject.GetType());
 
             var result = removeCommand.Invoke(oCollection, oChildObject);
@@ -138,18 +140,20 @@ namespace Envivo.Fresnel.Tests.Domain
             var addCommand = container.Resolve<AddToCollectionCommand>();
             var removeCommand = container.Resolve<RemoveFromCollectionCommand>();
 
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
+            var person = new SampleModel.Northwind.Person();
+            person.ID = Guid.NewGuid();
 
-            poco.AddSomeChildObjects();
+            person.Roles.Add(new SampleModel.Northwind.Employee());
+            person.Roles.Add(new SampleModel.Northwind.Customer());
+            person.Roles.Add(new SampleModel.Northwind.Supplier());
 
-            var oObject = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
-            var oProp = oObject.Properties["ChildObjects"];
+            var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+            var oProp = oObject.Properties["Roles"];
             var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Act:
-            var oNewItem = (ObjectObserver)createCommand.Invoke(typeof(SampleModel.Objects.PocoObject), null);
-            ((SampleModel.Objects.PocoObject)oNewItem.RealObject).ID = Guid.NewGuid();
+            var oNewItem = (ObjectObserver)createCommand.Invoke(typeof(SampleModel.Northwind.Employee), null);
+            ((SampleModel.Northwind.Employee)oNewItem.RealObject).ID = Guid.NewGuid();
 
             var addResult = addCommand.Invoke(oCollection, oNewItem);
             var removeResult = removeCommand.Invoke(oCollection, oNewItem);
@@ -171,26 +175,26 @@ namespace Envivo.Fresnel.Tests.Domain
             var getCommand = container.Resolve<GetPropertyCommand>();
             var setCommand = container.Resolve<SetPropertyCommand>();
 
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
+            var person = new SampleModel.Northwind.Person();
+            person.ID = Guid.NewGuid();
 
-            var oObject = (ObjectObserver)observerCache.GetObserver(poco, poco.GetType());
-            var oProp = oObject.Properties["ChildObjects"];
+            var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+            var oProp = oObject.Properties["Roles"];
 
             var iterations = 10000;
 
             // Act:
             for (var i = 0; i < iterations; i++)
             {
-                poco.ChildObjects.Add(new SampleModel.Objects.PocoObject());
+                person.Roles.Add(new SampleModel.Northwind.Employee());
             }
 
             var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Act:
-            var oTextProp = oObject.Properties["NormalText"];
+            var oNameProp = oObject.Properties["FirstName"];
             var oValue = observerCache.GetObserver("1234", typeof(string));
-            setCommand.Invoke(oTextProp, oValue);
+            setCommand.Invoke(oNameProp, oValue);
 
             // Assert:
             oCollection = (CollectionObserver)getCommand.Invoke(oProp);
