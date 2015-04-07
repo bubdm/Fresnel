@@ -10,10 +10,8 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 {
     public class Product
     {
-        public Product()
-        {
-            this.Categories = new List<Category>();
-        }
+        private ICollection<StockDetail> _Stock = new List<StockDetail>();
+        private ICollection<Category> _Categories = new List<Category>();
 
         [Key]
         public Guid ID { get; set; }
@@ -30,10 +28,18 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         public string Image { get; set; }
 
         [Relationship(Type = RelationshipType.Owns)]
-        public virtual ICollection<StockDetail> Stock { get; set; }
+        public virtual ICollection<StockDetail> Stock
+        {
+            get { return _Stock; }
+            set { _Stock = value; }
+        }
 
         [Relationship(Type = RelationshipType.Has)]
-        public virtual ICollection<Category> Categories { get; set; }
+        public virtual ICollection<Category> Categories
+        {
+            get { return _Categories; }
+            set { _Categories = value; }
+        }
 
     }
 }

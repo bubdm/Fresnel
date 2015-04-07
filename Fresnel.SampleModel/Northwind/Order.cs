@@ -10,10 +10,7 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 {
     public class Order
     {
-        public Order()
-        {
-            this.OrderItems = new List<OrderItem>();
-        }
+        private ICollection<OrderItem> _OrderItem = new List<OrderItem>();
 
         [Key]
         public Guid ID { get; set; }
@@ -21,7 +18,11 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         [ConcurrencyCheck]
         public long Version { get; set; }
 
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual ICollection<OrderItem> OrderItems
+        {
+            get { return _OrderItem; }
+            set { _OrderItem = value; }
+        }
 
     }
 }

@@ -10,10 +10,7 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 {
     public class Person : IParty
     {
-        public Person()
-        {
-            this.Roles = new List<Role>();
-        }
+        private ICollection<Role> _Roles = new List<Role>();
 
         [Key]
         public Guid ID { get; set; }
@@ -22,7 +19,11 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         public long Version { get; set; }
 
         [Relationship(Type = RelationshipType.Has)]
-        public virtual ICollection<Role> Roles { get; set; }
+        public virtual ICollection<Role> Roles
+        {
+            get { return _Roles; }
+            set { _Roles = value; }
+        }
 
         public string FirstName { get; set; }
 

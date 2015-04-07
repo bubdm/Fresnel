@@ -10,10 +10,7 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 {
     public class Employee : Role
     {
-        public Employee()
-        {
-            this.Territories = new List<Territory>();
-        }
+        private ICollection<Territory> _Territories = new List<Territory>();
 
         public Person Person { get; set; }
 
@@ -24,7 +21,11 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         public DateTime HiredOn { get; set; }
 
         [Relationship(Type = RelationshipType.Has)]
-        public virtual ICollection<Territory> Territories { get; set; }
+        public virtual ICollection<Territory> Territories
+        {
+            get { return _Territories; }
+            set { _Territories = value; }
+        }
 
         public void AddToTerritories(Territory territory)
         {
