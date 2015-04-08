@@ -49,6 +49,13 @@ namespace Envivo.Fresnel.Utils
                 return methodExpression.Method.Name;
             }
 
+            var unaryExpression = expression.Body as UnaryExpression;
+            if (unaryExpression != null)
+            {
+                var operandExpression = (MemberExpression)unaryExpression.Operand;
+                return operandExpression.Member.Name;
+            }
+
             throw new ArgumentOutOfRangeException("expression", "Unable to determine member/method name for given expression");
         }
     }
