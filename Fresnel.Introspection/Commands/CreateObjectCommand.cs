@@ -72,13 +72,12 @@ namespace Envivo.Fresnel.Introspection.Commands
         {
             if (constructorArg == null)
             {
-                var result = _DomainObjectFactory.Create(tClass.RealType, new object[0]);
+                var result = _DomainObjectFactory.Create(tClass.RealType);
                 return result;
             }
             else
             {
-                var args = new object[] { constructorArg };
-                var result = _DomainObjectFactory.Create(tClass.RealType, args);
+                var result = _DomainObjectFactory.Create(tClass.RealType, constructorArg);
                 return result;
             }
         }
