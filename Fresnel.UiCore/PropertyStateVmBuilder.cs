@@ -135,19 +135,25 @@ namespace Envivo.Fresnel.UiCore
             var result = new InteractionPoint();
 
             var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
-            if (isNull)
-            {
-                var createCheck = _CanCreatePermission.IsSatisfiedBy((ClassTemplate)tProp.InnerClass);
-                result.IsEnabled = createCheck == null;
-                result.Error = result.IsEnabled ? null : createCheck.Flatten().Message;
-            }
-            else
+            if (!isNull)
             {
                 result.IsEnabled = false;
                 result.IsVisible = false;
                 result.Error = "You must disassociate from the existing item before replacing it with a new one";
+                return result;
             }
 
+            if (!tProp.IsCompositeRelationship)
+            {
+                result.IsEnabled = false;
+                result.IsVisible = false;
+                result.Error = "New items can only be created if the parent object is the Owner";
+                return result;
+            }
+
+            var createCheck = _CanCreatePermission.IsSatisfiedBy((ClassTemplate)tProp.InnerClass);
+            result.IsEnabled = createCheck == null;
+            result.Error = result.IsEnabled ? null : createCheck.Flatten().Message;
             return result;
         }
 
