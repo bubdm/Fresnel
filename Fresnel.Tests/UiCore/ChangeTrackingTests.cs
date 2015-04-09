@@ -191,13 +191,13 @@ namespace Envivo.Fresnel.Tests.Proxies
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var templateCache = container.Resolve<TemplateCache>();
-            var controller = container.Resolve<ExplorerController>();
-
             var engine = container.Resolve<Core.Engine>();
             engine.RegisterDomainAssembly(typeof(ObjectWithCtorInjection).Assembly);
 
+            var observerCache = container.Resolve<ObserverCache>();
+            var templateCache = container.Resolve<TemplateCache>();
+            var controller = container.Resolve<ExplorerController>();
+            
             // Act:
             var obj = container.Resolve<ObjectWithCtorInjection>();
             obj.ID = Guid.NewGuid();
@@ -240,8 +240,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             var setResult = controller.SetProperty(request);
 
             // Assert:
-            // All of the text properties are bound to the same value:
-            Assert.AreEqual(8, setResult.Modifications.PropertyChanges.Count());
+            // Some of the text properties are bound to the same value:
+            Assert.AreEqual(3, setResult.Modifications.PropertyChanges.Count());
         }
 
         [Test]

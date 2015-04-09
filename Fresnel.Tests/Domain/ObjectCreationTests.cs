@@ -37,6 +37,26 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(newObject);
         }
 
+        public void ShouldCreateObjectWithCtorArgs()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+            var createCommand = container.Resolve<CreateObjectCommand>();
+
+            var order = _Fixture.Create<Order>();
+            var orderItemType = typeof(OrderItem);
+
+            // Act:
+            var oObject = createCommand.Invoke(orderItemType, new object[] { order });
+
+            // Assert:
+            Assert.IsNotNull(oObject);
+
+            var orderItem = (OrderItem)oObject.RealObject;
+            Assert.AreEqual(order, orderItem.ParentOrder);
+        }
+
         [Test]
         public void ShouldCreateObjectWithDomainFactory()
         {

@@ -9,6 +9,7 @@ using Envivo.Fresnel.UiCore;
 using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.UiCore.Model.TypeInfo;
 using Envivo.Fresnel.Utils;
+using Fresnel.Tests;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using System;
@@ -19,6 +20,8 @@ namespace Envivo.Fresnel.Tests.Proxies
     [TestFixture()]
     public class EditorIdentifierTests
     {
+        private Fixture _Fixture = new AutoFixtureFactory().Create();
+
         [Test]
         public void ShouldIdentifyPropertyTypes()
         {
@@ -27,19 +30,19 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
-            var fixture = new Fixture();
-            var obj = fixture.Create<MultiType>();
+
+            var obj = _Fixture.Create<MultiType>();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
-            var boolVM = vmBuilder.BuildFor(oObject.Properties["A_Boolean"]);
-            var charVM = vmBuilder.BuildFor(oObject.Properties["A_Char"]);
-            var stringVM = vmBuilder.BuildFor(oObject.Properties["A_String"]);
-            var intVM = vmBuilder.BuildFor(oObject.Properties["An_Int"]);
-            var doubleVM = vmBuilder.BuildFor(oObject.Properties["A_Double"]);
-            var floatVM = vmBuilder.BuildFor(oObject.Properties["A_Float"]);
-            var dateTimeVM = vmBuilder.BuildFor(oObject.Properties["A_DateTime"]);
-            var dateTimeOffsetVM = vmBuilder.BuildFor(oObject.Properties["A_DateTimeOffset"]);
+            var boolVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<MultiType>(x => x.A_Boolean)]);
+            var charVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<MultiType>(x => x.A_Char)]);
+            var stringVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<MultiType>(x => x.A_String)]);
+            var intVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<MultiType>(x => x.An_Int)]);
+            var doubleVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<MultiType>(x => x.A_Double)]);
+            var floatVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<MultiType>(x => x.A_Float)]);
+            var dateTimeVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<MultiType>(x => x.A_DateTime)]);
+            var dateTimeOffsetVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<MultiType>(x => x.A_DateTimeOffset)]);
 
             // Assert:
             Assert.AreEqual(UiControlType.Radio, boolVM.Info.PreferredControl);
@@ -60,18 +63,15 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
-            var fixture = new Fixture();
-            var obj = fixture.Create<TextValues>();
+
+            var obj = _Fixture.Create<TextValues>();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
-            var charVM = vmBuilder.BuildFor(oObject.Properties["NormalChar"]);
-
-            var stringVM = vmBuilder.BuildFor(oObject.Properties["NormalText"]);
-
-            var multiLineVM = vmBuilder.BuildFor(oObject.Properties["MultiLineText"]);
-
-            var passwordVM = vmBuilder.BuildFor(oObject.Properties["PasswordText"]);
+            var charVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<TextValues>(x => x.NormalChar)]);
+            var stringVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<TextValues>(x => x.NormalText)]);
+            var multiLineVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<TextValues>(x => x.MultiLineText)]);
+            var passwordVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<TextValues>(x => x.PasswordText)]);
 
             // Assert:
             Assert.AreEqual(UiControlType.Text, charVM.Info.PreferredControl);
@@ -88,14 +88,13 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
-            var fixture = new Fixture();
-            var obj = fixture.Create<EnumValues>(); 
+
+            var obj = _Fixture.Create<EnumValues>();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
-            var enumVM = vmBuilder.BuildFor(oObject.Properties["EnumValue"]);
-
-            var bitwiseEnumVM = vmBuilder.BuildFor(oObject.Properties["EnumSwitches"]);
+            var enumVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<EnumValues>(x => x.EnumValue)]);
+            var bitwiseEnumVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<EnumValues>(x => x.EnumSwitches)]);
 
             // Assert:
             Assert.IsFalse(((EnumVM)enumVM.Info).IsBitwiseEnum);
@@ -119,8 +118,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<AbstractObjectVmBuilder>();
 
-            var fixture = new Fixture();
-            var col = fixture.Create<Collection<Product>>(); 
+
+            var col = _Fixture.Create<Collection<Product>>();
             var oColl = (ObjectObserver)observerCache.GetObserver(col);
 
             // Act:
@@ -141,6 +140,9 @@ namespace Envivo.Fresnel.Tests.Proxies
         {
             // Arrange:
             var container = new ContainerFactory().Build();
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(MethodSamples).Assembly);
+
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<AbstractObjectVmBuilder>();
 

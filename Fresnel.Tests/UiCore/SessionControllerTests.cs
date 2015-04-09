@@ -5,6 +5,7 @@ using Envivo.Fresnel.SampleModel.Objects;
 using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
+using Envivo.Fresnel.Utils;
 using Fresnel.SampleModel.Persistence;
 using NUnit.Framework;
 using System;
@@ -58,13 +59,14 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Start a new session:
             var session = sessionController.GetSession();
 
-            var createResponse = toolboxController.Create("Envivo.Fresnel.Product");
+            var type = typeof(MultiType);
+            var createResponse = toolboxController.Create(type.FullName);
 
-            // Make a change
+            // Make some changes
             var request = new SetPropertyRequest()
             {
                 ObjectID = createResponse.NewObject.ID,
-                PropertyName = "NormalText",
+                PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_String),
                 NonReferenceValue = DateTime.Now.ToString()
             };
             var setResult = explorerController.SetProperty(request);
@@ -106,7 +108,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             var session = sessionController.GetSession();
 
             // Try to save an inconsistent object:
-            var createResponse = toolboxController.Create("Envivo.Fresnel.SampleModel.Objects.Money");
+            var type = typeof(Product);
+            var createResponse = toolboxController.Create(type.FullName);
 
             var saveRequest = new SaveChangesRequest()
             {
@@ -116,7 +119,7 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // Assert:
             Assert.IsFalse(saveResponse.Passed);
-            Assert.AreEqual(2, saveResponse.Messages.Length);
+            Assert.AreNotEqual(0, saveResponse.Messages.Length);
         }
 
         [Test]
@@ -131,7 +134,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             // Act:
             // Start a new session:
@@ -140,7 +143,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Find an object to edit:
             var searchRequest = new SearchObjectsRequest()
             {
-                SearchType = typeof(Product).FullName,
+                SearchType = typeof(MultiType).FullName,
                 PageSize = 10,
                 PageNumber = 1,
             };
@@ -151,7 +154,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var request = new SetPropertyRequest()
             {
                 ObjectID = pocoA.ID,
-                PropertyName = "NormalText",
+                PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_DateTime),
                 NonReferenceValue = DateTime.Now.ToString()
             };
             var setResult = explorerController.SetProperty(request);
@@ -161,9 +164,9 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // Assert:
             searchResponse = toolboxController.SearchObjects(searchRequest);
-            var pocoB = searchResponse.Result.Items.First();
+            var persistedItem = searchResponse.Result.Items.First();
 
-            var propertyValue = pocoB
+            var propertyValue = persistedItem
                                 .Properties
                                 .Single(p => p.InternalName == request.PropertyName)
                                 .IsNonReference;

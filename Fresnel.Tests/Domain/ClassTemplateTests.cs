@@ -215,8 +215,8 @@ namespace Envivo.Fresnel.Tests.Domain
             var typeToCreate = typeof(ObjectWithCtorInjection);
             var tClass = (ClassTemplate)templateCache.GetTemplate(typeToCreate);
 
-            var fixture = new Fixture();
-            var nameToInject = fixture.Create<string>();
+            
+            var nameToInject = _Fixture.Create<string>();
 
             // Act:
             var newInstance = (ObjectWithCtorInjection)createCommand.Invoke(tClass, nameToInject);

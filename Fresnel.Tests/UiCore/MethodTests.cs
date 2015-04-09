@@ -26,6 +26,9 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Arrange:
             var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
             var container = new ContainerFactory().Build(customDependencyModules);
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(MethodSamples).Assembly);
+
             var observerCache = container.Resolve<ObserverCache>();
             var controller = container.Resolve<ExplorerController>();
 
@@ -57,6 +60,9 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Arrange:
             var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
             var container = new ContainerFactory().Build(customDependencyModules);
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(MethodSamples).Assembly);
+
             var observerCache = container.Resolve<ObserverCache>();
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();

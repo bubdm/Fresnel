@@ -36,6 +36,11 @@ namespace Fresnel.Tests
                 .Without(x => x.Stock)
             );
 
+            fixture.Customize<StockDetail>(c => c
+                .Without(x => x.Product)
+                .Without(x => x.Supplier)
+            );
+
             fixture.Customize<Person>(c => c
                 // "Role" is abstract, therefore cannot be created:
                 .Without(x => x.Roles)
@@ -93,7 +98,7 @@ namespace Fresnel.Tests
 
                 return this.GenerateString(minLength, maxLength, isRequired);
             }
-            
+
             return result;
         }
 

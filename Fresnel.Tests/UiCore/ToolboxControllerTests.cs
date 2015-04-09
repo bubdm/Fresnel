@@ -81,7 +81,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsTrue(searchResponse.Result.Items.Count() <= searchRequest.PageSize);
 
             // The Results should show all Properties for the items:
-            Assert.AreEqual(10, searchResponse.Result.ElementProperties.Count());
+            Assert.AreEqual(5, searchResponse.Result.ElementProperties.Count());
         }
     }
 }
