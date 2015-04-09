@@ -15,6 +15,7 @@ namespace Envivo.Fresnel.UiCore.Commands
     {
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
+        private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private CreateObjectCommand _CreateObjectCommand;
         private AddToCollectionCommand _AddToCollectionCommand;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
@@ -25,6 +26,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             (
             TemplateCache templateCache,
             ObserverCache observerCache,
+            Core.Commands.GetPropertyCommand getPropertyCommand,
             CreateObjectCommand createObjectCommand,
             AddToCollectionCommand addToCollectionCommand,
             AbstractObjectVmBuilder objectVMBuilder,
@@ -34,6 +36,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
+            _GetPropertyCommand = getPropertyCommand;
             _CreateObjectCommand = createObjectCommand;
             _AddToCollectionCommand = addToCollectionCommand;
             _ObjectVMBuilder = objectVMBuilder;
@@ -47,15 +50,14 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var startedAt = SequentialIdGenerator.Next;
 
-                var oCollection = (CollectionObserver)_ObserverCache.GetObserverById(request.CollectionID);
-                if (oCollection == null)
-                    throw new UiCoreException("Cannot find collection with ID " + request.CollectionID);
+                var oParent = this.GetObserver(request.ParentObjectID);
+                var oCollection = GetCollectionObserver(oParent, request.CollectionPropertyName);
 
                 ObjectObserver oObject = null;
                 var tClass = _TemplateCache.GetTemplate(request.ElementTypeName);
                 if (tClass != null)
                 {
-                    oObject = (ObjectObserver)_CreateObjectCommand.Invoke(tClass.RealType, null);
+                    oObject = (ObjectObserver)_CreateObjectCommand.Invoke(tClass.RealType, oParent.RealObject);
                     if (oObject == null)
                         throw new UiCoreException("Cannot create object of type " + tClass.FriendlyName);
                 }
@@ -104,16 +106,13 @@ namespace Envivo.Fresnel.UiCore.Commands
 
                 var startedAt = SequentialIdGenerator.Next;
 
-                var oCollection = (CollectionObserver)_ObserverCache.GetObserverById(request.CollectionID);
-                if (oCollection == null)
-                    throw new UiCoreException("Cannot find collection with ID " + request.CollectionID);
+                var oParent = this.GetObserver(request.ParentObjectID);
+                var oCollection = this.GetCollectionObserver(oParent, request.CollectionPropertyName);
 
                 var oObjects = new List<ObjectObserver>();
                 foreach (var elementID in request.ElementIDs)
                 {
-                    var oObject = (ObjectObserver)_ObserverCache.GetObserverById(elementID);
-                    if (oObject == null)
-                        throw new UiCoreException("Cannot find object with ID " + elementID);
+                    var oObject = this.GetObserver(elementID);
 
                     oObjects.Add(oObject);
                     var oResult = _AddToCollectionCommand.Invoke(oCollection, oObject);
@@ -164,5 +163,23 @@ namespace Envivo.Fresnel.UiCore.Commands
                 };
             }
         }
+
+        private ObjectObserver GetObserver(Guid objectID)
+        {
+            var oObject = (ObjectObserver)_ObserverCache.GetObserverById(objectID);
+            if (oObject == null)
+                throw new UiCoreException("Cannot find object for " + objectID);
+            return oObject;
+        }
+
+        private CollectionObserver GetCollectionObserver(ObjectObserver oParent, string collectionPropertyName)
+        {
+            var oProp = (ObjectPropertyObserver)oParent.Properties[collectionPropertyName];
+            var oCollection = (CollectionObserver)_GetPropertyCommand.Invoke(oProp);
+            if (oCollection == null)
+                throw new UiCoreException("Cannot find collection for " + collectionPropertyName);
+            return oCollection;
+        }
+
     }
 }

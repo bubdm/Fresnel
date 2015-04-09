@@ -12,6 +12,7 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class CollectionRemoveCommand : ICommand
     {
         private ObserverCache _ObserverCache;
+        private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private RemoveFromCollectionCommand _RemoveFromCollectionCommand;
         private ModificationsVmBuilder _ModificationsBuilder;
         private IClock _Clock;
@@ -19,12 +20,14 @@ namespace Envivo.Fresnel.UiCore.Commands
         public CollectionRemoveCommand
             (
             ObserverCache observerCache,
+            Core.Commands.GetPropertyCommand getPropertyCommand,
             RemoveFromCollectionCommand removeFromCollectionCommand,
             ModificationsVmBuilder modificationsBuilder,
             IClock clock
             )
         {
             _ObserverCache = observerCache;
+            _GetPropertyCommand = getPropertyCommand;
             _RemoveFromCollectionCommand = removeFromCollectionCommand;
             _ModificationsBuilder = modificationsBuilder;
             _Clock = clock;
@@ -36,13 +39,9 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var startedAt = SequentialIdGenerator.Next;
 
-                var oCollection = (CollectionObserver)_ObserverCache.GetObserverById(request.CollectionID);
-                if (oCollection == null)
-                    throw new UiCoreException("Cannot find collection with ID " + request.CollectionID);
-
-                var oObject = (ObjectObserver)_ObserverCache.GetObserverById(request.ElementID);
-                if (oObject == null)
-                    throw new UiCoreException("Cannot find object with ID " + request.ElementID);
+                var oParent = this.GetObserver(request.ParentObjectID);
+                var oCollection = this.GetCollectionObserver(oParent, request.CollectionPropertyName);
+                var oObject = this.GetObserver(request.ElementID);
 
                 var oResult = _RemoveFromCollectionCommand.Invoke(oCollection, oObject);
 
@@ -78,6 +77,23 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Messages = new MessageVM[] { errorVM }
                 };
             }
+        }
+        
+        private ObjectObserver GetObserver(Guid objectID)
+        {
+            var oObject = (ObjectObserver)_ObserverCache.GetObserverById(objectID);
+            if (oObject == null)
+                throw new UiCoreException("Cannot find object for " + objectID);
+            return oObject;
+        }
+
+        private CollectionObserver GetCollectionObserver(ObjectObserver oParent, string collectionPropertyName)
+        {
+            var oProp = (ObjectPropertyObserver)oParent.Properties[collectionPropertyName];
+            var oCollection = (CollectionObserver)_GetPropertyCommand.Invoke(oProp);
+            if (oCollection == null)
+                throw new UiCoreException("Cannot find collection for " + collectionPropertyName);
+            return oCollection;
         }
     }
 }

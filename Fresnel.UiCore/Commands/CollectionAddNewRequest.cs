@@ -6,7 +6,9 @@ namespace Envivo.Fresnel.UiCore.Commands
     [TypeScriptInterface]
     public class CollectionAddNewRequest
     {
-        public Guid CollectionID { get; set; }
+        public Guid ParentObjectID { get; set; }
+
+        public string CollectionPropertyName { get; set; }
 
         public string ElementTypeName { get; set; }
     }
