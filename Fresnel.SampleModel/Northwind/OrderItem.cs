@@ -25,18 +25,17 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         public virtual Order ParentOrder { get; set; }
 
         [Relationship(Type = RelationshipType.Has)]
-        public virtual Customer DeliverTo { get; set; }
-
-        [Relationship(Type = RelationshipType.Has)]
-        public virtual Employee PlacedBy { get; set; }
-
-        [Relationship(Type = RelationshipType.Has)]
-        public virtual Shipper ShippedBy { get; set; }
+        public virtual Product Product { get; set; }
 
         public double UnitPrice { get; set; }
 
         public int Quantity { get; set; }
 
         public double Discount { get; set; }
+
+        public override string ToString()
+        {
+            return string.Concat(this.Product, " (", this.Quantity, ") items");
+        }
     }
 }
