@@ -61,7 +61,7 @@
     <Compile Include="Northwind\Shipment.cs" />
     <Compile Include="Northwind\Shipper.cs" />
     <Compile Include="Northwind\Territory.cs" />
-    <Compile Include="Northwind\IParty.cs" />
+    <Compile Include="Northwind\BaseParty.cs" />
     <Compile Include="Northwind\Supplier.cs" />
     <Compile Include="Northwind\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

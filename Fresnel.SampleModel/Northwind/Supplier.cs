@@ -6,7 +6,7 @@ namespace Envivo.Fresnel.SampleModel.Northwind
     public class Supplier : Role
     {
         [Relationship(Type = RelationshipType.Has)]
-        public virtual IParty Party { get; set; }
+        public virtual BaseParty Party { get; set; }
 
         [Relationship(Type = RelationshipType.Owns)]
         public virtual Address Address { get; set; }

@@ -50,7 +50,9 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 
         public override string ToString()
         {
-            return this.Person.ToString();
+            return this.Person != null ?
+                this.Person.ToString() :
+                this.GetType().Name;
         }
     }
 }
