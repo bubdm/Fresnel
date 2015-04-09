@@ -22,9 +22,17 @@ namespace Envivo.Fresnel.CompositionRoot.DomainIoC
             if (!_ComponentContext.IsRegistered(classType))
                 return null;
 
-            var ctorParams = args.Select(a => new TypedParameter(a.GetType(), a));
+            object result = null;
+            if (args == null || !args.Any())
+            {
+                result = _ComponentContext.Resolve(classType);
+            }
+            else
+            {
+                var ctorParams = args.Select(a => new TypedParameter(a.GetType(), a));
+                result = _ComponentContext.Resolve(classType, ctorParams);
+            }
 
-            var result = _ComponentContext.Resolve(classType, ctorParams);
             return result;
         }
     }
