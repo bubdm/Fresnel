@@ -5,6 +5,8 @@ using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.TestTypes;
 using NUnit.Framework;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +24,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.TestTypes.BooleanValues>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<BooleanValues>();
 
             // Act:
             var tNormalBool = tClass.Properties["NormalBoolean"];
@@ -45,7 +47,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.TestTypes.TextValues>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<TextValues>();
 
             // Act:
             var tReadOnlyText = tClass.Properties["ReadOnlyText"];
@@ -73,7 +75,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.TestTypes.DateValues>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<DateValues>();
 
             // Act:
             var tNormalDate = tClass.Properties["NormalDate"];
@@ -97,7 +99,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.TestTypes.NumberValues>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<NumberValues>();
 
             // Act:
             var tNormalNumber = tClass.Properties["NormalNumber"];
@@ -125,7 +127,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
 
             // Act:
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.Objects.PocoObject>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<Product>();
 
             // Assert:
             Assert.IsTrue(tClass.IsPersistable);
@@ -142,7 +144,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
 
             // Act:
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.TestTypes.MethodSamples>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<MethodSamples>();
 
             // Assert:
             Assert.IsFalse(tClass.IsPersistable);
@@ -157,7 +159,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var templateCache = container.Resolve<TemplateCache>();
 
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.Objects.SubProductA>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<Employee>();
 
             // Act:
             var tHidden = tClass.Properties["HiddenProperty"];

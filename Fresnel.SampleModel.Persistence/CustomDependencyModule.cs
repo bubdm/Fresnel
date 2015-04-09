@@ -12,6 +12,9 @@ using System.Data.Entity;
 
 namespace Fresnel.SampleModel.Persistence
 {
+    /// <summary>
+    /// Used to register the custom EntityFramework PersistenceService
+    /// </summary>
     public class CustomDependencyModule : Module
     {
 

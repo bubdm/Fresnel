@@ -1,4 +1,5 @@
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.Objects;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -10,15 +11,15 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
     /// </summary>
     public class ObjectWithCtorInjection
     {
-        public ObjectWithCtorInjection(IFactory<PocoObject> pocoFactory)
+        public ObjectWithCtorInjection(IFactory<Product> productFactory)
         {
-            this.PocoObject = pocoFactory.Create();
+            this.Product = productFactory.Create();
             this.Name = "This name is provided by default";
         }
 
-        public ObjectWithCtorInjection(IFactory<PocoObject> pocoFactory, string name)
+        public ObjectWithCtorInjection(IFactory<Product> productFactory, string name)
         {
-            this.PocoObject = pocoFactory.Create();
+            this.Product = productFactory.Create();
             this.Name = name;
         }
 
@@ -36,8 +37,8 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
         /// <summary>
         /// This property should have an item created by the injected factory
         /// </summary>
-        [FilterQuerySpecification(SpecificationType = typeof(PocoFilterQuerySpecification))]
-        public virtual PocoObject PocoObject { get; set; }
+        [FilterQuerySpecification(SpecificationType = typeof(ProductFilterQuerySpecification))]
+        public virtual Product Product { get; set; }
 
         /// <summary>
         ///

@@ -4,7 +4,11 @@ using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.SampleModel.TestTypes;
+using Envivo.Fresnel.Utils;
+using Fresnel.Tests;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using System;
 using System.Linq;
 
@@ -13,6 +17,8 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class ValidationTests
     {
+        private Fixture _Fixture = new AutoFixtureFactory().Create();
+
         [Test]
         public void ShouldNotSetInvalidString()
         {
@@ -21,10 +27,11 @@ namespace Envivo.Fresnel.Tests.Domain
             var observerCache = container.Resolve<ObserverCache>();
             var setCommand = container.Resolve<SetPropertyCommand>();
 
-            var obj = new SampleModel.TestTypes.TextValues();
+            var obj = _Fixture.Create<TextValues>();
             var oObj = (ObjectObserver)observerCache.GetObserver(obj);
 
-            var oProp = oObj.Properties["TextWithSize"];
+            var propName = LambdaExtensions.NameOf<TextValues>(x => x.TextWithSize);
+            var oProp = oObj.Properties[propName];
 
             var oInvalidValue = observerCache.GetObserver("1234");
 
@@ -42,10 +49,11 @@ namespace Envivo.Fresnel.Tests.Domain
             var observerCache = container.Resolve<ObserverCache>();
             var setCommand = container.Resolve<SetPropertyCommand>();
 
-            var obj = new SampleModel.TestTypes.NumberValues();
+            var obj = _Fixture.Create<NumberValues>();
             var oObj = (ObjectObserver)observerCache.GetObserver(obj);
 
-            var oProp = oObj.Properties["NumberWithRange"];
+            var propName = LambdaExtensions.NameOf<NumberValues>(x => x.NumberWithRange);
+            var oProp = oObj.Properties[propName];
 
             var oInvalidValue = observerCache.GetObserver(9999);
 

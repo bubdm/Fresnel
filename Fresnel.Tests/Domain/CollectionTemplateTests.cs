@@ -3,7 +3,11 @@ using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Commands;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.Utils;
+using Fresnel.Tests;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using System.Linq;
 
 namespace Envivo.Fresnel.Tests.Domain
@@ -11,6 +15,8 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class CollectionTemplateTests
     {
+        private Fixture _Fixture = new AutoFixtureFactory().Create();
+
         [Test]
         public void ShouldAddToCollection()
         {
@@ -19,19 +25,21 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
             var addCommand = container.Resolve<AddToCollectionCommand>();
 
-            var pocoObject = new SampleModel.Objects.PocoObject();
-            Assert.AreEqual(0, pocoObject.ChildObjects.Count);
+            var category = _Fixture.Create<Category>();
+            Assert.AreEqual(0, category.Products.Count);
 
-            var classTemplate = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
-            var collectionPropertyTemplate = classTemplate.Properties["ChildObjects"];
-            var collectionTemplate = (CollectionTemplate)collectionPropertyTemplate.InnerClass;
+            var tCategory = (ClassTemplate)templateCache.GetTemplate(category.GetType());
+            var propertyName = LambdaExtensions.NameOf<Category>(x => x.Products);
+            var tProperty = tCategory.Properties[propertyName];
+            var tCollection = (CollectionTemplate)tProperty.InnerClass;
 
             // Act:
-            var newItem = new SampleModel.Objects.PocoObject();
-            addCommand.Invoke(collectionTemplate, pocoObject.ChildObjects, classTemplate, newItem);
+            var product = _Fixture.Create<Product>();
+            var tProduct = (ClassTemplate)templateCache.GetTemplate(product.GetType());
+            addCommand.Invoke(tCollection, category.Products, tProduct, product);
 
             // Assert:
-            Assert.AreNotEqual(0, pocoObject.ChildObjects.Count);
+            Assert.AreNotEqual(0, category.Products.Count);
         }
 
         [Test]
@@ -42,18 +50,19 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
             var addCommand = container.Resolve<AddToCollectionCommand>();
 
-            var pocoObject = new SampleModel.Objects.PocoObject();
-            Assert.AreEqual(0, pocoObject.ChildObjects.Count);
+            var category = _Fixture.Create<Category>();
+            Assert.AreEqual(0, category.Products.Count);
 
-            var classTemplate = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
-            var collectionPropertyTemplate = classTemplate.Properties["ChildObjects"];
+            var tCategory = (ClassTemplate)templateCache.GetTemplate(category.GetType());
+            var propertyName = LambdaExtensions.NameOf<Category>(x => x.Products);
+            var tProperty = tCategory.Properties[propertyName];
 
             // Act:
-            var newItem = new SampleModel.Objects.PocoObject();
-            addCommand.Invoke(pocoObject, collectionPropertyTemplate, newItem);
+            var product = _Fixture.Create<Product>();
+            addCommand.Invoke(category, tProperty, product);
 
             // Assert:
-            Assert.AreNotEqual(0, pocoObject.ChildObjects.Count);
+            Assert.AreNotEqual(0, category.Products.Count);
         }
 
         [Test]
@@ -64,23 +73,25 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
             var removeCommand = container.Resolve<RemoveFromCollectionCommand>();
 
-            var pocoObject = new SampleModel.Objects.PocoObject();
-            pocoObject.AddSomeChildObjects();
-            Assert.AreNotEqual(0, pocoObject.ChildObjects.Count);
+            var category = _Fixture.Create<Category>();
+            category.Products.AddMany(() => _Fixture.Create<Product>(), 5);
+            Assert.AreNotEqual(0, category.Products.Count);
 
-            var classTemplate = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
-            var collectionPropertyTemplate = classTemplate.Properties["ChildObjects"];
-            var collectionTemplate = (CollectionTemplate)collectionPropertyTemplate.InnerClass;
+            var tCategory = (ClassTemplate)templateCache.GetTemplate(category.GetType());
+            var propertyName = LambdaExtensions.NameOf<Category>(x => x.Products);
+            var tProperty = tCategory.Properties[propertyName];
+            var tCollection = (CollectionTemplate)tProperty.InnerClass;
 
             // Act:
-            var items = pocoObject.ChildObjects.ToList();
-            foreach (var item in items)
+            var products = category.Products.ToList();
+            foreach (var product in products)
             {
-                removeCommand.Invoke(collectionTemplate, pocoObject.ChildObjects, classTemplate, item);
+                var tProduct = (ClassTemplate)templateCache.GetTemplate(product.GetType());
+                removeCommand.Invoke(tCollection, category.Products, tProduct, product);
             }
 
             // Assert:
-            Assert.AreEqual(0, pocoObject.ChildObjects.Count);
+            Assert.AreEqual(0, category.Products.Count);
         }
 
         [Test]
@@ -91,20 +102,22 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
             var removeCommand = container.Resolve<RemoveFromCollectionCommand>();
 
-            var pocoObject = new SampleModel.Objects.PocoObject();
-            Assert.AreEqual(0, pocoObject.ChildObjects.Count);
+            var category = _Fixture.Create<Category>();
 
-            var classTemplate = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
-            var collectionPropertyTemplate = classTemplate.Properties["ChildObjects"];
+            Assert.AreEqual(0, category.Products.Count);
+
+            var tCategory = (ClassTemplate)templateCache.GetTemplate(category.GetType());
+            var propertyName = LambdaExtensions.NameOf<Category>(x => x.Products);
+            var tProperty = tCategory.Properties[propertyName];
 
             // Act:
-            var items = pocoObject.ChildObjects.ToList();
-            foreach (var item in items)
+            var products = category.Products.ToList();
+            foreach (var product in products)
             {
-                removeCommand.Invoke(pocoObject, collectionPropertyTemplate, item);
+                removeCommand.Invoke(category, tProperty, product);
             }
             // Assert:
-            Assert.AreEqual(0, pocoObject.ChildObjects.Count);
+            Assert.AreEqual(0, category.Products.Count);
         }
     }
 }

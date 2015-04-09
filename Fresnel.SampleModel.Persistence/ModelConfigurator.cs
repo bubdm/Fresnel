@@ -9,7 +9,7 @@ using System.Data.Entity.Core;
 using System.Linq.Expressions;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Fresnel.SampleModel.Persistence
@@ -20,14 +20,10 @@ namespace Fresnel.SampleModel.Persistence
         public void ExecuteOn(DbModelBuilder modelBuilder)
         {
             modelBuilder
-                .Entity<MasterObject>()
-                .HasMany<DetailObject>(x => x.Children)
-                .WithRequired(x=> x.Parent);
+                .Entity<Employee>()
+                .HasMany<Territory>(e => e.Territories)
+                .WithMany(t=> t.Employees);
 
-            //modelBuilder
-            //    .Entity<DetailObject>()
-            //    .Property(x => x.Version)
-            //    .IsConcurrencyToken();
         }
 
     }

@@ -2,8 +2,12 @@
 using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.TestTypes;
 using Fresnel.SampleModel.Persistence;
+using Fresnel.Tests;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,53 +17,38 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class ObjectCreationTests
     {
+        private Fixture _Fixture = new AutoFixtureFactory().Create();
+
         [Test]
         public void ShouldCreateObjectUsingDefaultCtor()
         {
             // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
+            var container = new ContainerFactory().Build();
             var createCommand = container.Resolve<CreateObjectCommand>();
 
-            var classType = typeof(SampleModel.Objects.Money);
+            var classType = typeof(Category);
 
             // Act:
             var oObject = createCommand.Invoke(classType, null);
 
             // Assert:
             Assert.IsNotNull(oObject);
-            var newObject = (SampleModel.Objects.Money)oObject.RealObject;
+            var newObject = (Category)oObject.RealObject;
             Assert.IsNotNull(newObject);
         }
 
-        public void ShouldCreateObjectWithCtorArgs()
-        {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-            var createCommand = container.Resolve<CreateObjectCommand>();
-
-            var masterObject = new SampleModel.Objects.MasterObject();
-            var detailType = typeof(SampleModel.Objects.DetailObject);
-
-            // Act:
-            var oObject = createCommand.Invoke(detailType, new object[] { masterObject });
-
-            // Assert:
-            Assert.IsNotNull(oObject);
-
-            var detailObj = (SampleModel.Objects.DetailObject)oObject.RealObject;
-            Assert.AreEqual(masterObject, detailObj.Parent);
-        }
-
+        [Test]
         public void ShouldCreateObjectWithDomainFactory()
         {
             // Arrange:
             var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
             var container = new ContainerFactory().Build(customDependencyModules);
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(ObjectWithCtorInjection).Assembly);
+
             var createCommand = container.Resolve<CreateObjectCommand>();
 
-            var classType = typeof(SampleModel.Objects.PocoObject);
+            var classType = typeof(Product);
 
             // Act:
             var oObject = createCommand.Invoke(classType, null);
@@ -67,38 +56,22 @@ namespace Envivo.Fresnel.Tests.Domain
             // Assert:
             Assert.IsNotNull(oObject);
 
-            var newObject = (SampleModel.Objects.PocoObject)oObject.RealObject;
-            Assert.AreEqual("This was created using PocoObjectFactory.Create()", newObject.NormalText);
+            var newObject = (Product)oObject.RealObject;
+            Assert.AreEqual("This was created using ProductFactory.Create()", newObject.Name);
         }
 
-        public void ShouldCreateObjectWithIoCFactory()
-        {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-            var createCommand = container.Resolve<CreateObjectCommand>();
-
-            var classType = typeof(SampleModel.TestTypes.ObjectWithCtorInjection);
-            var testName = "Test " + DateTime.Now.Ticks.ToString();
-
-            // Act:
-            var oObject = createCommand.Invoke(classType, new object[] { testName });
-
-            // Assert:
-            Assert.IsNotNull(oObject);
-
-            var newObject = (SampleModel.TestTypes.ObjectWithCtorInjection)oObject.RealObject;
-            Assert.AreEqual(testName, newObject.Name);
-        }
-
+        [Test]
         public void ShouldCreateObjectWithPersistenceService()
         {
             // Arrange:
             var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
             var container = new ContainerFactory().Build(customDependencyModules);
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(ObjectWithCtorInjection).Assembly);
+
             var createCommand = container.Resolve<CreateObjectCommand>();
 
-            var classType = typeof(SampleModel.Objects.Category);
+            var classType = typeof(Category);
 
             // Act:
             var oObject = createCommand.Invoke(classType, null);
@@ -106,7 +79,7 @@ namespace Envivo.Fresnel.Tests.Domain
             // Assert:
             Assert.IsNotNull(oObject);
 
-            var newObject = (SampleModel.Objects.Category)oObject.RealObject;
+            var newObject = (Category)oObject.RealObject;
             Assert.IsTrue(newObject.GetType().Assembly.IsDynamic); // ie it's an EF Proxy
         }
     }

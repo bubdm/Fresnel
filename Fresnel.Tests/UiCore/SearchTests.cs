@@ -1,6 +1,10 @@
 ﻿using Autofac;
 using Envivo.Fresnel.CompositionRoot;
+using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.SampleModel.TestTypes;
+using Envivo.Fresnel.Tests.Persistence;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Model;
@@ -17,6 +21,12 @@ namespace Envivo.Fresnel.Tests.Proxies
     public class SearchTests
     {
 
+        [TestFixtureSetUp]
+        public void SetupFixture()
+        {
+            new TestDataGenerator().Generate();
+        }
+
         [Test]
         public void ShouldSearchForObjects()
         {
@@ -25,14 +35,14 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             var controller = container.Resolve<ToolboxController>();
 
             // Act:
             var searchRequest = new SearchObjectsRequest()
             {
-                SearchType = typeof(PocoObject).FullName,
+                SearchType = typeof(MultiType).FullName,
                 PageSize = 100,
                 PageNumber = 1
             };
@@ -47,7 +57,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsTrue(searchResponse.Result.Items.Count() <= searchRequest.PageSize);
 
             // The Results should show all Properties for the items:
-            Assert.AreEqual(10, searchResponse.Result.ElementProperties.Count());
+            Assert.AreEqual(12, searchResponse.Result.ElementProperties.Count());
         }
 
         [Test]
@@ -58,15 +68,16 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             var controller = container.Resolve<ToolboxController>();
 
             // Act:
+            var propName = LambdaExtensions.NameOf<MultiType>(x => x.A_String);
             var searchRequest = new SearchObjectsRequest()
             {
-                SearchType = typeof(PocoObject).FullName,
-                OrderBy = "NormalText",
+                SearchType = typeof(MultiType).FullName,
+                OrderBy = propName,
                 IsDescendingOrder = false,
                 PageSize = 100,
                 PageNumber = 1
@@ -80,7 +91,7 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // All nulls should appear after the text values:
             var textValues = searchResponse.Result.Items
-                                    .Select(i => i.Properties.Single(p => p.InternalName == "NormalText").State.Value)
+                                    .Select(i => i.Properties.Single(p => p.InternalName == propName).State.Value)
                                     .Cast<string>()
                                     .ToList();
 
@@ -103,15 +114,16 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             var controller = container.Resolve<ToolboxController>();
 
             // Act:
+            var propName = LambdaExtensions.NameOf<MultiType>(x => x.A_String);
             var searchRequest = new SearchObjectsRequest()
             {
-                SearchType = typeof(PocoObject).FullName,
-                OrderBy = "NormalText",
+                SearchType = typeof(MultiType).FullName,
+                OrderBy = propName,
                 IsDescendingOrder = true,
                 PageSize = 100,
                 PageNumber = 1
@@ -125,7 +137,7 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             // All nulls should appear after the text values:
             var textValues = searchResponse.Result.Items
-                                    .Select(i => i.Properties.Single(p => p.InternalName == "NormalText").State.Value)
+                                    .Select(i => i.Properties.Single(p => p.InternalName == propName).State.Value)
                                     .Cast<string>()
                                     .ToList();
 
@@ -140,7 +152,6 @@ namespace Envivo.Fresnel.Tests.Proxies
             }
         }
 
-
         [Test]
         public void ShouldPreventOrderingByCollections()
         {
@@ -149,15 +160,16 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             var controller = container.Resolve<ToolboxController>();
 
             // Act:
+            var propName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection);
             var searchRequest = new SearchObjectsRequest()
             {
-                SearchType = typeof(PocoObject).FullName,
-                OrderBy = "ChildObjects",
+                SearchType = typeof(MultiType).FullName,
+                OrderBy = propName,
                 IsDescendingOrder = false,
                 PageSize = 100,
                 PageNumber = 1
@@ -179,18 +191,19 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var createResponse = toolboxController.Create(typeof(Category).FullName);
+            var createResponse = toolboxController.Create(typeof(MultiType).FullName);
 
+            var propName = LambdaExtensions.NameOf<MultiType>(x => x.An_Object);
             var searchRequest = new SearchPropertyRequest()
             {
                 ObjectID = createResponse.NewObject.ID,
-                PropertyName = "Money",
+                PropertyName = propName,
                 OrderBy = "",
                 IsDescendingOrder = true,
                 PageSize = 100,
@@ -202,7 +215,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Assert:
             Assert.IsTrue(searchResponse.Passed);
             Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
-            Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(Money).Name));
+            Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(TextValues).Name));
         }
 
         [Test]
@@ -213,19 +226,20 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var createResponse = toolboxController.Create(typeof(PocoObject).FullName);
+            var createResponse = toolboxController.Create(typeof(MultiType).FullName);
 
             // Act:
+            var propName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection);
             var searchRequest = new SearchPropertyRequest()
             {
                 ObjectID = createResponse.NewObject.ID,
-                PropertyName = "ChildObjects",
+                PropertyName = propName,
                 OrderBy = "",
                 IsDescendingOrder = true,
                 PageSize = 100,
@@ -237,30 +251,31 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Assert:
             Assert.IsTrue(searchResponse.Passed);
             Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
-            Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(PocoObject).Name));
+            Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(BooleanValues).Name));
         }
 
         [Test]
-        public void ShouldSeachForObjectParameterObjects()
+        public void ShouldSeachForMethodParameterObjects()
         {
             // Arrange:
             var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var classType = typeof(Fresnel.SampleModel.TestTypes.MethodSamples);
+            var classType = typeof(MethodSamples);
             var createResponse = toolboxController.Create(classType.FullName);
 
+            var methodName = LambdaExtensions.NameOf<MethodSamples>(x => x.MethodWithObjectParameters(null));
             var searchRequest = new SearchParameterRequest()
             {
                 ObjectID = createResponse.NewObject.ID,
-                MethodName = "MethodWithObjectParameters",
+                MethodName = methodName,
                 ParameterName = "category",
                 OrderBy = "",
                 IsDescendingOrder = true,
@@ -284,7 +299,7 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    var container = new ContainerFactory().Build(customDependencyModules);
 
         //    var engine = container.Resolve<Core.Engine>();
-        //    engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+        //    engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
         //    var toolboxController = container.Resolve<ToolboxController>();
         //    var explorerController = container.Resolve<ExplorerController>();
@@ -309,7 +324,7 @@ namespace Envivo.Fresnel.Tests.Proxies
         //    // Assert:
         //    Assert.IsTrue(searchResponse.Passed);
         //    Assert.AreNotEqual(0, searchResponse.Result.Items.Count());
-        //    Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(PocoObject).Name));
+        //    Assert.IsTrue(searchResponse.Result.Items.All(i => i.Type == typeof(Product).Name));
         //}
 
         [Test]
@@ -320,27 +335,26 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var searchRequest = new SearchObjectsRequest()
-            {
-                SearchType = typeof(PocoObject).FullName,
-                PageSize = 100,
-                PageNumber = 1
-            };
-
-            var filterPropertyName = "NormalText";
-            var filterValue = "test";
+            var filterPropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_String);
+            var filterValue = "a";
             var searchFilters = new List<SearchFilter>()
             {
                 new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
             };
-            searchRequest.SearchFilters = searchFilters.ToArray();
 
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(MultiType).FullName,
+                SearchFilters = searchFilters.ToArray(),
+                PageSize = 100,
+                PageNumber = 1
+            };
             var searchResponse = toolboxController.SearchObjects(searchRequest);
 
             // Assert:
@@ -351,9 +365,10 @@ namespace Envivo.Fresnel.Tests.Proxies
                             .Select(i => i.Properties.Single(p => p.InternalName.IsSameAs(filterPropertyName)).State.Value)
                             .Where(t => t != null)
                             .Cast<string>()
+                            .Select(t => t.ToLower())
                             .ToList();
 
-            Assert.IsTrue(columnValues.All(t => t.Contains(filterValue)));
+            Assert.IsTrue(columnValues.All(t => t.Contains(filterValue.ToLower())));
         }
 
         [Test]
@@ -364,27 +379,26 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var searchRequest = new SearchObjectsRequest()
-            {
-                SearchType = typeof(PocoObject).FullName,
-                PageSize = 100,
-                PageNumber = 1
-            };
-
-            var filterPropertyName = "NormalBoolean";
+            var filterPropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Boolean);
             var filterValue = true;
             var searchFilters = new List<SearchFilter>()
             {
                 new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
             };
-            searchRequest.SearchFilters = searchFilters.ToArray();
 
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(MultiType).FullName,
+                SearchFilters = searchFilters.ToArray(),
+                PageSize = 100,
+                PageNumber = 1
+            };
             var searchResponse = toolboxController.SearchObjects(searchRequest);
 
             // Assert:
@@ -408,27 +422,38 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
 
-            // Act:
-            var searchRequest = new SearchObjectsRequest()
-            {
-                SearchType = typeof(PocoObject).FullName,
-                PageSize = 100,
-                PageNumber = 1
-            };
+            var persistenceService = container.Resolve<IPersistenceService>();
+            var allKnownDates = persistenceService
+                                    .GetObjects<MultiType>()
+                                    .Select(mt => mt.A_DateTime)
+                                    .ToArray();
+            var mostFrequentDate = allKnownDates
+                                    .Select(dt => dt.Date)
+                                    .GroupBy(d => d)
+                                    .OrderBy(g => g.Count())
+                                    .Last()
+                                    .Key;
 
-            var filterPropertyName = "NormalDate";
-            var filterValue = DateTime.Now;
+            // Act:
+            var filterPropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_DateTime);
+            var filterValue = mostFrequentDate;
             var searchFilters = new List<SearchFilter>()
             {
                 new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
             };
-            searchRequest.SearchFilters = searchFilters.ToArray();
 
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(MultiType).FullName,
+                SearchFilters = searchFilters.ToArray(),
+                PageSize = 100,
+                PageNumber = 1
+            };
             var searchResponse = toolboxController.SearchObjects(searchRequest);
 
             // Assert:
@@ -453,27 +478,26 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
 
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var searchRequest = new SearchObjectsRequest()
-            {
-                SearchType = typeof(PocoObject).FullName,
-                PageSize = 100,
-                PageNumber = 1
-            };
-
-            var filterPropertyName = "EnumSwitches";
-            var filterValue = SampleModel.TestTypes.CombinationOptions.Cheese;
+            var filterPropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Bitwise_Enum);
+            var filterValue = CombinationOptions.Cheese;
             var searchFilters = new List<SearchFilter>()
             {
                 new SearchFilter() { PropertyName = filterPropertyName, FilterValue = filterValue }
             };
-            searchRequest.SearchFilters = searchFilters.ToArray();
 
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(MultiType).FullName,
+                SearchFilters = searchFilters.ToArray(),
+                PageSize = 100,
+                PageNumber = 1
+            };
             var searchResponse = toolboxController.SearchObjects(searchRequest);
 
             // Assert:
@@ -482,8 +506,8 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             var columnValues = searchResponse.Result.Items
                             .Select(i => i.Properties.Single(p => p.InternalName.IsSameAs(filterPropertyName)).State.Value)
-                            .Select(v => Enum.Parse(typeof(SampleModel.TestTypes.CombinationOptions), v.ToStringOrNull()))
-                            .Cast<SampleModel.TestTypes.CombinationOptions>()
+                            .Select(v => Enum.Parse(typeof(CombinationOptions), v.ToStringOrNull()))
+                            .Cast<CombinationOptions>()
                             .ToList();
 
             Assert.IsTrue(columnValues.All(v => (v & filterValue) != 0));

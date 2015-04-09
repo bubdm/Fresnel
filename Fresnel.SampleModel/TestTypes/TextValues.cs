@@ -63,58 +63,32 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
             get { return this.NormalText; }
             set { this.NormalText = value; }
         }
-
-        /// <summary>
-        /// This is a Rich Text Text. Use SHIFT-ENTER to move to the next line.
-        /// </summary>
-        [DataType(DataType.Html)]
-        public string HtmlText
-        {
-            get { return this.NormalText; }
-            set { this.NormalText = value; }
-        }
-
+        
         /// <summary>
         /// This is a password string, and should be shown using asterisks
         /// </summary>
         [DataType(DataType.Password)]
-        public string PasswordText
-        {
-            get { return this.NormalText; }
-            set { this.NormalText = value; }
-        }
+        public string PasswordText { get; set; }
 
         /// <summary>
         /// This is a Text that must be at most 8 characters
         /// </summary>
         [MaxLength(8)]
-        public string TextWithMaximumSize
-        {
-            get { return this.NormalText; }
-            set { this.NormalText = value; }
-        }
+        public string TextWithMaximumSize { get; set; }
 
         /// <summary>
         /// This is a Text that must be between 8 and 16 characters in length
         /// </summary>
         [MinLength(8, ErrorMessage = "Please provide a value greater than 8 characters")]
         [MaxLength(16)]
-        public virtual string TextWithSize
-        {
-            get { return this.NormalText; }
-            set { this.NormalText = value; }
-        }
+        public virtual string TextWithSize { get; set; }
 
         /// <summary>
         /// This will force the string to only allow numbers
         /// </summary>
         [MaxLength(10)]
         [DisplayFormat(DataFormatString = @"[0-9]*")]
-        public string EditMaskText
-        {
-            get { return this.NormalText; }
-            set { this.NormalText = value; }
-        }
+        public string EditMaskText { get; set; }
 
     }
 }

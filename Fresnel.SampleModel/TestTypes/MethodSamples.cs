@@ -1,6 +1,7 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.Objects;
 using System;
 using System.Collections.Generic;
@@ -13,16 +14,14 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
     /// <summary>
     /// A set of methods
     /// </summary>
-    public class MethodSamples : IProgressReporter
+    public class MethodSamples
     {
-        #region IProgressReporter Members
+        private IFactory<Product> _ProductFactory;
 
-        /// <summary>
-        ///
-        /// </summary>
-        public event ReportProgressEventHandler NotifyProgressUpdate;
-
-        #endregion IProgressReporter Members
+        public MethodSamples(IFactory<Product> productFactory)
+        {
+            _ProductFactory = productFactory;
+        }
 
         /// <summary>
         /// The unique ID for this entity
@@ -86,9 +85,10 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
         /// It should invoke without showing a dialog, and the result should appear in the UI.
         /// </summary>
         /// <returns></returns>
-        public virtual PocoObject MethodThatReturnsAnObject()
+        public virtual Product MethodThatReturnsAnObject()
         {
-            return new PocoObject();
+            var result = _ProductFactory.Create();
+            return result;
         }
 
         /// <summary>

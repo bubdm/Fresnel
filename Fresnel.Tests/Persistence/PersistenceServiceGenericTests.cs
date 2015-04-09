@@ -5,12 +5,16 @@ using Envivo.Fresnel.Core.Persistence;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.IoC;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Model;
 using Fresnel.SampleModel.Persistence;
+using Fresnel.Tests;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +24,8 @@ namespace Envivo.Fresnel.Tests.Persistence
     [TestFixture()]
     public class PersistenceServiceGenericTests
     {
+        private Fixture _Fixture = new AutoFixtureFactory().Create();
+
         [Test]
         public void ShouldCreateCompleteAggregate()
         {
@@ -28,21 +34,19 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
             // Act:
-            var poco = persistenceService.CreateObject<PocoObject>();
-            poco.ID = Guid.NewGuid();
-            poco.AddSomeChildObjects();
-            poco.NormalBoolean = true;
-            poco.NormalText = "Created at " + Environment.TickCount.ToString();
+            var category = persistenceService.CreateObject<Category>();
+            category.ID = Guid.NewGuid();
+            category.Products.AddMany(() => _Fixture.Create<Product>(), 5);
 
             var savedChanges = persistenceService.SaveChanges();
 
             // Assert:
-            Assert.IsNotNull(poco);
+            Assert.IsNotNull(category);
             Assert.IsTrue(savedChanges > 1);
         }
 
@@ -54,28 +58,28 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
             // Act:
-            var poco = persistenceService.CreateObject<PocoObject>();
-            poco.ID = Guid.NewGuid();
-            poco.AddSomeChildObjects();
+            var category = persistenceService.CreateObject<Category>();
+            category.ID = Guid.NewGuid();
+            category.Products.AddMany(() => _Fixture.Create<Product>(), 5);
 
             // Step 1:
             var savedChanges1 = persistenceService.SaveChanges();
 
             // Step 2:
-            poco.ChildObjects.Remove(poco.ChildObjects.First());
+            category.Products.Remove(category.Products.First());
             var savedChanges2 = persistenceService.SaveChanges();
 
             // Assert:
             Assert.IsTrue(savedChanges1 > 1);
             Assert.IsTrue(savedChanges2 > 0);
 
-            var persistedPoco = persistenceService.GetObject<PocoObject>(poco.ID);
-            var differences = poco.ChildObjects.Except(persistedPoco.ChildObjects);
+            var persistedCategory = persistenceService.GetObject<Category>(category.ID);
+            var differences = category.Products.Except(persistedCategory.Products);
             Assert.AreEqual(0, differences.Count());
         }
 
@@ -87,29 +91,29 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
             // Act:
-            var master = persistenceService.CreateObject<MasterObject>();
-            master.ID = Guid.NewGuid();
+            var order = persistenceService.CreateObject<Order>();
+            order.ID = Guid.NewGuid();
 
-            var detail = persistenceService.CreateObject<DetailObject>();
-            detail.ID = Guid.NewGuid();
+            var orderItem = persistenceService.CreateObject<OrderItem>();
+            orderItem.ID = Guid.NewGuid();
 
-            master.Children.Add(detail);
+            order.OrderItems.Add(orderItem);
 
             var savedChanges = persistenceService.SaveChanges();
 
             // Assert:
             Assert.AreEqual(3, savedChanges);
 
-            var persistedA = persistenceService.GetObject<MasterObject>(master.ID);
-            var persistedB = persistenceService.GetObject<DetailObject>(detail.ID);
+            var persistedA = persistenceService.GetObject<Order>(order.ID);
+            var persistedB = persistenceService.GetObject<OrderItem>(orderItem.ID);
 
-            Assert.IsTrue(persistedA.Children.Contains(persistedB));
-            Assert.AreEqual(persistedB.Parent, persistedA);
+            Assert.IsTrue(persistedA.OrderItems.Contains(persistedB));
+            Assert.AreEqual(persistedB.ParentOrder, persistedA);
         }
 
         [Test]
@@ -120,24 +124,27 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             var persistenceService = container.Resolve<IPersistenceService>();
 
-            for (var i = 0; i < 5; i++)
+            var preCategories = persistenceService.GetObjects<Category>().ToList();
+
+            var categoryCount = 5;
+            for (var i = 0; i < categoryCount; i++)
             {
-                var poco = persistenceService.CreateObject<PocoObject>();
-                poco.ID = Guid.NewGuid();
-                poco.AddSomeChildObjects();
+                var category = persistenceService.CreateObject<Category>();
+                category.ID = Guid.NewGuid();
+                category.Products.AddMany(() => _Fixture.Create<Product>(), 3);
 
                 var savedChanges = persistenceService.SaveChanges();
             }
 
             // Act:
-            var pocos = persistenceService.GetObjects<PocoObject>();
+            var postCategories = persistenceService.GetObjects<Category>().ToList();
 
             // Assert:
-            Assert.AreNotEqual(0, pocos.OfType<PocoObject>().Count());
+            Assert.AreEqual(categoryCount, postCategories.Count() - preCategories.Count());
         }
 
     }

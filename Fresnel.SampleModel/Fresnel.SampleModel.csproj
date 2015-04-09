@@ -37,18 +37,16 @@
     <Reference Include="PresentationCore" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Northwind\Note.cs" />
     <Compile Include="TestTypes\InternalClass.cs" />
     <Compile Include="TestTypes\MultiType.cs" />
-    <Compile Include="DomainObjects\MoneyConsistencyCheck.cs" />
-    <Compile Include="DomainObjects\PocoFilterQuerySpecification.cs" />
+    <Compile Include="Northwind\ProductConsistencyCheck.cs" />
+    <Compile Include="Northwind\PocoFilterQuerySpecification.cs" />
     <Compile Include="TestTypes\ObjectWithCtorInjection.cs" />
-    <Compile Include="Factories\CategoryFactory.cs" />
-    <Compile Include="Factories\MasterObjectFactory.cs" />
-    <Compile Include="Factories\PocoObjectFactory.cs" />
+    <Compile Include="Northwind\ProductFactory.cs" />
     <Compile Include="Northwind\Country.cs" />
     <Compile Include="Northwind\Address.cs" />
     <Compile Include="Northwind\ContactDetails.cs" />
-    <Compile Include="Northwind\DemoInitialisationService.cs" />
     <Compile Include="Northwind\Employee.cs" />
     <Compile Include="Northwind\Category.cs" />
     <Compile Include="Northwind\OrderItem.cs" />
@@ -75,19 +73,7 @@
     <Compile Include="TestTypes\NumberValues.cs" />
     <Compile Include="TestTypes\StructValues.cs" />
     <Compile Include="TestTypes\TextValues.cs" />
-    <Compile Include="DomainObjects\Category.cs" />
-    <Compile Include="DomainObjects\DetailObject.cs" />
-    <Compile Include="DomainObjects\MasterObject.cs" />
     <Compile Include="TestTypes\MethodSamples.cs" />
-    <Compile Include="DomainObjects\Money.cs" />
-    <Compile Include="DomainObjects\NonInterceptablePropertyObjects.cs" />
-    <Compile Include="DomainObjects\PocoObject.cs" />
-    <Compile Include="DomainObjects\Product.cs" />
-    <Compile Include="DomainObjects\SecuredObject.cs" />
-    <Compile Include="DomainObjects\SubProductA.cs" />
-    <Compile Include="DomainObjects\SubProductB.cs" />
-    <Compile Include="DomainObjects\UnsupportedTypes.cs" />
-    <Compile Include="DomainObjects\ValidationExample.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

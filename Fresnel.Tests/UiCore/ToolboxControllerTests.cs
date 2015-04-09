@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Envivo.Fresnel.CompositionRoot;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Model;
@@ -21,7 +23,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var controller = container.Resolve<ToolboxController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             // Act:
             var results = controller.GetClassHierarchy();
@@ -38,10 +40,11 @@ namespace Envivo.Fresnel.Tests.Proxies
             var controller = container.Resolve<ToolboxController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.ObjectWithCtorInjection).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             // Act:
-            var response = controller.Create("Envivo.Fresnel.SampleModel.Objects.DependencyAwareObject");
+            var fullTypeName = typeof(ObjectWithCtorInjection).FullName;
+            var response = controller.Create(fullTypeName);
 
             // Assert:
             Assert.IsTrue(response.Passed);
@@ -56,14 +59,14 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             var controller = container.Resolve<ToolboxController>();
 
             // Act:
             var searchRequest = new SearchObjectsRequest()
             {
-                SearchType = typeof(PocoObject).FullName,
+                SearchType = typeof(Product).FullName,
                 PageSize = 10,
                 PageNumber = 1,
             };

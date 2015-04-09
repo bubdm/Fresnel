@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 {
     public class OrderItem
     {
-
+        
         [Key]
         public Guid ID { get; set; }
 

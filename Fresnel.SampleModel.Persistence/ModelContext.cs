@@ -9,9 +9,10 @@ using System.Data.Entity.Core;
 using System.Linq.Expressions;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using System.Data.Entity.Core.Metadata.Edm;
+using Envivo.Fresnel.SampleModel.TestTypes;
 
 namespace Fresnel.SampleModel.Persistence
 {
@@ -20,7 +21,7 @@ namespace Fresnel.SampleModel.Persistence
         private ModelConfigurator _Configurator;
         private ObjectContext _ObjectContext;
         private IDictionary<string, EntityType> _KnownTypes;
-             
+
         public ModelContext(string nameOrConnectionString, ModelConfigurator configurator)
             : base(nameOrConnectionString)
         {
@@ -34,12 +35,29 @@ namespace Fresnel.SampleModel.Persistence
             _Configurator.ExecuteOn(modelBuilder);
         }
 
+        public DbSet<Address> AddressSet { get; set; }
         public DbSet<Category> CategorySet { get; set; }
-        public DbSet<MasterObject> MasterObjectSet { get; set; }
-        public DbSet<DetailObject> DetailObjectSet { get; set; }
+        public DbSet<ContactDetails> ContactDetailsSet { get; set; }
+        public DbSet<Country> CountrySet { get; set; }
+        public DbSet<Customer> CustomerSet { get; set; }
+        public DbSet<Employee> EmployeeSet { get; set; }
+        public DbSet<Note> NoteSet { get; set; }
+        public DbSet<Order> OrderSet { get; set; }
+        public DbSet<OrderItem> OrderItemSet { get; set; }
+        public DbSet<Organisation> OrganisationSet { get; set; }
+        public DbSet<Person> PersonSet { get; set; }
         public DbSet<Product> ProductSet { get; set; }
-        public DbSet<Money> MoneySet { get; set; }
-        public DbSet<PocoObject> PocoObjectSet { get; set; }
+        public DbSet<Region> RegionSet { get; set; }
+        public DbSet<Role> RoleSet { get; set; }
+        public DbSet<Shipment> ShipmentSet { get; set; }
+        public DbSet<Shipper> ShipperSet { get; set; }
+        public DbSet<StockDetail> StockDetailSet { get; set; }
+        public DbSet<Supplier> SupplierSet { get; set; }
+        public DbSet<Territory> TerritorySet { get; set; }
+
+        public DbSet<BooleanValues> BooleanValuesSet { get; set; }
+        public DbSet<MultiType> MultiTypeSet { get; set; }
+        public DbSet<TextValues> TextValuesSet { get; set; }
 
         public bool IsKnownType(Type objectType)
         {
@@ -124,8 +142,24 @@ namespace Fresnel.SampleModel.Persistence
         public int SaveChanges(params object[] entities)
         {
             // TODO: Make this only save the entities given, not the whole context:
+
+            this.AttachMissingEntitiesToContext(entities);
             this.IncrementConcurrencyTokens();
             return base.SaveChanges();
+        }
+
+        private void AttachMissingEntitiesToContext(object[] entities)
+        {
+            foreach (var item in entities)
+            {
+                var entry = this.Entry(item);
+                if (entry.State == EntityState.Detached)
+                {
+                    // The context doesn't recognise it, so attach it:
+                    var set = this.Set(item.GetType());
+                    set.Add(item);
+                }
+            }
         }
 
         private void IncrementConcurrencyTokens()

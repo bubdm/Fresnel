@@ -4,7 +4,12 @@ using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Commands;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.TestTypes;
+using Envivo.Fresnel.Utils;
+using Fresnel.Tests;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using System;
 using System.Linq;
 
@@ -13,6 +18,8 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class ClassTemplateTests
     {
+        private Fixture _Fixture = new AutoFixtureFactory().Create();
+
         [Test]
         public void ShouldCreateClassTemplate()
         {
@@ -22,7 +29,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
             var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
 
-            var typeToInspect = typeof(SampleModel.TestTypes.TextValues);
+            var typeToInspect = typeof(TextValues);
 
             var attributesMap = attributesMapBuilder.BuildFor(typeToInspect);
 
@@ -39,7 +46,7 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             var container = new ContainerFactory().Build();
 
-            var typeToInspect = typeof(SampleModel.TestTypes.TextValues);
+            var typeToInspect = typeof(TextValues);
 
             var templateCache = container.Resolve<TemplateCache>();
 
@@ -59,7 +66,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
             var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
 
-            var typeToInspect = typeof(SampleModel.Objects.PocoObject);
+            var typeToInspect = typeof(Product);
 
             var attributesMap = attributesMapBuilder.BuildFor(typeToInspect);
 
@@ -84,7 +91,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
             var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
 
-            var typeToInspect = typeof(SampleModel.Objects.PocoObject);
+            var typeToInspect = typeof(Product);
 
             var attributesMap = attributesMapBuilder.BuildFor(typeToInspect);
 
@@ -115,13 +122,14 @@ namespace Envivo.Fresnel.Tests.Domain
             var classTemplateBuilder = container.Resolve<ClassTemplateBuilder>();
             var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
 
-            var typeToInspect = typeof(SampleModel.Objects.PocoObject);
+            var typeToInspect = typeof(Product);
 
             var attributesMap = attributesMapBuilder.BuildFor(typeToInspect);
 
             // Act:
             var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributesMap);
-            var collectionPropertyTemplate = classTemplate.Properties["ChildObjects"];
+            var propName = LambdaExtensions.NameOf<Product>(x => x.Categories);
+            var collectionPropertyTemplate = classTemplate.Properties[propName];
 
             // Assert:
             var collectionTemplate = (CollectionTemplate)collectionPropertyTemplate.InnerClass;
@@ -139,7 +147,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
             var createCommand = container.Resolve<CreateObjectCommand>();
 
-            var typeToInspect = typeof(SampleModel.Objects.PocoObject);
+            var typeToInspect = typeof(Product);
             var attributesMap = attributesMapBuilder.BuildFor(typeToInspect);
 
             var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributesMap);
@@ -149,7 +157,7 @@ namespace Envivo.Fresnel.Tests.Domain
 
             // Assert:
             Assert.IsNotNull(newInstance);
-            Assert.IsInstanceOf<SampleModel.Objects.PocoObject>(newInstance);
+            Assert.IsInstanceOf<Product>(newInstance);
         }
 
         [Test]
@@ -162,18 +170,18 @@ namespace Envivo.Fresnel.Tests.Domain
             var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
             var createCommand = container.Resolve<CreateObjectCommand>();
 
-            var typeToInspect = typeof(SampleModel.Objects.DetailObject);
+            var typeToInspect = typeof(OrderItem);
             var attributesMap = attributesMapBuilder.BuildFor(typeToInspect);
 
             var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributesMap);
 
             // Act:
-            var master = new SampleModel.Objects.MasterObject();
-            var detail = (SampleModel.Objects.DetailObject)createCommand.Invoke(classTemplate, master);
+            var order = new Order();
+            var orderItem = (OrderItem)createCommand.Invoke(classTemplate, order);
 
             // Assert:
-            Assert.IsNotNull(detail);
-            Assert.AreSame(master, detail.Parent);
+            Assert.IsNotNull(orderItem);
+            Assert.AreSame(order, orderItem.ParentOrder);
         }
 
         [Test]
@@ -186,7 +194,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var attributesMapBuilder = container.Resolve<AttributesMapBuilder>();
             var createCommand = container.Resolve<CreateObjectCommand>();
 
-            var typeToInspect = typeof(SampleModel.TestTypes.ClassWithHiddenCtor);
+            var typeToInspect = typeof(ClassWithHiddenCtor);
             var attributesMap = attributesMapBuilder.BuildFor(typeToInspect);
 
             var classTemplate = classTemplateBuilder.BuildFor(typeToInspect, attributesMap);
@@ -204,13 +212,14 @@ namespace Envivo.Fresnel.Tests.Domain
 
             var createCommand = container.Resolve<CreateObjectCommand>();
 
-            var typeToCreate = typeof(SampleModel.TestTypes.ObjectWithCtorInjection);
+            var typeToCreate = typeof(ObjectWithCtorInjection);
             var tClass = (ClassTemplate)templateCache.GetTemplate(typeToCreate);
 
-            var nameToInject = "Test " + Environment.TickCount.ToString();
+            var fixture = new Fixture();
+            var nameToInject = fixture.Create<string>();
 
             // Act:
-            var newInstance = (SampleModel.TestTypes.ObjectWithCtorInjection)createCommand.Invoke(tClass, nameToInject);
+            var newInstance = (ObjectWithCtorInjection)createCommand.Invoke(tClass, nameToInject);
 
             // Assert:
             Assert.IsNotNull(newInstance);

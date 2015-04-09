@@ -38,6 +38,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Ploeh.AutoFixture">
+      <HintPath>..\packages\AutoFixture.3.24.6\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
@@ -46,6 +49,7 @@
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoFixtureFactory.cs" />
     <Compile Include="Domain\ConfigurationTests.cs" />
     <Compile Include="Domain\ChangeTrackingTests.cs" />
     <Compile Include="Domain\ObjectCreationTests.cs" />
@@ -58,6 +62,7 @@
     <Compile Include="Domain\MethodTemplateTests.cs" />
     <Compile Include="Domain\PropertyTemplateTests.cs" />
     <Compile Include="Domain\CollectionTemplateTests.cs" />
+    <Compile Include="Persistence\TestDataGenerator.cs" />
     <Compile Include="Persistence\PersistenceServiceGenericTests.cs" />
     <Compile Include="Persistence\SearchTests.cs" />
     <Compile Include="Persistence\PersistenceServiceTests.cs" />

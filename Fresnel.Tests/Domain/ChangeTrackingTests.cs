@@ -2,7 +2,11 @@
 using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.Utils;
+using Fresnel.Tests;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using System;
 using System.Linq;
 
@@ -11,6 +15,8 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class ChangeTrackingTests
     {
+        private Fixture _Fixture = new AutoFixtureFactory().Create();
+
         [Test]
         public void ShouldHaveDefaultChangeStatus()
         {
@@ -18,8 +24,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
 
-            var person = new SampleModel.Northwind.Person();
-            person.ID = Guid.NewGuid();
+            var person = _Fixture.Create<Person>();
 
             // Act:
             var observer = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
@@ -36,12 +41,12 @@ namespace Envivo.Fresnel.Tests.Domain
             var observerCache = container.Resolve<ObserverCache>();
             var setCommand = container.Resolve<SetPropertyCommand>();
 
-            var person = new SampleModel.Northwind.Person();
-            person.ID = Guid.NewGuid();
+            var person = _Fixture.Create<Person>();
 
             var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
-            var oProp = oObject.Properties["FirstName"];
-            var oValue = observerCache.GetObserver("1234", typeof(string));
+            var propName = LambdaExtensions.NameOf<Person>(x => x.FirstName);
+            var oProp = oObject.Properties[propName];
+            var oValue = observerCache.GetObserver(_Fixture.Create<string>(), typeof(string));
 
             // Act:
             setCommand.Invoke(oProp, oValue);
@@ -58,12 +63,12 @@ namespace Envivo.Fresnel.Tests.Domain
             var createCommand = container.Resolve<CreateObjectCommand>();
 
             // Act:
-            var personType = typeof(SampleModel.Northwind.Person);
+            var personType = typeof(Person);
             var oObject = createCommand.Invoke(personType, null);
 
             // Assert:
             Assert.IsNotNull(oObject);
-            Assert.IsInstanceOf<SampleModel.Northwind.Person>(oObject.RealObject);
+            Assert.IsInstanceOf<Person>(oObject.RealObject);
         }
 
         [Test]
@@ -75,16 +80,15 @@ namespace Envivo.Fresnel.Tests.Domain
             var getCommand = container.Resolve<GetPropertyCommand>();
             var addCommand = container.Resolve<AddToCollectionCommand>();
 
-            var person = new SampleModel.Northwind.Person();
-            person.ID = Guid.NewGuid();
+            var person = _Fixture.Create<Person>();
 
             var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
-            var oProp = oObject.Properties["Roles"];
+            var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
+            var oProp = oObject.Properties[propName];
             var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Act:
-            var newRole = new SampleModel.Northwind.Employee();
-            newRole.ID = Guid.NewGuid();
+            var newRole = _Fixture.Create<Employee>();
             var oNewRole = (ObjectObserver)observerCache.GetObserver(newRole, newRole.GetType());
 
             var result = addCommand.Invoke(oCollection, oNewRole);
@@ -105,15 +109,14 @@ namespace Envivo.Fresnel.Tests.Domain
             var getCommand = container.Resolve<GetPropertyCommand>();
             var removeCommand = container.Resolve<RemoveFromCollectionCommand>();
 
-            var person = new SampleModel.Northwind.Person();
-            person.ID = Guid.NewGuid();
-
-            person.Roles.Add(new SampleModel.Northwind.Employee());
-            person.Roles.Add(new SampleModel.Northwind.Customer());
-            person.Roles.Add(new SampleModel.Northwind.Supplier());
+            var person = _Fixture.Create<Person>();
+            person.Roles.Add(_Fixture.Create<Employee>());
+            person.Roles.Add(_Fixture.Create<Customer>());
+            person.Roles.Add(_Fixture.Create<Supplier>());
 
             var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
-            var oProp = oObject.Properties["Roles"];
+            var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
+            var oProp = oObject.Properties[propName];
             var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Act:
@@ -140,20 +143,19 @@ namespace Envivo.Fresnel.Tests.Domain
             var addCommand = container.Resolve<AddToCollectionCommand>();
             var removeCommand = container.Resolve<RemoveFromCollectionCommand>();
 
-            var person = new SampleModel.Northwind.Person();
-            person.ID = Guid.NewGuid();
-
-            person.Roles.Add(new SampleModel.Northwind.Employee());
-            person.Roles.Add(new SampleModel.Northwind.Customer());
-            person.Roles.Add(new SampleModel.Northwind.Supplier());
+            var person = _Fixture.Create<Person>();
+            person.Roles.Add(_Fixture.Create<Employee>());
+            person.Roles.Add(_Fixture.Create<Customer>());
+            person.Roles.Add(_Fixture.Create<Supplier>());
 
             var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
-            var oProp = oObject.Properties["Roles"];
+            var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
+            var oProp = oObject.Properties[propName];
             var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Act:
-            var oNewItem = (ObjectObserver)createCommand.Invoke(typeof(SampleModel.Northwind.Employee), null);
-            ((SampleModel.Northwind.Employee)oNewItem.RealObject).ID = Guid.NewGuid();
+            var oNewItem = (ObjectObserver)createCommand.Invoke(typeof(Employee), null);
+            ((Employee)oNewItem.RealObject).ID = Guid.NewGuid();
 
             var addResult = addCommand.Invoke(oCollection, oNewItem);
             var removeResult = removeCommand.Invoke(oCollection, oNewItem);
@@ -175,25 +177,30 @@ namespace Envivo.Fresnel.Tests.Domain
             var getCommand = container.Resolve<GetPropertyCommand>();
             var setCommand = container.Resolve<SetPropertyCommand>();
 
-            var person = new SampleModel.Northwind.Person();
-            person.ID = Guid.NewGuid();
+            var person = _Fixture.Create<Person>();
 
             var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
-            var oProp = oObject.Properties["Roles"];
+            var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
+            var oProp = oObject.Properties[propName];
 
             var iterations = 10000;
 
             // Act:
             for (var i = 0; i < iterations; i++)
             {
-                person.Roles.Add(new SampleModel.Northwind.Employee());
+                var employee = new Employee()
+                {
+                     ID = Guid.NewGuid()
+                };
+                person.Roles.Add(employee);
             }
 
             var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Act:
-            var oNameProp = oObject.Properties["FirstName"];
-            var oValue = observerCache.GetObserver("1234", typeof(string));
+            var namePropName = LambdaExtensions.NameOf<Person>(x => x.FirstName);
+            var oNameProp = oObject.Properties[namePropName];
+            var oValue = observerCache.GetObserver(_Fixture.Create<string>(), typeof(string));
             setCommand.Invoke(oNameProp, oValue);
 
             // Assert:

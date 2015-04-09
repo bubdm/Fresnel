@@ -7,12 +7,13 @@ using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.Utils;
-
 using Fresnel.SampleModel.Persistence;
 using NUnit.Framework;
 using System;
@@ -34,10 +35,10 @@ namespace Envivo.Fresnel.Tests.Persistence
             var templateCache = container.Resolve<TemplateCache>();
             var searchCommand = container.Resolve<SearchCommand>();
 
-            var tClass = (ClassTemplate)templateCache.GetTemplate<SampleModel.Objects.PocoObject>();
+            var tClass = (ClassTemplate)templateCache.GetTemplate<Product>();
 
             // Act:
-            var results = searchCommand.Search(tClass).ToList<SampleModel.Objects.PocoObject>();
+            var results = searchCommand.Search(tClass).ToList<Product>();
 
             // Assert:
             Assert.IsNotNull(results);
@@ -52,23 +53,26 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(ObjectWithCtorInjection).Assembly);
 
             var observerCache = container.Resolve<ObserverCache>();
             var searchCommand = container.Resolve<SearchCommand>();
 
-            var obj = container.Resolve<SampleModel.TestTypes.ObjectWithCtorInjection>();
+            var obj = container.Resolve<ObjectWithCtorInjection>();
             var oObj = (ObjectObserver)observerCache.GetObserver(obj);
-            var oProp = oObj.Properties["PocoObject"];
+
+            // This property has the QuerySpecification associated with it:
+            var propName = LambdaExtensions.NameOf<ObjectWithCtorInjection>(x => x.Product);
+            var oProp = oObj.Properties[propName];
 
             // Act:
-            var results = searchCommand.Search(oProp).ToList<SampleModel.Objects.PocoObject>();
+            var results = searchCommand.Search(oProp).ToList<Product>();
 
             // Assert:
             Assert.IsNotNull(results);
             foreach (var item in results)
             {
-                Assert.IsFalse(item.NormalText.Contains("Test"));
+                Assert.IsFalse(item.Name.Contains("Test"));
             }
         }
 
@@ -80,17 +84,18 @@ namespace Envivo.Fresnel.Tests.Persistence
             var container = new ContainerFactory().Build(customDependencyModules);
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             var observerCache = container.Resolve<ObserverCache>();
             var searchCommand = container.Resolve<SearchCommand>();
 
-            var obj = container.Resolve<SampleModel.Objects.PocoObject>();
+            var obj = container.Resolve<Product>();
             var oObj = (ObjectObserver)observerCache.GetObserver(obj);
-            var oProp = oObj.Properties["ChildObjects"];
+            var propName = LambdaExtensions.NameOf<Product>(x => x.Categories);
+            var oProp = oObj.Properties[propName];
 
             // Act:
-            var results = searchCommand.Search(oProp).ToList<SampleModel.Objects.PocoObject>();
+            var results = searchCommand.Search(oProp).ToList<Category>();
 
             // Assert:
             Assert.IsNotNull(results);

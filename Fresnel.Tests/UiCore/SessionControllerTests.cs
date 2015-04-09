@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Envivo.Fresnel.CompositionRoot;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
 using Fresnel.SampleModel.Persistence;
@@ -22,7 +24,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var controller = container.Resolve<SessionController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             var now = DateTime.Now;
 
@@ -50,13 +52,13 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             // Act:
             // Start a new session:
             var session = sessionController.GetSession();
 
-            var createResponse = toolboxController.Create("Envivo.Fresnel.SampleModel.Objects.PocoObject");
+            var createResponse = toolboxController.Create("Envivo.Fresnel.Product");
 
             // Make a change
             var request = new SetPropertyRequest()
@@ -97,7 +99,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             // Act:
             // Start a new session:
@@ -129,7 +131,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(SampleModel.TestTypes.TextValues).Assembly);
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             // Act:
             // Start a new session:
@@ -138,7 +140,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Find an object to edit:
             var searchRequest = new SearchObjectsRequest()
             {
-                SearchType = typeof(PocoObject).FullName,
+                SearchType = typeof(Product).FullName,
                 PageSize = 10,
                 PageNumber = 1,
             };

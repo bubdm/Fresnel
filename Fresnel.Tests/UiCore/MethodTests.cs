@@ -3,6 +3,7 @@ using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.UiCore;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
@@ -28,7 +29,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var controller = container.Resolve<ExplorerController>();
 
-            var obj = new SampleModel.TestTypes.MethodSamples();
+            var obj = container.Resolve<MethodSamples>();
             obj.ID = Guid.NewGuid();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
@@ -60,12 +61,12 @@ namespace Envivo.Fresnel.Tests.Proxies
             var toolboxController = container.Resolve<ToolboxController>();
             var explorerController = container.Resolve<ExplorerController>();
 
-            var obj = new SampleModel.TestTypes.MethodSamples();
+            var obj = container.Resolve<MethodSamples>();
             obj.ID = Guid.NewGuid();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
-            var classType = typeof(SampleModel.TestTypes.MethodSamples);
+            var classType = typeof(MethodSamples);
             var createResponse = toolboxController.Create(classType.FullName);
 
             var methodName = "MethodWithObjectParameters";

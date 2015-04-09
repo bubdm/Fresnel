@@ -9,7 +9,7 @@ using System.Data.Entity.Core;
 using System.Linq.Expressions;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using Envivo.Fresnel.SampleModel.Objects;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 

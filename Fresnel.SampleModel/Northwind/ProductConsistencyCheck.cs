@@ -1,15 +1,16 @@
 using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.SampleModel.Northwind;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.Objects
 {
-    public class MoneyConsistencyCheck : IConsistencyCheck<Money>
+    public class ProductConsistencyCheck : IConsistencyCheck<Product>
     {
 
-        public AggregateException Check(Money obj)
+        public AggregateException Check(Product obj)
         {
             var allExceptions = new List<Exception>();
 

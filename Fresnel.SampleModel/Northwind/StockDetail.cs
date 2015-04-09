@@ -10,6 +10,12 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 {
     public class StockDetail
     {
+        [Key]
+        public Guid ID { get; set; }
+
+        [ConcurrencyCheck]
+        public long Version { get; set; }
+
         [Relationship(Type = RelationshipType.Has)]
         public virtual Product Product { get; set; }
 

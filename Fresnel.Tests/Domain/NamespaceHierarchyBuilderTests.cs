@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Introspection.Assemblies;
+using Envivo.Fresnel.SampleModel.Northwind;
 using NUnit.Framework;
 using System.Linq;
 
@@ -18,15 +19,15 @@ namespace Envivo.Fresnel.Tests.Domain
             var hierarchyBuilder = container.Resolve<NamespaceHierarchyBuilder>();
 
             // Act:
-            var hierarchy = hierarchyBuilder.BuildTreeFor(typeof(SampleModel.Objects.PocoObject).Assembly);
+            var hierarchy = hierarchyBuilder.BuildTreeFor(typeof(Product).Assembly);
 
             // Assert:
             Assert.IsNotNull(hierarchy);
 
-            var productNode = hierarchy.FindNodeByName("Product");
-            Assert.AreNotEqual(0, productNode.Children.Count());
+            var superClassNode = hierarchy.FindNodeByName(typeof(Role).Name);
+            Assert.AreNotEqual(0, superClassNode.Children.Count());
 
-            Assert.IsTrue(productNode.Children.All(c => c.IsSubClass));
+            Assert.IsTrue(superClassNode.Children.All(c => c.IsSubClass));
         }
     }
 }

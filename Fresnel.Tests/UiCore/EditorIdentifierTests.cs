@@ -3,10 +3,15 @@ using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.UiCore;
 using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.UiCore.Model.TypeInfo;
+using Envivo.Fresnel.Utils;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using System;
 using System.Linq;
 
 namespace Envivo.Fresnel.Tests.Proxies
@@ -22,7 +27,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
-            var obj = new SampleModel.TestTypes.MultiType();
+            var fixture = new Fixture();
+            var obj = fixture.Create<MultiType>();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
@@ -54,8 +60,9 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
-            var textValues = new SampleModel.TestTypes.TextValues();
-            var oObject = (ObjectObserver)observerCache.GetObserver(textValues);
+            var fixture = new Fixture();
+            var obj = fixture.Create<TextValues>();
+            var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
             var charVM = vmBuilder.BuildFor(oObject.Properties["NormalChar"]);
@@ -81,7 +88,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<PropertyVmBuilder>();
 
-            var obj = new SampleModel.TestTypes.EnumValues();
+            var fixture = new Fixture();
+            var obj = fixture.Create<EnumValues>(); 
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
@@ -111,7 +119,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<AbstractObjectVmBuilder>();
 
-            var col = new Collection<SampleModel.Objects.PocoObject>();
+            var fixture = new Fixture();
+            var col = fixture.Create<Collection<Product>>(); 
             var oColl = (ObjectObserver)observerCache.GetObserver(col);
 
             // Act:
@@ -135,14 +144,15 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var vmBuilder = container.Resolve<AbstractObjectVmBuilder>();
 
-            var obj = new SampleModel.TestTypes.MethodSamples();
+            var obj = container.Resolve<MethodSamples>();
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
             var vm = vmBuilder.BuildFor(oObject);
 
             // Assert:
-            var methodWithParams = vm.Methods.Single(m => m.InternalName == "MethodWithValueParameters");
+            var methodName = LambdaExtensions.NameOf<MethodSamples>(x => x.MethodWithValueParameters(null, 0, DateTime.MinValue));
+            var methodWithParams = vm.Methods.Single(m => m.InternalName == methodName);
 
             Assert.IsTrue(methodWithParams.Parameters.Any(p => p.State.ValueType != null));
             Assert.IsTrue(methodWithParams.Parameters.Any(p => p.Info != null));

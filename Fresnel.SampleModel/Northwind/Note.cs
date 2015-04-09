@@ -8,16 +8,22 @@ using System.Windows;
 
 namespace Envivo.Fresnel.SampleModel.Northwind
 {
-    public abstract class Role
+    public class Note
     {
+        private DateTime _CreateAt = DateTime.Now;
+
         [Key]
         public Guid ID { get; set; }
 
-        [ConcurrencyCheck]
-        public long Version { get; set; }
+        public DateTime CreateAt
+        {
+            get { return _CreateAt; }
+            set { _CreateAt = value; }
+        }
 
-        [Display(AutoGenerateField = false)]
-        public string HiddenProperty { get; set; }
+        [DataType(DataType.MultilineText)]
+        public string Content { get; set; }
 
     }
+
 }

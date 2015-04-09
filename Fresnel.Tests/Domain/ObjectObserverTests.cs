@@ -1,7 +1,10 @@
 ﻿using Autofac;
 using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.SampleModel.Northwind;
+using Fresnel.Tests;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,19 +14,19 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class ObjectObserverTests
     {
+        private Fixture _Fixture = new AutoFixtureFactory().Create();
+
         [Test]
         public void ShouldCreateObjectObserver()
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
             var observerBuilder = container.Resolve<AbstractObserverBuilder>();
 
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
+            var employee = _Fixture.Create<Employee>();
 
             // Act:
-            var observer = observerBuilder.BuildFor(poco, poco.GetType());
+            var observer = observerBuilder.BuildFor(employee, employee.GetType());
 
             // Assert:
             Assert.IsNotNull(observer);
@@ -34,16 +37,15 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
             var observerBuilder = container.Resolve<AbstractObserverBuilder>();
 
             // Act:
-            var observer = observerBuilder.BuildFor(null, typeof(SampleModel.Objects.PocoObject));
+            var observer = observerBuilder.BuildFor(null, typeof(Employee));
 
             // Assert:
             Assert.IsInstanceOf<NullObserver>(observer);
             Assert.IsNull(observer.RealObject);
-            Assert.AreEqual(typeof(SampleModel.Objects.PocoObject), observer.Template.RealType);
+            Assert.AreEqual(typeof(Employee), observer.Template.RealType);
         }
 
         [Test]
@@ -51,17 +53,15 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
-
             var observerCache = container.Resolve<ObserverCache>();
 
+            var employee = _Fixture.Create<Employee>();
+
             // Act:
-            var observer = observerCache.GetObserver(poco);
+            var observer = observerCache.GetObserver(employee);
 
             // Assert:
-            Assert.IsNotNull(poco);
+            Assert.IsNotNull(observer);
         }
 
         [Test]
@@ -69,18 +69,16 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
-            var obj = new SampleModel.Objects.PocoObject();
-            obj.ID = Guid.Empty;
-
             var observerCache = container.Resolve<ObserverCache>();
 
+            var employee = _Fixture.Create<Employee>();
+            
             // Act:
-            var observer = observerCache.GetObserver(obj);
+            var observer = observerCache.GetObserver(employee);
 
             // Assert:
-            Assert.AreNotEqual(Guid.Empty, obj.ID);
-            Assert.AreEqual(obj.ID, observer.ID);
+            Assert.AreNotEqual(Guid.Empty, employee.ID);
+            Assert.AreEqual(employee.ID, observer.ID);
         }
 
         [Test]
@@ -88,18 +86,16 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.Empty;
-
             var observerCache = container.Resolve<ObserverCache>();
 
+            var employee = _Fixture.Create<Employee>();
+            
             // Act:
-            var oObject = observerCache.GetObserver(poco);
+            var oObject = observerCache.GetObserver(employee);
             var objFromCache = observerCache.GetObserverById(oObject.ID).RealObject;
 
             // Assert:
-            Assert.AreEqual(poco, objFromCache);
+            Assert.AreEqual(employee, objFromCache);
         }
 
         [Test]
@@ -107,17 +103,16 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
-            var pocoList = new List<SampleModel.Objects.PocoObject>();
-
             var observerCache = container.Resolve<ObserverCache>();
 
+            var employees = _Fixture.CreateMany<Employee>().ToList();
+            
             // Act:
-            var oObject = observerCache.GetObserver(pocoList);
-            var objFromCache = observerCache.GetObserverById(oObject.ID).RealObject;
+            var oCollection = observerCache.GetObserver(employees);
+            var objFromCache = observerCache.GetObserverById(oCollection.ID).RealObject;
 
             // Assert:
-            Assert.AreEqual(pocoList, objFromCache);
+            Assert.AreEqual(employees, objFromCache);
         }
 
         [Test]
@@ -125,16 +120,13 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
-
             var observerCache = container.Resolve<ObserverCache>();
 
-            // Act:
-            var observer1 = observerCache.GetObserver(poco);
+            var employee = _Fixture.Create<Employee>();
 
-            var observer2 = observerCache.GetObserver(poco);
+            // Act:
+            var observer1 = observerCache.GetObserver(employee);
+            var observer2 = observerCache.GetObserver(employee);
 
             // Assert:
             Assert.AreSame(observer1, observer2);
@@ -145,19 +137,14 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
-            var poco1 = new SampleModel.Objects.PocoObject();
-            poco1.ID = Guid.NewGuid();
-
-            var poco2 = new SampleModel.Objects.PocoObject();
-            poco2.ID = Guid.NewGuid();
-
             var observerCache = container.Resolve<ObserverCache>();
 
-            // Act:
-            var observer1 = observerCache.GetObserver(poco1);
+            var employee1 = _Fixture.Create<Employee>();
+            var employee2 = _Fixture.Create<Employee>();
 
-            var observer2 = observerCache.GetObserver(poco2);
+            // Act:
+            var observer1 = observerCache.GetObserver(employee1);
+            var observer2 = observerCache.GetObserver(employee2);
 
             // Assert:
             Assert.AreNotSame(observer1, observer2);
@@ -168,14 +155,12 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
             var observerBuilder = container.Resolve<AbstractObserverBuilder>();
 
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
+            var employee = _Fixture.Create<Employee>();
 
             // Act:
-            var observer = (ObjectObserver)observerBuilder.BuildFor(poco, poco.GetType());
+            var observer = (ObjectObserver)observerBuilder.BuildFor(employee, employee.GetType());
 
             // Assert:
             Assert.AreNotEqual(0, observer.Properties.Count());
@@ -194,11 +179,10 @@ namespace Envivo.Fresnel.Tests.Domain
 
             var observerBuilder = container.Resolve<AbstractObserverBuilder>();
 
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
+            var employee = _Fixture.Create<Employee>();
 
             // Act:
-            var observer = (ObjectObserver)observerBuilder.BuildFor(poco, poco.GetType());
+            var observer = (ObjectObserver)observerBuilder.BuildFor(employee, employee.GetType());
 
             // Assert:
             Assert.AreNotEqual(0, observer.Methods.Count());
@@ -220,15 +204,13 @@ namespace Envivo.Fresnel.Tests.Domain
         {
             // Arrange:
             var container = new ContainerFactory().Build();
-
             var observerBuilder = container.Resolve<AbstractObserverBuilder>();
 
-            var poco = new SampleModel.Objects.PocoObject();
-            poco.ID = Guid.NewGuid();
-            poco.AddSomeChildObjects();
+            var employee = _Fixture.Create<Employee>();
+            employee.Notes.AddMany(() => _Fixture.Create<Note>(), 5);
 
             // Act:
-            var observer = observerBuilder.BuildFor(poco.ChildObjects, poco.ChildObjects.GetType());
+            var observer = observerBuilder.BuildFor(employee.Notes, employee.Notes.GetType());
 
             // Assert:
             Assert.IsNotNull(observer);
@@ -243,10 +225,10 @@ namespace Envivo.Fresnel.Tests.Domain
 
             for (var i = 0; i < 5; i++)
             {
-                var newObject = new SampleModel.Objects.PocoObject();
-                newObject.ID = Guid.NewGuid();
-                newObject.AddSomeChildObjects();
-                var observer = observerCache.GetObserver(newObject);
+                var employee = _Fixture.Create<Employee>();
+                employee.Notes.AddMany(() => _Fixture.Create<Note>(), 3);
+
+                var observer = observerCache.GetObserver(employee);
             }
 
             // Act:

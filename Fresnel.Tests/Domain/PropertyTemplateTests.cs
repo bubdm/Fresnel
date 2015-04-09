@@ -3,7 +3,11 @@ using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Commands;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.Utils;
+using Fresnel.Tests;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 using System;
 
 namespace Envivo.Fresnel.Tests.Domain
@@ -11,6 +15,8 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class PropertyTemplateTests
     {
+        private Fixture _Fixture = new AutoFixtureFactory().Create();
+
         [Test]
         public void ShouldGetProperty()
         {
@@ -19,16 +25,16 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
             var getCommand = container.Resolve<GetPropertyCommand>();
 
-            var pocoObject = new SampleModel.Objects.PocoObject();
+            var product = _Fixture.Create<Product>();
 
-            var template = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
+            var template = (ClassTemplate)templateCache.GetTemplate(product.GetType());
 
             // Act:
-            pocoObject.NormalText = DateTime.Now.ToString();
+            var propName = LambdaExtensions.NameOf<Product>(x => x.Name);
+            var value = getCommand.Invoke(template, product, propName);
 
             // Assert:
-            var value = getCommand.Invoke(template, pocoObject, "NormalText");
-            Assert.AreEqual(pocoObject.NormalText, value);
+            Assert.AreEqual(product.Name, value);
         }
 
         [Test]
@@ -39,16 +45,17 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
             var setCommand = container.Resolve<SetPropertyCommand>();
 
-            var pocoObject = new SampleModel.Objects.PocoObject();
+            var product = _Fixture.Create<Product>();
 
-            var template = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
+            var template = (ClassTemplate)templateCache.GetTemplate(product.GetType());
 
             // Act:
             var newValue = DateTime.Now.ToString();
-            setCommand.Invoke(template, pocoObject, "NormalText", newValue);
+            var propName = LambdaExtensions.NameOf<Product>(x => x.Name);
+            setCommand.Invoke(template, product, propName, newValue);
 
             // Assert:
-            Assert.AreEqual(newValue, pocoObject.NormalText);
+            Assert.AreEqual(newValue, product.Name);
         }
 
         [Test]
@@ -59,16 +66,16 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
             var getCommand = container.Resolve<GetBackingFieldCommand>();
 
-            var pocoObject = new SampleModel.Objects.PocoObject();
+            var product = _Fixture.Create<Product>();
 
-            var template = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
+            var template = (ClassTemplate)templateCache.GetTemplate(product.GetType());
 
             // Act:
-            pocoObject.NormalText = DateTime.Now.ToString();
+            var propName = LambdaExtensions.NameOf<Product>(x => x.Name);
+            var value = getCommand.Invoke(template, product, propName);
 
             // Assert:
-            var value = getCommand.Invoke(template, pocoObject, "NormalText");
-            Assert.AreEqual(pocoObject.NormalText, value);
+            Assert.AreEqual(product.Name, value);
         }
 
         [Test]
@@ -79,16 +86,17 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
             var setCommand = container.Resolve<SetBackingFieldCommand>();
 
-            var pocoObject = new SampleModel.Objects.PocoObject();
+            var product = _Fixture.Create<Product>();
 
-            var template = (ClassTemplate)templateCache.GetTemplate(pocoObject.GetType());
+            var template = (ClassTemplate)templateCache.GetTemplate(product.GetType());
 
             // Act:
             var newValue = DateTime.Now.ToString();
-            setCommand.Invoke(template, pocoObject, "NormalText", newValue);
+            var propName = LambdaExtensions.NameOf<Product>(x => x.Name);
+            setCommand.Invoke(template, product, propName, newValue);
 
             // Assert:
-            Assert.AreEqual(newValue, pocoObject.NormalText);
+            Assert.AreEqual(newValue, product.Name);
         }
 
         [Test]
@@ -99,22 +107,20 @@ namespace Envivo.Fresnel.Tests.Domain
             var templateCache = container.Resolve<TemplateCache>();
             var getCommand = container.Resolve<GetPropertyCommand>();
 
-            var subProduct = new SampleModel.Objects.SubProductA()
-            {
-                Name = "Test_" + Environment.TickCount,
-                Description = "1234",
-                Discount = 1234
-            };
+            var employee = _Fixture.Create<Employee>();
 
-            var template = (ClassTemplate)templateCache.GetTemplate(subProduct.GetType());
+            var template = (ClassTemplate)templateCache.GetTemplate(employee.GetType());
 
             // Act:
-            var description = getCommand.Invoke(template, subProduct, "Description");
-            var discount = getCommand.Invoke(template, subProduct, "Discount");
+            var personPropName = LambdaExtensions.NameOf<Employee>(x => x.Person);
+            var person = getCommand.Invoke(template, employee, personPropName);
+
+            var hiredOnPropName = LambdaExtensions.NameOf<Employee>(x => x.HiredOn);
+            var hiredOn = getCommand.Invoke(template, employee, hiredOnPropName);
 
             // Assert:
-            Assert.AreEqual(subProduct.Description, description);
-            Assert.AreEqual(subProduct.Discount, discount);
+            Assert.AreEqual(employee.Person, person);
+            Assert.AreEqual(employee.HiredOn, hiredOn);
         }
     }
 }

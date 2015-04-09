@@ -1,11 +1,15 @@
 using Envivo.Fresnel.Configuration;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Envivo.Fresnel.SampleModel.TestTypes
 {
     public class MultiType
     {
+        private TextValues _An_Object;
+        private ICollection<BooleanValues> _A_Collection = new List<BooleanValues>();
+
         [Key]
         public Guid ID { get; set; }
 
@@ -24,5 +28,22 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
         public DateTime A_DateTime { get; set; }
 
         public DateTimeOffset A_DateTimeOffset { get; set; }
+
+        public EnumValues.IndividualOptions An_Enum { get; set; }
+
+        public CombinationOptions A_Bitwise_Enum { get; set; }
+
+        public virtual TextValues An_Object
+        {
+            get { return _An_Object; }
+            set { _An_Object = value; }
+        }
+
+        public virtual ICollection<BooleanValues> A_Collection
+        {
+            get { return _A_Collection; }
+            set { _A_Collection = value; }
+        }
+
     }
 }
