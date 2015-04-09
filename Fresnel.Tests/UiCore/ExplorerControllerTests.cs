@@ -295,5 +295,56 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsFalse(obj.A_Collection.Contains(child));
         }
 
+        [Test]
+        public void ShouldAllowCreateOnCompositeProperties()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var obj = _Fixture.Create<Order>();
+            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+
+            // Act:
+            var getRequest = new GetObjectRequest()
+            {
+                ObjectID = obj.ID,
+            };
+            var getResponse = controller.GetObject(getRequest);
+
+            var propName = LambdaExtensions.NameOf<Order>(x => x.OrderItems);
+            var objectVM = getResponse.ReturnValue;
+            var propVM = objectVM.Properties.Single(p => p.InternalName == propName);
+
+            // Assert:
+            Assert.IsTrue(propVM.State.Create.IsEnabled);
+        }
+
+        [Test]
+        public void ShouldNotAllowCreateOnAggregateProperties()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var obj = _Fixture.Create<Order>();
+            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+
+            // Act:
+            var getRequest = new GetObjectRequest()
+            {
+                ObjectID = obj.ID,
+            };
+            var getResponse = controller.GetObject(getRequest);
+
+            var propName = LambdaExtensions.NameOf<Order>(x => x.DeliverTo);
+            var objectVM = getResponse.ReturnValue;
+            var propVM = objectVM.Properties.Single(p => p.InternalName == propName);
+
+            // Assert:
+            Assert.IsFalse(propVM.State.Create.IsEnabled);
+        }
     }
 }
