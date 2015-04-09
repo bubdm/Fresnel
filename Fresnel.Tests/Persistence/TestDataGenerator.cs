@@ -28,6 +28,15 @@ namespace Envivo.Fresnel.Tests.Persistence
             this.Create<TextValues>(persistenceService);
             this.Create<BooleanValues>(persistenceService);
 
+            this.Create<Person>(persistenceService);
+            this.Create<Organisation>(persistenceService);
+
+            // TODO: Randomly tie Roles back to some Parties:
+            this.Create<Customer>(persistenceService);
+            this.Create<Employee>(persistenceService);
+            this.Create<Supplier>(persistenceService);
+            this.Create<Shipper>(persistenceService);
+
             this.CreateCategories(persistenceService);
         }
 
@@ -80,3 +89,4 @@ namespace Envivo.Fresnel.Tests.Persistence
 
     }
 }
+

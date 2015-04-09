@@ -70,6 +70,32 @@ namespace Fresnel.Tests
                 .Without(x => x.ParentOrder)
             );
 
+            fixture.Customize<Person>(c => c
+                .Without(x => x.Roles)
+            );
+
+            fixture.Customize<Organisation>(c => c
+                .Without(x => x.Roles)
+            );
+
+            fixture.Customize<Customer>(c => c
+                .Without(x => x.Party)
+            );
+
+            fixture.Customize<Employee>(c => c
+                .Without(x => x.Person)
+                .Without(x => x.Territories)
+            );
+
+            fixture.Customize<Supplier>(c => c
+                .Without(x => x.Party)
+                .Without(x => x.Region)
+            );
+
+            fixture.Customize<Shipper>(c => c
+                .Without(x => x.Party)
+            );
+
             return fixture;
         }
 
