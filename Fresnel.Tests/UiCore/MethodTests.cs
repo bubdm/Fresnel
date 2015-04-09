@@ -72,8 +72,11 @@ namespace Envivo.Fresnel.Tests.Proxies
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
-            var classType = typeof(MethodSamples);
-            var createResponse = toolboxController.Create(classType.FullName);
+            var createRequest = new CreateRequest()
+            {
+                ClassTypeName = typeof(MethodSamples).FullName
+            };
+            var createResponse = toolboxController.Create(createRequest);
 
             var methodName = "MethodWithObjectParameters";
             var parameterName = "category";

@@ -28,33 +28,6 @@ namespace Envivo.Fresnel.Tests.Persistence
         private Fixture _Fixture = new AutoFixtureFactory().Create();
 
         [Test]
-        public void ShouldCreateSampleData()
-        {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
-
-            var persistenceService = container.Resolve<IPersistenceService>();
-
-            //// Act:
-            //for (var i = 0; i < 5; i++)
-            //{
-            //    var category = (Category)persistenceService.CreateObject(typeof(Category));
-            //    category.ID = Guid.NewGuid();
-            //    category.Name = "Category " + Environment.TickCount.ToString();
-
-            //    var money = (Money)persistenceService.CreateObject(typeof(Money));
-            //    money.ID = Guid.NewGuid();
-            //    money.Name = "Money " + Environment.TickCount.ToString();
-
-            //    var savedChanges = persistenceService.SaveChanges();
-            //}
-        }
-
-        [Test]
         public void ShouldCreateCompleteAggregate()
         {
             // Arrange:
@@ -69,15 +42,14 @@ namespace Envivo.Fresnel.Tests.Persistence
             var categoryType = typeof(Category);
 
             // Act:
-            var category = (Category)persistenceService.CreateObject(categoryType);
-            category.ID = Guid.NewGuid();
+            var category = _Fixture.Create<Category>();
             category.Products.AddMany(() => _Fixture.Create<Product>(), 5);
 
-            var savedChanges = persistenceService.SaveChanges();
+            var savedChanges = persistenceService.SaveChanges(category);
 
             // Assert:
             Assert.IsNotNull(category);
-            Assert.IsTrue(savedChanges > 1);
+            Assert.IsTrue(savedChanges > 5);
         }
 
         [Test]
@@ -95,19 +67,18 @@ namespace Envivo.Fresnel.Tests.Persistence
             var categoryType = typeof(Category);
 
             // Act:
-            var category = (Category)persistenceService.CreateObject(categoryType);
-            category.ID = Guid.NewGuid();
+            var category = _Fixture.Create<Category>();
             category.Products.AddMany(() => _Fixture.Create<Product>(), 5);
 
             // Step 1:
-            var savedChanges1 = persistenceService.SaveChanges();
+            var savedChanges1 = persistenceService.SaveChanges(category);
 
             // Step 2:
             category.Products.Remove(category.Products.First());
-            var savedChanges2 = persistenceService.SaveChanges();
+            var savedChanges2 = persistenceService.SaveChanges(category);
 
             // Assert:
-            Assert.IsTrue(savedChanges1 > 1);
+            Assert.IsTrue(savedChanges1 > 5);
             Assert.IsTrue(savedChanges2 > 0);
 
             var persistedCategory = (Category)persistenceService.GetObject(categoryType, category.ID);
@@ -131,11 +102,9 @@ namespace Envivo.Fresnel.Tests.Persistence
 
             for (var i = 0; i < 5; i++)
             {
-                var category = (Category)persistenceService.CreateObject(categoryType);
-                category.ID = Guid.NewGuid();
+                var category = _Fixture.Create<Category>();
                 category.Products.AddMany(() => _Fixture.Create<Product>(), 3);
-
-                var savedChanges = persistenceService.SaveChanges();
+                var savedChanges = persistenceService.SaveChanges(category);
             }
 
             // Act:
@@ -155,17 +124,13 @@ namespace Envivo.Fresnel.Tests.Persistence
             var engine = container.Resolve<Core.Engine>();
             engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
-            var dummyText = _Fixture.Create<string>();
-
             var persistenceService = container.Resolve<IPersistenceService>();
 
-            var productType = typeof(Product);
-
-            var product = (Product)persistenceService.CreateObject(productType);
-            product.ID = Guid.NewGuid();
+            var dummyText = _Fixture.Create<string>();
+            var product = _Fixture.Create<Product>();
             product.Name = dummyText;
 
-            var savedChanges = persistenceService.SaveChanges();
+            var savedChanges = persistenceService.SaveChanges(product);
 
             // Act:
             product.Name = _Fixture.Create<string>();

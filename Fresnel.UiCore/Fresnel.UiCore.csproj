@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CreateRequest.cs" />
     <Compile Include="Commands\CollectionAddRequest.cs" />
     <Compile Include="Commands\CollectionAddNewRequest.cs" />
     <Compile Include="Commands\CreateAndSetPropertyResponse.cs" />

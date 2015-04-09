@@ -197,7 +197,11 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var createResponse = toolboxController.Create(typeof(MultiType).FullName);
+            var createRequest = new CreateRequest()
+            {
+                ClassTypeName = typeof(MultiType).FullName
+            };
+            var createResponse = toolboxController.Create(createRequest);
 
             var propName = LambdaExtensions.NameOf<MultiType>(x => x.An_Object);
             var searchRequest = new SearchPropertyRequest()
@@ -232,7 +236,11 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var createResponse = toolboxController.Create(typeof(MultiType).FullName);
+            var createRequest = new CreateRequest()
+            {
+                ClassTypeName = typeof(MultiType).FullName
+            };
+            var createResponse = toolboxController.Create(createRequest);
 
             // Act:
             var propName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection);
@@ -268,8 +276,11 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var classType = typeof(MethodSamples);
-            var createResponse = toolboxController.Create(classType.FullName);
+            var createRequest = new CreateRequest()
+            {
+                ClassTypeName = typeof(MethodSamples).FullName
+            };
+            var createResponse = toolboxController.Create(createRequest);
 
             var methodName = LambdaExtensions.NameOf<MethodSamples>(x => x.MethodWithObjectParameters(null));
             var searchRequest = new SearchParameterRequest()

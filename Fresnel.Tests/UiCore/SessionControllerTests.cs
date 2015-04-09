@@ -59,8 +59,11 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Start a new session:
             var session = sessionController.GetSession();
 
-            var type = typeof(MultiType);
-            var createResponse = toolboxController.Create(type.FullName);
+            var createRequest = new CreateRequest()
+            {
+                ClassTypeName = typeof(MultiType).FullName
+            };
+            var createResponse = toolboxController.Create(createRequest);
 
             // Make some changes
             var request = new SetPropertyRequest()
@@ -108,8 +111,11 @@ namespace Envivo.Fresnel.Tests.Proxies
             var session = sessionController.GetSession();
 
             // Try to save an inconsistent object:
-            var type = typeof(Product);
-            var createResponse = toolboxController.Create(type.FullName);
+            var createRequest = new CreateRequest()
+            {
+                ClassTypeName = typeof(Product).FullName
+            };
+            var createResponse = toolboxController.Create(createRequest);
 
             var saveRequest = new SaveChangesRequest()
             {

@@ -6,7 +6,7 @@
 
         getClassHierarchy(): ng.IPromise<any>;
 
-        createObject(fullyQualifiedName: string): ng.IPromise<any>;
+        createObject(request: CreateRequest): ng.IPromise<any>;
 
         getObject(request: GetObjectRequest): ng.IPromise<any>;
 

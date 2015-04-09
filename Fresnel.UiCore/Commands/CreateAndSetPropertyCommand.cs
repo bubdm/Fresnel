@@ -40,7 +40,12 @@ namespace Envivo.Fresnel.UiCore.Commands
 
             try
             {
-                var createResponse = _CreateCommand.Invoke(request.ClassTypeName);
+                var createRequest = new CreateRequest()
+                {
+                     ParentObjectID = request.ObjectID,
+                     ClassTypeName = request.ClassTypeName
+                };
+                var createResponse = _CreateCommand.Invoke(createRequest);
                 if (createResponse.Failed)
                 {
                     return new CreateAndSetPropertyResponse()
@@ -65,7 +70,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                         Messages = createResponse.Messages,
                     };
                 }
-                
+
                 return new CreateAndSetPropertyResponse()
                 {
                     Passed = true,

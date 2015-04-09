@@ -33,16 +33,24 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public CreateCommandResponse Invoke(string fullyQualifiedName)
+        public CreateCommandResponse Invoke(CreateRequest request)
         {
             try
             {
-                var tClass = _TemplateCache.GetTemplate(fullyQualifiedName);
+                var tClass = _TemplateCache.GetTemplate(request.ClassTypeName);
                 if (tClass == null)
                     return null;
 
+                ObjectObserver oParentObject = null;
+                if (request.ParentObjectID != Guid.Empty)
+                {
+                    oParentObject = (ObjectObserver)_ObserverCache.GetObserverById(request.ParentObjectID);
+                    if (oParentObject == null)
+                        throw new UiCoreException("Cannot find object for " + request.ParentObjectID);
+                }
+
                 var classType = tClass.RealType;
-                var oObject = _CreateObjectCommand.Invoke(classType, null);
+                var oObject = _CreateObjectCommand.Invoke(classType, oParentObject);
                 var vm = _ObjectVMBuilder.BuildFor(oObject);
 
                 return new CreateCommandResponse()

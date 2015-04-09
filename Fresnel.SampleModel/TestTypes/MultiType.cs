@@ -9,6 +9,16 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
         private TextValues _An_Object;
         private ICollection<BooleanValues> _A_Collection = new List<BooleanValues>();
 
+        public MultiType()
+        {
+        }
+
+        public MultiType(TextValues anObject)
+            : this()
+        {
+            this.An_Object = anObject;
+        }
+
         [Key]
         public Guid ID { get; set; }
 

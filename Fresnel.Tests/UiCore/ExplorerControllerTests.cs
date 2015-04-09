@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
             var controller = container.Resolve<ExplorerController>();
-            
+
             var obj = _Fixture.Create<MultiType>();
 
             var oObject = observerCache.GetObserver(obj) as ObjectObserver;
@@ -134,31 +134,32 @@ namespace Envivo.Fresnel.Tests.Proxies
             var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 
             // Make sure we start tracking the collection:
-            var request = new GetPropertyRequest()
+            var getRequest = new GetPropertyRequest()
             {
                 ObjectID = obj.ID,
                 PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection)
             };
-            var getResult = controller.GetObjectProperty(request);
+            var getResult = controller.GetObjectProperty(getRequest);
 
             var collectionVM = (CollectionVM)getResult.ReturnValue;
 
             // Act:
             var addRequest = new CollectionAddNewRequest()
             {
-                CollectionID = collectionVM.ID,
+                ParentObjectID = obj.ID,
+                CollectionPropertyName = getRequest.PropertyName,
                 ElementTypeName = typeof(BooleanValues).FullName
             };
 
-            var response = controller.AddNewItemToCollection(addRequest);
+            var addResponse = controller.AddNewItemToCollection(addRequest);
 
             // Assert:
-            Assert.IsTrue(response.Passed);
-            Assert.AreEqual(1, response.Modifications.NewObjects.Count());
-            Assert.AreEqual(1, response.Modifications.CollectionAdditions.Count());
+            Assert.IsTrue(addResponse.Passed);
+            Assert.AreEqual(1, addResponse.Modifications.NewObjects.Count());
+            Assert.AreEqual(1, addResponse.Modifications.CollectionAdditions.Count());
 
             // Check that the domain object has changed:
-            var oChild = observerCache.GetObserverById(response.Modifications.NewObjects.First().ID);
+            var oChild = observerCache.GetObserverById(addResponse.Modifications.NewObjects.First().ID);
             Assert.IsTrue(obj.A_Collection.Contains(oChild.RealObject));
         }
 
@@ -180,19 +181,20 @@ namespace Envivo.Fresnel.Tests.Proxies
             var oChild = observerCache.GetObserver(child) as ObjectObserver;
 
             // Make sure we start tracking the collection:
-            var request = new GetPropertyRequest()
+            var getRequest = new GetPropertyRequest()
             {
                 ObjectID = obj.ID,
                 PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection)
             };
-            var getResult = controller.GetObjectProperty(request);
+            var getResult = controller.GetObjectProperty(getRequest);
 
             var collectionVM = (CollectionVM)getResult.ReturnValue;
 
             // Act:
             var addRequest = new CollectionAddRequest()
             {
-                CollectionID = collectionVM.ID,
+                ParentObjectID = obj.ID,
+                CollectionPropertyName = getRequest.PropertyName,
                 ElementIDs = new Guid[] { oChild.ID },
             };
 
@@ -207,6 +209,46 @@ namespace Envivo.Fresnel.Tests.Proxies
             Assert.IsTrue(obj.A_Collection.Contains(oChild.RealObject));
         }
 
+        [Test]
+        public void ShouldCreateNewPropertyObjectWithParentAsCtorArg()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var controller = container.Resolve<ExplorerController>();
+
+            var obj = _Fixture.Create<MultiType>();
+            obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
+
+            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+
+            // Make sure we start tracking the property:
+            var getRequest = new GetPropertyRequest()
+            {
+                ObjectID = obj.ID,
+                PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.An_Object)
+            };
+            var getResult = controller.GetObjectProperty(getRequest);
+
+            // Act:
+            var setRequest = new CreateAndSetPropertyRequest()
+            {
+                ObjectID = obj.ID,
+                PropertyName = getRequest.PropertyName,
+                ClassTypeName = typeof(TextValues).FullName
+            };
+
+            var setResponse = controller.CreateAndSetProperty(setRequest);
+
+            // Assert:
+            Assert.IsTrue(setResponse.Passed);
+            Assert.AreEqual(1, setResponse.Modifications.NewObjects.Count());
+            Assert.AreEqual(1, setResponse.Modifications.PropertyChanges.Count());
+
+            // Check that the domain object has changed:
+            var oChild = observerCache.GetObserverById(setResponse.Modifications.PropertyChanges.First().State.ReferenceValueID.Value);
+            Assert.AreEqual(obj.An_Object, oChild.RealObject);
+        }
 
         [Test]
         public void ShouldRemoveItemFromCollection()
@@ -226,19 +268,20 @@ namespace Envivo.Fresnel.Tests.Proxies
             var oChild = observerCache.GetObserver(child) as ObjectObserver;
 
             // Make sure we start tracking the collection:
-            var request = new GetPropertyRequest()
+            var getRequest = new GetPropertyRequest()
             {
                 ObjectID = obj.ID,
                 PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection)
             };
-            var getResult = controller.GetObjectProperty(request);
+            var getResult = controller.GetObjectProperty(getRequest);
 
             var collectionVM = (CollectionVM)getResult.ReturnValue;
 
             // Act:
             var removeRequest = new CollectionRemoveRequest()
             {
-                CollectionID = collectionVM.ID,
+                ParentObjectID = obj.ID,
+                CollectionPropertyName = getRequest.PropertyName,
                 ElementID = oChild.ID,
             };
 

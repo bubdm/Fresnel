@@ -31,17 +31,17 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public CreateCommandResponse Create([FromBody]string id)
+        public CreateCommandResponse Create([FromBody]CreateRequest id)
         {
-            var fullyQualifiedName = id;
-            var result = _CreateCommand.Invoke(fullyQualifiedName);
+            var request = id;
+            var result = _CreateCommand.Invoke(request);
             return result;
         }
 
         public SearchResponse SearchObjects(SearchObjectsRequest id)
         {
-            var fullyQualifiedName = id;
-            var result = _SearchObjectsCommand.Invoke(id);
+            var request = id;
+            var result = _SearchObjectsCommand.Invoke(request);
             return result;
         }
     }

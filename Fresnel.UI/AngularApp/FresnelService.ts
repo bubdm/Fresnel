@@ -38,16 +38,12 @@
 
             return promise;
         }
-
-        createObject(fullyQualifiedName: string): ng.IPromise<any> {
+        
+        createObject(request: CreateRequest): ng.IPromise<any> {
             this.blockUI.start("Creating new object...");
 
             var uri = "api/Toolbox/Create";
-            var arg = "=" + fullyQualifiedName;
-            var config = {
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-            };
-            var promise = this.http.post(uri, arg, config);
+            var promise = this.http.post(uri, request);
 
             promise.finally(() => {
                 this.blockUI.stop();

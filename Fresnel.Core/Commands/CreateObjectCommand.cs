@@ -16,7 +16,6 @@ namespace Envivo.Fresnel.Core.Commands
     public class CreateObjectCommand
     {
         private IDomainDependencyResolver _DomainDependencyResolver;
-        private IPersistenceService _PersistenceService;
         private Introspection.Commands.CreateObjectCommand _CreateObjectCommand;
 
         private TemplateCache _TemplateCache;
@@ -27,7 +26,6 @@ namespace Envivo.Fresnel.Core.Commands
         public CreateObjectCommand
         (
             IDomainDependencyResolver domainDependencyResolver,
-            IPersistenceService persistenceService,
             Introspection.Commands.CreateObjectCommand createObjectCommand,
 
             TemplateCache templateCache,
@@ -38,31 +36,25 @@ namespace Envivo.Fresnel.Core.Commands
         {
             _CreateObjectCommand = createObjectCommand;
             _DomainDependencyResolver = domainDependencyResolver;
-            _PersistenceService = persistenceService;
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
             _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
         }
 
-        public BaseObjectObserver Invoke(Type classType, IEnumerable<object> args)
+        public BaseObjectObserver Invoke(Type classType, object constructorArg)
         {
             var tClass = (ClassTemplate)_TemplateCache.GetTemplate(classType);
 
             // We have 3 strategies for creating the object:
             // 1) Try the Domain Factory (if it exists)
-            // 2) Try the PersistenceService
+            // 2) Try the IoC container
             // 3) Try the class constructors
 
-            var newInstance = this.CreateObjectUsingDomainFactory(tClass, args);
-            if (newInstance == null &&
-                _PersistenceService.IsTypeRecognised(classType))
-            {
-                newInstance = _PersistenceService.CreateObject(classType);
-            }
+            var newInstance = this.CreateObjectUsingDomainFactory(tClass, constructorArg);
             if (newInstance == null)
             {
-                newInstance = _CreateObjectCommand.Invoke(tClass, args);
+                newInstance = _CreateObjectCommand.Invoke(tClass, constructorArg);
             }
 
             SetDefaultId(tClass, newInstance);

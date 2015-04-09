@@ -12,12 +12,14 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionAddNewRequest **/
     export interface CollectionAddNewRequest {
-        CollectionID: any;
+        ParentObjectID: any;
+        CollectionPropertyName: string;
         ElementTypeName: string;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionAddRequest **/
     export interface CollectionAddRequest {
-        CollectionID: any;
+        ParentObjectID: any;
+        CollectionPropertyName: string;
         ElementIDs: any[];
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionAddResponse **/
@@ -26,7 +28,8 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionRemoveRequest **/
     export interface CollectionRemoveRequest {
-        CollectionID: any;
+        ParentObjectID: any;
+        CollectionPropertyName: string;
         ElementID: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CreateAndSetPropertyRequest **/
@@ -42,6 +45,11 @@ declare module FresnelApp {
     /** Generated from Envivo.Fresnel.UiCore.Commands.CreateCommandResponse **/
     export interface CreateCommandResponse extends FresnelApp.BaseCommandResponse {
         NewObject: FresnelApp.ObjectVM;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.CreateRequest **/
+    export interface CreateRequest {
+        ParentObjectID: any;
+        ClassTypeName: string;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.GenericResponse **/
     export interface GenericResponse extends FresnelApp.BaseCommandResponse {

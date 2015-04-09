@@ -737,8 +737,9 @@ var FresnelApp;
             };
             $scope.addNewItem = function (prop, itemType) {
                 var request = {
-                    CollectionID: collection.ID,
-                    ElementTypeName: itemType,
+                    ParentObjectID: prop.ObjectID,
+                    CollectionPropertyName: prop.InternalName,
+                    ElementTypeName: itemType
                 };
                 var promise = fresnelService.addNewItemToCollection(request);
                 promise.then(function (promiseResult) {
@@ -749,9 +750,9 @@ var FresnelApp;
                     //$rootScope.$broadcast(UiEventType.ExplorerOpen, newObject);             
                 });
             };
-            $scope.addExistingItems = function (prop, coll) {
+            $scope.addExistingItems = function (prop) {
                 var onSelectionConfirmed = function (selectedItems) {
-                    var request = requestBuilder.buildAddItemsRequest(coll, selectedItems);
+                    var request = requestBuilder.buildAddItemsRequest(prop, selectedItems);
                     var promise = fresnelService.addItemsToCollection(request);
                     promise.then(function (promiseResult) {
                         var response = promiseResult.data;
@@ -763,7 +764,8 @@ var FresnelApp;
             };
             $scope.removeItem = function (prop, obj) {
                 var request = {
-                    CollectionID: collection.ID,
+                    ParentObjectID: prop.ObjectID,
+                    CollectionPropertyName: prop.InternalName,
                     ElementID: obj.ID
                 };
                 var promise = fresnelService.removeItemFromCollection(request);
@@ -1032,6 +1034,13 @@ var FresnelApp;
     var RequestBuilder = (function () {
         function RequestBuilder() {
         }
+        RequestBuilder.prototype.buildCreateObjectRequest = function (obj, fullClassTypeName) {
+            var request = {
+                ParentObjectID: obj != null ? obj.ID : null,
+                ClassTypeName: fullClassTypeName
+            };
+            return request;
+        };
         RequestBuilder.prototype.buildSetParameterRequest = function (obj, method, param) {
             var request = {
                 ObjectID: obj.ID,
@@ -1133,12 +1142,13 @@ var FresnelApp;
             };
             return request;
         };
-        RequestBuilder.prototype.buildAddItemsRequest = function (coll, itemsToAdd) {
+        RequestBuilder.prototype.buildAddItemsRequest = function (collectionProp, itemsToAdd) {
             var elementIDs = itemsToAdd.map(function (o) {
                 return o.ID;
             });
             var request = {
-                CollectionID: coll.ID,
+                ParentObjectID: collectionProp.ObjectID,
+                CollectionPropertyName: collectionProp.InternalName,
                 ElementIDs: elementIDs,
             };
             return request;
@@ -1174,15 +1184,11 @@ var FresnelApp;
             });
             return promise;
         };
-        FresnelService.prototype.createObject = function (fullyQualifiedName) {
+        FresnelService.prototype.createObject = function (request) {
             var _this = this;
             this.blockUI.start("Creating new object...");
             var uri = "api/Toolbox/Create";
-            var arg = "=" + fullyQualifiedName;
-            var config = {
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-            };
-            var promise = this.http.post(uri, arg, config);
+            var promise = this.http.post(uri, request);
             promise.finally(function () {
                 _this.blockUI.stop();
             });
@@ -1388,7 +1394,8 @@ var FresnelApp;
                 });
             };
             $scope.create = function (fullyQualifiedName) {
-                var promise = fresnelService.createObject(fullyQualifiedName);
+                var request = requestBuilder.buildCreateObjectRequest(null, fullyQualifiedName);
+                var promise = fresnelService.createObject(request);
                 promise.then(function (promiseResult) {
                     var response = promiseResult.data;
                     appService.identityMap.merge(response.Modifications);

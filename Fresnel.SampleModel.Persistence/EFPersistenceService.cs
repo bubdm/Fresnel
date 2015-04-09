@@ -21,11 +21,6 @@ namespace Fresnel.SampleModel.Persistence
             return _ModelContext.IsKnownType(objectType);
         }
 
-        public object CreateObject(Type objectType)
-        {
-            return _ModelContext.CreateObject(objectType);
-        }
-
         public object GetObject(Type objectType, Guid id)
         {
             return _ModelContext.GetObject(objectType, id);
@@ -66,11 +61,6 @@ namespace Fresnel.SampleModel.Persistence
             // See http://stackoverflow.com/a/5468570/80369
             _ModelContext.Dispose();
             _ModelContext = _ModelContextFactory();
-        }
-
-        public T CreateObject<T>() where T : class
-        {
-            return _ModelContext.CreateObject<T>();
         }
 
         public T GetObject<T>(Guid id) where T : class

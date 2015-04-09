@@ -324,7 +324,8 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Step 3: Modify the collection, now that the collection's being tracked:
             var removeRequest = new CollectionRemoveRequest()
             {
-                CollectionID = collectionVM.ID,
+                ParentObjectID = employee.ID,
+                CollectionPropertyName = getRequest.PropertyName,
                 ElementID = elementToRemove.ID,
             };
             var removeResult = controller.RemoveItemFromCollection(removeRequest);

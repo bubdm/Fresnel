@@ -35,7 +35,8 @@
             }
 
             $scope.create = function (fullyQualifiedName: string) {
-                var promise = fresnelService.createObject(fullyQualifiedName);
+                var request = requestBuilder.buildCreateObjectRequest(null, fullyQualifiedName);
+                var promise = fresnelService.createObject(request);
 
                 promise.then((promiseResult) => {
                     var response = promiseResult.data;

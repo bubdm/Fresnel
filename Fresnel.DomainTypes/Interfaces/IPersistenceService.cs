@@ -9,8 +9,6 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
     {
         bool IsTypeRecognised(Type objectType);
 
-        object CreateObject(Type objectType);
-
         object GetObject(Type objectType, Guid id);
 
         IQueryable GetObjects(Type objectType);
@@ -26,9 +24,6 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
         int SaveChanges(params object[] entities);
 
         void RollbackChanges();
-
-        T CreateObject<T>()
-            where T : class;
 
         T GetObject<T>(Guid id)
             where T : class;

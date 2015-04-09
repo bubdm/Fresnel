@@ -167,14 +167,18 @@ namespace Fresnel.SampleModel.Persistence
 
         private void AttachMissingEntitiesToContext(object[] entities)
         {
-            foreach (var item in entities)
+            foreach (var entity in entities)
             {
-                var entry = this.Entry(item);
+                var entityType = entity.GetType();
+                if (!this.IsKnownType(entityType))
+                    continue;
+
+                var entry = this.Entry(entity);
                 if (entry.State == EntityState.Detached)
                 {
                     // The context doesn't recognise it, so attach it:
-                    var set = this.Set(item.GetType());
-                    set.Add(item);
+                    var set = this.Set(entityType);
+                    set.Add(entity);
                 }
             }
         }
@@ -194,14 +198,6 @@ namespace Fresnel.SampleModel.Persistence
                     entity.Version++;
                 }
             }
-        }
-
-        public T CreateObject<T>() where T : class
-        {
-            var newObject = _ObjectContext.CreateObject<T>();
-            this.Set<T>().Add(newObject);
-
-            return newObject;
         }
 
         public T GetObject<T>(Guid id) where T : class

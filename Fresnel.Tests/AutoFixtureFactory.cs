@@ -63,6 +63,13 @@ namespace Fresnel.Tests
                 .Without(x => x.OrderItems)
             );
 
+            fixture.Customize<OrderItem>(c => c
+                .Without(x => x.DeliverTo)
+                .Without(x => x.ParentOrder)
+                .Without(x => x.PlacedBy)
+                .Without(x => x.ShippedBy)
+            );
+
             return fixture;
         }
 

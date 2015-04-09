@@ -43,8 +43,11 @@ namespace Envivo.Fresnel.Tests.Proxies
             engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             // Act:
-            var fullTypeName = typeof(ObjectWithCtorInjection).FullName;
-            var response = controller.Create(fullTypeName);
+            var createRequest = new CreateRequest()
+            {
+                ClassTypeName = typeof(ObjectWithCtorInjection).FullName
+            };
+            var response = controller.Create(createRequest);
 
             // Assert:
             Assert.IsTrue(response.Passed);

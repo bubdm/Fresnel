@@ -51,8 +51,9 @@
 
             $scope.addNewItem = function (prop: PropertyVM, itemType: string) {
                 var request: CollectionAddNewRequest = {
-                    CollectionID: collection.ID,
-                    ElementTypeName: itemType,
+                    ParentObjectID : prop.ObjectID,
+                    CollectionPropertyName: prop.InternalName,
+                    ElementTypeName: itemType
                 };
 
                 var promise = fresnelService.addNewItemToCollection(request);
@@ -69,10 +70,10 @@
 
             };
 
-            $scope.addExistingItems = function (prop: PropertyVM, coll: CollectionVM) {
+            $scope.addExistingItems = function (prop: PropertyVM) {
 
                 var onSelectionConfirmed = function (selectedItems) {
-                    var request = requestBuilder.buildAddItemsRequest(coll, selectedItems);
+                    var request = requestBuilder.buildAddItemsRequest(prop, selectedItems);
                     var promise = fresnelService.addItemsToCollection(request);
                     promise.then((promiseResult) => {
                         var response = promiseResult.data;
@@ -87,7 +88,8 @@
 
             $scope.removeItem = function (prop: PropertyVM, obj: ObjectVM) {
                 var request: CollectionRemoveRequest = {
-                    CollectionID: collection.ID,
+                    ParentObjectID: prop.ObjectID,
+                    CollectionPropertyName: prop.InternalName,
                     ElementID: obj.ID
                 };
 

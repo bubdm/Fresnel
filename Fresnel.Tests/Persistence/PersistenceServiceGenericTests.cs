@@ -39,15 +39,14 @@ namespace Envivo.Fresnel.Tests.Persistence
             var persistenceService = container.Resolve<IPersistenceService>();
 
             // Act:
-            var category = persistenceService.CreateObject<Category>();
-            category.ID = Guid.NewGuid();
+            var category = _Fixture.Create<Category>();
             category.Products.AddMany(() => _Fixture.Create<Product>(), 5);
 
-            var savedChanges = persistenceService.SaveChanges();
+            var savedChanges = persistenceService.SaveChanges(category);
 
             // Assert:
             Assert.IsNotNull(category);
-            Assert.IsTrue(savedChanges > 1);
+            Assert.IsTrue(savedChanges > 5);
         }
 
         [Test]
@@ -63,19 +62,18 @@ namespace Envivo.Fresnel.Tests.Persistence
             var persistenceService = container.Resolve<IPersistenceService>();
 
             // Act:
-            var category = persistenceService.CreateObject<Category>();
-            category.ID = Guid.NewGuid();
+            var category = _Fixture.Create<Category>();
             category.Products.AddMany(() => _Fixture.Create<Product>(), 5);
 
             // Step 1:
-            var savedChanges1 = persistenceService.SaveChanges();
+            var savedChanges1 = persistenceService.SaveChanges(category);
 
             // Step 2:
             category.Products.Remove(category.Products.First());
-            var savedChanges2 = persistenceService.SaveChanges();
+            var savedChanges2 = persistenceService.SaveChanges(category);
 
             // Assert:
-            Assert.IsTrue(savedChanges1 > 1);
+            Assert.IsTrue(savedChanges1 > 5);
             Assert.IsTrue(savedChanges2 > 0);
 
             var persistedCategory = persistenceService.GetObject<Category>(category.ID);
@@ -96,18 +94,15 @@ namespace Envivo.Fresnel.Tests.Persistence
             var persistenceService = container.Resolve<IPersistenceService>();
 
             // Act:
-            var order = persistenceService.CreateObject<Order>();
-            order.ID = Guid.NewGuid();
-
-            var orderItem = persistenceService.CreateObject<OrderItem>();
-            orderItem.ID = Guid.NewGuid();
-
+            var order = _Fixture.Create<Order>();
+            var orderItem = _Fixture.Create<OrderItem>();
+            orderItem.ParentOrder = order;
             order.OrderItems.Add(orderItem);
 
-            var savedChanges = persistenceService.SaveChanges();
+            var savedChanges = persistenceService.SaveChanges(order);
 
             // Assert:
-            Assert.AreEqual(3, savedChanges);
+            Assert.IsTrue(savedChanges > 1);
 
             var persistedA = persistenceService.GetObject<Order>(order.ID);
             var persistedB = persistenceService.GetObject<OrderItem>(orderItem.ID);
@@ -133,11 +128,10 @@ namespace Envivo.Fresnel.Tests.Persistence
             var categoryCount = 5;
             for (var i = 0; i < categoryCount; i++)
             {
-                var category = persistenceService.CreateObject<Category>();
-                category.ID = Guid.NewGuid();
+                var category = _Fixture.Create<Category>();
                 category.Products.AddMany(() => _Fixture.Create<Product>(), 3);
 
-                var savedChanges = persistenceService.SaveChanges();
+                var savedChanges = persistenceService.SaveChanges(category);
             }
 
             // Act:

@@ -2,6 +2,15 @@
 
     export class RequestBuilder {
 
+        buildCreateObjectRequest(obj: ObjectVM, fullClassTypeName: string) {
+            var request: CreateRequest = {
+                ParentObjectID: obj != null ? obj.ID : null,
+                ClassTypeName: fullClassTypeName
+            };
+
+            return request;
+        }
+
         buildSetParameterRequest(obj: ObjectVM, method: MethodVM, param: ParameterVM) {
             var request: SetParameterRequest = {
                 ObjectID: obj.ID,
@@ -124,11 +133,12 @@
             return request;
         }
 
-        buildAddItemsRequest(coll: CollectionVM, itemsToAdd: ObjectVM[]) {
+        buildAddItemsRequest(collectionProp: PropertyVM, itemsToAdd: ObjectVM[]) {
             var elementIDs = itemsToAdd.map(function (o) { return o.ID });
 
             var request: CollectionAddRequest = {
-                CollectionID: coll.ID,
+                ParentObjectID: collectionProp.ObjectID,
+                CollectionPropertyName: collectionProp.InternalName,
                 ElementIDs: elementIDs,
             };
 
