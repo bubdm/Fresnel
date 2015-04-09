@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity.Core.Objects;
-using Envivo.Fresnel.Core.Persistence;
-using System.Data.Entity.Core;
-using System.Linq.Expressions;
-using Autofac;
-using System.Data.Entity;
+﻿using Autofac;
 
 namespace Fresnel.SampleModel.Persistence
 {
@@ -17,7 +7,6 @@ namespace Fresnel.SampleModel.Persistence
     /// </summary>
     public class CustomDependencyModule : Module
     {
-
         protected override void Load(ContainerBuilder builder)
         {
             // NB: MARS is important:
@@ -42,6 +31,5 @@ namespace Fresnel.SampleModel.Persistence
                     .InstancePerLifetimeScope()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
         }
-
     }
 }

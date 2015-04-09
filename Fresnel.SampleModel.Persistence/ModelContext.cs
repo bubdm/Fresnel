@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity.Core.Objects;
-using Envivo.Fresnel.Core.Persistence;
-using System.Data.Entity.Core;
-using System.Linq.Expressions;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.Northwind;
-using Envivo.Fresnel.DomainTypes.Interfaces;
-using System.Data.Entity.Core.Metadata.Edm;
 using Envivo.Fresnel.SampleModel.TestTypes;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.Entity.Core.Metadata.Edm;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Fresnel.SampleModel.Persistence
 {
@@ -36,27 +33,47 @@ namespace Fresnel.SampleModel.Persistence
         }
 
         public DbSet<Address> AddressSet { get; set; }
+
         public DbSet<Category> CategorySet { get; set; }
+
         public DbSet<ContactDetails> ContactDetailsSet { get; set; }
+
         public DbSet<Country> CountrySet { get; set; }
+
         public DbSet<Customer> CustomerSet { get; set; }
+
         public DbSet<Employee> EmployeeSet { get; set; }
+
         public DbSet<Note> NoteSet { get; set; }
+
         public DbSet<Order> OrderSet { get; set; }
+
         public DbSet<OrderItem> OrderItemSet { get; set; }
+
         public DbSet<Organisation> OrganisationSet { get; set; }
+
         public DbSet<Person> PersonSet { get; set; }
+
         public DbSet<Product> ProductSet { get; set; }
+
         public DbSet<Region> RegionSet { get; set; }
+
         public DbSet<Role> RoleSet { get; set; }
+
         public DbSet<Shipment> ShipmentSet { get; set; }
+
         public DbSet<Shipper> ShipperSet { get; set; }
+
         public DbSet<StockDetail> StockDetailSet { get; set; }
+
         public DbSet<Supplier> SupplierSet { get; set; }
+
         public DbSet<Territory> TerritorySet { get; set; }
 
         public DbSet<BooleanValues> BooleanValuesSet { get; set; }
+
         public DbSet<MultiType> MultiTypeSet { get; set; }
+
         public DbSet<TextValues> TextValuesSet { get; set; }
 
         public bool IsKnownType(Type objectType)
@@ -222,6 +239,5 @@ namespace Fresnel.SampleModel.Persistence
         {
             _ObjectContext.DeleteObject(entityToDelete);
         }
-
     }
 }

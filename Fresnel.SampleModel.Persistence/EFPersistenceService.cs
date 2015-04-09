@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Envivo.Fresnel.DomainTypes.Interfaces;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity.Core.Objects;
-using Envivo.Fresnel.Core.Persistence;
-using System.Data.Entity.Core;
 using System.Linq.Expressions;
-using System.Data.Entity;
-using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Fresnel.SampleModel.Persistence
 {
