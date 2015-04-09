@@ -1,10 +1,6 @@
-using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.Northwind;
-using Envivo.Fresnel.SampleModel.Objects;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Reflection;
@@ -108,6 +104,5 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
 
             return MethodBase.GetCurrentMethod().Name;
         }
-
     }
 }

@@ -1,13 +1,7 @@
-using Envivo.Fresnel.Configuration;
-using System;
-using System.ComponentModel.DataAnnotations;
-
 namespace Envivo.Fresnel.SampleModel.TestTypes
 {
-
     public class ClassWithHiddenCtor
     {
-
         internal ClassWithHiddenCtor()
         { }
 
@@ -20,6 +14,5 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
         /// The description for this object
         /// </summary>
         public string Description { get; set; }
-
     }
 }

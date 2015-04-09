@@ -1,10 +1,7 @@
 using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.SampleModel.TestTypes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Windows;
 
 namespace Envivo.Fresnel.SampleModel.Northwind
 {
@@ -40,6 +37,5 @@ namespace Envivo.Fresnel.SampleModel.Northwind
             get { return _Categories; }
             set { _Categories = value; }
         }
-
     }
 }

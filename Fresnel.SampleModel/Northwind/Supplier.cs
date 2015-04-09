@@ -1,16 +1,10 @@
 using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.SampleModel.TestTypes;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Windows;
 
 namespace Envivo.Fresnel.SampleModel.Northwind
 {
     public class Supplier : Role
     {
-
         [Relationship(Type = RelationshipType.Has)]
         public virtual IParty Party { get; set; }
 
@@ -22,6 +16,5 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 
         [Relationship(Type = RelationshipType.Owns)]
         public virtual ContactDetails ContactDetails { get; set; }
-
     }
 }

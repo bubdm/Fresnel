@@ -1,12 +1,9 @@
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.TestTypes;
-using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Envivo.Fresnel.SampleModel.Northwind
 {
-
     public class ProductFilterQuerySpecification : IQuerySpecification<ObjectWithCtorInjection, Product>
     {
         private IPersistenceService _PersistenceService;

@@ -1,16 +1,14 @@
 using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.SampleModel.TestTypes;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Windows;
 
 namespace Envivo.Fresnel.SampleModel.Northwind
 {
     public class OrderItem
     {
-        public OrderItem() { }
+        public OrderItem()
+        {
+        }
 
         public OrderItem(Order parentOrder)
         {
@@ -40,6 +38,5 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         public int Quantity { get; set; }
 
         public double Discount { get; set; }
-
     }
 }

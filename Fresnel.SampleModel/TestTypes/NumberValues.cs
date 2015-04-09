@@ -1,4 +1,3 @@
-using Envivo.Fresnel.Configuration;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -67,7 +66,7 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
         /// This is a Number with a range of -234 to +234.
         /// Values beyond the ranges should not be allowed from the UI.
         /// </summary>
-        [Range(-234, 234, ErrorMessage="Please provide a value between -234 and +234")]
+        [Range(-234, 234, ErrorMessage = "Please provide a value between -234 and +234")]
         public int NumberWithRange
         {
             get { return _IntValue; }

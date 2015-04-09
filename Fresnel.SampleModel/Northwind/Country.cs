@@ -1,16 +1,10 @@
-using Envivo.Fresnel.Configuration;
-using Envivo.Fresnel.DomainTypes;
-using Envivo.Fresnel.SampleModel.TestTypes;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Windows;
 
 namespace Envivo.Fresnel.SampleModel.Northwind
 {
     public class Country
     {
-
         [Key]
         public Guid ID { get; set; }
 
@@ -18,6 +12,5 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         public long Version { get; set; }
 
         public string Name { get; set; }
-
     }
 }

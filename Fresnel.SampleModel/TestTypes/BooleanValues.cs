@@ -1,4 +1,3 @@
-using Envivo.Fresnel.Configuration;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -23,7 +22,7 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
         /// <summary>
         /// This is a Boolean with custom titles
         /// </summary>
-        [DisplayFormat(DataFormatString="Clockwise|Anti-Clockwise")]
+        [DisplayFormat(DataFormatString = "Clockwise|Anti-Clockwise")]
         public bool Orientation { get; set; }
 
         /// <summary>

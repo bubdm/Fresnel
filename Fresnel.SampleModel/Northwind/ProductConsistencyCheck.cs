@@ -1,4 +1,3 @@
-using Envivo.Fresnel.DomainTypes;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.Northwind;
 using System;
@@ -9,7 +8,6 @@ namespace Envivo.Fresnel.SampleModel.Objects
 {
     public class ProductConsistencyCheck : IConsistencyCheck<Product>
     {
-
         public AggregateException Check(Product obj)
         {
             var allExceptions = new List<Exception>();
@@ -26,6 +24,5 @@ namespace Envivo.Fresnel.SampleModel.Objects
 
             return new AggregateException(allExceptions);
         }
-
     }
 }

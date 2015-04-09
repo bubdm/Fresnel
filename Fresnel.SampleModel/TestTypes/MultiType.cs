@@ -1,4 +1,3 @@
-using Envivo.Fresnel.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -44,6 +43,5 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
             get { return _A_Collection; }
             set { _A_Collection = value; }
         }
-
     }
 }

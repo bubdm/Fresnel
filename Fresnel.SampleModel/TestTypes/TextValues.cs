@@ -1,4 +1,3 @@
-using Envivo.Fresnel.Configuration;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -63,7 +62,7 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
             get { return this.NormalText; }
             set { this.NormalText = value; }
         }
-        
+
         /// <summary>
         /// This is a password string, and should be shown using asterisks
         /// </summary>
@@ -89,6 +88,5 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
         [MaxLength(10)]
         [DisplayFormat(DataFormatString = @"[0-9]*")]
         public string EditMaskText { get; set; }
-
     }
 }
