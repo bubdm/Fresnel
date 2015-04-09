@@ -3,7 +3,9 @@ using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.SampleModel.TestTypes;
+using Envivo.Fresnel.Utils;
 using NUnit.Framework;
+using System;
 
 namespace Envivo.Fresnel.Tests.Domain
 {
@@ -77,7 +79,8 @@ namespace Envivo.Fresnel.Tests.Domain
             var tClass = (ClassTemplate)templateCache.GetTemplate(typeToInspect);
 
             // Assert:
-            var tMethod = tClass.Methods["MethodWithValueParameters"];
+            var methodName = LambdaExtensions.NameOf<MethodSamples>(x => x.MethodWithValueParameters(null, 0, DateTime.MinValue));
+            var tMethod = tClass.Methods[methodName];
 
             foreach (var tParam in tMethod.Parameters.Values)
             {

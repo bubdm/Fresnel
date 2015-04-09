@@ -7,6 +7,7 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.TestTypes;
+using Envivo.Fresnel.Utils;
 using NUnit.Framework;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -27,8 +28,8 @@ namespace Envivo.Fresnel.Tests.Domain
             var tClass = (ClassTemplate)templateCache.GetTemplate<BooleanValues>();
 
             // Act:
-            var tNormalBool = tClass.Properties["NormalBoolean"];
-            var tOrientation = tClass.Properties["Orientation"];
+            var tNormalBool = tClass.Properties[LambdaExtensions.NameOf<BooleanValues>(x=> x.NormalBoolean)];
+            var tOrientation = tClass.Properties[LambdaExtensions.NameOf<BooleanValues>(x => x.Orientation)];
 
             // Assert:
             var booleanAttr1 = tNormalBool.Attributes.Get<DisplayBooleanAttribute>();
@@ -50,11 +51,11 @@ namespace Envivo.Fresnel.Tests.Domain
             var tClass = (ClassTemplate)templateCache.GetTemplate<TextValues>();
 
             // Act:
-            var tReadOnlyText = tClass.Properties["ReadOnlyText"];
-            var tHiddenText = tClass.Properties["HiddenText"];
-            var tMultiLine = tClass.Properties["MultiLineText"];
-            var tPassword = tClass.Properties["PasswordText"];
-            var tTextWithSize = tClass.Properties["TextWithSize"];
+            var tReadOnlyText = tClass.Properties[LambdaExtensions.NameOf<TextValues>(x=> x.ReadOnlyText)];
+            var tHiddenText = tClass.Properties[LambdaExtensions.NameOf<TextValues>(x => x.HiddenText)];
+            var tMultiLine = tClass.Properties[LambdaExtensions.NameOf<TextValues>(x => x.MultiLineText)];
+            var tPassword = tClass.Properties[LambdaExtensions.NameOf<TextValues>(x => x.PasswordText)];
+            var tTextWithSize = tClass.Properties[LambdaExtensions.NameOf<TextValues>(x => x.TextWithSize)];
 
             // Assert:
             Assert.IsTrue(tReadOnlyText.Attributes.Get<VisibilityAttribute>().IsAllowed);
@@ -78,11 +79,11 @@ namespace Envivo.Fresnel.Tests.Domain
             var tClass = (ClassTemplate)templateCache.GetTemplate<DateValues>();
 
             // Act:
-            var tNormalDate = tClass.Properties["NormalDate"];
-            var tTimeFormat = tClass.Properties["TimeFormat"];
-            var tDateFormat = tClass.Properties["DateFormat"];
-            var tCustomDateFormat = tClass.Properties["CustomDateFormat"];
-            var tTimespan = tClass.Properties["Timespan"];
+            var tNormalDate = tClass.Properties[LambdaExtensions.NameOf<DateValues>(x => x.NormalDate)];
+            var tTimeFormat = tClass.Properties[LambdaExtensions.NameOf<DateValues>(x => x.TimeFormat)];
+            var tDateFormat = tClass.Properties[LambdaExtensions.NameOf<DateValues>(x => x.DateFormat)];
+            var tCustomDateFormat = tClass.Properties[LambdaExtensions.NameOf<DateValues>(x => x.CustomDateFormat)];
+            var tTimespan = tClass.Properties[LambdaExtensions.NameOf<DateValues>(x => x.Timespan)];
 
             // Assert:
             Assert.AreEqual(DataType.DateTime, tNormalDate.Attributes.Get<DataTypeAttribute>().DataType);
@@ -102,11 +103,11 @@ namespace Envivo.Fresnel.Tests.Domain
             var tClass = (ClassTemplate)templateCache.GetTemplate<NumberValues>();
 
             // Act:
-            var tNormalNumber = tClass.Properties["NormalNumber"];
-            var tHiddenNumber = tClass.Properties["HiddenNumber"];
-            var tNumberWithRange = tClass.Properties["NumberWithRange"];
-            var tDoubleNumber = tClass.Properties["DoubleNumber"];
-            var tFloatNumberWithPlaces = tClass.Properties["FloatNumberWithPlaces"];
+            var tNormalNumber = tClass.Properties[LambdaExtensions.NameOf<NumberValues>(x => x.NormalNumber)];
+            var tHiddenNumber = tClass.Properties[LambdaExtensions.NameOf<NumberValues>(x => x.HiddenNumber)];
+            var tNumberWithRange = tClass.Properties[LambdaExtensions.NameOf<NumberValues>(x => x.NumberWithRange)];
+            var tDoubleNumber = tClass.Properties[LambdaExtensions.NameOf<NumberValues>(x => x.DoubleNumber)];
+            var tFloatNumberWithPlaces = tClass.Properties[LambdaExtensions.NameOf<NumberValues>(x => x.FloatNumberWithPlaces)];
 
             // Assert:
             Assert.IsFalse(tHiddenNumber.Attributes.Get<VisibilityAttribute>().IsAllowed);
@@ -162,7 +163,7 @@ namespace Envivo.Fresnel.Tests.Domain
             var tClass = (ClassTemplate)templateCache.GetTemplate<Employee>();
 
             // Act:
-            var tHidden = tClass.Properties["HiddenProperty"];
+            var tHidden = tClass.Properties[LambdaExtensions.NameOf<Employee>(x => x.HiddenProperty)];
 
             // Assert:
             Assert.IsFalse(tHidden.IsVisible);
