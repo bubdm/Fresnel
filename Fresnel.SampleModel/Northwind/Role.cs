@@ -13,5 +13,10 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 
         [Display(AutoGenerateField = false)]
         public string HiddenProperty { get; set; }
+
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
     }
 }

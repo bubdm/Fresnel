@@ -47,5 +47,10 @@ namespace Envivo.Fresnel.SampleModel.Northwind
             this.Notes.Add(new Note() { Content = "Vacation starts on " + lastDayAtWork.AddDays(1) });
             this.Notes.Add(new Note() { Content = "Vacation ends on " + firstDayBackAtWork.AddDays(-1) });
         }
+
+        public override string ToString()
+        {
+            return this.Person.ToString();
+        }
     }
 }

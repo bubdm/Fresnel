@@ -25,5 +25,10 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 
         [DataType(DataType.PostalCode)]
         public string PostalCode { get; set; }
+
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
     }
 }

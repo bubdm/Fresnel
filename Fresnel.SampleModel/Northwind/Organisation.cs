@@ -22,5 +22,10 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         public Address PrimaryAddress { get; set; }
 
         public string RegistrationNumber { get; set; }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

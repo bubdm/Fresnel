@@ -27,6 +27,11 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         public string LastName { get; set; }
 
         public NameTitles Title { get; set; }
+
+        public override string ToString()
+        {
+            return string.Concat(this.Title, " ", this.FirstName, " ", this.LastName);
+        }
     }
 
     public enum NameTitles

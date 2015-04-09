@@ -16,5 +16,12 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 
         [Relationship(Type = RelationshipType.Owns)]
         public virtual ContactDetails ContactDetails { get; set; }
+
+        public override string ToString()
+        {
+            return this.Party != null ?
+                    this.Party.ToString() :
+                    this.GetType().Name;
+        }
     }
 }

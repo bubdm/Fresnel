@@ -17,5 +17,10 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 
         [Relationship(Type = RelationshipType.Has)]
         public virtual Shipper Shipper { get; set; }
+
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
     }
 }

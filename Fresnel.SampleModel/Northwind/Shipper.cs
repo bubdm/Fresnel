@@ -10,5 +10,10 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 
         [Relationship(Type = RelationshipType.Owns)]
         public Address Address { get; set; }
+
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
     }
 }

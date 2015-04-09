@@ -29,5 +29,10 @@ namespace Envivo.Fresnel.SampleModel.Northwind
             get { return _Products; }
             set { _Products = value; }
         }
+        
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

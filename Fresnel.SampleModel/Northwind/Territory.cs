@@ -13,6 +13,13 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         [ConcurrencyCheck]
         public long Version { get; set; }
 
+        public string Name{ get; set; }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
+
         /// <summary>
         /// The Employees allocated to this Territory
         /// </summary>

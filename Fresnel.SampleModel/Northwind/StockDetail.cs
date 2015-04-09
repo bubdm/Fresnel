@@ -27,5 +27,10 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         public int ReorderLevel { get; set; }
 
         public bool IsDiscontinued { get; set; }
+
+        public override string ToString()
+        {
+            return string.Concat(this.Product, " (", this.UnitsInStock, " remaining");
+        }
     }
 }

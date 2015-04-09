@@ -18,5 +18,10 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 
         [DataType(DataType.MultilineText)]
         public string Content { get; set; }
+
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
     }
 }
