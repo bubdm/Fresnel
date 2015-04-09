@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class CreateAndSetPropertyCommand : ICommand
     {
         private ObserverCache _ObserverCache;
-        private CreateCommand _CreateCommand;
+        private CreateObjectCommand _CreateCommand;
         private SetPropertyCommand _SetPropertyCommand;
         private ModificationsVmBuilder _ModificationsBuilder;
         private IClock _Clock;
@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         public CreateAndSetPropertyCommand
             (
             ObserverCache observerCache,
-            CreateCommand createCommand,
+            CreateObjectCommand createCommand,
             SetPropertyCommand setPropertyCommand,
             ModificationsVmBuilder modificationsBuilder,
             IClock clock
@@ -40,7 +40,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
             try
             {
-                var createRequest = new CreateRequest()
+                var createRequest = new CreateObjectRequest()
                 {
                      ParentObjectID = request.ObjectID,
                      ClassTypeName = request.ClassTypeName

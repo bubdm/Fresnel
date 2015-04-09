@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
             // Act:
-            var createRequest = new CreateRequest()
+            var createRequest = new CreateObjectRequest()
             {
                 ClassTypeName = typeof(ObjectWithCtorInjection).FullName
             };

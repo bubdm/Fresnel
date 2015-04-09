@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
     public class ToolboxController : ApiController
     {
         private GetClassHierarchyCommand _GetClassHierarchyCommand;
-        private CreateCommand _CreateCommand;
+        private CreateObjectCommand _CreateCommand;
         private SearchObjectsCommand _SearchObjectsCommand;
 
         public ToolboxController
@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
             )
         {
             _GetClassHierarchyCommand = commands.OfType<GetClassHierarchyCommand>().Single();
-            _CreateCommand = commands.OfType<CreateCommand>().Single();
+            _CreateCommand = commands.OfType<CreateObjectCommand>().Single();
             _SearchObjectsCommand = commands.OfType<SearchObjectsCommand>().Single();
         }
 
@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public CreateCommandResponse Create([FromBody]CreateRequest id)
+        public CreateCommandResponse Create([FromBody]CreateObjectRequest id)
         {
             var request = id;
             var result = _CreateCommand.Invoke(request);

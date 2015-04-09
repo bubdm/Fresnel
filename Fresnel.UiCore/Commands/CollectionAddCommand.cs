@@ -16,7 +16,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
-        private CreateObjectCommand _CreateObjectCommand;
+        private Core.Commands.CreateObjectCommand _CreateObjectCommand;
         private AddToCollectionCommand _AddToCollectionCommand;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private ModificationsVmBuilder _ModificationsBuilder;
@@ -27,7 +27,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             TemplateCache templateCache,
             ObserverCache observerCache,
             Core.Commands.GetPropertyCommand getPropertyCommand,
-            CreateObjectCommand createObjectCommand,
+            Core.Commands.CreateObjectCommand createObjectCommand,
             AddToCollectionCommand addToCollectionCommand,
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsBuilder,

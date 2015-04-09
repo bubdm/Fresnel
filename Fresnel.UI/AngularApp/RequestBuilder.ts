@@ -3,7 +3,7 @@
     export class RequestBuilder {
 
         buildCreateObjectRequest(obj: ObjectVM, fullClassTypeName: string) {
-            var request: CreateRequest = {
+            var request: CreateObjectRequest = {
                 ParentObjectID: obj != null ? obj.ID : null,
                 ClassTypeName: fullClassTypeName
             };

@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.CompositionRoot
             return new Type[] {
                 typeof(Fresnel.UiCore.Commands.GetClassHierarchyCommand),
                 typeof(Fresnel.UiCore.Commands.CleanupSessionCommand),
-                typeof(Fresnel.UiCore.Commands.CreateCommand),
+                typeof(Fresnel.UiCore.Commands.CreateObjectCommand),
                 typeof(Fresnel.UiCore.Commands.GetObjectCommand),
                 typeof(Fresnel.UiCore.Commands.GetPropertyCommand),
                 typeof(Fresnel.UiCore.Commands.CreateAndSetPropertyCommand),

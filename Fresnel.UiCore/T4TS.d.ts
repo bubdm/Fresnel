@@ -46,8 +46,8 @@ declare module FresnelApp {
     export interface CreateCommandResponse extends FresnelApp.BaseCommandResponse {
         NewObject: FresnelApp.ObjectVM;
     }
-    /** Generated from Envivo.Fresnel.UiCore.Commands.CreateRequest **/
-    export interface CreateRequest {
+    /** Generated from Envivo.Fresnel.UiCore.Commands.CreateObjectRequest **/
+    export interface CreateObjectRequest {
         ParentObjectID: any;
         ClassTypeName: string;
     }

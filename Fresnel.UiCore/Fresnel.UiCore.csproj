@@ -52,7 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CreateRequest.cs" />
+    <Compile Include="Commands\CreateObjectRequest.cs" />
     <Compile Include="Commands\CollectionAddRequest.cs" />
     <Compile Include="Commands\CollectionAddNewRequest.cs" />
     <Compile Include="Commands\CreateAndSetPropertyResponse.cs" />
@@ -119,7 +119,7 @@
     <Compile Include="Commands\GetPropertyResponse.cs" />
     <Compile Include="Commands\GetPropertyCommand.cs" />
     <Compile Include="Commands\CreateCommandResponse.cs" />
-    <Compile Include="Commands\CreateCommand.cs" />
+    <Compile Include="Commands\CreateObjectCommand.cs" />
     <Compile Include="Model\Changes\ModificationsVmBuilder.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="MethodVmBuilder.cs" />

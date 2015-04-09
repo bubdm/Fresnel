@@ -197,7 +197,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var createRequest = new CreateRequest()
+            var createRequest = new CreateObjectRequest()
             {
                 ClassTypeName = typeof(MultiType).FullName
             };
@@ -236,7 +236,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var createRequest = new CreateRequest()
+            var createRequest = new CreateObjectRequest()
             {
                 ClassTypeName = typeof(MultiType).FullName
             };
@@ -276,7 +276,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var createRequest = new CreateRequest()
+            var createRequest = new CreateObjectRequest()
             {
                 ClassTypeName = typeof(MethodSamples).FullName
             };

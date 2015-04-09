@@ -39,7 +39,7 @@
             return promise;
         }
         
-        createObject(request: CreateRequest): ng.IPromise<any> {
+        createObject(request: CreateObjectRequest): ng.IPromise<any> {
             this.blockUI.start("Creating new object...");
 
             var uri = "api/Toolbox/Create";

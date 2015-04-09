@@ -72,7 +72,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
-            var createRequest = new CreateRequest()
+            var createRequest = new CreateObjectRequest()
             {
                 ClassTypeName = typeof(MethodSamples).FullName
             };

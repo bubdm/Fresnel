@@ -9,19 +9,19 @@ using System;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
-    public class CreateCommand : ICommand
+    public class CreateObjectCommand : ICommand
     {
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
-        private CreateObjectCommand _CreateObjectCommand;
+        private Core.Commands.CreateObjectCommand _CreateObjectCommand;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private IClock _Clock;
 
-        public CreateCommand
+        public CreateObjectCommand
             (
             TemplateCache templateCache,
             ObserverCache observerCache,
-            CreateObjectCommand createObjectCommand,
+            Core.Commands.CreateObjectCommand createObjectCommand,
             AbstractObjectVmBuilder objectVMBuilder,
             IClock clock
             )
@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public CreateCommandResponse Invoke(CreateRequest request)
+        public CreateCommandResponse Invoke(CreateObjectRequest request)
         {
             try
             {

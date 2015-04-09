@@ -41,7 +41,7 @@ namespace Envivo.Fresnel.Tests.Persistence
             var explorerController = container.Resolve<ExplorerController>();
 
             // Act:
-            var createRequest = new CreateRequest()
+            var createRequest = new CreateObjectRequest()
             {
                 ClassTypeName = typeof(Order).FullName
             };
