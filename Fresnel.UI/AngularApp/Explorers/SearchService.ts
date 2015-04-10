@@ -78,12 +78,14 @@ module FresnelApp {
 
                 this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
-                var searchResults: SearchResultsVM = response.Result;
-                searchResults.OriginalRequest = request;
-                searchResults.AllowSelection = true;
-                searchResults.AllowMultiSelect = true;
+                if (response.Passed) {
+                    var searchResults: SearchResultsVM = response.Result;
+                    searchResults.OriginalRequest = request;
+                    searchResults.AllowSelection = true;
+                    searchResults.AllowMultiSelect = true;
 
-                this.showSearchResultsModal(searchResults, onSelectionConfirmed);
+                    this.showSearchResultsModal(searchResults, onSelectionConfirmed);
+                }
             });
         }
 
@@ -98,12 +100,14 @@ module FresnelApp {
 
                 this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
-                var searchResults: SearchResultsVM = response.Result;
-                searchResults.OriginalRequest = request;
-                searchResults.AllowSelection = true;
-                searchResults.AllowMultiSelect = true;
+                if (response.Passed) {
+                    var searchResults: SearchResultsVM = response.Result;
+                    searchResults.OriginalRequest = request;
+                    searchResults.AllowSelection = true;
+                    searchResults.AllowMultiSelect = true;
 
-                this.showSearchResultsModal(searchResults, onSelectionConfirmed);
+                    this.showSearchResultsModal(searchResults, onSelectionConfirmed);
+                }
             });
         }
 
@@ -163,7 +167,7 @@ module FresnelApp {
                 var response = promiseResult.data;
 
                 this.appService.identityMap.merge(response.Modifications);
-                $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+                this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                 if (response.Passed) {
                     var latestObj = response.ReturnValue;
@@ -174,7 +178,7 @@ module FresnelApp {
                     else {
                         this.appService.identityMap.mergeObjects(existingObj, latestObj);
                     }
-                    $rootScope.$broadcast(UiEventType.ExplorerOpen, latestObj, parentExplorer);
+                    this.rootScope.$broadcast(UiEventType.ExplorerOpen, latestObj, parentExplorer);
                 }
             });
         }
@@ -189,21 +193,23 @@ module FresnelApp {
 
                 this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
-                var newSearchResults: SearchResultsVM = response.Result;
-                if (newSearchResults.Items.length == 0)
-                    return;
+                if (response.Passed) {
+                    var newSearchResults: SearchResultsVM = response.Result;
+                    if (newSearchResults.Items.length == 0)
+                        return;
 
-                // Ensure that we re-use any objects that are already cached:
-                var bindableItems = this.mergeSearchResults(newSearchResults);
+                    // Ensure that we re-use any objects that are already cached:
+                    var bindableItems = this.mergeSearchResults(newSearchResults);
 
-                // Append the new items to the exist results:
-                for (var i = 0; i < bindableItems.length; i++) {
-                    existingSearchResults.Items.push(bindableItems[i]);
+                    // Append the new items to the exist results:
+                    for (var i = 0; i < bindableItems.length; i++) {
+                        existingSearchResults.Items.push(bindableItems[i]);
+                    }
+
+                    // This allows Smart-Table to handle the st-safe-src properly:
+                    existingSearchResults.DisplayItems = [].concat(existingSearchResults.Items);
+                    existingSearchResults.AreMoreAvailable = newSearchResults.AreMoreAvailable;
                 }
-
-                // This allows Smart-Table to handle the st-safe-src properly:
-                existingSearchResults.DisplayItems = [].concat(existingSearchResults.Items);
-                existingSearchResults.AreMoreAvailable = newSearchResults.AreMoreAvailable;
             })
                 .finally(() => {
                 this.blockUI.stop();
@@ -218,17 +224,19 @@ module FresnelApp {
 
                 this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
-                var newSearchResults: SearchResultsVM = response.Result;
+                if (response.Passed) {
+                    var newSearchResults: SearchResultsVM = response.Result;
 
-                // Ensure that we re-use any objects that are already cached:
-                var bindableItems = this.mergeSearchResults(newSearchResults);
+                    // Ensure that we re-use any objects that are already cached:
+                    var bindableItems = this.mergeSearchResults(newSearchResults);
 
-                // Replace the existing items:
-                existingSearchResults.Items = bindableItems;
+                    // Replace the existing items:
+                    existingSearchResults.Items = bindableItems;
 
-                // This allows Smart-Table to handle the st-safe-src properly:
-                existingSearchResults.DisplayItems = [].concat(existingSearchResults.Items);
-                existingSearchResults.AreMoreAvailable = newSearchResults.AreMoreAvailable;
+                    // This allows Smart-Table to handle the st-safe-src properly:
+                    existingSearchResults.DisplayItems = [].concat(existingSearchResults.Items);
+                    existingSearchResults.AreMoreAvailable = newSearchResults.AreMoreAvailable;
+                }
             })
                 .finally(() => {
                 this.blockUI.stop();

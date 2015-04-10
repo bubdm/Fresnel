@@ -55,16 +55,21 @@
 
                 $scope.searchAction().then((promiseResult) => {
                     var response = promiseResult.data;
-                    var newSearchResults: SearchResultsVM = response.Result;
 
-                    // Ensure that we re-use any objects that are already cached:
-                    var bindableItems = searchService.mergeSearchResults(newSearchResults);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
-                    // This allows Smart-Table to handle the st-safe-src properly:
-                    $scope.results.Items = bindableItems;
-                    $scope.results.DisplayItems = [].concat(bindableItems);
+                    if (response.Passed) {
+                        var newSearchResults: SearchResultsVM = response.Result;
 
-                    tableState.pagination.numberOfPages = 50;
+                        // Ensure that we re-use any objects that are already cached:
+                        var bindableItems = searchService.mergeSearchResults(newSearchResults);
+
+                        // This allows Smart-Table to handle the st-safe-src properly:
+                        $scope.results.Items = bindableItems;
+                        $scope.results.DisplayItems = [].concat(bindableItems);
+
+                        tableState.pagination.numberOfPages = 50;
+                    }
                 })
                     .finally(() => {
                     blockUI.stop();
