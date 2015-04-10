@@ -52,7 +52,7 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         {
             return this.Person != null ?
                 this.Person.ToString() :
-                this.GetType().Name;
+                typeof(Person).Name;;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         {
             return this.Party != null ?
                     this.Party.ToString() :
-                    this.GetType().Name;
+                    typeof(Supplier).Name;
         }
     }
 }
