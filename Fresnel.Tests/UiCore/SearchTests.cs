@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.Objects;
 using Envivo.Fresnel.SampleModel.TestTypes;
@@ -363,6 +365,58 @@ namespace Envivo.Fresnel.Tests.Proxies
             // Assert:
             Assert.IsTrue(searchResponse.Passed);
             Assert.GreaterOrEqual(searchResponse.Result.ElementProperties.Count(), 3);
+        }
+
+        [Test]
+        public void ShouldAssignCorrectValuesForClassHierarchy()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(BaseParty).Assembly);
+
+            var controller = container.Resolve<ToolboxController>();
+
+            // Act:
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(BaseParty).FullName,
+                PageSize = 100,
+                PageNumber = 1
+            };
+
+            var searchResponse = controller.SearchObjects(searchRequest);
+
+            // Assert:
+            Assert.IsTrue(searchResponse.Passed);
+
+            var templateCache = container.Resolve<TemplateCache>();
+            var tPerson = (ClassTemplate)templateCache.GetTemplate<Person>();
+            var tOrganisation = (ClassTemplate)templateCache.GetTemplate<Organisation>();
+
+            // All "Person" rows should have blanks for "Organisation" columns
+            CheckPropertyColumnsDoNotCollide(searchResponse.Result, tPerson, tOrganisation);
+
+            // All "Organisation" rows should have blanks for "Person" columns
+            CheckPropertyColumnsDoNotCollide(searchResponse.Result, tOrganisation, tPerson);
+        }
+
+        private void CheckPropertyColumnsDoNotCollide(SearchResultsVM searchResult, ClassTemplate tClassToCheck, ClassTemplate tOtherClass)
+        {
+            var rowsToCheck = searchResult.Items.Where(i => i.Name == tClassToCheck.Name).ToArray();
+
+            foreach (var row in rowsToCheck)
+            {
+                var visibleProperties = tOtherClass.Properties.VisibleOnly;
+
+                foreach (var tProp in visibleProperties)
+                {
+                    var propVM = row.Properties.Single(p => p.InternalName == tProp.Name);
+                    Assert.IsNull(propVM.State.Value);
+                }
+            }
         }
 
         [Test]

@@ -48,7 +48,7 @@ namespace Envivo.Fresnel.UiCore
             }
             else if (oObject != null)
             {
-                var allKnownProperties = oObject.Template.Properties.Values;
+                var allKnownProperties = oObject.Template.Properties.VisibleOnly;
                 return this.BuildForObject(oObject, allKnownProperties);
             }
 
