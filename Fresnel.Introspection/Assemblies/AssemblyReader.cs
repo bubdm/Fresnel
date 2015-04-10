@@ -120,7 +120,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
 
         public IEnumerable<ClassTemplate> GetTemplates()
         {
-            var results = _TemplateMap.OfType<ClassTemplate>().ToArray();
+            var results = _TemplateMap.Values.OfType<ClassTemplate>().ToArray();
             return results;
         }
 
