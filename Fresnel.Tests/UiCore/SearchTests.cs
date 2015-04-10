@@ -339,6 +339,33 @@ namespace Envivo.Fresnel.Tests.Proxies
         //}
 
         [Test]
+        public void ShouldShowAllHeadersForClassHierarchy()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(BaseParty).Assembly);
+
+            var controller = container.Resolve<ToolboxController>();
+
+            // Act:
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(BaseParty).FullName,
+                PageSize = 100,
+                PageNumber = 1
+            };
+
+            var searchResponse = controller.SearchObjects(searchRequest);
+
+            // Assert:
+            Assert.IsTrue(searchResponse.Passed);
+            Assert.GreaterOrEqual(searchResponse.Result.ElementProperties.Count(), 3);
+        }
+
+        [Test]
         public void ShouldFilterTextProperties()
         {
             // Arrange:
