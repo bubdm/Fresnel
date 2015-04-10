@@ -2,6 +2,7 @@ using Envivo.Fresnel.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Envivo.Fresnel.SampleModel.Northwind
 {
@@ -14,6 +15,9 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 
         [ConcurrencyCheck]
         public long Version { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int OrderNumber { get; set; }
 
         [Relationship(Type = RelationshipType.Has)]
         public virtual Customer DeliverTo { get; set; }
@@ -33,7 +37,7 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 
         public override string ToString()
         {
-            return typeof(Order).Name;
+            return string.Concat(typeof(Order).Name, "/", this.OrderNumber);
         }
     }
 }
