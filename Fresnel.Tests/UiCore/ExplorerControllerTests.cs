@@ -80,7 +80,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var elementType = typeof(BooleanValues);
             var template = (ClassTemplate)templateCache.GetTemplate(elementType);
 
-            var visibleProperties = template.Properties.Values.Where(p => !p.IsFrameworkMember && p.IsVisible);
+            var visibleProperties = template.Properties.VisibleOnly;
 
             Assert.GreaterOrEqual(collectionVM.ElementProperties.Count(), visibleProperties.Count());
         }
