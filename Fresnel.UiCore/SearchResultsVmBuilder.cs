@@ -62,7 +62,7 @@ namespace Envivo.Fresnel.UiCore
                 ElementType = tElement.RealType.FullName,
                 IsVisible = oCollection.Template.IsVisible,
                 ElementProperties = elementProperties.ToArray(),
-                Properties = this.CreateProperties(oCollection).ToArray(),
+                Properties = this.CreateProperties(oCollection, allKnownProperties).ToArray(),
                 Items = this.CreateItems(oCollection, allKnownProperties).ToArray(),
                 AreMoreAvailable = searchResults.Count() > originalRequest.PageSize,
 
@@ -81,14 +81,14 @@ namespace Envivo.Fresnel.UiCore
                 var objType = _RealTypeResolver.GetRealType(obj);
 
                 var oObject = (ObjectObserver)_ObserverCache.GetObserver(obj, objType);
-                var objVM = this.BuildForObject(oObject);
+                var objVM = this.BuildForObject(oObject, allKnownProperties);
 
                 items.Add(objVM);
             }
             return items;
         }
 
-        private SearchResultItemVM BuildForObject(ObjectObserver oObject)
+        private SearchResultItemVM BuildForObject(ObjectObserver oObject, IEnumerable<PropertyTemplate> allKnownProperties)
         {
             var title = oObject.RealObject.ToString() ?? oObject.Template.FriendlyName;
             if (title == oObject.Template.FullName)
@@ -103,29 +103,28 @@ namespace Envivo.Fresnel.UiCore
                 Type = oObject.Template.RealType.Name,
                 IsVisible = oObject.Template.IsVisible,
                 IsPersistable = oObject.Template.IsPersistable,
-                Properties = this.CreateProperties(oObject).ToArray(),
+                Properties = this.CreateProperties(oObject, allKnownProperties).ToArray(),
                 DirtyState = this.CreateDirtyState(oObject),
             };
 
             return result;
         }
 
-        private IEnumerable<PropertyVM> CreateProperties(ObjectObserver oObject)
+        private IEnumerable<PropertyVM> CreateProperties(ObjectObserver oObject, IEnumerable<PropertyTemplate> allKnownProperties)
         {
-            var visibleProperties = oObject.Properties.Values.Where(p => !p.Template.IsFrameworkMember &&
-                                                                          p.Template.IsVisible);
-
             var properties = new List<PropertyVM>();
-            foreach (var oProp in visibleProperties)
+            foreach (var tProp in allKnownProperties)
             {
-                var propVM = _PropertyVmBuilder.BuildFor(oProp);
-                propVM.Description = null;
+                var oProp = oObject.Properties.TryGetValueOrNull(tProp.Name);
+                var propVM = oProp != null ?
+                            _PropertyVmBuilder.BuildFor(oProp) :
+                            _PropertyVmBuilder.BuildEmptyVMFor(tProp);
                 propVM.Index = properties.Count;
                 properties.Add(propVM);
             }
             return properties;
         }
-
+        
         private DirtyStateVM CreateDirtyState(ObjectObserver oObject)
         {
             return new DirtyStateVM()

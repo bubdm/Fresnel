@@ -2,6 +2,7 @@
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Model;
+using Envivo.Fresnel.Utils;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -47,7 +48,8 @@ namespace Envivo.Fresnel.UiCore
             }
             else if (oObject != null)
             {
-                return this.BuildForObject(oObject);
+                var allKnownProperties = oObject.Template.Properties.Values;
+                return this.BuildForObject(oObject, allKnownProperties);
             }
 
             return null;
@@ -77,7 +79,7 @@ namespace Envivo.Fresnel.UiCore
                 IsVisible = oCollection.Template.IsVisible,
                 ElementProperties = elementProperties.ToArray(),
                 Description = oCollection.Template.XmlComments.Summary,
-                Properties = this.CreateProperties(oCollection).ToArray(),
+                Properties = this.CreateProperties(oCollection, allKnownProperties).ToArray(),
                 Methods = this.CreateMethods(oCollection).ToArray(),
                 Items = this.CreateItems(oCollection, allKnownProperties).ToArray(),
 
@@ -105,8 +107,7 @@ namespace Envivo.Fresnel.UiCore
             }
         }
 
-        private IEnumerable<ObjectVM> CreateItems(CollectionObserver oCollection,
-                                                  IEnumerable<PropertyTemplate> allKnownProperties)
+        private IEnumerable<ObjectVM> CreateItems(CollectionObserver oCollection, IEnumerable<PropertyTemplate> allKnownProperties)
         {
             var items = new List<ObjectVM>();
             foreach (var obj in oCollection.GetItems())
@@ -114,14 +115,14 @@ namespace Envivo.Fresnel.UiCore
                 var objType = _RealTypeResolver.GetRealType(obj);
 
                 var oObject = (ObjectObserver)_ObserverCache.GetObserver(obj, objType);
-                var objVM = this.BuildForObject(oObject);
+                var objVM = this.BuildForObject(oObject, allKnownProperties);
 
                 items.Add(objVM);
             }
             return items;
         }
 
-        private ObjectVM BuildForObject(ObjectObserver oObject)
+        private ObjectVM BuildForObject(ObjectObserver oObject, IEnumerable<PropertyTemplate> allKnownProperties)
         {
             var title = oObject.RealObject.ToString() ?? oObject.Template.FriendlyName;
             if (title == oObject.Template.FullName)
@@ -136,7 +137,7 @@ namespace Envivo.Fresnel.UiCore
                 Type = oObject.Template.RealType.Name,
                 IsVisible = oObject.Template.IsVisible,
                 Description = oObject.Template.XmlComments.Summary,
-                Properties = this.CreateProperties(oObject).ToArray(),
+                Properties = this.CreateProperties(oObject, allKnownProperties).ToArray(),
                 Methods = this.CreateMethods(oObject).ToArray(),
 
                 IsPersistable = oObject.Template.IsPersistable,
@@ -146,15 +147,15 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private IEnumerable<PropertyVM> CreateProperties(ObjectObserver oObject)
+        private IEnumerable<PropertyVM> CreateProperties(ObjectObserver oObject, IEnumerable<PropertyTemplate> allKnownProperties)
         {
-            var visibleProperties = oObject.Properties.Values.Where(p => !p.Template.IsFrameworkMember &&
-                                                                          p.Template.IsVisible);
-
             var properties = new List<PropertyVM>();
-            foreach (var oProp in visibleProperties)
+            foreach (var tProp in allKnownProperties)
             {
-                var propVM = _PropertyVmBuilder.BuildFor(oProp);
+                var oProp = oObject.Properties.TryGetValueOrNull(tProp.Name);
+                var propVM = oProp != null ?
+                            _PropertyVmBuilder.BuildFor(oProp) :
+                            _PropertyVmBuilder.BuildEmptyVMFor(tProp);
                 propVM.Index = properties.Count;
                 properties.Add(propVM);
             }

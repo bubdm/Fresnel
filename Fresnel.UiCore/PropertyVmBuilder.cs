@@ -43,5 +43,11 @@ namespace Envivo.Fresnel.UiCore
             return propVM;
         }
 
+        public PropertyVM BuildEmptyVMFor(PropertyTemplate tProp)
+        {
+            var propVM = _EmptyPropertyVmBuilder.BuildFor(tProp);
+            propVM.State = new ValueStateVM();
+            return propVM;
+        }
     }
 }
