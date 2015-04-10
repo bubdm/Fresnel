@@ -20,5 +20,10 @@ namespace Envivo.Fresnel.UiCore.Model
 
         [DefaultValue(false)]
         public bool IsAsync { get; set; }
+
+        public override string ToString()
+        {
+            return string.Concat(this.Index, "/", this.InternalName);
+        }
     }
 }

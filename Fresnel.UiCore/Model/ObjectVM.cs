@@ -22,5 +22,10 @@ namespace Envivo.Fresnel.UiCore.Model
         public bool IsPersistable { get; set; }
 
         public DirtyStateVM DirtyState { get; set; }
+
+        public override string ToString()
+        {
+            return string.Concat(this.Type, "/", this.ID, "/", this.DirtyState);
+        }
     }
 }

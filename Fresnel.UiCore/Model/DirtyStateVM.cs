@@ -6,7 +6,7 @@ using T4TS;
 namespace Envivo.Fresnel.UiCore.Model
 {
     [TypeScriptInterface]
-    public class DirtyStateVM 
+    public class DirtyStateVM
     {
         /// <summary>
         /// Determines if the Object is brand new
@@ -32,5 +32,12 @@ namespace Envivo.Fresnel.UiCore.Model
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public bool HasDirtyChildren { get; set; }
 
+        public override string ToString()
+        {
+            return string.Concat(this.IsTransient ? "N " : " ",
+                                 this.IsPersistent ? "P " : " ",
+                                 this.IsDirty ? "D " : " ",
+                                 this.HasDirtyChildren ? "DC " : " ");
+        }
     }
 }

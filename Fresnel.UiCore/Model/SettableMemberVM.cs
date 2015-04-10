@@ -42,5 +42,10 @@ namespace Envivo.Fresnel.UiCore.Model
         public ITypeInfo Info { get; set; }
 
         public ValueStateVM State { get; set; }
+
+        public override string ToString()
+        {
+            return string.Concat(this.InternalName, "/", this.State);
+        }
     }
 }

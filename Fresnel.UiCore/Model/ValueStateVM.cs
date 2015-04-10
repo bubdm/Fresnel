@@ -6,7 +6,7 @@ using T4TS;
 namespace Envivo.Fresnel.UiCore.Model
 {
     [TypeScriptInterface]
-    public class ValueStateVM 
+    public class ValueStateVM
     {
         // By default, null values are omitted by the WebApi serialiser. 
         // However, we need to ensure this property is always sent:
@@ -43,5 +43,12 @@ namespace Envivo.Fresnel.UiCore.Model
         /// Interaction state for adding to a collection property
         /// </summary>
         public InteractionPoint Add { get; set; }
+
+        public override string ToString()
+        {
+            return this.Value != null ?
+                    this.Value.ToString() :
+                    this.ReferenceValueID.ToString();
+        }
     }
 }
