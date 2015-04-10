@@ -7,6 +7,7 @@ namespace Envivo.Fresnel.Introspection.Templates
     public class MethodTemplateMap : ReadOnlyDictionary<string, MethodTemplate>
     {
         private IDictionary<MethodInfo, MethodTemplate> _tMethods;
+        private IEnumerable<MethodTemplate> _VisibleOnly;
         private IEnumerable<MethodTemplate> _tMethodsForLinking;
         private IEnumerable<MethodTemplate> _tMethodsForUnlinking;
 
@@ -19,6 +20,7 @@ namespace Envivo.Fresnel.Introspection.Templates
             : base(items)
         {
             _tMethods = items.Values.ToDictionary(i => i.MethodInfo);
+            _VisibleOnly = items.Values.Where(i => i.IsVisible && !i.IsFrameworkMember).ToArray();
             _tMethodsForLinking = linkerMethods;
             _tMethodsForUnlinking = unlinkerMethods;
         }
@@ -26,6 +28,14 @@ namespace Envivo.Fresnel.Introspection.Templates
         internal MethodTemplate this[MethodInfo methodInfo]
         {
             get { return _tMethods[methodInfo]; }
+        }
+
+        /// <summary>
+        /// Returns the Methods that are for end user usage
+        /// </summary>
+        public IEnumerable<MethodTemplate> VisibleOnly
+        {
+            get { return _VisibleOnly; }
         }
 
         /// <summary>
