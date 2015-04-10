@@ -115,22 +115,19 @@ namespace Envivo.Fresnel.UiCore
                 }
             }
 
-            if (tProp.IsDomainObject)
-            {
-                result.Create = this.BuildCreate(tProp, result);
-            }
+            result.Create = tProp.IsCollection ? this.BuildCreateForCollection(tProp, result) :
+                            tProp.IsDomainObject ? this.BuildCreateForObject(tProp, result) :
+                            null;
 
             result.Clear = this.BuildClear(tProp, result);
 
-            if (tProp.IsCollection)
-            {
-                result.Add = this.BuildAdd(tProp, result);
-            }
+            result.Add = tProp.IsCollection ? this.BuildAdd(tProp, result) :
+                            null;
 
             return result;
         }
 
-        private InteractionPoint BuildCreate(PropertyTemplate tProp, ValueStateVM valueState)
+        private InteractionPoint BuildCreateForObject(PropertyTemplate tProp, ValueStateVM valueState)
         {
             var result = new InteractionPoint();
 
@@ -151,7 +148,27 @@ namespace Envivo.Fresnel.UiCore
                 return result;
             }
 
-            var createCheck = _CanCreatePermission.IsSatisfiedBy((ClassTemplate)tProp.InnerClass);
+            var tClassType = (ClassTemplate)tProp.InnerClass;
+            var createCheck = _CanCreatePermission.IsSatisfiedBy(tClassType);
+            result.IsEnabled = createCheck == null;
+            result.Error = result.IsEnabled ? null : createCheck.Flatten().Message;
+            return result;
+        }
+
+        private InteractionPoint BuildCreateForCollection(PropertyTemplate tProp, ValueStateVM valueState)
+        {
+            var result = new InteractionPoint();
+
+            if (!tProp.IsCompositeRelationship)
+            {
+                result.IsEnabled = false;
+                result.IsVisible = false;
+                result.Error = "New items can only be created if the parent object is the Owner";
+                return result;
+            }
+
+            var tClassType = ((CollectionTemplate)tProp.InnerClass).InnerClass;
+            var createCheck = _CanCreatePermission.IsSatisfiedBy(tClassType);
             result.IsEnabled = createCheck == null;
             result.Error = result.IsEnabled ? null : createCheck.Flatten().Message;
             return result;
