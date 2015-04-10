@@ -7,12 +7,12 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 {
     public class Person : BaseParty
     {
-     
+
+        public NameTitles Title { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
-
-        public NameTitles Title { get; set; }
 
         public override string ToString()
         {
