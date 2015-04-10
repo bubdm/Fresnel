@@ -16,10 +16,23 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class SearchResultsFilterApplier
     {
+        private ClassHierarchyBuilder _ClassHierarchyBuilder;
+
+        public SearchResultsFilterApplier
+            (
+            ClassHierarchyBuilder classHierarchyBuilder
+            )
+        {
+            _ClassHierarchyBuilder = classHierarchyBuilder;
+        }
 
         public IQueryable ApplyFilter(SearchRequest request, IQueryable searchResults, ClassTemplate tElement)
         {
-            IQueryable results = null;
+            if (request.PageNumber < 1)
+                throw new UiCoreException("The Page number must be at least 1");
+
+            if (request.PageSize < 1)
+                throw new UiCoreException("The Page Size must be at least 1");
 
             if (request.OrderBy.IsEmpty())
             {
@@ -27,15 +40,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 request.IsDescendingOrder = true;
             }
 
-            var tProp = tElement.Properties[request.OrderBy];
-            if (tProp.IsCollection)
-                throw new UiCoreException("Sorting by Collection properties is not allowed");
-
-            if (request.PageNumber < 1)
-                throw new UiCoreException("The Page number must be at least 1");
-
-            if (request.PageSize < 1)
-                throw new UiCoreException("The Page Size must be at least 1");
+            this.CheckOrderByIsValid(request, tElement);
 
             var maxLimit = request.PageSize + 1;
             var rowsToSkip = request.PageSize * (request.PageNumber - 1);
@@ -47,11 +52,11 @@ namespace Envivo.Fresnel.UiCore.Commands
 
             var whereClause = this.BuildWhereClauseString(request, tElement);
             var whereParams = this.BuildWhereClauseParameters(request, tElement);
-            results = searchResults
-                        .OrderBy(orderBy)
-                        .Where(whereClause, whereParams)
-                        .Skip(rowsToSkip)
-                        .Take(maxLimit);
+            IQueryable results = searchResults
+                                    .OrderBy(orderBy)
+                                    .Where(whereClause, whereParams)
+                                    .Skip(rowsToSkip)
+                                    .Take(maxLimit);
 
             var matches = results.ToList<object>();
             if (matches.Count < maxLimit)
@@ -68,6 +73,22 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
 
             return results;
+        }
+
+        private void CheckOrderByIsValid(SearchRequest request, ClassTemplate tClass)
+        {
+            var allKnownProperties = _ClassHierarchyBuilder
+                                        .GetProperties(tClass)
+                                        .ToDictionary(i => i.Name, StringComparer.OrdinalIgnoreCase);
+            var tProp = allKnownProperties[request.OrderBy];
+
+            if (tProp.OuterClass != tClass)
+            {
+                throw new UiCoreException("Unable to sort by properties on subclasses, as this hasn't been implemented yet");
+            }
+
+            if (!tProp.IsNonReference)
+                throw new UiCoreException("Unable to sort by Objects or Collections, as this hasn't been implemented yet");
         }
 
         private string BuildWhereClauseString(SearchRequest request, ClassTemplate tClass)

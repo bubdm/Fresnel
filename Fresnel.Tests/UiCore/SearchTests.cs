@@ -604,6 +604,34 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             Assert.IsTrue(columnValues.All(v => (v & filterValue) != 0));
         }
+
+        [Test]
+        public void ShouldNotAllowSortingBySubclassProperty()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(BaseParty).Assembly);
+
+            var toolboxController = container.Resolve<ToolboxController>();
+
+            // Act:
+            var propName = LambdaExtensions.NameOf<Person>(x => x.FirstName);
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(BaseParty).FullName,
+                OrderBy = propName,
+                PageSize = 100,
+                PageNumber = 1
+            };
+            var searchResponse = toolboxController.SearchObjects(searchRequest);
+
+            // Assert:
+            Assert.IsTrue(searchResponse.Failed);
+        }
+
     }
 
 
