@@ -37,6 +37,7 @@ namespace Envivo.Fresnel.Tests.Domain
             Assert.IsNotNull(newObject);
         }
 
+        [Test]
         public void ShouldCreateObjectWithCtorArgs()
         {
             // Arrange:
