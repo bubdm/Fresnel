@@ -95,9 +95,13 @@ namespace Envivo.Fresnel.Tests.Persistence
 
             // Act:
             var order = _Fixture.Create<Order>();
-            var orderItem = _Fixture.Create<OrderItem>();
-            orderItem.ParentOrder = order;
-            order.OrderItems.Add(orderItem);
+            var orderItem1 = _Fixture.Create<OrderItem>();
+            orderItem1.ParentOrder = order;
+            order.OrderItems.Add(orderItem1);
+
+            var orderItem2 = _Fixture.Create<OrderItem>();
+            orderItem2.ParentOrder = order;
+            order.OrderItems.Add(orderItem2);
 
             var savedChanges = persistenceService.SaveChanges(order);
 
@@ -105,10 +109,13 @@ namespace Envivo.Fresnel.Tests.Persistence
             Assert.IsTrue(savedChanges > 1);
 
             var persistedA = persistenceService.GetObject<Order>(order.ID);
-            var persistedB = persistenceService.GetObject<OrderItem>(orderItem.ID);
+            var persistedB = persistenceService.GetObject<OrderItem>(orderItem1.ID);
+            var persistedC = persistenceService.GetObject<OrderItem>(orderItem2.ID);
 
             Assert.IsTrue(persistedA.OrderItems.Contains(persistedB));
+            Assert.IsTrue(persistedA.OrderItems.Contains(persistedC));
             Assert.AreEqual(persistedB.ParentOrder, persistedA);
+            Assert.AreEqual(persistedC.ParentOrder, persistedA);
         }
 
         [Test]

@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.Tests.Persistence
         private Fixture _Fixture = new AutoFixtureFactory().Create();
 
         [Test]
-        public void ShouldAddOrderItemToOrder()
+        public void ShouldAddOrderItemToNewOrder()
         {
             // Arrange:
             var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
@@ -78,5 +78,57 @@ namespace Envivo.Fresnel.Tests.Persistence
         }
 
 
+        [Test]
+        public void ShouldAddOrderItemToExistingOrder()
+        {
+            // Arrange:
+            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
+            var container = new ContainerFactory().Build(customDependencyModules);
+
+            var engine = container.Resolve<Core.Engine>();
+            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
+
+            var toolboxController = container.Resolve<ToolboxController>();
+            var explorerController = container.Resolve<ExplorerController>();
+
+            // Act:
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(Order).FullName,
+                PageSize = 100,
+                PageNumber = 1
+            };
+            var searchResponse = toolboxController.SearchObjects(searchRequest);
+            var order = searchResponse.Result.Items.First();
+
+            // This ensures the Collection can be tracked:
+            var getRequest = new GetPropertyRequest()
+            {
+                ObjectID = order.ID,
+                PropertyName = LambdaExtensions.NameOf<Order>(x => x.OrderItems)
+            };
+            var getResult = explorerController.GetObjectProperty(getRequest);
+
+            // Add a new OrderItem:
+            var orderItemType = typeof(OrderItem);
+            var collectionAddNewRequest = new CollectionAddNewRequest()
+            {
+                ParentObjectID = order.ID,
+                CollectionPropertyName = getRequest.PropertyName,
+                ElementTypeName = orderItemType.FullName
+            };
+            var collectionAddResponse = explorerController.AddNewItemToCollection(collectionAddNewRequest);
+            var orderItem = collectionAddResponse.Modifications.NewObjects.First();
+
+            // Save everything:
+            var saveRequest = new SaveChangesRequest()
+            {
+                ObjectID = orderItem.ID
+            };
+            var saveResponse = explorerController.SaveChanges(saveRequest);
+
+            // Assert:
+            Assert.IsTrue(saveResponse.Passed);
+        }
     }
 }
