@@ -46,6 +46,7 @@ module FresnelApp {
             this.mergeObjectTitleChanges(modifications);
             this.mergeRemovals(modifications);
             this.mergeParameterChanges(modifications);
+            this.mergeDirtyStateChanges(modifications);
         }
 
         private mergeNewObjects(modifications: ModificationsVM) {
@@ -170,6 +171,22 @@ module FresnelApp {
                 }
 
                 param.State.Value = paramValue;
+            }
+        }
+
+        private mergeDirtyStateChanges(modifications: ModificationsVM) {
+            if (!modifications.DirtyStateChanges)
+                return;
+
+            for (var i = 0; i < modifications.DirtyStateChanges.length; i++) {
+                var dirtyState = modifications.DirtyStateChanges[i];
+
+                var existingItem = this.getObject(dirtyState.ObjectID);
+                if (existingItem == null) {
+                    continue;
+                }
+
+                this.extendDeep(existingItem.DirtyState, dirtyState);
             }
         }
 

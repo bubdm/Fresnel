@@ -20,6 +20,6 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
 
         public ParameterChangeVM[] MethodParameterChanges { get; set; }
 
-        public ObjectVM[] SavedObjects { get; set; }
+        public DirtyStateVM[] DirtyStateChanges { get; set; }
     }
 }

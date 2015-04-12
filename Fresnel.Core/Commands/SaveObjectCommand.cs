@@ -40,27 +40,29 @@ namespace Envivo.Fresnel.Core.Commands
         public ActionResult<ObjectObserver[]> Invoke(ObjectObserver oObj)
         {
             // TODO: Until we've found a decent pattern for selectively saving entities, we'll just save everything:
-            var observersToPersist = _ObserverCache.GetAllObservers()
-                                                     .Where(o => o.ChangeTracker.IsDirty || o.ChangeTracker.HasDirtyObjectGraph)
-                                                     .ToArray();
+            var objectsToPersist = _ObserverCache
+                                        .GetAllObservers()
+                                        .Where(o => o.Template.IsTrackable)
+                                        .Where(o => o.ChangeTracker.IsDirty || o.ChangeTracker.HasDirtyObjectGraph)
+                                        .ToArray();
 
             // Check that all entities are consistent:
-            var checkResult = _ConsistencyCheckCommand.Check(observersToPersist);
+            var checkResult = _ConsistencyCheckCommand.Check(objectsToPersist);
             if (checkResult.Failed)
             {
                 return ActionResult<ObjectObserver[]>.Fail(null, checkResult.FailureException);
             }
 
             // Now save:
-            var dirtyEntities = observersToPersist.Select(o => o.RealObject).ToArray();
+            var dirtyEntities = objectsToPersist.Select(o => o.RealObject).ToArray();
             var savedItemCount = _PersistenceService.SaveChanges(dirtyEntities);
 
-            foreach (var savedObj in observersToPersist)
+            foreach (var savedObj in objectsToPersist)
             {
                 _DirtyObjectNotifier.ObjectIsNoLongerDirty(savedObj);
             }
 
-            return ActionResult<ObjectObserver[]>.Pass(observersToPersist);
+            return ActionResult<ObjectObserver[]>.Pass(objectsToPersist);
         }
 
     }

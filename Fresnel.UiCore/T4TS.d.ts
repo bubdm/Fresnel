@@ -154,6 +154,7 @@ declare module FresnelApp {
         CollectionAdditions: FresnelApp.CollectionElementVM[];
         CollectionRemovals: FresnelApp.CollectionElementVM[];
         MethodParameterChanges: FresnelApp.ParameterChangeVM[];
+        DirtyStateChanges: FresnelApp.DirtyStateVM[];
         SavedObjects: FresnelApp.ObjectVM[];
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Changes.ObjectTitleChangeVM **/
@@ -200,6 +201,7 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.DirtyStateVM **/
     export interface DirtyStateVM {
+        ObjectID: any;
         IsTransient: boolean;
         IsPersistent: boolean;
         IsDirty: boolean;

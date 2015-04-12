@@ -16,6 +16,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ObserverCache _ObserverCache;
         private SaveObjectCommand _SaveObjectCommand;
         private AbstractObjectVmBuilder _ObjectVmBuilder;
+        private ModificationsVmBuilder _ModificationsVmBuilder;
         private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
@@ -24,6 +25,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             ObserverCache observerCache,
             SaveObjectCommand saveObjectCommand,
             AbstractObjectVmBuilder objectVmBuilder,
+            ModificationsVmBuilder modificationsVmBuilder,
             ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
         )
@@ -31,6 +33,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _ObserverCache = observerCache;
             _SaveObjectCommand = saveObjectCommand;
             _ObjectVmBuilder = objectVmBuilder;
+            _ModificationsVmBuilder = modificationsVmBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
             _Clock = clock;
         }
@@ -68,7 +71,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     Passed = savedItemCount > 0,
                     SavedObjects = savedObjectVMs,
-                    Messages = new MessageVM[] { infoVM }
+                    Messages = new MessageVM[] { infoVM },
+                    Modifications = _ModificationsVmBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt)
                 };
             }
             catch (Exception ex)
@@ -82,5 +86,6 @@ namespace Envivo.Fresnel.UiCore.Commands
                 };
             }
         }
+
     }
 }

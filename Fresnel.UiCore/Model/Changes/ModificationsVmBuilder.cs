@@ -52,6 +52,9 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
                                     .SelectMany(c => c.ChangeTracker.GetCollectionRemovalsSince(startedAt))
                                     .ToArray();
 
+            var dirtyTrackers = observers
+                                    .ToArray();
+
             var result = new ModificationsVM()
             {
                 NewObjects = newObjects.Select(o => _AbstractObjectVMBuilder.BuildFor(o.Object)).ToArray(),
@@ -59,6 +62,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
                 ObjectTitleChanges = objectTitleChanges.Select(c => CreateTitleChange(c)).ToArray(),
                 CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c)).ToArray(),
                 CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c)).ToArray(),
+                DirtyStateChanges = dirtyTrackers.Select(c => CreateDirtyState(c)).ToArray(),
             };
 
             return result;
@@ -152,6 +156,19 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
                 ElementId = oElement.ID,
             };
             return result;
+        }
+
+        private DirtyStateVM CreateDirtyState(ObjectObserver oObject)
+        {
+            var changeTracker = oObject.ChangeTracker;
+            return new DirtyStateVM()
+            {
+                ObjectID = oObject.ID,
+                IsTransient = changeTracker.IsTransient,
+                IsPersistent = changeTracker.IsPersistent,
+                IsDirty = changeTracker.IsDirty,
+                HasDirtyChildren = changeTracker.HasDirtyObjectGraph,
+            };
         }
     }
 }

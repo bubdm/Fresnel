@@ -9,6 +9,11 @@ namespace Envivo.Fresnel.UiCore.Model
     public class DirtyStateVM
     {
         /// <summary>
+        /// The ID of the associated Object
+        /// </summary>
+        public Guid ObjectID { get; set; }
+
+        /// <summary>
         /// Determines if the Object is brand new
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
