@@ -11,6 +11,11 @@ namespace Fresnel.SampleModel.Persistence
                 .Entity<Employee>()
                 .HasMany<Territory>(e => e.Territories)
                 .WithMany(t => t.Employees);
+
+            modelBuilder
+                .Entity<Order>()
+                .HasMany<OrderItem>(e => e.OrderItems)
+                .WithRequired(i => i.ParentOrder);
         }
     }
 }
