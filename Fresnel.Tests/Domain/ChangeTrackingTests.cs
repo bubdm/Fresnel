@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Envivo.Fresnel.CompositionRoot;
+using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.SampleModel.Northwind;
@@ -190,7 +191,7 @@ namespace Envivo.Fresnel.Tests.Domain
             {
                 var employee = new Employee()
                 {
-                     ID = Guid.NewGuid()
+                    ID = Guid.NewGuid()
                 };
                 person.Roles.Add(employee);
             }
@@ -206,6 +207,41 @@ namespace Envivo.Fresnel.Tests.Domain
             // Assert:
             oCollection = (CollectionObserver)getCommand.Invoke(oProp);
             Assert.AreEqual(iterations, oCollection.GetItems().Cast<object>().Count());
+        }
+
+        [Test]
+        public void ShouldCascadeDirtyStateChanges()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var observerCache = container.Resolve<ObserverCache>();
+            var createCommand = container.Resolve<CreateObjectCommand>();
+            var getCommand = container.Resolve<GetPropertyCommand>();
+            var addCommand = container.Resolve<AddToCollectionCommand>();
+
+            var oOrder = (ObjectObserver)createCommand.Invoke(typeof(Order), null);
+            var oProp = oOrder.Properties[LambdaExtensions.NameOf<Order>(x => x.OrderItems)];
+            var oOrderItems = (CollectionObserver)getCommand.Invoke(oProp);
+
+            // Add a new OrderItem:
+            var oOrderItem  = (ObjectObserver)createCommand.Invoke(typeof(OrderItem), null);
+            var oAddedItem = (ObjectObserver)addCommand.Invoke(oOrderItems, oOrderItem);
+
+            // The chain of objects should be dirty:
+            Assert.IsTrue(oOrderItem.ChangeTracker.IsTransient);
+            Assert.IsTrue(oOrderItem.ChangeTracker.IsMarkedForAddition);
+            Assert.IsTrue(oOrderItems.ChangeTracker.HasDirtyObjectGraph);
+            Assert.IsTrue(oOrder.ChangeTracker.HasDirtyObjectGraph);
+
+            var dirtyNotifier = container.Resolve<DirtyObjectNotifier>();
+            dirtyNotifier.ObjectIsNoLongerDirty(oOrderItem);
+
+            // Now the chain of objects should be clean:
+            Assert.IsFalse(oOrderItem.ChangeTracker.IsDirty);
+            Assert.IsFalse(oOrderItem.ChangeTracker.IsMarkedForAddition);
+            Assert.IsFalse(oOrderItems.ChangeTracker.HasDirtyObjectGraph);
+            Assert.IsFalse(oOrder.ChangeTracker.HasDirtyObjectGraph);
+
         }
     }
 }

@@ -32,17 +32,7 @@ namespace Envivo.Fresnel.Core.Commands
         {
             // TODO: Check permissions
 
-            //var preSnapshot = new CollectionChangeSnapshot(this);
-
             var result = _AddCommand.Invoke(oCollection.Template, oCollection.RealObject, oItemToAdd.Template, oItemToAdd.RealObject);
-
-            //var postSnapshot = new CollectionChangeSnapshot(this);
-            //if (postSnapshot.IsUnchangedSince(preSnapshot))
-            //{
-            //    // Because we don't have any hooks into the list/collection,
-            //    // this is the easiest away to determine that nothing changed:
-            //    return null;
-            //}
 
             BaseObjectObserver oAddedItem;
             if (result == null)
@@ -58,11 +48,10 @@ namespace Envivo.Fresnel.Core.Commands
             var oResult = oAddedItem as ObjectObserver;
             if (oResult != null)
             {
-                // Make sure we know of any changes in the object graph:
-                //oResult.AssociateWith(oCollection);
-                _ObserverCacheSynchroniser.SyncAll();
-
                 _DirtyObjectNotifier.ObjectWasAddedToCollection(oResult, oCollection);
+
+                // Make sure we know of any changes in the object graph:
+                _ObserverCacheSynchroniser.SyncAll();
             }
 
             return oAddedItem;

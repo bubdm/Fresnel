@@ -28,11 +28,12 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// </summary>
         /// <param name="oNewObject"></param>
         /// <param name="oTargetProperty"></param>
-        public void ObjectWasCreated(ObjectObserver oNewObject, BasePropertyObserver oTargetProperty)
+        public void ObjectWasCreated(ObjectObserver oNewObject, ObjectPropertyObserver oTargetProperty)
         {
             oNewObject.ChangeTracker.IsTransient = true;
 
             var oOuterObject = oTargetProperty.OuterObject;
+            oNewObject.AssociateWith(oTargetProperty);
             oOuterObject.ChangeTracker.AddDirtyObject(oNewObject);
 
             var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oOuterObject, int.MaxValue);
@@ -50,6 +51,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         public void ObjectWasCreated(ObjectObserver oNewObject, CollectionObserver oTargetCollection)
         {
             oNewObject.ChangeTracker.IsTransient = true;
+            oNewObject.AssociateWith(oTargetCollection);
             oNewObject.ChangeTracker.MarkForAdditionTo(oTargetCollection);
 
             oTargetCollection.ChangeTracker.AddDirtyObject(oNewObject);
@@ -72,7 +74,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 return;
 
             oDirtyObject.ChangeTracker.IsDirty = true;
-
             oDirtyObject.ChangeTracker.MarkPropertyChange(oProperty);
 
             var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oDirtyObject, int.MaxValue);
@@ -88,10 +89,18 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// <param name="oObject"></param>
         public void ObjectIsNoLongerDirty(ObjectObserver oObject)
         {
+            oObject.ChangeTracker.ResetDirtyFlags();
+
             var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oObject, int.MaxValue);
             foreach (var outerObject in outerObjects)
             {
-                outerObject.ChangeTracker.RemoveFromDirtyObjectGraph(oObject);
+                var outerChangeTracker = outerObject.ChangeTracker;
+                outerChangeTracker.RemoveFromDirtyObjectGraph(oObject);
+                if (!outerChangeTracker.IsDirty && !outerChangeTracker.HasDirtyObjectGraph)
+                {
+                    // Ensure the status is cascaded up the chain:
+                    this.ObjectIsNoLongerDirty(outerObject);
+                }
             }
         }
 
@@ -102,6 +111,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// <param name="oTargetCollection"></param>
         public void ObjectWasAddedToCollection(ObjectObserver oAddedItem, CollectionObserver oTargetCollection)
         {
+            oAddedItem.AssociateWith(oTargetCollection);
             oAddedItem.ChangeTracker.MarkForAdditionTo(oTargetCollection);
             oTargetCollection.ChangeTracker.MarkAsAdded(oAddedItem);
 
@@ -119,6 +129,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// <param name="oTargetCollection"></param>
         public void ObjectWasRemovedFromCollection(ObjectObserver oRemovedItem, CollectionObserver oTargetCollection)
         {
+            oRemovedItem.DisassociateFrom(oTargetCollection);
             oRemovedItem.ChangeTracker.MarkForRemovalFrom(oTargetCollection);
             oTargetCollection.ChangeTracker.MarkAsRemoved(oRemovedItem);
 

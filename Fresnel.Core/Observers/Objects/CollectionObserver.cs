@@ -42,29 +42,7 @@ namespace Envivo.Fresnel.Core.Observers
         {
             get { return (CollectionTracker)base.ChangeTracker; }
         }
-
-        /// <summary>
-        /// Ensures that all Domain Objects know that they belong to this Collection
-        /// </summary>
-        internal void BindItemsToCollection(IEnumerable<ObjectObserver> items)
-        {
-            foreach (var oItem in items)
-            {
-                oItem.AssociateWith(this);
-            }
-        }
-
-        /// <summary>
-        /// Performs the inverse of <see>BindItemsToCollection</see>
-        /// </summary>
-        internal void UnbindItemsFromCollection(IEnumerable<ObjectObserver> items)
-        {
-            foreach (var oItem in items)
-            {
-                oItem.DisassociateFrom(this);
-            }
-        }
-
+        
         /// <summary>
         /// Returns an enumerable of the underlying Collection objects (not observers)
         /// </summary>

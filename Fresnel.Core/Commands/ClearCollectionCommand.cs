@@ -25,7 +25,6 @@ namespace Envivo.Fresnel.Core.Commands
         public void Invoke(CollectionObserver oCollection)
         {
             var oItems = _GetCollectionItemsCommand.Invoke(oCollection);
-            oCollection.UnbindItemsFromCollection(oItems);
 
             var oMethod = oCollection.Methods.TryGetValueOrNull("Clear");
             if (oMethod != null)

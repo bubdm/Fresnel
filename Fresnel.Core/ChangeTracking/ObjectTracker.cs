@@ -135,13 +135,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             get { return _oDirtyObjectGraph.Values; }
         }
 
-        private void AddToDirtyObjectGraph(ObjectObserver oObject)
-        {
-            //System.Diagnostics.Debug.WriteLine("Dirty graph add : " + oObject.DebugID + " to " + _oObject.DebugID);
-            _oDirtyObjectGraph[oObject.ID] = oObject;
-        }
-
-        internal void RemoveFromDirtyObjectGraph(ObjectObserver oObject)
+        internal virtual void RemoveFromDirtyObjectGraph(ObjectObserver oObject)
         {
             //System.Diagnostics.Debug.WriteLine("Dirty graph remove : " + oObject.DebugID + " from " + _oObject.DebugID);
             _oDirtyObjectGraph.Remove(oObject.ID);

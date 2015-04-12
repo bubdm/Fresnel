@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Introspection;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Envivo.Fresnel.Core.Observers
@@ -22,9 +23,24 @@ namespace Envivo.Fresnel.Core.Observers
 
         public void SyncAll()
         {
-            // We may have accessed a Collection property, but haven't
-            var knownObservers = ObserverCache.GetAllObservers().ToArray();
-            foreach (var oObject in knownObservers)
+            // Make sure we have a known state *before* we scan the observers for changes
+            // (after all, we don't want to detect false Collection modifications:
+            this.EnsureCacheIsHasKnownState();
+
+            // This prevents the ORM from accidentally triggering load operations:
+            var observersToSync = this.GetObserversThatWontTriggerLazyLoads();
+
+            // Now we can scan:
+            foreach (var oObject in observersToSync)
+            {
+                this.Sync(oObject);
+            }
+        }
+
+        private void EnsureCacheIsHasKnownState()
+        {
+            var allObservers = this.ObserverCache.GetAllObservers().ToArray();
+            foreach (var oObject in allObservers)
             {
                 var outerObjectProperties = oObject.OuterProperties.OfType<ObjectPropertyObserver>();
                 var collectionProperties = outerObjectProperties.Where(p => p.Template.IsCollection);
@@ -38,21 +54,36 @@ namespace Envivo.Fresnel.Core.Observers
                     }
                 }
             }
+        }
 
-            // Now we can scan:
-            // NB: We need to pull back the list first, to prevent "Collection was modified" exceptions:
+        public ObjectObserver[] GetObserversThatWontTriggerLazyLoads()
+        {
+            var results = new List<ObjectObserver>();
+
             var allObservers = this.ObserverCache.GetAllObservers().ToList();
             foreach (var oObject in allObservers)
             {
-                this.Sync(oObject);
+                var outerObjectProperties = oObject.OuterProperties.OfType<ObjectPropertyObserver>();
+                var referenceProperties = outerObjectProperties.Where(p => p.Template.IsReferenceType);
+                if (referenceProperties.Any(p => p.IsLazyLoaded))
+                {
+                    results.Add(oObject);
+                }
+                else
+                { }
             }
+
+            return results.ToArray();
         }
 
         public void Sync(ObjectObserver oObject)
         {
             foreach (var oProp in oObject.Properties.Values.OfType<ObjectPropertyObserver>())
             {
-                if (oProp.Template.IsReferenceType)
+                if (oProp.Template.IsNonReference)
+                    continue;
+
+                if (oProp.IsLazyLoadPending)
                     continue;
 
                 var value = oProp.Template.GetProperty(oObject.RealObject);

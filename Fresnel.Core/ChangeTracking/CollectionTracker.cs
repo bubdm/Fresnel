@@ -53,6 +53,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             };
 
             _AddedItems.Add(latestChange);
+            this.AddDirtyObject(oAddedItem);
         }
 
         internal void MarkAsRemoved(ObjectObserver oRemovedItem)
@@ -65,6 +66,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 {
                     _AddedItems.Remove(previouslyAddedItem);
                 }
+                this.RemoveFromDirtyObjectGraph(oRemovedItem);
             }
             else
             {
@@ -76,6 +78,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 };
 
                 _RemovedItems.Add(latestChange);
+                this.AddDirtyObject(oRemovedItem);
             }
         }
 
@@ -91,6 +94,18 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             set
             {
                 throw new InvalidOperationException();
+            }
+        }
+
+        internal override void RemoveFromDirtyObjectGraph(ObjectObserver oObject)
+        {
+            //System.Diagnostics.Debug.WriteLine("Dirty graph remove : " + oObject.DebugID + " from " + _oObject.DebugID);
+            base.RemoveFromDirtyObjectGraph(oObject);
+
+            var previouslyAddedItem = _AddedItems.SingleOrDefault(e => e.Element == oObject);
+            if (previouslyAddedItem != null)
+            {
+                _AddedItems.Remove(previouslyAddedItem);
             }
         }
 
