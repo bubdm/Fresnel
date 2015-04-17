@@ -102,8 +102,8 @@ namespace Envivo.Fresnel.Tests.Proxies
 
             for (var i = 1; i < nonNullValues.Count; i++)
             {
-                var previousValue = nonNullValues[i - 1];
-                var currentValue = nonNullValues[i];
+                var previousValue = nonNullValues[i - 1].ToLower();
+                var currentValue = nonNullValues[i].ToLower();
                 Assert.LessOrEqual(previousValue, currentValue);
             }
         }

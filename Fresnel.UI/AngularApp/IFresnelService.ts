@@ -30,6 +30,8 @@
 
         saveChanges(request: SaveChangesRequest): ng.IPromise<any>;
 
+        cancelChanges(request: CancelChangesRequest): ng.IPromise<any>;
+
         searchObjects(request: SearchObjectsRequest): ng.IPromise<any>;
 
         searchPropertyObjects(request: SearchPropertyRequest): ng.IPromise<any>;

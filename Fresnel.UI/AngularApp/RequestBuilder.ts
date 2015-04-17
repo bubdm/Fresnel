@@ -91,6 +91,14 @@
             return request;
         }
 
+        buildCancelChangesRequest(obj: ObjectVM) {
+            var request: CancelChangesRequest = {
+                ObjectID: obj.ID
+            };
+
+            return request;
+        }
+
         buildSearchObjectsRequest(fullyQualifiedName: string) {
             var request: SearchObjectsRequest = {
                 SearchType: fullyQualifiedName,

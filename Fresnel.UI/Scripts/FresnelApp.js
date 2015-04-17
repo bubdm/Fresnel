@@ -74,7 +74,7 @@ var FresnelApp;
             };
             return options;
         };
-        SaveService.prototype.invoke = function (obj) {
+        SaveService.prototype.saveChanges = function (obj) {
             var _this = this;
             var request = this.requestBuilder.buildSaveChangesRequest(obj);
             var promise = this.fresnelService.saveChanges(request);
@@ -83,6 +83,18 @@ var FresnelApp;
                 _this.appService.identityMap.merge(response.Modifications);
                 _this.rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                 _this.resetDirtyFlags(response.SavedObjects);
+            });
+            return promise;
+        };
+        SaveService.prototype.cancelChanges = function (obj) {
+            var _this = this;
+            var request = this.requestBuilder.buildCancelChangesRequest(obj);
+            var promise = this.fresnelService.cancelChanges(request);
+            promise.then(function (promiseResult) {
+                var response = promiseResult.data;
+                _this.appService.identityMap.merge(response.Modifications);
+                _this.rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
+                _this.resetDirtyFlags(response.CancelledObjects);
             });
             return promise;
         };
@@ -953,7 +965,10 @@ var FresnelApp;
                 var promise = saveService.askUser(obj);
                 promise.then(function (isSaveRequested) {
                     if (isSaveRequested) {
-                        promise = saveService.invoke(obj);
+                        promise = saveService.saveChanges(obj);
+                    }
+                    else {
+                        promise = saveService.cancelChanges(obj);
                     }
                     promise.finally(function () {
                         $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerClose, explorer);
@@ -986,7 +1001,7 @@ var FresnelApp;
                 });
             };
             $scope.save = function (obj) {
-                saveService.invoke(obj);
+                saveService.saveChanges(obj);
             };
         }
         ExplorerController.$inject = [
@@ -1112,6 +1127,12 @@ var FresnelApp;
             return request;
         };
         RequestBuilder.prototype.buildSaveChangesRequest = function (obj) {
+            var request = {
+                ObjectID: obj.ID
+            };
+            return request;
+        };
+        RequestBuilder.prototype.buildCancelChangesRequest = function (obj) {
             var request = {
                 ObjectID: obj.ID
             };
@@ -1309,6 +1330,16 @@ var FresnelApp;
             var _this = this;
             this.blockUI.start("Saving all changes...");
             var uri = "api/Explorer/SaveChanges";
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
+        };
+        FresnelService.prototype.cancelChanges = function (request) {
+            var _this = this;
+            this.blockUI.start("Cancelling changes...");
+            var uri = "api/Explorer/CancelChanges";
             var promise = this.http.post(uri, request);
             promise.finally(function () {
                 _this.blockUI.stop();

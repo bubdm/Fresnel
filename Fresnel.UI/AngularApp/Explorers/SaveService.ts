@@ -63,7 +63,7 @@
             return options;
         }
 
-        public invoke(obj: ObjectVM): ng.IPromise<any> {
+        public saveChanges(obj: ObjectVM): ng.IPromise<any> {
             var request = this.requestBuilder.buildSaveChangesRequest(obj);
             var promise = this.fresnelService.saveChanges(request);
 
@@ -74,6 +74,22 @@
                 this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                 this.resetDirtyFlags(response.SavedObjects);
+            });
+
+            return promise;
+        }
+
+        public cancelChanges(obj: ObjectVM): ng.IPromise<any> {
+            var request = this.requestBuilder.buildCancelChangesRequest(obj);
+            var promise = this.fresnelService.cancelChanges(request);
+
+            promise.then((promiseResult) => {
+                var response: CancelChangesResponse = promiseResult.data;
+
+                this.appService.identityMap.merge(response.Modifications);
+                this.rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
+                this.resetDirtyFlags(response.CancelledObjects);
             });
 
             return promise;

@@ -195,6 +195,19 @@
             return promise;
         }
 
+        cancelChanges(request: CancelChangesRequest): ng.IPromise<any> {
+            this.blockUI.start("Cancelling changes...");
+
+            var uri = "api/Explorer/CancelChanges";
+            var promise = this.http.post(uri, request);
+
+            promise.finally(() => {
+                this.blockUI.stop();
+            });
+
+            return promise;
+        }
+
         searchObjects(request: SearchObjectsRequest): ng.IPromise<any> {
             var uri = "api/Toolbox/SearchObjects";
             var promise = this.http.post(uri, request);

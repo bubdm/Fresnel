@@ -17,25 +17,38 @@ namespace Envivo.Fresnel.UiCore.Controllers
         private CollectionAddCommand _CollectionAddCommand;
         private CollectionRemoveCommand _CollectionRemoveCommand;
         private SaveChangesCommand _SaveChangesCommand;
+        private CancelChangesCommand _CancelChangesCommand;
         private SearchPropertyCommand _SearchPropertyCommand;
         private SearchParameterCommand _SearchParameterCommand;
 
         public ExplorerController
             (
-            IEnumerable<ICommand> commands
+            CreateAndSetPropertyCommand createAndSetPropertyCommand,
+            GetObjectCommand getObjectCommand,
+            GetPropertyCommand getPropertyCommand,
+            SetPropertyCommand setPropertyCommand,
+            SetParameterCommand setParameterCommand,
+            InvokeMethodCommand invokeMethodCommand,
+            CollectionAddCommand collectionAddCommand,
+            CollectionRemoveCommand collectionRemoveCommand,
+            SaveChangesCommand saveChangesCommand,
+            CancelChangesCommand cancelChangesCommand,
+            SearchPropertyCommand searchPropertyCommand,
+            SearchParameterCommand searchParameterCommand
             )
         {
-            _CreateAndSetPropertyCommand = commands.OfType<CreateAndSetPropertyCommand>().Single();
-            _GetObjectCommand = commands.OfType<GetObjectCommand>().Single();
-            _GetPropertyCommand = commands.OfType<GetPropertyCommand>().Single();
-            _SetPropertyCommand = commands.OfType<SetPropertyCommand>().Single();
-            _SetParameterCommand = commands.OfType<SetParameterCommand>().Single();
-            _InvokeMethodCommand = commands.OfType<InvokeMethodCommand>().Single();
-            _CollectionAddCommand = commands.OfType<CollectionAddCommand>().Single();
-            _CollectionRemoveCommand = commands.OfType<CollectionRemoveCommand>().Single();
-            _SaveChangesCommand = commands.OfType<SaveChangesCommand>().Single();
-            _SearchPropertyCommand = commands.OfType<SearchPropertyCommand>().Single();
-            _SearchParameterCommand = commands.OfType<SearchParameterCommand>().Single();
+            _CreateAndSetPropertyCommand = createAndSetPropertyCommand;
+            _GetObjectCommand = getObjectCommand;
+            _GetPropertyCommand = getPropertyCommand;
+            _SetPropertyCommand = setPropertyCommand;
+            _SetParameterCommand = setParameterCommand;
+            _InvokeMethodCommand = invokeMethodCommand;
+            _CollectionAddCommand = collectionAddCommand;
+            _CollectionRemoveCommand = collectionRemoveCommand;
+            _SaveChangesCommand = saveChangesCommand;
+            _CancelChangesCommand = cancelChangesCommand;
+            _SearchPropertyCommand = searchPropertyCommand;
+            _SearchParameterCommand = searchParameterCommand;
         }
 
         [HttpPost]
@@ -114,6 +127,13 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public SaveChangesResponse SaveChanges([FromBody]SaveChangesRequest id)
         {
             var result = _SaveChangesCommand.Invoke(id);
+            return result;
+        }
+
+        [HttpPost]
+        public CancelChangesResponse CancelChanges([FromBody]CancelChangesRequest id)
+        {
+            var result = _CancelChangesCommand.Invoke(id);
             return result;
         }
 

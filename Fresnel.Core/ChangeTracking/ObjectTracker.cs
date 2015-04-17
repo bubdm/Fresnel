@@ -176,6 +176,9 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             this.IsTransient = false;
             _HasLocalChanges = false;
 
+            _ObjectPropertiesTracker.DetermineInitialState();
+            _ObjectTitleTracker.DetermineInitialState();
+
             _oNewParents.Clear();
             _oPreviousParents.Clear();
         }
@@ -232,5 +235,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             _ObjectTitleTracker.DisposeSafely();
             _ObjectTitleTracker = null;
         }
+
     }
 }

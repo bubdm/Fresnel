@@ -10,6 +10,14 @@ declare module FresnelApp {
         Messages: FresnelApp.MessageVM[];
         Modifications: FresnelApp.ModificationsVM;
     }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.CancelChangesRequest **/
+    export interface CancelChangesRequest {
+        ObjectID: any;
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.CancelChangesResponse **/
+    export interface CancelChangesResponse extends FresnelApp.BaseCommandResponse {
+        CancelledObjects: FresnelApp.ObjectVM[];
+    }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CollectionAddNewRequest **/
     export interface CollectionAddNewRequest {
         ParentObjectID: any;
@@ -155,7 +163,6 @@ declare module FresnelApp {
         CollectionRemovals: FresnelApp.CollectionElementVM[];
         MethodParameterChanges: FresnelApp.ParameterChangeVM[];
         DirtyStateChanges: FresnelApp.DirtyStateVM[];
-        SavedObjects: FresnelApp.ObjectVM[];
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Changes.ObjectTitleChangeVM **/
     export interface ObjectTitleChangeVM {

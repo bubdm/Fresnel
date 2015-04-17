@@ -57,6 +57,9 @@
     <Compile Include="Commands\CollectionAddNewRequest.cs" />
     <Compile Include="Commands\CreateAndSetPropertyResponse.cs" />
     <Compile Include="Commands\CreateAndSetPropertyCommand.cs" />
+    <Compile Include="Commands\CancelChangesRequest.cs" />
+    <Compile Include="Commands\CancelChangesResponse.cs" />
+    <Compile Include="Commands\CancelChangesCommand.cs" />
     <Compile Include="Commands\SaveChangesResponse.cs" />
     <Compile Include="Commands\SearchResultsFilterApplier.cs" />
     <Compile Include="Commands\SearchParameterCommand.cs" />

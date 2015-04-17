@@ -214,7 +214,10 @@ module FresnelApp {
                 var promise = saveService.askUser(obj);
                 promise.then((isSaveRequested) => {
                     if (isSaveRequested) {
-                        promise = saveService.invoke(obj);
+                        promise = saveService.saveChanges(obj);
+                    }
+                    else {
+                        promise = saveService.cancelChanges(obj);
                     }
                     promise.finally(() => {
                         $rootScope.$broadcast(UiEventType.ExplorerClose, explorer);
@@ -254,7 +257,7 @@ module FresnelApp {
             }
 
             $scope.save = function (obj: ObjectVM) {
-                saveService.invoke(obj);
+                saveService.saveChanges(obj);
             }
 
         }
