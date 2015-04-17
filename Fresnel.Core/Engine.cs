@@ -1,4 +1,5 @@
-﻿using Envivo.Fresnel.Introspection;
+﻿using Envivo.Fresnel.Core.Commands;
+using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Assemblies;
 using System;
 using System.Reflection;
@@ -11,20 +12,18 @@ namespace Envivo.Fresnel.Core
         private AssemblyReaderMap _AssemblyReaderMap;
         private RealTypeResolver _RealTypeResolver;
 
-        private Func<UserSession> _UserSessionFactory;
-
         public Engine
             (
             AssemblyReaderBuilder assemblyReaderBuilder,
             AssemblyReaderMap assemblyReaderMap,
             RealTypeResolver realTypeResolver,
-            Func<UserSession> userSessionFactory
+            EventTimeLine eventTimeLine
             )
         {
             _AssemblyReaderBuilder = assemblyReaderBuilder;
             _AssemblyReaderMap = assemblyReaderMap;
             _RealTypeResolver = realTypeResolver;
-            _UserSessionFactory = userSessionFactory;
+            this.EventTimeLine = eventTimeLine;
         }
 
         public void RegisterDomainAssembly(Assembly domainAssembly)
@@ -39,15 +38,6 @@ namespace Envivo.Fresnel.Core
             _AssemblyReaderMap.Add(nonDomainAssembly, newReader);
         }
 
-        //public void RegisterTypeResolver(IRealTypeResolver typeResolver)
-        //{
-        //    _RealTypeResolver.Register(typeResolver);
-        //}
-
-        public UserSession CreateNewSession()
-        {
-            var result = _UserSessionFactory();
-            return result;
-        }
+        public EventTimeLine EventTimeLine { get; private set; }
     }
 }

@@ -13,7 +13,8 @@ namespace Envivo.Fresnel.UiCore.Commands
     {
         private ObserverCache _ObserverCache;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
-        private RemoveFromCollectionCommand _RemoveFromCollectionCommand;
+        private Func<ObjectPropertyObserver, ObjectObserver, RemoveFromCollectionEvent> _RemoveFromCollectionEventFactory;
+        private EventTimeLine _EventTimeLine;
         private ModificationsVmBuilder _ModificationsBuilder;
         private IClock _Clock;
 
@@ -21,14 +22,16 @@ namespace Envivo.Fresnel.UiCore.Commands
             (
             ObserverCache observerCache,
             Core.Commands.GetPropertyCommand getPropertyCommand,
-            RemoveFromCollectionCommand removeFromCollectionCommand,
+            Func<ObjectPropertyObserver, ObjectObserver, RemoveFromCollectionEvent> removeFromCollectionEventFactory,
+            EventTimeLine eventTimeLine,
             ModificationsVmBuilder modificationsBuilder,
             IClock clock
             )
         {
             _ObserverCache = observerCache;
             _GetPropertyCommand = getPropertyCommand;
-            _RemoveFromCollectionCommand = removeFromCollectionCommand;
+            _RemoveFromCollectionEventFactory = removeFromCollectionEventFactory;
+            _EventTimeLine = eventTimeLine;
             _ModificationsBuilder = modificationsBuilder;
             _Clock = clock;
         }
@@ -40,10 +43,17 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var startedAt = SequentialIdGenerator.Next;
 
                 var oParent = this.GetObserver(request.ParentObjectID);
-                var oCollection = this.GetCollectionObserver(oParent, request.CollectionPropertyName);
+                var oProp = (ObjectPropertyObserver)oParent.Properties[request.CollectionPropertyName];
                 var oObject = this.GetObserver(request.ElementID);
 
-                var oResult = _RemoveFromCollectionCommand.Invoke(oCollection, oObject);
+                var removeEvent = _RemoveFromCollectionEventFactory(oProp, oObject);
+                var removeOperation = (ActionResult<bool>)removeEvent.Do();
+                if (removeOperation.Failed)
+                {
+                    throw removeOperation.FailureException;
+                }
+
+                _EventTimeLine.Add(removeEvent);
 
                 // Other objects may have been affected by the action:
                 _ObserverCache.ScanForChanges();

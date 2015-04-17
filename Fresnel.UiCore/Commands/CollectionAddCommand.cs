@@ -17,7 +17,8 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ObserverCache _ObserverCache;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private Core.Commands.CreateObjectCommand _CreateObjectCommand;
-        private AddToCollectionCommand _AddToCollectionCommand;
+        private Func<ObjectPropertyObserver, ObjectObserver, AddToCollectionEvent> _AddToCollectionEventFactory;
+        private EventTimeLine _EventTimeLine;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private ModificationsVmBuilder _ModificationsBuilder;
         private IClock _Clock;
@@ -28,7 +29,8 @@ namespace Envivo.Fresnel.UiCore.Commands
             ObserverCache observerCache,
             Core.Commands.GetPropertyCommand getPropertyCommand,
             Core.Commands.CreateObjectCommand createObjectCommand,
-            AddToCollectionCommand addToCollectionCommand,
+            Func<ObjectPropertyObserver, ObjectObserver, AddToCollectionEvent> addToCollectionEventFactory,
+            EventTimeLine eventTimeLine,
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsBuilder,
             IClock clock
@@ -38,7 +40,8 @@ namespace Envivo.Fresnel.UiCore.Commands
             _ObserverCache = observerCache;
             _GetPropertyCommand = getPropertyCommand;
             _CreateObjectCommand = createObjectCommand;
-            _AddToCollectionCommand = addToCollectionCommand;
+            _AddToCollectionEventFactory = addToCollectionEventFactory;
+            _EventTimeLine = eventTimeLine;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
             _Clock = clock;
@@ -51,7 +54,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var startedAt = SequentialIdGenerator.Next;
 
                 var oParent = this.GetObserver(request.ParentObjectID);
-                var oCollection = GetCollectionObserver(oParent, request.CollectionPropertyName);
+                var oProp = (ObjectPropertyObserver)oParent.Properties[request.CollectionPropertyName];
+                var oCollection = GetCollectionObserver(oParent, oProp);
 
                 ObjectObserver oObject = null;
                 var tClass = _TemplateCache.GetTemplate(request.ElementTypeName);
@@ -62,7 +66,16 @@ namespace Envivo.Fresnel.UiCore.Commands
                         throw new UiCoreException("Cannot create object of type " + tClass.FriendlyName);
                 }
 
-                var oResult = _AddToCollectionCommand.Invoke(oCollection, oObject);
+                var addEvent = _AddToCollectionEventFactory(oProp, oObject);
+                var addOperation = (ActionResult<ObjectObserver>)addEvent.Do();
+                if (addOperation.Failed)
+                {
+                    throw addOperation.FailureException;
+                }
+
+                _EventTimeLine.Add(addEvent);
+
+                var oResult = addOperation.Result;
 
                 // Other objects may have been affected by the action:
                 _ObserverCache.ScanForChanges();
@@ -107,23 +120,40 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var startedAt = SequentialIdGenerator.Next;
 
                 var oParent = this.GetObserver(request.ParentObjectID);
-                var oCollection = this.GetCollectionObserver(oParent, request.CollectionPropertyName);
+                var oProp = (ObjectPropertyObserver)oParent.Properties[request.CollectionPropertyName];
+                var oCollection = this.GetCollectionObserver(oParent, oProp);
 
                 var oObjects = new List<ObjectObserver>();
                 foreach (var elementID in request.ElementIDs)
                 {
                     var oObject = this.GetObserver(elementID);
 
-                    oObjects.Add(oObject);
-                    var oResult = _AddToCollectionCommand.Invoke(oCollection, oObject);
+                    var addEvent = _AddToCollectionEventFactory(oProp, oObject);
+                    _EventTimeLine.Add(addEvent);
 
-                    var infoVM = new MessageVM()
+                    var addOperation = (ActionResult<ObjectObserver>)addEvent.Do();
+                    if (addOperation.Passed)
                     {
-                        IsInfo = true,
-                        OccurredAt = _Clock.Now,
-                        Text = string.Concat("Added ", oObject.RealObject.ToString(), " to the collection")
-                    };
-                    messages.Add(infoVM);
+                        oObjects.Add(oObject);
+
+                        var infoVM = new MessageVM()
+                        {
+                            IsInfo = true,
+                            OccurredAt = _Clock.Now,
+                            Text = string.Concat("Added ", oObject.RealObject.ToString(), " to the collection")
+                        };
+                        messages.Add(infoVM);
+                    }
+                    else if (addOperation.Failed)
+                    {
+                        var infoVM = new MessageVM()
+                        {
+                            IsError = true,
+                            OccurredAt = _Clock.Now,
+                            Text = string.Concat("Unable to add ", oObject.RealObject.ToString(), " to the collection")
+                        };
+                        messages.Add(infoVM);
+                    }
                 }
 
                 // Other objects may have been affected by the action:
@@ -172,12 +202,11 @@ namespace Envivo.Fresnel.UiCore.Commands
             return oObject;
         }
 
-        private CollectionObserver GetCollectionObserver(ObjectObserver oParent, string collectionPropertyName)
+        private CollectionObserver GetCollectionObserver(ObjectObserver oParent, ObjectPropertyObserver oProp)
         {
-            var oProp = (ObjectPropertyObserver)oParent.Properties[collectionPropertyName];
             var oCollection = (CollectionObserver)_GetPropertyCommand.Invoke(oProp);
             if (oCollection == null)
-                throw new UiCoreException("Cannot find collection for " + collectionPropertyName);
+                throw new UiCoreException("Cannot find collection for " + oProp.Template.Name);
             return oCollection;
         }
 

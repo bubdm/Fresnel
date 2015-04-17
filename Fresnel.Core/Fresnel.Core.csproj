@@ -60,6 +60,12 @@
     <Compile Include="ChangeTracking\PropertyChange.cs" />
     <Compile Include="ChangeTracking\ObjectTitleTracker.cs" />
     <Compile Include="ChangeTracking\PropertyChangeTracker.cs" />
+    <Compile Include="Commands\EventTimeLine.cs" />
+    <Compile Include="Commands\SaveObjectEvent.cs" />
+    <Compile Include="Commands\SetPropertyEvent.cs" />
+    <Compile Include="Commands\RemoveFromCollectionEvent.cs" />
+    <Compile Include="Commands\AddToCollectionEvent.cs" />
+    <Compile Include="Commands\IFresnelEvent.cs" />
     <Compile Include="Commands\CloneObjectCommand.cs" />
     <Compile Include="Commands\ConsistencyCheckCommand.cs" />
     <Compile Include="Commands\SearchCommand.cs" />
@@ -83,7 +89,6 @@
     <Compile Include="Permissions\CanGetPropertyPermission.cs" />
     <Compile Include="Permissions\CanCreatePermission.cs" />
     <Compile Include="Engine.cs" />
-    <Compile Include="UserSession.cs" />
     <Compile Include="ChangeTracking\CollectionTracker.cs" />
     <Compile Include="Observers\Methods\MethodObserverMapBuilder.cs" />
     <Compile Include="Observers\OuterObjectsIdentifier.cs" />
@@ -111,7 +116,6 @@
     <Compile Include="Observers\BaseObserver.cs" />
     <Compile Include="Observers\ObserverCache.cs" />
     <Compile Include="Observers\ObserverExtensions.cs" />
-    <Compile Include="IdentityMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
