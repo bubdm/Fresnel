@@ -28,11 +28,14 @@ namespace Envivo.Fresnel.Core.Commands
 
         public long SequenceNo { get; set; }
 
-        private IEnumerable<ObjectObserver> ModifiedObjects { get; set; }
+        public IEnumerable<ObjectObserver> AffectedObjects { get; private set; }
 
         public ActionResult Do()
         {
             var result = _SaveObjectCommand.Invoke(_oObject);
+
+            this.AffectedObjects = new ObjectObserver[] { _oObject };
+
             return result;
         }
 

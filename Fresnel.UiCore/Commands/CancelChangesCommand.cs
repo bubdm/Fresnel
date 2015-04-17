@@ -16,6 +16,7 @@ namespace Envivo.Fresnel.UiCore.Commands
     {
         private ObserverCache _ObserverCache;
         private OuterObjectsIdentifier _OuterObjectsIdentifier;
+        private EventTimeLine _EventTimeLine;
         private DirtyObjectNotifier _DirtyObjectNotifier;
         private AbstractObjectVmBuilder _ObjectVmBuilder;
         private ModificationsVmBuilder _ModificationsVmBuilder;
@@ -26,6 +27,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             (
             ObserverCache observerCache,
             OuterObjectsIdentifier outerObjectsIdentifier,
+            EventTimeLine eventTimeLine,
             DirtyObjectNotifier dirtyObjectNotifier,
             AbstractObjectVmBuilder objectVmBuilder,
             ModificationsVmBuilder modificationsVmBuilder,
@@ -35,6 +37,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             _ObserverCache = observerCache;
             _OuterObjectsIdentifier = outerObjectsIdentifier;
+            _EventTimeLine = eventTimeLine;
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _ObjectVmBuilder = objectVmBuilder;
             _ModificationsVmBuilder = modificationsVmBuilder;
@@ -52,15 +55,11 @@ namespace Envivo.Fresnel.UiCore.Commands
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
-                var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oObject, 99);
-                var objectsToReset = outerObjects
-                                        .Where(o => o.Template.IsTrackable)
-                                        .Where(o => o.ChangeTracker.IsDirty || o.ChangeTracker.HasDirtyObjectGraph)
-                                        .ToArray();
+                // Undo all changes to this object since the last Save event
+                this.UndoChangesTo(oObject);
 
-                _DirtyObjectNotifier.ObjectIsNoLongerDirty(oObject);
-
-                var cancelledObjectVMs = objectsToReset.Select(o => _ObjectVmBuilder.BuildFor(o)).ToArray();
+                // Now reset the dirty flag up the chain:
+                var cancelledObjectVMs = this.ResetDirtyFlags(oObject);
 
                 // Done:
                 var infoVM = new MessageVM()
@@ -87,6 +86,29 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Messages = errorVMs
                 };
             }
+        }
+
+        private void UndoChangesTo(ObjectObserver oObject)
+        {
+            var earliestPoint = _EventTimeLine.LastOrDefault(e=> e is SaveObjectEvent &&
+                                                                 e.AffectedObjects.Contains(oObject)) ??
+                                _EventTimeLine.FirstOrDefault();
+
+            _EventTimeLine.UndoChangesTo(oObject, earliestPoint);
+        }
+
+        private ObjectVM[] ResetDirtyFlags(ObjectObserver oObject)
+        {
+            var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oObject, 99);
+            var objectsToReset = outerObjects
+                                    .Where(o => o.Template.IsTrackable)
+                                    .Where(o => o.ChangeTracker.IsDirty || o.ChangeTracker.HasDirtyObjectGraph)
+                                    .ToArray();
+
+            _DirtyObjectNotifier.ObjectIsNoLongerDirty(oObject);
+
+            var cancelledObjectVMs = objectsToReset.Select(o => _ObjectVmBuilder.BuildFor(o)).ToArray();
+            return cancelledObjectVMs;
         }
 
     }

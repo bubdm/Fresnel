@@ -66,7 +66,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             var createAddResponse = _ExplorerController.AddNewItemToCollection(request);
             Assert.IsTrue(createAddResponse.Passed);
 
-            _ChildObject = createAddResponse.Modifications.NewObjects.First();
+            _ChildObject = createAddResponse.Modifications.NewObjects.Last();
         }
 
         public void And_when_the_child_object_is_modified()
@@ -85,6 +85,8 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
         {
             var cancelRequest = new CancelChangesRequest()
             {
+                ParentObjectID = _ParentObject.ID,
+                ParentPropertyName = LambdaExtensions.NameOf<Order>(x => x.OrderItems),
                 ObjectID = _ChildObject.ID,
             };
 
@@ -123,7 +125,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
         {
             var getRequest = new GetObjectRequest()
             {
-                ObjectID = _ParentObject.ID
+                ObjectID = _ChildObject.ID
             };
             var getResponse = _ExplorerController.GetObject(getRequest);
 

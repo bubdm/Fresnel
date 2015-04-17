@@ -14,6 +14,8 @@ namespace Envivo.Fresnel.Core.Commands
 
         long SequenceNo { get; }
 
+        IEnumerable<ObjectObserver> AffectedObjects { get; }
+
         ActionResult Do();
 
         ActionResult Undo();

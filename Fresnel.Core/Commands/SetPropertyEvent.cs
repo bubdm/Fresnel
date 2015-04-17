@@ -35,14 +35,14 @@ namespace Envivo.Fresnel.Core.Commands
 
         public long SequenceNo { get; set; }
 
-        private IEnumerable<ObjectObserver> ModifiedObjects { get; set; }
+        public IEnumerable<ObjectObserver> AffectedObjects { get; private set; }
 
         public ActionResult Do()
         {
             _oPreviousValue = _GetPropertyCommand.Invoke(_oProp);
             _SetPropertyCommand.Invoke(_oProp, _oValue);
 
-            this.ModifiedObjects = new ObjectObserver[] { _oProp.OuterObject };
+            this.AffectedObjects = new ObjectObserver[] { _oProp.OuterObject };
 
             return ActionResult.Pass;
         }
