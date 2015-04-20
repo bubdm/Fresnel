@@ -21,6 +21,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private EventTimeLine _EventTimeLine;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private ModificationsVmBuilder _ModificationsBuilder;
+        private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
         public CollectionAddCommand
@@ -33,6 +34,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             EventTimeLine eventTimeLine,
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsBuilder,
+            ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
             )
         {
@@ -44,6 +46,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _EventTimeLine = eventTimeLine;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
+            _ExceptionMessagesBuilder = exceptionMessagesBuilder;
             _Clock = clock;
         }
 
@@ -95,18 +98,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
-                var errorVM = new MessageVM()
-                {
-                    IsError = true,
-                    OccurredAt = _Clock.Now,
-                    Text = ex.Message,
-                    Detail = ex.ToString(),
-                };
+                var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
 
                 return new GenericResponse()
                 {
                     Failed = true,
-                    Messages = new MessageVM[] { errorVM }
+                    Messages = errorVMs
                 };
             }
         }
@@ -178,18 +175,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
-                var errorVM = new MessageVM()
-                {
-                    IsError = true,
-                    OccurredAt = _Clock.Now,
-                    Text = ex.Message,
-                    Detail = ex.ToString(),
-                };
+                var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
 
                 return new GenericResponse()
                 {
                     Failed = true,
-                    Messages = new MessageVM[] { errorVM }
+                    Messages = errorVMs
                 };
             }
         }

@@ -16,6 +16,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.InvokeMethodCommand _InvokeMethodCommand;
         private ModificationsVmBuilder _ModificationsBuilder;
+        private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
         public InvokeMethodCommand
@@ -24,6 +25,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             Core.Commands.InvokeMethodCommand invokeMethodCommand,
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsBuilder,
+            ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
         )
         {
@@ -31,6 +33,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _InvokeMethodCommand = invokeMethodCommand;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
+            _ExceptionMessagesBuilder = exceptionMessagesBuilder;
             _Clock = clock;
         }
 
@@ -88,18 +91,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
-                var errorVM = new MessageVM()
-                {
-                    IsError = true,
-                    OccurredAt = _Clock.Now,
-                    Text = string.Concat("'", request.MethodName, "' failed: ", ex.Message),
-                    Detail = ex.StackTrace,
-                };
+                var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
 
                 return new InvokeMethodResponse()
                 {
                     Failed = true,
-                    Messages = new MessageVM[] { errorVM }
+                    Messages = errorVMs
                 };
             }
         }

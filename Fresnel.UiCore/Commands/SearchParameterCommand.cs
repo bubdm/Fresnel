@@ -23,6 +23,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private SearchResultsVmBuilder _SearchResultsVmBuilder;
         private SearchCommand _SearchCommand;
         private SearchResultsFilterApplier _SearchResultsFilterApplier;
+        private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
         public SearchParameterCommand
@@ -33,6 +34,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             SearchResultsVmBuilder searchResultsVmBuilder,
             SearchCommand searchCommand,
             SearchResultsFilterApplier searchResultsFilterApplier,
+            ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
         )
         {
@@ -42,6 +44,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _SearchResultsVmBuilder = searchResultsVmBuilder;
             _SearchCommand = searchCommand;
             _SearchResultsFilterApplier = searchResultsFilterApplier;
+            _ExceptionMessagesBuilder = exceptionMessagesBuilder;
             _Clock = clock;
         }
 
@@ -81,18 +84,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
-                var errorVM = new MessageVM()
-                {
-                    IsError = true,
-                    OccurredAt = _Clock.Now,
-                    Text = ex.Message,
-                    Detail = ex.ToString(),
-                };
+                var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
 
                 return new SearchResponse()
                 {
                     Failed = true,
-                    Messages = new MessageVM[] { errorVM }
+                    Messages = errorVMs
                 };
             }
         }

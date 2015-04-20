@@ -15,6 +15,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ObserverCache _ObserverCache;
         private Core.Commands.CreateObjectCommand _CreateObjectCommand;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
+        private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
         public CreateObjectCommand
@@ -23,6 +24,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             ObserverCache observerCache,
             Core.Commands.CreateObjectCommand createObjectCommand,
             AbstractObjectVmBuilder objectVMBuilder,
+            ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
             )
         {
@@ -30,6 +32,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _ObserverCache = observerCache;
             _CreateObjectCommand = createObjectCommand;
             _ObjectVMBuilder = objectVMBuilder;
+            _ExceptionMessagesBuilder = exceptionMessagesBuilder;
             _Clock = clock;
         }
 
@@ -61,18 +64,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
-                var errorVM = new MessageVM()
-                {
-                    IsError = true,
-                    OccurredAt = _Clock.Now,
-                    Text = ex.Message,
-                    Detail = ex.ToString(),
-                };
+                var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
 
                 return new CreateCommandResponse()
                 {
                     Failed = true,
-                    Messages = new MessageVM[] { errorVM }
+                    Messages = errorVMs
                 };
             }
         }

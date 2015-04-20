@@ -11,6 +11,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ObserverCache _ObserverCache;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
+        private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
         public GetPropertyCommand
@@ -18,12 +19,14 @@ namespace Envivo.Fresnel.UiCore.Commands
             Core.Commands.GetPropertyCommand getPropertyCommand,
             ObserverCache observerCache,
             AbstractObjectVmBuilder objectVMBuilder,
+            ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
         )
         {
             _GetPropertyCommand = getPropertyCommand;
             _ObserverCache = observerCache;
             _ObjectVMBuilder = objectVMBuilder;
+            _ExceptionMessagesBuilder = exceptionMessagesBuilder;
             _Clock = clock;
         }
 
@@ -62,18 +65,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
-                var errorVM = new MessageVM()
-                {
-                    IsError = true,
-                    OccurredAt = _Clock.Now,
-                    Text = ex.Message,
-                    Detail = ex.ToString(),
-                };
+                var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
 
                 return new GetPropertyResponse()
                 {
                     Failed = true,
-                    Messages = new MessageVM[] { errorVM }
+                    Messages = errorVMs
                 };
             }
         }

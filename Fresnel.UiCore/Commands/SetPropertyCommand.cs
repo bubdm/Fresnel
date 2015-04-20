@@ -19,6 +19,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private Func<BasePropertyObserver, BaseObjectObserver, SetPropertyEvent> _SetPropertyEventFactory;
         private EventTimeLine _EventTimeLine;
         private ModificationsVmBuilder _ModificationsBuilder;
+        private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
         public SetPropertyCommand
@@ -28,6 +29,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             ObserverCache observerCache,
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsBuilder,
+            ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
             )
         {
@@ -36,6 +38,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _ObserverCache = observerCache;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
+            _ExceptionMessagesBuilder = exceptionMessagesBuilder;
             _Clock = clock;
         }
 
@@ -103,18 +106,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
-                var errorVM = new MessageVM()
-                {
-                    IsError = true,
-                    OccurredAt = _Clock.Now,
-                    Text = ex.Message,
-                    Detail = ex.ToString(),
-                };
+                var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
 
                 return new GenericResponse()
                 {
                     Failed = true,
-                    Messages = new MessageVM[] { errorVM }
+                    Messages = errorVMs
                 };
             }
         }

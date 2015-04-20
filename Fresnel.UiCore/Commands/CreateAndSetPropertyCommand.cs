@@ -16,6 +16,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private CreateObjectCommand _CreateCommand;
         private SetPropertyCommand _SetPropertyCommand;
         private ModificationsVmBuilder _ModificationsBuilder;
+        private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
         public CreateAndSetPropertyCommand
@@ -24,6 +25,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             CreateObjectCommand createCommand,
             SetPropertyCommand setPropertyCommand,
             ModificationsVmBuilder modificationsBuilder,
+            ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
             )
         {
@@ -31,6 +33,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _CreateCommand = createCommand;
             _SetPropertyCommand = setPropertyCommand;
             _ModificationsBuilder = modificationsBuilder;
+            _ExceptionMessagesBuilder = exceptionMessagesBuilder;
             _Clock = clock;
         }
 
@@ -80,18 +83,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
             catch (Exception ex)
             {
-                var errorVM = new MessageVM()
-                {
-                    IsError = true,
-                    OccurredAt = _Clock.Now,
-                    Text = ex.Message,
-                    Detail = ex.ToString(),
-                };
+                var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
 
                 return new CreateAndSetPropertyResponse()
                 {
                     Failed = true,
-                    Messages = new MessageVM[] { errorVM }
+                    Messages = errorVMs
                 };
             }
         }
