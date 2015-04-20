@@ -82,7 +82,7 @@ module FresnelApp {
             for (var i = 0; i < modifications.ObjectTitleChanges.length; i++) {
                 var titleChange: ObjectTitleChangeVM = modifications.ObjectTitleChanges[i];
 
-                var existingItem = this.getObject(titleChange.ObjectId);
+                var existingItem = this.getObject(titleChange.ObjectID);
                 if (existingItem == null) {
                     continue;
                 }
@@ -98,7 +98,7 @@ module FresnelApp {
             for (var i = 0; i < modifications.PropertyChanges.length; i++) {
                 var propertyChange: PropertyChangeVM = modifications.PropertyChanges[i];
 
-                var existingItem = this.getObject(propertyChange.ObjectId);
+                var existingItem = this.getObject(propertyChange.ObjectID);
                 if (existingItem == null) {
                     continue;
                 }
@@ -146,7 +146,7 @@ module FresnelApp {
             for (var i = 0; i < modifications.MethodParameterChanges.length; i++) {
                 var parameterChange: ParameterChangeVM = modifications.MethodParameterChanges[i];
 
-                var existingItem = this.getObject(parameterChange.ObjectId);
+                var existingItem = this.getObject(parameterChange.ObjectID);
                 if (existingItem == null) {
                     continue;
                 }

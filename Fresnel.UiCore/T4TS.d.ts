@@ -166,19 +166,19 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Changes.ObjectTitleChangeVM **/
     export interface ObjectTitleChangeVM {
-        ObjectId: any;
+        ObjectID: any;
         Title: string;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Changes.ParameterChangeVM **/
     export interface ParameterChangeVM {
-        ObjectId: any;
+        ObjectID: any;
         MethodName: string;
         ParameterName: string;
         State: FresnelApp.ValueStateVM;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Changes.PropertyChangeVM **/
     export interface PropertyChangeVM {
-        ObjectId: any;
+        ObjectID: any;
         PropertyName: string;
         State: FresnelApp.ValueStateVM;
     }

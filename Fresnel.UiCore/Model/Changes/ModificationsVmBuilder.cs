@@ -72,7 +72,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
         {
             var parameterChange = new ParameterChangeVM()
             {
-                ObjectId = oMethod.OuterObject.ID,
+                ObjectID = oMethod.OuterObject.ID,
                 MethodName = oMethod.Template.Name,
                 ParameterName = oParam.Template.Name,
                 State = _ParameterStateVmBuilder.BuildFor(oParam)
@@ -92,7 +92,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
 
             var result = new PropertyChangeVM()
             {
-                ObjectId = oProperty.OuterObject.ID,
+                ObjectID = oProperty.OuterObject.ID,
                 PropertyName = oProperty.Template.Name,
                 State = _PropertyStateVmBuilder.BuildFor(oProperty)
             };
@@ -128,7 +128,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
         {
             var result = new ObjectTitleChangeVM()
             {
-                ObjectId = titleChange.ObjectObserver.ID,
+                ObjectID = titleChange.ObjectObserver.ID,
                 Title = titleChange.NewValue
             };
             return result;

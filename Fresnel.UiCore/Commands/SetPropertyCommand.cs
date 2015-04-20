@@ -81,7 +81,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
                 // Done:
                 var modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt);
-                var thisPropertyChange = modifications.PropertyChanges.SingleOrDefault(p => p.ObjectId == oObject.ID && p.PropertyName == oProp.Template.Name);
+                var thisPropertyChange = modifications.PropertyChanges.SingleOrDefault(p => p.ObjectID == oObject.ID && p.PropertyName == oProp.Template.Name);
 
                 var infoText = thisPropertyChange == null ?
                                 "Nothing was changed" :

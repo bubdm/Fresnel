@@ -7,7 +7,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
     [TypeScriptInterface]
     public class PropertyChangeVM
     {
-        public Guid ObjectId { get; set; }
+        public Guid ObjectID { get; set; }
 
         public string PropertyName { get; set; }
 
