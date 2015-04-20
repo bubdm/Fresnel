@@ -38,8 +38,10 @@ namespace Envivo.Fresnel.Core.Commands
             var oOuterObject = oProperty.OuterObject;
 
             var value = _GetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name);
+            //if (value == null)
+            //    return null;
             if (value == null)
-                return null;
+                return _ObserverCache.GetObserver(null, oProperty.Template.PropertyType);
 
             var valueType = _RealTypeResolver.GetRealType(value);
             var oValue = _ObserverCache.GetObserver(value, valueType);
