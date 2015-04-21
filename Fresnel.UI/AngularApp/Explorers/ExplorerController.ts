@@ -28,7 +28,7 @@ module FresnelApp {
 
             $scope.invoke = function (method: MethodVM) {
                 if (method.Parameters.length == 0) {
-                    var request = requestBuilder.buildMethodInvokeRequest(method);
+                    var request = requestBuilder.buildInvokeMethodRequest(method);
                     var promise = fresnelService.invokeMethod(request);
 
                     promise.then((promiseResult) => {

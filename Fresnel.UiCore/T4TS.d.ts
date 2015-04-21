@@ -75,6 +75,12 @@ declare module FresnelApp {
     export interface GetPropertyResponse extends FresnelApp.BaseCommandResponse {
         ReturnValue: FresnelApp.ObjectVM;
     }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.InvokeDependencyMethodRequest **/
+    export interface InvokeDependencyMethodRequest {
+        ClassType: string;
+        MethodName: string;
+        Parameters: FresnelApp.ParameterVM[];
+    }
     /** Generated from Envivo.Fresnel.UiCore.Commands.InvokeMethodRequest **/
     export interface InvokeMethodRequest {
         ObjectID: any;
@@ -188,10 +194,9 @@ declare module FresnelApp {
         FullTypeName: string;
         Create: FresnelApp.InteractionPoint;
         Search: FresnelApp.InteractionPoint;
-        RepositoryCommands: FresnelApp.InteractionPoint[];
-        StaticMethodCommands: FresnelApp.InteractionPoint[];
-        FactoryCommands: FresnelApp.InteractionPoint[];
-        ServiceCommands: FresnelApp.InteractionPoint[];
+        FactoryCommands: FresnelApp.DependencyMethodVM[];
+        QueryCommands: FresnelApp.DependencyMethodVM[];
+        ServiceCommands: FresnelApp.DependencyMethodVM[];
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Classes.Namespace **/
     export interface Namespace extends FresnelApp.BaseViewModel {
@@ -205,6 +210,10 @@ declare module FresnelApp {
         ElementProperties: FresnelApp.PropertyVM[];
         Items: FresnelApp.ObjectVM[];
         DisplayItems: FresnelApp.ObjectVM[];
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.DependencyMethodVM **/
+    export interface DependencyMethodVM extends FresnelApp.MethodVM {
+        ClassType: string;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.DirtyStateVM **/
     export interface DirtyStateVM {
@@ -239,12 +248,16 @@ declare module FresnelApp {
         ParametersSetByUser: FresnelApp.ParameterVM[];
         IsAsync: boolean;
     }
+    /** Generated from Envivo.Fresnel.UiCore.Model.ObjectMethodVM **/
+    export interface ObjectMethodVM extends FresnelApp.MethodVM {
+        ObjectID?: any;
+    }
     /** Generated from Envivo.Fresnel.UiCore.Model.ObjectVM **/
     export interface ObjectVM extends FresnelApp.BaseViewModel {
         ID: any;
         Type: string;
         Properties: FresnelApp.PropertyVM[];
-        Methods: FresnelApp.MethodVM[];
+        Methods: FresnelApp.ObjectMethodVM[];
         IsPersistable: boolean;
         DirtyState: FresnelApp.DirtyStateVM;
     }

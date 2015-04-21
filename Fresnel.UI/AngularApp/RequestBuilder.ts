@@ -23,12 +23,28 @@
             return request;
         }
 
-        buildMethodInvokeRequest(method: MethodVM) {
+        buildInvokeMethodRequest(method: MethodVM) {
             var request: InvokeMethodRequest = {
                 ObjectID: method.ObjectID,
                 MethodName: method.InternalName,
-                Parameters: []
+                Parameters: this.buildParametersFrom(method)
             };
+
+            return request;
+        }
+
+        buildInvokeDependencyMethodRequest(method: DependencyMethodVM) {
+            var request: InvokeDependencyMethodRequest = {
+                ClassType: method.ClassType,
+                MethodName: method.InternalName,
+                Parameters: this.buildParametersFrom(method)
+            };
+
+            return request;
+        }
+
+        buildParametersFrom(method: MethodVM): ParameterVM[] {
+            var params = [];
 
             for (var i = 0; i < method.Parameters.length; i++) {
                 var param = method.Parameters[i];
@@ -39,10 +55,10 @@
                         ReferenceValueID: param.State.ReferenceValueID
                     }
                 }
-                request.Parameters.push(requestParam);
+                params.push(requestParam);
             }
 
-            return request;
+            return params;
         }
 
         buildCreateAndAssociateRequest(prop: PropertyVM, classTypeName: string) {

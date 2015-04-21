@@ -17,7 +17,7 @@ namespace Envivo.SampleModel.Factories
             return newProduct;
         }
 
-        public Product Create(Supplier supplier)
+        public Product CreateForSupplier(Supplier supplier)
         {
             var newProduct = this.Create();
             newProduct.Name = "This was created using ProductFactory.Create(supplier)";

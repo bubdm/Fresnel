@@ -20,6 +20,8 @@
 
         invokeMethod(request: InvokeMethodRequest): ng.IPromise<any>;
 
+        invokeDependencyMethod(request: InvokeDependencyMethodRequest): ng.IPromise<any>;
+
         addNewItemToCollection(request: CollectionAddNewRequest): ng.IPromise<any>;
 
         addItemsToCollection(request: CollectionAddRequest): ng.IPromise<any>;

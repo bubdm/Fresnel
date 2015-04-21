@@ -14,7 +14,7 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public PropertyVM[] Properties { get; set; }
 
-        public MethodVM[] Methods { get; set; }
+        public ObjectMethodVM[] Methods { get; set; }
 
         /// <summary>
         /// Determines if the Object can be saved to a data store

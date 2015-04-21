@@ -1,6 +1,7 @@
 ﻿using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Permissions;
+using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Model;
 using System.Collections.Generic;
@@ -23,31 +24,53 @@ namespace Envivo.Fresnel.UiCore
             _CanInvokeMethodPermission = canInvokeMethodPermission;
         }
 
-        public MethodVM BuildFor(ObjectObserver oObject, MethodObserver oMethod)
+        public ObjectMethodVM BuildFor(MethodObserver oMethod)
         {
             var invokeCheck = _CanInvokeMethodPermission.IsSatisfiedBy(oMethod);
 
-            var methodVM = new MethodVM()
+            var methodVM = this.BuildFor(oMethod.Template);
+            methodVM.ObjectID = oMethod.OuterObject.ID;
+            methodVM.IsEnabled = invokeCheck == null;
+            methodVM.Error = invokeCheck == null ? null : invokeCheck.Flatten().Message;
+
+            return methodVM;
+        }
+
+        public ObjectMethodVM BuildFor(MethodTemplate tMethod)
+        {
+            var methodVM = new ObjectMethodVM()
             {
-                ObjectID = oObject.ID,
-                Name = oMethod.Template.FriendlyName,
-                InternalName = oMethod.Template.Name,
-                Description = oMethod.Template.XmlComments.Summary,
-                Parameters = this.CreateParametersFor(oMethod).ToArray(),
-                //IsAsync = oMethod.Template.Configurations.Get<MethodConfiguration>().IsAsynchronous,
-                IsVisible = !oMethod.Template.IsFrameworkMember && oMethod.Template.IsVisible,
-                IsEnabled = invokeCheck == null,
-                Error = invokeCheck == null ? null : invokeCheck.Flatten().Message
+                Name = tMethod.FriendlyName,
+                InternalName = tMethod.Name,
+                Description = tMethod.XmlComments.Summary,
+                Parameters = this.CreateParametersFor(tMethod).ToArray(),
+                IsVisible = !tMethod.IsFrameworkMember && tMethod.IsVisible,
             };
 
             return methodVM;
         }
 
-        private IEnumerable<ParameterVM> CreateParametersFor(MethodObserver oMethod)
+        public DependencyMethodVM BuildFor(ClassTemplate tClass, MethodTemplate tMethod)
+        {
+            var methodVM = new DependencyMethodVM()
+            {
+                ClassType = tClass.RealType.FullName,
+                Name = tMethod.FriendlyName,
+                InternalName = tMethod.Name,
+                Description = tMethod.XmlComments.Summary,
+                Parameters = this.CreateParametersFor(tMethod).ToArray(),
+                IsVisible = !tMethod.IsFrameworkMember && tMethod.IsVisible,
+                IsEnabled = true,
+            };
+
+            return methodVM;
+        }
+
+        private IEnumerable<ParameterVM> CreateParametersFor(MethodTemplate tMethod)
         {
             var results = new List<ParameterVM>();
 
-            foreach (var tParam in oMethod.Template.Parameters.Values)
+            foreach (var tParam in tMethod.Parameters.Values)
             {
                 var paramVM = _AbstractParameterVmBuilder.BuildFor(tParam);
                 results.Add(paramVM);

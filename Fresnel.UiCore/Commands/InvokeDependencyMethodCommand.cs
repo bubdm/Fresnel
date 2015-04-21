@@ -40,7 +40,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public InvokeMethodResponse Invoke(InvokeMethodRequest request)
+        public InvokeMethodResponse Invoke(InvokeDependencyMethodRequest request)
         {
             try
             {
@@ -55,7 +55,14 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var oService = (ObjectObserver)_ObserverCache.GetObserver(domainService);
                 var oMethod = oService.Methods[request.MethodName];
 
-                var result = _InvokeMethodCommand.Invoke(request, oMethod, startedAt);
+                var innerRequest = new InvokeMethodRequest()
+                {
+                    ObjectID = oService.ID,
+                    MethodName = request.MethodName,
+                    Parameters = request.Parameters,
+                };
+
+                var result = _InvokeMethodCommand.Invoke(innerRequest, oMethod, startedAt);
                 return result;
             }
             catch (Exception ex)

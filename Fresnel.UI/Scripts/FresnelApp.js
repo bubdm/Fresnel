@@ -499,7 +499,7 @@ var FresnelApp;
                 param.State.ReferenceValueID = null;
             }
             $scope.invoke = function (method) {
-                var request = requestBuilder.buildMethodInvokeRequest(method);
+                var request = requestBuilder.buildInvokeMethodRequest(method);
                 var promise = fresnelService.invokeMethod(request);
                 promise.then(function (promiseResult) {
                     var response = promiseResult.data;
@@ -818,7 +818,7 @@ var FresnelApp;
         function ExplorerController($rootScope, $scope, fresnelService, requestBuilder, appService, searchService, explorerService, saveService, $modal) {
             $scope.invoke = function (method) {
                 if (method.Parameters.length == 0) {
-                    var request = requestBuilder.buildMethodInvokeRequest(method);
+                    var request = requestBuilder.buildInvokeMethodRequest(method);
                     var promise = fresnelService.invokeMethod(request);
                     promise.then(function (promiseResult) {
                         var response = promiseResult.data;
@@ -1077,12 +1077,24 @@ var FresnelApp;
             };
             return request;
         };
-        RequestBuilder.prototype.buildMethodInvokeRequest = function (method) {
+        RequestBuilder.prototype.buildInvokeMethodRequest = function (method) {
             var request = {
                 ObjectID: method.ObjectID,
                 MethodName: method.InternalName,
-                Parameters: []
+                Parameters: this.buildParametersFrom(method)
             };
+            return request;
+        };
+        RequestBuilder.prototype.buildInvokeDependencyMethodRequest = function (method) {
+            var request = {
+                ClassType: method.ClassType,
+                MethodName: method.InternalName,
+                Parameters: this.buildParametersFrom(method)
+            };
+            return request;
+        };
+        RequestBuilder.prototype.buildParametersFrom = function (method) {
+            var params = [];
             for (var i = 0; i < method.Parameters.length; i++) {
                 var param = method.Parameters[i];
                 var requestParam = {
@@ -1092,9 +1104,9 @@ var FresnelApp;
                         ReferenceValueID: param.State.ReferenceValueID
                     }
                 };
-                request.Parameters.push(requestParam);
+                params.push(requestParam);
             }
-            return request;
+            return params;
         };
         RequestBuilder.prototype.buildCreateAndAssociateRequest = function (prop, classTypeName) {
             var request = {
@@ -1286,6 +1298,16 @@ var FresnelApp;
             });
             return promise;
         };
+        FresnelService.prototype.invokeDependencyMethod = function (request) {
+            var _this = this;
+            this.blockUI.start("Performing action...");
+            var uri = "api/Toolbox/InvokeDependencyMethod";
+            var promise = this.http.post(uri, request);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
+        };
         FresnelService.prototype.addNewItemToCollection = function (request) {
             var _this = this;
             this.blockUI.start("Adding new item to collection...");
@@ -1424,7 +1446,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
-        function ToolboxController($rootScope, $scope, fresnelService, requestBuilder, appService, searchService, blockUI) {
+        function ToolboxController($rootScope, $scope, fresnelService, requestBuilder, appService, searchService, blockUI, $modal) {
             $scope.loadClassHierarchy = function () {
                 var _this = this;
                 var promise = fresnelService.getClassHierarchy();
@@ -1452,6 +1474,43 @@ var FresnelApp;
             $scope.searchObjects = function (fullyQualifiedName) {
                 searchService.searchForObjects(fullyQualifiedName);
             };
+            $scope.invokeDependencyMethod = function (method) {
+                if (method.Parameters.length == 0) {
+                    var request = requestBuilder.buildInvokeDependencyMethodRequest(method);
+                    var promise = fresnelService.invokeDependencyMethod(request);
+                    promise.then(function (promiseResult) {
+                        var response = promiseResult.data;
+                        method.Error = response.Passed ? "" : response.Messages[0].Text;
+                        appService.identityMap.merge(response.Modifications);
+                        $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
+                        if (response.ResultObject) {
+                            $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.ResultObject, null);
+                        }
+                    });
+                }
+                else {
+                    var options = {
+                        templateUrl: '/Templates/methodDialog.html',
+                        controller: 'methodController',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            // These objects will be injected into the MethodController's ctor:
+                            explorer: function () {
+                                return null;
+                            },
+                            method: function () {
+                                return method;
+                            }
+                        }
+                    };
+                    var modal = $modal.open(options);
+                    $rootScope.$broadcast(FresnelApp.UiEventType.ModalOpened, modal);
+                    modal.result.finally(function () {
+                        $rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
+                    });
+                }
+            };
             // This will run when the page loads:
             angular.element(document).ready(function () {
                 $scope.loadClassHierarchy();
@@ -1464,7 +1523,8 @@ var FresnelApp;
             'requestBuilder',
             'appService',
             'searchService',
-            'blockUI'
+            'blockUI',
+            '$modal'
         ];
         return ToolboxController;
     })();

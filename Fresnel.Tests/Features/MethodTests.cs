@@ -136,7 +136,7 @@ namespace Envivo.Fresnel.Tests.Proxies
             var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
             // Act:
-            var invokeRequest = new InvokeMethodRequest()
+            var invokeRequest = new InvokeDependencyMethodRequest()
             {
                 ClassType = typeof(ProductFactory).FullName,
                 MethodName = "Create",

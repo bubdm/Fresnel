@@ -43,7 +43,12 @@
                                 </a>
                             </li>
                             <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+
+                            <li ng-repeat="factoryMethod in item.FactoryCommands" class="">
+                                <a href="" a-disabled="!factoryMethod.IsEnabled" ng-click="invokeDependencyMethod(factoryMethod)" data-toggle="tooltip" title="{{factoryMethod.Tooltip}}">
+                                    <i class="fa fa-play"></i>{{factoryMethod.Name}}
+                                </a>
+                            </li>
                         </ul>
                     </div>
 

@@ -38,7 +38,7 @@
 
             return promise;
         }
-        
+
         createObject(request: CreateObjectRequest): ng.IPromise<any> {
             this.blockUI.start("Creating new object...");
 
@@ -121,6 +121,19 @@
             this.blockUI.start("Performing action...");
 
             var uri = "api/Explorer/InvokeMethod";
+            var promise = this.http.post(uri, request);
+
+            promise.finally(() => {
+                this.blockUI.stop();
+            });
+
+            return promise;
+        }
+
+        invokeDependencyMethod(request: InvokeDependencyMethodRequest): ng.IPromise<any> {
+            this.blockUI.start("Performing action...");
+
+            var uri = "api/Toolbox/InvokeDependencyMethod";
             var promise = this.http.post(uri, request);
 
             promise.finally(() => {

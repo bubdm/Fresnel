@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public InvokeMethodResponse InvokeDependencyMethod([FromBody]InvokeMethodRequest id)
+        public InvokeMethodResponse InvokeDependencyMethod([FromBody]InvokeDependencyMethodRequest id)
         {
             var request = id;
             var result = _InvokeDependencyMethodCommand.Invoke(request);

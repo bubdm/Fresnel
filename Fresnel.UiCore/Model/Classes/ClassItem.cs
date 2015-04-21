@@ -12,12 +12,10 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
 
         public InteractionPoint Search { get; set; }
 
-        public InteractionPoint[] RepositoryCommands { get; set; }
+        public DependencyMethodVM[] FactoryCommands { get; set; }
 
-        public InteractionPoint[] StaticMethodCommands { get; set; }
+        public DependencyMethodVM[] QueryCommands { get; set; }
 
-        public InteractionPoint[] FactoryCommands { get; set; }
-
-        public InteractionPoint[] ServiceCommands { get; set; }
+        public DependencyMethodVM[] ServiceCommands { get; set; }
     }
 }

@@ -62,6 +62,7 @@
     <Compile Include="Commands\CancelChangesCommand.cs" />
     <Compile Include="Commands\InvokeMethodCommand.cs" />
     <Compile Include="Commands\InvokeDependencyMethodCommand.cs" />
+    <Compile Include="Commands\InvokeDependencyMethodRequest.cs" />
     <Compile Include="Commands\SaveChangesResponse.cs" />
     <Compile Include="Commands\SearchResultsFilterApplier.cs" />
     <Compile Include="Commands\SearchParameterCommand.cs" />
@@ -75,6 +76,8 @@
     <Compile Include="ExceptionMessagesBuilder.cs" />
     <Compile Include="Model\Changes\ParameterChangeVM.cs" />
     <Compile Include="Model\Changes\ObjectTitleChangeVM.cs" />
+    <Compile Include="Model\MethodVM.cs" />
+    <Compile Include="Model\DependencyMethodVM.cs" />
     <Compile Include="Model\SearchResultsVM.cs" />
     <Compile Include="Model\TypeInfo\DateTimeValueFormatter.cs" />
     <Compile Include="Model\TypeInfo\BooleanValueFormatter.cs" />
@@ -149,7 +152,7 @@
     <Compile Include="PropertyVmBuilder.cs" />
     <Compile Include="Model\CollectionVM.cs" />
     <Compile Include="AbstractObjectVmBuilder.cs" />
-    <Compile Include="Model\MethodVM.cs" />
+    <Compile Include="Model\ObjectMethodVM.cs" />
     <Compile Include="Model\SettableMemberVM.cs" />
     <Compile Include="Model\ObjectVM.cs" />
     <Compile Include="Model\TypeInfo\DateTimeVM.cs" />
