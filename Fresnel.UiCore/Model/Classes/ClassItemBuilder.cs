@@ -5,6 +5,7 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.Introspection.Templates;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Envivo.Fresnel.UiCore.Model.Classes
 {
@@ -45,12 +46,15 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
                 IsVisible = tClass.IsVisible,
             };
 
-            var createCheck = _CanCreatePermission.IsSatisfiedBy(tClass);
+            // NB: Don't show the default "Create" option if there are Factory methods:
+            item.FactoryMethods = this.CreateFactoryMethods(tClass);
+            var areFactoryMethodsAvailable = item.FactoryMethods != null;
 
+            var createPermissionError = _CanCreatePermission.IsSatisfiedBy(tClass);
             var create = item.Create = new InteractionPoint();
-            create.IsVisible = true;
-            create.IsEnabled = createCheck == null;
-            create.Tooltip = create.IsEnabled ? "Create a new instance of " + tClass.FriendlyName : createCheck.Message;
+            create.IsVisible = !areFactoryMethodsAvailable;
+            create.IsEnabled = createPermissionError == null;
+            create.Tooltip = create.IsEnabled ? "Create a new instance of " + tClass.FriendlyName : createPermissionError.Message;
             create.CommandUri = create.IsEnabled ? "/Toolbox/Create" : "";
             create.CommandArg = create.IsEnabled ? tClass.FullName : "";
 
@@ -60,7 +64,6 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
             search.Tooltip = search.IsEnabled ? "Search for existing instances of " + tClass.FriendlyName : "These items are not saved to the database";
 
             // TODO: Add other Interaction Points (Factory, Service, Static methods, etc)
-            item.FactoryMethods = this.CreateFactoryMethods(tClass);
 
             return item;
         }
