@@ -10,17 +10,22 @@ namespace Envivo.Fresnel.UiCore.Controllers
     public class ToolboxController : ApiController
     {
         private GetClassHierarchyCommand _GetClassHierarchyCommand;
-        private CreateObjectCommand _CreateCommand;
+        private CreateObjectCommand _CreateObjectCommand;
+        private InvokeDependencyMethodCommand _InvokeDependencyMethodCommand;
         private SearchObjectsCommand _SearchObjectsCommand;
 
         public ToolboxController
             (
-            IEnumerable<ICommand> commands
+            GetClassHierarchyCommand getClassHierarchyCommand,
+            CreateObjectCommand createObjectCommand,
+            InvokeDependencyMethodCommand invokeServiceMethodCommand,
+            SearchObjectsCommand searchObjectsCommand
             )
         {
-            _GetClassHierarchyCommand = commands.OfType<GetClassHierarchyCommand>().Single();
-            _CreateCommand = commands.OfType<CreateObjectCommand>().Single();
-            _SearchObjectsCommand = commands.OfType<SearchObjectsCommand>().Single();
+            _GetClassHierarchyCommand = getClassHierarchyCommand;
+            _CreateObjectCommand = createObjectCommand;
+            _InvokeDependencyMethodCommand = invokeServiceMethodCommand;
+            _SearchObjectsCommand = searchObjectsCommand;
         }
 
         [HttpGet]
@@ -34,7 +39,15 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public CreateCommandResponse Create([FromBody]CreateObjectRequest id)
         {
             var request = id;
-            var result = _CreateCommand.Invoke(request);
+            var result = _CreateObjectCommand.Invoke(request);
+            return result;
+        }
+
+        [HttpPost]
+        public InvokeMethodResponse InvokeDependencyMethod([FromBody]InvokeMethodRequest id)
+        {
+            var request = id;
+            var result = _InvokeDependencyMethodCommand.Invoke(request);
             return result;
         }
 

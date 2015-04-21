@@ -60,6 +60,8 @@
     <Compile Include="Commands\CancelChangesRequest.cs" />
     <Compile Include="Commands\CancelChangesResponse.cs" />
     <Compile Include="Commands\CancelChangesCommand.cs" />
+    <Compile Include="Commands\InvokeMethodCommand.cs" />
+    <Compile Include="Commands\InvokeDependencyMethodCommand.cs" />
     <Compile Include="Commands\SaveChangesResponse.cs" />
     <Compile Include="Commands\SearchResultsFilterApplier.cs" />
     <Compile Include="Commands\SearchParameterCommand.cs" />
@@ -118,7 +120,7 @@
     <Compile Include="Model\Classes\NamespaceBuilder.cs" />
     <Compile Include="Model\Classes\Namespace.cs" />
     <Compile Include="Commands\BaseCommandResponse.cs" />
-    <Compile Include="Commands\InvokeMethodCommand.cs" />
+    <Compile Include="Commands\InvokeObjectMethodCommand.cs" />
     <Compile Include="Commands\GetPropertyResponse.cs" />
     <Compile Include="Commands\GetPropertyCommand.cs" />
     <Compile Include="Commands\CreateCommandResponse.cs" />
