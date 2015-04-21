@@ -58,10 +58,10 @@
                 searchService.searchForObjects(fullyQualifiedName);
             }
 
-            $scope.invokeDependencyMethod = function (method: DependencyMethodVM) {
+            $scope.invokeDependencyMethod = function (method: MethodVM) {
                 if (method.Parameters.length == 0) {
-                    var request = requestBuilder.buildInvokeDependencyMethodRequest(method);
-                    var promise = fresnelService.invokeDependencyMethod(request);
+                    var request = requestBuilder.buildInvokeMethodRequest(method);
+                    var promise = fresnelService.invokeMethod(request);
 
                     promise.then((promiseResult) => {
                         var response = promiseResult.data;
@@ -84,7 +84,10 @@
                         resolve: {
                             // These objects will be injected into the MethodController's ctor:
                             explorer: function () {
-                                return null;
+                                var fakeExplorer = {
+                                    __meta: { ID: method.ObjectID },
+                                };
+                                return fakeExplorer;
                             },
                             method: function () {
                                 return method;

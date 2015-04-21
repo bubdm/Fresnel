@@ -12,10 +12,10 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
 
         public InteractionPoint Search { get; set; }
 
-        public DependencyMethodVM[] FactoryCommands { get; set; }
+        public MethodVM[] FactoryMethods { get; set; }
 
-        public DependencyMethodVM[] QueryCommands { get; set; }
+        public MethodVM[] QueryMethods { get; set; }
 
-        public DependencyMethodVM[] ServiceCommands { get; set; }
+        public MethodVM[] ServiceMethods { get; set; }
     }
 }

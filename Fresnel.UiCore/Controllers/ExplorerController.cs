@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         private GetPropertyCommand _GetPropertyCommand;
         private SetPropertyCommand _SetPropertyCommand;
         private SetParameterCommand _SetParameterCommand;
-        private InvokeObjectMethodCommand _InvokeObjectMethodCommand;
+        private InvokeMethodCommand _InvokeMethodCommand;
         private CollectionAddCommand _CollectionAddCommand;
         private CollectionRemoveCommand _CollectionRemoveCommand;
         private SaveChangesCommand _SaveChangesCommand;
@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
             GetPropertyCommand getPropertyCommand,
             SetPropertyCommand setPropertyCommand,
             SetParameterCommand setParameterCommand,
-            InvokeObjectMethodCommand invokeMethodCommand,
+            InvokeMethodCommand invokeMethodCommand,
             CollectionAddCommand collectionAddCommand,
             CollectionRemoveCommand collectionRemoveCommand,
             SaveChangesCommand saveChangesCommand,
@@ -42,7 +42,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
             _GetPropertyCommand = getPropertyCommand;
             _SetPropertyCommand = setPropertyCommand;
             _SetParameterCommand = setParameterCommand;
-            _InvokeObjectMethodCommand = invokeMethodCommand;
+            _InvokeMethodCommand = invokeMethodCommand;
             _CollectionAddCommand = collectionAddCommand;
             _CollectionRemoveCommand = collectionRemoveCommand;
             _SaveChangesCommand = saveChangesCommand;
@@ -95,7 +95,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public InvokeMethodResponse InvokeMethod([FromBody]InvokeMethodRequest id)
         {
             var request = id;
-            var response = _InvokeObjectMethodCommand.Invoke(request);
+            var response = _InvokeMethodCommand.Invoke(request);
             return response;
         }
 

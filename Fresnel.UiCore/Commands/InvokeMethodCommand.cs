@@ -37,10 +37,19 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public InvokeMethodResponse Invoke(InvokeMethodRequest request, MethodObserver oMethod, long startedAt)
+
+        public InvokeMethodResponse Invoke(InvokeMethodRequest request)
         {
             try
             {
+                var startedAt = SequentialIdGenerator.Next;
+
+                var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
+                if (oObject == null)
+                    throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
+
+                var oMethod = oObject.Methods[request.MethodName];
+
                 this.UpdateParameters(oMethod, request);
 
                 var oMethodResult = _InvokeMethodCommand.Invoke(oMethod, oMethod.OuterObject.RealObject);

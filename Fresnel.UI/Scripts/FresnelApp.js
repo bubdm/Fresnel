@@ -1085,14 +1085,6 @@ var FresnelApp;
             };
             return request;
         };
-        RequestBuilder.prototype.buildInvokeDependencyMethodRequest = function (method) {
-            var request = {
-                ClassType: method.ClassType,
-                MethodName: method.InternalName,
-                Parameters: this.buildParametersFrom(method)
-            };
-            return request;
-        };
         RequestBuilder.prototype.buildParametersFrom = function (method) {
             var params = [];
             for (var i = 0; i < method.Parameters.length; i++) {
@@ -1298,16 +1290,6 @@ var FresnelApp;
             });
             return promise;
         };
-        FresnelService.prototype.invokeDependencyMethod = function (request) {
-            var _this = this;
-            this.blockUI.start("Performing action...");
-            var uri = "api/Toolbox/InvokeDependencyMethod";
-            var promise = this.http.post(uri, request);
-            promise.finally(function () {
-                _this.blockUI.stop();
-            });
-            return promise;
-        };
         FresnelService.prototype.addNewItemToCollection = function (request) {
             var _this = this;
             this.blockUI.start("Adding new item to collection...");
@@ -1476,8 +1458,8 @@ var FresnelApp;
             };
             $scope.invokeDependencyMethod = function (method) {
                 if (method.Parameters.length == 0) {
-                    var request = requestBuilder.buildInvokeDependencyMethodRequest(method);
-                    var promise = fresnelService.invokeDependencyMethod(request);
+                    var request = requestBuilder.buildInvokeMethodRequest(method);
+                    var promise = fresnelService.invokeMethod(request);
                     promise.then(function (promiseResult) {
                         var response = promiseResult.data;
                         method.Error = response.Passed ? "" : response.Messages[0].Text;
@@ -1497,7 +1479,10 @@ var FresnelApp;
                         resolve: {
                             // These objects will be injected into the MethodController's ctor:
                             explorer: function () {
-                                return null;
+                                var fakeExplorer = {
+                                    __meta: { ID: method.ObjectID },
+                                };
+                                return fakeExplorer;
                             },
                             method: function () {
                                 return method;

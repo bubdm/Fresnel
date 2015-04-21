@@ -11,20 +11,20 @@ namespace Envivo.Fresnel.UiCore.Controllers
     {
         private GetClassHierarchyCommand _GetClassHierarchyCommand;
         private CreateObjectCommand _CreateObjectCommand;
-        private InvokeDependencyMethodCommand _InvokeDependencyMethodCommand;
+        private InvokeMethodCommand _InvokeMethodCommand;
         private SearchObjectsCommand _SearchObjectsCommand;
 
         public ToolboxController
             (
             GetClassHierarchyCommand getClassHierarchyCommand,
             CreateObjectCommand createObjectCommand,
-            InvokeDependencyMethodCommand invokeServiceMethodCommand,
+            InvokeMethodCommand invokeMethodCommand,
             SearchObjectsCommand searchObjectsCommand
             )
         {
             _GetClassHierarchyCommand = getClassHierarchyCommand;
             _CreateObjectCommand = createObjectCommand;
-            _InvokeDependencyMethodCommand = invokeServiceMethodCommand;
+            _InvokeMethodCommand = invokeMethodCommand;
             _SearchObjectsCommand = searchObjectsCommand;
         }
 
@@ -44,10 +44,10 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public InvokeMethodResponse InvokeDependencyMethod([FromBody]InvokeDependencyMethodRequest id)
+        public InvokeMethodResponse InvokeMethod([FromBody]InvokeMethodRequest id)
         {
             var request = id;
-            var result = _InvokeDependencyMethodCommand.Invoke(request);
+            var result = _InvokeMethodCommand.Invoke(request);
             return result;
         }
 

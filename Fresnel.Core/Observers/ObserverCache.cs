@@ -277,16 +277,27 @@ namespace Envivo.Fresnel.Core.Observers
 
         public void CleanUp()
         {
+            var disposedIDs = new List<Guid>();
+
             foreach (var oObject in _ObjectIdMap.Values)
             {
+                if (oObject.IsPinned)
+                    continue;
+
                 if (oObject.RealObject != null)
                 {
                     _ObjectMap.Remove(oObject.RealObject);
                 }
                 oObject.DisposeSafely();
+                disposedIDs.Add(oObject.ID);
             }
-            _ObjectIdMap.Clear();
 
+            foreach (var id in disposedIDs)
+            {
+                _ObjectIdMap.Remove(id);
+            }
+
+            // Now take care of non-reference values:
             foreach (var oNonRefObject in _NonReferenceMap.Values)
             {
                 oNonRefObject.DisposeSafely();

@@ -33,16 +33,6 @@
             return request;
         }
 
-        buildInvokeDependencyMethodRequest(method: DependencyMethodVM) {
-            var request: InvokeDependencyMethodRequest = {
-                ClassType: method.ClassType,
-                MethodName: method.InternalName,
-                Parameters: this.buildParametersFrom(method)
-            };
-
-            return request;
-        }
-
         buildParametersFrom(method: MethodVM): ParameterVM[] {
             var params = [];
 

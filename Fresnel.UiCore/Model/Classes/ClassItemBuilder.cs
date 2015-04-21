@@ -1,4 +1,5 @@
-﻿using Envivo.Fresnel.Core.Permissions;
+﻿using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Core.Permissions;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.IoC;
@@ -10,18 +11,21 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
     public class ClassItemBuilder
     {
         private TemplateCache _TemplateCache;
+        private ObserverCache _ObserverCache;
         private IDomainDependencyResolver _DomainDependencyResolver;
         private MethodVmBuilder _MethodVmBuilder;
         private CanCreatePermission _CanCreatePermission;
 
         public ClassItemBuilder
             (
+            ObserverCache observerCache,
             TemplateCache templateCache,
             IDomainDependencyResolver domainDependencyResolver,
             MethodVmBuilder methodVmBuilder,
             CanCreatePermission canCreatePermission
             )
         {
+            _ObserverCache = observerCache;
             _TemplateCache = templateCache;
             _DomainDependencyResolver = domainDependencyResolver;
             _MethodVmBuilder = methodVmBuilder;
@@ -56,12 +60,12 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
             search.Tooltip = search.IsEnabled ? "Search for existing instances of " + tClass.FriendlyName : "These items are not saved to the database";
 
             // TODO: Add other Interaction Points (Factory, Service, Static methods, etc)
-            item.FactoryCommands = this.CreateFactoryCommands(tClass);
+            item.FactoryMethods = this.CreateFactoryMethods(tClass);
 
             return item;
         }
 
-        public DependencyMethodVM[] CreateFactoryCommands(ClassTemplate tClass)
+        public MethodVM[] CreateFactoryMethods(ClassTemplate tClass)
         {
             var genericFactory = typeof(IFactory<>);
             var factoryType = genericFactory.MakeGenericType(tClass.RealType);
@@ -71,12 +75,17 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
                 return null;
 
             var tFactory = (ClassTemplate)_TemplateCache.GetTemplate(factory.GetType());
-            var results = new List<DependencyMethodVM>();
+            var results = new List<MethodVM>();
 
-            var visibleMethods = tFactory.Methods.VisibleOnly;
-            foreach (var tMethod in visibleMethods)
+            var oFactory = (ObjectObserver)_ObserverCache.GetObserver(factory, tFactory.RealType);
+            oFactory.IsPinned = true;
+
+            foreach (var oMethod in oFactory.Methods.Values)
             {
-                var methodVM = _MethodVmBuilder.BuildFor(tFactory, tMethod);
+                if (!oMethod.Template.IsVisible)
+                    continue;
+
+                var methodVM = _MethodVmBuilder.BuildFor(oMethod);
                 results.Add(methodVM);
             }
             return results.ToArray();

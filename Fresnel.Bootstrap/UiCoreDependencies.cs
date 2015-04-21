@@ -39,8 +39,6 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.UiCore.Commands.SetPropertyCommand),
                 typeof(Fresnel.UiCore.Commands.SetParameterCommand),
                 typeof(Fresnel.UiCore.Commands.InvokeMethodCommand),
-                typeof(Fresnel.UiCore.Commands.InvokeObjectMethodCommand),
-                typeof(Fresnel.UiCore.Commands.InvokeDependencyMethodCommand),
                 typeof(Fresnel.UiCore.Commands.CollectionAddCommand),
                 typeof(Fresnel.UiCore.Commands.CollectionRemoveCommand),
                 typeof(Fresnel.UiCore.Commands.SaveChangesCommand),

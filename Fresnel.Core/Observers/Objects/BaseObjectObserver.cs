@@ -154,20 +154,16 @@ namespace Envivo.Fresnel.Core.Observers
             //this.ChangeTracker.ResetDirtyFlags();
         }
 
-        ///// <summary>
-        ///// The current Object Observer
-        ///// </summary>
-        ///// <value>The current Object Observer</value>
-        ///// <remarks>An Object Observer cannot directly reference an InnerObserver, so it returns itself</remarks>
-        //public override BaseObjectObserver<ITemplate> InnerObserver
-        //{
-        //    // This ObjectObserver is the end of the graph, so we can only return ourselves:
-        //    get { return null; }
-        //    set { }
-        //}
+        /// <summary>
+        /// Ensures that this Observer is never cleaned up
+        /// </summary>
+        public bool IsPinned { get; set; }
 
         public override void Dispose()
         {
+            if (this.IsPinned)
+                return;
+
             if (_OuterCollections != null)
             {
                 _OuterCollections.Value.ClearSafely();

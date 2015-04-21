@@ -130,19 +130,6 @@
             return promise;
         }
 
-        invokeDependencyMethod(request: InvokeDependencyMethodRequest): ng.IPromise<any> {
-            this.blockUI.start("Performing action...");
-
-            var uri = "api/Toolbox/InvokeDependencyMethod";
-            var promise = this.http.post(uri, request);
-
-            promise.finally(() => {
-                this.blockUI.stop();
-            });
-
-            return promise;
-        }
-
         addNewItemToCollection(request: CollectionAddNewRequest): ng.IPromise<any> {
             this.blockUI.start("Adding new item to collection...");
 

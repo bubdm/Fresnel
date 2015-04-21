@@ -162,12 +162,12 @@ namespace Envivo.Fresnel.UiCore
             return properties;
         }
 
-        private IEnumerable<ObjectMethodVM> CreateMethods(ObjectObserver oObject)
+        private IEnumerable<MethodVM> CreateMethods(ObjectObserver oObject)
         {
             var visibleMethods = oObject.Methods.Values.Where(m => !m.Template.IsFrameworkMember &&
                                                                     m.Template.IsVisible);
 
-            var methods = new List<ObjectMethodVM>();
+            var methods = new List<MethodVM>();
             foreach (var oMethod in visibleMethods)
             {
                 var methodVM = _MethodVmBuilder.BuildFor(oMethod);

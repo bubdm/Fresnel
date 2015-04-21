@@ -24,43 +24,21 @@ namespace Envivo.Fresnel.UiCore
             _CanInvokeMethodPermission = canInvokeMethodPermission;
         }
 
-        public ObjectMethodVM BuildFor(MethodObserver oMethod)
+        public MethodVM BuildFor(MethodObserver oMethod)
         {
             var invokeCheck = _CanInvokeMethodPermission.IsSatisfiedBy(oMethod);
 
-            var methodVM = this.BuildFor(oMethod.Template);
-            methodVM.ObjectID = oMethod.OuterObject.ID;
-            methodVM.IsEnabled = invokeCheck == null;
-            methodVM.Error = invokeCheck == null ? null : invokeCheck.Flatten().Message;
-
-            return methodVM;
-        }
-
-        public ObjectMethodVM BuildFor(MethodTemplate tMethod)
-        {
-            var methodVM = new ObjectMethodVM()
+            var tMethod = oMethod.Template;
+            var methodVM = new MethodVM()
             {
+                ObjectID = oMethod.OuterObject.ID,
                 Name = tMethod.FriendlyName,
                 InternalName = tMethod.Name,
                 Description = tMethod.XmlComments.Summary,
                 Parameters = this.CreateParametersFor(tMethod).ToArray(),
                 IsVisible = !tMethod.IsFrameworkMember && tMethod.IsVisible,
-            };
-
-            return methodVM;
-        }
-
-        public DependencyMethodVM BuildFor(ClassTemplate tClass, MethodTemplate tMethod)
-        {
-            var methodVM = new DependencyMethodVM()
-            {
-                ClassType = tClass.RealType.FullName,
-                Name = tMethod.FriendlyName,
-                InternalName = tMethod.Name,
-                Description = tMethod.XmlComments.Summary,
-                Parameters = this.CreateParametersFor(tMethod).ToArray(),
-                IsVisible = !tMethod.IsFrameworkMember && tMethod.IsVisible,
-                IsEnabled = true,
+                IsEnabled = invokeCheck == null,
+                Error = invokeCheck == null ? null : invokeCheck.Flatten().Message
             };
 
             return methodVM;

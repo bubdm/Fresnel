@@ -3,6 +3,8 @@ using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes;
+using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.UiCore;
 using Envivo.Fresnel.UiCore.Commands;
@@ -131,24 +133,24 @@ namespace Envivo.Fresnel.Tests.Proxies
             var observerCache = container.Resolve<ObserverCache>();
             var toolboxController = container.Resolve<ToolboxController>();
 
-            var obj = container.Resolve<MethodSamples>();
-            obj.ID = Guid.NewGuid();
-            var oObject = (ObjectObserver)observerCache.GetObserver(obj);
+            var factory = container.Resolve<IFactory<Product>>();
+            var oFactory = observerCache.GetObserver(factory);
+
 
             // Act:
-            var invokeRequest = new InvokeDependencyMethodRequest()
+            var invokeRequest = new InvokeMethodRequest()
             {
-                ClassType = typeof(ProductFactory).FullName,
-                MethodName = "Create",
+                ObjectID = oFactory.ID,
+                MethodName = "Create"
             };
 
-            var invokeResponse = toolboxController.InvokeDependencyMethod(invokeRequest);
+            var invokeResponse = toolboxController.InvokeMethod(invokeRequest);
 
             // Assert:
             Assert.IsTrue(invokeResponse.Passed);
             var objectVM = invokeResponse.ResultObject;
 
-            var nameProp = objectVM.Properties.Single(p=> p.InternalName == "Name");
+            var nameProp = objectVM.Properties.Single(p => p.InternalName == "Name");
             Assert.AreEqual("This was created using ProductFactory.Create()", nameProp.State.Value);
         }
 

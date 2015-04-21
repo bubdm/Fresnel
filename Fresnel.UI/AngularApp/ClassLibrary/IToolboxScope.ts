@@ -12,7 +12,7 @@
 
         loadClassHierarchy();
 
-        invokeDependencyMethod(method: DependencyMethodVM);
+        invokeDependencyMethod(method: MethodVM);
     }
 
 }
