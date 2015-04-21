@@ -90,11 +90,14 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private void UndoChangesTo(ObjectObserver oObject)
         {
-            var earliestPoint = _EventTimeLine.LastOrDefault(e=> e is SaveObjectEvent &&
-                                                                 e.AffectedObjects.Contains(oObject)) ??
+            var earliestPoint = _EventTimeLine.LastOrDefault(e => e is SaveObjectEvent &&
+                                                                  e.AffectedObjects.Contains(oObject)) ??
                                 _EventTimeLine.FirstOrDefault();
 
-            _EventTimeLine.UndoChangesTo(oObject, earliestPoint);
+            if (earliestPoint != null)
+            {
+                _EventTimeLine.UndoChangesTo(oObject, earliestPoint);
+            }
         }
 
         private ObjectVM[] ResetDirtyFlags(ObjectObserver oObject)
