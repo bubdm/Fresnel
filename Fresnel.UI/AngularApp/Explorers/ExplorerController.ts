@@ -13,6 +13,7 @@ module FresnelApp {
             'searchService',
             'explorerService',
             'saveService',
+            'methodInvoker',
             '$modal'];
 
         constructor(
@@ -24,49 +25,11 @@ module FresnelApp {
             searchService: SearchService,
             explorerService: ExplorerService,
             saveService: SaveService,
+            methodInvoker: MethodInvoker,
             $modal: ng.ui.bootstrap.IModalService) {
 
             $scope.invoke = function (method: MethodVM) {
-                if (method.Parameters.length == 0) {
-                    var request = requestBuilder.buildInvokeMethodRequest(method);
-                    var promise = fresnelService.invokeMethod(request);
-
-                    promise.then((promiseResult) => {
-                        var response = promiseResult.data;
-                        method.Error = response.Passed ? "" : response.Messages[0].Text;
-
-                        appService.identityMap.merge(response.Modifications);
-                        $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
-
-                        if (response.ResultObject) {
-                            $rootScope.$broadcast(UiEventType.ExplorerOpen, response.ResultObject, $scope.explorer);
-                        }
-                    });
-                }
-                else {
-                    var options: ng.ui.bootstrap.IModalSettings = {
-                        templateUrl: '/Templates/methodDialog.html',
-                        controller: 'methodController',
-                        backdrop: 'static',
-                        size: 'lg',
-                        resolve: {
-                            // These objects will be injected into the MethodController's ctor:
-                            explorer: function () {
-                                return $scope.explorer;
-                            },
-                            method: function () {
-                                return method;
-                            }
-                        }
-                    }
-
-                    var modal = $modal.open(options);
-                    $rootScope.$broadcast(UiEventType.ModalOpened, modal);
-
-                    modal.result.finally(() => {
-                        $rootScope.$broadcast(UiEventType.ModalClosed, modal);
-                    });
-                }
+                methodInvoker.invokeOrOpen(method);
             }
 
             $scope.setProperty = function (prop: PropertyVM) {

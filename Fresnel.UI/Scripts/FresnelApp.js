@@ -258,6 +258,68 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
+    var MethodInvoker = (function () {
+        function MethodInvoker($rootScope, fresnelService, appService, requestBuilder, $modal) {
+            this.rootScope = $rootScope;
+            this.fresnelService = fresnelService;
+            this.appService = appService;
+            this.requestBuilder = requestBuilder;
+            this.modal = $modal;
+        }
+        MethodInvoker.prototype.invokeOrOpen = function (method) {
+            var _this = this;
+            if (method.Parameters.length == 0) {
+                var request = this.requestBuilder.buildInvokeMethodRequest(method);
+                var promise = this.fresnelService.invokeMethod(request);
+                promise.then(function (promiseResult) {
+                    var response = promiseResult.data;
+                    method.Error = response.Passed ? "" : response.Messages[0].Text;
+                    _this.appService.identityMap.merge(response.Modifications);
+                    _this.rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
+                    if (response.ResultObject) {
+                        _this.rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.ResultObject, null);
+                    }
+                });
+            }
+            else {
+                var options = {
+                    templateUrl: '/Templates/methodDialog.html',
+                    controller: 'methodController',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        // These objects will be injected into the MethodController's ctor:
+                        explorer: function () {
+                            var fakeExplorer = {
+                                __meta: { ID: method.ObjectID },
+                            };
+                            return fakeExplorer;
+                        },
+                        method: function () {
+                            return method;
+                        }
+                    }
+                };
+                var modal = this.modal.open(options);
+                this.rootScope.$broadcast(FresnelApp.UiEventType.ModalOpened, modal);
+                modal.result.finally(function () {
+                    _this.rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
+                });
+            }
+        };
+        MethodInvoker.$inject = [
+            '$rootScope',
+            'fresnelService',
+            'appService',
+            'requestBuilder',
+            '$modal'
+        ];
+        return MethodInvoker;
+    })();
+    FresnelApp.MethodInvoker = MethodInvoker;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     var SmartTablePredicateService = (function () {
         function SmartTablePredicateService() {
         }
@@ -815,43 +877,9 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ExplorerController = (function () {
-        function ExplorerController($rootScope, $scope, fresnelService, requestBuilder, appService, searchService, explorerService, saveService, $modal) {
+        function ExplorerController($rootScope, $scope, fresnelService, requestBuilder, appService, searchService, explorerService, saveService, methodInvoker, $modal) {
             $scope.invoke = function (method) {
-                if (method.Parameters.length == 0) {
-                    var request = requestBuilder.buildInvokeMethodRequest(method);
-                    var promise = fresnelService.invokeMethod(request);
-                    promise.then(function (promiseResult) {
-                        var response = promiseResult.data;
-                        method.Error = response.Passed ? "" : response.Messages[0].Text;
-                        appService.identityMap.merge(response.Modifications);
-                        $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
-                        if (response.ResultObject) {
-                            $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.ResultObject, $scope.explorer);
-                        }
-                    });
-                }
-                else {
-                    var options = {
-                        templateUrl: '/Templates/methodDialog.html',
-                        controller: 'methodController',
-                        backdrop: 'static',
-                        size: 'lg',
-                        resolve: {
-                            // These objects will be injected into the MethodController's ctor:
-                            explorer: function () {
-                                return $scope.explorer;
-                            },
-                            method: function () {
-                                return method;
-                            }
-                        }
-                    };
-                    var modal = $modal.open(options);
-                    $rootScope.$broadcast(FresnelApp.UiEventType.ModalOpened, modal);
-                    modal.result.finally(function () {
-                        $rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
-                    });
-                }
+                methodInvoker.invokeOrOpen(method);
             };
             $scope.setProperty = function (prop) {
                 // BUG: This is to prevent 'digest' model changes accidentally triggering server code:
@@ -1013,6 +1041,7 @@ var FresnelApp;
             'searchService',
             'explorerService',
             'saveService',
+            'methodInvoker',
             '$modal'
         ];
         return ExplorerController;
@@ -1428,7 +1457,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
-        function ToolboxController($rootScope, $scope, fresnelService, requestBuilder, appService, searchService, blockUI, $modal) {
+        function ToolboxController($rootScope, $scope, fresnelService, requestBuilder, appService, searchService, methodInvoker) {
             $scope.loadClassHierarchy = function () {
                 var _this = this;
                 var promise = fresnelService.getClassHierarchy();
@@ -1457,44 +1486,7 @@ var FresnelApp;
                 searchService.searchForObjects(fullyQualifiedName);
             };
             $scope.invokeDependencyMethod = function (method) {
-                if (method.Parameters.length == 0) {
-                    var request = requestBuilder.buildInvokeMethodRequest(method);
-                    var promise = fresnelService.invokeMethod(request);
-                    promise.then(function (promiseResult) {
-                        var response = promiseResult.data;
-                        method.Error = response.Passed ? "" : response.Messages[0].Text;
-                        appService.identityMap.merge(response.Modifications);
-                        $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
-                        if (response.ResultObject) {
-                            $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.ResultObject, null);
-                        }
-                    });
-                }
-                else {
-                    var options = {
-                        templateUrl: '/Templates/methodDialog.html',
-                        controller: 'methodController',
-                        backdrop: 'static',
-                        size: 'lg',
-                        resolve: {
-                            // These objects will be injected into the MethodController's ctor:
-                            explorer: function () {
-                                var fakeExplorer = {
-                                    __meta: { ID: method.ObjectID },
-                                };
-                                return fakeExplorer;
-                            },
-                            method: function () {
-                                return method;
-                            }
-                        }
-                    };
-                    var modal = $modal.open(options);
-                    $rootScope.$broadcast(FresnelApp.UiEventType.ModalOpened, modal);
-                    modal.result.finally(function () {
-                        $rootScope.$broadcast(FresnelApp.UiEventType.ModalClosed, modal);
-                    });
-                }
+                methodInvoker.invokeOrOpen(method);
             };
             // This will run when the page loads:
             angular.element(document).ready(function () {
@@ -1508,8 +1500,7 @@ var FresnelApp;
             'requestBuilder',
             'appService',
             'searchService',
-            'blockUI',
-            '$modal'
+            'methodInvoker'
         ];
         return ToolboxController;
     })();
@@ -1785,7 +1776,7 @@ var FresnelApp;
 var FresnelApp;
 (function (FresnelApp) {
     var requires = ['blockUI', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table', 'ui.bootstrap'];
-    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).service("requestBuilder", FresnelApp.RequestBuilder).service("searchService", FresnelApp.SearchService).service("smartTablePredicateService", FresnelApp.SmartTablePredicateService).service("saveService", FresnelApp.SaveService).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("methodController", FresnelApp.MethodController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).controller("searchExplorerController", FresnelApp.SearchExplorerController).controller("searchModalController", FresnelApp.SearchModalController).controller("saveController", FresnelApp.SaveController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
+    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).service("requestBuilder", FresnelApp.RequestBuilder).service("searchService", FresnelApp.SearchService).service("smartTablePredicateService", FresnelApp.SmartTablePredicateService).service("saveService", FresnelApp.SaveService).service("methodInvoker", FresnelApp.MethodInvoker).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("methodController", FresnelApp.MethodController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).controller("searchExplorerController", FresnelApp.SearchExplorerController).controller("searchModalController", FresnelApp.SearchModalController).controller("saveController", FresnelApp.SaveController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);
             return responseData;

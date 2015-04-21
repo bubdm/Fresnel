@@ -1063,6 +1063,7 @@
     <TypeScriptCompile Include="AngularApp\Explorers\IWorkbenchScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\SearchModalController.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\SearchExplorerController.ts" />
+    <TypeScriptCompile Include="AngularApp\Explorers\MethodInvoker.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\SmartTablePredicateService.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\SearchService.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\MethodController.ts" />

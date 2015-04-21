@@ -10,8 +10,7 @@
             'requestBuilder',
             'appService',
             'searchService',
-            'blockUI',
-            '$modal'];
+            'methodInvoker'];
 
         constructor(
             $rootScope: ng.IRootScopeService,
@@ -20,8 +19,7 @@
             requestBuilder: RequestBuilder,
             appService: AppService,
             searchService: SearchService,
-            blockUI: any,
-            $modal: ng.ui.bootstrap.IModalService) {
+            methodInvoker: MethodInvoker) {
 
             $scope.loadClassHierarchy = function () {
                 var promise = fresnelService.getClassHierarchy();
@@ -59,49 +57,7 @@
             }
 
             $scope.invokeDependencyMethod = function (method: MethodVM) {
-                if (method.Parameters.length == 0) {
-                    var request = requestBuilder.buildInvokeMethodRequest(method);
-                    var promise = fresnelService.invokeMethod(request);
-
-                    promise.then((promiseResult) => {
-                        var response = promiseResult.data;
-                        method.Error = response.Passed ? "" : response.Messages[0].Text;
-
-                        appService.identityMap.merge(response.Modifications);
-                        $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
-
-                        if (response.ResultObject) {
-                            $rootScope.$broadcast(UiEventType.ExplorerOpen, response.ResultObject, null);
-                        }
-                    });
-                }
-                else {
-                    var options: ng.ui.bootstrap.IModalSettings = {
-                        templateUrl: '/Templates/methodDialog.html',
-                        controller: 'methodController',
-                        backdrop: 'static',
-                        size: 'lg',
-                        resolve: {
-                            // These objects will be injected into the MethodController's ctor:
-                            explorer: function () {
-                                var fakeExplorer = {
-                                    __meta: { ID: method.ObjectID },
-                                };
-                                return fakeExplorer;
-                            },
-                            method: function () {
-                                return method;
-                            }
-                        }
-                    }
-
-                    var modal = $modal.open(options);
-                    $rootScope.$broadcast(UiEventType.ModalOpened, modal);
-
-                    modal.result.finally(() => {
-                        $rootScope.$broadcast(UiEventType.ModalClosed, modal);
-                    });
-                }
+                methodInvoker.invokeOrOpen(method);
             }
 
             // This will run when the page loads:

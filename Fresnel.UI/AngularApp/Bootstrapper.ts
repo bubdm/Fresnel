@@ -13,6 +13,7 @@
         .service("searchService", FresnelApp.SearchService)
         .service("smartTablePredicateService", FresnelApp.SmartTablePredicateService)
         .service("saveService", FresnelApp.SaveService)
+        .service("methodInvoker", FresnelApp.MethodInvoker)
         .controller("appController", FresnelApp.AppController)
         .controller("toolboxController", FresnelApp.ToolboxController)
         .controller("workbenchController", FresnelApp.WorkbenchController)
