@@ -117,9 +117,9 @@
                     </ol>
                 </section>*@
             <!-- Main content -->
-            <section class="content workbenchContainer">
+            <section id="workbench" class="content workbenchContainer">
 
-                <div id="workbench" ng-controller="workbenchController">
+                <div ng-controller="workbenchController">
                     <div ng-repeat="row in visibleRows" class="animate">
                         <div class="explorerRow rowColour{{row.ColourIndex}}">
                             <div ng-repeat="explorer in row.Explorers" class="explorerPanel">

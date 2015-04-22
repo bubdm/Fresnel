@@ -18,17 +18,69 @@
                 $timeout(function () {
                     var explorer = scope.explorer;
 
-                    // If the panel fits in the view, it's right side should be completely visible:
-                    var rightAnchorID = "explorerRightAnchor_" + explorer.__meta.ID;
-                    $location.hash(rightAnchorID);
-                    $anchorScroll();
+                    var bodyElem = $("body");
+                    var workbenchElem = $("#workbench");
+                    var explorerElem = $("#explorer_" + explorer.__meta.ID);
 
-                    // If the panel is wider than the container, make sure it's left side is visible:
-                    var elementID = "explorer_" + explorer.__meta.ID;
-                    $location.hash(elementID);
-                    $anchorScroll();
+                    // Handle X positioning:
+                    {
+                        //var isExplorerWiderThanViewport = (explorerElem.width() > workbenchElem.innerWidth());
+                        //var doesExplorerHangOffLeft = (explorerElem.position().left < workbenchElem.scrollLeft());
+                        //var doesExplorerHangOffRight = (
+                        //    (explorerElem.position().left + explorerElem.width()) >
+                        //    (workbenchElem.scrollLeft() + workbenchElem.innerWidth())
+                        //    );
 
-                }, 1000);
+                        //if (isExplorerWiderThanViewport) {
+                        //    // The Explorer should be left-justified in the viewport:
+                        //    var xPos = explorerElem.position().left - workbenchElem.offset().left;
+                        //    workbenchElem.animate({ scrollLeft: xPos }, delay);
+                        //}
+                        //else if (doesExplorerHangOffLeft) {
+                        //    // The Explorer should be left-justified in the viewport:
+                        //    var xPos = explorerElem.position().left - workbenchElem.offset().left;
+                        //    workbenchElem.animate({ scrollLeft: xPos }, delay);
+                        //}
+                        //else if (doesExplorerHangOffRight) {
+                        //    // The Explorer should be right-justified in the viewport:
+                        //    var xPos = explorerElem.position().left - workbenchElem.offset().left;
+                        //    workbenchElem.animate({ scrollLeft: xPos }, delay);
+                        //}
+
+                        var xPos = explorerElem.position().left - workbenchElem.offset().left;
+                        workbenchElem.animate({ scrollLeft: xPos }, delay);
+                    }
+
+                    // Handle Y positioning:
+                    {
+                        //var isExplorerTallerThanViewport = (explorerElem.height() > workbenchElem.innerHeight());
+                        //var doesExplorerHangOffTop = (explorerElem.position().top < workbenchElem.scrollTop());
+                        //var doesExplorerHangOffBottom = (
+                        //    (explorerElem.position().top + explorerElem.height()) >
+                        //    (workbenchElem.scrollTop() + workbenchElem.innerHeight())
+                        //    );
+
+                        //if (isExplorerTallerThanViewport) {
+                        //    // The Explorer should be top-justified in the viewport:
+                        //    var yPos = explorerElem.position().top;
+                        //    bodyElem.animate({ scrollTop: xPos }, delay);
+                        //}
+                        //else if (doesExplorerHangOffTop) {
+                        //    // The Explorer should be top-justified in the viewport:
+                        //    var yPos = explorerElem.position().top;
+                        //    bodyElem.animate({ scrollTop: xPos }, delay);
+                        //}
+                        //else if (doesExplorerHangOffBottom) {
+                        //    // The Explorer should be bottom-justified in the viewport:
+                        //    var yPos = explorerElem.position().top - workbenchElem.offset().top;
+                        //    bodyElem.animate({ scrollTop: xPos }, delay);
+                        //}
+
+                        var yPos = explorerElem.position().top - workbenchElem.offset().top;
+                        bodyElem.animate({ scrollTop: yPos }, delay);
+                    }
+
+                }, delay);
             }
 
         }
