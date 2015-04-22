@@ -10,7 +10,7 @@ using Fresnel.SampleModel.Persistence;
 using NUnit.Framework;
 using System.Linq;
 
-namespace Envivo.Fresnel.Tests.Proxies
+namespace Envivo.Fresnel.Tests.Features
 {
     [TestFixture()]
     public class ToolboxControllerTests

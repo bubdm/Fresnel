@@ -17,7 +17,7 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 
-namespace Envivo.Fresnel.Tests.Proxies
+namespace Envivo.Fresnel.Tests.Features
 {
     [TestFixture()]
     public class MethodTests
