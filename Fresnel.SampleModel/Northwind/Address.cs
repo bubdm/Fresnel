@@ -28,7 +28,10 @@ namespace Envivo.Fresnel.SampleModel.Northwind
 
         public override string ToString()
         {
-            return typeof(Address).Name;
+            return string.Concat(this.Number, ", ",
+                                 this.Street, ", ",
+                                 this.City, ", ",
+                                 this.County, ", ");
         }
     }
 }
