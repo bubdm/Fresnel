@@ -115,6 +115,9 @@ namespace Envivo.Fresnel.UiCore
                 }
             }
 
+            var isNull = result.ReferenceValueID == null && result.Value == null;
+            result.Get.IsEnabled = result.Get.IsEnabled & !isNull;
+
             result.Create = tProp.IsCollection ? this.BuildCreateForCollection(tProp, result) :
                             tProp.IsDomainObject ? this.BuildCreateForObject(tProp, result) :
                             null;
@@ -214,6 +217,7 @@ namespace Envivo.Fresnel.UiCore
         private InteractionPoint BuildAdd(PropertyTemplate tProp, ValueStateVM valueState)
         {
             var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
+
             var result = new InteractionPoint()
             {
                 IsEnabled = tProp.CanAdd &&
