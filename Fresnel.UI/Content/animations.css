@@ -30,7 +30,7 @@
 
 .explorerRow.ng-leave.ng-leave-active {
     opacity: 0;
-    margin-top: -600px;
+    margin-top: -485px;
 }
 
 
@@ -51,5 +51,5 @@
 
 .explorerPanel.ng-leave.ng-leave-active {
     opacity: 0;
-    margin-left: -600px;
+    margin-left: -485px;
 }
