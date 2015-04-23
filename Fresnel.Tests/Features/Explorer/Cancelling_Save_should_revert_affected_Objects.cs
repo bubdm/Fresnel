@@ -49,7 +49,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             _Session = sessionController.GetSession();
         }
 
-        public void when_an_aggregate_root_exists_in_the_database()
+        public void And_given_an_aggregate_root_exists_in_the_database()
         {
             _orderPoco = _Fixture.Create<Order>();
             _orderPoco.PlacedBy = _Fixture.Create<Employee>();
@@ -64,7 +64,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             _Container.Resolve<ObserverCache>().GetObserver(_orderPoco.PlacedBy.Address);
         }
 
-        public void when_the_aggregate_root_is_retrieved()
+        public void When_an_Order_aggregate_root_is_retrieved()
         {
             var getOrderRequest = new GetObjectRequest()
             {
@@ -76,7 +76,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             _Order = getOrderResponse.ReturnValue;
         }
 
-        public void And_when_the_Address_is_modified()
+        public void And_when_the_leaf_Address_is_modified()
         {
             var request = new SetPropertyRequest()
             {

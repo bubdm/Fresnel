@@ -42,7 +42,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             _Session = sessionController.GetSession();
         }
 
-        public void when_a_domain_object_is_retrieved()
+        public void And_given_a_domain_object_is_retrieved()
         {
             var searchRequest = new SearchObjectsRequest()
             {
@@ -55,7 +55,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             _ParentObject = searchResponse.Result.Items.First();
         }
 
-        public void And_when_a_child_object_is_added_to_the_parent()
+        public void When_a_child_object_is_added_to_the_parent()
         {
             var request = new CollectionAddNewRequest()
             {
