@@ -3,6 +3,8 @@ using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.Northwind.People;
+using Envivo.Fresnel.SampleModel.Northwind.Places;
 using Envivo.Fresnel.SampleModel.Objects;
 using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.UiCore.Commands;

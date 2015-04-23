@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Envivo.Fresnel.SampleModel.Northwind
+namespace Envivo.Fresnel.SampleModel.Northwind.Places
 {
-    public class Region
+    public class Country
     {
         [Key]
         public Guid ID { get; set; }
@@ -12,9 +12,6 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         public long Version { get; set; }
 
         public string Name { get; set; }
-
-        [DataType(DataType.MultilineText)]
-        public string Description { get; set; }
 
         public override string ToString()
         {

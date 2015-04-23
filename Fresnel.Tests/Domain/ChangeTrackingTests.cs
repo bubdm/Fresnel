@@ -4,6 +4,7 @@ using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.Northwind.People;
 using Envivo.Fresnel.Utils;
 using Fresnel.Tests;
 using NUnit.Framework;

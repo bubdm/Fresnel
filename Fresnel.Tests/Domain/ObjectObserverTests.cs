@@ -2,6 +2,7 @@
 using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.Northwind.People;
 using Fresnel.Tests;
 using NUnit.Framework;
 using Ploeh.AutoFixture;

@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Envivo.Fresnel.SampleModel.Northwind
+namespace Envivo.Fresnel.SampleModel.Northwind.Places
 {
-    public abstract class Role
+    public class Region
     {
         [Key]
         public Guid ID { get; set; }
@@ -11,12 +11,14 @@ namespace Envivo.Fresnel.SampleModel.Northwind
         [ConcurrencyCheck]
         public long Version { get; set; }
 
-        [Display(AutoGenerateField = false)]
-        public string HiddenProperty { get; set; }
+        public string Name { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        public string Description { get; set; }
 
         public override string ToString()
         {
-            return typeof(Role).Name;
+            return this.Name;
         }
     }
 }

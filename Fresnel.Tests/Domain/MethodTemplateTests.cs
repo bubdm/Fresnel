@@ -4,6 +4,7 @@ using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Commands;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.Northwind.People;
 using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.Utils;
 using Fresnel.Tests;

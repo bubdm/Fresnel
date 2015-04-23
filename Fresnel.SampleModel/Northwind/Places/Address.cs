@@ -2,7 +2,7 @@ using Envivo.Fresnel.Configuration;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Envivo.Fresnel.SampleModel.Northwind
+namespace Envivo.Fresnel.SampleModel.Northwind.Places
 {
     public class Address
     {

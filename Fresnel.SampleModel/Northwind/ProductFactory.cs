@@ -1,5 +1,6 @@
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.Northwind.People;
 using System;
 
 namespace Envivo.SampleModel.Factories

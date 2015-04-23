@@ -1,5 +1,7 @@
 ﻿using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.Northwind.People;
+using Envivo.Fresnel.SampleModel.Northwind.Places;
 using Envivo.Fresnel.SampleModel.TestTypes;
 using System;
 using System.Collections.Generic;

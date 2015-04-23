@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.Northwind.People;
 
 namespace Envivo.Fresnel.Tests.Persistence
 {

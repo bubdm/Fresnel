@@ -1,4 +1,6 @@
 ﻿using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.Northwind.People;
+using Envivo.Fresnel.SampleModel.Northwind.Places;
 using System.Data.Entity;
 
 namespace Fresnel.SampleModel.Persistence

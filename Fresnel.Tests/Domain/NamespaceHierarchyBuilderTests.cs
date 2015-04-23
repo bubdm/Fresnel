@@ -2,6 +2,7 @@
 using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Introspection.Assemblies;
 using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.Northwind.People;
 using NUnit.Framework;
 using System.Linq;
 

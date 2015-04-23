@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.Northwind.People;
 using Envivo.Fresnel.SampleModel.TestTypes;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;

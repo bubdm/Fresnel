@@ -1,19 +1,19 @@
 using Envivo.Fresnel.Configuration;
 using System.ComponentModel.DataAnnotations;
 
-namespace Envivo.Fresnel.SampleModel.Northwind
+namespace Envivo.Fresnel.SampleModel.Northwind.People
 {
-    public class Shipper : Role
+    public class Customer : Role
     {
         [Relationship(Type = RelationshipType.Has)]
         public BaseParty Party { get; set; }
 
         [Relationship(Type = RelationshipType.Owns)]
-        public Address Address { get; set; }
+        public ContactDetails Contact { get; set; }
 
         public override string ToString()
         {
-            return typeof(Shipper).Name;
+            return typeof(Customer).Name;
         }
     }
 }

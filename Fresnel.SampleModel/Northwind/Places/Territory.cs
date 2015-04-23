@@ -1,9 +1,10 @@
 using Envivo.Fresnel.Configuration;
+using Envivo.Fresnel.SampleModel.Northwind.People;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Envivo.Fresnel.SampleModel.Northwind
+namespace Envivo.Fresnel.SampleModel.Northwind.Places
 {
     public class Territory
     {
