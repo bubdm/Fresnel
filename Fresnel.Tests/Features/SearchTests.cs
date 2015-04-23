@@ -397,25 +397,28 @@ namespace Envivo.Fresnel.Tests.Features
             var tPerson = (ClassTemplate)templateCache.GetTemplate<Person>();
             var tOrganisation = (ClassTemplate)templateCache.GetTemplate<Organisation>();
 
-            // All "Person" rows should have blanks for "Organisation" columns
-            CheckPropertyColumnsDoNotCollide(searchResponse.Result, tPerson, tOrganisation);
+            // All "Person" rows should have blanks for non-Person columns
+            CheckOtherPropertiesAreInaccessible(searchResponse.Result, tPerson);
 
-            // All "Organisation" rows should have blanks for "Person" columns
-            CheckPropertyColumnsDoNotCollide(searchResponse.Result, tOrganisation, tPerson);
+            // All "Organisation" rows should have blanks for non-Organisation columns
+            CheckOtherPropertiesAreInaccessible(searchResponse.Result, tOrganisation);
         }
 
-        private void CheckPropertyColumnsDoNotCollide(SearchResultsVM searchResult, ClassTemplate tClassToCheck, ClassTemplate tOtherClass)
+        private void CheckOtherPropertiesAreInaccessible(SearchResultsVM searchResult, ClassTemplate tClassToCheck)
         {
             var rowsToCheck = searchResult.Items.Where(i => i.Name == tClassToCheck.Name).ToArray();
 
             foreach (var row in rowsToCheck)
             {
-                var visibleProperties = tOtherClass.Properties.VisibleOnly;
-
-                foreach (var tProp in visibleProperties)
+                foreach (var prop in row.Properties)
                 {
-                    var propVM = row.Properties.Single(p => p.InternalName == tProp.Name);
-                    Assert.IsNull(propVM.State.Value);
+                    var tProp = tClassToCheck.Properties.Values.SingleOrDefault(tp => tp.Name == prop.InternalName);
+                    if (tProp == null)
+                    {
+                        // The row contains a property that belongs to another class:
+                        Assert.IsNull(prop.State.Value);
+                        Assert.IsFalse(prop.IsVisible);
+                    }
                 }
             }
         }

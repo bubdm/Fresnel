@@ -46,6 +46,7 @@ namespace Envivo.Fresnel.UiCore
         public PropertyVM BuildEmptyVMFor(PropertyTemplate tProp)
         {
             var propVM = _EmptyPropertyVmBuilder.BuildFor(tProp);
+            propVM.IsVisible = false;
             propVM.State = new ValueStateVM();
             return propVM;
         }
