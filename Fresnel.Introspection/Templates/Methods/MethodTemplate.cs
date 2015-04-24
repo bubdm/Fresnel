@@ -51,7 +51,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// </summary>
         /// <param name="obj">The instance to execute the method on</param>
         /// <param name="args"></param>
-
         public object Invoke(object obj, IEnumerable<object> args)
         {
             var rapidMethod = _RapidMethod.Value;
@@ -71,11 +70,6 @@ namespace Envivo.Fresnel.Introspection.Templates
             }
         }
 
-        ///// <summary>
-        ///// Determines if the method has a paramter that is a Service
-        ///// </summary>
-        //public bool UsesDoubleDispatch { get; private set; }
-
         /// <summary>
         /// The .NET Reflection of the Method
         /// </summary>
@@ -87,38 +81,15 @@ namespace Envivo.Fresnel.Introspection.Templates
         /// The collection of ParameterTemplates associated with the Method
         /// </summary>
         /// <value></value>
-
         public ParameterTemplateMap Parameters
         {
             get { return _Parameters.Value; }
         }
 
         ///// <summary>
-        ///// Determines if the Method can be invoked
-        ///// </summary>
-        ///// <value></value>
-        //
-        //
-        //public bool CanInvoke
-        //{
-        //    get { return _Attribute.IsVisible; }
-        //}
-
-        /// <summary>
-        /// Returns TRUE if this Method is used for adding results to Collections
-        /// </summary>
-        public bool IsCollectionAddMethod { get; internal set; }
-
-        /// <summary>
-        /// Returns TRUE if this Method is used for removing results from Collections
-        /// </summary>
-        public bool IsCollectionRemoveMethod { get; internal set; }
-
-        ///// <summary>
         ///// Appends the given value to the Name and FullName
         ///// </summary>
         ///// <param name="extension"></param>
-        //
         internal void AppendNameWith(string extension)
         {
             if (extension.IsEmpty())

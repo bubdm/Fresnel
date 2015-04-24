@@ -43,42 +43,6 @@ namespace Envivo.Fresnel.Core.Observers
         /// </summary>
         public ParameterObserverMap Parameters { get { return _ParameterObservers.Value; } }
 
-        ///// <summary>
-        ///// Sets the parameters with the given values.  The number of items MUST match the number of parameters
-        ///// </summary>
-        ///// <param name="parameters"></param>
-        //internal void SetParameters(params object[] parameters)
-        //{
-        //    if (parameters.Length == 0)
-        //        return;
-
-        //    if (parameters.Length != this.Parameters.Count)
-        //        return;
-
-        //    var i = 0;
-        //    foreach (var oParameter in this.Parameters.Values)
-        //    {
-        //        oParameter.Value = parameters[i];
-        //        i++;
-        //    }
-        //}
-
         public DateTime LastInvokedAtUtc { get; set; }
-
-        ///// <summary>
-        ///// Returns a token (Memento) for the Observer
-        ///// </summary>
-        //
-        //
-        //public MethodToken GetToken()
-        //{
-        //    return new MethodToken(this);
-        //}
-
-        //public override void Dispose()
-        //{
-        //    this.Parameters = null;
-        //    base.Dispose();
-        //}
     }
 }

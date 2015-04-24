@@ -37,18 +37,6 @@ namespace Envivo.Fresnel.Introspection.Templates
 
             result.FinaliseConstruction();
 
-            if (methodInfo.Name.StartsWith("AddTo") && result.Parameters.Count == 1)
-            {
-                result.IsCollectionAddMethod = true;
-                result.IsVisible = false;
-            }
-
-            if (methodInfo.Name.StartsWith("RemoveFrom") && result.Parameters.Count == 1)
-            {
-                result.IsCollectionRemoveMethod = true;
-                result.IsVisible = false;
-            }
-
             return result;
         }
     }
