@@ -84,6 +84,12 @@ namespace Envivo.Fresnel.Introspection.Templates
         public bool IsNullableType { get; internal set; }
 
         /// <summary>
+        /// Returns TRUE if the Parameter is a Domain Dependency (ie for double-dispatch)
+        /// </summary>
+        /// <value></value>
+        public bool IsDomainDependency { get; internal set; }
+
+        /// <summary>
         /// The MethodTemplate that owns this Parameter
         /// </summary>
         /// <value></value>
@@ -91,7 +97,7 @@ namespace Envivo.Fresnel.Introspection.Templates
         public MethodTemplate OuterMethod { get; internal set; }
 
         /// <summary>
-        /// Returns TRUE if the parameter acccepts the given type
+        /// Returns TRUE if the Parameter acccepts the given type
         /// </summary>
         /// <param name="type"></param>
         public bool CanAccept(Type type)
@@ -103,6 +109,11 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var result = _TemplateCache.GetTemplate(this.ParameterType);
             return result;
+        }
+
+        public override string ToString()
+        {
+            return string.Concat(this.GetType().Name, ":", this.Name);
         }
     }
 }

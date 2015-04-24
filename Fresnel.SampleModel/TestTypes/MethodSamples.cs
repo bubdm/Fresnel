@@ -47,12 +47,23 @@ namespace Envivo.Fresnel.SampleModel.TestTypes
         /// This method accepts multiple parameters, and will open a dialog.
         /// The method can only be invoked when the user supplies the parameter values.
         /// </summary>
+        /// <param name="enumFilter">This should be automatically injected</param>
         /// <param name="aString">This should accept a String</param>
         /// <param name="aNumber">This should accept an Integer</param>
         /// <param name="aDate">This should accept a Date</param>
-        public string MethodWithValueParameters(string aString, int aNumber, DateTime aDate)
+        public string MethodWithValueParameters(IQuerySpecification<EnumValues.IndividualOptions> enumFilter, string aString, int aNumber, DateTime aDate)
         {
-            return MethodBase.GetCurrentMethod().Name;
+            if (enumFilter == null)
+            {
+                throw new ArgumentNullException("enumFilter");
+            }
+
+            var result = string.Concat(MethodBase.GetCurrentMethod().Name,
+                                       " executed with the values [",
+                                       aString, ", ",
+                                       aNumber, ", ",
+                                       aDate, "]");
+            return result;
         }
 
         /// <summary>

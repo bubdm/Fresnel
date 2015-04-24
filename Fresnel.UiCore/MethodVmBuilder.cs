@@ -50,6 +50,9 @@ namespace Envivo.Fresnel.UiCore
 
             foreach (var tParam in tMethod.Parameters.Values)
             {
+                if (!tParam.IsVisible)
+                    continue;
+
                 var paramVM = _AbstractParameterVmBuilder.BuildFor(tParam);
                 results.Add(paramVM);
             }

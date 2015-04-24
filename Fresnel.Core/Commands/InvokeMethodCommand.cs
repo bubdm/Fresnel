@@ -1,6 +1,7 @@
 ﻿using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.IoC;
 using System;
 using System.Linq;
 
@@ -13,6 +14,7 @@ namespace Envivo.Fresnel.Core.Commands
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private Fresnel.Introspection.Commands.InvokeMethodCommand _InvokeCommand;
         private RealTypeResolver _RealTypeResolver;
+        private IDomainDependencyResolver _DomainDependencyResolver;
 
         public InvokeMethodCommand
             (
@@ -20,7 +22,8 @@ namespace Envivo.Fresnel.Core.Commands
             ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier,
             Fresnel.Introspection.Commands.InvokeMethodCommand invokeCommand,
-            RealTypeResolver realTypeResolver
+            RealTypeResolver realTypeResolver,
+            IDomainDependencyResolver domainDependencyResolver
             )
         {
             _ObserverCache = observerCache;
@@ -28,20 +31,23 @@ namespace Envivo.Fresnel.Core.Commands
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _InvokeCommand = invokeCommand;
             _RealTypeResolver = realTypeResolver;
+            _DomainDependencyResolver = domainDependencyResolver;
         }
 
         public BaseObjectObserver Invoke(MethodObserver oMethod, object targetObject)
         {
-            if (oMethod.Parameters.AreRequired &&
-                !oMethod.Parameters.IsComplete)
-            {
-                throw new ArgumentException("One or more Parameters has not been set for this method");
-            }
-
             // TODO: Check permissions
 
             try
             {
+                this.InjectDomainDependencies(oMethod);
+
+                if (oMethod.Parameters.AreRequired &&
+                    !oMethod.Parameters.IsComplete)
+                {
+                    throw new ArgumentException("One or more Parameters has not been set for this method");
+                }
+
                 var args = oMethod.Parameters.Values.Select(p => p.Value);
 
                 // NB: Always use TargetObject instead of oMethod.OuterObject.RealObject
@@ -64,5 +70,18 @@ namespace Envivo.Fresnel.Core.Commands
                 oMethod.Parameters.Reset();
             }
         }
+
+        private void InjectDomainDependencies(MethodObserver oMethod)
+        {
+            foreach (var oParam in oMethod.Parameters.Values)
+            {
+                var tParam = oParam.Template;
+                if (!tParam.IsDomainDependency)
+                    continue;
+
+                oParam.Value = _DomainDependencyResolver.Resolve(tParam.ParameterType);
+            }
+        }
+
     }
 }

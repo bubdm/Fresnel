@@ -153,7 +153,7 @@ namespace Envivo.Fresnel.Tests.Features
             var vm = vmBuilder.BuildFor(oObject);
 
             // Assert:
-            var methodName = LambdaExtensions.NameOf<MethodSamples>(x => x.MethodWithValueParameters(null, 0, DateTime.MinValue));
+            var methodName = LambdaExtensions.NameOf<MethodSamples>(x => x.MethodWithValueParameters(null, null, 0, DateTime.MinValue));
             var methodWithParams = vm.Methods.Single(m => m.InternalName == methodName);
 
             Assert.IsTrue(methodWithParams.Parameters.Any(p => p.State.ValueType != null));

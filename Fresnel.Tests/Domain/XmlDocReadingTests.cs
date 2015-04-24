@@ -79,11 +79,14 @@ namespace Envivo.Fresnel.Tests.Domain
             var tClass = (ClassTemplate)templateCache.GetTemplate(typeToInspect);
 
             // Assert:
-            var methodName = LambdaExtensions.NameOf<MethodSamples>(x => x.MethodWithValueParameters(null, 0, DateTime.MinValue));
+            var methodName = LambdaExtensions.NameOf<MethodSamples>(x => x.MethodWithValueParameters(null, null, 0, DateTime.MinValue));
             var tMethod = tClass.Methods[methodName];
 
             foreach (var tParam in tMethod.Parameters.Values)
             {
+                if (!tParam.IsVisible)
+                    continue;
+
                 Assert.IsNotEmpty(tParam.XmlComments.Summary);
             }
         }

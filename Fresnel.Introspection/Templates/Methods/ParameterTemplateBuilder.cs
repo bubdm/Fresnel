@@ -1,5 +1,6 @@
 using Envivo.Fresnel.Configuration;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Reflection;
@@ -10,15 +11,18 @@ namespace Envivo.Fresnel.Introspection.Templates
     {
         private Func<ParameterTemplate> _paramterFactory;
         private IsObjectTrackableSpecification _IsObjectTrackableSpecification;
+        private IDomainDependencyResolver _DomainDependencyResolver;
 
         public ParameterTemplateBuilder
         (
             Func<ParameterTemplate> paramterFactory,
-            IsObjectTrackableSpecification isObjectTrackableSpecification
+            IsObjectTrackableSpecification isObjectTrackableSpecification,
+            IDomainDependencyResolver domainDependencyResolver
         )
         {
             _paramterFactory = paramterFactory;
             _IsObjectTrackableSpecification = isObjectTrackableSpecification;
+            _DomainDependencyResolver = domainDependencyResolver;
         }
 
         public TemplateCache TemplateCache { get; set; }
@@ -27,7 +31,6 @@ namespace Envivo.Fresnel.Introspection.Templates
         {
             var result = _paramterFactory();
 
-            result.IsVisible = true;
             result.OuterClass = tMethod.OuterClass;
             result.OuterMethod = tMethod;
             result.ParameterInfo = paramInfo;
@@ -44,6 +47,8 @@ namespace Envivo.Fresnel.Introspection.Templates
             result.FinaliseConstruction();
 
             this.CheckParameterType(result);
+
+            result.IsVisible = !result.IsDomainDependency;
 
             return result;
         }
@@ -72,6 +77,9 @@ namespace Envivo.Fresnel.Introspection.Templates
 
                 tParameter.IsNullableType = paramType.IsNullableType() || paramType.IsDerivedFrom<string>();
             }
+
+            var dependency = _DomainDependencyResolver.Resolve(paramType);
+            tParameter.IsDomainDependency = (dependency != null);
         }
     }
 }

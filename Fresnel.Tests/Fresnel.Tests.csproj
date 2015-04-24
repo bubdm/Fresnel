@@ -65,6 +65,7 @@
     <Compile Include="Domain\MethodTemplateTests.cs" />
     <Compile Include="Domain\PropertyTemplateTests.cs" />
     <Compile Include="Domain\CollectionTemplateTests.cs" />
+    <Compile Include="Features\Explorer\Method_should_automatically_resolve_Dependency_parameters.cs" />
     <Compile Include="Features\Explorer\Cancelling_Save_should_revert_affected_Objects.cs" />
     <Compile Include="Features\Explorer\Cancelling_Save_should_revert_affected_Collections.cs" />
     <Compile Include="Features\Session\Consistency_check_failures_should_be_reported.cs" />
