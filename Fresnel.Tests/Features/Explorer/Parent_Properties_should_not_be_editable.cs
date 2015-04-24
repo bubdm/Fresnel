@@ -2,6 +2,7 @@
 using Envivo.Fresnel.CompositionRoot;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.Objects;
 using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.UiCore.Commands;
@@ -28,7 +29,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
         private ToolboxController _ToolboxController;
 
         private SessionVM _Session;
-        private ObjectVM _Object;
+        private ObjectVM _ObjectVM;
         private MethodVM _Method;
 
         private string _DoubleDispatchMethod;
@@ -48,10 +49,31 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             _Session = sessionController.GetSession();
         }
 
+        public void When_an_OrderItem_is_retrieved()
+        {
+            var searchRequest = new SearchObjectsRequest()
+            {
+                SearchType = typeof(OrderItem).FullName,
+                PageSize = 10,
+                PageNumber = 1,
+            };
+            var searchResponse = _ToolboxController.SearchObjects(searchRequest);
+            Assert.IsTrue(searchResponse.Passed);
+            _ObjectVM = searchResponse.Result.Items.First();
+        }
+
+        public void Then_the_Parent_property_should_not_be_modifiable()
+        {
+            var propName = LambdaExtensions.NameOf<OrderItem>(x => x.ParentOrder);
+            var propVM = _ObjectVM.Properties.Single(m => m.InternalName == propName);
+
+            Assert.IsFalse(propVM.State.Set.IsEnabled);
+            Assert.IsFalse(propVM.State.Clear.IsEnabled);
+        }
+
         [Test]
         public void Execute()
         {
-            throw new NotImplementedException();
             this.BDDfy();
         }
 
