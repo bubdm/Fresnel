@@ -81,6 +81,7 @@
     <Compile Include="Commands\AddToCollectionCommand.cs" />
     <Compile Include="CoreException.cs" />
     <Compile Include="Observers\ObserverCacheSynchroniser.cs" />
+    <Compile Include="Permissions\CanClearPermission.cs" />
     <Compile Include="Persistence\NullPersistenceService.cs" />
     <Compile Include="SequentialIdGenerator.cs" />
     <Compile Include="IEntityExtensions.cs" />

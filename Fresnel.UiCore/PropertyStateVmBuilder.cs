@@ -19,6 +19,7 @@ namespace Envivo.Fresnel.UiCore
         private CanCreatePermission _CanCreatePermission;
         private CanGetPropertyPermission _CanGetPropertyPermission;
         private CanSetPropertyPermission _CanSetPropertyPermission;
+        private CanClearPermission _CanClearPermission;
 
         private ObserverCache _ObserverCache;
         private BooleanValueFormatter _BooleanValueFormatter;
@@ -29,6 +30,7 @@ namespace Envivo.Fresnel.UiCore
             CanCreatePermission canCreatePermission,
             CanGetPropertyPermission canGetPropertyPermission,
             CanSetPropertyPermission canSetPropertyPermission,
+            CanClearPermission canClearPermission,
             ObserverCache observerCache,
             BooleanValueFormatter booleanValueFormatter,
             DateTimeValueFormatter dateTimeValueFormatter
@@ -37,6 +39,7 @@ namespace Envivo.Fresnel.UiCore
             _CanCreatePermission = canCreatePermission;
             _CanGetPropertyPermission = canGetPropertyPermission;
             _CanSetPropertyPermission = canSetPropertyPermission;
+            _CanClearPermission = canClearPermission;
             _ObserverCache = observerCache;
             _BooleanValueFormatter = booleanValueFormatter;
             _DateTimeValueFormatter = dateTimeValueFormatter;
@@ -203,13 +206,14 @@ namespace Envivo.Fresnel.UiCore
 
         private InteractionPoint BuildClear(PropertyTemplate tProp, ValueStateVM valueState)
         {
+            var clearCheck = _CanClearPermission.IsSatisfiedBy(tProp);
+
             var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
 
             var result = new InteractionPoint()
             {
-                IsEnabled = tProp.CanWrite &&
-                             !isNull &&
-                             (!tProp.IsNonReference || tProp.IsNullableType),
+                IsEnabled = clearCheck == null &&
+                             !isNull,
             };
             return result;
         }
