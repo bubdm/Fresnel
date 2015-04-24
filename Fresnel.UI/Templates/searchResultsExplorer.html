@@ -64,7 +64,7 @@
                     <tr ng-repeat="item in oCol.DisplayItems">
                         <td title="{{item.Type}}">
                             <input type="checkbox" class="" ng-show="oCol.AllowSelection" ng-model="item.IsSelected" />
-                            <span class="classItemIcon {{item.Type}}-Icon"></span>
+                            <span class="classItemIcon {{item.Type}}-Icon">{{item.Type}}</span>
                         </td>
                         <td ng-repeat="elementProp in oCol.ElementProperties"
                             ng-init="prop = item.Properties[elementProp.Index]"
