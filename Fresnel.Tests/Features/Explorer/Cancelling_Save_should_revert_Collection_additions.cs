@@ -17,7 +17,7 @@ using TestStack.BDDfy;
 namespace Envivo.Fresnel.Tests.Features.Explorer
 {
     [TestFixture()]
-    public class Cancelling_Save_should_revert_affected_Collections
+    public class Cancelling_Save_should_revert_Collection_additions
     {
         private IContainer _Container;
         private ToolboxController _ToolboxController;

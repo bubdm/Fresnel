@@ -1,4 +1,5 @@
 using Envivo.Fresnel.Core.Observers;
+using System.Linq;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
@@ -89,9 +90,10 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// <param name="oObject"></param>
         public void ObjectIsNoLongerDirty(ObjectObserver oObject)
         {
+            var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oObject, int.MaxValue).ToList();
+
             oObject.ChangeTracker.ResetDirtyFlags();
 
-            var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oObject, int.MaxValue);
             foreach (var outerObject in outerObjects)
             {
                 var outerChangeTracker = outerObject.ChangeTracker;

@@ -31,12 +31,19 @@
     <Reference Include="Autofac">
       <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="Autofac.Integration.WebApi">
+      <HintPath>..\packages\Autofac.WebApi2.3.4.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ploeh.AutoFixture">
       <HintPath>..\packages\AutoFixture.3.24.6\lib\net40\Ploeh.AutoFixture.dll</HintPath>
@@ -46,7 +53,15 @@
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="TestStack.BDDfy">
       <HintPath>..\packages\TestStack.BDDfy.4.1.2\lib\NET40\TestStack.BDDfy.dll</HintPath>
     </Reference>
@@ -65,12 +80,13 @@
     <Compile Include="Domain\MethodTemplateTests.cs" />
     <Compile Include="Domain\PropertyTemplateTests.cs" />
     <Compile Include="Domain\CollectionTemplateTests.cs" />
+    <Compile Include="Features\Explorer\Cancelling_Save_should_revert_Collection_removals.cs" />
     <Compile Include="Features\Explorer\Remove_from_Collection_should_invoke_AddTo_method_if_available.cs" />
     <Compile Include="Features\Explorer\Add_to_Collection_should_invoke_AddTo_method_if_available.cs" />
     <Compile Include="Features\Explorer\Parent_Properties_should_not_be_editable.cs" />
     <Compile Include="Features\Explorer\Method_should_automatically_resolve_Dependency_parameters.cs" />
     <Compile Include="Features\Explorer\Cancelling_Save_should_revert_affected_Objects.cs" />
-    <Compile Include="Features\Explorer\Cancelling_Save_should_revert_affected_Collections.cs" />
+    <Compile Include="Features\Explorer\Cancelling_Save_should_revert_Collection_additions.cs" />
     <Compile Include="Features\Session\Consistency_check_failures_should_be_reported.cs" />
     <Compile Include="Features\Session\All_changes_are_saved.cs" />
     <Compile Include="Features\Session\Session_Is_Unique.cs" />

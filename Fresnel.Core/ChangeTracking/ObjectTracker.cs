@@ -118,6 +118,11 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             get { return _oPreviousParents.Any(); }
         }
 
+        public IEnumerable<ObjectObserver> PreviousParents
+        {
+            get { return _oPreviousParents.Values; }
+        }
+
         /// <summary>
         /// Returns TRUE if the Object Graph has any objects that are dirty.
         /// This eliminates the need to scan the entire graph every time we want to check if anything is dirty.
@@ -168,10 +173,10 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         }
 
         /// <summary>
-        /// Resets the dirty flag for this Object and cascades the status to all parents
+        /// Resets the dirty flag for this Object
         /// </summary>
         /// <remarks></remarks>
-        internal void ResetDirtyFlags()
+        internal virtual void ResetDirtyFlags()
         {
             this.IsTransient = false;
             _HasLocalChanges = false;

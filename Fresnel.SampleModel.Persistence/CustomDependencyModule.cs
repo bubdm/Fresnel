@@ -14,22 +14,23 @@ namespace Fresnel.SampleModel.Persistence
 
             builder.RegisterType<RealTypeResolver>()
                    .AsImplementedInterfaces()
-                   .InstancePerLifetimeScope();
+                   .AsSelf()
+                   .InstancePerDependency();
 
             builder.RegisterType<ModelConfigurator>()
                    .AsSelf()
-                   .InstancePerLifetimeScope();
+                   .InstancePerDependency();
 
             builder.RegisterType<ModelContext>()
                     .WithParameter("nameOrConnectionString", connectionString)
                     .AsImplementedInterfaces()
                     .AsSelf()
-                    .InstancePerDependency();
+                    .InstancePerRequest();
 
             builder.RegisterType<EFPersistenceService>()
                     .AsImplementedInterfaces()
-                    .InstancePerLifetimeScope()
-                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+                    .AsSelf()
+                    .InstancePerRequest();
         }
     }
 }

@@ -11,5 +11,10 @@ namespace Envivo.Fresnel.UiCore.Commands
         /// </summary>
         public Guid ObjectID { get; set; }
 
+        /// <summary>
+        /// The optional name of the Property who's content's are being cancelled
+        /// </summary>
+        public string PropertyName { get; set; }
+
     }
 }

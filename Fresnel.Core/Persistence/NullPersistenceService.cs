@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.Core.Persistence
             return _DummyList;
         }
 
-        public void LoadProperty(Type objectType, Guid id, string propertyName)
+        public void LoadProperty(object entity, string propertyName)
         {
             
         }
@@ -88,6 +88,10 @@ namespace Envivo.Fresnel.Core.Persistence
         {
             
         }
-
+        
+        public void Dispose()
+        {
+        
+        }
     }
 }

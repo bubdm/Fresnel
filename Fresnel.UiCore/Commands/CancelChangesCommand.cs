@@ -4,10 +4,12 @@ using Envivo.Fresnel.Core.Commands;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Core.Persistence;
 using Envivo.Fresnel.DomainTypes.Interfaces;
+using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.UiCore.Model.Changes;
 using Envivo.Fresnel.Utils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Envivo.Fresnel.UiCore.Commands
@@ -16,6 +18,8 @@ namespace Envivo.Fresnel.UiCore.Commands
     {
         private ObserverCache _ObserverCache;
         private OuterObjectsIdentifier _OuterObjectsIdentifier;
+        private Core.Commands.GetPropertyCommand _GetPropertyCommand;
+        private IPersistenceService _PersistenceService;
         private EventTimeLine _EventTimeLine;
         private DirtyObjectNotifier _DirtyObjectNotifier;
         private AbstractObjectVmBuilder _ObjectVmBuilder;
@@ -27,6 +31,8 @@ namespace Envivo.Fresnel.UiCore.Commands
             (
             ObserverCache observerCache,
             OuterObjectsIdentifier outerObjectsIdentifier,
+            Core.Commands.GetPropertyCommand getPropertyCommand,
+            IPersistenceService persistenceService,
             EventTimeLine eventTimeLine,
             DirtyObjectNotifier dirtyObjectNotifier,
             AbstractObjectVmBuilder objectVmBuilder,
@@ -37,6 +43,8 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             _ObserverCache = observerCache;
             _OuterObjectsIdentifier = outerObjectsIdentifier;
+            _GetPropertyCommand = getPropertyCommand;
+            _PersistenceService = persistenceService;
             _EventTimeLine = eventTimeLine;
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _ObjectVmBuilder = objectVmBuilder;
@@ -51,27 +59,41 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var startedAt = SequentialIdGenerator.Next;
 
-                var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
-                if (oObject == null)
-                    throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
+                ObjectObserver oObjectToCancel = null;
+                if (request.PropertyName.IsNotEmpty())
+                {
+                    var oParent = this.GetObserver(request.ObjectID);
+                    oObjectToCancel = this.GetObserver(oParent, request.PropertyName);
+                    this.UndoChangesTo(oParent, request.PropertyName);
+                }
+                else
+                {
+                    oObjectToCancel = this.GetObserver(request.ObjectID);
+                    this.UndoChangesTo(oObjectToCancel);
+                }
 
-                // Undo all changes to this object since the last Save event
-                this.UndoChangesTo(oObject);
+
+                var cancelledObjectVMs = new List<ObjectVM>();
+                var oCollection = oObjectToCancel as CollectionObserver;
+                if (oCollection != null)
+                {
+                    cancelledObjectVMs.AddRange(this.ResetDirtyCollectionModifications(oCollection));
+                }
 
                 // Now reset the dirty flag up the chain:
-                var cancelledObjectVMs = this.ResetDirtyFlags(oObject);
+                cancelledObjectVMs.AddRange(this.ResetDirtyFlags(oObjectToCancel));
 
                 // Done:
                 var infoVM = new MessageVM()
                 {
                     IsSuccess = true,
                     OccurredAt = _Clock.Now,
-                    Text = "Cancelled changes to " + oObject.Template.FriendlyName
+                    Text = "Cancelled changes to " + oObjectToCancel.Template.FriendlyName
                 };
                 return new CancelChangesResponse()
                 {
                     Passed = true,
-                    CancelledObjects = cancelledObjectVMs,
+                    CancelledObjects = cancelledObjectVMs.ToArray(),
                     Messages = new MessageVM[] { infoVM },
                     Modifications = _ModificationsVmBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt)
                 };
@@ -88,16 +110,56 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
         }
 
+        private ObjectObserver GetObserver(Guid objectID)
+        {
+            var oObject = (ObjectObserver)_ObserverCache.GetObserverById(objectID);
+            if (oObject == null)
+                throw new UiCoreException("Cannot find object for " + objectID);
+            return oObject;
+        }
+
+        private ObjectObserver GetObserver(ObjectObserver oParent, string propertyName)
+        {
+            var oProp = oParent.Properties[propertyName];
+            var oResult = (CollectionObserver)_GetPropertyCommand.Invoke(oProp);
+            if (oResult == null)
+                throw new UiCoreException("Cannot find content for " + oProp.Template.Name);
+            return oResult;
+        }
+
         private void UndoChangesTo(ObjectObserver oObject)
         {
-            var earliestPoint = _EventTimeLine.LastOrDefault(e => e is SaveObjectEvent &&
-                                                                  e.AffectedObjects.Contains(oObject)) ??
-                                _EventTimeLine.FirstOrDefault();
+            _PersistenceService.Refresh(oObject.RealObject);
+        }
 
-            if (earliestPoint != null)
+        private void UndoChangesTo(ObjectObserver oObject, string propertyName)
+        {
+            // Refresh the property's contents:
+            _PersistenceService.LoadProperty(oObject.RealObject, propertyName);
+        }
+
+        private ObjectVM[] ResetDirtyCollectionModifications(CollectionObserver oCollection)
+        {
+            var resetObjects = new List<ObjectObserver>();
+
+            var addedItems = oCollection.ChangeTracker.AddedItems.ToArray();
+            foreach (var item in addedItems)
             {
-                _EventTimeLine.UndoChangesTo(oObject, earliestPoint);
+                var oItem = (ObjectObserver)_ObserverCache.GetObserver(item.Element);
+                _DirtyObjectNotifier.ObjectIsNoLongerDirty(oItem);
+                resetObjects.Add(oItem);
             }
+
+            var removedItems = oCollection.ChangeTracker.RemovedItems.ToArray();
+            foreach (var item in removedItems)
+            {
+                var oItem = (ObjectObserver)_ObserverCache.GetObserver(item.Element);
+                _DirtyObjectNotifier.ObjectIsNoLongerDirty(oItem);
+                resetObjects.Add(oItem);
+            }
+
+            var cancelledObjectVMs = resetObjects.Select(o => _ObjectVmBuilder.BuildFor(o)).ToArray();
+            return cancelledObjectVMs;
         }
 
         private ObjectVM[] ResetDirtyFlags(ObjectObserver oObject)

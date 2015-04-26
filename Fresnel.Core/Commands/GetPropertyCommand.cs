@@ -1,4 +1,5 @@
 ﻿using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 
 namespace Envivo.Fresnel.Core.Commands
@@ -7,6 +8,7 @@ namespace Envivo.Fresnel.Core.Commands
     {
         private ObserverCache _ObserverCache;
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
+        private IPersistenceService _PersistenceService;
         private Fresnel.Introspection.Commands.GetPropertyCommand _GetCommand;
         private RealTypeResolver _RealTypeResolver;
 
@@ -14,12 +16,14 @@ namespace Envivo.Fresnel.Core.Commands
             (
             ObserverCache observerCache,
             ObserverCacheSynchroniser observerCacheSynchroniser,
+            IPersistenceService persistenceService,
             Fresnel.Introspection.Commands.GetPropertyCommand getCommand,
             RealTypeResolver realTypeResolver
             )
         {
             _ObserverCache = observerCache;
             _ObserverCacheSynchroniser = observerCacheSynchroniser;
+            _PersistenceService = persistenceService;
             _GetCommand = getCommand;
             _RealTypeResolver = realTypeResolver;
         }
@@ -36,12 +40,14 @@ namespace Envivo.Fresnel.Core.Commands
             ////-----
 
             var oOuterObject = oProperty.OuterObject;
+            _PersistenceService.LoadProperty(oOuterObject.RealObject, oProperty.Template.Name);
 
             var value = _GetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name);
-            //if (value == null)
-            //    return null;
+
             if (value == null)
+            {
                 return _ObserverCache.GetObserver(null, oProperty.Template.PropertyType);
+            }
 
             var valueType = _RealTypeResolver.GetRealType(value);
             var oValue = _ObserverCache.GetObserver(value, valueType);

@@ -4,6 +4,7 @@ using Envivo.Fresnel.SampleModel.Northwind.People;
 using Envivo.Fresnel.SampleModel.Northwind.Places;
 using Envivo.Fresnel.SampleModel.TestTypes;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core;
@@ -15,17 +16,27 @@ using System.Linq.Expressions;
 
 namespace Fresnel.SampleModel.Persistence
 {
-    public class ModelContext : DbContext
+    public class ModelContext : DbContext, IDisposable
     {
         private ModelConfigurator _Configurator;
         private ObjectContext _ObjectContext;
+        private RealTypeResolver _RealTypeResolver;
         private IDictionary<string, EntityType> _KnownTypes;
 
-        public ModelContext(string nameOrConnectionString, ModelConfigurator configurator)
+        public ModelContext
+            (
+            string nameOrConnectionString,
+            ModelConfigurator configurator,
+            RealTypeResolver realTypeResolver
+            )
             : base(nameOrConnectionString)
         {
             _Configurator = configurator;
             _ObjectContext = ((IObjectContextAdapter)this).ObjectContext;
+            _RealTypeResolver = realTypeResolver;
+
+            this.Database.Log = Console.Write;
+            Console.Write("Created new ModelContext");
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -125,26 +136,41 @@ namespace Fresnel.SampleModel.Persistence
             return string.Concat(this.GetType().Name, ".", type.Name, "Set");
         }
 
-        public void LoadProperty(Type objectType, Guid id, string propertyName)
+        public void LoadProperty(object entity, string propertyName)
         {
-            var set = this.Set(objectType);
+            this.AttachMissingEntityToContext(entity);
+            var entry = this.Entry(entity);
 
-            var entity = set.Find(id);
-
-            var collectionEntry = this.Entry(entity).Collection(propertyName);
+            var collectionEntry = entry.Collection(propertyName);
             if (collectionEntry != null)
             {
                 collectionEntry.Load();
             }
             else
             {
-                this.Entry(entity).Reference(propertyName).Load();
+                var referenceEntry = entry.Reference(propertyName);
+                referenceEntry.Load();
             }
         }
 
         public void Refresh(object entity)
         {
-            _ObjectContext.Refresh(RefreshMode.StoreWins, entity);
+            var entry = this.Entry(entity);
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    // Act like the entity doesn't exist in the Context:
+                    entry.State = EntityState.Detached;
+                    break;
+
+                case EntityState.Detached:
+                    // Do nothing
+                    break;
+
+                default:
+                    _ObjectContext.Refresh(RefreshMode.StoreWins, entity);
+                    break;
+            }
         }
 
         public void UpdateObject(object entityWithChanges, Type objectType)
@@ -167,21 +193,26 @@ namespace Fresnel.SampleModel.Persistence
             return base.SaveChanges();
         }
 
+        private void AttachMissingEntityToContext(object entity)
+        {
+            var entityType = _RealTypeResolver.GetRealType(entity);
+            if (!this.IsKnownType(entityType))
+                return;
+
+            var entry = this.Entry(entity);
+            if (entry.State == EntityState.Detached)
+            {
+                // The context doesn't recognise it, so attach it:
+                var set = this.Set(entityType);
+                set.Attach(entity);
+            }
+        }
+
         private void AttachMissingEntitiesToContext(object[] entities)
         {
             foreach (var entity in entities)
             {
-                var entityType = entity.GetType();
-                if (!this.IsKnownType(entityType))
-                    continue;
-
-                var entry = this.Entry(entity);
-                if (entry.State == EntityState.Detached)
-                {
-                    // The context doesn't recognise it, so attach it:
-                    var set = this.Set(entityType);
-                    set.Add(entity);
-                }
+                this.AttachMissingEntityToContext(entity);
             }
         }
 
@@ -237,5 +268,30 @@ namespace Fresnel.SampleModel.Persistence
         {
             _ObjectContext.DeleteObject(entityToDelete);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                AllowEntitiesToBeUsedInOtherContexts();
+            }
+
+            base.Dispose(disposing);
+        }
+
+        private void AllowEntitiesToBeUsedInOtherContexts()
+        {
+            var entityStates = EntityState.Added | EntityState.Deleted | EntityState.Modified | EntityState.Unchanged;
+            var entries = _ObjectContext.ObjectStateManager.GetObjectStateEntries(entityStates)
+                               .Where(e => e.State != EntityState.Detached)
+                               .Where(e => !e.IsRelationship)
+                               .ToArray();
+
+            foreach (var entry in entries)
+            {
+                entry.ChangeState(EntityState.Detached);
+            }
+        }
+
     }
 }

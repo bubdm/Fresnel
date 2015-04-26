@@ -107,6 +107,12 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             {
                 _AddedItems.Remove(previouslyAddedItem);
             }
+
+            var previouslyRemovedItem = _RemovedItems.SingleOrDefault(e => e.Element == oObject);
+            if (previouslyRemovedItem != null)
+            {
+                _RemovedItems.Remove(previouslyRemovedItem);
+            }
         }
 
         public override void DetectChanges()
@@ -121,6 +127,14 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 //// NB: Use the property setter, so that the dirty status is cascaded:
                 //this.IsDirty = true;
             }
+        }
+
+        internal override void ResetDirtyFlags()
+        {
+            base.ResetDirtyFlags();
+
+            _AddedItems.Clear();
+            _RemovedItems.Clear();
         }
 
         public IEnumerable<CollectionAdd> GetCollectionAdditionsSince(long startedAt)

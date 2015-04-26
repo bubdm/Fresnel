@@ -31,9 +31,9 @@ namespace Fresnel.SampleModel.Persistence
             return _ModelContext.GetObjects(objectType);
         }
 
-        public void LoadProperty(Type objectType, Guid id, string propertyName)
+        public void LoadProperty(object entity, string propertyName)
         {
-            _ModelContext.LoadProperty(objectType, id, propertyName);
+            _ModelContext.LoadProperty(entity, propertyName);
         }
 
         public void Refresh(object entity)
@@ -58,9 +58,7 @@ namespace Fresnel.SampleModel.Persistence
 
         public void RollbackChanges()
         {
-            // See http://stackoverflow.com/a/5468570/80369
-            _ModelContext.Dispose();
-            _ModelContext = _ModelContextFactory();
+            // The ModelContext is instantiated per-request, therefore nothing needs to happen
         }
 
         public T GetObject<T>(Guid id) where T : class
@@ -86,6 +84,11 @@ namespace Fresnel.SampleModel.Persistence
         public void DeleteObject<T>(T entityToDelete) where T : class
         {
             _ModelContext.DeleteObject<T>(entityToDelete);
+        }
+
+        public void Dispose()
+        {
+            _ModelContext.Dispose();
         }
     }
 }

@@ -14,10 +14,10 @@ namespace Envivo.Fresnel.CompositionRoot
                     .SingleInstance()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
-            builder.RegisterTypes(this.GetPerDependencyInstanceTypes())
+            builder.RegisterTypes(this.GetPerRequestInstanceTypes())
                     .AsImplementedInterfaces()
                     .AsSelf()
-                    .InstancePerDependency()
+                    .InstancePerRequest()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
             builder.RegisterType<SystemClock>().As<IClock>()
@@ -29,6 +29,14 @@ namespace Envivo.Fresnel.CompositionRoot
 
         private Type[] GetSingleInstanceTypes()
         {
+            return new Type[] {
+              
+            };
+        }
+
+        private Type[] GetPerRequestInstanceTypes()
+        {
+            // These are created per request:
             return new Type[] {
                 typeof(Fresnel.UiCore.Commands.GetClassHierarchyCommand),
                 typeof(Fresnel.UiCore.Commands.CleanupSessionCommand),
@@ -48,11 +56,26 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.UiCore.Commands.SearchParameterCommand),
                 typeof(Fresnel.UiCore.Commands.SearchResultsFilterApplier),
 
-                typeof(Fresnel.UiCore.Model.Changes.ModificationsVmBuilder),
+                typeof(Fresnel.UiCore.Controllers.ToolboxController),
+                typeof(Fresnel.UiCore.Controllers.ExplorerController),
+                typeof(Fresnel.UiCore.Controllers.SessionController),
+                typeof(Fresnel.UiCore.Controllers.TestController),
 
+                typeof(Fresnel.UiCore.AbstractObjectVmBuilder),
+                typeof(Fresnel.UiCore.EmptyPropertyVmBuilder),
+                typeof(Fresnel.UiCore.ExceptionMessagesBuilder),
+                typeof(Fresnel.UiCore.PropertyVmBuilder),
+                typeof(Fresnel.UiCore.PropertyStateVmBuilder),
+                typeof(Fresnel.UiCore.ParameterStateVmBuilder),
+                typeof(Fresnel.UiCore.MethodVmBuilder),
+                typeof(Fresnel.UiCore.AbstractParameterVmBuilder),
+                typeof(Fresnel.UiCore.SearchResultsVmBuilder),
+                typeof(Fresnel.UiCore.SearchFilterPropertyVmBuilder),
+                typeof(Fresnel.UiCore.SessionVmBuilder),
+
+                typeof(Fresnel.UiCore.Model.Changes.ModificationsVmBuilder),
                 typeof(Fresnel.UiCore.Model.Classes.ClassItemBuilder),
                 typeof(Fresnel.UiCore.Model.Classes.NamespacesBuilder),
-
                 typeof(Fresnel.UiCore.Model.TypeInfo.DataTypeToUiControlMapper),
                 typeof(Fresnel.UiCore.Model.TypeInfo.BooleanVmBuilder),
                 typeof(Fresnel.UiCore.Model.TypeInfo.BooleanValueFormatter),
@@ -63,29 +86,6 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.UiCore.Model.TypeInfo.StringVmBuilder),
                 typeof(Fresnel.UiCore.Model.TypeInfo.ObjectSelectionVmBuilder),
                 typeof(Fresnel.UiCore.Model.TypeInfo.UnknownVmBuilder),
-
-                typeof(Fresnel.UiCore.ExceptionMessagesBuilder),
-                typeof(Fresnel.UiCore.SessionVmBuilder),
-            };
-        }
-
-        private Type[] GetPerDependencyInstanceTypes()
-        {
-            return new Type[] {
-                typeof(Fresnel.UiCore.Controllers.ToolboxController),
-                typeof(Fresnel.UiCore.Controllers.ExplorerController),
-                typeof(Fresnel.UiCore.Controllers.SessionController),
-                typeof(Fresnel.UiCore.Controllers.TestController),
-
-                typeof(Fresnel.UiCore.AbstractObjectVmBuilder),
-                typeof(Fresnel.UiCore.EmptyPropertyVmBuilder),
-                typeof(Fresnel.UiCore.PropertyVmBuilder),
-                typeof(Fresnel.UiCore.PropertyStateVmBuilder),
-                typeof(Fresnel.UiCore.ParameterStateVmBuilder),
-                typeof(Fresnel.UiCore.MethodVmBuilder),
-                typeof(Fresnel.UiCore.AbstractParameterVmBuilder),
-                typeof(Fresnel.UiCore.SearchResultsVmBuilder),
-                typeof(Fresnel.UiCore.SearchFilterPropertyVmBuilder),
             };
         }
     }

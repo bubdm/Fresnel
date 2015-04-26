@@ -16,7 +16,13 @@ namespace Envivo.Fresnel.CompositionRoot
             builder.RegisterTypes(this.GetPerSessionInstanceTypes())
                     .AsImplementedInterfaces()
                     .AsSelf()
-                    .InstancePerLifetimeScope()
+                    .SingleInstance()
+                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+
+            builder.RegisterTypes(this.GetPerRequestInstanceTypes())
+                    .AsImplementedInterfaces()
+                    .AsSelf()
+                    .InstancePerRequest()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
             builder.RegisterTypes(this.GetPerDependencyInstanceTypes())
@@ -32,6 +38,8 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.Core.Engine),
 
                 typeof(Fresnel.Core.OuterObjectsIdentifier),
+                typeof(Fresnel.Core.ChangeTracking.DirtyObjectNotifier),
+                typeof(Fresnel.Core.ChangeTracking.AbstractChangeTrackerBuilder),
 
                 typeof(Fresnel.Core.Observers.AbstractObserverBuilder),
                 typeof(Fresnel.Core.Observers.MethodObserverBuilder),
@@ -42,13 +50,11 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.Core.Observers.PropertyObserverBuilder),
                 typeof(Fresnel.Core.Observers.PropertyObserverMapBuilder),
 
-                typeof(Fresnel.Core.ChangeTracking.DirtyObjectNotifier),
-
                 typeof(Fresnel.Core.Permissions.CanCreatePermission),
                 typeof(Fresnel.Core.Permissions.CanGetPropertyPermission),
                 typeof(Fresnel.Core.Permissions.CanSetPropertyPermission),
                 typeof(Fresnel.Core.Permissions.CanInvokeMethodPermission),
-                typeof(Fresnel.Core.Permissions.CanClearPermission),
+                typeof(Fresnel.Core.Permissions.CanClearPermission),               
             };
         }
 
@@ -57,6 +63,15 @@ namespace Envivo.Fresnel.CompositionRoot
             return new Type[] {
                 // These depend on the ObserverCache, hence the need for them being Per Session:
                 typeof(Fresnel.Core.Commands.EventTimeLine),
+                typeof(Fresnel.Core.Observers.ObserverCache),
+                typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
+            };
+        }
+
+        private Type[] GetPerRequestInstanceTypes()
+        {
+            // These are created per request:
+            return new Type[] {
                 typeof(Fresnel.Core.Commands.AddToCollectionCommand),
                 typeof(Fresnel.Core.Commands.ClearCollectionCommand),
                 typeof(Fresnel.Core.Commands.CloneObjectCommand),
@@ -70,17 +85,13 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.Core.Commands.ConsistencyCheckCommand),
                 typeof(Fresnel.Core.Commands.SaveObjectCommand),
                 typeof(Fresnel.Core.Commands.SearchCommand),
-
-                typeof(Fresnel.Core.Observers.ObserverCache),
-                typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
-
+                
                 typeof(Fresnel.Core.Persistence.NullPersistenceService),
             };
         }
 
         private Type[] GetPerDependencyInstanceTypes()
         {
-            // These are created per request:
             return new Type[] {
                 typeof(Fresnel.Core.Commands.AddToCollectionEvent),
                 typeof(Fresnel.Core.Commands.RemoveFromCollectionEvent),
@@ -96,11 +107,9 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.Core.Observers.NullObserver),
                 typeof(Fresnel.Core.Observers.ParameterObserver),
 
-                typeof(Fresnel.Core.ChangeTracking.AbstractChangeTrackerBuilder),
                 typeof(Fresnel.Core.ChangeTracking.ObjectTracker),
                 typeof(Fresnel.Core.ChangeTracking.CollectionTracker),
             };
         }
-
     }
 }

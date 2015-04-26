@@ -39,6 +39,12 @@ namespace Envivo.Fresnel.Core
                 foundObjects.Add(oCollection, oCollection);
             }
 
+            // Get all of the Collections that the object may have belonged to:
+            foreach (var oPreviousParent in oObject.ChangeTracker.PreviousParents)
+            {
+                foundObjects.Add(oPreviousParent, oPreviousParent);
+            }
+
             // Get all of the Domain Objects that have references to the given Object:
             foreach (var oProp in oObject.OuterProperties)
             {

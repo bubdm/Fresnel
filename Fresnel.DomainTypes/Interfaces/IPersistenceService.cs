@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
-    public interface IPersistenceService
+    public interface IPersistenceService : IDisposable
     {
         bool IsTypeRecognised(Type objectType);
 
@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
 
         IQueryable GetObjects(Type objectType);
 
-        void LoadProperty(Type objectType, Guid id, string propertyName);
+        void LoadProperty(object entity, string propertyName);
 
         void Refresh(object entity);
 
