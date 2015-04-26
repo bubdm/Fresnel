@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.Core.Commands
         public ActionResult Do()
         {
             _oCollection = (CollectionObserver)_GetPropertyCommand.Invoke(_CollectionProperty);
-            var result = _RemoveFromCollectionCommand.Invoke(_oCollection, _oItemToRemove);
+            var result = _RemoveFromCollectionCommand.Invoke(_CollectionProperty, _oCollection, _oItemToRemove);
 
             this.AffectedObjects = new ObjectObserver[] { _oCollection, _oItemToRemove };
 
@@ -52,7 +52,7 @@ namespace Envivo.Fresnel.Core.Commands
 
         public ActionResult Undo()
         {
-            var oAddedItem = (ObjectObserver)_AddToCollectionCommand.Invoke(_oCollection, _oItemToRemove);
+            var oAddedItem = (ObjectObserver)_AddToCollectionCommand.Invoke(_CollectionProperty, _oCollection, _oItemToRemove);
             return ActionResult<ObjectObserver>.Pass(oAddedItem);
         }
     }

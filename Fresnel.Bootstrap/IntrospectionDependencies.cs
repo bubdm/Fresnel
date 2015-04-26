@@ -51,6 +51,8 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.Introspection.Templates.ClassTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.CollectionTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.CollectionTypeIdentifier),
+                typeof(Fresnel.Introspection.Templates.CollectionAddMethodIdentifier),
+                typeof(Fresnel.Introspection.Templates.CollectionRemoveMethodIdentifier),
                 typeof(Fresnel.Introspection.Templates.DynamicMethodBuilder),
                 typeof(Fresnel.Introspection.Templates.EnumItemTemplateBuilder),
                 typeof(Fresnel.Introspection.Templates.EnumItemTemplateMapBuilder),

@@ -1,6 +1,9 @@
 ﻿using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Utils;
+using System.Linq;
 
 namespace Envivo.Fresnel.Core.Commands
 {
@@ -9,7 +12,9 @@ namespace Envivo.Fresnel.Core.Commands
         private DirtyObjectNotifier _DirtyObjectNotifier;
         private ObserverCache _ObserverCache;
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
-        private Fresnel.Introspection.Commands.AddToCollectionCommand _AddCommand;
+        private CollectionAddMethodIdentifier _CollectionAddMethodIdentifier;
+        private Introspection.Commands.InvokeMethodCommand _InvokeMethodCommand;
+        private Introspection.Commands.AddToCollectionCommand _AddCommand;
         private RealTypeResolver _RealTypeResolver;
 
         public AddToCollectionCommand
@@ -17,22 +22,37 @@ namespace Envivo.Fresnel.Core.Commands
             ObserverCache observerCache,
             ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier,
-            Fresnel.Introspection.Commands.AddToCollectionCommand addCommand,
+            CollectionAddMethodIdentifier collectionAddMethodIdentifier,
+            Introspection.Commands.InvokeMethodCommand invokeMethodCommand,
+            Introspection.Commands.AddToCollectionCommand addCommand,
             RealTypeResolver realTypeResolver
             )
         {
             _ObserverCache = observerCache;
             _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
+            _CollectionAddMethodIdentifier = collectionAddMethodIdentifier;
+            _InvokeMethodCommand = invokeMethodCommand;
             _AddCommand = addCommand;
             _RealTypeResolver = realTypeResolver;
         }
 
-        public BaseObjectObserver Invoke(CollectionObserver oCollection, ObjectObserver oItemToAdd)
+        public BaseObjectObserver Invoke(ObjectPropertyObserver oCollectionProp, CollectionObserver oCollection, ObjectObserver oItemToAdd)
         {
             // TODO: Check permissions
+            object result = null;
 
-            var result = _AddCommand.Invoke(oCollection.Template, oCollection.RealObject, oItemToAdd.Template, oItemToAdd.RealObject);
+            var outerAddMethod = this.FindAddMethodFromOuterObject(oCollectionProp);
+            if (outerAddMethod != null)
+            {
+                var parentObj = oCollectionProp.OuterObject.RealObject;
+                var args = new object[] { oItemToAdd.RealObject };
+                result = _InvokeMethodCommand.Invoke(parentObj, outerAddMethod.Template, args);
+            }
+            else
+            {
+                result = _AddCommand.Invoke(oCollection.Template, oCollection.RealObject, oItemToAdd.Template, oItemToAdd.RealObject);
+            }
 
             BaseObjectObserver oAddedItem;
             if (result == null)
@@ -56,5 +76,16 @@ namespace Envivo.Fresnel.Core.Commands
 
             return oAddedItem;
         }
+
+        private MethodObserver FindAddMethodFromOuterObject(ObjectPropertyObserver oCollectionProp)
+        {
+            var tMethod = _CollectionAddMethodIdentifier.GetMethod(oCollectionProp.Template);
+            if (tMethod == null)
+                return null;
+
+            var result = oCollectionProp.OuterObject.Methods.Values.Single(m => m.Template == tMethod);
+            return result;
+        }
+
     }
 }

@@ -86,14 +86,14 @@ namespace Envivo.Fresnel.Tests.Domain
 
             var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
             var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
-            var oProp = oObject.Properties[propName];
+            var oProp = (ObjectPropertyObserver)oObject.Properties[propName];
             var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Act:
             var newRole = _Fixture.Create<Employee>();
             var oNewRole = (ObjectObserver)observerCache.GetObserver(newRole, newRole.GetType());
 
-            var result = addCommand.Invoke(oCollection, oNewRole);
+            var result = addCommand.Invoke(oProp, oCollection, oNewRole);
 
             // Assert:
             Assert.IsTrue(oNewRole.ChangeTracker.IsDirty);
@@ -118,14 +118,14 @@ namespace Envivo.Fresnel.Tests.Domain
 
             var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
             var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
-            var oProp = oObject.Properties[propName];
+            var oProp = (ObjectPropertyObserver)oObject.Properties[propName];
             var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Act:
             var childObject = person.Roles.Last();
             var oChildObject = (ObjectObserver)observerCache.GetObserver(childObject, childObject.GetType());
 
-            var result = removeCommand.Invoke(oCollection, oChildObject);
+            var result = removeCommand.Invoke(oProp, oCollection, oChildObject);
 
             // Assert:
             Assert.IsTrue(oChildObject.ChangeTracker.IsDirty);
@@ -152,15 +152,15 @@ namespace Envivo.Fresnel.Tests.Domain
 
             var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
             var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
-            var oProp = oObject.Properties[propName];
+            var oProp = (ObjectPropertyObserver)oObject.Properties[propName];
             var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Act:
             var oNewItem = (ObjectObserver)createCommand.Invoke(typeof(Employee), null);
             ((Employee)oNewItem.RealObject).ID = Guid.NewGuid();
 
-            var addResult = addCommand.Invoke(oCollection, oNewItem);
-            var removeResult = removeCommand.Invoke(oCollection, oNewItem);
+            var addResult = addCommand.Invoke(oProp, oCollection, oNewItem);
+            var removeResult = removeCommand.Invoke(oProp, oCollection, oNewItem);
 
             // Assert:
             Assert.IsTrue(oNewItem.ChangeTracker.IsTransient);
@@ -183,7 +183,7 @@ namespace Envivo.Fresnel.Tests.Domain
 
             var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
             var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
-            var oProp = oObject.Properties[propName];
+            var oProp = (ObjectPropertyObserver)oObject.Properties[propName];
 
             var iterations = 10000;
 
@@ -221,12 +221,12 @@ namespace Envivo.Fresnel.Tests.Domain
             var addCommand = container.Resolve<AddToCollectionCommand>();
 
             var oOrder = (ObjectObserver)createCommand.Invoke(typeof(Order), null);
-            var oProp = oOrder.Properties[LambdaExtensions.NameOf<Order>(x => x.OrderItems)];
+            var oProp = (ObjectPropertyObserver)oOrder.Properties[LambdaExtensions.NameOf<Order>(x => x.OrderItems)];
             var oOrderItems = (CollectionObserver)getCommand.Invoke(oProp);
 
             // Add a new OrderItem:
-            var oOrderItem  = (ObjectObserver)createCommand.Invoke(typeof(OrderItem), null);
-            var oAddedItem = (ObjectObserver)addCommand.Invoke(oOrderItems, oOrderItem);
+            var oOrderItem = (ObjectObserver)createCommand.Invoke(typeof(OrderItem), null);
+            var oAddedItem = (ObjectObserver)addCommand.Invoke(oProp, oOrderItems, oOrderItem);
 
             // The chain of objects should be dirty:
             Assert.IsTrue(oOrderItem.ChangeTracker.IsTransient);

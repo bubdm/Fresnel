@@ -65,6 +65,8 @@
     <Compile Include="Assemblies\AssemblyReaderBuilder.cs" />
     <Compile Include="IRealTypeResolver.cs" />
     <Compile Include="RealTypeResolver.cs" />
+    <Compile Include="Templates\Methods\CollectionRemoveMethodIdentifier.cs" />
+    <Compile Include="Templates\Methods\CollectionAddMethodIdentifier.cs" />
     <Compile Include="Templates\XmlComments.cs" />
     <Compile Include="Templates\Classes\ClassHierarchyBuilder.cs" />
     <Compile Include="Templates\Classes\NullTemplate.cs" />
