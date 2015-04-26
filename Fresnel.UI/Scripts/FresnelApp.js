@@ -51,7 +51,7 @@ var FresnelApp;
             this.requestBuilder = requestBuilder;
         }
         SaveService.prototype.isRequiredFor = function (obj) {
-            if (!obj.IsPersistable)
+            if (!obj.DirtyState.IsPersistent)
                 return false;
             return (obj.DirtyState.IsDirty || obj.DirtyState.HasDirtyChildren);
         };
