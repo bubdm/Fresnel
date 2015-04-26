@@ -94,13 +94,5 @@ namespace Envivo.Fresnel.UiCore.Commands
             return oObject;
         }
 
-        private CollectionObserver GetCollectionObserver(ObjectObserver oParent, string collectionPropertyName)
-        {
-            var oProp = (ObjectPropertyObserver)oParent.Properties[collectionPropertyName];
-            var oCollection = (CollectionObserver)_GetPropertyCommand.Invoke(oProp);
-            if (oCollection == null)
-                throw new UiCoreException("Cannot find collection for " + collectionPropertyName);
-            return oCollection;
-        }
     }
 }
