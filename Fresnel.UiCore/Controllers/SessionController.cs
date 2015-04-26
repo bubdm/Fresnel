@@ -14,11 +14,11 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public SessionController
             (
             SessionVmBuilder sessionVmBuilder,
-            IEnumerable<ICommand> commands
+            CleanupSessionCommand cleanupSessionCommand
             )
         {
             _SessionVmBuilder = sessionVmBuilder;
-            _CleanupSessionCommand = commands.OfType<CleanupSessionCommand>().Single();
+            _CleanupSessionCommand = cleanupSessionCommand;
         }
 
         [HttpGet]
