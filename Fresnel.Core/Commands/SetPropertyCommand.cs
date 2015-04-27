@@ -46,6 +46,7 @@ namespace Envivo.Fresnel.Core.Commands
             var oObjectProp = oProperty as ObjectPropertyObserver;
             if (oObjectProp != null)
             {
+                // This allows the actual property value to be accessed:
                 oObjectProp.IsLazyLoaded = true;
             }
 

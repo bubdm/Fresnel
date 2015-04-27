@@ -42,11 +42,15 @@ namespace Envivo.Fresnel.Core.Commands
             var oOuterObject = oProperty.OuterObject;
             var oObjectProperty = oProperty as ObjectPropertyObserver;
 
-            if (oObjectProperty != null && 
-                oOuterObject.ChangeTracker.IsPersistent &&
-                oObjectProperty.IsLazyLoadPending)
+            if (oObjectProperty != null)
             {
-                _PersistenceService.LoadProperty(oOuterObject.RealObject, oProperty.Template.Name);
+                if (oOuterObject.ChangeTracker.IsPersistent &&
+                     oObjectProperty.IsLazyLoadPending)
+                {
+                    _PersistenceService.LoadProperty(oOuterObject.RealObject, oProperty.Template.Name);
+                }
+
+                // This allows the actual property value to be accessed:
                 oObjectProperty.IsLazyLoaded = true;
             }
 

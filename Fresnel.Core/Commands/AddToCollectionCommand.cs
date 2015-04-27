@@ -42,6 +42,9 @@ namespace Envivo.Fresnel.Core.Commands
             // TODO: Check permissions
             object result = null;
 
+            // This allows the actual property value to be accessed:
+            oCollectionProp.IsLazyLoaded = true;
+
             var outerAddMethod = this.FindAddMethodFromOuterObject(oCollectionProp);
             if (outerAddMethod != null)
             {
