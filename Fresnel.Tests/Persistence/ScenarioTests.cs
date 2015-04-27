@@ -25,8 +25,20 @@ namespace Envivo.Fresnel.Tests.Persistence
     [TestFixture()]
     public class ScenarioTests
     {
-        private TestScopeContainer _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
         private Fixture _Fixture = new AutoFixtureFactory().Create();
+        private TestScopeContainer _TestScopeContainer = null;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
+
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
+            }
+        }
 
         [Test]
         public void ShouldAddOrderItemToNewOrder()
@@ -34,9 +46,6 @@ namespace Envivo.Fresnel.Tests.Persistence
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var engine = _TestScopeContainer.Resolve<Core.Engine>();
-                engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
-
                 var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
                 var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
 
@@ -84,9 +93,6 @@ namespace Envivo.Fresnel.Tests.Persistence
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var engine = _TestScopeContainer.Resolve<Core.Engine>();
-                engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
-                
                 var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
                 var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
 
