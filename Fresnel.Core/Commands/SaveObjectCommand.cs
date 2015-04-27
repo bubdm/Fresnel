@@ -54,8 +54,12 @@ namespace Envivo.Fresnel.Core.Commands
             }
 
             // Now save:
-            var dirtyEntities = objectsToPersist.Select(o => o.RealObject).ToArray();
-            var savedItemCount = _PersistenceService.SaveChanges(dirtyEntities);
+            var newEntities = objectsToPersist
+                                    .Where(o=> o.ChangeTracker.IsTransient)
+                                    .Select(o => o.RealObject).ToArray();
+            var dirtyEntities = objectsToPersist.Select(o => o.RealObject)
+                                    .ToArray();
+            var savedItemCount = _PersistenceService.SaveChanges(newEntities, dirtyEntities);
 
             foreach (var savedObj in objectsToPersist)
             {

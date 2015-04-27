@@ -21,330 +21,349 @@ namespace Envivo.Fresnel.Tests.Features
     [TestFixture()]
     public class ExplorerControllerTests
     {
+        private TestScopeContainer _TestScopeContainer = new TestScopeContainer();
         private Fixture _Fixture = new AutoFixtureFactory().Create();
 
         [Test]
         public void ShouldReturnObjectProperty()
         {
             // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-            var obj = _Fixture.Create<MultiType>();
-
-            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
-
-            // Act:
-            var request = new GetPropertyRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = obj.ID,
-                PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.An_Object)
-            };
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var getResult = controller.GetObjectProperty(request);
+                var obj = _Fixture.Create<MultiType>();
 
-            // Assert:
-            Assert.IsTrue(getResult.Passed);
-            Assert.IsNotNull(getResult.ReturnValue);
+                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+
+                // Act:
+                var request = new GetPropertyRequest()
+                {
+                    ObjectID = obj.ID,
+                    PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.An_Object)
+                };
+
+                var getResult = controller.GetObjectProperty(request);
+
+                // Assert:
+                Assert.IsTrue(getResult.Passed);
+                Assert.IsNotNull(getResult.ReturnValue);
+            }
         }
 
         [Test]
         public void ShouldReturnCorrectHeadersForCollection()
         {
             // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var templateCache = container.Resolve<TemplateCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-
-            var obj = _Fixture.Create<MultiType>();
-            obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
-
-            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
-
-            // Act:
-            var request = new GetPropertyRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = obj.ID,
-                PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection)
-            };
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var getResult = controller.GetObjectProperty(request);
 
-            // Assert:
-            var collectionVM = (CollectionVM)getResult.ReturnValue;
+                var obj = _Fixture.Create<MultiType>();
+                obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
-            // There should be a Header for each viewable property in the collection's Element type:
-            var elementType = typeof(BooleanValues);
-            var template = (ClassTemplate)templateCache.GetTemplate(elementType);
+                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 
-            var visibleProperties = template.Properties.VisibleOnly;
+                // Act:
+                var request = new GetPropertyRequest()
+                {
+                    ObjectID = obj.ID,
+                    PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection)
+                };
 
-            Assert.GreaterOrEqual(collectionVM.ElementProperties.Count(), visibleProperties.Count());
+                var getResult = controller.GetObjectProperty(request);
+
+                // Assert:
+                var collectionVM = (CollectionVM)getResult.ReturnValue;
+
+                // There should be a Header for each viewable property in the collection's Element type:
+                var elementType = typeof(BooleanValues);
+                var template = (ClassTemplate)templateCache.GetTemplate(elementType);
+
+                var visibleProperties = template.Properties.VisibleOnly;
+
+                Assert.GreaterOrEqual(collectionVM.ElementProperties.Count(), visibleProperties.Count());
+            }
         }
 
         [Test]
         public void ShouldRefreshObject()
         {
             // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-
-            var obj = _Fixture.Create<MultiType>();
-
-            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
-
-            // Act:
-            var request = new SetPropertyRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = obj.ID,
-                PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_String),
-                NonReferenceValue = _Fixture.Create<string>(),
-            };
-            var setResult = controller.SetProperty(request);
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            // Now check that the server object has the right value:
-            var getRequest = new GetObjectRequest()
-            {
-                ObjectID = obj.ID,
-            };
-            var refreshedObject = controller.GetObject(getRequest);
 
-            // Assert:
-            var propVM = refreshedObject.ReturnValue.Properties.Single(p => p.InternalName == request.PropertyName);
-            Assert.AreEqual(request.NonReferenceValue, propVM.State.Value);
+                var obj = _Fixture.Create<MultiType>();
+
+                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+
+                // Act:
+                var request = new SetPropertyRequest()
+                {
+                    ObjectID = obj.ID,
+                    PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_String),
+                    NonReferenceValue = _Fixture.Create<string>(),
+                };
+                var setResult = controller.SetProperty(request);
+
+                // Now check that the server object has the right value:
+                var getRequest = new GetObjectRequest()
+                {
+                    ObjectID = obj.ID,
+                };
+                var refreshedObject = controller.GetObject(getRequest);
+
+                // Assert:
+                var propVM = refreshedObject.ReturnValue.Properties.Single(p => p.InternalName == request.PropertyName);
+                Assert.AreEqual(request.NonReferenceValue, propVM.State.Value);
+            }
         }
 
         [Test]
         public void ShouldAddNewItemToCollection()
         {
             // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-
-            var obj = _Fixture.Create<MultiType>();
-            obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
-
-            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
-
-            // Make sure we start tracking the collection:
-            var getRequest = new GetPropertyRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = obj.ID,
-                PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection)
-            };
-            var getResult = controller.GetObjectProperty(getRequest);
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var collectionVM = (CollectionVM)getResult.ReturnValue;
 
-            // Act:
-            var addRequest = new CollectionAddNewRequest()
-            {
-                ParentObjectID = obj.ID,
-                CollectionPropertyName = getRequest.PropertyName,
-                ElementTypeName = typeof(BooleanValues).FullName
-            };
+                var obj = _Fixture.Create<MultiType>();
+                obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
-            var addResponse = controller.AddNewItemToCollection(addRequest);
+                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 
-            // Assert:
-            Assert.IsTrue(addResponse.Passed);
-            Assert.AreEqual(1, addResponse.Modifications.NewObjects.Count());
-            Assert.AreEqual(1, addResponse.Modifications.CollectionAdditions.Count());
+                // Make sure we start tracking the collection:
+                var getRequest = new GetPropertyRequest()
+                {
+                    ObjectID = obj.ID,
+                    PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection)
+                };
+                var getResult = controller.GetObjectProperty(getRequest);
 
-            // Check that the domain object has changed:
-            var oChild = observerCache.GetObserverById(addResponse.Modifications.NewObjects.First().ID);
-            Assert.IsTrue(obj.A_Collection.Contains(oChild.RealObject));
+                var collectionVM = (CollectionVM)getResult.ReturnValue;
+
+                // Act:
+                var addRequest = new CollectionAddNewRequest()
+                {
+                    ParentObjectID = obj.ID,
+                    CollectionPropertyName = getRequest.PropertyName,
+                    ElementTypeName = typeof(BooleanValues).FullName
+                };
+
+                var addResponse = controller.AddNewItemToCollection(addRequest);
+
+                // Assert:
+                Assert.IsTrue(addResponse.Passed);
+                Assert.AreEqual(1, addResponse.Modifications.NewObjects.Count());
+                Assert.AreEqual(1, addResponse.Modifications.CollectionAdditions.Count());
+
+                // Check that the domain object has changed:
+                var oChild = observerCache.GetObserverById(addResponse.Modifications.NewObjects.First().ID);
+                Assert.IsTrue(obj.A_Collection.Contains(oChild.RealObject));
+            }
         }
 
         [Test]
         public void ShouldAddExistingItemToCollection()
         {
             // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-
-            var obj = _Fixture.Create<MultiType>();
-            obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
-
-            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
-
-            var child = _Fixture.Create<BooleanValues>();
-            var oChild = observerCache.GetObserver(child) as ObjectObserver;
-
-            // Make sure we start tracking the collection:
-            var getRequest = new GetPropertyRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = obj.ID,
-                PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection)
-            };
-            var getResult = controller.GetObjectProperty(getRequest);
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var collectionVM = (CollectionVM)getResult.ReturnValue;
 
-            // Act:
-            var addRequest = new CollectionAddRequest()
-            {
-                ParentObjectID = obj.ID,
-                CollectionPropertyName = getRequest.PropertyName,
-                ElementIDs = new Guid[] { oChild.ID },
-            };
+                var obj = _Fixture.Create<MultiType>();
+                obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
-            var response = controller.AddItemsToCollection(addRequest);
+                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 
-            // Assert:
-            Assert.IsTrue(response.Passed);
-            Assert.AreEqual(0, response.Modifications.NewObjects.Count());
-            Assert.AreEqual(1, response.Modifications.CollectionAdditions.Count());
+                var child = _Fixture.Create<BooleanValues>();
+                var oChild = observerCache.GetObserver(child) as ObjectObserver;
 
-            // Check that the domain object has changed:
-            Assert.IsTrue(obj.A_Collection.Contains(oChild.RealObject));
+                // Make sure we start tracking the collection:
+                var getRequest = new GetPropertyRequest()
+                {
+                    ObjectID = obj.ID,
+                    PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection)
+                };
+                var getResult = controller.GetObjectProperty(getRequest);
+
+                var collectionVM = (CollectionVM)getResult.ReturnValue;
+
+                // Act:
+                var addRequest = new CollectionAddRequest()
+                {
+                    ParentObjectID = obj.ID,
+                    CollectionPropertyName = getRequest.PropertyName,
+                    ElementIDs = new Guid[] { oChild.ID },
+                };
+
+                var response = controller.AddItemsToCollection(addRequest);
+
+                // Assert:
+                Assert.IsTrue(response.Passed);
+                Assert.AreEqual(0, response.Modifications.NewObjects.Count());
+                Assert.AreEqual(1, response.Modifications.CollectionAdditions.Count());
+
+                // Check that the domain object has changed:
+                Assert.IsTrue(obj.A_Collection.Contains(oChild.RealObject));
+            }
         }
 
         [Test]
         public void ShouldCreateNewPropertyObjectWithParentAsCtorArg()
         {
             // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-            var obj = _Fixture.Create<MultiType>();
-            obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
-
-            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
-
-            // Make sure we start tracking the property:
-            var getRequest = new GetPropertyRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = obj.ID,
-                PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.An_Object)
-            };
-            var getResult = controller.GetObjectProperty(getRequest);
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            // Act:
-            var setRequest = new CreateAndSetPropertyRequest()
-            {
-                ObjectID = obj.ID,
-                PropertyName = getRequest.PropertyName,
-                ClassTypeName = typeof(TextValues).FullName
-            };
+                var obj = _Fixture.Create<MultiType>();
+                obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
-            var setResponse = controller.CreateAndSetProperty(setRequest);
+                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 
-            // Assert:
-            Assert.IsTrue(setResponse.Passed);
-            Assert.AreEqual(1, setResponse.Modifications.NewObjects.Count());
-            Assert.AreEqual(1, setResponse.Modifications.PropertyChanges.Count());
+                // Make sure we start tracking the property:
+                var getRequest = new GetPropertyRequest()
+                {
+                    ObjectID = obj.ID,
+                    PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.An_Object)
+                };
+                var getResult = controller.GetObjectProperty(getRequest);
 
-            // Check that the domain object has changed:
-            var oChild = observerCache.GetObserverById(setResponse.Modifications.PropertyChanges.First().State.ReferenceValueID.Value);
-            Assert.AreEqual(obj.An_Object, oChild.RealObject);
+                // Act:
+                var setRequest = new CreateAndSetPropertyRequest()
+                {
+                    ObjectID = obj.ID,
+                    PropertyName = getRequest.PropertyName,
+                    ClassTypeName = typeof(TextValues).FullName
+                };
+
+                var setResponse = controller.CreateAndSetProperty(setRequest);
+
+                // Assert:
+                Assert.IsTrue(setResponse.Passed);
+                Assert.AreEqual(1, setResponse.Modifications.NewObjects.Count());
+                Assert.AreEqual(1, setResponse.Modifications.PropertyChanges.Count());
+
+                // Check that the domain object has changed:
+                var oChild = observerCache.GetObserverById(setResponse.Modifications.PropertyChanges.First().State.ReferenceValueID.Value);
+                Assert.AreEqual(obj.An_Object, oChild.RealObject);
+            }
         }
 
         [Test]
         public void ShouldRemoveItemFromCollection()
         {
             // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-
-            var obj = _Fixture.Create<MultiType>();
-            obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
-
-            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
-
-            var child = obj.A_Collection.First();
-            var oChild = observerCache.GetObserver(child) as ObjectObserver;
-
-            // Make sure we start tracking the collection:
-            var getRequest = new GetPropertyRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = obj.ID,
-                PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection)
-            };
-            var getResult = controller.GetObjectProperty(getRequest);
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var collectionVM = (CollectionVM)getResult.ReturnValue;
 
-            // Act:
-            var removeRequest = new CollectionRemoveRequest()
-            {
-                ParentObjectID = obj.ID,
-                CollectionPropertyName = getRequest.PropertyName,
-                ElementID = oChild.ID,
-            };
+                var obj = _Fixture.Create<MultiType>();
+                obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
-            var response = controller.RemoveItemFromCollection(removeRequest);
+                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 
-            // Assert:
-            Assert.IsTrue(response.Passed);
-            Assert.AreEqual(1, response.Modifications.CollectionRemovals.Count());
+                var child = obj.A_Collection.First();
+                var oChild = observerCache.GetObserver(child) as ObjectObserver;
 
-            // Check that the domain object has changed:
-            Assert.IsFalse(obj.A_Collection.Contains(child));
+                // Make sure we start tracking the collection:
+                var getRequest = new GetPropertyRequest()
+                {
+                    ObjectID = obj.ID,
+                    PropertyName = LambdaExtensions.NameOf<MultiType>(x => x.A_Collection)
+                };
+                var getResult = controller.GetObjectProperty(getRequest);
+
+                var collectionVM = (CollectionVM)getResult.ReturnValue;
+
+                // Act:
+                var removeRequest = new CollectionRemoveRequest()
+                {
+                    ParentObjectID = obj.ID,
+                    CollectionPropertyName = getRequest.PropertyName,
+                    ElementID = oChild.ID,
+                };
+
+                var response = controller.RemoveItemFromCollection(removeRequest);
+
+                // Assert:
+                Assert.IsTrue(response.Passed);
+                Assert.AreEqual(1, response.Modifications.CollectionRemovals.Count());
+
+                // Check that the domain object has changed:
+                Assert.IsFalse(obj.A_Collection.Contains(child));
+            }
         }
 
         [Test]
         public void ShouldAllowCreateOnCompositeProperties()
         {
             // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-            var obj = _Fixture.Create<Order>();
-            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
-
-            // Act:
-            var getRequest = new GetObjectRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = obj.ID,
-            };
-            var getResponse = controller.GetObject(getRequest);
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var propName = LambdaExtensions.NameOf<Order>(x => x.OrderItems);
-            var objectVM = getResponse.ReturnValue;
-            var propVM = objectVM.Properties.Single(p => p.InternalName == propName);
+                var obj = _Fixture.Create<Order>();
+                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 
-            // Assert:
-            Assert.IsTrue(propVM.State.Create.IsEnabled);
+                // Act:
+                var getRequest = new GetObjectRequest()
+                {
+                    ObjectID = obj.ID,
+                };
+                var getResponse = controller.GetObject(getRequest);
+
+                var propName = LambdaExtensions.NameOf<Order>(x => x.OrderItems);
+                var objectVM = getResponse.ReturnValue;
+                var propVM = objectVM.Properties.Single(p => p.InternalName == propName);
+
+                // Assert:
+                Assert.IsTrue(propVM.State.Create.IsEnabled);
+            }
         }
 
         [Test]
         public void ShouldNotAllowCreateOnAggregateProperties()
         {
             // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-            var obj = _Fixture.Create<Order>();
-            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
-
-            // Act:
-            var getRequest = new GetObjectRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = obj.ID,
-            };
-            var getResponse = controller.GetObject(getRequest);
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var propName = LambdaExtensions.NameOf<Order>(x => x.DeliverTo);
-            var objectVM = getResponse.ReturnValue;
-            var propVM = objectVM.Properties.Single(p => p.InternalName == propName);
+                var obj = _Fixture.Create<Order>();
+                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 
-            // Assert:
-            Assert.IsFalse(propVM.State.Create.IsEnabled);
+                // Act:
+                var getRequest = new GetObjectRequest()
+                {
+                    ObjectID = obj.ID,
+                };
+                var getResponse = controller.GetObject(getRequest);
+
+                var propName = LambdaExtensions.NameOf<Order>(x => x.DeliverTo);
+                var objectVM = getResponse.ReturnValue;
+                var propVM = objectVM.Properties.Single(p => p.InternalName == propName);
+
+                // Assert:
+                Assert.IsFalse(propVM.State.Create.IsEnabled);
+            }
         }
     }
 }

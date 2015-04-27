@@ -30,34 +30,41 @@ namespace Fresnel.Tests
 
             fixture.Customize<Category>(c => c
                 .Without(x => x.Products)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Product>(c => c
                 .Without(x => x.Categories)
                 .Without(x => x.Stock)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<StockDetail>(c => c
                 .Without(x => x.Product)
                 .Without(x => x.Supplier)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Person>(c => c
                 // "Role" is abstract, therefore cannot be created:
                 .Without(x => x.Roles)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Employee>(c => c
                 .Without(x => x.Territories)
                 .Without(x => x.Notes)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Customer>(c => c
                 .Without(x => x.Party)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Supplier>(c => c
                 .Without(x => x.Party)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Order>(c => c
@@ -65,36 +72,44 @@ namespace Fresnel.Tests
                 .Without(x => x.DeliverTo)
                 .Without(x => x.PlacedBy)
                 .Without(x => x.ShippedBy)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<OrderItem>(c => c
                 .Without(x => x.ParentOrder)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Person>(c => c
                 .Without(x => x.Roles)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Organisation>(c => c
                 .Without(x => x.Roles)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Customer>(c => c
                 .Without(x => x.Party)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Employee>(c => c
                 .Without(x => x.Person)
                 .Without(x => x.Territories)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Supplier>(c => c
                 .Without(x => x.Party)
                 .Without(x => x.Region)
+                .Without(x => x.Version)
             );
 
             fixture.Customize<Shipper>(c => c
                 .Without(x => x.Party)
+                .Without(x => x.Version)
             );
 
             return fixture;

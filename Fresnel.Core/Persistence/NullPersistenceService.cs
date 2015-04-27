@@ -49,7 +49,7 @@ namespace Envivo.Fresnel.Core.Persistence
             
         }
 
-        public int SaveChanges(params object[] entities)
+        public int SaveChanges(IEnumerable<object> newEntities, IEnumerable<object> modifiedEntities)
         {
             return -1;
         }

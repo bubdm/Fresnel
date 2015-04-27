@@ -23,114 +23,134 @@ namespace Envivo.Fresnel.Tests.Features
     public class ProxyChangeTrackingTests
     {
         private Fixture _Fixture = new AutoFixtureFactory().Create();
+        private TestScopeContainer _TestScopeContainer = null;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            _TestScopeContainer = new TestScopeContainer();
+
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
+            }
+        }
 
         [Test]
         public void ShouldReturnCollectionAdditions()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var templateCache = container.Resolve<TemplateCache>();
-            var controller = container.Resolve<ExplorerController>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {    
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var employee = _Fixture.Create<Employee>();
-            var oObject = observerCache.GetObserver(employee) as ObjectObserver;
+                var employee = _Fixture.Create<Employee>();
+                var oObject = observerCache.GetObserver(employee) as ObjectObserver;
 
-            // This ensures the Collection can be tracked:
-            var getRequest = new GetPropertyRequest()
-            {
-                ObjectID = employee.ID,
-                PropertyName = LambdaExtensions.NameOf<Employee>(x => x.Notes)
-            };
-            var getResult = controller.GetObjectProperty(getRequest);
+                // This ensures the Collection can be tracked:
+                var getRequest = new GetPropertyRequest()
+                {
+                    ObjectID = employee.ID,
+                    PropertyName = LambdaExtensions.NameOf<Employee>(x => x.Notes)
+                };
+                var getResult = controller.GetObjectProperty(getRequest);
 
-            // Act:
-            var invokeRequest = CreateInvokeRequestForAddVacationTime(employee);
+                // Act:
+                var invokeRequest = CreateInvokeRequestForAddVacationTime(employee);
 
-            var invokeResult1 = controller.InvokeMethod(invokeRequest);
-            var invokeResult2 = controller.InvokeMethod(invokeRequest);
-            var invokeResult3 = controller.InvokeMethod(invokeRequest);
+                var invokeResult1 = controller.InvokeMethod(invokeRequest);
+                var invokeResult2 = controller.InvokeMethod(invokeRequest);
+                var invokeResult3 = controller.InvokeMethod(invokeRequest);
 
-            // Assert:
-            // Each call performs 3 new additions:
-            Assert.AreEqual(2, invokeResult1.Modifications.CollectionAdditions.Count());
-            Assert.AreEqual(2, invokeResult2.Modifications.CollectionAdditions.Count());
-            Assert.AreEqual(2, invokeResult3.Modifications.CollectionAdditions.Count());
+                // Assert:
+                // Each call performs 3 new additions:
+                Assert.AreEqual(2, invokeResult1.Modifications.CollectionAdditions.Count());
+                Assert.AreEqual(2, invokeResult2.Modifications.CollectionAdditions.Count());
+                Assert.AreEqual(2, invokeResult3.Modifications.CollectionAdditions.Count());
+            }
         }
 
         [Test]
         public void ShouldReturnNewlyCreatedObservers()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var templateCache = container.Resolve<TemplateCache>();
-            var controller = container.Resolve<ExplorerController>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {   
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var employee = _Fixture.Create<Employee>();
-            var oObject = observerCache.GetObserver(employee) as ObjectObserver;
+                var employee = _Fixture.Create<Employee>();
+                var oObject = observerCache.GetObserver(employee) as ObjectObserver;
 
-            // This ensures the Collection can be tracked:
-            var getRequest = new GetPropertyRequest()
-            {
-                ObjectID = employee.ID,
-                PropertyName = LambdaExtensions.NameOf<Employee>(x => x.Notes)
-            };
-            var getResult = controller.GetObjectProperty(getRequest);
+                // This ensures the Collection can be tracked:
+                var getRequest = new GetPropertyRequest()
+                {
+                    ObjectID = employee.ID,
+                    PropertyName = LambdaExtensions.NameOf<Employee>(x => x.Notes)
+                };
+                var getResult = controller.GetObjectProperty(getRequest);
 
-            // Act:
-            var invokeRequest = CreateInvokeRequestForAddVacationTime(employee);
+                // Act:
+                var invokeRequest = CreateInvokeRequestForAddVacationTime(employee);
 
-            var invokeResult = controller.InvokeMethod(invokeRequest);
+                var invokeResult = controller.InvokeMethod(invokeRequest);
 
-            // Assert:
-            Assert.AreEqual(2, invokeResult.Modifications.NewObjects.Count());
+                // Assert:
+                Assert.AreEqual(2, invokeResult.Modifications.NewObjects.Count());
+            }
         }
 
         [Test]
         public void ShouldReturnPopulatedCollectionProperty()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var templateCache = container.Resolve<TemplateCache>();
-            var controller = container.Resolve<ExplorerController>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {   
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var employee = _Fixture.Create<Employee>();
-            employee.Notes.AddMany(() => _Fixture.Create<Note>(), 3);
-            var oObject = observerCache.GetObserver(employee) as ObjectObserver;
+                var employee = _Fixture.Create<Employee>();
+                employee.Notes.AddMany(() => _Fixture.Create<Note>(), 3);
+                var oObject = observerCache.GetObserver(employee) as ObjectObserver;
 
-            // Act:
-            var getRequest = new GetPropertyRequest()
-            {
-                ObjectID = employee.ID,
-                PropertyName = LambdaExtensions.NameOf<Employee>(x => x.Notes)
-            };
-            var getResult = controller.GetObjectProperty(getRequest);
+                // Act:
+                var getRequest = new GetPropertyRequest()
+                {
+                    ObjectID = employee.ID,
+                    PropertyName = LambdaExtensions.NameOf<Employee>(x => x.Notes)
+                };
+                var getResult = controller.GetObjectProperty(getRequest);
 
-            // Assert:
-            Assert.IsTrue(getResult.Passed);
+                // Assert:
+                Assert.IsTrue(getResult.Passed);
 
-            var collectionVM = getResult.ReturnValue as CollectionVM;
-            Assert.IsNotNull(collectionVM);
+                var collectionVM = getResult.ReturnValue as CollectionVM;
+                Assert.IsNotNull(collectionVM);
 
-            Assert.AreNotEqual(0, collectionVM.Items.Count());
+                Assert.AreNotEqual(0, collectionVM.Items.Count());
+            }
         }
 
         [Test]
         public void ShouldSetNonReferenceProperties()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var templateCache = container.Resolve<TemplateCache>();
-            var controller = container.Resolve<ExplorerController>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {  
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var multiType = _Fixture.Create<MultiType>();
-            var oObject = observerCache.GetObserver(multiType) as ObjectObserver;
+                var multiType = _Fixture.Create<MultiType>();
+                var oObject = observerCache.GetObserver(multiType) as ObjectObserver;
 
-            // Act:
-            var requests = new List<SetPropertyRequest>()
+                // Act:
+                var requests = new List<SetPropertyRequest>()
             {
                 new SetPropertyRequest() { 
                     ObjectID = oObject.ID, 
@@ -154,191 +174,199 @@ namespace Envivo.Fresnel.Tests.Features
                 },
             };
 
-            foreach (var request in requests)
-            {
-                var setResult = controller.SetProperty(request);
-                Assert.AreEqual(1, setResult.Modifications.PropertyChanges.Count());
+                foreach (var request in requests)
+                {
+                    var setResult = controller.SetProperty(request);
+                    Assert.AreEqual(1, setResult.Modifications.PropertyChanges.Count());
+                }
             }
         }
 
         [Test]
         public void ShouldReturnPropertyModifications()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var templateCache = container.Resolve<TemplateCache>();
-            var controller = container.Resolve<ExplorerController>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            { 
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var employee = _Fixture.Create<Employee>();
-            var oObject = observerCache.GetObserver(employee) as ObjectObserver;
+                var employee = _Fixture.Create<Employee>();
+                var oObject = observerCache.GetObserver(employee) as ObjectObserver;
 
-            // Act:
-            var request = new SetPropertyRequest()
-            {
-                ObjectID = employee.ID,
-                PropertyName = LambdaExtensions.NameOf<Employee>(x => x.HiredOn),
-                NonReferenceValue = _Fixture.Create<DateTime>()
-            };
+                // Act:
+                var request = new SetPropertyRequest()
+                {
+                    ObjectID = employee.ID,
+                    PropertyName = LambdaExtensions.NameOf<Employee>(x => x.HiredOn),
+                    NonReferenceValue = _Fixture.Create<DateTime>()
+                };
 
-            var setResult = controller.SetProperty(request);
+                var setResult = controller.SetProperty(request);
 
-            // Assert:
-            Assert.AreEqual(1, setResult.Modifications.PropertyChanges.Count());
+                // Assert:
+                Assert.AreEqual(1, setResult.Modifications.PropertyChanges.Count());
+            }
         }
 
         [Test]
         public void ShouldReturnObjectTitleModifications()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(ObjectWithCtorInjection).Assembly);
-
-            var observerCache = container.Resolve<ObserverCache>();
-            var templateCache = container.Resolve<TemplateCache>();
-            var controller = container.Resolve<ExplorerController>();
-            
-            // Act:
-            var obj = container.Resolve<ObjectWithCtorInjection>();
-            obj.ID = Guid.NewGuid();
-            var oObject = observerCache.GetObserver(obj) as ObjectObserver;
-
-            var request = new SetPropertyRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = obj.ID,
-                PropertyName = LambdaExtensions.NameOf<ObjectWithCtorInjection>(x => x.Name),
-                NonReferenceValue = _Fixture.Create<string>()
-            };
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var setResult = controller.SetProperty(request);
+                // Act:
+                var obj = _TestScopeContainer.Resolve<ObjectWithCtorInjection>();
+                obj.ID = Guid.NewGuid();
+                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 
-            // Assert:
-            Assert.AreEqual(1, setResult.Modifications.ObjectTitleChanges.Count());
-            Assert.AreEqual(request.NonReferenceValue, setResult.Modifications.ObjectTitleChanges.First().Title);
+                var request = new SetPropertyRequest()
+                {
+                    ObjectID = obj.ID,
+                    PropertyName = LambdaExtensions.NameOf<ObjectWithCtorInjection>(x => x.Name),
+                    NonReferenceValue = _Fixture.Create<string>()
+                };
+
+                var setResult = controller.SetProperty(request);
+
+                // Assert:
+                Assert.AreEqual(1, setResult.Modifications.ObjectTitleChanges.Count());
+                Assert.AreEqual(request.NonReferenceValue, setResult.Modifications.ObjectTitleChanges.First().Title);
+            }
         }
 
         [Test]
         public void ShouldDetectIntraPropertyCalls()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var templateCache = container.Resolve<TemplateCache>();
-            var controller = container.Resolve<ExplorerController>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            { 
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var textValues = _Fixture.Create<TextValues>();
-            var oObject = observerCache.GetObserver(textValues) as ObjectObserver;
+                var textValues = _Fixture.Create<TextValues>();
+                var oObject = observerCache.GetObserver(textValues) as ObjectObserver;
 
-            // Act:
-            var request = new SetPropertyRequest()
-            {
-                ObjectID = textValues.ID,
-                PropertyName = LambdaExtensions.NameOf<TextValues>(x => x.NormalText),
-                NonReferenceValue = _Fixture.Create<string>()
-            };
+                // Act:
+                var request = new SetPropertyRequest()
+                {
+                    ObjectID = textValues.ID,
+                    PropertyName = LambdaExtensions.NameOf<TextValues>(x => x.NormalText),
+                    NonReferenceValue = _Fixture.Create<string>()
+                };
 
-            var setResult = controller.SetProperty(request);
+                var setResult = controller.SetProperty(request);
 
-            // Assert:
-            // Some of the text properties are bound to the same value:
-            Assert.AreEqual(3, setResult.Modifications.PropertyChanges.Count());
+                // Assert:
+                // Some of the text properties are bound to the same value:
+                Assert.AreEqual(3, setResult.Modifications.PropertyChanges.Count());
+            }
         }
 
         [Test]
         public void ShouldDetectCorrectModificationsWhenCollectionIsExploreredPartway()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var templateCache = container.Resolve<TemplateCache>();
-            var controller = container.Resolve<ExplorerController>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {   
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var employee = _Fixture.Create<Employee>();
-            var oObject = observerCache.GetObserver(employee) as ObjectObserver;
+                var employee = _Fixture.Create<Employee>();
+                var oObject = observerCache.GetObserver(employee) as ObjectObserver;
 
-            // Act:
+                // Act:
 
-            // Step 1: Modify the collection, before we've started tracking it:
-            var invokeRequest = this.CreateInvokeRequestForAddVacationTime(employee);
+                // Step 1: Modify the collection, before we've started tracking it:
+                var invokeRequest = this.CreateInvokeRequestForAddVacationTime(employee);
 
-            var invokeResult1 = controller.InvokeMethod(invokeRequest);
-            // As we're not tracking the collection, we're not expecting any new items:
-            Assert.AreEqual(0, invokeResult1.Modifications.CollectionAdditions.Count());
+                var invokeResult1 = controller.InvokeMethod(invokeRequest);
+                // As we're not tracking the collection, we're not expecting any new items:
+                Assert.AreEqual(0, invokeResult1.Modifications.CollectionAdditions.Count());
 
-            // Step 2: Open the Collection, so that the engine starts tracking it:
-            var getRequest = new GetPropertyRequest()
-            {
-                ObjectID = employee.ID,
-                PropertyName = LambdaExtensions.NameOf<Employee>(x => x.Notes),
-            };
-            var getPropertyResponse = controller.GetObjectProperty(getRequest);
+                // Step 2: Open the Collection, so that the engine starts tracking it:
+                var getRequest = new GetPropertyRequest()
+                {
+                    ObjectID = employee.ID,
+                    PropertyName = LambdaExtensions.NameOf<Employee>(x => x.Notes),
+                };
+                var getPropertyResponse = controller.GetObjectProperty(getRequest);
 
-            var getObjectRequest = new GetObjectRequest()
-            {
-                ObjectID = getPropertyResponse.ReturnValue.ID
-            };
-            var getObjectResult = controller.GetObject(getObjectRequest);
+                var getObjectRequest = new GetObjectRequest()
+                {
+                    ObjectID = getPropertyResponse.ReturnValue.ID
+                };
+                var getObjectResult = controller.GetObject(getObjectRequest);
 
-            // Step 3: Modify the collection, now that the collection's being tracked:
-            var invokeResult2 = controller.InvokeMethod(invokeRequest);
+                // Step 3: Modify the collection, now that the collection's being tracked:
+                var invokeResult2 = controller.InvokeMethod(invokeRequest);
 
-            // Assert:
-            // We're expecting 2 new items:
-            Assert.AreEqual(2, invokeResult2.Modifications.CollectionAdditions.Count());
+                // Assert:
+                // We're expecting 2 new items:
+                Assert.AreEqual(2, invokeResult2.Modifications.CollectionAdditions.Count());
+            }
         }
-        
+
         [Test]
         public void ShouldDetectRemoveFromCollection()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var templateCache = container.Resolve<TemplateCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-            var employee = _Fixture.Create<Employee>();
-            var oObject = observerCache.GetObserver(employee) as ObjectObserver;
-
-            // Act:
-
-            // Step 1: Modify the collection, before we've started tracking it:
-            var invokeRequest = this.CreateInvokeRequestForAddVacationTime(employee);
-
-            var invokeResult1 = controller.InvokeMethod(invokeRequest);
-            // As we're not tracking the collection, we're not expecting any new items:
-            Assert.AreEqual(0, invokeResult1.Modifications.CollectionAdditions.Count());
-
-            // Step 2: Open the Collection, so that the engine starts tracking it:
-            var getRequest = new GetPropertyRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = employee.ID,
-                PropertyName = LambdaExtensions.NameOf<Employee>(x => x.Notes),
-            };
-            var getPropertyResponse = controller.GetObjectProperty(getRequest);
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var collectionVM = (CollectionVM)getPropertyResponse.ReturnValue;
+                var employee = _Fixture.Create<Employee>();
+                var oObject = observerCache.GetObserver(employee) as ObjectObserver;
 
-            var firstNote = employee.Notes.First();
-            var elementToRemove = collectionVM.Items.First();
+                // Act:
 
-            // Step 3: Modify the collection, now that the collection's being tracked:
-            var removeRequest = new CollectionRemoveRequest()
-            {
-                ParentObjectID = employee.ID,
-                CollectionPropertyName = getRequest.PropertyName,
-                ElementID = elementToRemove.ID,
-            };
-            var removeResult = controller.RemoveItemFromCollection(removeRequest);
+                // Step 1: Modify the collection, before we've started tracking it:
+                var invokeRequest = this.CreateInvokeRequestForAddVacationTime(employee);
 
-            // Assert:
-            Assert.AreEqual(1, removeResult.Modifications.CollectionRemovals.Count());
-            Assert.IsFalse(employee.Notes.Contains(firstNote));
+                var invokeResult1 = controller.InvokeMethod(invokeRequest);
+                // As we're not tracking the collection, we're not expecting any new items:
+                Assert.AreEqual(0, invokeResult1.Modifications.CollectionAdditions.Count());
 
-            var getPropertyResponse2 = controller.GetObjectProperty(getRequest);
-            var collectionVM2 = (CollectionVM)getPropertyResponse2.ReturnValue;
+                // Step 2: Open the Collection, so that the engine starts tracking it:
+                var getRequest = new GetPropertyRequest()
+                {
+                    ObjectID = employee.ID,
+                    PropertyName = LambdaExtensions.NameOf<Employee>(x => x.Notes),
+                };
+                var getPropertyResponse = controller.GetObjectProperty(getRequest);
 
-            Assert.IsFalse(collectionVM2.Items.Any(c => c.ID == elementToRemove.ID));
+                var collectionVM = (CollectionVM)getPropertyResponse.ReturnValue;
+
+                var firstNote = employee.Notes.First();
+                var elementToRemove = collectionVM.Items.First();
+
+                // Step 3: Modify the collection, now that the collection's being tracked:
+                var removeRequest = new CollectionRemoveRequest()
+                {
+                    ParentObjectID = employee.ID,
+                    CollectionPropertyName = getRequest.PropertyName,
+                    ElementID = elementToRemove.ID,
+                };
+                var removeResult = controller.RemoveItemFromCollection(removeRequest);
+
+                // Assert:
+                Assert.AreEqual(1, removeResult.Modifications.CollectionRemovals.Count());
+                Assert.IsFalse(employee.Notes.Contains(firstNote));
+
+                var getPropertyResponse2 = controller.GetObjectProperty(getRequest);
+                var collectionVM2 = (CollectionVM)getPropertyResponse2.ReturnValue;
+
+                Assert.IsFalse(collectionVM2.Items.Any(c => c.ID == elementToRemove.ID));
+            }
         }
 
         private InvokeMethodRequest CreateInvokeRequestForAddVacationTime(Employee employee)

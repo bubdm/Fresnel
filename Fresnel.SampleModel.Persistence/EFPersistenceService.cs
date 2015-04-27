@@ -1,5 +1,6 @@
 ﻿using Envivo.Fresnel.DomainTypes.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -51,9 +52,9 @@ namespace Fresnel.SampleModel.Persistence
             _ModelContext.DeleteObject(entityToDelete, objectType);
         }
 
-        public int SaveChanges(params object[] entities)
+        public int SaveChanges(IEnumerable<object> newEntities, IEnumerable<object> modifiedEntities)
         {
-            return _ModelContext.SaveChanges(entities);
+            return _ModelContext.SaveChanges(newEntities, modifiedEntities);
         }
 
         public void RollbackChanges()

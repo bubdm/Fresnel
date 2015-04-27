@@ -26,118 +26,134 @@ namespace Envivo.Fresnel.Tests.Persistence
     public class PersistenceServiceTests
     {
         private Fixture _Fixture = new AutoFixtureFactory().Create();
+        private TestScopeContainer _TestScopeContainer = null;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
+
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
+            }
+        }
 
         [Test]
         public void ShouldCreateCompleteAggregate()
         {
             // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var persistenceService = _TestScopeContainer.Resolve<IPersistenceService>();
 
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
+                var categoryType = typeof(Category);
 
-            var persistenceService = container.Resolve<IPersistenceService>();
+                // Act:
+                var category = _Fixture.Create<Category>();
+                category.Products.AddMany(() => _Fixture.Create<Product>(), 5);
 
-            var categoryType = typeof(Category);
+                var newEntities = new List<object>() { category };
+                newEntities.AddRange(category.Products);
 
-            // Act:
-            var category = _Fixture.Create<Category>();
-            category.Products.AddMany(() => _Fixture.Create<Product>(), 5);
+                var savedChanges = persistenceService.SaveChanges(newEntities, new object[0]);
 
-            var savedChanges = persistenceService.SaveChanges(category);
-
-            // Assert:
-            Assert.IsNotNull(category);
-            Assert.IsTrue(savedChanges > 5);
+                // Assert:
+                Assert.IsNotNull(category);
+                Assert.IsTrue(savedChanges > 5);
+            }
         }
 
         [Test]
         public void ShouldModifyChildCollection()
         {
             // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var persistenceService = _TestScopeContainer.Resolve<IPersistenceService>();
 
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
+                var categoryType = typeof(Category);
 
-            var persistenceService = container.Resolve<IPersistenceService>();
+                // Act:
+                var category = _Fixture.Create<Category>();
+                category.Products.AddMany(() => _Fixture.Create<Product>(), 5);
 
-            var categoryType = typeof(Category);
+                // Step 1:
+                var newEntities = new List<object>() { category };
+                newEntities.AddRange(category.Products);
 
-            // Act:
-            var category = _Fixture.Create<Category>();
-            category.Products.AddMany(() => _Fixture.Create<Product>(), 5);
+                var savedChanges1 = persistenceService.SaveChanges(newEntities, new object[0]);
 
-            // Step 1:
-            var savedChanges1 = persistenceService.SaveChanges(category);
+                // Step 2:
+                var product = category.Products.First();
+                category.Products.Remove(product);
 
-            // Step 2:
-            category.Products.Remove(category.Products.First());
-            var savedChanges2 = persistenceService.SaveChanges(category);
+                var modifiedEntities = new List<object>() { category, product };
 
-            // Assert:
-            Assert.IsTrue(savedChanges1 > 5);
-            Assert.IsTrue(savedChanges2 > 0);
+                var savedChanges2 = persistenceService.SaveChanges(new object[0], modifiedEntities);
 
-            var persistedCategory = (Category)persistenceService.GetObject(categoryType, category.ID);
-            var differences = category.Products.Except(persistedCategory.Products);
-            Assert.AreEqual(0, differences.Count());
+                // Assert:
+                Assert.IsTrue(savedChanges1 > 5);
+                Assert.IsTrue(savedChanges2 > 0);
+
+                var persistedCategory = (Category)persistenceService.GetObject(categoryType, category.ID);
+                var differences = category.Products.Except(persistedCategory.Products);
+                Assert.AreEqual(0, differences.Count());
+            }
         }
 
         [Test]
         public void ShouldGetObjects()
         {
             // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
-
-            var persistenceService = container.Resolve<IPersistenceService>();
-
-            var categoryType = typeof(Category);
-
-            for (var i = 0; i < 5; i++)
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                var category = _Fixture.Create<Category>();
-                category.Products.AddMany(() => _Fixture.Create<Product>(), 3);
-                var savedChanges = persistenceService.SaveChanges(category);
+                var persistenceService = _TestScopeContainer.Resolve<IPersistenceService>();
+
+                var categoryType = typeof(Category);
+
+                for (var i = 0; i < 5; i++)
+                {
+                    var category = _Fixture.Create<Category>();
+                    category.Products.AddMany(() => _Fixture.Create<Product>(), 3);
+
+                    var newEntities = new List<object>() { category };
+                    newEntities.AddRange(category.Products);
+
+                    var savedChanges = persistenceService.SaveChanges(newEntities, new object[0]);
+                }
+
+                // Act:
+                var persistedCategories = persistenceService.GetObjects(categoryType).ToList<Category>();
+
+                // Assert:
+                Assert.AreNotEqual(0, persistedCategories.Count());
             }
-
-            // Act:
-            var persistedCategories = persistenceService.GetObjects(categoryType).ToList<Category>();
-
-            // Assert:
-            Assert.AreNotEqual(0, persistedCategories.Count());
         }
 
         [Test]
         public void ShouldRefreshObjectFromDB()
         {
             // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var persistenceService = _TestScopeContainer.Resolve<IPersistenceService>();
 
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
+                var dummyText = _Fixture.Create<string>();
+                var product = _Fixture.Create<Product>();
+                product.Name = dummyText;
 
-            var persistenceService = container.Resolve<IPersistenceService>();
+                var newEntities = new List<object>() { product };
+                var savedChanges = persistenceService.SaveChanges(newEntities, new object[0]);
 
-            var dummyText = _Fixture.Create<string>();
-            var product = _Fixture.Create<Product>();
-            product.Name = dummyText;
+                // Act:
+                product.Name = _Fixture.Create<string>();
+                persistenceService.Refresh(product);
 
-            var savedChanges = persistenceService.SaveChanges(product);
-
-            // Act:
-            product.Name = _Fixture.Create<string>();
-            persistenceService.Refresh(product);
-
-            // Assert:
-            Assert.AreEqual(dummyText, product.Name);
+                // Assert:
+                Assert.AreEqual(dummyText, product.Name);
+            }
         }
 
     }

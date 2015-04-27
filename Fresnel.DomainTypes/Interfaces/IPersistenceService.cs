@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
 
         void DeleteObject(object entityWithChanges, Type objectType);
 
-        int SaveChanges(params object[] entities);
+        int SaveChanges(IEnumerable<object> newEntities, IEnumerable<object> modifiedEntities);
 
         void RollbackChanges();
 

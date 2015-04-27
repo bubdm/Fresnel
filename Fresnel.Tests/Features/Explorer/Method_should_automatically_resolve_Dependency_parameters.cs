@@ -23,9 +23,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
     public class Method_should_automatically_resolve_Dependency_parameters
     {
         private Fixture _Fixture = new AutoFixtureFactory().Create();
-        private IContainer _Container;
-        private ExplorerController _ExplorerController;
-        private ToolboxController _ToolboxController;
+        private TestScopeContainer _TestScopeContainer = null;
 
         private SessionVM _Session;
         private ObjectVM _Object;
@@ -35,29 +33,31 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
 
         public void Given_the_session_is_already_started()
         {
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            _Container = new ContainerFactory().Build(customDependencyModules);
+            _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
 
-            var engine = _Container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
-            _ExplorerController = _Container.Resolve<ExplorerController>();
-            _ToolboxController = _Container.Resolve<ToolboxController>();
-
-            var sessionController = _Container.Resolve<SessionController>();
-            _Session = sessionController.GetSession();
+                var sessionController = _TestScopeContainer.Resolve<SessionController>();
+                _Session = sessionController.GetSession();
+            }
         }
 
         public void And_given_an_object_with_a_Double_Dispatch_Method_is_selected()
         {
-            var createRequest = new CreateObjectRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ClassTypeName = typeof(MethodSamples).FullName
-            };
-            var createResponse = _ToolboxController.Create(createRequest);
+                var createRequest = new CreateObjectRequest()
+                    {
+                        ClassTypeName = typeof(MethodSamples).FullName
+                    };
+                var createResponse = _TestScopeContainer.Resolve<ToolboxController>().Create(createRequest);
 
-            Assert.IsTrue(createResponse.Passed);
-            _Object = createResponse.NewObject;
+                Assert.IsTrue(createResponse.Passed);
+                _Object = createResponse.NewObject;
+            }
         }
 
         public void And_given_a_Double_Dispatch_Method_is_selected()
@@ -68,6 +68,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
 
         public void When_the_Method_has_its_normal_parameters_set()
         {
+            using (var scope = _TestScopeContainer.BeginScope())
             {
                 var setRequest = new SetParameterRequest()
                 {
@@ -76,9 +77,10 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
                     ParameterName = "aString",
                     NonReferenceValue = _Fixture.Create<string>(),
                 };
-                var setResponse = _ExplorerController.SetParameter(setRequest);
+                var setResponse = _TestScopeContainer.Resolve<ExplorerController>().SetParameter(setRequest);
             }
 
+            using (var scope = _TestScopeContainer.BeginScope())
             {
                 var setRequest = new SetParameterRequest()
                 {
@@ -87,9 +89,10 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
                     ParameterName = "aNumber",
                     NonReferenceValue = _Fixture.Create<int>(),
                 };
-                var setResponse = _ExplorerController.SetParameter(setRequest);
+                var setResponse = _TestScopeContainer.Resolve<ExplorerController>().SetParameter(setRequest);
             }
 
+            using (var scope = _TestScopeContainer.BeginScope())
             {
                 var setRequest = new SetParameterRequest()
                 {
@@ -98,7 +101,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
                     ParameterName = "aDate",
                     NonReferenceValue = _Fixture.Create<DateTime>(),
                 };
-                var setResponse = _ExplorerController.SetParameter(setRequest);
+                var setResponse = _TestScopeContainer.Resolve<ExplorerController>().SetParameter(setRequest);
             }
         }
 
@@ -110,14 +113,17 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
 
         public void And_then_the_Method_should_execute()
         {
-            var invokeRequest = new InvokeMethodRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = _Object.ID,
-                MethodName = _DoubleDispatchMethod
-            };
+                var invokeRequest = new InvokeMethodRequest()
+                    {
+                        ObjectID = _Object.ID,
+                        MethodName = _DoubleDispatchMethod
+                    };
 
-            var invokeResponse = _ExplorerController.InvokeMethod(invokeRequest);
-            Assert.IsTrue(invokeResponse.Passed);
+                var invokeResponse = _TestScopeContainer.Resolve<ExplorerController>().InvokeMethod(invokeRequest);
+                Assert.IsTrue(invokeResponse.Passed);
+            }
         }
 
         [Test]

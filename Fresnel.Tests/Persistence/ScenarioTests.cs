@@ -25,110 +25,110 @@ namespace Envivo.Fresnel.Tests.Persistence
     [TestFixture()]
     public class ScenarioTests
     {
+        private TestScopeContainer _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
         private Fixture _Fixture = new AutoFixtureFactory().Create();
 
         [Test]
         public void ShouldAddOrderItemToNewOrder()
         {
             // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
-
-            var toolboxController = container.Resolve<ToolboxController>();
-            var explorerController = container.Resolve<ExplorerController>();
-
-            // Act:
-            var createRequest = new CreateObjectRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ClassTypeName = typeof(Order).FullName
-            };
-            var createResponse = toolboxController.Create(createRequest);
-            var orderId = createResponse.NewObject.ID;
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
-            // This ensures the Collection can be tracked:
-            var getRequest = new GetPropertyRequest()
-            {
-                ObjectID = orderId,
-                PropertyName = LambdaExtensions.NameOf<Order>(x => x.OrderItems)
-            };
-            var getResult = explorerController.GetObjectProperty(getRequest);
+                var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
+                var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
 
-            // Add a new OrderItem:
-            var orderItemType = typeof(OrderItem);
-            var collectionAddNewRequest = new CollectionAddNewRequest()
-            {
-                ParentObjectID = orderId,
-                CollectionPropertyName = getRequest.PropertyName,
-                ElementTypeName = orderItemType.FullName
-            };
-            var collectionAddResponse = explorerController.AddNewItemToCollection(collectionAddNewRequest);
+                // Act:
+                var createRequest = new CreateObjectRequest()
+                {
+                    ClassTypeName = typeof(Order).FullName
+                };
+                var createResponse = toolboxController.Create(createRequest);
+                var orderId = createResponse.NewObject.ID;
 
-            // Save everything:
-            var saveRequest = new SaveChangesRequest()
-            {
-                ObjectID = orderId
-            };
-            var saveResponse = explorerController.SaveChanges(saveRequest);
+                // This ensures the Collection can be tracked:
+                var getRequest = new GetPropertyRequest()
+                {
+                    ObjectID = orderId,
+                    PropertyName = LambdaExtensions.NameOf<Order>(x => x.OrderItems)
+                };
+                var getResult = explorerController.GetObjectProperty(getRequest);
 
-            // Assert:
-            Assert.IsTrue(saveResponse.Passed);
+                // Add a new OrderItem:
+                var orderItemType = typeof(OrderItem);
+                var collectionAddNewRequest = new CollectionAddNewRequest()
+                {
+                    ParentObjectID = orderId,
+                    CollectionPropertyName = getRequest.PropertyName,
+                    ElementTypeName = orderItemType.FullName
+                };
+                var collectionAddResponse = explorerController.AddNewItemToCollection(collectionAddNewRequest);
+
+                // Save everything:
+                var saveRequest = new SaveChangesRequest()
+                {
+                    ObjectID = orderId
+                };
+                var saveResponse = explorerController.SaveChanges(saveRequest);
+
+                // Assert:
+                Assert.IsTrue(saveResponse.Passed);
+            }
         }
-
 
         [Test]
         public void ShouldAddOrderItemToExistingOrder()
         {
             // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
-
-            var toolboxController = container.Resolve<ToolboxController>();
-            var explorerController = container.Resolve<ExplorerController>();
-
-            // Act:
-            var searchRequest = new SearchObjectsRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                SearchType = typeof(Order).FullName,
-                PageSize = 100,
-                PageNumber = 1
-            };
-            var searchResponse = toolboxController.SearchObjects(searchRequest);
-            var order = searchResponse.Result.Items.First();
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
+                
+                var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
+                var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
 
-            // This ensures the Collection can be tracked:
-            var getRequest = new GetPropertyRequest()
-            {
-                ObjectID = order.ID,
-                PropertyName = LambdaExtensions.NameOf<Order>(x => x.OrderItems)
-            };
-            var getResult = explorerController.GetObjectProperty(getRequest);
+                // Act:
+                var searchRequest = new SearchObjectsRequest()
+                {
+                    SearchType = typeof(Order).FullName,
+                    PageSize = 100,
+                    PageNumber = 1
+                };
+                var searchResponse = toolboxController.SearchObjects(searchRequest);
+                var order = searchResponse.Result.Items.First();
 
-            // Add a new OrderItem:
-            var orderItemType = typeof(OrderItem);
-            var collectionAddNewRequest = new CollectionAddNewRequest()
-            {
-                ParentObjectID = order.ID,
-                CollectionPropertyName = getRequest.PropertyName,
-                ElementTypeName = orderItemType.FullName
-            };
-            var collectionAddResponse = explorerController.AddNewItemToCollection(collectionAddNewRequest);
-            var orderItem = collectionAddResponse.Modifications.NewObjects.First();
+                // This ensures the Collection can be tracked:
+                var getRequest = new GetPropertyRequest()
+                {
+                    ObjectID = order.ID,
+                    PropertyName = LambdaExtensions.NameOf<Order>(x => x.OrderItems)
+                };
+                var getResult = explorerController.GetObjectProperty(getRequest);
 
-            // Save everything:
-            var saveRequest = new SaveChangesRequest()
-            {
-                ObjectID = orderItem.ID
-            };
-            var saveResponse = explorerController.SaveChanges(saveRequest);
+                // Add a new OrderItem:
+                var orderItemType = typeof(OrderItem);
+                var collectionAddNewRequest = new CollectionAddNewRequest()
+                {
+                    ParentObjectID = order.ID,
+                    CollectionPropertyName = getRequest.PropertyName,
+                    ElementTypeName = orderItemType.FullName
+                };
+                var collectionAddResponse = explorerController.AddNewItemToCollection(collectionAddNewRequest);
+                var orderItem = collectionAddResponse.Modifications.NewObjects.First();
 
-            // Assert:
-            Assert.IsTrue(saveResponse.Passed);
+                // Save everything:
+                var saveRequest = new SaveChangesRequest()
+                {
+                    ObjectID = orderItem.ID
+                };
+                var saveResponse = explorerController.SaveChanges(saveRequest);
+
+                // Assert:
+                Assert.IsTrue(saveResponse.Passed);
+            }
         }
     }
 }

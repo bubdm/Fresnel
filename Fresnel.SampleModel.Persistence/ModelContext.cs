@@ -138,7 +138,7 @@ namespace Fresnel.SampleModel.Persistence
 
         public void LoadProperty(object entity, string propertyName)
         {
-            this.AttachMissingEntityToContext(entity);
+            this.AttachPersistentEntityToContext(entity);
             var entry = this.Entry(entity);
 
             var collectionEntry = entry.Collection(propertyName);
@@ -155,13 +155,13 @@ namespace Fresnel.SampleModel.Persistence
 
         public void Refresh(object entity)
         {
-            this.AttachMissingEntityToContext(entity);
+            this.AttachPersistentEntityToContext(entity);
             _ObjectContext.Refresh(RefreshMode.StoreWins, entity);
         }
 
         public void UpdateObject(object entityWithChanges, Type objectType)
         {
-            var entry = base.Entry(entityWithChanges);
+            var entry = this.Entry(entityWithChanges);
             entry.State = EntityState.Modified;
         }
 
@@ -170,52 +170,57 @@ namespace Fresnel.SampleModel.Persistence
             _ObjectContext.DeleteObject(entityToDelete);
         }
 
-        public int SaveChanges(params object[] entities)
+        public int SaveChanges(IEnumerable<object> newEntities, IEnumerable<object> modifiedEntities)
         {
             // TODO: Make this only save the entities given, not the whole context:
 
-            this.AttachMissingEntitiesToContext(entities);
-            this.IncrementConcurrencyTokens();
+            this.AddTransientEntitiesToContext(newEntities);
+            this.AttachPersistentEntitiesToContext(modifiedEntities);
+
             return base.SaveChanges();
         }
 
-        private void AttachMissingEntityToContext(object entity)
+        private void AddTransientEntitiesToContext(IEnumerable<object> transientEntities)
         {
-            var entityType = _RealTypeResolver.GetRealType(entity) ?? entity.GetType();
+            foreach (var entity in transientEntities)
+            {
+                this.AddTransientEntityToContext(entity);
+            }
+        }
+
+        private void AddTransientEntityToContext(object transientEntity)
+        {
+            var entityType = _RealTypeResolver.GetRealType(transientEntity) ?? transientEntity.GetType();
             if (!this.IsKnownType(entityType))
                 return;
 
-            var entry = this.Entry(entity);
+            var entry = this.Entry(transientEntity);
             if (entry.State == EntityState.Detached)
             {
-                // The context doesn't recognise it, so attach it:
                 var set = this.Set(entityType);
-                set.Attach(entity);
+                set.Add(transientEntity);
             }
         }
 
-        private void AttachMissingEntitiesToContext(object[] entities)
+        private void AttachPersistentEntitiesToContext(IEnumerable<object> persistentEntities)
         {
-            foreach (var entity in entities)
+            foreach (var entity in persistentEntities)
             {
-                this.AttachMissingEntityToContext(entity);
+                this.AttachPersistentEntityToContext(entity);
             }
         }
 
-        private void IncrementConcurrencyTokens()
+        private void AttachPersistentEntityToContext(object persistentEntity)
         {
-            var changes = this.ChangeTracker
-                            .Entries()
-                            .Where(x => x.State == EntityState.Added ||
-                                        x.State == EntityState.Modified);
+            var entityType = _RealTypeResolver.GetRealType(persistentEntity) ?? persistentEntity.GetType();
+            if (!this.IsKnownType(entityType))
+                return;
 
-            foreach (var entry in changes)
+            var entry = this.Entry(persistentEntity);
+            if (entry.State == EntityState.Detached)
             {
-                var entity = entry.Entity as IPersistable;
-                if (entity != null)
-                {
-                    entity.Version++;
-                }
+                var set = this.Set(entityType);
+                set.Attach(persistentEntity);
             }
         }
 
@@ -269,6 +274,7 @@ namespace Fresnel.SampleModel.Persistence
         {
             var entityStates = EntityState.Added | EntityState.Deleted | EntityState.Modified | EntityState.Unchanged;
             var entries = _ObjectContext.ObjectStateManager.GetObjectStateEntries(entityStates)
+                               .Where(e => e.Entity != null)
                                .Where(e => e.State != EntityState.Detached)
                                .Where(e => !e.IsRelationship)
                                .ToArray();

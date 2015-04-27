@@ -16,6 +16,7 @@ using Fresnel.Tests;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TestStack.BDDfy;
@@ -55,8 +56,10 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             _orderPoco.PlacedBy = _Fixture.Create<Employee>();
             _orderPoco.PlacedBy.Address = _Fixture.Create<Address>();
 
+            var newEntities = new List<object>() { _orderPoco, _orderPoco.PlacedBy, _orderPoco.PlacedBy.Address };
+
             var persistenceService = _Container.Resolve<IPersistenceService>();
-            persistenceService.SaveChanges(_orderPoco);
+            persistenceService.SaveChanges(newEntities, new object[0]);
 
             // This ensures the Object is being observed:
             _Container.Resolve<ObserverCache>().GetObserver(_orderPoco);
