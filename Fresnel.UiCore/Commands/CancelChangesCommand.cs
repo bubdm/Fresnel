@@ -129,13 +129,45 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private void UndoChangesTo(ObjectObserver oObject)
         {
-            _PersistenceService.Refresh(oObject.RealObject);
+            if (oObject.ChangeTracker.IsPersistent)
+            {
+                _PersistenceService.Refresh(oObject.RealObject);
+            }
+            else
+            {
+                this.UndoChangesFromEventTimeLine(oObject);
+            }
+
+            foreach (var oProp in oObject.Properties.Values)
+            {
+                var oObjectProp = oProp as ObjectPropertyObserver;
+                if (oObjectProp != null)
+                {
+                    oObjectProp.IsLazyLoaded = false;
+                }
+            }
+        }
+
+        private void UndoChangesFromEventTimeLine(ObjectObserver oObject)
+        {
+            var earliestPoint = _EventTimeLine.LastOrDefault(e => e is SaveObjectEvent &&
+                                                              e.AffectedObjects.Contains(oObject)) ??
+                            _EventTimeLine.FirstOrDefault();
+
+            if (earliestPoint != null)
+            {
+                _EventTimeLine.UndoChangesTo(oObject, earliestPoint);
+            }
         }
 
         private void UndoChangesTo(ObjectObserver oObject, string propertyName)
         {
-            // Refresh the property's contents:
-            _PersistenceService.LoadProperty(oObject.RealObject, propertyName);
+            var oObjectProp = oObject.Properties[propertyName] as ObjectPropertyObserver;
+            if (oObjectProp != null)
+            {
+                _PersistenceService.LoadProperty(oObject.RealObject, propertyName);
+                oObjectProp.IsLazyLoaded = false;
+            }
         }
 
         private ObjectVM[] ResetDirtyCollectionModifications(CollectionObserver oCollection)
