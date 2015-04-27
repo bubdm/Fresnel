@@ -143,14 +143,15 @@ namespace Fresnel.SampleModel.Persistence
             this.AttachPersistentEntityToContext(entity);
             var entry = this.Entry(entity);
 
-            var collectionEntry = entry.Collection(propertyName);
+            var memberEntry = entry.Member(propertyName);
+            var collectionEntry = memberEntry as DbCollectionEntry;
+            var referenceEntry = memberEntry as DbReferenceEntry;
             if (collectionEntry != null)
             {
                 collectionEntry.Load();
             }
-            else
+            else if (referenceEntry != null)
             {
-                var referenceEntry = entry.Reference(propertyName);
                 referenceEntry.Load();
             }
         }
