@@ -54,7 +54,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             }
         }
 
-        public void And_given_a_domain_object_is_retrieved()
+        public void And_given_an_Order_is_loaded()
         {
             using (var scope = _HttpConfiguration.DependencyResolver.BeginScope())
             {
@@ -69,6 +69,10 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
                 _Order = searchResponse.Result.Items.First();
             }
 
+        }
+
+        public void And_given_the_OrderItems_property_is_loaded()
+        {
             using (var scope = _HttpConfiguration.DependencyResolver.BeginScope())
             {
                 var getPropertyRequest = new GetPropertyRequest()
@@ -83,7 +87,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             }
         }
 
-        public void When_a_child_object_is_removed_from_the_parent()
+        public void When_an_OrderItem_is_removed_from_the_OrderItems_Collection()
         {
             using (var scope = _HttpConfiguration.DependencyResolver.BeginScope())
             {
@@ -98,7 +102,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             }
         }
 
-        public void And_when_the_user_Cancels_the_Save_on_the_Collection()
+        public void And_when_the_user_Cancels_the_Save_on_the_OrderItems_Collection()
         {
             using (var scope = _HttpConfiguration.DependencyResolver.BeginScope())
             {
@@ -127,7 +131,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             }
         }
 
-        public void Then_the_original_object_should_not_have_dirty_contents()
+        public void Then_the_Order_should_not_have_dirty_contents()
         {
             using (var scope = _HttpConfiguration.DependencyResolver.BeginScope())
             {
@@ -137,8 +141,15 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
                 };
                 var getResponse = this.GetService<ExplorerController>(scope).GetObject(getRequest);
                 Assert.IsNotNull(getResponse.ReturnValue);
-            }
 
+                var objectVM = getResponse.ReturnValue;
+                Assert.IsFalse(objectVM.DirtyState.IsDirty);
+                Assert.IsFalse(objectVM.DirtyState.HasDirtyChildren);
+            }
+        }
+
+        public void Then_the_Orders_OrderItems_should_have_the_original_contents()
+        {
             using (var scope = _HttpConfiguration.DependencyResolver.BeginScope())
             {
                 var getPropertyRequest = new GetPropertyRequest()
