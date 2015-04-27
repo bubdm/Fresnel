@@ -26,9 +26,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
     public class Add_to_Collection_should_invoke_AddTo_method_if_available
     {
         private Fixture _Fixture = new AutoFixtureFactory().Create();
-        private IContainer _Container;
-        private ExplorerController _ExplorerController;
-        private ToolboxController _ToolboxController;
+        private TestScopeContainer _TestScopeContainer = null;
 
         private SessionVM _Session;
         private ObjectVM _Master;
@@ -38,57 +36,66 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
 
         public void Given_the_session_is_already_started()
         {
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            _Container = new ContainerFactory().Build(customDependencyModules);
+            _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
 
-            var engine = _Container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
-            _ExplorerController = _Container.Resolve<ExplorerController>();
-            _ToolboxController = _Container.Resolve<ToolboxController>();
-
-            var sessionController = _Container.Resolve<SessionController>();
-            _Session = sessionController.GetSession();
+                var sessionController = _TestScopeContainer.Resolve<SessionController>();
+                _Session = sessionController.GetSession();
+            }
         }
 
         public void When_a_Master_object_is_created()
         {
-            var createRequest = new CreateObjectRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ClassTypeName = typeof(Territory).FullName
-            };
-            var createResponse = _ToolboxController.Create(createRequest);
-            _Master = createResponse.NewObject;
+                var createRequest = new CreateObjectRequest()
+                {
+                    ClassTypeName = typeof(Territory).FullName
+                };
+                var createResponse = _TestScopeContainer.Resolve<ToolboxController>().Create(createRequest);
+                _Master = createResponse.NewObject;
+            }
         }
 
         public void And_when_a_Child_object_is_added_to_a_Collection_property()
         {
-            var propName = LambdaExtensions.NameOf<Territory>(x => x.Employees);
-
-            var addNewRequest = new CollectionAddNewRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ParentObjectID = _Master.ID,
-                CollectionPropertyName = propName,
-                ElementTypeName = typeof(Employee).FullName
-            };
-            var addResponse = _ExplorerController.AddNewItemToCollection(addNewRequest);
-            _Child = addResponse.Modifications.NewObjects.First();
+                var propName = LambdaExtensions.NameOf<Territory>(x => x.Employees);
+
+                var addNewRequest = new CollectionAddNewRequest()
+                {
+                    ParentObjectID = _Master.ID,
+                    CollectionPropertyName = propName,
+                    ElementTypeName = typeof(Employee).FullName
+                };
+                var addResponse = _TestScopeContainer.Resolve<ExplorerController>().AddNewItemToCollection(addNewRequest);
+                _Child = addResponse.Modifications.NewObjects.Single(o => o.Type == typeof(Employee).Name &&
+                                                                          o.DirtyState.IsTransient);
+            }
         }
 
         public void Then_the_Child_should_have_a_reference_back_to_the_Master()
         {
-            var propName = LambdaExtensions.NameOf<Employee>(x => x.Territories);
-
-            var getRequest = new GetPropertyRequest
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = _Child.ID,
-                PropertyName = propName
-            };
-            var getResponse = _ExplorerController.GetObjectProperty(getRequest);
-            var collectionVM = (CollectionVM)getResponse.ReturnValue;
+                var propName = LambdaExtensions.NameOf<Employee>(x => x.Territories);
 
-            Assert.AreEqual(1, collectionVM.Items.Count());
-            Assert.AreEqual(_Master.ID, collectionVM.Items.First().ID);
+                var getRequest = new GetPropertyRequest
+                {
+                    ObjectID = _Child.ID,
+                    PropertyName = propName
+                };
+                var getResponse = _TestScopeContainer.Resolve<ExplorerController>().GetObjectProperty(getRequest);
+                var collectionVM = (CollectionVM)getResponse.ReturnValue;
+
+                Assert.AreEqual(1, collectionVM.Items.Count());
+                Assert.AreEqual(_Master.ID, collectionVM.Items.First().ID);
+            }
         }
 
         [Test]
