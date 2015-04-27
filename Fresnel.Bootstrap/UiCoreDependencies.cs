@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.CompositionRoot
         private Type[] GetSingleInstanceTypes()
         {
             return new Type[] {
-              
+                typeof(Fresnel.UiCore.SessionVmBuilder),
             };
         }
 
@@ -71,7 +71,6 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.UiCore.AbstractParameterVmBuilder),
                 typeof(Fresnel.UiCore.SearchResultsVmBuilder),
                 typeof(Fresnel.UiCore.SearchFilterPropertyVmBuilder),
-                typeof(Fresnel.UiCore.SessionVmBuilder),
 
                 typeof(Fresnel.UiCore.Model.Changes.ModificationsVmBuilder),
                 typeof(Fresnel.UiCore.Model.Classes.ClassItemBuilder),
