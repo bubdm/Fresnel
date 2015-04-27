@@ -155,22 +155,8 @@ namespace Fresnel.SampleModel.Persistence
 
         public void Refresh(object entity)
         {
-            var entry = this.Entry(entity);
-            switch (entry.State)
-            {
-                case EntityState.Added:
-                    // Act like the entity doesn't exist in the Context:
-                    entry.State = EntityState.Detached;
-                    break;
-
-                case EntityState.Detached:
-                    // Do nothing
-                    break;
-
-                default:
-                    _ObjectContext.Refresh(RefreshMode.StoreWins, entity);
-                    break;
-            }
+            this.AttachMissingEntityToContext(entity);
+            _ObjectContext.Refresh(RefreshMode.StoreWins, entity);
         }
 
         public void UpdateObject(object entityWithChanges, Type objectType)
@@ -195,7 +181,7 @@ namespace Fresnel.SampleModel.Persistence
 
         private void AttachMissingEntityToContext(object entity)
         {
-            var entityType = _RealTypeResolver.GetRealType(entity);
+            var entityType = _RealTypeResolver.GetRealType(entity) ?? entity.GetType();
             if (!this.IsKnownType(entityType))
                 return;
 
