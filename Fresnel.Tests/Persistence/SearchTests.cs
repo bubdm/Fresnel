@@ -15,6 +15,7 @@ using Envivo.Fresnel.UiCore.Controllers;
 using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.Utils;
 using Fresnel.SampleModel.Persistence;
+using Fresnel.Tests;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -25,81 +26,89 @@ namespace Envivo.Fresnel.Tests.Persistence
     [TestFixture()]
     public class SearchTests
     {
+        private TestScopeContainer _TestScopeContainer = null;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
+
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
+            }
+        }
 
         [Test]
         public void ShouldFetchObjectsForClass()
         {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-            var templateCache = container.Resolve<TemplateCache>();
-            var searchCommand = container.Resolve<SearchCommand>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var searchCommand = _TestScopeContainer.Resolve<SearchCommand>();
 
-            var tClass = (ClassTemplate)templateCache.GetTemplate<Product>();
+                var tClass = (ClassTemplate)templateCache.GetTemplate<Product>();
 
-            // Act:
-            var results = searchCommand.Search(tClass).ToList<Product>();
+                // Act:
+                var results = searchCommand.Search(tClass).ToList<Product>();
 
-            // Assert:
-            Assert.IsNotNull(results);
-            Assert.AreNotEqual(0, results.Count());
+                // Assert:
+                Assert.IsNotNull(results);
+                Assert.AreNotEqual(0, results.Count());
+            }
         }
 
         [Test]
         public void ShouldFetchObjectsForPropertyWithQuerySpecification()
         {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(ObjectWithCtorInjection).Assembly);
-
-            var observerCache = container.Resolve<ObserverCache>();
-            var searchCommand = container.Resolve<SearchCommand>();
-
-            var obj = container.Resolve<ObjectWithCtorInjection>();
-            var oObj = (ObjectObserver)observerCache.GetObserver(obj);
-
-            // This property has the QuerySpecification associated with it:
-            var propName = LambdaExtensions.NameOf<ObjectWithCtorInjection>(x => x.Product);
-            var oProp = oObj.Properties[propName];
-
-            // Act:
-            var results = searchCommand.Search(oProp).ToList<Product>();
-
-            // Assert:
-            Assert.IsNotNull(results);
-            foreach (var item in results)
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                Assert.IsFalse(item.Name.Contains("Test"));
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var searchCommand = _TestScopeContainer.Resolve<SearchCommand>();
+
+                var obj = _TestScopeContainer.Resolve<ObjectWithCtorInjection>();
+                var oObj = (ObjectObserver)observerCache.GetObserver(obj);
+
+                // This property has the QuerySpecification associated with it:
+                var propName = LambdaExtensions.NameOf<ObjectWithCtorInjection>(x => x.Product);
+                var oProp = oObj.Properties[propName];
+
+                // Act:
+                var results = searchCommand.Search(oProp).ToList<Product>();
+
+                // Assert:
+                Assert.IsNotNull(results);
+                foreach (var item in results)
+                {
+                    Assert.IsFalse(item.Name.Contains("Test"));
+                }
             }
         }
 
         [Test]
         public void ShouldFetchObjectsForPropertyWithoutQuerySpecification()
         {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var searchCommand = _TestScopeContainer.Resolve<SearchCommand>();
 
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
+                var obj = _TestScopeContainer.Resolve<Product>();
+                var oObj = (ObjectObserver)observerCache.GetObserver(obj);
+                var propName = LambdaExtensions.NameOf<Product>(x => x.Categories);
+                var oProp = oObj.Properties[propName];
 
-            var observerCache = container.Resolve<ObserverCache>();
-            var searchCommand = container.Resolve<SearchCommand>();
+                // Act:
+                var results = searchCommand.Search(oProp).ToList<Category>();
 
-            var obj = container.Resolve<Product>();
-            var oObj = (ObjectObserver)observerCache.GetObserver(obj);
-            var propName = LambdaExtensions.NameOf<Product>(x => x.Categories);
-            var oProp = oObj.Properties[propName];
-
-            // Act:
-            var results = searchCommand.Search(oProp).ToList<Category>();
-
-            // Assert:
-            Assert.IsNotNull(results);
-            Assert.AreNotEqual(0, results.Count());
+                // Assert:
+                Assert.IsNotNull(results);
+                Assert.AreNotEqual(0, results.Count());
+            }
         }
 
     }

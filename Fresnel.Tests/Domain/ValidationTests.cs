@@ -18,49 +18,66 @@ namespace Envivo.Fresnel.Tests.Domain
     public class ValidationTests
     {
         private Fixture _Fixture = new AutoFixtureFactory().Create();
+        private TestScopeContainer _TestScopeContainer = null;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            _TestScopeContainer = new TestScopeContainer();
+
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
+            }
+        }
 
         [Test]
         public void ShouldNotSetInvalidString()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var setCommand = container.Resolve<SetPropertyCommand>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var setCommand = _TestScopeContainer.Resolve<SetPropertyCommand>();
 
-            var obj = _Fixture.Create<TextValues>();
-            var oObj = (ObjectObserver)observerCache.GetObserver(obj);
+                var obj = _Fixture.Create<TextValues>();
+                var oObj = (ObjectObserver)observerCache.GetObserver(obj);
 
-            var propName = LambdaExtensions.NameOf<TextValues>(x => x.TextWithSize);
-            var oProp = oObj.Properties[propName];
+                var propName = LambdaExtensions.NameOf<TextValues>(x => x.TextWithSize);
+                var oProp = oObj.Properties[propName];
 
-            var oInvalidValue = observerCache.GetObserver("1234");
+                var oInvalidValue = observerCache.GetObserver("1234");
 
-            // Act:
-            var exception = Assert.Throws<AggregateException>(() => setCommand.Invoke(oProp, oInvalidValue));
-            var minLengthException = exception.InnerExceptions.First();
-            Assert.IsTrue(minLengthException.Message.Contains("8 char"));
+                // Act:
+                var exception = Assert.Throws<AggregateException>(() => setCommand.Invoke(oProp, oInvalidValue));
+                var minLengthException = exception.InnerExceptions.First();
+                Assert.IsTrue(minLengthException.Message.Contains("8 char"));
+            }
         }
 
         [Test]
         public void ShouldNotSetInvalidNumber()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            var setCommand = container.Resolve<SetPropertyCommand>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var setCommand = _TestScopeContainer.Resolve<SetPropertyCommand>();
 
-            var obj = _Fixture.Create<NumberValues>();
-            var oObj = (ObjectObserver)observerCache.GetObserver(obj);
+                var obj = _Fixture.Create<NumberValues>();
+                var oObj = (ObjectObserver)observerCache.GetObserver(obj);
 
-            var propName = LambdaExtensions.NameOf<NumberValues>(x => x.NumberWithRange);
-            var oProp = oObj.Properties[propName];
+                var propName = LambdaExtensions.NameOf<NumberValues>(x => x.NumberWithRange);
+                var oProp = oObj.Properties[propName];
 
-            var oInvalidValue = observerCache.GetObserver(9999);
+                var oInvalidValue = observerCache.GetObserver(9999);
 
-            // Act:
-            var exception = Assert.Throws<AggregateException>(() => setCommand.Invoke(oProp, oInvalidValue));
-            var minLengthException = exception.InnerExceptions.First();
-            Assert.IsTrue(minLengthException.Message.Contains("-234"));
+                // Act:
+                var exception = Assert.Throws<AggregateException>(() => setCommand.Invoke(oProp, oInvalidValue));
+                var minLengthException = exception.InnerExceptions.First();
+                Assert.IsTrue(minLengthException.Message.Contains("-234"));
+            }
         }
 
     }

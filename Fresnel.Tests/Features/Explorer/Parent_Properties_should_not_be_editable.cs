@@ -24,42 +24,39 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
     public class Parent_Properties_should_not_be_editable
     {
         private Fixture _Fixture = new AutoFixtureFactory().Create();
-        private IContainer _Container;
-        private ExplorerController _ExplorerController;
-        private ToolboxController _ToolboxController;
+        private TestScopeContainer _TestScopeContainer = null;
 
         private SessionVM _Session;
         private ObjectVM _ObjectVM;
-        private MethodVM _Method;
-
-        private string _DoubleDispatchMethod;
 
         public void Given_the_session_is_already_started()
         {
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            _Container = new ContainerFactory().Build(customDependencyModules);
+            _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
 
-            var engine = _Container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
-            _ExplorerController = _Container.Resolve<ExplorerController>();
-            _ToolboxController = _Container.Resolve<ToolboxController>();
-
-            var sessionController = _Container.Resolve<SessionController>();
-            _Session = sessionController.GetSession();
+                var sessionController = _TestScopeContainer.Resolve<SessionController>();
+                _Session = sessionController.GetSession();
+            }
         }
 
         public void When_an_OrderItem_is_retrieved()
         {
-            var searchRequest = new SearchObjectsRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                SearchType = typeof(OrderItem).FullName,
-                PageSize = 10,
-                PageNumber = 1,
-            };
-            var searchResponse = _ToolboxController.SearchObjects(searchRequest);
-            Assert.IsTrue(searchResponse.Passed);
-            _ObjectVM = searchResponse.Result.Items.First();
+                var searchRequest = new SearchObjectsRequest()
+                    {
+                        SearchType = typeof(OrderItem).FullName,
+                        PageSize = 10,
+                        PageNumber = 1,
+                    };
+                var searchResponse = _TestScopeContainer.Resolve<ToolboxController>().SearchObjects(searchRequest);
+                Assert.IsTrue(searchResponse.Passed);
+                _ObjectVM = searchResponse.Result.Items.First();
+            }
         }
 
         public void Then_the_Parent_property_should_not_be_modifiable()

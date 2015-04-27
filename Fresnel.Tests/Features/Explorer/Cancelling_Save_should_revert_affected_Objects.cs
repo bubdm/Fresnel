@@ -27,9 +27,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
     public class Cancelling_Save_should_revert_affected_Objects
     {
         private Fixture _Fixture = new AutoFixtureFactory().Create();
-        private IContainer _Container;
-        private ToolboxController _ToolboxController;
-        private ExplorerController _ExplorerController;
+        private TestScopeContainer _TestScopeContainer = null;
 
         private SessionVM _Session;
         private Order _orderPoco;
@@ -37,115 +35,135 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
 
         public void Given_the_session_is_already_started()
         {
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            _Container = new ContainerFactory().Build(customDependencyModules);
+            _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
 
-            var engine = _Container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(TextValues).Assembly);
 
-            _ToolboxController = _Container.Resolve<ToolboxController>();
-            _ExplorerController = _Container.Resolve<ExplorerController>();
-
-            var sessionController = _Container.Resolve<SessionController>();
-            _Session = sessionController.GetSession();
+                var sessionController = _TestScopeContainer.Resolve<SessionController>();
+                _Session = sessionController.GetSession();
+            }
         }
 
         public void And_given_an_aggregate_root_exists_in_the_database()
         {
-            _orderPoco = _Fixture.Create<Order>();
-            _orderPoco.PlacedBy = _Fixture.Create<Employee>();
-            _orderPoco.PlacedBy.Address = _Fixture.Create<Address>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                _orderPoco = _Fixture.Create<Order>();
+                _orderPoco.PlacedBy = _Fixture.Create<Employee>();
+                _orderPoco.PlacedBy.Address = _Fixture.Create<Address>();
 
-            var newEntities = new List<object>() { _orderPoco, _orderPoco.PlacedBy, _orderPoco.PlacedBy.Address };
+                var newEntities = new List<object>() { _orderPoco, _orderPoco.PlacedBy, _orderPoco.PlacedBy.Address };
 
-            var persistenceService = _Container.Resolve<IPersistenceService>();
-            persistenceService.SaveChanges(newEntities, new object[0]);
+                var persistenceService = _TestScopeContainer.Resolve<IPersistenceService>();
+                persistenceService.SaveChanges(newEntities, new object[0]);
 
-            // This ensures the Object is being observed:
-            _Container.Resolve<ObserverCache>().GetObserver(_orderPoco);
-            _Container.Resolve<ObserverCache>().GetObserver(_orderPoco.PlacedBy);
-            _Container.Resolve<ObserverCache>().GetObserver(_orderPoco.PlacedBy.Address);
+                // This ensures the Object is being observed:
+                _TestScopeContainer.Resolve<ObserverCache>().GetObserver(_orderPoco);
+                _TestScopeContainer.Resolve<ObserverCache>().GetObserver(_orderPoco.PlacedBy);
+                _TestScopeContainer.Resolve<ObserverCache>().GetObserver(_orderPoco.PlacedBy.Address);
+            }
         }
 
         public void When_an_Order_aggregate_root_is_retrieved()
         {
-            var getOrderRequest = new GetObjectRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = _orderPoco.ID
-            };
-            var getOrderResponse = _ExplorerController.GetObject(getOrderRequest);
+                var getOrderRequest = new GetObjectRequest()
+                {
+                    ObjectID = _orderPoco.ID
+                };
+                var getOrderResponse = _TestScopeContainer.Resolve<ExplorerController>().GetObject(getOrderRequest);
 
-            Assert.IsNotNull(getOrderResponse.ReturnValue);
-            _Order = getOrderResponse.ReturnValue;
+                Assert.IsNotNull(getOrderResponse.ReturnValue);
+                _Order = getOrderResponse.ReturnValue;
+            }
         }
 
         public void And_when_the_leaf_Address_is_modified()
         {
-            var request = new SetPropertyRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = _orderPoco.PlacedBy.Address.ID,
-                PropertyName = LambdaExtensions.NameOf<Address>(x => x.PostalCode),
-                NonReferenceValue = Guid.NewGuid().ToString()
-            };
-            var setResponse = _ExplorerController.SetProperty(request);
-            Assert.IsTrue(setResponse.Passed);
+                var request = new SetPropertyRequest()
+                {
+                    ObjectID = _orderPoco.PlacedBy.Address.ID,
+                    PropertyName = LambdaExtensions.NameOf<Address>(x => x.PostalCode),
+                    NonReferenceValue = Guid.NewGuid().ToString()
+                };
+                var setResponse = _TestScopeContainer.Resolve<ExplorerController>().SetProperty(request);
+                Assert.IsTrue(setResponse.Passed);
+            }
         }
 
         public void And_when_the_user_Cancels_the_Address_changes()
         {
-            var cancelRequest = new CancelChangesRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = _orderPoco.PlacedBy.Address.ID,
-            };
+                var cancelRequest = new CancelChangesRequest()
+                {
+                    ObjectID = _orderPoco.PlacedBy.Address.ID,
+                };
 
-            var cancelResponse = _ExplorerController.CancelChanges(cancelRequest);
-            Assert.IsTrue(cancelResponse.Passed);
+                var cancelResponse = _TestScopeContainer.Resolve<ExplorerController>().CancelChanges(cancelRequest);
+                Assert.IsTrue(cancelResponse.Passed);
+            }
         }
 
         public void Then_the_Order_should_not_have_dirty_contents()
         {
-            var getRequest = new GetObjectRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = _orderPoco.ID
-            };
-            var getResponse = _ExplorerController.GetObject(getRequest);
+                var getRequest = new GetObjectRequest()
+                {
+                    ObjectID = _orderPoco.ID
+                };
+                var getResponse = _TestScopeContainer.Resolve<ExplorerController>().GetObject(getRequest);
 
-            Assert.IsNotNull(getResponse.ReturnValue);
+                Assert.IsNotNull(getResponse.ReturnValue);
 
-            var order = getResponse.ReturnValue;
-            Assert.IsFalse(order.DirtyState.IsDirty);
-            Assert.IsFalse(order.DirtyState.HasDirtyChildren);
+                var order = getResponse.ReturnValue;
+                Assert.IsFalse(order.DirtyState.IsDirty);
+                Assert.IsFalse(order.DirtyState.HasDirtyChildren);
+            }
         }
 
         public void And_then_the_Employee_should_not_have_dirty_contents()
         {
-            var getPropertyRequest = new GetPropertyRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = _orderPoco.ID,
-                PropertyName = LambdaExtensions.NameOf<Order>(x => x.PlacedBy),
-            };
-            var getPropertyResponse = _ExplorerController.GetObjectProperty(getPropertyRequest);
-            Assert.IsNotNull(getPropertyResponse.ReturnValue);
+                var getPropertyRequest = new GetPropertyRequest()
+                {
+                    ObjectID = _orderPoco.ID,
+                    PropertyName = LambdaExtensions.NameOf<Order>(x => x.PlacedBy),
+                };
+                var getPropertyResponse = _TestScopeContainer.Resolve<ExplorerController>().GetObjectProperty(getPropertyRequest);
+                Assert.IsNotNull(getPropertyResponse.ReturnValue);
 
-            var employee = getPropertyResponse.ReturnValue;
-            Assert.IsFalse(employee.DirtyState.IsDirty);
-            Assert.IsFalse(employee.DirtyState.HasDirtyChildren);
+                var employee = getPropertyResponse.ReturnValue;
+                Assert.IsFalse(employee.DirtyState.IsDirty);
+                Assert.IsFalse(employee.DirtyState.HasDirtyChildren);
+            }
         }
 
         public void And_then_the_Address_should_not_have_dirty_contents()
         {
-            var getRequest = new GetObjectRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = _orderPoco.PlacedBy.Address.ID
-            };
-            var getResponse = _ExplorerController.GetObject(getRequest);
+                var getRequest = new GetObjectRequest()
+                {
+                    ObjectID = _orderPoco.PlacedBy.Address.ID
+                };
+                var getResponse = _TestScopeContainer.Resolve<ExplorerController>().GetObject(getRequest);
 
-            var address = getResponse.ReturnValue;
-            Assert.IsFalse(address.DirtyState.IsDirty);
-            Assert.IsFalse(address.DirtyState.HasDirtyChildren);
+                var address = getResponse.ReturnValue;
+                Assert.IsFalse(address.DirtyState.IsDirty);
+                Assert.IsFalse(address.DirtyState.HasDirtyChildren);
 
-            var prop = address.Properties.Single(p => p.InternalName == LambdaExtensions.NameOf<Address>(x => x.PostalCode));
-            Assert.AreEqual(_orderPoco.PlacedBy.Address.PostalCode, prop.State.Value);
+                var prop = address.Properties.Single(p => p.InternalName == LambdaExtensions.NameOf<Address>(x => x.PostalCode));
+                Assert.AreEqual(_orderPoco.PlacedBy.Address.PostalCode, prop.State.Value);
+            }
         }
 
         [Test]

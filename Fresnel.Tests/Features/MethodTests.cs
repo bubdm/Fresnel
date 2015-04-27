@@ -13,6 +13,7 @@ using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.UiCore.Model.TypeInfo;
 using Envivo.SampleModel.Factories;
 using Fresnel.SampleModel.Persistence;
+using Fresnel.Tests;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -22,136 +23,143 @@ namespace Envivo.Fresnel.Tests.Features
     [TestFixture()]
     public class MethodTests
     {
+        private TestScopeContainer _TestScopeContainer = null;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
+
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
+            }
+        }
 
         [Test]
         public void ShouldInvokeMethodWithMultipleParameters()
         {
             // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(MethodSamples).Assembly);
-
-            var observerCache = container.Resolve<ObserverCache>();
-            var controller = container.Resolve<ExplorerController>();
-
-            var obj = container.Resolve<MethodSamples>();
-            obj.ID = Guid.NewGuid();
-            var oObject = (ObjectObserver)observerCache.GetObserver(obj);
-
-            // Act:
-            var request = new InvokeMethodRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = obj.ID,
-                MethodName = "MethodWithValueParameters",
-                Parameters = new ParameterVM[] { 
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
+
+                var obj = _TestScopeContainer.Resolve<MethodSamples>();
+                obj.ID = Guid.NewGuid();
+                var oObject = (ObjectObserver)observerCache.GetObserver(obj);
+
+                // Act:
+                var request = new InvokeMethodRequest()
+                {
+                    ObjectID = obj.ID,
+                    MethodName = "MethodWithValueParameters",
+                    Parameters = new ParameterVM[] { 
                     new ParameterVM(){ InternalName = "aString", State = new ValueStateVM() { Value = "123"} },
                     new ParameterVM(){ InternalName = "aNumber", State = new ValueStateVM() { Value = 123} },
                     new ParameterVM(){ InternalName = "aDate", State = new ValueStateVM() { Value = DateTime.Now} },
                  }
-            };
+                };
 
-            var response = controller.InvokeMethod(request);
+                var response = controller.InvokeMethod(request);
 
-            // Assert:
-            Assert.IsTrue(response.Passed);
+                // Assert:
+                Assert.IsTrue(response.Passed);
+            }
         }
 
         [Test]
         public void ShouldInvokeMethodWithObjectParameters()
         {
             // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(MethodSamples).Assembly);
-
-            var observerCache = container.Resolve<ObserverCache>();
-            var toolboxController = container.Resolve<ToolboxController>();
-            var explorerController = container.Resolve<ExplorerController>();
-
-            var obj = container.Resolve<MethodSamples>();
-            obj.ID = Guid.NewGuid();
-            var oObject = (ObjectObserver)observerCache.GetObserver(obj);
-
-            // Act:
-            var createRequest = new CreateObjectRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ClassTypeName = typeof(MethodSamples).FullName
-            };
-            var createResponse = toolboxController.Create(createRequest);
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
+                var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
 
-            var methodName = "MethodWithObjectParameters";
-            var parameterName = "category";
+                var obj = _TestScopeContainer.Resolve<MethodSamples>();
+                obj.ID = Guid.NewGuid();
+                var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
-            // Find some objects that can be used for the Parameter:
-            var searchRequest = new SearchParameterRequest()
-            {
-                ObjectID = obj.ID,
-                MethodName = methodName,
-                ParameterName = parameterName,
-                OrderBy = "",
-                IsDescendingOrder = true,
-                PageSize = 100,
-                PageNumber = 1
-            };
-            var searchResponse = explorerController.SearchParameterObjects(searchRequest);
-            var parameterValue = searchResponse.Result.Items.First();
+                // Act:
+                var createRequest = new CreateObjectRequest()
+                {
+                    ClassTypeName = typeof(MethodSamples).FullName
+                };
+                var createResponse = toolboxController.Create(createRequest);
 
-            // Now set the Parameter:
-            var setRequest = new SetParameterRequest()
-            {
-                ObjectID = obj.ID,
-                MethodName = methodName,
-                ParameterName = parameterName,
-                ReferenceValueId = parameterValue.ID
-            };
-            var setResponse = explorerController.SetParameter(setRequest);
+                var methodName = "MethodWithObjectParameters";
+                var parameterName = "category";
 
-            // And finally invoke the Method:
-            var invokeRequest = new InvokeMethodRequest()
-            {
-                ObjectID = obj.ID,
-                MethodName = "MethodWithObjectParameters",
-            };
+                // Find some objects that can be used for the Parameter:
+                var searchRequest = new SearchParameterRequest()
+                {
+                    ObjectID = obj.ID,
+                    MethodName = methodName,
+                    ParameterName = parameterName,
+                    OrderBy = "",
+                    IsDescendingOrder = true,
+                    PageSize = 100,
+                    PageNumber = 1
+                };
+                var searchResponse = explorerController.SearchParameterObjects(searchRequest);
+                var parameterValue = searchResponse.Result.Items.First();
 
-            var invokeResponse = explorerController.InvokeMethod(invokeRequest);
+                // Now set the Parameter:
+                var setRequest = new SetParameterRequest()
+                {
+                    ObjectID = obj.ID,
+                    MethodName = methodName,
+                    ParameterName = parameterName,
+                    ReferenceValueId = parameterValue.ID
+                };
+                var setResponse = explorerController.SetParameter(setRequest);
 
-            // Assert:
-            Assert.IsTrue(invokeResponse.Passed);
+                // And finally invoke the Method:
+                var invokeRequest = new InvokeMethodRequest()
+                {
+                    ObjectID = obj.ID,
+                    MethodName = "MethodWithObjectParameters",
+                };
+
+                var invokeResponse = explorerController.InvokeMethod(invokeRequest);
+
+                // Assert:
+                Assert.IsTrue(invokeResponse.Passed);
+            }
         }
 
         [Test]
         public void ShouldInvokeFactoryMethod()
         {
             // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(MethodSamples).Assembly);
-
-            var observerCache = container.Resolve<ObserverCache>();
-            var toolboxController = container.Resolve<ToolboxController>();
-
-            var factory = container.Resolve<IFactory<Product>>();
-            var oFactory = observerCache.GetObserver(factory);
-
-
-            // Act:
-            var invokeRequest = new InvokeMethodRequest()
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                ObjectID = oFactory.ID,
-                MethodName = "Create"
-            };
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
 
-            var invokeResponse = toolboxController.InvokeMethod(invokeRequest);
+                var factory = _TestScopeContainer.Resolve<IFactory<Product>>();
+                var oFactory = observerCache.GetObserver(factory);
 
-            // Assert:
-            Assert.IsTrue(invokeResponse.Passed);
-            var objectVM = invokeResponse.ResultObject;
 
-            var nameProp = objectVM.Properties.Single(p => p.InternalName == "Name");
-            Assert.AreEqual("This was created using ProductFactory.Create()", nameProp.State.Value);
+                // Act:
+                var invokeRequest = new InvokeMethodRequest()
+                {
+                    ObjectID = oFactory.ID,
+                    MethodName = "Create"
+                };
+
+                var invokeResponse = toolboxController.InvokeMethod(invokeRequest);
+
+                // Assert:
+                Assert.IsTrue(invokeResponse.Passed);
+                var objectVM = invokeResponse.ResultObject;
+
+                var nameProp = objectVM.Properties.Single(p => p.InternalName == "Name");
+                Assert.AreEqual("This was created using ProductFactory.Create()", nameProp.State.Value);
+            }
         }
 
     }

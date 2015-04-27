@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.WebApi;
 using Envivo.Fresnel.CompositionRoot;
+using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.SampleModel.Northwind;
 using Envivo.Fresnel.SampleModel.Objects;
 using Envivo.Fresnel.SampleModel.TestTypes;
@@ -25,6 +26,9 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
     public class Saving_transient_Aggregates
     {
         private TestScopeContainer _TestScopeContainer = null;
+
+        // For debugging only:
+        private ObjectObserver _oOrder;
 
         private SessionVM _Session;
         private ObjectVM _Order;
@@ -55,6 +59,10 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
                 };
                 var createResponse = _TestScopeContainer.Resolve<ToolboxController>().Create(createRequest);
                 _Order = createResponse.NewObject;
+
+                // For debugging only:
+                var observerCache = _TestScopeContainer.Resolve<Core.Observers.ObserverCache>();
+                _oOrder = (Core.Observers.ObjectObserver)observerCache.GetObserverById(_Order.ID);
             }
         }
 
@@ -97,6 +105,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
                     ObjectID = _Order.ID
                 };
                 var saveResponse = _TestScopeContainer.Resolve<ExplorerController>().SaveChanges(saveRequest);
+                Assert.AreEqual(2, saveResponse.SavedObjects.Count());
             }
         }
 

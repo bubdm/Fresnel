@@ -18,90 +18,105 @@ namespace Envivo.Fresnel.Tests.Domain
     public class ObjectCreationTests
     {
         private Fixture _Fixture = new AutoFixtureFactory().Create();
+        private TestScopeContainer _TestScopeContainer = null;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
+
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var engine = _TestScopeContainer.Resolve<Core.Engine>();
+                engine.RegisterDomainAssembly(typeof(MultiType).Assembly);
+            }
+        }
 
         [Test]
         public void ShouldCreateObjectUsingDefaultCtor()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var createCommand = container.Resolve<CreateObjectCommand>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
+                var createCommand = _TestScopeContainer.Resolve<CreateObjectCommand>();
 
-            var classType = typeof(Category);
+                var classType = typeof(Category);
 
-            // Act:
-            var oObject = createCommand.Invoke(classType, null);
+                // Act:
+                var oObject = createCommand.Invoke(classType, null);
 
-            // Assert:
-            Assert.IsNotNull(oObject);
-            var newObject = (Category)oObject.RealObject;
-            Assert.IsNotNull(newObject);
+                // Assert:
+                Assert.IsNotNull(oObject);
+                var newObject = (Category)oObject.RealObject;
+                Assert.IsNotNull(newObject);
+            }
         }
 
         [Test]
         public void ShouldCreateObjectWithCtorArgs()
         {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-            var createCommand = container.Resolve<CreateObjectCommand>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
+                var createCommand = _TestScopeContainer.Resolve<CreateObjectCommand>();
 
-            var order = _Fixture.Create<Order>();
-            var orderItemType = typeof(OrderItem);
+                var order = _Fixture.Create<Order>();
+                var orderItemType = typeof(OrderItem);
 
-            // Act:
-            var oObject = createCommand.Invoke(orderItemType, order);
+                // Act:
+                var oObject = createCommand.Invoke(orderItemType, order);
 
-            // Assert:
-            Assert.IsNotNull(oObject);
+                // Assert:
+                Assert.IsNotNull(oObject);
 
-            var orderItem = (OrderItem)oObject.RealObject;
-            Assert.AreEqual(order, orderItem.ParentOrder);
+                var orderItem = (OrderItem)oObject.RealObject;
+                Assert.AreEqual(order, orderItem.ParentOrder);
+            }
         }
 
         [Test]
         public void ShouldIgnoreUnusableCtorArgs()
         {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-            var createCommand = container.Resolve<CreateObjectCommand>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
+                var createCommand = _TestScopeContainer.Resolve<CreateObjectCommand>();
 
-            // We're attempting to create a new Product, and pass the Category as a potential ctor arg:
-            // 'Product' doesn't have a ctor that accepts a Category...
-            var category = _Fixture.Create<Category>();
-            var productType = typeof(Product);
+                // We're attempting to create a new Product, and pass the Category as a potential ctor arg:
+                // 'Product' doesn't have a ctor that accepts a Category...
+                var category = _Fixture.Create<Category>();
+                var productType = typeof(Product);
 
-            // Act:
-            var oObject = createCommand.Invoke(productType, category);
+                // Act:
+                var oObject = createCommand.Invoke(productType, category);
 
-            // Assert:
-            Assert.IsNotNull(oObject);
+                // Assert:
+                Assert.IsNotNull(oObject);
 
-            var product = (Product)oObject.RealObject;
-            Assert.IsNotNull(product);
+                var product = (Product)oObject.RealObject;
+                Assert.IsNotNull(product);
+            }
         }
 
         [Test]
         public void ShouldCreateObjectWithDomainFactory()
         {
-            // Arrange:
-            var customDependencyModules = new Autofac.Module[] { new CustomDependencyModule() };
-            var container = new ContainerFactory().Build(customDependencyModules);
-            var engine = container.Resolve<Core.Engine>();
-            engine.RegisterDomainAssembly(typeof(ObjectWithCtorInjection).Assembly);
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
+                var createCommand = _TestScopeContainer.Resolve<CreateObjectCommand>();
 
-            var createCommand = container.Resolve<CreateObjectCommand>();
+                var classType = typeof(Product);
 
-            var classType = typeof(Product);
+                // Act:
+                var oObject = createCommand.Invoke(classType, null);
 
-            // Act:
-            var oObject = createCommand.Invoke(classType, null);
+                // Assert:
+                Assert.IsNotNull(oObject);
 
-            // Assert:
-            Assert.IsNotNull(oObject);
-
-            var newObject = (Product)oObject.RealObject;
-            Assert.AreEqual("This was created using ProductFactory.Create()", newObject.Name);
+                var newObject = (Product)oObject.RealObject;
+                Assert.AreEqual("This was created using ProductFactory.Create()", newObject.Name);
+            }
         }
 
     }
