@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestScopeContainer.cs" />
     <Compile Include="AutoFixtureFactory.cs" />
     <Compile Include="Domain\ConfigurationTests.cs" />
     <Compile Include="Domain\ChangeTrackingTests.cs" />
