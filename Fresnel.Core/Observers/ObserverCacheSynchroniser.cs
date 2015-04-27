@@ -65,12 +65,18 @@ namespace Envivo.Fresnel.Core.Observers
             {
                 var outerObjectProperties = oObject.OuterProperties.OfType<ObjectPropertyObserver>();
                 var referenceProperties = outerObjectProperties.Where(p => p.Template.IsReferenceType);
-                if (referenceProperties.Any(p => p.IsLazyLoaded))
+
+                var isStandAloneObject = !outerObjectProperties.Any();
+                var hasBeenLazyLoaded = referenceProperties.Any(p => p.IsLazyLoaded);
+
+                if (isStandAloneObject || hasBeenLazyLoaded)
                 {
                     results.Add(oObject);
                 }
-                else
-                { }
+                else if (!hasBeenLazyLoaded)
+                {
+                    // We don't want to check this object
+                }
             }
 
             return results.ToArray();
