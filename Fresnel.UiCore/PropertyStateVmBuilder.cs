@@ -54,8 +54,15 @@ namespace Envivo.Fresnel.UiCore
 
             try
             {
-                // TODO: Use the GetPropertyCommand, in case the property should be hidden:
-                realValue = tProp.GetProperty(oProp.OuterObject.RealObject);
+                var oObjectProp = oProp as ObjectPropertyObserver;
+                if (oObjectProp != null && oObjectProp.IsLazyLoadPending)
+                {
+                    // Do nothing - We don't want to accidentally trigger a lazy load
+                }
+                else
+                {
+                    realValue = tProp.GetProperty(oProp.OuterObject.RealObject);
+                }
             }
             catch (Exception ex)
             {

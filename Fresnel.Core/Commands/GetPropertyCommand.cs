@@ -40,7 +40,13 @@ namespace Envivo.Fresnel.Core.Commands
             ////-----
 
             var oOuterObject = oProperty.OuterObject;
-            _PersistenceService.LoadProperty(oOuterObject.RealObject, oProperty.Template.Name);
+            var oObjectProperty = oProperty as ObjectPropertyObserver;
+
+            if (oObjectProperty != null && oObjectProperty.IsLazyLoadPending)
+            {
+                _PersistenceService.LoadProperty(oOuterObject.RealObject, oProperty.Template.Name);
+                oObjectProperty.IsLazyLoaded = true;
+            }
 
             var value = _GetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name);
 
@@ -52,13 +58,10 @@ namespace Envivo.Fresnel.Core.Commands
             var valueType = _RealTypeResolver.GetRealType(value);
             var oValue = _ObserverCache.GetObserver(value, valueType);
 
-            var oObjectProperty = oProperty as ObjectPropertyObserver;
             if (oObjectProperty != null)
             {
-                var oValueObject = (ObjectObserver)oValue;
-                oObjectProperty.IsLazyLoaded = true;
-
                 // Make the object aware that it is associated with this property:
+                var oValueObject = (ObjectObserver)oValue;
                 _ObserverCacheSynchroniser.Sync(oObjectProperty, oValue);
             }
 

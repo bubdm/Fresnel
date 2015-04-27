@@ -92,6 +92,10 @@ namespace Envivo.Fresnel.Core.ChangeTracking
 
         public virtual void DetectChanges()
         {
+            // Skip If this belongs to a property that has NOT been lazy loaded yet:
+            if (_oObject.OuterProperties.All(p => p.IsLazyLoadPending))
+                return;
+
             if (_ObjectPropertiesTracker != null &&
                 _ObjectPropertiesTracker.DetectChanges())
             {

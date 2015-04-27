@@ -14,7 +14,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// <summary>
         /// Determines whether reading the Property value will trigger a lazy-load operation
         /// </summary>
-        internal bool IsLazyLoadPending
+        public bool IsLazyLoadPending
         {
             get { return !this.IsLazyLoaded; }
             set { this.IsLazyLoaded = !value; }
