@@ -40,6 +40,9 @@ namespace Envivo.Fresnel.UiCore
             var resultsPage = searchResults.ToList<object>().Take(originalRequest.PageSize);
 
             var oCollection = (CollectionObserver)_ObserverCache.GetObserver(resultsPage, resultsPage.GetType());
+            
+            // Code smell: This is the only point where we know the persistent state:
+            this.MarkAsPersistent(oCollection);
 
             var allKnownProperties = _ClassHierarchyBuilder
                                         .GetProperties(tElement)
@@ -81,11 +84,20 @@ namespace Envivo.Fresnel.UiCore
                 var objType = _RealTypeResolver.GetRealType(obj);
 
                 var oObject = (ObjectObserver)_ObserverCache.GetObserver(obj, objType);
+
+                // Code smell: This is the only point where we know the persistent state:
+                this.MarkAsPersistent(oObject);
+
                 var objVM = this.BuildForObject(oObject, allKnownProperties);
 
                 items.Add(objVM);
             }
             return items;
+        }
+
+        private void MarkAsPersistent(ObjectObserver oObject)
+        {
+            oObject.ChangeTracker.IsTransient = false;
         }
 
         private SearchResultItemVM BuildForObject(ObjectObserver oObject, IEnumerable<PropertyTemplate> allKnownProperties)
@@ -124,7 +136,7 @@ namespace Envivo.Fresnel.UiCore
             }
             return properties;
         }
-        
+
         private DirtyStateVM CreateDirtyState(ObjectObserver oObject)
         {
             return new DirtyStateVM()
