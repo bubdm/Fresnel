@@ -57,8 +57,11 @@ namespace Envivo.Fresnel.Core.Commands
             var newEntities = objectsToPersist
                                     .Where(o=> o.ChangeTracker.IsTransient)
                                     .Select(o => o.RealObject).ToArray();
+            
             var dirtyEntities = objectsToPersist.Select(o => o.RealObject)
+                                    .Except(newEntities)
                                     .ToArray();
+
             var savedItemCount = _PersistenceService.SaveChanges(newEntities, dirtyEntities);
 
             foreach (var savedObj in objectsToPersist)
