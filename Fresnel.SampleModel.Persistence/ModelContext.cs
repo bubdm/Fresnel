@@ -35,6 +35,8 @@ namespace Fresnel.SampleModel.Persistence
             _ObjectContext = ((IObjectContextAdapter)this).ObjectContext;
             _RealTypeResolver = realTypeResolver;
 
+            _ObjectContext.ContextOptions.LazyLoadingEnabled = false;
+
             this.Database.Log = Console.Write;
             Console.Write("Created new ModelContext");
         }
@@ -264,7 +266,10 @@ namespace Fresnel.SampleModel.Persistence
         {
             if (disposing)
             {
-                AllowEntitiesToBeUsedInOtherContexts();
+                if (_ObjectContext.ContextOptions.LazyLoadingEnabled)
+                {
+                    AllowEntitiesToBeUsedInOtherContexts();
+                }
             }
 
             base.Dispose(disposing);
