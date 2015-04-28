@@ -1,10 +1,17 @@
 ﻿using System;
+using System.ComponentModel;
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
+
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public interface ISpecification : IDomainDependency
+    { }
+
     /// <summary>
     /// Encapsulates a test to be made against a Domain Object
     /// </summary>
-    public interface ISpecification<T>
+    public interface ISpecification<T> : ISpecification
         where T : class
     {
         /// <summary>

@@ -32,6 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IConsistencyCheck.cs" />
+    <Compile Include="Interfaces\IDomainDependency.cs" />
     <Compile Include="Interfaces\IPersistable.cs" />
     <Compile Include="Interfaces\IPersistenceService.cs" />
     <Compile Include="Interfaces\IValidatable.cs" />
@@ -52,8 +53,6 @@
     <Compile Include="Interfaces\IFactory.cs" />
     <Compile Include="Interfaces\IListAdapter.cs" />
     <Compile Include="Interfaces\INotifyCollectionChanges.cs" />
-    <Compile Include="Interfaces\INotifyProgressUpdate.cs" />
-    <Compile Include="Interfaces\IProgressArgs.cs" />
     <Compile Include="Interfaces\IQuerySpecification.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\ISpecification.cs" />
@@ -63,7 +62,6 @@
     <Compile Include="BaseEntity.cs" />
     <Compile Include="BaseValueObject.cs" />
     <Compile Include="BaseDomainObject.cs" />
-    <Compile Include="z:\VS Projects\Fresnel\Fresnel.DomainTypes\ProgressEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
-    public interface IPersistenceService : IDisposable
+    public interface IPersistenceService : IDomainDependency, IDisposable
     {
         bool IsTypeRecognised(Type objectType);
 

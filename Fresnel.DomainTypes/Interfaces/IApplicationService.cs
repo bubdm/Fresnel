@@ -5,7 +5,7 @@
     /// Application Services should not be confused with Domain Services or Infrastructure services
     /// Consider implementing IDependencyAware to access other dependencies.
     /// </summary>
-    public interface IApplicationService
+    public interface IApplicationService : IDomainDependency
     {
     }
 }
