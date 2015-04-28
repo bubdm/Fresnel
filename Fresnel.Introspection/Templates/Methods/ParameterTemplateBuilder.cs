@@ -3,6 +3,8 @@ using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.Utils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Envivo.Fresnel.Introspection.Templates
@@ -11,18 +13,18 @@ namespace Envivo.Fresnel.Introspection.Templates
     {
         private Func<ParameterTemplate> _paramterFactory;
         private IsObjectTrackableSpecification _IsObjectTrackableSpecification;
-        private IDomainDependencyResolver _DomainDependencyResolver;
+        private IEnumerable<IDomainDependency> _DomainDependencies;
 
         public ParameterTemplateBuilder
         (
             Func<ParameterTemplate> paramterFactory,
             IsObjectTrackableSpecification isObjectTrackableSpecification,
-            IDomainDependencyResolver domainDependencyResolver
+            IEnumerable<IDomainDependency> domainDependencies
         )
         {
             _paramterFactory = paramterFactory;
             _IsObjectTrackableSpecification = isObjectTrackableSpecification;
-            _DomainDependencyResolver = domainDependencyResolver;
+            _DomainDependencies = domainDependencies;
         }
 
         public TemplateCache TemplateCache { get; set; }
@@ -78,8 +80,13 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tParameter.IsNullableType = paramType.IsNullableType() || paramType.IsDerivedFrom<string>();
             }
 
-            var dependency = _DomainDependencyResolver.Resolve(paramType);
-            tParameter.IsDomainDependency = (dependency != null);
+            if (!paramType.IsPrimitive && 
+                paramType != typeof(object))
+            {
+                var dependency = _DomainDependencies.FirstOrDefault(d => d.GetType().IsDerivedFrom(paramType));
+                tParameter.IsDomainDependency = (dependency != null);
+            }
         }
+
     }
 }

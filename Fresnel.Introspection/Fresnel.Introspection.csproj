@@ -54,7 +54,6 @@
     <Compile Include="Configuration\AssemblyConfigurationMapBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IoC\IDomainDependencyResolver.cs" />
     <Compile Include="IoC\IDomainClassRegistrar.cs" />
     <Compile Include="IoC\IDomainObjectFactory.cs" />
     <Compile Include="IoC\IDomainDependencyRegistrar.cs" />

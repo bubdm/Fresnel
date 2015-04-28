@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Core.Commands
 
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
-        private IDomainDependencyResolver _DomainDependencyResolver;
+        private IEnumerable<IQuerySpecification> _QuerySpecifications;
 
         public SearchCommand
         (
@@ -29,13 +29,13 @@ namespace Envivo.Fresnel.Core.Commands
 
             TemplateCache templateCache,
             ObserverCache observerCache,
-            IDomainDependencyResolver domainDependencyResolver
+            IEnumerable<IQuerySpecification> querySpecifications
         )
         {
             _PersistenceService = persistenceService;
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
-            _DomainDependencyResolver = domainDependencyResolver;
+            _QuerySpecifications = querySpecifications;
         }
 
         public IQueryable Search(ClassTemplate tClass)
@@ -79,7 +79,7 @@ namespace Envivo.Fresnel.Core.Commands
 
         public IQueryable Search(Type querySpecificationType, ObjectObserver oRequestor)
         {
-            var querySpecification = _DomainDependencyResolver.Resolve(querySpecificationType);
+            var querySpecification = _QuerySpecifications.SingleOrDefault(q => q.GetType() == querySpecificationType);
             if (querySpecification == null)
                 return null;
 
@@ -93,7 +93,7 @@ namespace Envivo.Fresnel.Core.Commands
             if (querySpecificationType == null)
                 return null;
 
-            var querySpecification = _DomainDependencyResolver.Resolve(querySpecificationType);
+            var querySpecification = _QuerySpecifications.SingleOrDefault(q => q.GetType() == querySpecificationType);
             return querySpecification;
         }
 

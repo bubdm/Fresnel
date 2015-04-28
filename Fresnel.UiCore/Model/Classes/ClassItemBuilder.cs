@@ -4,6 +4,7 @@ using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.IoC;
 using Envivo.Fresnel.Introspection.Templates;
+using Envivo.Fresnel.Utils;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,7 +14,7 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
     {
         private TemplateCache _TemplateCache;
         private ObserverCache _ObserverCache;
-        private IDomainDependencyResolver _DomainDependencyResolver;
+        private IEnumerable<IFactory> _DomainObjectFactories;
         private MethodVmBuilder _MethodVmBuilder;
         private CanCreatePermission _CanCreatePermission;
 
@@ -21,14 +22,14 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
             (
             ObserverCache observerCache,
             TemplateCache templateCache,
-            IDomainDependencyResolver domainDependencyResolver,
+            IEnumerable<IFactory> domainObjectFactories,
             MethodVmBuilder methodVmBuilder,
             CanCreatePermission canCreatePermission
             )
         {
             _ObserverCache = observerCache;
             _TemplateCache = templateCache;
-            _DomainDependencyResolver = domainDependencyResolver;
+            _DomainObjectFactories = domainObjectFactories;
             _MethodVmBuilder = methodVmBuilder;
             _CanCreatePermission = canCreatePermission;
         }
@@ -72,7 +73,7 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
         {
             var genericFactory = typeof(IFactory<>);
             var factoryType = genericFactory.MakeGenericType(tClass.RealType);
-            var factory = _DomainDependencyResolver.Resolve(factoryType);
+            var factory = _DomainObjectFactories.SingleOrDefault(f => f.GetType().IsDerivedFrom(factoryType));
 
             if (factory == null)
                 return null;

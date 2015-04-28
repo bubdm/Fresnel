@@ -1,8 +1,12 @@
 ﻿using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.IoC;
+using Envivo.Fresnel.Utils;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Envivo.Fresnel.Core.Commands
@@ -14,7 +18,7 @@ namespace Envivo.Fresnel.Core.Commands
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private Fresnel.Introspection.Commands.InvokeMethodCommand _InvokeCommand;
         private RealTypeResolver _RealTypeResolver;
-        private IDomainDependencyResolver _DomainDependencyResolver;
+        private IEnumerable<IDomainDependency> _DomainDependencies;
 
         public InvokeMethodCommand
             (
@@ -23,7 +27,7 @@ namespace Envivo.Fresnel.Core.Commands
             DirtyObjectNotifier dirtyObjectNotifier,
             Fresnel.Introspection.Commands.InvokeMethodCommand invokeCommand,
             RealTypeResolver realTypeResolver,
-            IDomainDependencyResolver domainDependencyResolver
+            IEnumerable<IDomainDependency> domainDependencies
             )
         {
             _ObserverCache = observerCache;
@@ -31,7 +35,7 @@ namespace Envivo.Fresnel.Core.Commands
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _InvokeCommand = invokeCommand;
             _RealTypeResolver = realTypeResolver;
-            _DomainDependencyResolver = domainDependencyResolver;
+            _DomainDependencies = domainDependencies;
         }
 
         public BaseObjectObserver Invoke(MethodObserver oMethod, object targetObject)
@@ -79,7 +83,8 @@ namespace Envivo.Fresnel.Core.Commands
                 if (!tParam.IsDomainDependency)
                     continue;
 
-                oParam.Value = _DomainDependencyResolver.Resolve(tParam.ParameterType);
+                var dependency = _DomainDependencies.SingleOrDefault(d => d.GetType().IsDerivedFrom(tParam.ParameterType));
+                oParam.Value = dependency;
             }
         }
 

@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Core.Commands
 {
     public class CreateObjectCommand
     {
-        private IDomainDependencyResolver _DomainDependencyResolver;
+        private IEnumerable<IFactory> _DomainObjectFactories;
         private Introspection.Commands.CreateObjectCommand _CreateObjectCommand;
 
         private TemplateCache _TemplateCache;
@@ -25,7 +25,7 @@ namespace Envivo.Fresnel.Core.Commands
 
         public CreateObjectCommand
         (
-            IDomainDependencyResolver domainDependencyResolver,
+            IEnumerable<IFactory> domainObjectFactories,
             Introspection.Commands.CreateObjectCommand createObjectCommand,
 
             TemplateCache templateCache,
@@ -35,7 +35,7 @@ namespace Envivo.Fresnel.Core.Commands
         )
         {
             _CreateObjectCommand = createObjectCommand;
-            _DomainDependencyResolver = domainDependencyResolver;
+            _DomainObjectFactories = domainObjectFactories;
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
             _ObserverCacheSynchroniser = observerCacheSynchroniser;
@@ -74,7 +74,7 @@ namespace Envivo.Fresnel.Core.Commands
         {
             var genericFactory = typeof(IFactory<>);
             var factoryType = genericFactory.MakeGenericType(tClass.RealType);
-            var factory = _DomainDependencyResolver.Resolve(factoryType);
+            var factory = _DomainObjectFactories.SingleOrDefault(f => f.GetType().IsDerivedFrom(factoryType));
 
             if (factory == null)
                 return null;

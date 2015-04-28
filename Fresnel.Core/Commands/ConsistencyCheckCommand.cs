@@ -20,16 +20,16 @@ namespace Envivo.Fresnel.Core.Commands
         private Type _IConsistencyCheckType = typeof(IConsistencyCheck<>);
         private string _CheckMethodName;
 
-        private IDomainDependencyResolver _DomainDependencyResolver;
+        private IEnumerable<IConsistencyCheck> _ConsistencyChecks;
         private TemplateCache _TemplateCache;
 
         public ConsistencyCheckCommand
         (
-            IDomainDependencyResolver domainDependencyResolver,
+            IEnumerable<IConsistencyCheck> consistencyChecks,
             TemplateCache templateCache
         )
         {
-            _DomainDependencyResolver = domainDependencyResolver;
+            _ConsistencyChecks = consistencyChecks;
             _TemplateCache = templateCache;
 
             _CheckMethodName = LambdaExtensions.NameOf<IConsistencyCheck<IEntity>>(x => x.Check(null));
@@ -38,7 +38,8 @@ namespace Envivo.Fresnel.Core.Commands
         public ActionResult Check(ObjectObserver oObj)
         {
             var searchType = _IConsistencyCheckType.MakeGenericType(oObj.Template.RealType);
-            var consistencyChecker = _DomainDependencyResolver.Resolve(searchType);
+            var consistencyChecker = _ConsistencyChecks.SingleOrDefault(c => c.GetType().IsDerivedFrom(searchType));
+
             if (consistencyChecker == null)
                 // If there's no consistency check, we have to assume everything is OK:
                 return ActionResult.Pass;
@@ -61,7 +62,8 @@ namespace Envivo.Fresnel.Core.Commands
             foreach (var oObj in oObjects)
             {
                 var searchType = _IConsistencyCheckType.MakeGenericType(oObj.Template.RealType);
-                var consistencyChecker = _DomainDependencyResolver.Resolve(searchType);
+                var consistencyChecker = _ConsistencyChecks.SingleOrDefault(c => c.GetType().IsDerivedFrom(searchType));
+
                 if (consistencyChecker == null)
                     // If there's no consistency check, we have to assume everything is OK:
                     return ActionResult.Pass;
