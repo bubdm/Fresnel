@@ -11,16 +11,7 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
     public class EnumVmBuilder : ISettableVmBuilder
     {
-        private IDomainDependencyResolver _DomainDependencyResolver;
-
-        public EnumVmBuilder
-            (
-            IDomainDependencyResolver domainDependencyResolver
-            )
-        {
-            _DomainDependencyResolver = domainDependencyResolver;
-        }
-
+        
         public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
             return actualType.IsEnum;
