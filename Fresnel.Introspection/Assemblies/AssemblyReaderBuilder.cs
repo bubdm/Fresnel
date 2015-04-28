@@ -65,12 +65,7 @@ namespace Envivo.Fresnel.Introspection.Assemblies
             var publicTypes = domainAssembly.GetExportedTypes();
 
             var dependencyTypes = publicTypes
-                                    .Where(t => t.IsDerivedFrom(typeof(IFactory<>)) ||
-                                                t.IsDerivedFrom(typeof(IRepository<>)) ||
-                                                t.IsDerivedFrom(typeof(IDomainService)) ||
-                                                t.IsDerivedFrom(typeof(IQuerySpecification<>)) ||
-                                                t.IsDerivedFrom(typeof(IConsistencyCheck<>))
-                                                )
+                                    .Where(t => t.IsDerivedFrom<IDomainDependency>())
                                     .ToArray();
 
             _DomainDependencyRegistrar.RegisterTypes(dependencyTypes);
