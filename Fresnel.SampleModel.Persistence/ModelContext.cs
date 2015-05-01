@@ -116,10 +116,19 @@ namespace Fresnel.SampleModel.Persistence
             return newObject;
         }
 
-        public object GetObject(Type objectType, Guid id)
+        public object GetObject(Type objectType, Guid id, string[] propertiesToInclude)
         {
             var set = this.Set(objectType);
             var result = set.Find(id);
+
+            if (result != null)
+            {
+                foreach (var propName in propertiesToInclude)
+                {
+                    this.LoadProperty(result, propName);
+                }
+            }
+
             return result;
         }
 
@@ -130,7 +139,6 @@ namespace Fresnel.SampleModel.Persistence
             {
                 set = set.Include(propName);
             }
-
             return set;
         }
 

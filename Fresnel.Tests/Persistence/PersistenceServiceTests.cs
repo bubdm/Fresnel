@@ -97,7 +97,7 @@ namespace Envivo.Fresnel.Tests.Persistence
                 Assert.IsTrue(savedChanges1 > 5);
                 Assert.IsTrue(savedChanges2 > 0);
 
-                var persistedCategory = (Category)persistenceService.GetObject(categoryType, category.ID);
+                var persistedCategory = (Category)persistenceService.GetObject(categoryType, category.ID, new string[0]);
                 var differences = category.Products.Except(persistedCategory.Products);
                 Assert.AreEqual(0, differences.Count());
             }

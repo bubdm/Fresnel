@@ -22,7 +22,17 @@ namespace Fresnel.SampleModel.Persistence
 
         public object GetObject(Type objectType, Guid id)
         {
-            return _ModelContext.GetObject(objectType, id);
+            return _ModelContext.GetObject(objectType, id, new string[0]);
+        }
+
+        public object GetObject(Type objectType, Guid id, string[] propertiesToInclude)
+        {
+            return _ModelContext.GetObject(objectType, id, propertiesToInclude);
+        }
+
+        public IQueryable GetObjects(Type objectType)
+        {
+            return _ModelContext.GetObjects(objectType, new string[0]);
         }
 
         public IQueryable GetObjects(Type objectType, string[] propertiesToInclude)

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 namespace Envivo.Fresnel.Core.Persistence
 {
-    public class NullPersistenceService: IPersistenceService
+    public class NullPersistenceService : IPersistenceService
     {
         private IQueryable _DummyList = new List<IEntity>().AsQueryable();
 
@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.Core.Persistence
             return null;
         }
 
-        public object GetObject(Type objectType, Guid id)
+        public object GetObject(Type objectType, Guid id, string[] propertiesToInclude)
         {
             return null;
         }
@@ -31,22 +31,22 @@ namespace Envivo.Fresnel.Core.Persistence
 
         public void LoadProperty(object entity, string propertyName)
         {
-            
+
         }
 
         public void Refresh(object entity)
         {
-            
+
         }
 
         public void UpdateObject(object entityWithChanges, Type objectType)
         {
-            
+
         }
 
         public void DeleteObject(object entityWithChanges, Type objectType)
         {
-            
+
         }
 
         public int SaveChanges(IEnumerable<object> newEntities, IEnumerable<object> modifiedEntities)
@@ -56,7 +56,7 @@ namespace Envivo.Fresnel.Core.Persistence
 
         public void RollbackChanges()
         {
-        
+
         }
 
         public T CreateObject<T>() where T : class
@@ -76,22 +76,22 @@ namespace Envivo.Fresnel.Core.Persistence
 
         public void LoadProperty<TParent>(TParent parent, Expression<Func<TParent, object>> selector) where TParent : class
         {
-            
+
         }
 
         public void UpdateObject<T>(T entityWithChanges) where T : class
         {
-            
+
         }
 
         public void DeleteObject<T>(T entityToDelete) where T : class
         {
-            
+
         }
-        
+
         public void Dispose()
         {
-        
+
         }
     }
 }
