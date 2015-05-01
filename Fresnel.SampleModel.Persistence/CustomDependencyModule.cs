@@ -15,11 +15,11 @@ namespace Fresnel.SampleModel.Persistence
             builder.RegisterType<RealTypeResolver>()
                    .AsImplementedInterfaces()
                    .AsSelf()
-                   .InstancePerDependency();
+                   .SingleInstance();
 
             builder.RegisterType<ModelConfigurator>()
                    .AsSelf()
-                   .InstancePerDependency();
+                   .SingleInstance();
 
             builder.RegisterType<ModelContext>()
                     .WithParameter("nameOrConnectionString", connectionString)

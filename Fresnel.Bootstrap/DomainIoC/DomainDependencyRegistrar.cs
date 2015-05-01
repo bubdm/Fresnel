@@ -23,7 +23,8 @@ namespace Envivo.Fresnel.CompositionRoot.DomainIoC
                 .RegisterTypes(domainDependencyTypes)
                 .AsImplementedInterfaces()
                 .AsSelf()
-                .InstancePerLifetimeScope()
+                //.InstancePerRequest() // This will cause failures, as SingleInstance cannot depend on InstancePerRequest
+                .InstancePerDependency()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
             builder.Update(_ExistingContainer);

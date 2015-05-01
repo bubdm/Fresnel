@@ -16,7 +16,7 @@ namespace Envivo.Fresnel.CompositionRoot
             builder.RegisterTypes(this.GetPerSessionInstanceTypes())
                     .AsImplementedInterfaces()
                     .AsSelf()
-                    .SingleInstance()
+                    .InstancePerRequest()
                     .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
             builder.RegisterTypes(this.GetPerRequestInstanceTypes())
@@ -55,6 +55,10 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.Core.Permissions.CanSetPropertyPermission),
                 typeof(Fresnel.Core.Permissions.CanInvokeMethodPermission),
                 typeof(Fresnel.Core.Permissions.CanClearPermission),               
+            
+                typeof(Fresnel.Core.Commands.EventTimeLine),
+                typeof(Fresnel.Core.Observers.ObserverCache),
+                typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
             };
         }
 
@@ -62,9 +66,9 @@ namespace Envivo.Fresnel.CompositionRoot
         {
             return new Type[] {
                 // These depend on the ObserverCache, hence the need for them being Per Session:
-                typeof(Fresnel.Core.Commands.EventTimeLine),
-                typeof(Fresnel.Core.Observers.ObserverCache),
-                typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
+                //typeof(Fresnel.Core.Commands.EventTimeLine),
+                //typeof(Fresnel.Core.Observers.ObserverCache),
+                //typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
             };
         }
 
@@ -93,11 +97,6 @@ namespace Envivo.Fresnel.CompositionRoot
         private Type[] GetPerDependencyInstanceTypes()
         {
             return new Type[] {
-                typeof(Fresnel.Core.Commands.AddToCollectionEvent),
-                typeof(Fresnel.Core.Commands.RemoveFromCollectionEvent),
-                typeof(Fresnel.Core.Commands.SetPropertyEvent),
-                typeof(Fresnel.Core.Commands.SaveObjectEvent),
-
                 typeof(Fresnel.Core.Observers.CollectionObserver),
                 typeof(Fresnel.Core.Observers.EnumObserver),
                 typeof(Fresnel.Core.Observers.MethodObserver),
