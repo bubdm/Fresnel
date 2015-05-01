@@ -27,6 +27,7 @@ namespace Envivo.Fresnel.Tests.Domain
             using (var scope = _TestScopeContainer.BeginScope())
             {
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                observerCache.CleanUp();
 
                 var person = _Fixture.Create<Person>();
 
@@ -47,6 +48,7 @@ namespace Envivo.Fresnel.Tests.Domain
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var setCommand = _TestScopeContainer.Resolve<SetPropertyCommand>();
 
+                observerCache.CleanUp();
                 var person = _Fixture.Create<Person>();
 
                 var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
@@ -90,6 +92,7 @@ namespace Envivo.Fresnel.Tests.Domain
                 var getCommand = _TestScopeContainer.Resolve<GetPropertyCommand>();
                 var addCommand = _TestScopeContainer.Resolve<AddToCollectionCommand>();
 
+                observerCache.CleanUp(); 
                 var person = _Fixture.Create<Person>();
 
                 var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
@@ -121,6 +124,7 @@ namespace Envivo.Fresnel.Tests.Domain
                 var getCommand = _TestScopeContainer.Resolve<GetPropertyCommand>();
                 var removeCommand = _TestScopeContainer.Resolve<RemoveFromCollectionCommand>();
 
+                observerCache.CleanUp();
                 var person = _Fixture.Create<Person>();
                 person.Roles.Add(_Fixture.Create<Employee>());
                 person.Roles.Add(_Fixture.Create<Customer>());
@@ -157,6 +161,7 @@ namespace Envivo.Fresnel.Tests.Domain
                 var addCommand = _TestScopeContainer.Resolve<AddToCollectionCommand>();
                 var removeCommand = _TestScopeContainer.Resolve<RemoveFromCollectionCommand>();
 
+                observerCache.CleanUp(); 
                 var person = _Fixture.Create<Person>();
                 person.Roles.Add(_Fixture.Create<Employee>());
                 person.Roles.Add(_Fixture.Create<Customer>());
@@ -193,6 +198,7 @@ namespace Envivo.Fresnel.Tests.Domain
                 var getCommand = _TestScopeContainer.Resolve<GetPropertyCommand>();
                 var setCommand = _TestScopeContainer.Resolve<SetPropertyCommand>();
 
+                observerCache.CleanUp();
                 var person = _Fixture.Create<Person>();
 
                 var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
@@ -236,6 +242,7 @@ namespace Envivo.Fresnel.Tests.Domain
                 var getCommand = _TestScopeContainer.Resolve<GetPropertyCommand>();
                 var addCommand = _TestScopeContainer.Resolve<AddToCollectionCommand>();
 
+                observerCache.CleanUp();
                 var oOrder = (ObjectObserver)createCommand.Invoke(typeof(Order), null);
                 var oProp = (ObjectPropertyObserver)oOrder.Properties[LambdaExtensions.NameOf<Order>(x => x.OrderItems)];
                 var oOrderItems = (CollectionObserver)getCommand.Invoke(oProp);
