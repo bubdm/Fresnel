@@ -37,8 +37,10 @@ namespace Fresnel.SampleModel.Persistence
 
             _ObjectContext.ContextOptions.LazyLoadingEnabled = false;
 
+#if DEBUG
             this.Database.Log = Console.Write;
             Console.Write("Created new ModelContext");
+#endif
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
