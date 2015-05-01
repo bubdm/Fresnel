@@ -41,6 +41,7 @@ namespace Envivo.Fresnel.Tests.Domain
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var setCommand = _TestScopeContainer.Resolve<SetPropertyCommand>();
 
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<TextValues>();
                 var oObj = (ObjectObserver)observerCache.GetObserver(obj);
 
@@ -65,6 +66,7 @@ namespace Envivo.Fresnel.Tests.Domain
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var setCommand = _TestScopeContainer.Resolve<SetPropertyCommand>();
 
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<NumberValues>();
                 var oObj = (ObjectObserver)observerCache.GetObserver(obj);
 

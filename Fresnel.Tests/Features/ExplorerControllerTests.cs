@@ -33,6 +33,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<MultiType>();
 
                 var oObject = observerCache.GetObserver(obj) as ObjectObserver;
@@ -62,7 +63,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<MultiType>();
                 obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
@@ -99,7 +100,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<MultiType>();
 
                 var oObject = observerCache.GetObserver(obj) as ObjectObserver;
@@ -135,7 +136,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<MultiType>();
                 obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
@@ -181,7 +182,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<MultiType>();
                 obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
@@ -229,6 +230,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<MultiType>();
                 obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
@@ -272,7 +274,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<MultiType>();
                 obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
@@ -319,6 +321,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<Order>();
                 var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 
@@ -347,6 +350,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<Order>();
                 var oObject = observerCache.GetObserver(obj) as ObjectObserver;
 

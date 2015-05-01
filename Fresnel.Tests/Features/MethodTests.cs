@@ -46,6 +46,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var obj = _TestScopeContainer.Resolve<MethodSamples>();
                 obj.ID = Guid.NewGuid();
                 var oObject = (ObjectObserver)observerCache.GetObserver(obj);
@@ -79,6 +80,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
                 var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var obj = _TestScopeContainer.Resolve<MethodSamples>();
                 obj.ID = Guid.NewGuid();
                 var oObject = (ObjectObserver)observerCache.GetObserver(obj);
@@ -140,6 +142,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
 
+                observerCache.CleanUp();
                 var factory = _TestScopeContainer.Resolve<IFactory<Product>>();
                 var oFactory = observerCache.GetObserver(factory);
 

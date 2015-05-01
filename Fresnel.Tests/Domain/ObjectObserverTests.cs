@@ -55,7 +55,8 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-
+            observerCache.CleanUp(); 
+                
             var employee = _Fixture.Create<Employee>();
 
             // Act:
@@ -71,7 +72,8 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-
+            observerCache.CleanUp(); 
+                
             var employee = _Fixture.Create<Employee>();
             
             // Act:
@@ -88,7 +90,8 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-
+            observerCache.CleanUp(); 
+                
             var employee = _Fixture.Create<Employee>();
             
             // Act:
@@ -105,7 +108,8 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-
+            observerCache.CleanUp(); 
+                
             var employees = _Fixture.CreateMany<Employee>().ToList();
             
             // Act:
@@ -122,7 +126,8 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-
+            observerCache.CleanUp(); 
+                
             var employee = _Fixture.Create<Employee>();
 
             // Act:
@@ -139,7 +144,8 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-
+            observerCache.CleanUp(); 
+                
             var employee1 = _Fixture.Create<Employee>();
             var employee2 = _Fixture.Create<Employee>();
 
@@ -223,7 +229,8 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             var container = new ContainerFactory().Build();
             var observerCache = container.Resolve<ObserverCache>();
-
+            observerCache.CleanUp(); 
+                
             for (var i = 0; i < 5; i++)
             {
                 var employee = _Fixture.Create<Employee>();

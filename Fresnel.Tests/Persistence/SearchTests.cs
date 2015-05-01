@@ -49,10 +49,10 @@ namespace Envivo.Fresnel.Tests.Persistence
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var searchCommand = _TestScopeContainer.Resolve<SearchCommand>();
 
-                var tClass = (ClassTemplate)templateCache.GetTemplate<Product>();
+                var tClass = (ClassTemplate)templateCache.GetTemplate<Order>();
 
                 // Act:
-                var results = searchCommand.Search(tClass).ToList<Product>();
+                var results = searchCommand.Search(tClass).ToList<Order>();
 
                 // Assert:
                 Assert.IsNotNull(results);
@@ -69,6 +69,7 @@ namespace Envivo.Fresnel.Tests.Persistence
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var searchCommand = _TestScopeContainer.Resolve<SearchCommand>();
 
+                observerCache.CleanUp();
                 var obj = _TestScopeContainer.Resolve<ObjectWithCtorInjection>();
                 var oObj = (ObjectObserver)observerCache.GetObserver(obj);
 
@@ -97,6 +98,7 @@ namespace Envivo.Fresnel.Tests.Persistence
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var searchCommand = _TestScopeContainer.Resolve<SearchCommand>();
 
+                observerCache.CleanUp();
                 var obj = _TestScopeContainer.Resolve<Product>();
                 var oObj = (ObjectObserver)observerCache.GetObserver(obj);
                 var propName = LambdaExtensions.NameOf<Product>(x => x.Categories);

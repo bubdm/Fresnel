@@ -47,6 +47,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var employee = _Fixture.Create<Employee>();
                 var oObject = observerCache.GetObserver(employee) as ObjectObserver;
 
@@ -83,6 +84,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var employee = _Fixture.Create<Employee>();
                 var oObject = observerCache.GetObserver(employee) as ObjectObserver;
 
@@ -114,6 +116,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var employee = _Fixture.Create<Employee>();
                 employee.Notes.AddMany(() => _Fixture.Create<Note>(), 3);
                 var oObject = observerCache.GetObserver(employee) as ObjectObserver;
@@ -146,12 +149,13 @@ namespace Envivo.Fresnel.Tests.Features
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var multiType = _Fixture.Create<MultiType>();
                 var oObject = observerCache.GetObserver(multiType) as ObjectObserver;
 
                 // Act:
                 var requests = new List<SetPropertyRequest>()
-            {
+                {
                 new SetPropertyRequest() { 
                     ObjectID = oObject.ID, 
                     PropertyName = LambdaExtensions.NameOf<MultiType>(x=> x.A_Char),
@@ -192,6 +196,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var employee = _Fixture.Create<Employee>();
                 var oObject = observerCache.GetObserver(employee) as ObjectObserver;
 
@@ -219,7 +224,8 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
-
+                observerCache.CleanUp(); 
+                
                 // Act:
                 var obj = _TestScopeContainer.Resolve<ObjectWithCtorInjection>();
                 obj.ID = Guid.NewGuid();
@@ -250,6 +256,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var textValues = _Fixture.Create<TextValues>();
                 var oObject = observerCache.GetObserver(textValues) as ObjectObserver;
 
@@ -279,6 +286,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var employee = _Fixture.Create<Employee>();
                 var oObject = observerCache.GetObserver(employee) as ObjectObserver;
 
@@ -324,6 +332,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
+                observerCache.CleanUp();
                 var employee = _Fixture.Create<Employee>();
                 var oObject = observerCache.GetObserver(employee) as ObjectObserver;
 

@@ -44,6 +44,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var vmBuilder = _TestScopeContainer.Resolve<PropertyVmBuilder>();
 
+                observerCache.CleanUp();
                 var obj = _Fixture.Create<MultiType>();
                 var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
@@ -78,7 +79,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var vmBuilder = _TestScopeContainer.Resolve<PropertyVmBuilder>();
 
-
+                observerCache.CleanUp(); 
                 var obj = _Fixture.Create<TextValues>();
                 var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
@@ -105,7 +106,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var vmBuilder = _TestScopeContainer.Resolve<PropertyVmBuilder>();
 
-
+                observerCache.CleanUp(); 
                 var obj = _Fixture.Create<EnumValues>();
                 var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
@@ -137,7 +138,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var vmBuilder = _TestScopeContainer.Resolve<AbstractObjectVmBuilder>();
 
-
+                observerCache.CleanUp();
                 var col = _Fixture.Create<Collection<Product>>();
                 var oColl = (ObjectObserver)observerCache.GetObserver(col);
 
@@ -164,6 +165,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
                 var vmBuilder = _TestScopeContainer.Resolve<AbstractObjectVmBuilder>();
 
+                observerCache.CleanUp();
                 var obj = _TestScopeContainer.Resolve<MethodSamples>();
                 var oObject = (ObjectObserver)observerCache.GetObserver(obj);
 
