@@ -34,7 +34,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
 
         public void Given_the_session_is_already_started()
         {
-            _TestScopeContainer = new TestScopeContainer(new CustomDependencyModule());
+            _TestScopeContainer = new TestScopeContainer();
 
             using (var scope = _TestScopeContainer.BeginScope())
             {
