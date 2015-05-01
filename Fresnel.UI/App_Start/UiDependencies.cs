@@ -14,18 +14,30 @@ namespace Envivo.Fresnel.CompositionRoot
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterTypes(this.GetSingleInstanceTypes())
-                .SingleInstance()
-                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+                    .AsImplementedInterfaces()
+                    .AsSelf()
+                    .SingleInstance()
+                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
-            builder.RegisterType<HomeController>().InstancePerLifetimeScope();
+            builder.RegisterTypes(this.GetPerRequestTypes())
+                    .AsImplementedInterfaces()
+                    .AsSelf()
+                    .InstancePerRequest()
+                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
         }
 
         private Type[] GetSingleInstanceTypes()
         {
             return new Type[] { 
-                typeof(Fresnel.UI.Controllers.HomeController),
+              
             };
         }
 
+        private Type[] GetPerRequestTypes()
+        {
+            return new Type[] { 
+                typeof(HomeController)
+            };
+        }
     }
 }
