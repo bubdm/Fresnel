@@ -138,7 +138,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
             }
         }
 
-        public void Then_the_Orders_OrderItems_should_have_the_original_contents()
+        public void And_then_the_Orders_OrderItems_should_have_the_original_contents()
         {
             using (var scope = _TestScopeContainer.BeginScope())
             {
