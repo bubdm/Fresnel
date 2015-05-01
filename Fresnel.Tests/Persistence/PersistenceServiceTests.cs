@@ -125,7 +125,7 @@ namespace Envivo.Fresnel.Tests.Persistence
                 }
 
                 // Act:
-                var persistedCategories = persistenceService.GetObjects(categoryType).ToList<Category>();
+                var persistedCategories = persistenceService.GetObjects(categoryType, new string[0]).ToList<Category>();
 
                 // Assert:
                 Assert.AreNotEqual(0, persistedCategories.Count());
