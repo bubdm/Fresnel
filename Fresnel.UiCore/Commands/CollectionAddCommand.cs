@@ -17,8 +17,9 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ObserverCache _ObserverCache;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private Core.Commands.CreateObjectCommand _CreateObjectCommand;
-        private Func<ObjectPropertyObserver, ObjectObserver, AddToCollectionEvent> _AddToCollectionEventFactory;
-        private EventTimeLine _EventTimeLine;
+        //private Func<ObjectPropertyObserver, ObjectObserver, AddToCollectionEvent> _AddToCollectionEventFactory;
+        //private EventTimeLine _EventTimeLine;
+        private Core.Commands.AddToCollectionCommand _AddToCollectionCommand;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private ModificationsVmBuilder _ModificationsBuilder;
         private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
@@ -30,8 +31,9 @@ namespace Envivo.Fresnel.UiCore.Commands
             ObserverCache observerCache,
             Core.Commands.GetPropertyCommand getPropertyCommand,
             Core.Commands.CreateObjectCommand createObjectCommand,
-            Func<ObjectPropertyObserver, ObjectObserver, AddToCollectionEvent> addToCollectionEventFactory,
-            EventTimeLine eventTimeLine,
+            Core.Commands.AddToCollectionCommand addToCollectionCommand,
+            //Func<ObjectPropertyObserver, ObjectObserver, AddToCollectionEvent> addToCollectionEventFactory,
+            //EventTimeLine eventTimeLine,
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsBuilder,
             ExceptionMessagesBuilder exceptionMessagesBuilder,
@@ -42,8 +44,9 @@ namespace Envivo.Fresnel.UiCore.Commands
             _ObserverCache = observerCache;
             _GetPropertyCommand = getPropertyCommand;
             _CreateObjectCommand = createObjectCommand;
-            _AddToCollectionEventFactory = addToCollectionEventFactory;
-            _EventTimeLine = eventTimeLine;
+            //_AddToCollectionEventFactory = addToCollectionEventFactory;
+            //_EventTimeLine = eventTimeLine;
+            _AddToCollectionCommand = addToCollectionCommand;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
@@ -69,16 +72,17 @@ namespace Envivo.Fresnel.UiCore.Commands
                         throw new UiCoreException("Cannot create object of type " + tClass.FriendlyName);
                 }
 
-                var addEvent = _AddToCollectionEventFactory(oProp, oObject);
-                var addOperation = (ActionResult<ObjectObserver>)addEvent.Do();
-                if (addOperation.Failed)
-                {
-                    throw addOperation.FailureException;
-                }
+                //var addEvent = _AddToCollectionEventFactory(oProp, oObject);
+                //var addOperation = (ActionResult<ObjectObserver>)addEvent.Do();
+                //if (addOperation.Failed)
+                //{
+                //    throw addOperation.FailureException;
+                //}
 
-                _EventTimeLine.Add(addEvent);
+                //_EventTimeLine.Add(addEvent);
+                //var oResult = addOperation.Result;
 
-                var oResult = addOperation.Result;
+                var oResult = _AddToCollectionCommand.Invoke(oProp, oCollection, oObject);
 
                 // Other objects may have been affected by the action:
                 _ObserverCache.ScanForChanges();
@@ -125,13 +129,14 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     var oObject = this.GetObserver(elementID);
 
-                    var addEvent = _AddToCollectionEventFactory(oProp, oObject);
-                    _EventTimeLine.Add(addEvent);
+                    //var addEvent = _AddToCollectionEventFactory(oProp, oObject);
+                    //_EventTimeLine.Add(addEvent);
 
-                    var addOperation = (ActionResult<ObjectObserver>)addEvent.Do();
-                    if (addOperation.Passed)
+                    //var addOperation = (ActionResult<ObjectObserver>)addEvent.Do();
+
+                    try
                     {
-                        oObjects.Add(oObject);
+                        var oResult = _AddToCollectionCommand.Invoke(oProp, oCollection, oObject);
 
                         var infoVM = new MessageVM()
                         {
@@ -141,15 +146,10 @@ namespace Envivo.Fresnel.UiCore.Commands
                         };
                         messages.Add(infoVM);
                     }
-                    else if (addOperation.Failed)
+                    catch (Exception ex)
                     {
-                        var infoVM = new MessageVM()
-                        {
-                            IsError = true,
-                            OccurredAt = _Clock.Now,
-                            Text = string.Concat("Unable to add ", oObject.RealObject.ToString(), " to the collection")
-                        };
-                        messages.Add(infoVM);
+                        var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
+                        messages.AddRange(errorVMs);
                     }
                 }
 

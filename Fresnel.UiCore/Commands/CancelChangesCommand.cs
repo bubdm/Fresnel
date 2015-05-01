@@ -150,8 +150,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private void UndoChangesFromEventTimeLine(ObjectObserver oObject)
         {
-            var earliestPoint = _EventTimeLine.LastOrDefault(e => e is SaveObjectEvent &&
-                                                              e.AffectedObjects.Contains(oObject)) ??
+            var earliestPoint = _EventTimeLine.LastOrDefault(e => e.AffectedObjects.Contains(oObject)) ??
                             _EventTimeLine.FirstOrDefault();
 
             if (earliestPoint != null)
