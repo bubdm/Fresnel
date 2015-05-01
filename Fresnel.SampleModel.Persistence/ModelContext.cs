@@ -121,9 +121,14 @@ namespace Fresnel.SampleModel.Persistence
             return result;
         }
 
-        public IQueryable GetObjects(Type objectType)
+        public IQueryable GetObjects(Type objectType, string[] propertiesToInclude)
         {
-            var set = this.Set(objectType);
+            DbQuery set = this.Set(objectType);
+            foreach (var propName in propertiesToInclude)
+            {
+                set = set.Include(propName);
+            }
+
             return set;
         }
 

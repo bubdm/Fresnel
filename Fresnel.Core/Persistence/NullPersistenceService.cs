@@ -24,7 +24,7 @@ namespace Envivo.Fresnel.Core.Persistence
             return null;
         }
 
-        public IQueryable GetObjects(Type objectType)
+        public IQueryable GetObjects(Type objectType, string[] propertiesToInclude)
         {
             return _DummyList;
         }

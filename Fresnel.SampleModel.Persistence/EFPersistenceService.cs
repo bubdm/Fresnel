@@ -8,13 +8,11 @@ namespace Fresnel.SampleModel.Persistence
 {
     public class EFPersistenceService : IPersistenceService
     {
-        private Func<ModelContext> _ModelContextFactory;
         private ModelContext _ModelContext;
 
-        public EFPersistenceService(Func<ModelContext> modelContextFactory)
+        public EFPersistenceService(ModelContext modelContext)
         {
-            _ModelContextFactory = modelContextFactory;
-            _ModelContext = _ModelContextFactory();
+            _ModelContext = modelContext;
         }
 
         public bool IsTypeRecognised(Type objectType)
@@ -27,9 +25,9 @@ namespace Fresnel.SampleModel.Persistence
             return _ModelContext.GetObject(objectType, id);
         }
 
-        public IQueryable GetObjects(Type objectType)
+        public IQueryable GetObjects(Type objectType, string[] propertiesToInclude)
         {
-            return _ModelContext.GetObjects(objectType);
+            return _ModelContext.GetObjects(objectType, propertiesToInclude);
         }
 
         public void LoadProperty(object entity, string propertyName)

@@ -5,13 +5,13 @@ using System.Linq.Expressions;
 
 namespace Envivo.Fresnel.DomainTypes.Interfaces
 {
-    public interface IPersistenceService : IDomainDependency, IDisposable
+    public interface IPersistenceService : IDisposable
     {
         bool IsTypeRecognised(Type objectType);
 
         object GetObject(Type objectType, Guid id);
 
-        IQueryable GetObjects(Type objectType);
+        IQueryable GetObjects(Type objectType, string[] propertiesToInclude);
 
         void LoadProperty(object entity, string propertyName);
 

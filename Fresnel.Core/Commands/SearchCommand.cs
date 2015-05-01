@@ -38,11 +38,25 @@ namespace Envivo.Fresnel.Core.Commands
             _QuerySpecifications = querySpecifications;
         }
 
+        private string[] GetTopLevelReferencePropertyNames(ClassTemplate tClass)
+        {
+            var results = tClass
+                            .Properties
+                            .VisibleOnly
+                            .Where(p => !p.IsNonReference)
+                            .Select(p => p.Name)
+                            .ToArray();
+
+            return results;
+        }
+
         public IQueryable Search(ClassTemplate tClass)
         {
             this.CheckIfTypeIsRecognised(tClass.RealType);
 
-            return _PersistenceService.GetObjects(tClass.RealType);
+            var propertiesToInclude = this.GetTopLevelReferencePropertyNames(tClass);
+
+            return _PersistenceService.GetObjects(tClass.RealType, propertiesToInclude);
         }
 
         public IQueryable Search(BasePropertyObserver oProp)
@@ -56,8 +70,10 @@ namespace Envivo.Fresnel.Core.Commands
 
             this.CheckIfTypeIsRecognised(searchType);
 
+            var propertiesToInclude = this.GetTopLevelReferencePropertyNames((ClassTemplate)oProp.Template.InnerClass);
+
             var results = this.GetResults(querySpecification, oParent) ??
-                          _PersistenceService.GetObjects(searchType);
+                          _PersistenceService.GetObjects(searchType, propertiesToInclude);
             return results;
         }
 
@@ -72,8 +88,10 @@ namespace Envivo.Fresnel.Core.Commands
 
             this.CheckIfTypeIsRecognised(searchType);
 
+            var propertiesToInclude = this.GetTopLevelReferencePropertyNames((ClassTemplate)oParam.Template.InnerClass);
+
             var results = this.GetResults(querySpecification, oParent) ??
-                          _PersistenceService.GetObjects(searchType);
+                          _PersistenceService.GetObjects(searchType, propertiesToInclude);
             return results;
         }
 
