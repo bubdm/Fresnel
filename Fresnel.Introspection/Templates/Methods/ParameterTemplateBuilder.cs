@@ -13,18 +13,15 @@ namespace Envivo.Fresnel.Introspection.Templates
     {
         private Func<ParameterTemplate> _paramterFactory;
         private IsObjectTrackableSpecification _IsObjectTrackableSpecification;
-        private IEnumerable<IDomainDependency> _DomainDependencies;
 
         public ParameterTemplateBuilder
         (
             Func<ParameterTemplate> paramterFactory,
-            IsObjectTrackableSpecification isObjectTrackableSpecification,
-            IEnumerable<IDomainDependency> domainDependencies
+            IsObjectTrackableSpecification isObjectTrackableSpecification
         )
         {
             _paramterFactory = paramterFactory;
             _IsObjectTrackableSpecification = isObjectTrackableSpecification;
-            _DomainDependencies = domainDependencies;
         }
 
         public TemplateCache TemplateCache { get; set; }
@@ -80,12 +77,7 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tParameter.IsNullableType = paramType.IsNullableType() || paramType.IsDerivedFrom<string>();
             }
 
-            if (!paramType.IsPrimitive && 
-                paramType != typeof(object))
-            {
-                var dependency = _DomainDependencies.FirstOrDefault(d => d.GetType().IsDerivedFrom(paramType));
-                tParameter.IsDomainDependency = (dependency != null);
-            }
+            tParameter.IsDomainDependency = paramType.IsDerivedFrom<IDomainDependency>();
         }
 
     }
