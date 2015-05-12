@@ -80,6 +80,15 @@ a.disabled {
     max-height: 200px;
 }
 
+.explorerTitle {
+    margin-top: 0px;
+    overflow: hidden;
+    max-width: 300px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
 .collapsedExplorerTitle {
     margin-top: 0px;
     max-width: 134px;
