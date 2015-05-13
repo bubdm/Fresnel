@@ -163,10 +163,14 @@ namespace Fresnel.SampleModel.Persistence
             var referenceEntry = memberEntry as DbReferenceEntry;
             if (collectionEntry != null)
             {
+                // Force the property to load, even if it has been loaded already:
+                collectionEntry.IsLoaded = false;
                 collectionEntry.Load();
             }
             else if (referenceEntry != null)
             {
+                // Force the property to load, even if it has been loaded already:
+                referenceEntry.IsLoaded = false;
                 referenceEntry.Load();
             }
         }

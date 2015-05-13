@@ -129,7 +129,10 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
 
                 Assert.IsNotNull(getResponse.ReturnValue);
             }
-
+        }
+        
+        public void And_then_the_Order_should_not_contain_the_new_OrderItem()
+        {
             using (var scope = _TestScopeContainer.BeginScope())
             {
                 var getPropertyRequest = new GetPropertyRequest()
