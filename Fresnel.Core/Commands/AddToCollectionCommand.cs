@@ -3,6 +3,7 @@ using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
+using System;
 using System.Linq;
 
 namespace Envivo.Fresnel.Core.Commands
@@ -16,6 +17,7 @@ namespace Envivo.Fresnel.Core.Commands
         private Introspection.Commands.InvokeMethodCommand _InvokeMethodCommand;
         private Introspection.Commands.AddToCollectionCommand _AddCommand;
         private RealTypeResolver _RealTypeResolver;
+        private EventTimeLine _EventTimeLine;
 
         public AddToCollectionCommand
             (
@@ -25,7 +27,8 @@ namespace Envivo.Fresnel.Core.Commands
             CollectionAddMethodIdentifier collectionAddMethodIdentifier,
             Introspection.Commands.InvokeMethodCommand invokeMethodCommand,
             Introspection.Commands.AddToCollectionCommand addCommand,
-            RealTypeResolver realTypeResolver
+            RealTypeResolver realTypeResolver,
+            EventTimeLine eventTimeLine
             )
         {
             _ObserverCache = observerCache;
@@ -35,6 +38,7 @@ namespace Envivo.Fresnel.Core.Commands
             _InvokeMethodCommand = invokeMethodCommand;
             _AddCommand = addCommand;
             _RealTypeResolver = realTypeResolver;
+            _EventTimeLine = eventTimeLine;
         }
 
         public BaseObjectObserver Invoke(ObjectPropertyObserver oCollectionProp, CollectionObserver oCollection, ObjectObserver oItemToAdd)
@@ -72,6 +76,9 @@ namespace Envivo.Fresnel.Core.Commands
             if (oResult != null)
             {
                 _DirtyObjectNotifier.ObjectWasAddedToCollection(oResult, oCollection);
+
+                var addEvent = new AddToCollectionEvent(oCollectionProp, oCollection, oItemToAdd);
+                _EventTimeLine.Add(addEvent);
 
                 // Make sure we know of any changes in the object graph:
                 _ObserverCacheSynchroniser.SyncAll();

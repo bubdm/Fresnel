@@ -19,8 +19,8 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ObserverCache _ObserverCache;
         private OuterObjectsIdentifier _OuterObjectsIdentifier;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
+        private Core.Commands.CancelChangesCommand _CancelChangesCommand;
         private IPersistenceService _PersistenceService;
-        private EventTimeLine _EventTimeLine;
         private DirtyObjectNotifier _DirtyObjectNotifier;
         private AbstractObjectVmBuilder _ObjectVmBuilder;
         private ModificationsVmBuilder _ModificationsVmBuilder;
@@ -32,8 +32,8 @@ namespace Envivo.Fresnel.UiCore.Commands
             ObserverCache observerCache,
             OuterObjectsIdentifier outerObjectsIdentifier,
             Core.Commands.GetPropertyCommand getPropertyCommand,
+            Core.Commands.CancelChangesCommand cancelChangesCommand,
             IPersistenceService persistenceService,
-            EventTimeLine eventTimeLine,
             DirtyObjectNotifier dirtyObjectNotifier,
             AbstractObjectVmBuilder objectVmBuilder,
             ModificationsVmBuilder modificationsVmBuilder,
@@ -44,8 +44,8 @@ namespace Envivo.Fresnel.UiCore.Commands
             _ObserverCache = observerCache;
             _OuterObjectsIdentifier = outerObjectsIdentifier;
             _GetPropertyCommand = getPropertyCommand;
+            _CancelChangesCommand = cancelChangesCommand;
             _PersistenceService = persistenceService;
-            _EventTimeLine = eventTimeLine;
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _ObjectVmBuilder = objectVmBuilder;
             _ModificationsVmBuilder = modificationsVmBuilder;
@@ -129,13 +129,11 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private void UndoChangesTo(ObjectObserver oObject)
         {
+            _CancelChangesCommand.Invoke(oObject);
+
             if (oObject.ChangeTracker.IsPersistent)
             {
                 _PersistenceService.Refresh(oObject.RealObject);
-            }
-            else
-            {
-                this.UndoChangesFromEventTimeLine(oObject);
             }
 
             foreach (var oProp in oObject.Properties.Values)
@@ -148,19 +146,11 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
         }
 
-        private void UndoChangesFromEventTimeLine(ObjectObserver oObject)
-        {
-            var earliestPoint = _EventTimeLine.LastOrDefault(e => e.AffectedObjects.Contains(oObject)) ??
-                            _EventTimeLine.FirstOrDefault();
-
-            if (earliestPoint != null)
-            {
-                _EventTimeLine.UndoChangesTo(oObject, earliestPoint);
-            }
-        }
-
         private void UndoChangesTo(ObjectObserver oObject, string propertyName)
         {
+            var oCollection = this.GetObserver(oObject, propertyName);
+            _CancelChangesCommand.Invoke(oCollection);
+
             var oObjectProp = oObject.Properties[propertyName] as ObjectPropertyObserver;
             if (oObjectProp != null)
             {

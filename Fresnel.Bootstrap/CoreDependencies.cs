@@ -90,6 +90,11 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.Core.Commands.SaveObjectCommand),
                 typeof(Fresnel.Core.Commands.SearchCommand),
                 
+                typeof(Fresnel.Core.Commands.CancelChangesCommand),
+                typeof(Fresnel.Core.Commands.UndoSetPropertyCommand),
+                typeof(Fresnel.Core.Commands.UndoAddToCollectionCommand),
+                typeof(Fresnel.Core.Commands.UndoRemoveFromCollectionCommand),
+
                 typeof(Fresnel.Core.Persistence.NullPersistenceService),
             };
         }

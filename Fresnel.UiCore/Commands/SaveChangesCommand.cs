@@ -14,8 +14,6 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class SaveChangesCommand : ICommand
     {
         private ObserverCache _ObserverCache;
-        //private Func<ObjectObserver, SaveObjectEvent> _SaveObjectEventFactory;
-        //private EventTimeLine _EventTimeLine;
         private Core.Commands.SaveObjectCommand _SaveObjectCommand;
         private AbstractObjectVmBuilder _ObjectVmBuilder;
         private ModificationsVmBuilder _ModificationsVmBuilder;
@@ -25,8 +23,6 @@ namespace Envivo.Fresnel.UiCore.Commands
         public SaveChangesCommand
             (
             ObserverCache observerCache,
-            //Func<ObjectObserver, SaveObjectEvent> saveObjectEventFactory,
-            //EventTimeLine eventTimeLine,
             Core.Commands.SaveObjectCommand saveObjectCommand,
             AbstractObjectVmBuilder objectVmBuilder,
             ModificationsVmBuilder modificationsVmBuilder,
@@ -35,8 +31,6 @@ namespace Envivo.Fresnel.UiCore.Commands
         )
         {
             _ObserverCache = observerCache;
-            //_SaveObjectEventFactory = saveObjectEventFactory;
-            //_EventTimeLine = eventTimeLine;
             _SaveObjectCommand = saveObjectCommand;
             _ObjectVmBuilder = objectVmBuilder;
             _ModificationsVmBuilder = modificationsVmBuilder;
@@ -53,15 +47,6 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
-
-                //var saveEvent = _SaveObjectEventFactory(oObject);
-                //_EventTimeLine.Add(saveEvent);
-
-                //var saveResult = (ActionResult<ObjectObserver[]>)saveEvent.Do();
-                //if (saveResult.Failed)
-                //{
-                //    throw saveResult.FailureException;
-                //}
 
                 var saveResult = _SaveObjectCommand.Invoke(oObject);
                 if (saveResult.Failed)

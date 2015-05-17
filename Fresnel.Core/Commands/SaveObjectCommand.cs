@@ -20,6 +20,7 @@ namespace Envivo.Fresnel.Core.Commands
         private ObserverCache _ObserverCache;
         private ConsistencyCheckCommand _ConsistencyCheckCommand;
         private DirtyObjectNotifier _DirtyObjectNotifier;
+        private EventTimeLine _EventTimeLine;
 
         public SaveObjectCommand
         (
@@ -27,7 +28,8 @@ namespace Envivo.Fresnel.Core.Commands
             TemplateCache templateCache,
             ObserverCache observerCache,
             ConsistencyCheckCommand consistencyCheckCommand,
-            DirtyObjectNotifier dirtyObjectNotifier
+            DirtyObjectNotifier dirtyObjectNotifier,
+            EventTimeLine eventTimeLine
         )
         {
             _PersistenceService = persistenceService;
@@ -35,6 +37,7 @@ namespace Envivo.Fresnel.Core.Commands
             _ObserverCache = observerCache;
             _ConsistencyCheckCommand = consistencyCheckCommand;
             _DirtyObjectNotifier = dirtyObjectNotifier;
+            _EventTimeLine = eventTimeLine;
         }
 
         public ActionResult<ObjectObserver[]> Invoke(ObjectObserver oObj)
@@ -63,6 +66,9 @@ namespace Envivo.Fresnel.Core.Commands
                                     .ToArray();
 
             var savedItemCount = _PersistenceService.SaveChanges(newEntities, dirtyEntities);
+
+            var saveEvent = new SaveObjectEvent(oObj);
+            _EventTimeLine.Add(saveEvent);
 
             foreach (var savedObj in objectsToPersist)
             {

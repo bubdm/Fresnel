@@ -14,8 +14,6 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ObserverCache _ObserverCache;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private Core.Commands.RemoveFromCollectionCommand _RemoveFromCollectionCommand;
-        //private Func<ObjectPropertyObserver, ObjectObserver, RemoveFromCollectionEvent> _RemoveFromCollectionEventFactory;
-        //private EventTimeLine _EventTimeLine;
         private ModificationsVmBuilder _ModificationsBuilder;
         private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
@@ -25,8 +23,6 @@ namespace Envivo.Fresnel.UiCore.Commands
             ObserverCache observerCache,
             Core.Commands.GetPropertyCommand getPropertyCommand,
             Core.Commands.RemoveFromCollectionCommand removeFromCollectionCommand,
-            //Func<ObjectPropertyObserver, ObjectObserver, RemoveFromCollectionEvent> removeFromCollectionEventFactory,
-            //EventTimeLine eventTimeLine,
             ModificationsVmBuilder modificationsBuilder,
             ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
@@ -34,8 +30,6 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             _ObserverCache = observerCache;
             _GetPropertyCommand = getPropertyCommand;
-            //_RemoveFromCollectionEventFactory = removeFromCollectionEventFactory;
-            //_EventTimeLine = eventTimeLine;
             _RemoveFromCollectionCommand = removeFromCollectionCommand;
             _ModificationsBuilder = modificationsBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
@@ -52,15 +46,6 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var oProp = (ObjectPropertyObserver)oParent.Properties[request.CollectionPropertyName];
                 var oCollection = this.GetCollectionObserver(oParent, oProp);
                 var oObject = this.GetObserver(request.ElementID);
-
-                //var removeEvent = _RemoveFromCollectionEventFactory(oProp, oObject);
-                //var removeOperation = (ActionResult<bool>)removeEvent.Do();
-                //if (removeOperation.Failed)
-                //{
-                //    throw removeOperation.FailureException;
-                //}
-
-                //_EventTimeLine.Add(removeEvent);
 
                 var result = _RemoveFromCollectionCommand.Invoke(oProp, oCollection, oObject);
                 if (result == false)

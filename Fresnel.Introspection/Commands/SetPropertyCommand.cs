@@ -22,20 +22,15 @@ namespace Envivo.Fresnel.Introspection.Commands
         {
             var realType = _RealTypeResolver.GetRealType(obj);
             var tClass = (ClassTemplate)_TemplateCache.GetTemplate(realType);
+
             this.Invoke(tClass, obj, propertyName, value);
         }
-
+        
         /// <summary>
         /// Sets the value of the property on the given object
         /// </summary>
         public void Invoke(ClassTemplate tClass, object obj, string propertyName, object value)
         {
-            if (tClass == null)
-                throw new ArgumentNullException("tClass");
-
-            if (obj == null)
-                throw new ArgumentNullException("obj");
-
             if (propertyName == null)
                 throw new ArgumentNullException("propertyName");
 
@@ -46,7 +41,24 @@ namespace Envivo.Fresnel.Introspection.Commands
                 throw new ArgumentException(msg);
             }
 
-            tProp.SetProperty(obj, value);
+            this.Invoke(tClass, obj, tProp, value);
+        }
+
+        /// <summary>
+        /// Sets the value of the property on the given object
+        /// </summary>
+        public void Invoke(ClassTemplate tClass, object obj, PropertyTemplate tProperty, object value)
+        {
+            if (tClass == null)
+                throw new ArgumentNullException("tClass");
+
+            if (obj == null)
+                throw new ArgumentNullException("obj");
+
+            if (tProperty == null)
+                throw new ArgumentNullException("tProperty");
+
+            tProperty.SetProperty(obj, value);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Envivo.Fresnel.Core.Commands
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private Fresnel.Introspection.Commands.GetPropertyCommand _GetCommand;
         private Fresnel.Introspection.Commands.SetPropertyCommand _SetCommand;
+        private EventTimeLine _EventTimeLine;
 
         public SetPropertyCommand
             (
@@ -18,7 +19,8 @@ namespace Envivo.Fresnel.Core.Commands
             ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier,
             Fresnel.Introspection.Commands.GetPropertyCommand getCommand,
-            Fresnel.Introspection.Commands.SetPropertyCommand setCommand
+            Fresnel.Introspection.Commands.SetPropertyCommand setCommand,
+            EventTimeLine eventTimeLine
             )
         {
             _ObserverCache = observerCache;
@@ -27,6 +29,8 @@ namespace Envivo.Fresnel.Core.Commands
 
             _GetCommand = getCommand;
             _SetCommand = setCommand;
+
+            _EventTimeLine = eventTimeLine;
         }
 
         public void Invoke(BasePropertyObserver oProperty, BaseObjectObserver oValue)
@@ -40,6 +44,7 @@ namespace Envivo.Fresnel.Core.Commands
             this.PerformValidations(oProperty, oValue);
 
             var oOuterObject = oProperty.OuterObject;
+            var previousValue = _GetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name);
 
             _SetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name, oValue.RealObject);
 
@@ -51,6 +56,12 @@ namespace Envivo.Fresnel.Core.Commands
             }
 
             _DirtyObjectNotifier.PropertyHasChanged(oProperty);
+
+            var oPreviousValue = previousValue != null ?
+                                    _ObserverCache.GetObserver(previousValue) :
+                                    null;
+            var setPropertyEvent = new SetPropertyEvent(oProperty, oPreviousValue);
+            _EventTimeLine.Add(setPropertyEvent);
 
             // Make sure we know of any changes in the object graph:
             var oObjectProperty = oProperty as ObjectPropertyObserver;

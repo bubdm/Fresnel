@@ -8,13 +8,11 @@ using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Core.Commands
 {
-    public interface IFresnelEvent
+    public interface IUndoCommand
     {
-        DateTime OccurredAt { get; }
+        bool CanHandle(IFresnelEvent eventToUndo);
 
-        long SequenceNo { get; }
-
-        IEnumerable<ObjectObserver> AffectedObjects { get; }
+        ActionResult Invoke(IFresnelEvent eventToUndo);
     }
 
 }

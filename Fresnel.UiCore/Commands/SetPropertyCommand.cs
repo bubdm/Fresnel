@@ -17,7 +17,6 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ObserverCache _ObserverCache;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.SetPropertyCommand _SetPropertyCommand;
-        //private EventTimeLine _EventTimeLine;
         private ModificationsVmBuilder _ModificationsBuilder;
         private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
@@ -25,7 +24,6 @@ namespace Envivo.Fresnel.UiCore.Commands
         public SetPropertyCommand
             (
             Core.Commands.SetPropertyCommand setPropertyCommand,
-            //EventTimeLine eventTimeLine,
             ObserverCache observerCache,
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsBuilder,
@@ -34,7 +32,6 @@ namespace Envivo.Fresnel.UiCore.Commands
             )
         {
             _SetPropertyCommand = setPropertyCommand;
-            //_EventTimeLine = eventTimeLine;
             _ObserverCache = observerCache;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
@@ -67,14 +64,6 @@ namespace Envivo.Fresnel.UiCore.Commands
                     throw new UiCoreException("Please provide a valid value for " + oProp.Template.FriendlyName);
                 }
 
-                //var setPropertyEvent = _SetPropertyEventFactory(oProp, oValue);
-                //var setAction = setPropertyEvent.Do();
-                //if (setAction.Failed)
-                //{
-                //    throw setAction.FailureException;
-                //}
-
-                //_EventTimeLine.Add(setPropertyEvent);
                 _SetPropertyCommand.Invoke(oProp, oValue);
 
                 // Other objects may have been affected by this property's value:

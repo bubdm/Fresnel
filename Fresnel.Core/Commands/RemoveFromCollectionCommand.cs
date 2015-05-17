@@ -3,6 +3,7 @@ using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.Utils;
+using System;
 using System.Linq;
 
 namespace Envivo.Fresnel.Core.Commands
@@ -14,6 +15,7 @@ namespace Envivo.Fresnel.Core.Commands
         private CollectionRemoveMethodIdentifier _CollectionRemoveMethodIdentifier;
         private Introspection.Commands.InvokeMethodCommand _InvokeMethodCommand;
         private Introspection.Commands.RemoveFromCollectionCommand _RemoveCommand;
+        private EventTimeLine _EventTimeLine;
 
         public RemoveFromCollectionCommand
             (
@@ -21,7 +23,8 @@ namespace Envivo.Fresnel.Core.Commands
             DirtyObjectNotifier dirtyObjectNotifier,
             CollectionRemoveMethodIdentifier collectionRemoveMethodIdentifier,
             Introspection.Commands.InvokeMethodCommand invokeMethodCommand,
-            Introspection.Commands.RemoveFromCollectionCommand removeCommand
+            Introspection.Commands.RemoveFromCollectionCommand removeCommand,
+            EventTimeLine eventTimeLine
             )
         {
             _ObserverCacheSynchroniser = observerCacheSynchroniser;
@@ -29,6 +32,7 @@ namespace Envivo.Fresnel.Core.Commands
             _CollectionRemoveMethodIdentifier = collectionRemoveMethodIdentifier;
             _InvokeMethodCommand = invokeMethodCommand;
             _RemoveCommand = removeCommand;
+            _EventTimeLine = eventTimeLine;
         }
 
         public bool Invoke(ObjectPropertyObserver oCollectionProp, CollectionObserver oCollection, ObjectObserver oItemToRemove)
@@ -55,6 +59,9 @@ namespace Envivo.Fresnel.Core.Commands
             if (passed)
             {
                 _DirtyObjectNotifier.ObjectWasRemovedFromCollection(oItemToRemove, oCollection);
+
+                var removeEvent = new RemoveFromCollectionEvent(oCollectionProp, oCollection, oItemToRemove);
+                _EventTimeLine.Add(removeEvent);
 
                 // Make sure we know of any changes in the object graph:
                 _ObserverCacheSynchroniser.SyncAll();
