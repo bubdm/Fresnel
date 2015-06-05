@@ -199,6 +199,8 @@ module FresnelApp {
                 promise.then((promiseResult) => {
                     var response = promiseResult.data;
 
+                    appService.identityMap.merge(response.Modifications);
+
                     var obj = response.ReturnValue;
                     if (obj) {
                         var existingObj = appService.identityMap.getObject(obj.ID);

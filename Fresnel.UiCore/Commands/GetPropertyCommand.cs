@@ -1,8 +1,10 @@
-﻿using Envivo.Fresnel.Core.Observers;
+﻿using Envivo.Fresnel.Core;
+using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.UiCore.Model;
-
+using Envivo.Fresnel.UiCore.Model.Changes;
 using Envivo.Fresnel.Utils;
 using System;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
@@ -11,6 +13,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private ObserverCache _ObserverCache;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
+        private ModificationsVmBuilder _ModificationsVmBuilder;
         private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
@@ -19,6 +22,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             Core.Commands.GetPropertyCommand getPropertyCommand,
             ObserverCache observerCache,
             AbstractObjectVmBuilder objectVMBuilder,
+            ModificationsVmBuilder modificationsVmBuilder,
             ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
         )
@@ -26,6 +30,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _GetPropertyCommand = getPropertyCommand;
             _ObserverCache = observerCache;
             _ObjectVMBuilder = objectVMBuilder;
+            _ModificationsVmBuilder = modificationsVmBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
             _Clock = clock;
         }
@@ -34,6 +39,8 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             try
             {
+                var startedAt = SequentialIdGenerator.Next;
+
                 ObjectVM result = null;
 
                 var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
@@ -49,6 +56,11 @@ namespace Envivo.Fresnel.UiCore.Commands
                     result = _ObjectVMBuilder.BuildFor(oReturnValue);
                 }
 
+                // The Property's lazy-state may have changed, so we need to send the change to the client:
+                var modifications = oObjectProp != null ?
+                                    _ModificationsVmBuilder.BuildFrom(oObjectProp) :
+                                    null;
+
                 // Done:
                 var infoVM = new MessageVM()
                 {
@@ -60,7 +72,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     Passed = true,
                     ReturnValue = result,
-                    Messages = new MessageVM[] { infoVM }
+                    Messages = new MessageVM[] { infoVM },
+                    Modifications = modifications
                 };
             }
             catch (Exception ex)

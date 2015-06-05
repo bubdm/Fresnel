@@ -68,6 +68,23 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
             return result;
         }
 
+        public ModificationsVM BuildFrom(ObjectPropertyObserver oProperty)
+        {
+            var propertyChange = new PropertyChange()
+            {
+                Property = oProperty,
+            };
+
+            var propertyChangeVM = this.CreatePropertyChange(propertyChange);
+
+            var result = new ModificationsVM()
+            {
+                PropertyChanges = new PropertyChangeVM[] { propertyChangeVM }
+            };
+
+            return result;
+        }
+
         public ModificationsVM BuildFrom(MethodObserver oMethod, ParameterObserver oParam)
         {
             var parameterChange = new ParameterChangeVM()
