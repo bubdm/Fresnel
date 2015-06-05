@@ -72,7 +72,6 @@ namespace Envivo.Fresnel.UiCore.Commands
                     this.UndoChangesTo(oObjectToCancel);
                 }
 
-
                 var cancelledObjectVMs = new List<ObjectVM>();
                 var oCollection = oObjectToCancel as CollectionObserver;
                 if (oCollection != null)
@@ -161,14 +160,14 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private ObjectVM[] ResetDirtyCollectionModifications(CollectionObserver oCollection)
         {
-            var resetObjects = new List<ObjectObserver>();
+            var affectedObjects = new List<ObjectObserver>();
 
             var addedItems = oCollection.ChangeTracker.AddedItems.ToArray();
             foreach (var item in addedItems)
             {
                 var oItem = (ObjectObserver)_ObserverCache.GetObserver(item.Element);
                 _DirtyObjectNotifier.ObjectIsNoLongerDirty(oItem);
-                resetObjects.Add(oItem);
+                affectedObjects.Add(oItem);
             }
 
             var removedItems = oCollection.ChangeTracker.RemovedItems.ToArray();
@@ -176,25 +175,26 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var oItem = (ObjectObserver)_ObserverCache.GetObserver(item.Element);
                 _DirtyObjectNotifier.ObjectIsNoLongerDirty(oItem);
-                resetObjects.Add(oItem);
+                affectedObjects.Add(oItem);
             }
 
-            var cancelledObjectVMs = resetObjects.Select(o => _ObjectVmBuilder.BuildFor(o)).ToArray();
-            return cancelledObjectVMs;
+            var affectedObjectVMs = affectedObjects.Select(o => _ObjectVmBuilder.BuildFor(o)).ToArray();
+            return affectedObjectVMs;
         }
 
         private ObjectVM[] ResetDirtyFlags(ObjectObserver oObject)
         {
             var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oObject, 99);
-            var objectsToReset = outerObjects
+            var affectedObjects = outerObjects
                                     .Where(o => o.Template.IsTrackable)
                                     .Where(o => o.ChangeTracker.IsDirty || o.ChangeTracker.HasDirtyObjectGraph)
-                                    .ToArray();
+                                    .ToList();
+            affectedObjects.Add(oObject);
 
             _DirtyObjectNotifier.ObjectIsNoLongerDirty(oObject);
 
-            var cancelledObjectVMs = objectsToReset.Select(o => _ObjectVmBuilder.BuildFor(o)).ToArray();
-            return cancelledObjectVMs;
+            var affectedObjectVMs = affectedObjects.Select(o => _ObjectVmBuilder.BuildFor(o)).ToArray();
+            return affectedObjectVMs;
         }
 
     }

@@ -16,7 +16,9 @@ namespace Envivo.Fresnel.Core.Commands
             )
         {
             this.Property = oProp;
-            this.PreviousValue = oPreviousValue;
+            this.PreviousValue = oPreviousValue != null ?
+                                    oPreviousValue.RealObject :
+                                    null;
 
             this.AffectedObjects = new ObjectObserver[] { Property.OuterObject };
         }
@@ -27,7 +29,7 @@ namespace Envivo.Fresnel.Core.Commands
 
         public BasePropertyObserver Property { get; private set; }
 
-        public BaseObjectObserver PreviousValue { get; private set; }
+        public object PreviousValue { get; private set; }
 
         public IEnumerable<ObjectObserver> AffectedObjects { get; private set; }
 

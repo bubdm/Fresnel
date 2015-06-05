@@ -35,7 +35,7 @@ namespace Envivo.Fresnel.Core.Commands
             // NB: Do NOT re-use the Core Commands, as they will keep adding new Events to the EventTimeLine
             _SetPropertyCommand.Invoke(eventToUndo.Property.OuterObject.RealObject,
                                        eventToUndo.Property.Template.Name,
-                                       eventToUndo.PreviousValue.RealObject);
+                                       eventToUndo.PreviousValue);
             return ActionResult.Pass;
         }
     }

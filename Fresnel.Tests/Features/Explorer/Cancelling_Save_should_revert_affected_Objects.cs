@@ -32,6 +32,7 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
         private SessionVM _Session;
         private Order _orderPoco;
         private ObjectVM _Order;
+        private CancelChangesResponse _CancelChangesResponse;
 
         public void Given_the_session_is_already_started()
         {
@@ -106,8 +107,8 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
                     ObjectID = _orderPoco.PlacedBy.Address.ID,
                 };
 
-                var cancelResponse = _TestScopeContainer.Resolve<ExplorerController>().CancelChanges(cancelRequest);
-                Assert.IsTrue(cancelResponse.Passed);
+                _CancelChangesResponse = _TestScopeContainer.Resolve<ExplorerController>().CancelChanges(cancelRequest);
+                Assert.IsTrue(_CancelChangesResponse.Passed);
             }
         }
 
@@ -164,6 +165,14 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
                 var prop = address.Properties.Single(p => p.InternalName == LambdaExtensions.NameOf<Address>(x => x.PostalCode));
                 Assert.AreEqual(_orderPoco.PlacedBy.Address.PostalCode, prop.State.Value);
             }
+        }
+
+        public void And_then_the_Response_should_contain_the_affected_object()
+        {
+            var match = _CancelChangesResponse.CancelledObjects.Single(vm => vm.ID == _orderPoco.PlacedBy.Address.ID);
+
+            var prop = match.Properties.Single(p => p.InternalName == LambdaExtensions.NameOf<Address>(x => x.PostalCode));
+            Assert.AreEqual(_orderPoco.PlacedBy.Address.PostalCode, prop.State.Value);
         }
 
         [Test]
