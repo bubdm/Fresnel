@@ -832,7 +832,7 @@ var FresnelApp;
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                     // This will cause the new object to appear in a new Explorer:
-                    //$rootScope.$broadcast(UiEventType.ExplorerOpen, newObject);             
+                    $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.AddedItem);
                 });
             };
             $scope.addExistingItems = function (prop) {

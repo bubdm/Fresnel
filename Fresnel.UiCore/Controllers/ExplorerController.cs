@@ -100,7 +100,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpPost]
-        public GenericResponse AddNewItemToCollection([FromBody]CollectionAddNewRequest id)
+        public CollectionAddResponse AddNewItemToCollection([FromBody]CollectionAddNewRequest id)
         {
             var request = id;
             var response = _CollectionAddCommand.Invoke(request);

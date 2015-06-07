@@ -47,7 +47,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             _Clock = clock;
         }
 
-        public GenericResponse Invoke(CollectionAddNewRequest request)
+        public CollectionAddResponse Invoke(CollectionAddNewRequest request)
         {
             try
             {
@@ -71,16 +71,20 @@ namespace Envivo.Fresnel.UiCore.Commands
                 // Other objects may have been affected by the action:
                 _ObserverCache.ScanForChanges();
 
+                var addedItemVM = _ObjectVMBuilder.BuildFor(oResult);
+                var modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt);
+
                 var infoVM = new MessageVM()
                 {
                     IsSuccess = true,
                     OccurredAt = _Clock.Now,
                     Text = string.Concat("Created and added new ", oObject.Template.FriendlyName)
                 };
-                return new GenericResponse()
+                return new CollectionAddResponse()
                 {
                     Passed = true,
-                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
+                    AddedItem = addedItemVM,
+                    Modifications = modifications,
                     Messages = new MessageVM[] { infoVM }
                 };
             }
@@ -88,7 +92,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
 
-                return new GenericResponse()
+                return new CollectionAddResponse()
                 {
                     Failed = true,
                     Messages = errorVMs

@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Features\Explorer\Add_to_Collection.cs" />
     <Compile Include="Features\Explorer\Saving_transient_Aggregates.cs" />
     <Compile Include="TestScopeContainer.cs" />
     <Compile Include="AutoFixtureFactory.cs" />
