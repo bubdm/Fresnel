@@ -9,6 +9,8 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
     {
         bool IsTypeRecognised(Type objectType);
 
+        object CreateObject(Type objectType, object constructorArg);
+
         object GetObject(Type objectType, Guid id, string[] propertiesToInclude);
 
         IQueryable GetObjects(Type objectType, string[] propertiesToInclude);

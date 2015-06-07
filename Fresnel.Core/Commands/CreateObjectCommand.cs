@@ -16,6 +16,7 @@ namespace Envivo.Fresnel.Core.Commands
     public class CreateObjectCommand
     {
         private IEnumerable<IFactory> _DomainObjectFactories;
+        private IPersistenceService _PersistenceService;
         private Introspection.Commands.CreateObjectCommand _CreateObjectCommand;
 
         private TemplateCache _TemplateCache;
@@ -26,6 +27,7 @@ namespace Envivo.Fresnel.Core.Commands
         public CreateObjectCommand
         (
             IEnumerable<IFactory> domainObjectFactories,
+            IPersistenceService persistenceService,
             Introspection.Commands.CreateObjectCommand createObjectCommand,
 
             TemplateCache templateCache,
@@ -36,6 +38,7 @@ namespace Envivo.Fresnel.Core.Commands
         {
             _CreateObjectCommand = createObjectCommand;
             _DomainObjectFactories = domainObjectFactories;
+            _PersistenceService = persistenceService;
             _TemplateCache = templateCache;
             _ObserverCache = observerCache;
             _ObserverCacheSynchroniser = observerCacheSynchroniser;
@@ -48,10 +51,15 @@ namespace Envivo.Fresnel.Core.Commands
 
             // We have 3 strategies for creating the object:
             // 1) Try the Domain Factory (if it exists)
-            // 2) Try the IoC container
-            // 3) Try the class constructors
+            // 2) Try the PersistenceService
+            // 3) Try the IoC container
+            // 4) Try the class constructors
 
             var newInstance = this.CreateObjectUsingDomainFactory(tClass, constructorArg);
+            if (newInstance == null)
+            {
+                newInstance = this.CreateObjectUsingPersistenceService(tClass, constructorArg);
+            }
             if (newInstance == null)
             {
                 newInstance = _CreateObjectCommand.Invoke(tClass, constructorArg);
@@ -70,6 +78,14 @@ namespace Envivo.Fresnel.Core.Commands
             return oNewObject;
         }
 
+        private object CreateObjectUsingPersistenceService(ClassTemplate tClass, object constructorArg)
+        {
+            if (!_PersistenceService.IsTypeRecognised(tClass.RealType))
+                return null;
+
+            return _PersistenceService.CreateObject(tClass.RealType, constructorArg);
+        }
+
         private object CreateObjectUsingDomainFactory(ClassTemplate tClass, object constructorArg)
         {
             var genericFactory = typeof(IFactory<>);
@@ -86,23 +102,23 @@ namespace Envivo.Fresnel.Core.Commands
             if (constructorArg == null)
             {
                 // Find a zero-arg method that returns an object:
-                tCreateMethod  = tFactory.Methods.Values
-                                    .SingleOrDefault(m=> m.MethodInfo.GetParameters().Length == 0 && 
+                tCreateMethod = tFactory.Methods.Values
+                                    .SingleOrDefault(m => m.MethodInfo.GetParameters().Length == 0 &&
                                                          m.MethodInfo.ReturnType.IsDerivedFrom(tClass.RealType));
             }
             else
             {
                 // Find a method that accepts the arg and returns an object:
                 var ctorType = constructorArg.GetType();
-                tCreateMethod  = tFactory.Methods.Values
-                                    .SingleOrDefault(m=> m.MethodInfo.GetParameters().Length == 1 && 
-                                                         ctorType.IsDerivedFrom(m.MethodInfo.GetParameters()[0].ParameterType) && 
+                tCreateMethod = tFactory.Methods.Values
+                                    .SingleOrDefault(m => m.MethodInfo.GetParameters().Length == 1 &&
+                                                         ctorType.IsDerivedFrom(m.MethodInfo.GetParameters()[0].ParameterType) &&
                                                          m.MethodInfo.ReturnType.IsDerivedFrom(tClass.RealType));
             }
 
             if (tCreateMethod != null)
             {
-                var result = tCreateMethod.Invoke(factory, new object[]{constructorArg});
+                var result = tCreateMethod.Invoke(factory, new object[] { constructorArg });
                 return result;
             }
 

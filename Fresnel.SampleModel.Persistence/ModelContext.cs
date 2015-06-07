@@ -106,8 +106,14 @@ namespace Fresnel.SampleModel.Persistence
             return match != null;
         }
 
-        public object CreateObject(Type objectType)
+        public object CreateObject(Type objectType, object constructorArg)
         {
+            if (constructorArg != null)
+            {
+                // EF only creates objects using a parameterless ctor, so we can't continue:
+                return null;
+            }
+
             var set = this.Set(objectType);
 
             var newObject = set.Create();

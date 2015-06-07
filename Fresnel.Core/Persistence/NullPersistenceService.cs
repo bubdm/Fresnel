@@ -14,7 +14,7 @@ namespace Envivo.Fresnel.Core.Persistence
             return true;
         }
 
-        public object CreateObject(Type objectType)
+        public object CreateObject(Type objectType, object constructorArg)
         {
             return null;
         }

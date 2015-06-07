@@ -20,6 +20,11 @@ namespace Fresnel.SampleModel.Persistence
             return _ModelContext.IsKnownType(objectType);
         }
 
+        public object CreateObject(Type objectType, object constructorArg)
+        {
+            return _ModelContext.CreateObject(objectType, constructorArg);
+        }
+
         public object GetObject(Type objectType, Guid id)
         {
             return _ModelContext.GetObject(objectType, id, new string[0]);
