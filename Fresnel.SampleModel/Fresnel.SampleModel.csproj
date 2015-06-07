@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Northwind\Note.cs" />
+    <Compile Include="Northwind\Services\OrderPlacementService.cs" />
     <Compile Include="TestTypes\InternalClass.cs" />
     <Compile Include="TestTypes\MultiTypeFactory.cs" />
     <Compile Include="TestTypes\MultiType.cs" />

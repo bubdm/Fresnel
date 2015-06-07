@@ -6,6 +6,8 @@
 
         getClassHierarchy(): ng.IPromise<any>;
 
+        getDomainServicesHierarchy(): ng.IPromise<any>;
+
         createObject(request: CreateObjectRequest): ng.IPromise<any>;
 
         getObject(request: GetObjectRequest): ng.IPromise<any>;

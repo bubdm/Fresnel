@@ -39,6 +39,7 @@ namespace Envivo.Fresnel.CompositionRoot
             // These are created per request:
             return new Type[] {
                 typeof(Fresnel.UiCore.Commands.GetClassHierarchyCommand),
+                typeof(Fresnel.UiCore.Commands.GetDomainServicesHierarchyCommand),
                 typeof(Fresnel.UiCore.Commands.CleanupSessionCommand),
                 typeof(Fresnel.UiCore.Commands.CreateObjectCommand),
                 typeof(Fresnel.UiCore.Commands.GetObjectCommand),
@@ -75,6 +76,8 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.UiCore.Model.Changes.ModificationsVmBuilder),
                 typeof(Fresnel.UiCore.Model.Classes.ClassItemBuilder),
                 typeof(Fresnel.UiCore.Model.Classes.NamespacesBuilder),
+                typeof(Fresnel.UiCore.Model.Classes.DomainServicesBuilder),
+                typeof(Fresnel.UiCore.Model.Classes.DomainServiceItemBuilder),
                 typeof(Fresnel.UiCore.Model.TypeInfo.DataTypeToUiControlMapper),
                 typeof(Fresnel.UiCore.Model.TypeInfo.BooleanVmBuilder),
                 typeof(Fresnel.UiCore.Model.TypeInfo.BooleanValueFormatter),

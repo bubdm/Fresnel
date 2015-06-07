@@ -1295,6 +1295,16 @@ var FresnelApp;
             });
             return promise;
         };
+        FresnelService.prototype.getDomainServicesHierarchy = function () {
+            var _this = this;
+            this.blockUI.start("Setting up Services...");
+            var uri = "api/Toolbox/GetDomainServicesHierarchy";
+            var promise = this.http.get(uri);
+            promise.finally(function () {
+                _this.blockUI.stop();
+            });
+            return promise;
+        };
         FresnelService.prototype.createObject = function (request) {
             var _this = this;
             this.blockUI.start("Creating new object...");
@@ -1514,6 +1524,16 @@ var FresnelApp;
                     _this.classHierarchy = promiseResult.data;
                 });
             };
+            $scope.loadDomainServicesHierarchy = function () {
+                var _this = this;
+                var promise = fresnelService.getDomainServicesHierarchy();
+                promise.then(function (promiseResult) {
+                    var response = promiseResult.data;
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
+                    _this.domainServicesHierarchy = promiseResult.data;
+                });
+            };
             $scope.create = function (fullyQualifiedName) {
                 var request = requestBuilder.buildCreateObjectRequest(null, fullyQualifiedName);
                 var promise = fresnelService.createObject(request);
@@ -1537,6 +1557,7 @@ var FresnelApp;
             // This will run when the page loads:
             angular.element(document).ready(function () {
                 $scope.loadClassHierarchy();
+                $scope.loadDomainServicesHierarchy();
             });
         }
         ToolboxController.$inject = [

@@ -11,6 +11,8 @@
         </div>
     </li>
 
+    <!-- Domain Classes:  -->
+
     <li ng-repeat="namespace in classHierarchy" href="" class="treeview">
         <a href="#">
             <span>{{namespace.Name}} ({{namespace.Classes.length}})</span>
@@ -45,7 +47,7 @@
                             <li class="divider"></li>
 
                             <li ng-repeat="factoryMethod in item.FactoryMethods" class="">
-                                <a href="" a-disabled="!factoryMethod.IsEnabled" ng-click="invokeDependencyMethod(factoryMethod)" data-toggle="tooltip" title="{{factoryMethod.Tooltip}}">
+                                <a href="" a-disabled="!factoryMethod.IsEnabled" ng-click="invokeDependencyMethod(factoryMethod)" data-toggle="tooltip" title="{{factoryMethod.Description}}">
                                     <i class="fa fa-play"></i>{{factoryMethod.Name}}
                                 </a>
                             </li>
@@ -59,15 +61,41 @@
 
     </li>
 
+    <!-- Domain Services:  -->
 
-    <li class="treeview">
+    <li ng-repeat="namespace in domainServicesHierarchy" href="" class="treeview">
         <a href="#">
-            <i class="fa fa-gear"></i> <span>Services</span>
+            <span>{{namespace.Name}} ({{namespace.Classes.length}})</span>
             <i class="fa fa-angle-left pull-right"></i>
         </a>
+
         <ul class="treeview-menu">
-            <li><a href=""><i class="fa fa-ban"></i> Nothing here yet</a></li>
+            <li ng-repeat="item in namespace.Classes | filter:classNameFilter" class="active classItem">
+                <div class="">
+
+                    <div class="btn-group" ng-show="item.IsVisible">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                            &nbsp;
+                            <span class="classItemIcon {{item.Type}}-Icon" data-toggle="tooltip" title="{{item.Description}}">
+                                {{item.Name}}
+                            </span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-repeat="serviceMethod in item.ServiceMethods" class="">
+                                <a href="" a-disabled="!serviceMethod.IsEnabled" ng-click="invokeDependencyMethod(serviceMethod)" data-toggle="tooltip" title="{{serviceMethod.Description}}">
+                                    <i class="fa fa-play"></i>{{serviceMethod.Name}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </li>
         </ul>
+
     </li>
 
     <li class="treeview">

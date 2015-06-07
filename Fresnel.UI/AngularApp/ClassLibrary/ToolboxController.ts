@@ -2,6 +2,7 @@
 
     export class ToolboxController {
         public classHierarchy: Namespace[];
+        public domainServicesHierarchy: Namespace[];
 
         static $inject = [
             '$rootScope',
@@ -34,6 +35,19 @@
                 });
             }
 
+            $scope.loadDomainServicesHierarchy = function () {
+                var promise = fresnelService.getDomainServicesHierarchy();
+
+                promise.then((promiseResult) => {
+                    var response = promiseResult.data;
+
+                    appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
+
+                    this.domainServicesHierarchy = promiseResult.data;
+                });
+            }
+
             $scope.create = function (fullyQualifiedName: string) {
                 var request = requestBuilder.buildCreateObjectRequest(null, fullyQualifiedName);
                 var promise = fresnelService.createObject(request);
@@ -63,6 +77,7 @@
             // This will run when the page loads:
             angular.element(document).ready(function () {
                 $scope.loadClassHierarchy();
+                $scope.loadDomainServicesHierarchy();
             });
 
         }

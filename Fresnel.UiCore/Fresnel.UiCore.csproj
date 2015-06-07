@@ -60,6 +60,7 @@
     <Compile Include="Commands\CancelChangesRequest.cs" />
     <Compile Include="Commands\CancelChangesResponse.cs" />
     <Compile Include="Commands\CancelChangesCommand.cs" />
+    <Compile Include="Commands\GetDomainServicesHierarchyCommand.cs" />
     <Compile Include="Commands\InvokeMethodCommand.cs" />
     <Compile Include="Commands\SaveChangesResponse.cs" />
     <Compile Include="Commands\SearchResultsFilterApplier.cs" />
@@ -74,6 +75,8 @@
     <Compile Include="ExceptionMessagesBuilder.cs" />
     <Compile Include="Model\Changes\ParameterChangeVM.cs" />
     <Compile Include="Model\Changes\ObjectTitleChangeVM.cs" />
+    <Compile Include="Model\Classes\DomainServiceItemBuilder.cs" />
+    <Compile Include="Model\Classes\DomainServicesBuilder.cs" />
     <Compile Include="Model\MethodVM.cs" />
     <Compile Include="Model\SearchResultsVM.cs" />
     <Compile Include="Model\TypeInfo\DateTimeValueFormatter.cs" />

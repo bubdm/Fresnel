@@ -10,6 +10,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
     public class ToolboxController : ApiController
     {
         private GetClassHierarchyCommand _GetClassHierarchyCommand;
+        private GetDomainServicesHierarchyCommand _GetDomainServicesHierarchyCommand;
         private CreateObjectCommand _CreateObjectCommand;
         private InvokeMethodCommand _InvokeMethodCommand;
         private SearchObjectsCommand _SearchObjectsCommand;
@@ -17,12 +18,14 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public ToolboxController
             (
             GetClassHierarchyCommand getClassHierarchyCommand,
+            GetDomainServicesHierarchyCommand getDomainServicesHierarchyCommand,
             CreateObjectCommand createObjectCommand,
             InvokeMethodCommand invokeMethodCommand,
             SearchObjectsCommand searchObjectsCommand
             )
         {
             _GetClassHierarchyCommand = getClassHierarchyCommand;
+            _GetDomainServicesHierarchyCommand = getDomainServicesHierarchyCommand;
             _CreateObjectCommand = createObjectCommand;
             _InvokeMethodCommand = invokeMethodCommand;
             _SearchObjectsCommand = searchObjectsCommand;
@@ -32,6 +35,13 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public IEnumerable<Namespace> GetClassHierarchy()
         {
             var results = _GetClassHierarchyCommand.Invoke();
+            return results;
+        }
+
+        [HttpGet]
+        public IEnumerable<Namespace> GetDomainServicesHierarchy()
+        {
+            var results = _GetDomainServicesHierarchyCommand.Invoke();
             return results;
         }
 
@@ -57,5 +67,6 @@ namespace Envivo.Fresnel.UiCore.Controllers
             var result = _SearchObjectsCommand.Invoke(request);
             return result;
         }
+
     }
 }

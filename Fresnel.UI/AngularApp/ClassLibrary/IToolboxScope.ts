@@ -6,11 +6,15 @@
 
         classHierarchy: Namespace[];
 
+        domainServicesHierarchy: Namespace[];
+
         create(fullyQualifiedName: string);
 
         searchObjects(fullyQualifiedName: string);
 
         loadClassHierarchy();
+
+        loadDomainServicesHierarchy();
 
         invokeDependencyMethod(method: MethodVM);
     }

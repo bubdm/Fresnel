@@ -63,6 +63,9 @@ namespace Envivo.Fresnel.Core.Commands
 
                 var resultType = _RealTypeResolver.GetRealType(result);
                 var oResult = _ObserverCache.GetObserver(result, resultType);
+
+                // At this stage, is the object Persistent, or Transient?
+
                 return oResult;
             }
             finally

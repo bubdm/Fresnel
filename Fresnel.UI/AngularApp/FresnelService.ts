@@ -39,6 +39,19 @@
             return promise;
         }
 
+        getDomainServicesHierarchy(): ng.IPromise<any> {
+            this.blockUI.start("Setting up Services...");
+
+            var uri = "api/Toolbox/GetDomainServicesHierarchy";
+            var promise = this.http.get(uri);
+
+            promise.finally(() => {
+                this.blockUI.stop();
+            });
+
+            return promise;
+        }
+
         createObject(request: CreateObjectRequest): ng.IPromise<any> {
             this.blockUI.start("Creating new object...");
 
