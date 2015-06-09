@@ -35,6 +35,8 @@ namespace Envivo.Fresnel.SampleModel.Northwind.Services
                 Quantity = quantity
             };
 
+            order.OrderItems.Add(orderItem);
+
             return order;
         }
 
