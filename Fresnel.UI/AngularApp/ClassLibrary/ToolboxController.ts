@@ -39,12 +39,12 @@
                 var promise = fresnelService.getDomainServicesHierarchy();
 
                 promise.then((promiseResult) => {
-                    var response = promiseResult.data;
+                    var response: GetDomainServicesResponse = promiseResult.data;
 
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
-                    this.domainServicesHierarchy = promiseResult.data;
+                    this.domainServicesHierarchy = response.Namespaces;
                 });
             }
 

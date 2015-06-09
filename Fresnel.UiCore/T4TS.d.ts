@@ -13,6 +13,7 @@ declare module FresnelApp {
     /** Generated from Envivo.Fresnel.UiCore.Commands.CancelChangesRequest **/
     export interface CancelChangesRequest {
         ObjectID: any;
+        PropertyName: string;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.CancelChangesResponse **/
     export interface CancelChangesResponse extends FresnelApp.BaseCommandResponse {
@@ -61,6 +62,10 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.GenericResponse **/
     export interface GenericResponse extends FresnelApp.BaseCommandResponse {
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Commands.GetDomainServicesResponse **/
+    export interface GetDomainServicesResponse extends FresnelApp.BaseCommandResponse {
+        Namespaces: any;
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.GetObjectRequest **/
     export interface GetObjectRequest {

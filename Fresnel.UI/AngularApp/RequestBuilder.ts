@@ -99,7 +99,8 @@
 
         buildCancelChangesRequest(obj: ObjectVM) {
             var request: CancelChangesRequest = {
-                ObjectID: obj.ID
+                ObjectID: obj.ID,
+                PropertyName: null
             };
 
             return request;

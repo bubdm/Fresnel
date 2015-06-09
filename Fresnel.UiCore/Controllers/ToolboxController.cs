@@ -39,10 +39,10 @@ namespace Envivo.Fresnel.UiCore.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Namespace> GetDomainServicesHierarchy()
+        public GetDomainServicesResponse GetDomainServicesHierarchy()
         {
-            var results = _GetDomainServicesHierarchyCommand.Invoke();
-            return results;
+            var result = _GetDomainServicesHierarchyCommand.Invoke();
+            return result;
         }
 
         [HttpPost]

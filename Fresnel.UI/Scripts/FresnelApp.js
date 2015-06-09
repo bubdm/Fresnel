@@ -1213,7 +1213,8 @@ var FresnelApp;
         };
         RequestBuilder.prototype.buildCancelChangesRequest = function (obj) {
             var request = {
-                ObjectID: obj.ID
+                ObjectID: obj.ID,
+                PropertyName: null
             };
             return request;
         };
@@ -1531,7 +1532,7 @@ var FresnelApp;
                     var response = promiseResult.data;
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
-                    _this.domainServicesHierarchy = promiseResult.data;
+                    _this.domainServicesHierarchy = response.Namespaces;
                 });
             };
             $scope.create = function (fullyQualifiedName) {

@@ -22,21 +22,21 @@ namespace Envivo.Fresnel.UiCore.Commands
             _DomainServicesBuilder = domainServicesBuilder;
         }
 
-        public IEnumerable<Namespace> Invoke()
+        public GetDomainServicesResponse Invoke()
         {
             var assemblyReader = _AssemblyReaderMap.Values.First(a => !a.IsFrameworkAssembly);
-            var results = _DomainServicesBuilder.BuildFor(assemblyReader);
-            return results;
+            var result = _DomainServicesBuilder.BuildFor(assemblyReader);
+            return result;
         }
 
-        public IEnumerable<Namespace> Invoke(Assembly domainAssembly)
+        public GetDomainServicesResponse Invoke(Assembly domainAssembly)
         {
             var assemblyReader = _AssemblyReaderMap.TryGetValueOrNull(domainAssembly);
             if (assemblyReader == null)
                 return null;
 
-            var results = _DomainServicesBuilder.BuildFor(assemblyReader);
-            return results;
+            var result = _DomainServicesBuilder.BuildFor(assemblyReader);
+            return result;
         }
     }
 }
