@@ -183,7 +183,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
                 ObjectID = oObject.ID,
                 IsTransient = changeTracker.IsTransient,
                 IsPersistent = changeTracker.IsPersistent,
-                IsDirty = changeTracker.IsDirty,
+                IsDirty = changeTracker.IsTransient || changeTracker.IsDirty,
                 HasDirtyChildren = changeTracker.HasDirtyObjectGraph,
             };
         }
