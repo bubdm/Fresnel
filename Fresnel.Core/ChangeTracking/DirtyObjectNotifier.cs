@@ -98,9 +98,11 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             {
                 var outerChangeTracker = outerObject.ChangeTracker;
                 outerChangeTracker.RemoveFromDirtyObjectGraph(oObject);
-                if (!outerChangeTracker.IsDirty && !outerChangeTracker.HasDirtyObjectGraph)
+
+                var isOuterObjectNoLongerDirty = !outerChangeTracker.IsDirty && !outerChangeTracker.HasDirtyObjectGraph;
+                if (isOuterObjectNoLongerDirty)
                 {
-                    // Ensure the status is cascaded up the chain:
+                    // Ensure the Outer Object's status is cascaded up the chain:
                     this.ObjectIsNoLongerDirty(outerObject);
                 }
             }

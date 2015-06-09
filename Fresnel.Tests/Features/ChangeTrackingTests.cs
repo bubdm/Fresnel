@@ -102,7 +102,8 @@ namespace Envivo.Fresnel.Tests.Features
                 var invokeResult = controller.InvokeMethod(invokeRequest);
 
                 // Assert:
-                Assert.AreEqual(2, invokeResult.Modifications.NewObjects.Count());
+                // 1x Employee, 1x List'<Note>, 2x Notes:
+                Assert.AreEqual(4, invokeResult.Modifications.NewObjects.Count());
             }
         }
 
@@ -241,8 +242,10 @@ namespace Envivo.Fresnel.Tests.Features
                 var setResult = controller.SetProperty(request);
 
                 // Assert:
-                Assert.AreEqual(1, setResult.Modifications.ObjectTitleChanges.Count());
-                Assert.AreEqual(request.NonReferenceValue, setResult.Modifications.ObjectTitleChanges.First().Title);
+                Assert.AreEqual(2, setResult.Modifications.ObjectTitleChanges.Count());
+
+                var matchingModification = setResult.Modifications.ObjectTitleChanges.Single(m => m.ObjectID == request.ObjectID);
+                Assert.AreEqual(request.NonReferenceValue, matchingModification.Title);
             }
         }
 

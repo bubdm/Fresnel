@@ -54,12 +54,26 @@ namespace Envivo.Fresnel.UiCore
 
             try
             {
+                var isSafeToRead = true;
                 var oObjectProp = oProp as ObjectPropertyObserver;
-                if (oObjectProp != null && oObjectProp.IsLazyLoadPending)
+
+                if (oObjectProp != null && oObjectProp.Template.IsCollection)
                 {
                     // Do nothing - We don't want to accidentally trigger a lazy load
+                    isSafeToRead = false;
                 }
-                else
+                else if (oObjectProp != null && oProp.OuterObject.ChangeTracker.IsTransient)
+                {
+                    oObjectProp.IsLazyLoaded = true;
+                    isSafeToRead = true;
+                }
+                else if (oObjectProp != null && oObjectProp.IsLazyLoadPending)
+                {
+                    // Do nothing - We don't want to accidentally trigger a lazy load
+                    isSafeToRead = false;
+                }
+
+                if (isSafeToRead)
                 {
                     realValue = tProp.GetProperty(oProp.OuterObject.RealObject);
                 }

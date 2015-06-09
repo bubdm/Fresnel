@@ -125,7 +125,6 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
                 Assert.IsNotNull(getResponse.ReturnValue);
 
                 var order = getResponse.ReturnValue;
-                Assert.IsFalse(order.DirtyState.IsDirty);
                 Assert.IsFalse(order.DirtyState.HasDirtyChildren);
             }
         }

@@ -145,7 +145,6 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
                 Assert.IsNotNull(getPropertyResponse.ReturnValue);
 
                 var collectionVM = (CollectionVM)getPropertyResponse.ReturnValue;
-                Assert.IsFalse(collectionVM.DirtyState.IsDirty);
                 Assert.IsFalse(collectionVM.DirtyState.HasDirtyChildren);
 
                 var matchingChild = collectionVM.Items.SingleOrDefault(i => i.ID == _OrderItem.ID);

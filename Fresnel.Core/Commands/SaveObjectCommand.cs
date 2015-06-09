@@ -46,7 +46,7 @@ namespace Envivo.Fresnel.Core.Commands
             var objectsToPersist = _ObserverCache
                                         .GetAllObservers()
                                         .Where(o => o.Template.IsTrackable)
-                                        .Where(o => o.ChangeTracker.IsDirty || o.ChangeTracker.HasDirtyObjectGraph)
+                                        .Where(o => o.ChangeTracker.IsTransient || o.ChangeTracker.IsDirty || o.ChangeTracker.HasDirtyObjectGraph)
                                         .ToArray();
 
             // Check that all entities are consistent:
@@ -58,9 +58,9 @@ namespace Envivo.Fresnel.Core.Commands
 
             // Now save:
             var newEntities = objectsToPersist
-                                    .Where(o=> o.ChangeTracker.IsTransient)
+                                    .Where(o => o.ChangeTracker.IsTransient)
                                     .Select(o => o.RealObject).ToArray();
-            
+
             var dirtyEntities = objectsToPersist.Select(o => o.RealObject)
                                     .Except(newEntities)
                                     .ToArray();

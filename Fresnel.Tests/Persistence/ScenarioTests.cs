@@ -43,11 +43,13 @@ namespace Envivo.Fresnel.Tests.Persistence
         [Test]
         public void ShouldAddOrderItemToNewOrder()
         {
-            // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
+                // Arrange:
                 var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
                 var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                observerCache.CleanUp();
 
                 // Act:
                 var createRequest = new CreateObjectRequest()
@@ -90,11 +92,13 @@ namespace Envivo.Fresnel.Tests.Persistence
         [Test]
         public void ShouldAddOrderItemToExistingOrder()
         {
-            // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
+                // Arrange:
                 var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
                 var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
+                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                observerCache.CleanUp();
 
                 // Act:
                 var searchRequest = new SearchObjectsRequest()

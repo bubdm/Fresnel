@@ -29,6 +29,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
             ObjectObserver oObject
             )
         {
+            this.IsTransient = true;
             _OuterObjectsIdentifier = outerObjectsIdentifier;
             _oObject = oObject;
         }
@@ -54,7 +55,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         }
 
         /// <summary>
-        /// Determines if the associated Object is dirty. This does NOT include associated dirty objects.
+        /// Determines if the associated Object was changed/added/removed. This does NOT include associated dirty objects.
         /// </summary>
         public virtual bool IsDirty
         {
@@ -69,9 +70,6 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 if (this.IsMarkedForRemoval)
                     return true;
 
-                if (this.IsTransient)
-                    return true;
-
                 return false;
             }
             set
@@ -83,7 +81,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// <summary>
         /// Determines if the associated Object is a brand new instance, and doesn't exist in the Repository
         /// </summary>
-        public bool IsTransient { get; set; }
+        public virtual bool IsTransient { get; set; }
 
         public bool IsPersistent
         {
@@ -182,7 +180,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// <remarks></remarks>
         internal virtual void ResetDirtyFlags()
         {
-            this.IsTransient = false;
+            //this.IsTransient = false;
             _HasLocalChanges = false;
 
             _ObjectPropertiesTracker.DetermineInitialState();

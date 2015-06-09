@@ -33,8 +33,10 @@ namespace Envivo.Fresnel.Tests.Domain
 
                 // Act:
                 var observer = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+                Assert.AreSame(person, observer.RealObject);
 
                 // Assert:
+                Assert.IsTrue(observer.ChangeTracker.IsTransient);
                 Assert.IsFalse(observer.ChangeTracker.IsDirty);
             }
         }
@@ -52,6 +54,8 @@ namespace Envivo.Fresnel.Tests.Domain
                 var person = _Fixture.Create<Person>();
 
                 var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+                Assert.AreSame(person, oObject.RealObject);
+
                 var propName = LambdaExtensions.NameOf<Person>(x => x.FirstName);
                 var oProp = oObject.Properties[propName];
                 var oValue = observerCache.GetObserver(_Fixture.Create<string>(), typeof(string));
@@ -92,10 +96,12 @@ namespace Envivo.Fresnel.Tests.Domain
                 var getCommand = _TestScopeContainer.Resolve<GetPropertyCommand>();
                 var addCommand = _TestScopeContainer.Resolve<AddToCollectionCommand>();
 
-                observerCache.CleanUp(); 
+                observerCache.CleanUp();
                 var person = _Fixture.Create<Person>();
 
                 var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+                Assert.AreSame(person, oObject.RealObject);
+
                 var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
                 var oProp = (ObjectPropertyObserver)oObject.Properties[propName];
                 var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
@@ -115,7 +121,7 @@ namespace Envivo.Fresnel.Tests.Domain
         }
 
         [Test]
-        public void ShouldDetectRemoveFromCollection()
+        public void ShouldRevertDirtyStatusWhenTransientObjectIsAddedThenRemoved()
         {
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
@@ -130,22 +136,23 @@ namespace Envivo.Fresnel.Tests.Domain
                 person.Roles.Add(_Fixture.Create<Customer>());
                 person.Roles.Add(_Fixture.Create<Supplier>());
 
-                var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
-                var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
-                var oProp = (ObjectPropertyObserver)oObject.Properties[propName];
-                var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
+                var oPerson = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+                var rolesPropName = LambdaExtensions.NameOf<Person>(x => x.Roles);
+                var oRolesProp = (ObjectPropertyObserver)oPerson.Properties[rolesPropName];
+                var oRoles = (CollectionObserver)getCommand.Invoke(oRolesProp);
 
                 // Act:
                 var childObject = person.Roles.Last();
                 var oChildObject = (ObjectObserver)observerCache.GetObserver(childObject, childObject.GetType());
 
-                var result = removeCommand.Invoke(oProp, oCollection, oChildObject);
+                var result = removeCommand.Invoke(oRolesProp, oRoles, oChildObject);
 
                 // Assert:
-                Assert.IsTrue(oChildObject.ChangeTracker.IsDirty);
-                Assert.IsTrue(oChildObject.ChangeTracker.IsMarkedForRemoval);
-                Assert.IsTrue(oCollection.ChangeTracker.IsDirty);
-                Assert.IsTrue(oObject.ChangeTracker.HasDirtyObjectGraph);
+                Assert.IsTrue(oChildObject.ChangeTracker.IsTransient);
+                Assert.IsFalse(oChildObject.ChangeTracker.IsDirty);
+                Assert.IsFalse(oChildObject.ChangeTracker.IsMarkedForRemoval, "The removed child is transient AND detached from the collection, so doesn't need saving");
+                Assert.IsFalse(oRoles.ChangeTracker.IsDirty);
+                Assert.IsFalse(oPerson.ChangeTracker.HasDirtyObjectGraph);
             }
         }
 
@@ -161,7 +168,7 @@ namespace Envivo.Fresnel.Tests.Domain
                 var addCommand = _TestScopeContainer.Resolve<AddToCollectionCommand>();
                 var removeCommand = _TestScopeContainer.Resolve<RemoveFromCollectionCommand>();
 
-                observerCache.CleanUp(); 
+                observerCache.CleanUp();
                 var person = _Fixture.Create<Person>();
                 person.Roles.Add(_Fixture.Create<Employee>());
                 person.Roles.Add(_Fixture.Create<Customer>());
@@ -261,7 +268,7 @@ namespace Envivo.Fresnel.Tests.Domain
                 dirtyNotifier.ObjectIsNoLongerDirty(oOrderItem);
 
                 // Now the chain of objects should be clean:
-                Assert.IsFalse(oOrderItem.ChangeTracker.IsDirty);
+                Assert.IsTrue(oOrderItem.ChangeTracker.IsTransient);
                 Assert.IsFalse(oOrderItem.ChangeTracker.IsMarkedForAddition);
                 Assert.IsFalse(oOrderItems.ChangeTracker.HasDirtyObjectGraph);
                 Assert.IsFalse(oOrder.ChangeTracker.HasDirtyObjectGraph);

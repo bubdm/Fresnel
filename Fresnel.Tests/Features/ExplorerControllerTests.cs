@@ -141,6 +141,7 @@ namespace Envivo.Fresnel.Tests.Features
                 obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
                 var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+                Assert.AreSame(obj, oObject.RealObject);
 
                 // Make sure we start tracking the collection:
                 var getRequest = new GetPropertyRequest()
@@ -164,11 +165,12 @@ namespace Envivo.Fresnel.Tests.Features
 
                 // Assert:
                 Assert.IsTrue(addResponse.Passed);
-                Assert.AreEqual(1, addResponse.Modifications.NewObjects.Count());
+                Assert.AreEqual(2, addResponse.Modifications.NewObjects.Count());
                 Assert.AreEqual(1, addResponse.Modifications.CollectionAdditions.Count());
+                Assert.AreEqual(9, obj.A_Collection.Count());
 
                 // Check that the domain object has changed:
-                var oChild = observerCache.GetObserverById(addResponse.Modifications.NewObjects.First().ID);
+                var oChild = observerCache.GetObserverById(addResponse.AddedItem.ID);
                 Assert.IsTrue(obj.A_Collection.Contains(oChild.RealObject));
             }
         }
@@ -213,7 +215,7 @@ namespace Envivo.Fresnel.Tests.Features
 
                 // Assert:
                 Assert.IsTrue(response.Passed);
-                Assert.AreEqual(0, response.Modifications.NewObjects.Count());
+                Assert.AreEqual(1, response.Modifications.NewObjects.Count());  // MultiType.An_Object
                 Assert.AreEqual(1, response.Modifications.CollectionAdditions.Count());
 
                 // Check that the domain object has changed:
@@ -256,7 +258,7 @@ namespace Envivo.Fresnel.Tests.Features
 
                 // Assert:
                 Assert.IsTrue(setResponse.Passed);
-                Assert.AreEqual(1, setResponse.Modifications.NewObjects.Count());
+                Assert.AreEqual(10, setResponse.Modifications.NewObjects.Count());
                 Assert.AreEqual(1, setResponse.Modifications.PropertyChanges.Count());
 
                 // Check that the domain object has changed:
