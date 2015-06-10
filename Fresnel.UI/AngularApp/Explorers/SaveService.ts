@@ -34,7 +34,7 @@
         }
 
         public isRequiredFor(obj: ObjectVM): boolean {
-            if (!obj.DirtyState.IsPersistent)
+            if (!obj.IsPersistable)
                 return false;
 
             return (obj.DirtyState.IsTransient || obj.DirtyState.IsDirty || obj.DirtyState.HasDirtyChildren);
