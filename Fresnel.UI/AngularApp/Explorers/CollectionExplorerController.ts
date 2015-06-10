@@ -65,7 +65,7 @@
                     $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     // This will cause the new object to appear in a new Explorer:
-                    $rootScope.$broadcast(UiEventType.ExplorerOpen, response.AddedItem);             
+                    $rootScope.$broadcast(UiEventType.ExplorerOpen, response.AddedItem, $scope.explorer);             
                 });
 
             };
