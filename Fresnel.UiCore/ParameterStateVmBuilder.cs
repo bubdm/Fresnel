@@ -17,18 +17,18 @@ namespace Envivo.Fresnel.UiCore
 
     public class ParameterStateVmBuilder
     {
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private BooleanValueFormatter _BooleanValueFormatter;
         private DateTimeValueFormatter _DateTimeValueFormatter;
 
         public ParameterStateVmBuilder
             (
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             BooleanValueFormatter booleanValueFormatter,
             DateTimeValueFormatter dateTimeValueFormatter
             )
         {
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _BooleanValueFormatter = booleanValueFormatter;
             _DateTimeValueFormatter = dateTimeValueFormatter;
         }
@@ -47,7 +47,7 @@ namespace Envivo.Fresnel.UiCore
                 }
                 else if (oParam.IsObject || oParam.IsCollection)
                 {
-                    var oValue = _ObserverCache.GetObserver(realValue, oParam.Template.ParameterType);
+                    var oValue = _ObserverRetriever.GetObserver(realValue, oParam.Template.ParameterType);
                     result.ReferenceValueID = oValue.ID;
                 }
                 else if (realValue is bool)

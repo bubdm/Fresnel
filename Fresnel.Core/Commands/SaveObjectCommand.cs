@@ -17,7 +17,7 @@ namespace Envivo.Fresnel.Core.Commands
     {
         private IPersistenceService _PersistenceService;
         private TemplateCache _TemplateCache;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private ConsistencyCheckCommand _ConsistencyCheckCommand;
         private DirtyObjectNotifier _DirtyObjectNotifier;
         private EventTimeLine _EventTimeLine;
@@ -26,7 +26,7 @@ namespace Envivo.Fresnel.Core.Commands
         (
             IPersistenceService persistenceService,
             TemplateCache templateCache,
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             ConsistencyCheckCommand consistencyCheckCommand,
             DirtyObjectNotifier dirtyObjectNotifier,
             EventTimeLine eventTimeLine
@@ -34,7 +34,7 @@ namespace Envivo.Fresnel.Core.Commands
         {
             _PersistenceService = persistenceService;
             _TemplateCache = templateCache;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ConsistencyCheckCommand = consistencyCheckCommand;
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _EventTimeLine = eventTimeLine;
@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.Core.Commands
         public ActionResult<ObjectObserver[]> Invoke(ObjectObserver oObj)
         {
             // TODO: Until we've found a decent pattern for selectively saving entities, we'll just save everything:
-            var objectsToPersist = _ObserverCache
+            var objectsToPersist = _ObserverRetriever
                                         .GetAllObservers()
                                         .Where(o => o.Template.IsTrackable)
                                         .Where(o => o.ChangeTracker.IsTransient || o.ChangeTracker.IsDirty || o.ChangeTracker.HasDirtyObjectGraph)

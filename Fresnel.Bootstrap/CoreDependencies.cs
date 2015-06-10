@@ -58,7 +58,6 @@ namespace Envivo.Fresnel.CompositionRoot
             
                 typeof(Fresnel.Core.Commands.EventTimeLine),
                 typeof(Fresnel.Core.Observers.ObserverCache),
-                typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
             };
         }
 
@@ -76,6 +75,9 @@ namespace Envivo.Fresnel.CompositionRoot
         {
             // These are created per request:
             return new Type[] {
+                typeof(Fresnel.Core.Observers.ObserverRetriever),
+                typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
+
                 typeof(Fresnel.Core.Commands.AddToCollectionCommand),
                 typeof(Fresnel.Core.Commands.ClearCollectionCommand),
                 typeof(Fresnel.Core.Commands.CloneObjectCommand),

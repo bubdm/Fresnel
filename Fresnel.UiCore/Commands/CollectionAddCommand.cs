@@ -14,6 +14,7 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class CollectionAddCommand : ICommand
     {
         private TemplateCache _TemplateCache;
+        private ObserverRetriever _ObserverRetriever;
         private ObserverCache _ObserverCache;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private Core.Commands.CreateObjectCommand _CreateObjectCommand;
@@ -26,6 +27,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         public CollectionAddCommand
             (
             TemplateCache templateCache,
+            ObserverRetriever observerRetriever,
             ObserverCache observerCache,
             Core.Commands.GetPropertyCommand getPropertyCommand,
             Core.Commands.CreateObjectCommand createObjectCommand,
@@ -37,6 +39,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             )
         {
             _TemplateCache = templateCache;
+            _ObserverRetriever = observerRetriever;
             _ObserverCache = observerCache;
             _GetPropertyCommand = getPropertyCommand;
             _CreateObjectCommand = createObjectCommand;
@@ -72,7 +75,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 _ObserverCache.ScanForChanges();
 
                 var addedItemVM = _ObjectVMBuilder.BuildFor(oResult);
-                var modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt);
+                var modifications = _ModificationsBuilder.BuildFrom(_ObserverRetriever.GetAllObservers(), startedAt);
 
                 var infoVM = new MessageVM()
                 {
@@ -152,7 +155,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 return new GenericResponse()
                 {
                     Passed = true,
-                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
+                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverRetriever.GetAllObservers(), startedAt),
                     Messages = messages.ToArray()
                 };
             }
@@ -170,7 +173,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private ObjectObserver GetObserver(Guid objectID)
         {
-            var oObject = (ObjectObserver)_ObserverCache.GetObserverById(objectID);
+            var oObject = (ObjectObserver)_ObserverRetriever.GetObserverById(objectID);
             if (oObject == null)
                 throw new UiCoreException("Cannot find object for " + objectID);
             return oObject;

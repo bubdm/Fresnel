@@ -48,8 +48,8 @@ namespace Envivo.Fresnel.Tests.Persistence
                 // Arrange:
                 var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
                 var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
-                observerCache.CleanUp();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
 
                 // Act:
                 var createRequest = new CreateObjectRequest()
@@ -97,8 +97,8 @@ namespace Envivo.Fresnel.Tests.Persistence
                 // Arrange:
                 var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
                 var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
-                observerCache.CleanUp();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
 
                 // Act:
                 var searchRequest = new SearchObjectsRequest()

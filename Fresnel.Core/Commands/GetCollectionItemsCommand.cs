@@ -1,9 +1,11 @@
 ﻿using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Core.Commands
 {
+    [Obsolete]
     public class GetCollectionItemsCommand
     {
         private ObserverCache _ObserverCache;

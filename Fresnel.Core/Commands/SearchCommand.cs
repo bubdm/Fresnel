@@ -20,22 +20,25 @@ namespace Envivo.Fresnel.Core.Commands
         private IPersistenceService _PersistenceService;
 
         private TemplateCache _TemplateCache;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private IEnumerable<IQuerySpecification> _QuerySpecifications;
+        private RealTypeResolver _RealTypeResolver;
 
         public SearchCommand
         (
             IPersistenceService persistenceService,
 
             TemplateCache templateCache,
-            ObserverCache observerCache,
-            IEnumerable<IQuerySpecification> querySpecifications
+            ObserverRetriever observerRetriever,
+            IEnumerable<IQuerySpecification> querySpecifications,
+            RealTypeResolver realTypeResolver
         )
         {
             _PersistenceService = persistenceService;
             _TemplateCache = templateCache;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _QuerySpecifications = querySpecifications;
+            _RealTypeResolver = realTypeResolver;
         }
 
         private string[] GetTopLevelReferencePropertyNames(ClassTemplate tClass)
@@ -154,5 +157,15 @@ namespace Envivo.Fresnel.Core.Commands
             return results;
         }
 
+        // HACK!! THIS SHOULD NOT BELONG HERE - IT SHOULD EXIST HIGHER UP THE CALL CHAIN
+        private void MarkAllObjectsAsPersistent(IEnumerable<object> searchResults)
+        {
+            foreach (var obj in searchResults)
+            {
+                var objType = _RealTypeResolver.GetRealType(obj);
+
+                var oObj = (ObjectObserver)_ObserverRetriever.GetObserver(obj, objType);
+            }
+        }
     }
 }

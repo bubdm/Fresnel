@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.UiCore
         private CanSetPropertyPermission _CanSetPropertyPermission;
         private CanClearPermission _CanClearPermission;
 
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private BooleanValueFormatter _BooleanValueFormatter;
         private DateTimeValueFormatter _DateTimeValueFormatter;
 
@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.UiCore
             CanGetPropertyPermission canGetPropertyPermission,
             CanSetPropertyPermission canSetPropertyPermission,
             CanClearPermission canClearPermission,
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             BooleanValueFormatter booleanValueFormatter,
             DateTimeValueFormatter dateTimeValueFormatter
             )
@@ -40,7 +40,7 @@ namespace Envivo.Fresnel.UiCore
             _CanGetPropertyPermission = canGetPropertyPermission;
             _CanSetPropertyPermission = canSetPropertyPermission;
             _CanClearPermission = canClearPermission;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _BooleanValueFormatter = booleanValueFormatter;
             _DateTimeValueFormatter = dateTimeValueFormatter;
         }
@@ -57,13 +57,9 @@ namespace Envivo.Fresnel.UiCore
                 var isSafeToRead = true;
                 var oObjectProp = oProp as ObjectPropertyObserver;
 
-                if (oObjectProp != null && oObjectProp.Template.IsCollection)
+                if (oObjectProp != null && oProp.OuterObject.ChangeTracker.IsTransient)
                 {
-                    // Do nothing - We don't want to accidentally trigger a lazy load
-                    isSafeToRead = false;
-                }
-                else if (oObjectProp != null && oProp.OuterObject.ChangeTracker.IsTransient)
-                {
+                    // The property is in-memory, so it's safe to access:
                     oObjectProp.IsLazyLoaded = true;
                     isSafeToRead = true;
                 }
@@ -72,7 +68,7 @@ namespace Envivo.Fresnel.UiCore
                     // Do nothing - We don't want to accidentally trigger a lazy load
                     isSafeToRead = false;
                 }
-
+                
                 if (isSafeToRead)
                 {
                     realValue = tProp.GetProperty(oProp.OuterObject.RealObject);
@@ -108,7 +104,7 @@ namespace Envivo.Fresnel.UiCore
                     }
                     else if (!tProp.IsNonReference)
                     {
-                        var oValue = _ObserverCache.GetObserver(realValue, tProp.PropertyType);
+                        var oValue = _ObserverRetriever.GetObserver(realValue, tProp.PropertyType);
                         result.ReferenceValueID = oValue.ID;
                     }
                     else if (realValue is bool)

@@ -18,7 +18,7 @@ namespace Envivo.Fresnel.UiCore.Commands
     {
         private RealTypeResolver _RealTypeResolver;
         private TemplateCache _TemplateCache;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private SearchResultsVmBuilder _SearchResultsVmBuilder;
         private SearchCommand _SearchCommand;
         private SearchResultsFilterApplier _SearchResultsFilterApplier;
@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             (
             RealTypeResolver realTypeResolver,
             TemplateCache templateCache,
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             SearchResultsVmBuilder searchResultsVmBuilder,
             SearchCommand searchCommand,
             SearchResultsFilterApplier searchResultsFilterApplier,
@@ -39,7 +39,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             _RealTypeResolver = realTypeResolver;
             _TemplateCache = templateCache;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _SearchResultsVmBuilder = searchResultsVmBuilder;
             _SearchCommand = searchCommand;
             _SearchResultsFilterApplier = searchResultsFilterApplier;
@@ -51,7 +51,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             try
             {
-                var oObj = (ObjectObserver)_ObserverCache.GetObserverById(request.ObjectID);
+                var oObj = (ObjectObserver)_ObserverRetriever.GetObserverById(request.ObjectID);
                 var oProp = oObj.Properties[request.PropertyName];
                 var tProp = oProp.Template;
 

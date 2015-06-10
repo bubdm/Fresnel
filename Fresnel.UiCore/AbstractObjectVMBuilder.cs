@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.UiCore
     public class AbstractObjectVmBuilder
     {
         private RealTypeResolver _RealTypeResolver;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private ClassHierarchyBuilder _ClassHierarchyBuilder;
         private EmptyPropertyVmBuilder _EmptyPropertyVmBuilder;
         private PropertyVmBuilder _PropertyVmBuilder;
@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.UiCore
         public AbstractObjectVmBuilder
             (
             RealTypeResolver realTypeResolver,
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             ClassHierarchyBuilder classHierarchyBuilder,
             EmptyPropertyVmBuilder emptyPropertyVmBuilder,
             PropertyVmBuilder propertyVmBuilder,
@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.UiCore
             )
         {
             _RealTypeResolver = realTypeResolver;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ClassHierarchyBuilder = classHierarchyBuilder;
             _EmptyPropertyVmBuilder = emptyPropertyVmBuilder;
             _PropertyVmBuilder = propertyVmBuilder;
@@ -114,7 +114,7 @@ namespace Envivo.Fresnel.UiCore
             {
                 var objType = _RealTypeResolver.GetRealType(obj);
 
-                var oObject = (ObjectObserver)_ObserverCache.GetObserver(obj, objType);
+                var oObject = (ObjectObserver)_ObserverRetriever.GetObserver(obj, objType);
                 var objVM = this.BuildForObject(oObject, allKnownProperties);
 
                 items.Add(objVM);

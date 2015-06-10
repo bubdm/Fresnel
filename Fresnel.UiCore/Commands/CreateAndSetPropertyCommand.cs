@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class CreateAndSetPropertyCommand : ICommand
     {
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private CreateObjectCommand _CreateCommand;
         private SetPropertyCommand _SetPropertyCommand;
         private ModificationsVmBuilder _ModificationsBuilder;
@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         public CreateAndSetPropertyCommand
             (
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             CreateObjectCommand createCommand,
             SetPropertyCommand setPropertyCommand,
             ModificationsVmBuilder modificationsBuilder,
@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             IClock clock
             )
         {
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _CreateCommand = createCommand;
             _SetPropertyCommand = setPropertyCommand;
             _ModificationsBuilder = modificationsBuilder;
@@ -78,7 +78,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     Passed = true,
                     NewObject = createResponse.NewObject,
-                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
+                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverRetriever.GetAllObservers(), startedAt),
                 };
             }
             catch (Exception ex)

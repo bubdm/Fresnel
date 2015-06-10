@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class SaveChangesCommand : ICommand
     {
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private Core.Commands.SaveObjectCommand _SaveObjectCommand;
         private AbstractObjectVmBuilder _ObjectVmBuilder;
         private ModificationsVmBuilder _ModificationsVmBuilder;
@@ -22,7 +22,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         public SaveChangesCommand
             (
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             Core.Commands.SaveObjectCommand saveObjectCommand,
             AbstractObjectVmBuilder objectVmBuilder,
             ModificationsVmBuilder modificationsVmBuilder,
@@ -30,7 +30,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             IClock clock
         )
         {
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _SaveObjectCommand = saveObjectCommand;
             _ObjectVmBuilder = objectVmBuilder;
             _ModificationsVmBuilder = modificationsVmBuilder;
@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var startedAt = SequentialIdGenerator.Next;
 
-                var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
+                var oObject = _ObserverRetriever.GetObserverById(request.ObjectID) as ObjectObserver;
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
@@ -88,7 +88,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 Passed = true,
                 SavedObjects = savedObjectVMs,
                 Messages = new MessageVM[] { infoVM },
-                Modifications = _ModificationsVmBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt)
+                Modifications = _ModificationsVmBuilder.BuildFrom(_ObserverRetriever.GetAllObservers(), startedAt)
             };
         }
 

@@ -15,193 +15,225 @@ namespace Envivo.Fresnel.Tests.Domain
     [TestFixture()]
     public class ObjectObserverTests
     {
+        private TestScopeContainer _TestScopeContainer = new TestScopeContainer();
+
         private Fixture _Fixture = new AutoFixtureFactory().Create();
 
         [Test]
         public void ShouldCreateObjectObserver()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerBuilder = container.Resolve<AbstractObserverBuilder>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
 
-            var employee = _Fixture.Create<Employee>();
+                var observerBuilder = _TestScopeContainer.Resolve<AbstractObserverBuilder>();
 
-            // Act:
-            var observer = observerBuilder.BuildFor(employee, employee.GetType());
+                var employee = _Fixture.Create<Employee>();
 
-            // Assert:
-            Assert.IsNotNull(observer);
+                // Act:
+                var observer = observerBuilder.BuildFor(employee, employee.GetType());
+
+                // Assert:
+                Assert.IsNotNull(observer);
+            }
         }
 
         [Test]
         public void ShouldCreateNullObserver()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerBuilder = container.Resolve<AbstractObserverBuilder>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
+                
+                var observerBuilder = _TestScopeContainer.Resolve<AbstractObserverBuilder>();
 
-            // Act:
-            var observer = observerBuilder.BuildFor(null, typeof(Employee));
+                // Act:
+                var observer = observerBuilder.BuildFor(null, typeof(Employee));
 
-            // Assert:
-            Assert.IsInstanceOf<NullObserver>(observer);
-            Assert.IsNull(observer.RealObject);
-            Assert.AreEqual(typeof(Employee), observer.Template.RealType);
+                // Assert:
+                Assert.IsInstanceOf<NullObserver>(observer);
+                Assert.IsNull(observer.RealObject);
+                Assert.AreEqual(typeof(Employee), observer.Template.RealType);
+            }
         }
 
         [Test]
         public void ShouldGetObjectObserverFromCache()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            observerCache.CleanUp(); 
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
                 
-            var employee = _Fixture.Create<Employee>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
 
-            // Act:
-            var observer = observerCache.GetObserver(employee);
+                var employee = _Fixture.Create<Employee>();
 
-            // Assert:
-            Assert.IsNotNull(observer);
+                // Act:
+                var observer = observerRetriever.GetObserver(employee);
+
+                // Assert:
+                Assert.IsNotNull(observer);
+            }
         }
 
         [Test]
         public void ShouldReplaceInvalidIdForTrackableObjects()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            observerCache.CleanUp(); 
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
                 
-            var employee = _Fixture.Create<Employee>();
-            
-            // Act:
-            var observer = observerCache.GetObserver(employee);
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
 
-            // Assert:
-            Assert.AreNotEqual(Guid.Empty, employee.ID);
-            Assert.AreEqual(employee.ID, observer.ID);
+                var employee = _Fixture.Create<Employee>();
+
+                // Act:
+                var observer = observerRetriever.GetObserver(employee);
+
+                // Assert:
+                Assert.AreNotEqual(Guid.Empty, employee.ID);
+                Assert.AreEqual(employee.ID, observer.ID);
+            }
         }
 
         [Test]
         public void ShouldLocateTrackableObjectsByID()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            observerCache.CleanUp(); 
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
                 
-            var employee = _Fixture.Create<Employee>();
-            
-            // Act:
-            var oObject = observerCache.GetObserver(employee);
-            var objFromCache = observerCache.GetObserverById(oObject.ID).RealObject;
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
 
-            // Assert:
-            Assert.AreEqual(employee, objFromCache);
+                var employee = _Fixture.Create<Employee>();
+
+                // Act:
+                var oObject = observerRetriever.GetObserver(employee);
+                var objFromCache = observerRetriever.GetObserverById(oObject.ID).RealObject;
+
+                // Assert:
+                Assert.AreEqual(employee, objFromCache);
+            }
         }
 
         [Test]
         public void ShouldLocateNonTrackableObjectsByID()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            observerCache.CleanUp(); 
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
                 
-            var employees = _Fixture.CreateMany<Employee>().ToList();
-            
-            // Act:
-            var oCollection = observerCache.GetObserver(employees);
-            var objFromCache = observerCache.GetObserverById(oCollection.ID).RealObject;
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
 
-            // Assert:
-            Assert.AreEqual(employees, objFromCache);
+                var employees = _Fixture.CreateMany<Employee>().ToList();
+
+                // Act:
+                var oCollection = observerRetriever.GetObserver(employees);
+                var objFromCache = observerRetriever.GetObserverById(oCollection.ID).RealObject;
+
+                // Assert:
+                Assert.AreEqual(employees, objFromCache);
+            }
         }
 
         [Test]
         public void ShouldGetSameCachedObserver()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            observerCache.CleanUp(); 
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
                 
-            var employee = _Fixture.Create<Employee>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
 
-            // Act:
-            var observer1 = observerCache.GetObserver(employee);
-            var observer2 = observerCache.GetObserver(employee);
+                var employee = _Fixture.Create<Employee>();
 
-            // Assert:
-            Assert.AreSame(observer1, observer2);
+                // Act:
+                var observer1 = observerRetriever.GetObserver(employee);
+                var observer2 = observerRetriever.GetObserver(employee);
+
+                // Assert:
+                Assert.AreSame(observer1, observer2);
+            }
         }
 
         [Test]
         public void ShouldReturnSeparateObserversForSeparateInstances()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            observerCache.CleanUp(); 
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
                 
-            var employee1 = _Fixture.Create<Employee>();
-            var employee2 = _Fixture.Create<Employee>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
 
-            // Act:
-            var observer1 = observerCache.GetObserver(employee1);
-            var observer2 = observerCache.GetObserver(employee2);
+                var employee1 = _Fixture.Create<Employee>();
+                var employee2 = _Fixture.Create<Employee>();
 
-            // Assert:
-            Assert.AreNotSame(observer1, observer2);
+                // Act:
+                var observer1 = observerRetriever.GetObserver(employee1);
+                var observer2 = observerRetriever.GetObserver(employee2);
+
+                // Assert:
+                Assert.AreNotSame(observer1, observer2);
+            }
         }
 
         [Test]
         public void ShouldCreatePropertyObservers()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerBuilder = container.Resolve<AbstractObserverBuilder>();
-
-            var employee = _Fixture.Create<Employee>();
-
-            // Act:
-            var observer = (ObjectObserver)observerBuilder.BuildFor(employee, employee.GetType());
-
-            // Assert:
-            Assert.AreNotEqual(0, observer.Properties.Count());
-
-            foreach (var prop in observer.Properties.Values)
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                Assert.IsNotNull(prop.FullName);
+                // Arrange:
+                
+                var observerBuilder = _TestScopeContainer.Resolve<AbstractObserverBuilder>();
+
+                var employee = _Fixture.Create<Employee>();
+
+                // Act:
+                var observer = (ObjectObserver)observerBuilder.BuildFor(employee, employee.GetType());
+
+                // Assert:
+                Assert.AreNotEqual(0, observer.Properties.Count());
+
+                foreach (var prop in observer.Properties.Values)
+                {
+                    Assert.IsNotNull(prop.FullName);
+                }
             }
         }
 
         [Test]
         public void ShouldCreateMethodObservers()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-
-            var observerBuilder = container.Resolve<AbstractObserverBuilder>();
-
-            var employee = _Fixture.Create<Employee>();
-
-            // Act:
-            var observer = (ObjectObserver)observerBuilder.BuildFor(employee, employee.GetType());
-
-            // Assert:
-            Assert.AreNotEqual(0, observer.Methods.Count());
-
-            foreach (var method in observer.Methods.Values)
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                var parameters = method.Parameters;
-                Assert.IsNotNull(method.Parameters);
+                // Arrange:
+                
 
-                foreach (var p in parameters.Values)
+                var observerBuilder = _TestScopeContainer.Resolve<AbstractObserverBuilder>();
+
+                var employee = _Fixture.Create<Employee>();
+
+                // Act:
+                var observer = (ObjectObserver)observerBuilder.BuildFor(employee, employee.GetType());
+
+                // Assert:
+                Assert.AreNotEqual(0, observer.Methods.Count());
+
+                foreach (var method in observer.Methods.Values)
                 {
-                    Assert.IsNotNull(p.FullName);
+                    var parameters = method.Parameters;
+                    Assert.IsNotNull(method.Parameters);
+
+                    foreach (var p in parameters.Values)
+                    {
+                        Assert.IsNotNull(p.FullName);
+                    }
                 }
             }
         }
@@ -209,41 +241,46 @@ namespace Envivo.Fresnel.Tests.Domain
         [Test]
         public void ShouldCreateCollectionObserver()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerBuilder = container.Resolve<AbstractObserverBuilder>();
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
 
-            var employee = _Fixture.Create<Employee>();
-            employee.Notes.AddMany(() => _Fixture.Create<Note>(), 5);
+                var observerBuilder = _TestScopeContainer.Resolve<AbstractObserverBuilder>();
 
-            // Act:
-            var observer = observerBuilder.BuildFor(employee.Notes, employee.Notes.GetType());
+                var employee = _Fixture.Create<Employee>();
+                employee.Notes.AddMany(() => _Fixture.Create<Note>(), 5);
 
-            // Assert:
-            Assert.IsNotNull(observer);
+                // Act:
+                var observer = observerBuilder.BuildFor(employee.Notes, employee.Notes.GetType());
+
+                // Assert:
+                Assert.IsNotNull(observer);
+            }
         }
 
         [Test]
         public void ShouldCleanupCache()
         {
-            // Arrange:
-            var container = new ContainerFactory().Build();
-            var observerCache = container.Resolve<ObserverCache>();
-            observerCache.CleanUp(); 
-                
-            for (var i = 0; i < 5; i++)
+            using (var scope = _TestScopeContainer.BeginScope())
             {
-                var employee = _Fixture.Create<Employee>();
-                employee.Notes.AddMany(() => _Fixture.Create<Note>(), 3);
+                // Arrange:
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
 
-                var observer = observerCache.GetObserver(employee);
+                for (var i = 0; i < 5; i++)
+                {
+                    var employee = _Fixture.Create<Employee>();
+                    employee.Notes.AddMany(() => _Fixture.Create<Note>(), 3);
+
+                    var observer = observerRetriever.GetObserver(employee);
+                }
+
+                // Act:
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
+
+                // Assert:
+                Assert.AreEqual(0, observerRetriever.GetAllObservers().Count());
             }
-
-            // Act:
-            observerCache.CleanUp();
-
-            // Assert:
-            Assert.AreEqual(0, observerCache.GetAllObservers().Count());
         }
     }
 }

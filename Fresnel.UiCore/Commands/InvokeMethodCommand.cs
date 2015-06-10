@@ -12,6 +12,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class InvokeMethodCommand : ICommand
     {
+        private ObserverRetriever _ObserverRetriever;
         private ObserverCache _ObserverCache;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.InvokeMethodCommand _InvokeMethodCommand;
@@ -21,6 +22,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         public InvokeMethodCommand
             (
+            ObserverRetriever observerRetriever,
             ObserverCache observerCache,
             Core.Commands.InvokeMethodCommand invokeMethodCommand,
             AbstractObjectVmBuilder objectVMBuilder,
@@ -29,6 +31,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             IClock clock
         )
         {
+            _ObserverRetriever = observerRetriever;
             _ObserverCache = observerCache;
             _InvokeMethodCommand = invokeMethodCommand;
             _ObjectVMBuilder = objectVMBuilder;
@@ -44,7 +47,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var startedAt = SequentialIdGenerator.Next;
 
-                var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
+                var oObject = _ObserverRetriever.GetObserverById(request.ObjectID) as ObjectObserver;
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
@@ -86,7 +89,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 {
                     Passed = true,
                     ResultObject = resultVM,
-                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
+                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverRetriever.GetAllObservers(), startedAt),
                     Messages = messages.ToArray(),
                 };
             }
@@ -113,8 +116,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var oParam = oMethod.Parameters[paramVM.InternalName];
 
                 var oValue = (paramVM.State.ReferenceValueID != null) ?
-                            _ObserverCache.GetObserverById(paramVM.State.ReferenceValueID.Value) :
-                            _ObserverCache.GetValueObserver(paramVM.State.Value.ToStringOrNull(), oParam.Template.ParameterType);
+                            _ObserverRetriever.GetObserverById(paramVM.State.ReferenceValueID.Value) :
+                            _ObserverRetriever.GetValueObserver(paramVM.State.Value.ToStringOrNull(), oParam.Template.ParameterType);
 
                 oParam.Value = oValue.RealObject;
             }

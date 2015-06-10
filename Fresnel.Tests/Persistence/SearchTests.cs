@@ -66,12 +66,12 @@ namespace Envivo.Fresnel.Tests.Persistence
             using (var scope = _TestScopeContainer.BeginScope())
             {
                 // Arrange:
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var searchCommand = _TestScopeContainer.Resolve<SearchCommand>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _TestScopeContainer.Resolve<ObjectWithCtorInjection>();
-                var oObj = (ObjectObserver)observerCache.GetObserver(obj);
+                var oObj = (ObjectObserver)observerRetriever.GetObserver(obj);
 
                 // This property has the QuerySpecification associated with it:
                 var propName = LambdaExtensions.NameOf<ObjectWithCtorInjection>(x => x.Product);
@@ -95,12 +95,12 @@ namespace Envivo.Fresnel.Tests.Persistence
             using (var scope = _TestScopeContainer.BeginScope())
             {
                 // Arrange:
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var searchCommand = _TestScopeContainer.Resolve<SearchCommand>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _TestScopeContainer.Resolve<Product>();
-                var oObj = (ObjectObserver)observerCache.GetObserver(obj);
+                var oObj = (ObjectObserver)observerRetriever.GetObserver(obj);
                 var propName = LambdaExtensions.NameOf<Product>(x => x.Categories);
                 var oProp = oObj.Properties[propName];
 

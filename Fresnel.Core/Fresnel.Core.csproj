@@ -85,6 +85,7 @@
     <Compile Include="Commands\AddToCollectionCommand.cs" />
     <Compile Include="Commands\SetPropertyEvent.cs" />
     <Compile Include="CoreException.cs" />
+    <Compile Include="Observers\ObserverRetriever.cs" />
     <Compile Include="Observers\ObserverCacheSynchroniser.cs" />
     <Compile Include="Permissions\CanClearPermission.cs" />
     <Compile Include="Persistence\NullPersistenceService.cs" />

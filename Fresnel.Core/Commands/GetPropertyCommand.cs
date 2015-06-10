@@ -6,7 +6,7 @@ namespace Envivo.Fresnel.Core.Commands
 {
     public class GetPropertyCommand
     {
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private IPersistenceService _PersistenceService;
         private Fresnel.Introspection.Commands.GetPropertyCommand _GetCommand;
@@ -14,14 +14,14 @@ namespace Envivo.Fresnel.Core.Commands
 
         public GetPropertyCommand
             (
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             ObserverCacheSynchroniser observerCacheSynchroniser,
             IPersistenceService persistenceService,
             Fresnel.Introspection.Commands.GetPropertyCommand getCommand,
             RealTypeResolver realTypeResolver
             )
         {
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _PersistenceService = persistenceService;
             _GetCommand = getCommand;
@@ -58,16 +58,17 @@ namespace Envivo.Fresnel.Core.Commands
 
             if (value == null)
             {
-                return _ObserverCache.GetObserver(null, oProperty.Template.PropertyType);
+                return _ObserverRetriever.GetObserver(null, oProperty.Template.PropertyType);
             }
 
             var valueType = _RealTypeResolver.GetRealType(value);
-            var oValue = _ObserverCache.GetObserver(value, valueType);
+            var oValue = _ObserverRetriever.GetObserver(value, valueType);
 
             if (oObjectProperty != null)
             {
                 // Make the object aware that it is associated with this property:
                 var oValueObject = (ObjectObserver)oValue;
+
                 _ObserverCacheSynchroniser.Sync(oObjectProperty, oValue);
             }
 

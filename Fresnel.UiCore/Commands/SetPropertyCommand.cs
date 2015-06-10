@@ -15,6 +15,7 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class SetPropertyCommand : ICommand
     {
         private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.SetPropertyCommand _SetPropertyCommand;
         private ModificationsVmBuilder _ModificationsBuilder;
@@ -25,6 +26,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             (
             Core.Commands.SetPropertyCommand setPropertyCommand,
             ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsBuilder,
             ExceptionMessagesBuilder exceptionMessagesBuilder,
@@ -33,6 +35,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             _SetPropertyCommand = setPropertyCommand;
             _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
@@ -45,17 +48,17 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var startedAt = SequentialIdGenerator.Next;
 
-                var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
+                var oObject = _ObserverRetriever.GetObserverById(request.ObjectID) as ObjectObserver;
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
                 var oProp = oObject.Properties[request.PropertyName];
 
                 var oValue = (request.ReferenceValueId != Guid.Empty) ?
-                            _ObserverCache.GetObserverById(request.ReferenceValueId) :
+                            _ObserverRetriever.GetObserverById(request.ReferenceValueId) :
                             (request.NonReferenceValue != null) ?
-                            _ObserverCache.GetValueObserver(request.NonReferenceValue.ToStringOrNull(), oProp.Template.PropertyType) :
-                            _ObserverCache.GetObserver(null, oProp.Template.PropertyType);
+                            _ObserverRetriever.GetValueObserver(request.NonReferenceValue.ToStringOrNull(), oProp.Template.PropertyType) :
+                            _ObserverRetriever.GetObserver(null, oProp.Template.PropertyType);
 
                 if (oProp.Template.IsNonReference &&
                     !oProp.Template.IsNullableType &&
@@ -70,7 +73,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 _ObserverCache.ScanForChanges();
 
                 // Done:
-                var modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt);
+                var modifications = _ModificationsBuilder.BuildFrom(_ObserverRetriever.GetAllObservers(), startedAt);
                 var thisPropertyChange = modifications.PropertyChanges.SingleOrDefault(p => p.ObjectID == oObject.ID && p.PropertyName == oProp.Template.Name);
 
                 var infoText = thisPropertyChange == null ?

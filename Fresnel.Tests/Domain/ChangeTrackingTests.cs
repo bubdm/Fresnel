@@ -26,13 +26,13 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
-                observerCache.CleanUp();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
 
                 var person = _Fixture.Create<Person>();
 
                 // Act:
-                var observer = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+                var observer = (ObjectObserver)observerRetriever.GetObserver(person, person.GetType());
                 Assert.AreSame(person, observer.RealObject);
 
                 // Assert:
@@ -47,18 +47,18 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var setCommand = _TestScopeContainer.Resolve<SetPropertyCommand>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var person = _Fixture.Create<Person>();
 
-                var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+                var oObject = (ObjectObserver)observerRetriever.GetObserver(person, person.GetType());
                 Assert.AreSame(person, oObject.RealObject);
 
                 var propName = LambdaExtensions.NameOf<Person>(x => x.FirstName);
                 var oProp = oObject.Properties[propName];
-                var oValue = observerCache.GetObserver(_Fixture.Create<string>(), typeof(string));
+                var oValue = observerRetriever.GetObserver(_Fixture.Create<string>(), typeof(string));
 
                 // Act:
                 setCommand.Invoke(oProp, oValue);
@@ -92,14 +92,14 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var getCommand = _TestScopeContainer.Resolve<GetPropertyCommand>();
                 var addCommand = _TestScopeContainer.Resolve<AddToCollectionCommand>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var person = _Fixture.Create<Person>();
 
-                var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+                var oObject = (ObjectObserver)observerRetriever.GetObserver(person, person.GetType());
                 Assert.AreSame(person, oObject.RealObject);
 
                 var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
@@ -108,7 +108,7 @@ namespace Envivo.Fresnel.Tests.Domain
 
                 // Act:
                 var newRole = _Fixture.Create<Employee>();
-                var oNewRole = (ObjectObserver)observerCache.GetObserver(newRole, newRole.GetType());
+                var oNewRole = (ObjectObserver)observerRetriever.GetObserver(newRole, newRole.GetType());
 
                 var result = addCommand.Invoke(oProp, oCollection, oNewRole);
 
@@ -126,24 +126,24 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var getCommand = _TestScopeContainer.Resolve<GetPropertyCommand>();
                 var removeCommand = _TestScopeContainer.Resolve<RemoveFromCollectionCommand>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var person = _Fixture.Create<Person>();
                 person.Roles.Add(_Fixture.Create<Employee>());
                 person.Roles.Add(_Fixture.Create<Customer>());
                 person.Roles.Add(_Fixture.Create<Supplier>());
 
-                var oPerson = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+                var oPerson = (ObjectObserver)observerRetriever.GetObserver(person, person.GetType());
                 var rolesPropName = LambdaExtensions.NameOf<Person>(x => x.Roles);
                 var oRolesProp = (ObjectPropertyObserver)oPerson.Properties[rolesPropName];
                 var oRoles = (CollectionObserver)getCommand.Invoke(oRolesProp);
 
                 // Act:
                 var childObject = person.Roles.Last();
-                var oChildObject = (ObjectObserver)observerCache.GetObserver(childObject, childObject.GetType());
+                var oChildObject = (ObjectObserver)observerRetriever.GetObserver(childObject, childObject.GetType());
 
                 var result = removeCommand.Invoke(oRolesProp, oRoles, oChildObject);
 
@@ -162,19 +162,19 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var getCommand = _TestScopeContainer.Resolve<GetPropertyCommand>();
                 var createCommand = _TestScopeContainer.Resolve<CreateObjectCommand>();
                 var addCommand = _TestScopeContainer.Resolve<AddToCollectionCommand>();
                 var removeCommand = _TestScopeContainer.Resolve<RemoveFromCollectionCommand>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var person = _Fixture.Create<Person>();
                 person.Roles.Add(_Fixture.Create<Employee>());
                 person.Roles.Add(_Fixture.Create<Customer>());
                 person.Roles.Add(_Fixture.Create<Supplier>());
 
-                var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+                var oObject = (ObjectObserver)observerRetriever.GetObserver(person, person.GetType());
                 var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
                 var oProp = (ObjectPropertyObserver)oObject.Properties[propName];
                 var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
@@ -201,14 +201,14 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var getCommand = _TestScopeContainer.Resolve<GetPropertyCommand>();
                 var setCommand = _TestScopeContainer.Resolve<SetPropertyCommand>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var person = _Fixture.Create<Person>();
 
-                var oObject = (ObjectObserver)observerCache.GetObserver(person, person.GetType());
+                var oObject = (ObjectObserver)observerRetriever.GetObserver(person, person.GetType());
                 var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
                 var oProp = (ObjectPropertyObserver)oObject.Properties[propName];
 
@@ -229,7 +229,7 @@ namespace Envivo.Fresnel.Tests.Domain
                 // Act:
                 var namePropName = LambdaExtensions.NameOf<Person>(x => x.FirstName);
                 var oNameProp = oObject.Properties[namePropName];
-                var oValue = observerCache.GetObserver(_Fixture.Create<string>(), typeof(string));
+                var oValue = observerRetriever.GetObserver(_Fixture.Create<string>(), typeof(string));
                 setCommand.Invoke(oNameProp, oValue);
 
                 // Assert:
@@ -244,12 +244,12 @@ namespace Envivo.Fresnel.Tests.Domain
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var createCommand = _TestScopeContainer.Resolve<CreateObjectCommand>();
                 var getCommand = _TestScopeContainer.Resolve<GetPropertyCommand>();
                 var addCommand = _TestScopeContainer.Resolve<AddToCollectionCommand>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var oOrder = (ObjectObserver)createCommand.Invoke(typeof(Order), null);
                 var oProp = (ObjectPropertyObserver)oOrder.Properties[LambdaExtensions.NameOf<Order>(x => x.OrderItems)];
                 var oOrderItems = (CollectionObserver)getCommand.Invoke(oProp);

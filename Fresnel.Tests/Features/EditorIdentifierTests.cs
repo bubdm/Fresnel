@@ -41,12 +41,12 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var vmBuilder = _TestScopeContainer.Resolve<PropertyVmBuilder>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<MultiType>();
-                var oObject = (ObjectObserver)observerCache.GetObserver(obj);
+                var oObject = (ObjectObserver)observerRetriever.GetObserver(obj);
 
                 // Act:
                 var boolVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<MultiType>(x => x.A_Boolean)]);
@@ -76,12 +76,12 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var vmBuilder = _TestScopeContainer.Resolve<PropertyVmBuilder>();
 
-                observerCache.CleanUp(); 
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp(); 
                 var obj = _Fixture.Create<TextValues>();
-                var oObject = (ObjectObserver)observerCache.GetObserver(obj);
+                var oObject = (ObjectObserver)observerRetriever.GetObserver(obj);
 
                 // Act:
                 var charVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<TextValues>(x => x.NormalChar)]);
@@ -103,12 +103,12 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var vmBuilder = _TestScopeContainer.Resolve<PropertyVmBuilder>();
 
-                observerCache.CleanUp(); 
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp(); 
                 var obj = _Fixture.Create<EnumValues>();
-                var oObject = (ObjectObserver)observerCache.GetObserver(obj);
+                var oObject = (ObjectObserver)observerRetriever.GetObserver(obj);
 
                 // Act:
                 var enumVM = vmBuilder.BuildFor(oObject.Properties[LambdaExtensions.NameOf<EnumValues>(x => x.EnumValue)]);
@@ -135,12 +135,12 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var vmBuilder = _TestScopeContainer.Resolve<AbstractObjectVmBuilder>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var col = _Fixture.Create<Collection<Product>>();
-                var oColl = (ObjectObserver)observerCache.GetObserver(col);
+                var oColl = (ObjectObserver)observerRetriever.GetObserver(col);
 
                 // Act:
                 var collVM = (CollectionVM)vmBuilder.BuildFor(oColl);
@@ -162,12 +162,12 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var vmBuilder = _TestScopeContainer.Resolve<AbstractObjectVmBuilder>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _TestScopeContainer.Resolve<MethodSamples>();
-                var oObject = (ObjectObserver)observerCache.GetObserver(obj);
+                var oObject = (ObjectObserver)observerRetriever.GetObserver(obj);
 
                 // Act:
                 var vm = vmBuilder.BuildFor(oObject);

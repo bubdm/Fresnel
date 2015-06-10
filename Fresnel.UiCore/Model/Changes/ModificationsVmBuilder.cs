@@ -11,20 +11,20 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
         private AbstractObjectVmBuilder _AbstractObjectVMBuilder;
         private PropertyStateVmBuilder _PropertyStateVmBuilder;
         private ParameterStateVmBuilder _ParameterStateVmBuilder;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
 
         public ModificationsVmBuilder
             (
             AbstractObjectVmBuilder abstractObjectVMBuilder,
             PropertyStateVmBuilder propertyStateVmBuilder,
             ParameterStateVmBuilder parameterStateVmBuilder,
-            ObserverCache observerCache
+            ObserverRetriever ObserverRetriever
             )
         {
             _AbstractObjectVMBuilder = abstractObjectVMBuilder;
             _PropertyStateVmBuilder = propertyStateVmBuilder;
             _ParameterStateVmBuilder = parameterStateVmBuilder;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = ObserverRetriever;
         }
 
         public ModificationsVM BuildFrom(IEnumerable<ObjectObserver> observers, long startedAt)
@@ -128,7 +128,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
             }
             else if (propertyChange.NewValue != null)
             {
-                var oObj = _ObserverCache.GetObserver(propertyChange.NewValue, oProperty.Template.PropertyType);
+                var oObj = _ObserverRetriever.GetObserver(propertyChange.NewValue, oProperty.Template.PropertyType);
                 result.State.ReferenceValueID = oObj.ID;
             }
             else
@@ -153,7 +153,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
 
         private CollectionElementVM CreateCollectionElement(CollectionAdd collectionAdd)
         {
-            var oElement = _ObserverCache.GetObserver(collectionAdd.Element, collectionAdd.Collection.Template.InnerClass.RealType);
+            var oElement = _ObserverRetriever.GetObserver(collectionAdd.Element, collectionAdd.Collection.Template.InnerClass.RealType);
 
             var result = new CollectionElementVM()
             {
@@ -165,7 +165,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
 
         private CollectionElementVM CreateCollectionElement(CollectionRemove collectionRemove)
         {
-            var oElement = _ObserverCache.GetObserver(collectionRemove.Element, collectionRemove.Collection.Template.InnerClass.RealType);
+            var oElement = _ObserverRetriever.GetObserver(collectionRemove.Element, collectionRemove.Collection.Template.InnerClass.RealType);
 
             var result = new CollectionElementVM()
             {

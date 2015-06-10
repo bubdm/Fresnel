@@ -13,21 +13,21 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
     public class ClassItemBuilder
     {
         private TemplateCache _TemplateCache;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private IEnumerable<IFactory> _DomainObjectFactories;
         private MethodVmBuilder _MethodVmBuilder;
         private CanCreatePermission _CanCreatePermission;
 
         public ClassItemBuilder
             (
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             TemplateCache templateCache,
             IEnumerable<IFactory> domainObjectFactories,
             MethodVmBuilder methodVmBuilder,
             CanCreatePermission canCreatePermission
             )
         {
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _TemplateCache = templateCache;
             _DomainObjectFactories = domainObjectFactories;
             _MethodVmBuilder = methodVmBuilder;
@@ -81,7 +81,7 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
             var tFactory = (ClassTemplate)_TemplateCache.GetTemplate(factory.GetType());
             var results = new List<MethodVM>();
 
-            var oFactory = (ObjectObserver)_ObserverCache.GetObserver(factory, tFactory.RealType);
+            var oFactory = (ObjectObserver)_ObserverRetriever.GetObserver(factory, tFactory.RealType);
             oFactory.IsPinned = true;
 
             foreach (var oMethod in oFactory.Methods.Values)

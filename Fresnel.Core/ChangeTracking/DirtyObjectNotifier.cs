@@ -1,10 +1,14 @@
 using Envivo.Fresnel.Core.Observers;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Envivo.Fresnel.Utils;
 
 namespace Envivo.Fresnel.Core.ChangeTracking
 {
     /// <summary>
-    /// Notifies all objects up the tree when modifieds are made to objects & properties
+    /// Notifies all objects up the tree when modifieds are made to objects and properties
     /// </summary>
     public class DirtyObjectNotifier
     {
@@ -21,7 +25,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// <param name="oNewObject"></param>
         public void ObjectWasCreated(ObjectObserver oNewObject)
         {
-            oNewObject.ChangeTracker.IsTransient = true;
+            oNewObject.MarkAsTransient();
         }
 
         /// <summary>
@@ -31,8 +35,8 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// <param name="oTargetProperty"></param>
         public void ObjectWasCreated(ObjectObserver oNewObject, ObjectPropertyObserver oTargetProperty)
         {
-            oNewObject.ChangeTracker.IsTransient = true;
-
+            oNewObject.MarkAsTransient();
+            
             var oOuterObject = oTargetProperty.OuterObject;
             oNewObject.AssociateWith(oTargetProperty);
             oOuterObject.ChangeTracker.AddDirtyObject(oNewObject);
@@ -51,7 +55,7 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// <param name="oTargetCollection"></param>
         public void ObjectWasCreated(ObjectObserver oNewObject, CollectionObserver oTargetCollection)
         {
-            oNewObject.ChangeTracker.IsTransient = true;
+            oNewObject.MarkAsTransient();
             oNewObject.AssociateWith(oTargetCollection);
             oNewObject.ChangeTracker.MarkForAdditionTo(oTargetCollection);
 
@@ -90,6 +94,22 @@ namespace Envivo.Fresnel.Core.ChangeTracking
         /// <param name="oObject"></param>
         public void ObjectIsNoLongerDirty(ObjectObserver oObject)
         {
+            // This is to ensure we don't keep bouncing between objects with bi-directional relationships:
+            var visitedObjectIds = new Dictionary<Guid, Guid>();
+            this.ObjectIsNoLongerDirty(oObject, visitedObjectIds);
+        }
+
+        private void ObjectIsNoLongerDirty(ObjectObserver oObject, IDictionary<Guid, Guid> visitiedObjectIds)
+        {
+            if (visitiedObjectIds.Contains(oObject.ID))
+            {
+                // We're potentially traversing a bi-directional relationship in the graph.
+                // If we've already processed this Observer, there's no need to continue:
+                return;
+            }
+
+            visitiedObjectIds.Add(oObject.ID, oObject.ID);
+
             var outerObjects = _OuterObjectsIdentifier.GetOuterObjects(oObject, int.MaxValue).ToList();
 
             oObject.ChangeTracker.ResetDirtyFlags();
@@ -103,10 +123,12 @@ namespace Envivo.Fresnel.Core.ChangeTracking
                 if (isOuterObjectNoLongerDirty)
                 {
                     // Ensure the Outer Object's status is cascaded up the chain:
-                    this.ObjectIsNoLongerDirty(outerObject);
+                    this.ObjectIsNoLongerDirty(outerObject, visitiedObjectIds);
                 }
             }
         }
+
+
 
         /// <summary>
         /// The given Object was added to the Collection

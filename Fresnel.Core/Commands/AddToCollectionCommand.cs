@@ -11,7 +11,7 @@ namespace Envivo.Fresnel.Core.Commands
     public class AddToCollectionCommand
     {
         private DirtyObjectNotifier _DirtyObjectNotifier;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private CollectionAddMethodIdentifier _CollectionAddMethodIdentifier;
         private Introspection.Commands.InvokeMethodCommand _InvokeMethodCommand;
@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Core.Commands
 
         public AddToCollectionCommand
             (
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier,
             CollectionAddMethodIdentifier collectionAddMethodIdentifier,
@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.Core.Commands
             EventTimeLine eventTimeLine
             )
         {
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _CollectionAddMethodIdentifier = collectionAddMethodIdentifier;
@@ -69,7 +69,7 @@ namespace Envivo.Fresnel.Core.Commands
             else
             {
                 var resultType = _RealTypeResolver.GetRealType(result);
-                oAddedItem = _ObserverCache.GetObserver(result, resultType);
+                oAddedItem = _ObserverRetriever.GetObserver(result, resultType);
             }
 
             var oResult = oAddedItem as ObjectObserver;

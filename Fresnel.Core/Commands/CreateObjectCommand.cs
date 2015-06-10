@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.Core.Commands
         private Introspection.Commands.CreateObjectCommand _CreateObjectCommand;
 
         private TemplateCache _TemplateCache;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private DirtyObjectNotifier _DirtyObjectNotifier;
 
@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.Core.Commands
             Introspection.Commands.CreateObjectCommand createObjectCommand,
 
             TemplateCache templateCache,
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier
         )
@@ -40,7 +40,7 @@ namespace Envivo.Fresnel.Core.Commands
             _DomainObjectFactories = domainObjectFactories;
             _PersistenceService = persistenceService;
             _TemplateCache = templateCache;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
         }
@@ -67,7 +67,7 @@ namespace Envivo.Fresnel.Core.Commands
 
             SetDefaultId(tClass, newInstance);
 
-            var oNewObject = (ObjectObserver)_ObserverCache.GetObserver(newInstance, classType);
+            var oNewObject = (ObjectObserver)_ObserverRetriever.GetObserver(newInstance, classType);
 
             // Make sure the instance can be edited before the user saves it:
             _DirtyObjectNotifier.ObjectWasCreated(oNewObject);

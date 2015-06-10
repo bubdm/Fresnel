@@ -19,7 +19,7 @@ namespace Envivo.Fresnel.Core.Observers
             _RealTypeResolver = realTypeResolver;
         }
 
-        public ObserverCache ObserverCache { get; set; }
+        public ObserverRetriever ObserverRetriever { get; set; }
 
         public void SyncAll()
         {
@@ -39,7 +39,7 @@ namespace Envivo.Fresnel.Core.Observers
 
         private void EnsureCacheIsHasKnownState()
         {
-            var allObservers = this.ObserverCache.GetAllObservers().ToArray();
+            var allObservers = this.ObserverRetriever.GetAllObservers().ToArray();
             foreach (var oObject in allObservers)
             {
                 var outerObjectProperties = oObject.OuterProperties.OfType<ObjectPropertyObserver>();
@@ -50,7 +50,7 @@ namespace Envivo.Fresnel.Core.Observers
                     foreach (var item in items)
                     {
                         var itemType = _RealTypeResolver.GetRealType(item);
-                        var oItem = this.ObserverCache.GetObserver(item, itemType);
+                        var oItem = this.ObserverRetriever.GetObserver(item, itemType);
                     }
                 }
             }
@@ -60,7 +60,7 @@ namespace Envivo.Fresnel.Core.Observers
         {
             var results = new List<ObjectObserver>();
 
-            var allObservers = this.ObserverCache.GetAllObservers().ToList();
+            var allObservers = this.ObserverRetriever.GetAllObservers().ToList();
             foreach (var oObject in allObservers)
             {
                 var outerObjectProperties = oObject.OuterProperties.OfType<ObjectPropertyObserver>();
@@ -97,7 +97,7 @@ namespace Envivo.Fresnel.Core.Observers
                                 _RealTypeResolver.GetRealType(value) :
                                 oProp.Template.PropertyType;
 
-                var oValue = this.ObserverCache.GetObserver(value, valueType);
+                var oValue = this.ObserverRetriever.GetObserver(value, valueType);
 
                 this.Sync(oProp, oValue);
             }
@@ -123,14 +123,14 @@ namespace Envivo.Fresnel.Core.Observers
                 foreach (var item in removedItems)
                 {
                     var itemType = _RealTypeResolver.GetRealType(item);
-                    var oItem = ObserverCache.GetObserver(item, itemType);
+                    var oItem = ObserverRetriever.GetObserver(item, itemType);
                     oItem.DisassociateFrom(oCollection);
                 }
 
                 foreach (var item in addedItems)
                 {
                     var itemType = _RealTypeResolver.GetRealType(item);
-                    var oItem = ObserverCache.GetObserver(item, itemType);
+                    var oItem = ObserverRetriever.GetObserver(item, itemType);
                     oItem.AssociateWith(oCollection);
                 }
 
@@ -149,7 +149,7 @@ namespace Envivo.Fresnel.Core.Observers
             if (oProperty.PreviousValue != null)
             {
                 var itemType = _RealTypeResolver.GetRealType(oProperty.PreviousValue);
-                var oPreviousValue = this.ObserverCache.GetObserver(oProperty.PreviousValue, itemType);
+                var oPreviousValue = this.ObserverRetriever.GetObserver(oProperty.PreviousValue, itemType);
 
                 var isDifferent = !(object.Equals(oValue.RealObject, oPreviousValue.RealObject));
                 if (isDifferent)

@@ -56,13 +56,6 @@ namespace Envivo.Fresnel.Core.Observers
                               System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
-        internal override void FinaliseConstruction()
-        {
-            base.FinaliseConstruction();
-
-            this.CheckIfPropertiesShouldLazyLoad();
-        }
-
         [JsonIgnore]
         public new ClassTemplate Template
         {
@@ -148,10 +141,22 @@ namespace Envivo.Fresnel.Core.Observers
             return false;
         }
 
+        public void MarkAsTransient()
+        {
+            this.ChangeTracker.IsTransient = true;
+            this.CheckIfPropertiesShouldLazyLoad();
+        }
+
+        public void MarkAsPersistent()
+        {
+            this.ChangeTracker.IsTransient = false;
+            this.CheckIfPropertiesShouldLazyLoad();
+        }
+
         /// <summary>
         /// Determines if the associated Object is new, and allows reading of all properties
         /// </summary>
-        internal void CheckIfPropertiesShouldLazyLoad()
+        private void CheckIfPropertiesShouldLazyLoad()
         {
             if (_IsLazyLoadingAlreadyDetermined)
                 return;
@@ -170,7 +175,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// <summary>
         /// Makes all Object/List properties instantly available (subject to the Persistor's lazy-load mechanism)
         /// </summary>
-        internal void MakePropertyValuesImmediatelyAvailable()
+        private void MakePropertyValuesImmediatelyAvailable()
         {
             foreach (var oProp in this.Properties.ForObjects)
             {
@@ -290,5 +295,6 @@ namespace Envivo.Fresnel.Core.Observers
 
             base.Dispose();
         }
+
     }
 }

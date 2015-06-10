@@ -13,21 +13,21 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
     public class DomainServiceItemBuilder
     {
         private TemplateCache _TemplateCache;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private IEnumerable<IDomainService> _DomainServiceInstances;
         private MethodVmBuilder _MethodVmBuilder;
         private CanCreatePermission _CanCreatePermission;
 
         public DomainServiceItemBuilder
             (
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             TemplateCache templateCache,
             IEnumerable<IDomainService> domainServiceInstances,
             MethodVmBuilder methodVmBuilder,
             CanCreatePermission canCreatePermission
             )
         {
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _TemplateCache = templateCache;
             _DomainServiceInstances = domainServiceInstances;
             _MethodVmBuilder = methodVmBuilder;
@@ -64,7 +64,7 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
             var tDomainService = (ClassTemplate)_TemplateCache.GetTemplate(domainService.GetType());
             var results = new List<MethodVM>();
 
-            var oDomainService = (ObjectObserver)_ObserverCache.GetObserver(domainService, tDomainService.RealType);
+            var oDomainService = (ObjectObserver)_ObserverRetriever.GetObserver(domainService, tDomainService.RealType);
             oDomainService.IsPinned = true;
 
             foreach (var oMethod in oDomainService.Methods.Values)

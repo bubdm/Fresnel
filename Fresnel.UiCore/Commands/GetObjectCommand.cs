@@ -8,20 +8,20 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class GetObjectCommand : ICommand
     {
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
         public GetObjectCommand
             (
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             AbstractObjectVmBuilder objectVMBuilder,
             ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
         )
         {
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ObjectVMBuilder = objectVMBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
             _Clock = clock;
@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             try
             {
-                var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
+                var oObject = _ObserverRetriever.GetObserverById(request.ObjectID) as ObjectObserver;
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 

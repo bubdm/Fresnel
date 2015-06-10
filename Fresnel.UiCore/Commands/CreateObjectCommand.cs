@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class CreateObjectCommand : ICommand
     {
         private TemplateCache _TemplateCache;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private Core.Commands.CreateObjectCommand _CreateObjectCommand;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         public CreateObjectCommand
             (
             TemplateCache templateCache,
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             Core.Commands.CreateObjectCommand createObjectCommand,
             AbstractObjectVmBuilder objectVMBuilder,
             ExceptionMessagesBuilder exceptionMessagesBuilder,
@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             )
         {
             _TemplateCache = templateCache;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _CreateObjectCommand = createObjectCommand;
             _ObjectVMBuilder = objectVMBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
@@ -47,7 +47,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 ObjectObserver oParentObject = null;
                 if (request.ParentObjectID != Guid.Empty)
                 {
-                    oParentObject = (ObjectObserver)_ObserverCache.GetObserverById(request.ParentObjectID);
+                    oParentObject = (ObjectObserver)_ObserverRetriever.GetObserverById(request.ParentObjectID);
                     if (oParentObject == null)
                         throw new UiCoreException("Cannot find object for " + request.ParentObjectID);
                 }

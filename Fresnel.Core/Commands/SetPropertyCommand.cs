@@ -8,7 +8,7 @@ namespace Envivo.Fresnel.Core.Commands
     public class SetPropertyCommand
     {
         private DirtyObjectNotifier _DirtyObjectNotifier;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private Fresnel.Introspection.Commands.GetPropertyCommand _GetCommand;
         private Fresnel.Introspection.Commands.SetPropertyCommand _SetCommand;
@@ -17,7 +17,7 @@ namespace Envivo.Fresnel.Core.Commands
 
         public SetPropertyCommand
             (
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier,
             Fresnel.Introspection.Commands.GetPropertyCommand getCommand,
@@ -26,7 +26,7 @@ namespace Envivo.Fresnel.Core.Commands
             EventTimeLine eventTimeLine
             )
         {
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
 
@@ -63,7 +63,7 @@ namespace Envivo.Fresnel.Core.Commands
             _DirtyObjectNotifier.PropertyHasChanged(oProperty);
 
             var oPreviousValue = previousValue != null ?
-                                    _ObserverCache.GetObserver(previousValue, previousValueType) :
+                                    _ObserverRetriever.GetObserver(previousValue, previousValueType) :
                                     null;
             var setPropertyEvent = new SetPropertyEvent(oProperty, oPreviousValue);
             _EventTimeLine.Add(setPropertyEvent);

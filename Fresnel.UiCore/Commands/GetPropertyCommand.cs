@@ -10,7 +10,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class GetPropertyCommand : ICommand
     {
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private ModificationsVmBuilder _ModificationsVmBuilder;
@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         public GetPropertyCommand
             (
             Core.Commands.GetPropertyCommand getPropertyCommand,
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsVmBuilder,
             ExceptionMessagesBuilder exceptionMessagesBuilder,
@@ -28,7 +28,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         )
         {
             _GetPropertyCommand = getPropertyCommand;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsVmBuilder = modificationsVmBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
@@ -43,7 +43,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
                 ObjectVM result = null;
 
-                var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
+                var oObject = _ObserverRetriever.GetObserverById(request.ObjectID) as ObjectObserver;
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 

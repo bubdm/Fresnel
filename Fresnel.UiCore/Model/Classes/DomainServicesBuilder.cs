@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
     public class DomainServicesBuilder
     {
         private TemplateCache _TemplateCache;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private DomainServiceItemBuilder _DomainServiceItemBuilder;
         private ModificationsVmBuilder _ModificationsBuilder;
         private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
@@ -23,14 +23,14 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
         public DomainServicesBuilder
             (
             TemplateCache templateCache,
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             DomainServiceItemBuilder domainServiceItemBuilder,
             ModificationsVmBuilder modificationsBuilder,
             ExceptionMessagesBuilder exceptionMessagesBuilder
         )
         {
             _TemplateCache = templateCache;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _DomainServiceItemBuilder = domainServiceItemBuilder;
             _ModificationsBuilder = modificationsBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
@@ -77,7 +77,7 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
                     namespaces.Add(newNamespace);
                 }
 
-                var oDomainServices = _ObserverCache.GetAllObservers()
+                var oDomainServices = _ObserverRetriever.GetAllObservers()
                                         .OfType<ObjectObserver>()
                                         .Where(o => o.Template.RealType.IsDerivedFrom<IDomainService>());
 

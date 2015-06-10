@@ -1,9 +1,11 @@
 ﻿using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Utils;
+using System;
 
 namespace Envivo.Fresnel.Core.Commands
 {
+    [Obsolete]
     public class ClearCollectionCommand
     {
         private GetCollectionItemsCommand _GetCollectionItemsCommand;

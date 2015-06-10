@@ -30,13 +30,13 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<MultiType>();
 
-                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+                var oObject = observerRetriever.GetObserver(obj) as ObjectObserver;
 
                 // Act:
                 var request = new GetPropertyRequest()
@@ -59,15 +59,15 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<MultiType>();
                 obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
-                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+                var oObject = observerRetriever.GetObserver(obj) as ObjectObserver;
 
                 // Act:
                 var request = new GetPropertyRequest()
@@ -97,13 +97,13 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<MultiType>();
 
-                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+                var oObject = observerRetriever.GetObserver(obj) as ObjectObserver;
 
                 // Act:
                 var request = new SetPropertyRequest()
@@ -133,14 +133,14 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<MultiType>();
                 obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
-                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+                var oObject = observerRetriever.GetObserver(obj) as ObjectObserver;
                 Assert.AreSame(obj, oObject.RealObject);
 
                 // Make sure we start tracking the collection:
@@ -170,7 +170,7 @@ namespace Envivo.Fresnel.Tests.Features
                 Assert.AreEqual(9, obj.A_Collection.Count());
 
                 // Check that the domain object has changed:
-                var oChild = observerCache.GetObserverById(addResponse.AddedItem.ID);
+                var oChild = observerRetriever.GetObserverById(addResponse.AddedItem.ID);
                 Assert.IsTrue(obj.A_Collection.Contains(oChild.RealObject));
             }
         }
@@ -181,17 +181,17 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<MultiType>();
                 obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
-                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+                var oObject = observerRetriever.GetObserver(obj) as ObjectObserver;
 
                 var child = _Fixture.Create<BooleanValues>();
-                var oChild = observerCache.GetObserver(child) as ObjectObserver;
+                var oChild = observerRetriever.GetObserver(child) as ObjectObserver;
 
                 // Make sure we start tracking the collection:
                 var getRequest = new GetPropertyRequest()
@@ -229,14 +229,14 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<MultiType>();
                 obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
-                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+                var oObject = observerRetriever.GetObserver(obj) as ObjectObserver;
 
                 // Make sure we start tracking the property:
                 var getRequest = new GetPropertyRequest()
@@ -262,7 +262,7 @@ namespace Envivo.Fresnel.Tests.Features
                 Assert.AreEqual(1, setResponse.Modifications.PropertyChanges.Count());
 
                 // Check that the domain object has changed:
-                var oChild = observerCache.GetObserverById(setResponse.Modifications.PropertyChanges.First().State.ReferenceValueID.Value);
+                var oChild = observerRetriever.GetObserverById(setResponse.Modifications.PropertyChanges.First().State.ReferenceValueID.Value);
                 Assert.AreEqual(obj.An_Object, oChild.RealObject);
             }
         }
@@ -273,17 +273,17 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<MultiType>();
                 obj.A_Collection.AddMany(() => _Fixture.Create<BooleanValues>(), 5);
 
-                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+                var oObject = observerRetriever.GetObserver(obj) as ObjectObserver;
 
                 var child = obj.A_Collection.First();
-                var oChild = observerCache.GetObserver(child) as ObjectObserver;
+                var oChild = observerRetriever.GetObserver(child) as ObjectObserver;
 
                 // Make sure we start tracking the collection:
                 var getRequest = new GetPropertyRequest()
@@ -320,12 +320,12 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<Order>();
-                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+                var oObject = observerRetriever.GetObserver(obj) as ObjectObserver;
 
                 // Act:
                 var getRequest = new GetObjectRequest()
@@ -349,12 +349,12 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<Order>();
-                var oObject = observerCache.GetObserver(obj) as ObjectObserver;
+                var oObject = observerRetriever.GetObserver(obj) as ObjectObserver;
 
                 // Act:
                 var getRequest = new GetObjectRequest()

@@ -14,27 +14,30 @@ namespace Envivo.Fresnel.Core.Commands
     public class InvokeMethodCommand
     {
         private DirtyObjectNotifier _DirtyObjectNotifier;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private Fresnel.Introspection.Commands.InvokeMethodCommand _InvokeCommand;
         private RealTypeResolver _RealTypeResolver;
+        private IPersistenceService _PersistenceService;
         private IEnumerable<IDomainDependency> _DomainDependencies;
 
         public InvokeMethodCommand
             (
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             ObserverCacheSynchroniser observerCacheSynchroniser,
             DirtyObjectNotifier dirtyObjectNotifier,
             Fresnel.Introspection.Commands.InvokeMethodCommand invokeCommand,
             RealTypeResolver realTypeResolver,
+            IPersistenceService persistenceService,
             IEnumerable<IDomainDependency> domainDependencies
             )
         {
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ObserverCacheSynchroniser = observerCacheSynchroniser;
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _InvokeCommand = invokeCommand;
             _RealTypeResolver = realTypeResolver;
+            _PersistenceService = persistenceService;
             _DomainDependencies = domainDependencies;
         }
 
@@ -62,9 +65,7 @@ namespace Envivo.Fresnel.Core.Commands
                     return null;
 
                 var resultType = _RealTypeResolver.GetRealType(result);
-                var oResult = _ObserverCache.GetObserver(result, resultType);
-
-                // At this stage, is the object Persistent, or Transient?
+                var oResult = _ObserverRetriever.GetObserver(result, resultType);
 
                 return oResult;
             }

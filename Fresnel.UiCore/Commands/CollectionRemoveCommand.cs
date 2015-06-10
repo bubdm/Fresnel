@@ -12,6 +12,7 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class CollectionRemoveCommand : ICommand
     {
         private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private Core.Commands.RemoveFromCollectionCommand _RemoveFromCollectionCommand;
         private ModificationsVmBuilder _ModificationsBuilder;
@@ -21,6 +22,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         public CollectionRemoveCommand
             (
             ObserverCache observerCache,
+            ObserverRetriever OobserverRetriever,
             Core.Commands.GetPropertyCommand getPropertyCommand,
             Core.Commands.RemoveFromCollectionCommand removeFromCollectionCommand,
             ModificationsVmBuilder modificationsBuilder,
@@ -29,6 +31,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             )
         {
             _ObserverCache = observerCache;
+            _ObserverRetriever = OobserverRetriever;
             _GetPropertyCommand = getPropertyCommand;
             _RemoveFromCollectionCommand = removeFromCollectionCommand;
             _ModificationsBuilder = modificationsBuilder;
@@ -65,7 +68,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                 return new GenericResponse()
                 {
                     Passed = true,
-                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt),
+                    Modifications = _ModificationsBuilder.BuildFrom(_ObserverRetriever.GetAllObservers(), startedAt),
                     Messages = new MessageVM[] { infoVM }
                 };
             }
@@ -83,7 +86,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private ObjectObserver GetObserver(Guid objectID)
         {
-            var oObject = (ObjectObserver)_ObserverCache.GetObserverById(objectID);
+            var oObject = (ObjectObserver)_ObserverRetriever.GetObserverById(objectID);
             if (oObject == null)
                 throw new UiCoreException("Cannot find object for " + objectID);
             return oObject;

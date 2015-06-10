@@ -38,17 +38,17 @@ namespace Envivo.Fresnel.Tests.Domain
             using (var scope = _TestScopeContainer.BeginScope())
             {
                 // Arrange:
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverCache>();
                 var setCommand = _TestScopeContainer.Resolve<SetPropertyCommand>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<TextValues>();
-                var oObj = (ObjectObserver)observerCache.GetObserver(obj);
+                var oObj = (ObjectObserver)observerRetriever.GetObserver(obj);
 
                 var propName = LambdaExtensions.NameOf<TextValues>(x => x.TextWithSize);
                 var oProp = oObj.Properties[propName];
 
-                var oInvalidValue = observerCache.GetObserver("1234");
+                var oInvalidValue = observerRetriever.GetObserver("1234");
 
                 // Act:
                 var exception = Assert.Throws<AggregateException>(() => setCommand.Invoke(oProp, oInvalidValue));
@@ -63,17 +63,17 @@ namespace Envivo.Fresnel.Tests.Domain
             using (var scope = _TestScopeContainer.BeginScope())
             {
                 // Arrange:
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverCache>();
                 var setCommand = _TestScopeContainer.Resolve<SetPropertyCommand>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _Fixture.Create<NumberValues>();
-                var oObj = (ObjectObserver)observerCache.GetObserver(obj);
+                var oObj = (ObjectObserver)observerRetriever.GetObserver(obj);
 
                 var propName = LambdaExtensions.NameOf<NumberValues>(x => x.NumberWithRange);
                 var oProp = oObj.Properties[propName];
 
-                var oInvalidValue = observerCache.GetObserver(9999);
+                var oInvalidValue = observerRetriever.GetObserver(9999);
 
                 // Act:
                 var exception = Assert.Throws<AggregateException>(() => setCommand.Invoke(oProp, oInvalidValue));

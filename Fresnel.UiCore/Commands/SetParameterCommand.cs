@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class SetParameterCommand : ICommand
     {
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.SetParameterCommand _SetParameterCommand;
         private ModificationsVmBuilder _ModificationsBuilder;
@@ -23,7 +23,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         public SetParameterCommand
             (
             Core.Commands.SetParameterCommand setParameterCommand,
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsBuilder,
             ExceptionMessagesBuilder exceptionMessagesBuilder,
@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             )
         {
             _SetParameterCommand = setParameterCommand;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
@@ -44,7 +44,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var startedAt = SequentialIdGenerator.Next;
 
-                var oObject = _ObserverCache.GetObserverById(request.ObjectID) as ObjectObserver;
+                var oObject = _ObserverRetriever.GetObserverById(request.ObjectID) as ObjectObserver;
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
@@ -52,10 +52,10 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var oParam = oMethod.Parameters[request.ParameterName];
 
                 var oValue = (request.ReferenceValueId != Guid.Empty) ?
-                            _ObserverCache.GetObserverById(request.ReferenceValueId) :
+                            _ObserverRetriever.GetObserverById(request.ReferenceValueId) :
                             (request.NonReferenceValue != null) ?
-                            _ObserverCache.GetValueObserver(request.NonReferenceValue.ToStringOrNull(), oParam.Template.ParameterType) :
-                            _ObserverCache.GetObserver(null, oParam.Template.ParameterType);
+                            _ObserverRetriever.GetValueObserver(request.NonReferenceValue.ToStringOrNull(), oParam.Template.ParameterType) :
+                            _ObserverRetriever.GetObserver(null, oParam.Template.ParameterType);
 
                 if (oParam.Template.IsNonReference &&
                     !oParam.Template.IsNullableType &&

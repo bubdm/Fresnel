@@ -13,7 +13,7 @@ namespace Envivo.Fresnel.UiCore
     public class SearchResultsVmBuilder
     {
         private RealTypeResolver _RealTypeResolver;
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private ClassHierarchyBuilder _ClassHierarchyBuilder;
         private SearchFilterPropertyVmBuilder _SearchFilterPropertyVmBuilder;
         private PropertyVmBuilder _PropertyVmBuilder;
@@ -21,14 +21,14 @@ namespace Envivo.Fresnel.UiCore
         public SearchResultsVmBuilder
             (
             RealTypeResolver realTypeResolver,
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             ClassHierarchyBuilder classHierarchyBuilder,
             SearchFilterPropertyVmBuilder searchFilterPropertyVmBuilder,
             PropertyVmBuilder propertyVmBuilder
             )
         {
             _RealTypeResolver = realTypeResolver;
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _ClassHierarchyBuilder = classHierarchyBuilder;
             _SearchFilterPropertyVmBuilder = searchFilterPropertyVmBuilder;
             _PropertyVmBuilder = propertyVmBuilder;
@@ -39,11 +39,8 @@ namespace Envivo.Fresnel.UiCore
             // Only return back the number of items actually requested:
             var resultsPage = searchResults.ToList<object>().Take(originalRequest.PageSize);
 
-            var oCollection = (CollectionObserver)_ObserverCache.GetObserver(resultsPage, resultsPage.GetType());
+            var oCollection = (CollectionObserver)_ObserverRetriever.GetObserver(resultsPage, resultsPage.GetType());
             
-            // Code smell: This is the only point where we know the persistent state:
-            this.MarkAsPersistent(oCollection);
-
             var allKnownProperties = _ClassHierarchyBuilder
                                         .GetProperties(tElement)
                                         .Where(p => !p.IsFrameworkMember &&
@@ -83,21 +80,13 @@ namespace Envivo.Fresnel.UiCore
             {
                 var objType = _RealTypeResolver.GetRealType(obj);
 
-                var oObject = (ObjectObserver)_ObserverCache.GetObserver(obj, objType);
-
-                // Code smell: This is the only point where we know the persistent state:
-                this.MarkAsPersistent(oObject);
+                var oObject = (ObjectObserver)_ObserverRetriever.GetObserver(obj, objType);
 
                 var objVM = this.BuildForObject(oObject, allKnownProperties);
 
                 items.Add(objVM);
             }
             return items;
-        }
-
-        private void MarkAsPersistent(ObjectObserver oObject)
-        {
-            oObject.ChangeTracker.IsTransient = false;
         }
 
         private SearchResultItemVM BuildForObject(ObjectObserver oObject, IEnumerable<PropertyTemplate> allKnownProperties)

@@ -43,13 +43,13 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var controller = _TestScopeContainer.Resolve<ExplorerController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _TestScopeContainer.Resolve<MethodSamples>();
                 obj.ID = Guid.NewGuid();
-                var oObject = (ObjectObserver)observerCache.GetObserver(obj);
+                var oObject = (ObjectObserver)observerRetriever.GetObserver(obj);
 
                 // Act:
                 var request = new InvokeMethodRequest()
@@ -76,14 +76,14 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
                 var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var obj = _TestScopeContainer.Resolve<MethodSamples>();
                 obj.ID = Guid.NewGuid();
-                var oObject = (ObjectObserver)observerCache.GetObserver(obj);
+                var oObject = (ObjectObserver)observerRetriever.GetObserver(obj);
 
                 // Act:
                 var createRequest = new CreateObjectRequest()
@@ -139,12 +139,12 @@ namespace Envivo.Fresnel.Tests.Features
             // Arrange:
             using (var scope = _TestScopeContainer.BeginScope())
             {
-                var observerCache = _TestScopeContainer.Resolve<ObserverCache>();
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
                 var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
 
-                observerCache.CleanUp();
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
                 var factory = _TestScopeContainer.Resolve<IFactory<Product>>();
-                var oFactory = observerCache.GetObserver(factory);
+                var oFactory = observerRetriever.GetObserver(factory);
 
 
                 // Act:

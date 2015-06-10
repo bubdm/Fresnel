@@ -16,7 +16,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 {
     public class CancelChangesCommand : ICommand
     {
-        private ObserverCache _ObserverCache;
+        private ObserverRetriever _ObserverRetriever;
         private OuterObjectsIdentifier _OuterObjectsIdentifier;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private Core.Commands.CancelChangesCommand _CancelChangesCommand;
@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         public CancelChangesCommand
             (
-            ObserverCache observerCache,
+            ObserverRetriever observerRetriever,
             OuterObjectsIdentifier outerObjectsIdentifier,
             Core.Commands.GetPropertyCommand getPropertyCommand,
             Core.Commands.CancelChangesCommand cancelChangesCommand,
@@ -41,7 +41,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             IClock clock
         )
         {
-            _ObserverCache = observerCache;
+            _ObserverRetriever = observerRetriever;
             _OuterObjectsIdentifier = outerObjectsIdentifier;
             _GetPropertyCommand = getPropertyCommand;
             _CancelChangesCommand = cancelChangesCommand;
@@ -94,7 +94,7 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Passed = true,
                     CancelledObjects = cancelledObjectVMs.ToArray(),
                     Messages = new MessageVM[] { infoVM },
-                    Modifications = _ModificationsVmBuilder.BuildFrom(_ObserverCache.GetAllObservers(), startedAt)
+                    Modifications = _ModificationsVmBuilder.BuildFrom(_ObserverRetriever.GetAllObservers(), startedAt)
                 };
             }
             catch (Exception ex)
@@ -111,7 +111,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         private ObjectObserver GetObserver(Guid objectID)
         {
-            var oObject = (ObjectObserver)_ObserverCache.GetObserverById(objectID);
+            var oObject = (ObjectObserver)_ObserverRetriever.GetObserverById(objectID);
             if (oObject == null)
                 throw new UiCoreException("Cannot find object for " + objectID);
             return oObject;
@@ -165,7 +165,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             var addedItems = oCollection.ChangeTracker.AddedItems.ToArray();
             foreach (var item in addedItems)
             {
-                var oItem = (ObjectObserver)_ObserverCache.GetObserver(item.Element);
+                var oItem = (ObjectObserver)_ObserverRetriever.GetObserver(item.Element);
                 _DirtyObjectNotifier.ObjectIsNoLongerDirty(oItem);
                 affectedObjects.Add(oItem);
             }
@@ -173,7 +173,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             var removedItems = oCollection.ChangeTracker.RemovedItems.ToArray();
             foreach (var item in removedItems)
             {
-                var oItem = (ObjectObserver)_ObserverCache.GetObserver(item.Element);
+                var oItem = (ObjectObserver)_ObserverRetriever.GetObserver(item.Element);
                 _DirtyObjectNotifier.ObjectIsNoLongerDirty(oItem);
                 affectedObjects.Add(oItem);
             }
