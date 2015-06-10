@@ -33,6 +33,7 @@ namespace Envivo.Fresnel.SampleModel.Northwind.Places
             set { _Employees = value; }
         }
 
+        [Visibility(IsAllowed = false)]
         public void AddToEmployees(Employee employee)
         {
             if (this.Employees.Contains(employee))
@@ -46,6 +47,7 @@ namespace Envivo.Fresnel.SampleModel.Northwind.Places
             }
         }
 
+        [Visibility(IsAllowed = false)]
         public void RemoveFromEmployees(Employee employee)
         {
             if (!this.Employees.Contains(employee))
