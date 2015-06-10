@@ -37,7 +37,7 @@
             if (!obj.DirtyState.IsPersistent)
                 return false;
 
-            return (obj.DirtyState.IsDirty || obj.DirtyState.HasDirtyChildren);
+            return (obj.DirtyState.IsTransient || obj.DirtyState.IsDirty || obj.DirtyState.HasDirtyChildren);
         }
 
         public askUser(obj: ObjectVM): ng.IPromise<any> {

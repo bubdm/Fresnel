@@ -53,7 +53,7 @@ var FresnelApp;
         SaveService.prototype.isRequiredFor = function (obj) {
             if (!obj.DirtyState.IsPersistent)
                 return false;
-            return (obj.DirtyState.IsDirty || obj.DirtyState.HasDirtyChildren);
+            return (obj.DirtyState.IsTransient || obj.DirtyState.IsDirty || obj.DirtyState.HasDirtyChildren);
         };
         SaveService.prototype.askUser = function (obj) {
             var _this = this;
@@ -832,7 +832,7 @@ var FresnelApp;
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                     // This will cause the new object to appear in a new Explorer:
-                    $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.AddedItem);
+                    $rootScope.$broadcast(FresnelApp.UiEventType.ExplorerOpen, response.AddedItem, $scope.explorer);
                 });
             };
             $scope.addExistingItems = function (prop) {
