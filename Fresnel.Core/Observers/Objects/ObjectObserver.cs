@@ -156,7 +156,10 @@ namespace Envivo.Fresnel.Core.Observers
             if (_IsLazyLoadingAlreadyDetermined)
                 return;
 
-            if (this.ChangeTracker.IsTransient)
+            // If an object can't be loaded from a persistence store, it doesn't support lazy-loading.
+            // If an object only exists in memory, it's properties should be immediately available.
+            if (!this.Template.IsPersistable || 
+                 this.ChangeTracker.IsTransient)
             {
                 this.MakePropertyValuesImmediatelyAvailable();
             }
