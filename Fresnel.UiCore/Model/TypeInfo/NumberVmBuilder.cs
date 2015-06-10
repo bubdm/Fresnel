@@ -9,6 +9,16 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
     public class NumberVmBuilder : ISettableVmBuilder
     {
+        private DataTypeToUiControlMapper _DataTypeToUiControlMapper;
+
+        public NumberVmBuilder
+        (
+        DataTypeToUiControlMapper dataTypeToUiControlMapper
+        )
+        {
+            _DataTypeToUiControlMapper = dataTypeToUiControlMapper;
+        }
+
         public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
             return actualType == typeof(double) ||
@@ -35,13 +45,12 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
             var range = attributesMap.Get<RangeAttribute>();
             var decimalPlaces = attributesMap.Get<DecimalPlacesAttribute>();
             var dataType = attributesMap.Get<DataTypeAttribute>();
-
             var preferredControl = attributesMap.Get<UiControlHintAttribute>().PreferredUiControl;
-            if (dataType.DataType == DataType.Currency)
+            if (preferredControl == UiControlType.None)
             {
-                preferredControl = UiControlType.Currency;
+                preferredControl = _DataTypeToUiControlMapper.Convert(dataType.DataType);
             }
-            else if (preferredControl == UiControlType.None)
+            if (preferredControl == UiControlType.None)
             {
                 preferredControl = UiControlType.Number;
             }

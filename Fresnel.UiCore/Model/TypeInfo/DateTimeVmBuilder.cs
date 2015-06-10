@@ -9,7 +9,16 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
 {
     public class DateTimeVmBuilder : ISettableVmBuilder
     {
+        private DataTypeToUiControlMapper _DataTypeToUiControlMapper;
         private readonly DateTime _epoch = new DateTime(1970, 1, 1);
+
+        public DateTimeVmBuilder
+            (
+            DataTypeToUiControlMapper dataTypeToUiControlMapper
+            )
+        {
+            _DataTypeToUiControlMapper = dataTypeToUiControlMapper;
+        }
 
         public bool CanHandle(ISettableMemberTemplate template, Type actualType)
         {
@@ -30,7 +39,12 @@ namespace Envivo.Fresnel.UiCore.Model.TypeInfo
         private ITypeInfo CreateInfoVM(AttributesMap attributesMap)
         {
             var displayFormat = attributesMap.Get<DisplayFormatAttribute>();
+            var dataType = attributesMap.Get<DataTypeAttribute>();
             var preferredControl = attributesMap.Get<UiControlHintAttribute>().PreferredUiControl;
+            if (preferredControl == UiControlType.None)
+            {
+                preferredControl = _DataTypeToUiControlMapper.Convert(dataType.DataType);
+            }
             if (preferredControl == UiControlType.None)
             {
                 preferredControl = UiControlType.DateTimeLocal;
