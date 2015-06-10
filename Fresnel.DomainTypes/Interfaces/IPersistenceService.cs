@@ -9,6 +9,8 @@ namespace Envivo.Fresnel.DomainTypes.Interfaces
     {
         bool IsTypeRecognised(Type objectType);
 
+        bool IsPersistent(Guid id, object entity);
+
         object CreateObject(Type objectType, object constructorArg);
 
         object GetObject(Type objectType, Guid id, string[] propertiesToInclude);

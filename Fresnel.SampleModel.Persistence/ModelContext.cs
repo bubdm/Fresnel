@@ -106,6 +106,12 @@ namespace Fresnel.SampleModel.Persistence
             return match != null;
         }
 
+        public bool IsPersistent(Guid id, object entity)
+        {
+            var entry = this.Entry(entity);
+            return entry.State != EntityState.Detached;
+        }
+
         public object CreateObject(Type objectType, object constructorArg)
         {
             if (constructorArg != null)
@@ -315,6 +321,5 @@ namespace Fresnel.SampleModel.Persistence
                 entry.ChangeState(EntityState.Detached);
             }
         }
-
     }
 }

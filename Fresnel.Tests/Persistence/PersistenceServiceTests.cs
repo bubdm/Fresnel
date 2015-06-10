@@ -57,9 +57,12 @@ namespace Envivo.Fresnel.Tests.Persistence
                 var newEntities = new List<object>() { category };
                 newEntities.AddRange(category.Products);
 
+                Assert.IsFalse(persistenceService.IsPersistent(category.ID, category));
+
                 var savedChanges = persistenceService.SaveChanges(newEntities, new object[0]);
 
                 // Assert:
+                Assert.IsTrue(persistenceService.IsPersistent(category.ID, category));
                 Assert.IsNotNull(category);
                 Assert.IsTrue(savedChanges > 5);
             }

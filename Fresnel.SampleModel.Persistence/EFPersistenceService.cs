@@ -20,6 +20,11 @@ namespace Fresnel.SampleModel.Persistence
             return _ModelContext.IsKnownType(objectType);
         }
 
+        public bool IsPersistent(Guid id, object entity)
+        {
+            return _ModelContext.IsPersistent(id, entity);
+        }
+
         public object CreateObject(Type objectType, object constructorArg)
         {
             return _ModelContext.CreateObject(objectType, constructorArg);

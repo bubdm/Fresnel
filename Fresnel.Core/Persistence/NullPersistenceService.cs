@@ -14,6 +14,11 @@ namespace Envivo.Fresnel.Core.Persistence
             return true;
         }
 
+        public bool IsPersistent(Guid id, object entity)
+        {
+            return false;
+        }
+
         public object CreateObject(Type objectType, object constructorArg)
         {
             return null;
