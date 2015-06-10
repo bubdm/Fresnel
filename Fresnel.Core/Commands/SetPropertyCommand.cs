@@ -1,5 +1,6 @@
 ﻿using Envivo.Fresnel.Core.ChangeTracking;
 using Envivo.Fresnel.Core.Observers;
+using Envivo.Fresnel.Introspection;
 using System;
 
 namespace Envivo.Fresnel.Core.Commands
@@ -11,6 +12,7 @@ namespace Envivo.Fresnel.Core.Commands
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private Fresnel.Introspection.Commands.GetPropertyCommand _GetCommand;
         private Fresnel.Introspection.Commands.SetPropertyCommand _SetCommand;
+        private RealTypeResolver _RealTypeResolver;
         private EventTimeLine _EventTimeLine;
 
         public SetPropertyCommand
@@ -20,6 +22,7 @@ namespace Envivo.Fresnel.Core.Commands
             DirtyObjectNotifier dirtyObjectNotifier,
             Fresnel.Introspection.Commands.GetPropertyCommand getCommand,
             Fresnel.Introspection.Commands.SetPropertyCommand setCommand,
+            RealTypeResolver realTypeResolver,
             EventTimeLine eventTimeLine
             )
         {
@@ -29,6 +32,7 @@ namespace Envivo.Fresnel.Core.Commands
 
             _GetCommand = getCommand;
             _SetCommand = setCommand;
+            _RealTypeResolver = realTypeResolver;
 
             _EventTimeLine = eventTimeLine;
         }
@@ -45,6 +49,7 @@ namespace Envivo.Fresnel.Core.Commands
 
             var oOuterObject = oProperty.OuterObject;
             var previousValue = _GetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name);
+            var previousValueType = _RealTypeResolver.GetRealType(previousValue);
 
             _SetCommand.Invoke(oOuterObject.RealObject, oProperty.Template.Name, oValue.RealObject);
 
@@ -58,7 +63,7 @@ namespace Envivo.Fresnel.Core.Commands
             _DirtyObjectNotifier.PropertyHasChanged(oProperty);
 
             var oPreviousValue = previousValue != null ?
-                                    _ObserverCache.GetObserver(previousValue) :
+                                    _ObserverCache.GetObserver(previousValue, previousValueType) :
                                     null;
             var setPropertyEvent = new SetPropertyEvent(oProperty, oPreviousValue);
             _EventTimeLine.Add(setPropertyEvent);
