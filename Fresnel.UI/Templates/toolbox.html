@@ -44,11 +44,11 @@
                                     <i class="fa fa-plus-circle"></i>Create
                                 </a>
                             </li>
-                            <li class="divider"></li>
+                            <li class="divider" ng-show="item.FactoryMethods"></li>
 
                             <li ng-repeat="factoryMethod in item.FactoryMethods" class="">
                                 <a href="" a-disabled="!factoryMethod.IsEnabled" ng-click="invokeDependencyMethod(factoryMethod)" data-toggle="tooltip" title="{{factoryMethod.Description}}">
-                                    <i class="fa fa-play"></i>{{factoryMethod.Name}}
+                                    <i class="fa fa-plus-circle"></i>{{factoryMethod.Name}}
                                 </a>
                             </li>
                         </ul>
