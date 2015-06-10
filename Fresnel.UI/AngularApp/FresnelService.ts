@@ -40,7 +40,7 @@
         }
 
         getDomainServicesHierarchy(): ng.IPromise<any> {
-            this.blockUI.start("Setting up Services...");
+            this.blockUI.start("Setting up Library...");
 
             var uri = "api/Toolbox/GetDomainServicesHierarchy";
             var promise = this.http.get(uri);
