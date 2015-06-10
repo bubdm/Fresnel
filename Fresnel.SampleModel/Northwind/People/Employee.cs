@@ -26,11 +26,13 @@ namespace Envivo.Fresnel.SampleModel.Northwind.People
             set { _Territories = value; }
         }
 
+        [Visibility(IsAllowed = false)]
         public void AddToTerritories(Territory territory)
         {
             territory.AddToEmployees(this);
         }
 
+        [Visibility(IsAllowed = false)]
         public void RemoveFromTerritories(Territory territory)
         {
             territory.RemoveFromEmployees(this);
@@ -53,7 +55,7 @@ namespace Envivo.Fresnel.SampleModel.Northwind.People
         {
             return this.Person != null ?
                 this.Person.ToString() :
-                typeof(Person).Name;;
+                typeof(Person).Name; ;
         }
     }
 }
