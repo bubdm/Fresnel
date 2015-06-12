@@ -153,6 +153,7 @@ module FresnelApp {
                     var existingObj = appService.identityMap.getObject(obj.ID);
 
                     appService.identityMap.mergeObjects(existingObj, obj);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
                 });
             }
 
@@ -200,6 +201,7 @@ module FresnelApp {
                     var response = promiseResult.data;
 
                     appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     var obj = response.ReturnValue;
                     if (obj) {

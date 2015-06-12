@@ -51,7 +51,7 @@ var FresnelApp;
             this.requestBuilder = requestBuilder;
         }
         SaveService.prototype.isRequiredFor = function (obj) {
-            if (!obj.DirtyState.IsPersistent)
+            if (!obj.IsPersistable)
                 return false;
             return (obj.DirtyState.IsTransient || obj.DirtyState.IsDirty || obj.DirtyState.HasDirtyChildren);
         };
@@ -974,6 +974,7 @@ var FresnelApp;
                     var obj = response.ReturnValue;
                     var existingObj = appService.identityMap.getObject(obj.ID);
                     appService.identityMap.mergeObjects(existingObj, obj);
+                    $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                 });
             };
             $scope.minimise = function (explorer) {
@@ -1012,6 +1013,7 @@ var FresnelApp;
                 promise.then(function (promiseResult) {
                     var response = promiseResult.data;
                     appService.identityMap.merge(response.Modifications);
+                    $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                     var obj = response.ReturnValue;
                     if (obj) {
                         var existingObj = appService.identityMap.getObject(obj.ID);
@@ -1298,7 +1300,7 @@ var FresnelApp;
         };
         FresnelService.prototype.getDomainServicesHierarchy = function () {
             var _this = this;
-            this.blockUI.start("Setting up Services...");
+            this.blockUI.start("Setting up Library...");
             var uri = "api/Toolbox/GetDomainServicesHierarchy";
             var promise = this.http.get(uri);
             promise.finally(function () {
