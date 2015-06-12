@@ -5,6 +5,7 @@
             ng-click="save(oObj)"
             ng-class="{ 'alert-default' : dirtyState.IsTransient || dirtyState.IsDirty || dirtyState.HasDirtyChildren }"
             ng-disabled="!dirtyState.IsTransient && !dirtyState.IsDirty && !dirtyState.HasDirtyChildren"
+            ng-show="obj.IsPersistent"
             tooltip="">
         <i class=" fa fa-save"></i>
     </button>
@@ -13,7 +14,6 @@
             ng-click="showInfo(explorer)">
         <i class="fa fa-info-circle"></i>
     </button>
-
 
     <button class="btn btn-primary btn-sm"
             ng-click="refresh(explorer)">
