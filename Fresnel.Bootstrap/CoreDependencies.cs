@@ -79,10 +79,10 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
 
                 typeof(Fresnel.Core.Commands.AddToCollectionCommand),
-                typeof(Fresnel.Core.Commands.ClearCollectionCommand),
+                //typeof(Fresnel.Core.Commands.ClearCollectionCommand),
                 typeof(Fresnel.Core.Commands.CloneObjectCommand),
                 typeof(Fresnel.Core.Commands.CreateObjectCommand),
-                typeof(Fresnel.Core.Commands.GetCollectionItemsCommand),
+                //typeof(Fresnel.Core.Commands.GetCollectionItemsCommand),
                 typeof(Fresnel.Core.Commands.GetPropertyCommand),
                 typeof(Fresnel.Core.Commands.InvokeMethodCommand),
                 typeof(Fresnel.Core.Commands.RemoveFromCollectionCommand),
