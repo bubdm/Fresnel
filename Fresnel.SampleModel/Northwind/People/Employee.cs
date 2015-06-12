@@ -45,7 +45,10 @@ namespace Envivo.Fresnel.SampleModel.Northwind.People
             set { _Notes = value; }
         }
 
-        public void AddVacationTime(DateTime lastDayAtWork, DateTime firstDayBackAtWork)
+        public void AddVacationTime(
+            [DataType(DataType.Date)] DateTime lastDayAtWork,
+            [DataType(DataType.Date)] DateTime firstDayBackAtWork
+            )
         {
             this.Notes.Add(new Note() { Content = "Vacation starts on " + lastDayAtWork.AddDays(1) });
             this.Notes.Add(new Note() { Content = "Vacation ends on " + firstDayBackAtWork.AddDays(-1) });
