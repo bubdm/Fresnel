@@ -24,7 +24,6 @@ namespace Envivo.Fresnel.Tests.Features.Session
         private TestScopeContainer _TestScopeContainer = null;
 
         private SessionVM _Session;
-        private Namespace _Namespace;
 
         public void Given_the_session_is_already_started()
         {

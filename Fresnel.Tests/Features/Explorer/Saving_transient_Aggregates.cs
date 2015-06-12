@@ -33,7 +33,6 @@ namespace Envivo.Fresnel.Tests.Features.Explorer
         private SessionVM _Session;
         private ObjectVM _Order;
         private ObjectVM _OrderItem;
-        private CollectionVM _OrderItems;
 
         public void Given_the_session_is_already_started()
         {

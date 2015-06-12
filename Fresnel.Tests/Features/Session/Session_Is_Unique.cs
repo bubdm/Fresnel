@@ -37,6 +37,7 @@ namespace Envivo.Fresnel.Tests.Features.Session
 
                 var sessionController = _TestScopeContainer.Resolve<SessionController>();
                 _InitialSession = sessionController.GetSession();
+                _SessionStartTime = _InitialSession.LogonTime;
             }
         }
 
