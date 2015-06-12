@@ -10,7 +10,8 @@ namespace Envivo.Fresnel.UiCore.Model
     {
         // By default, null values are omitted by the WebApi serialiser. 
         // However, we need to ensure this property is always sent:
-        [JsonProperty(NullValueHandling = NullValueHandling.Include)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Include,
+                      DefaultValueHandling = DefaultValueHandling.Include)]
         public object Value { get; set; }
 
         public Guid? ReferenceValueID { get; set; }
