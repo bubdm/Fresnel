@@ -108,7 +108,7 @@ a.disabled {
 .collectionExplorerPanelBody {
     overflow-x: auto;
     overflow-y: none;
-    max-height: 700px;
+    max-height: 500px;
 }
 
 .collectionRowText {
@@ -160,6 +160,13 @@ a.disabled {
     width: 100%;
 }
 
+.buttonWrapperForTooltips {
+    /* To enabled tooltips on disabled buttons, 
+       use this class on a <div> that wraps the button,
+       and place the 'title' on the div */
+    display: inline-block;
+}
+
 .explorerFooter {
 }
 
@@ -169,7 +176,7 @@ a.disabled {
 
 .modalDialog {
     width: 100%;
-    height: 775px;
+    height: 500px;
 }
 
 .searchFilterRow {
