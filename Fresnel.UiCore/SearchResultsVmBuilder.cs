@@ -17,6 +17,7 @@ namespace Envivo.Fresnel.UiCore
         private ClassHierarchyBuilder _ClassHierarchyBuilder;
         private SearchFilterPropertyVmBuilder _SearchFilterPropertyVmBuilder;
         private PropertyVmBuilder _PropertyVmBuilder;
+        private DirtyStateVmBuilder _DirtyStateVmBuilder;
 
         public SearchResultsVmBuilder
             (
@@ -24,7 +25,8 @@ namespace Envivo.Fresnel.UiCore
             ObserverRetriever observerRetriever,
             ClassHierarchyBuilder classHierarchyBuilder,
             SearchFilterPropertyVmBuilder searchFilterPropertyVmBuilder,
-            PropertyVmBuilder propertyVmBuilder
+            PropertyVmBuilder propertyVmBuilder,
+            DirtyStateVmBuilder dirtyStateVmBuilder
             )
         {
             _RealTypeResolver = realTypeResolver;
@@ -32,6 +34,7 @@ namespace Envivo.Fresnel.UiCore
             _ClassHierarchyBuilder = classHierarchyBuilder;
             _SearchFilterPropertyVmBuilder = searchFilterPropertyVmBuilder;
             _PropertyVmBuilder = propertyVmBuilder;
+            _DirtyStateVmBuilder = dirtyStateVmBuilder;
         }
 
         public SearchResultsVM BuildFor(IQueryable searchResults, ClassTemplate tElement, SearchRequest originalRequest)
@@ -66,7 +69,7 @@ namespace Envivo.Fresnel.UiCore
                 Items = this.CreateItems(oCollection, allKnownProperties).ToArray(),
                 AreMoreAvailable = searchResults.Count() > originalRequest.PageSize,
 
-                DirtyState = this.CreateDirtyState(oCollection),
+                DirtyState = _DirtyStateVmBuilder.BuildFor(oCollection),
             };
 
             return result;
@@ -105,7 +108,7 @@ namespace Envivo.Fresnel.UiCore
                 IsVisible = oObject.Template.IsVisible,
                 IsPersistable = oObject.Template.IsPersistable,
                 Properties = this.CreateProperties(oObject, allKnownProperties).ToArray(),
-                DirtyState = this.CreateDirtyState(oObject),
+                DirtyState = _DirtyStateVmBuilder.BuildFor(oObject),
             };
 
             return result;
@@ -126,15 +129,5 @@ namespace Envivo.Fresnel.UiCore
             return properties;
         }
 
-        private DirtyStateVM CreateDirtyState(ObjectObserver oObject)
-        {
-            return new DirtyStateVM()
-            {
-                IsTransient = oObject.ChangeTracker.IsTransient,
-                IsPersistent = oObject.ChangeTracker.IsPersistent,
-                IsDirty = oObject.ChangeTracker.IsDirty,
-                HasDirtyChildren = oObject.ChangeTracker.HasDirtyObjectGraph,
-            };
-        }
     }
 }

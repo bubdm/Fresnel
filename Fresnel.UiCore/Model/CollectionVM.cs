@@ -15,5 +15,12 @@ namespace Envivo.Fresnel.UiCore.Model
         public ObjectVM[] Items { get; set; }
 
         public ObjectVM[] DisplayItems { get; set; }
+
+        public InteractionPoint Add { get; set; }
+
+        public InteractionPoint Create { get; set; }
+
+        public InteractionPoint[] CreateSubclasses { get; set; }
+
     }
 }

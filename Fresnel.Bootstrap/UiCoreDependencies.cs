@@ -63,6 +63,9 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.UiCore.Controllers.TestController),
 
                 typeof(Fresnel.UiCore.AbstractObjectVmBuilder),
+                typeof(Fresnel.UiCore.ObjectVmBuilder),
+                typeof(Fresnel.UiCore.CollectionVmBuilder),
+                typeof(Fresnel.UiCore.DirtyStateVmBuilder),
                 typeof(Fresnel.UiCore.EmptyPropertyVmBuilder),
                 typeof(Fresnel.UiCore.ExceptionMessagesBuilder),
                 typeof(Fresnel.UiCore.PropertyVmBuilder),

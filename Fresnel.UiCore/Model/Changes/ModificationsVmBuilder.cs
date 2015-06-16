@@ -11,6 +11,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
         private AbstractObjectVmBuilder _AbstractObjectVMBuilder;
         private PropertyStateVmBuilder _PropertyStateVmBuilder;
         private ParameterStateVmBuilder _ParameterStateVmBuilder;
+        private DirtyStateVmBuilder _DirtyStateVmBuilder;
         private ObserverRetriever _ObserverRetriever;
 
         public ModificationsVmBuilder
@@ -18,12 +19,14 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
             AbstractObjectVmBuilder abstractObjectVMBuilder,
             PropertyStateVmBuilder propertyStateVmBuilder,
             ParameterStateVmBuilder parameterStateVmBuilder,
+            DirtyStateVmBuilder dirtyStateVmBuilder,
             ObserverRetriever ObserverRetriever
             )
         {
             _AbstractObjectVMBuilder = abstractObjectVMBuilder;
             _PropertyStateVmBuilder = propertyStateVmBuilder;
             _ParameterStateVmBuilder = parameterStateVmBuilder;
+            _DirtyStateVmBuilder = dirtyStateVmBuilder;
             _ObserverRetriever = ObserverRetriever;
         }
 
@@ -62,7 +65,7 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
                 ObjectTitleChanges = objectTitleChanges.Select(c => CreateTitleChange(c)).ToArray(),
                 CollectionAdditions = collectionAdds.Select(c => CreateCollectionElement(c)).ToArray(),
                 CollectionRemovals = collectionRemoves.Select(c => CreateCollectionElement(c)).ToArray(),
-                DirtyStateChanges = dirtyTrackers.Select(c => CreateDirtyState(c)).ToArray(),
+                DirtyStateChanges = dirtyTrackers.Select(c => _DirtyStateVmBuilder.BuildFor(c)).ToArray(),
             };
 
             return result;
@@ -175,17 +178,5 @@ namespace Envivo.Fresnel.UiCore.Model.Changes
             return result;
         }
 
-        private DirtyStateVM CreateDirtyState(ObjectObserver oObject)
-        {
-            var changeTracker = oObject.ChangeTracker;
-            return new DirtyStateVM()
-            {
-                ObjectID = oObject.ID,
-                IsTransient = changeTracker.IsTransient,
-                IsPersistent = changeTracker.IsPersistent,
-                IsDirty = changeTracker.IsDirty,
-                HasDirtyChildren = changeTracker.HasDirtyObjectGraph,
-            };
-        }
     }
 }

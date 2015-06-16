@@ -52,6 +52,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionVmBuilder.cs" />
+    <Compile Include="ObjectVmBuilder.cs" />
     <Compile Include="Commands\GetDomainServicesResponse.cs" />
     <Compile Include="Commands\CreateObjectRequest.cs" />
     <Compile Include="Commands\CollectionAddRequest.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Model\DirtyStateVM.cs" />
     <Compile Include="ParameterStateVmBuilder.cs" />
     <Compile Include="EmptyPropertyVmBuilder.cs" />
+    <Compile Include="DirtyStateVmBuilder.cs" />
     <Compile Include="SearchFilterPropertyVmBuilder.cs" />
     <Compile Include="SearchResultsVmBuilder.cs" />
     <Compile Include="AbstractParameterVmBuilder.cs" />
