@@ -18,9 +18,15 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public InteractionPoint Add { get; set; }
 
-        public InteractionPoint Create { get; set; }
+        /// <summary>
+        /// Methods for creating the Element Type
+        /// </summary>
+        public MethodVM[] ElementFactoryMethods { get; set; }
 
-        public InteractionPoint[] CreateSubclasses { get; set; }
+        /// <summary>
+        /// Methods for creating all Sub-Classes of the Element Type
+        /// </summary>
+        public MethodVM[] ElementSubClassFactoryMethods { get; set; }
 
     }
 }

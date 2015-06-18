@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionInteractionsBuilder.cs" />
     <Compile Include="CollectionVmBuilder.cs" />
     <Compile Include="ObjectVmBuilder.cs" />
     <Compile Include="Commands\GetDomainServicesResponse.cs" />

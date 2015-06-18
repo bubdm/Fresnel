@@ -4,6 +4,7 @@ using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.Introspection;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.SampleModel.Northwind;
+using Envivo.Fresnel.SampleModel.Northwind.People;
 using Envivo.Fresnel.SampleModel.TestTypes;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Controllers;
@@ -88,6 +89,45 @@ namespace Envivo.Fresnel.Tests.Features
                 var visibleProperties = template.Properties.VisibleOnly;
 
                 Assert.GreaterOrEqual(collectionVM.ElementProperties.Count(), visibleProperties.Count());
+            }
+        }
+        
+        [Test]
+        public void ShouldReturnCorrectInteractionsCollection()
+        {
+            // Arrange:
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                var templateCache = _TestScopeContainer.Resolve<TemplateCache>();
+                var controller = _TestScopeContainer.Resolve<ExplorerController>();
+                var getCommand = _TestScopeContainer.Resolve<Core.Commands.GetPropertyCommand>();
+
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
+                var obj = _Fixture.Create<Person>();
+                var oObject = observerRetriever.GetObserver(obj) as ObjectObserver;
+
+                var propName = LambdaExtensions.NameOf<Person>(x => x.Roles);
+                var oProp = (ObjectPropertyObserver)oObject.Properties[propName];
+                var oCollection = (CollectionObserver)getCommand.Invoke(oProp);
+
+                // Act:
+                var request = new GetPropertyRequest()
+                {
+                    ObjectID = obj.ID,
+                    PropertyName = LambdaExtensions.NameOf<Person>(x => x.Roles)
+                };
+
+                var getResult = controller.GetObjectProperty(request);
+
+                // Assert:
+                var collectionVM = (CollectionVM)getResult.ReturnValue;
+
+                // There should be "Create" methods for all sub-classes of the collection's Element type:
+                Assert.AreEqual(4, collectionVM.ElementSubClassFactoryMethods.Count());
+
+                // The element Type is abstract, so it shouldn't be accessible:
+                Assert.IsFalse(collectionVM.ElementFactoryMethods.First().IsEnabled);
             }
         }
 

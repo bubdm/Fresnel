@@ -19,6 +19,8 @@ namespace Envivo.Fresnel.UiCore
         private ObjectVmBuilder _ObjectVmBuilder;
         private DirtyStateVmBuilder _DirtyStateVmBuilder;
 
+        private CollectionInteractionsBuilder _CollectionInteractionsBuilder;
+
         public CollectionVmBuilder
             (
             RealTypeResolver realTypeResolver,
@@ -28,7 +30,8 @@ namespace Envivo.Fresnel.UiCore
             PropertyVmBuilder propertyVmBuilder,
             MethodVmBuilder methodVmBuilder,
             ObjectVmBuilder objectVmBuilder,
-            DirtyStateVmBuilder dirtyStateVmBuilder
+            DirtyStateVmBuilder dirtyStateVmBuilder,
+            CollectionInteractionsBuilder collectionInteractionsBuilder
             )
         {
             _RealTypeResolver = realTypeResolver;
@@ -39,15 +42,35 @@ namespace Envivo.Fresnel.UiCore
             _MethodVmBuilder = methodVmBuilder;
             _ObjectVmBuilder = objectVmBuilder;
             _DirtyStateVmBuilder = dirtyStateVmBuilder;
+            _CollectionInteractionsBuilder = collectionInteractionsBuilder;
         }
 
         public ObjectVM BuildFor(CollectionObserver oCollection)
         {
             // The View needs to know about ALL properties for all sub-classes of the Collection's element type:
             var tElement = oCollection.Template.InnerClass;
-            return this.BuildFor(oCollection, tElement);
+            var result = this.BuildFor(oCollection, tElement);
+
+            //result.Add = _CollectionInteractionsBuilder.BuildAdd(oCollectionProperty, oCollection);
+            result.ElementFactoryMethods = _CollectionInteractionsBuilder.BuildElementFactoryMethods(oCollection);
+            result.ElementSubClassFactoryMethods = _CollectionInteractionsBuilder.BuildElementSubClassFactoryMethods(oCollection);
+
+            return result;
         }
 
+        public ObjectVM BuildFor(ObjectPropertyObserver oCollectionProperty, CollectionObserver oCollection)
+        {
+            // The View needs to know about ALL properties for all sub-classes of the Collection's element type:
+            var tElement = oCollection.Template.InnerClass;
+            var result = this.BuildFor(oCollection, tElement);
+
+            result.Add = _CollectionInteractionsBuilder.BuildAdd(oCollectionProperty, oCollection);
+            result.ElementFactoryMethods = _CollectionInteractionsBuilder.BuildElementFactoryMethods(oCollection);
+            result.ElementSubClassFactoryMethods = _CollectionInteractionsBuilder.BuildElementSubClassFactoryMethods(oCollection);
+
+            return result;
+        }
+        
         private CollectionVM BuildFor(CollectionObserver oCollection, ClassTemplate tElement)
         {
             var tSubClasses = _ClassHierarchyBuilder.GetSubClasses(tElement, false, false).ToArray();
@@ -77,9 +100,6 @@ namespace Envivo.Fresnel.UiCore
                 Name = objectVM.Name,
                 Type = objectVM.Type,
                 ElementType = tElement.RealType.FullName,
-                //Add = this.CreateAdd(oCollection),
-                //Create = this.CreateCreate(oCollection),
-                //CreateSubclasses = this.CreateSubclasses(oCollection),
                 IsVisible = objectVM.IsVisible,
                 ElementProperties = elementProperties.ToArray(),
                 Description = objectVM.Description,
@@ -108,21 +128,6 @@ namespace Envivo.Fresnel.UiCore
                 items.Add(objVM);
             }
             return items;
-        }
-
-        private InteractionPoint CreateAdd(CollectionObserver oCollection)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private InteractionPoint CreateCreate(CollectionObserver oCollection)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private InteractionPoint[] CreateSubclasses(CollectionObserver oCollection)
-        {
-            throw new System.NotImplementedException();
         }
 
         private void TrimRedundantContentFrom(CollectionVM collectionVM)

@@ -65,6 +65,7 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.UiCore.AbstractObjectVmBuilder),
                 typeof(Fresnel.UiCore.ObjectVmBuilder),
                 typeof(Fresnel.UiCore.CollectionVmBuilder),
+                typeof(Fresnel.UiCore.CollectionInteractionsBuilder),
                 typeof(Fresnel.UiCore.DirtyStateVmBuilder),
                 typeof(Fresnel.UiCore.EmptyPropertyVmBuilder),
                 typeof(Fresnel.UiCore.ExceptionMessagesBuilder),
