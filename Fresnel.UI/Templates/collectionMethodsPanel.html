@@ -1,0 +1,49 @@
+﻿<!--This is embedded in the MethodsPanel, and only shown for Collections -->
+
+<div ng-init="oObj = explorer.__meta; oCol = oObj;" class="btn-group btn-group-sm methodItems">
+    <div class="buttonWrapperForTooltips" title="{{oCol.OuterProperty.State.Add.Error}}">
+        <button class="btn btn-default methodItem"
+                ng-disabled="!oCol.OuterProperty.State.Add.IsEnabled"
+                ng-click="addExistingItems(oCol.OuterProperty, oCol)"
+                title="Add existing item/s to this list">
+            <i class="fa fa-plus"></i> Add
+        </button>
+    </div>
+
+    <div class="btn-group buttonWrapperForTooltips" title="{{oCol.OuterProperty.State.Create.Error}}">
+        <button type="button"
+                class="btn btn-default btn-sm"
+                ng-disabled="!oCol.OuterProperty.State.Create.IsEnabled"
+                ng-click="addNewItem(oCol.OuterProperty, oCol.ElementType)"
+                title="Create a new item in this list">
+            <i class="fa fa-plus-square"></i> Create
+        </button>
+
+        <!--Each sub-class appears in the drop-down: -->
+        <button type="button"
+                class="btn btn-default btn-sm dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                ng-disabled="!oCol.OuterProperty.State.Create.IsEnabled">
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li ng-repeat='factoryMethod in oCol.ElementFactoryMethods'
+                ng-disabled="!factoryMethod.IsEnabled"
+                ng-click="invoke(factoryMethod)"
+                data-toggle="tooltip"
+                title="{{factoryMethod.Description}}">
+                <a href="">{{factoryMethod.Name}}</a>
+            </li>
+            <li ng-repeat='factoryMethod in oCol.ElementSubClassFactoryMethods'
+                ng-disabled="!factoryMethod.IsEnabled"
+                ng-click="invoke(factoryMethod)"
+                data-toggle="tooltip"
+                title="{{factoryMethod.Description}}">
+                <a href="">{{factoryMethod.Name}}</a>
+            </li>
+        </ul>
+    </div>
+
+</div>

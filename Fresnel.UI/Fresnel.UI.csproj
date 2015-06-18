@@ -977,6 +977,7 @@
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\ng-dock.js" />
     <Content Include="Scripts\angular-smart-table\smart-table.min.js" />
+    <Content Include="Templates\collectionMethodsPanel.html" />
     <Content Include="Templates\saveDialog.html" />
     <Content Include="Templates\searchFilterItem.html" />
     <Content Include="Templates\searchResultsToolbar.html" />

@@ -1,26 +1,6 @@
-﻿<div ng-init="oObj = explorer.__meta; oCol = oObj;" class="btn-group btn-group-sm methodItems">
-    <div>
-        <!-- Collection specific buttons: -->
-        <div class="buttonWrapperForTooltips" title="{{oCol.OuterProperty.State.Add.Error}}">
-            <button class="btn btn-default methodItem"
-                    ng-show="oCol.IsCollection"
-                    ng-disabled="!oCol.OuterProperty.State.Add.IsEnabled"
-                    ng-click="addExistingItems(oCol.OuterProperty, oCol)"
-                    title="Add existing item/s to this list">
-                <i class="fa fa-plus"></i> Add
-            </button>
-        </div>
+﻿<div ng-init="oObj = explorer.__meta" class="btn-group btn-group-sm methodItems">
 
-        <div class="buttonWrapperForTooltips" title="{{oCol.OuterProperty.State.Create.Error}}">
-            <button class="btn btn-default methodItem"
-                    ng-show="oCol.IsCollection"
-                    ng-disabled="!oCol.OuterProperty.State.Create.IsEnabled"
-                    ng-click="addNewItem(oCol.OuterProperty, oCol.ElementType)"
-                    title="Create a new item in this list">
-                <i class="fa fa-plus-square"></i> Create
-            </button>
-        </div>
-    </div>
+    <div ng-if="oObj.IsCollection" ng-include="'/Templates/collectionMethodsPanel.html'"></div>
 
     <!-- Domain object actions: -->
     <button class="btn btn-default methodItem"
