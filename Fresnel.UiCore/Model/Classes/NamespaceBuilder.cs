@@ -34,6 +34,8 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
                                             .Where(h => h.Type != null)
                                             .GroupBy(h => h.Type.Namespace);
 
+            var commonNamespacePrexix = this.DetermineCommonNamespacePrefix(hierarchy);
+
             foreach (var group in nodesGroupedByNamespace)
             {
                 var classItems = new List<ClassItem>();
@@ -44,7 +46,9 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
                     classItems.Add(item);
                 }
 
-                var namespaceFriendlyName = group.Key.Split('.').Last();
+                var namespaceFriendlyName = group.Key
+                                                .Replace(commonNamespacePrexix + ".", null)
+                                                .Replace(".", " ");
 
                 var newNamespace = new Namespace()
                 {
@@ -57,6 +61,18 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
 
             return results
                     .OrderBy(n => n.Name);
+        }
+
+        private string DetermineCommonNamespacePrefix(IEnumerable<HierarchyNode> hierarchy)
+        {
+            var currentNode = hierarchy.First();
+            while (currentNode.Children.Count() == 1)
+            {
+                currentNode = currentNode.Children.First();
+            }
+
+            var result = currentNode.FQN;
+            return result;
         }
     }
 }
