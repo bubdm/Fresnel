@@ -32,7 +32,11 @@
                     $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
                     this.classHierarchy = promiseResult.data;
-                });
+                })
+                    .then((promiseResult) => {
+                    // This *must* run after loading the ClassHierarchy:
+                    this.loadDomainServicesHierarchy();
+                })
             }
 
             $scope.loadDomainServicesHierarchy = function () {
@@ -77,7 +81,6 @@
             // This will run when the page loads:
             angular.element(document).ready(function () {
                 $scope.loadClassHierarchy();
-                $scope.loadDomainServicesHierarchy();
             });
 
         }

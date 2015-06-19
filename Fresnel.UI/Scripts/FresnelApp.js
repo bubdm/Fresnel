@@ -1525,6 +1525,9 @@ var FresnelApp;
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                     _this.classHierarchy = promiseResult.data;
+                }).then(function (promiseResult) {
+                    // This *must* run after loading the ClassHierarchy:
+                    _this.loadDomainServicesHierarchy();
                 });
             };
             $scope.loadDomainServicesHierarchy = function () {
@@ -1560,7 +1563,6 @@ var FresnelApp;
             // This will run when the page loads:
             angular.element(document).ready(function () {
                 $scope.loadClassHierarchy();
-                $scope.loadDomainServicesHierarchy();
             });
         }
         ToolboxController.$inject = [
