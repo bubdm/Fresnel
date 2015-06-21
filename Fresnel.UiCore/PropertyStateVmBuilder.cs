@@ -68,7 +68,7 @@ namespace Envivo.Fresnel.UiCore
                     // Do nothing - We don't want to accidentally trigger a lazy load
                     isSafeToRead = false;
                 }
-                
+
                 if (isSafeToRead)
                 {
                     realValue = tProp.GetProperty(oProp.OuterObject.RealObject);
@@ -91,7 +91,7 @@ namespace Envivo.Fresnel.UiCore
         {
             var result = new ValueStateVM();
 
-            result.Get = this.BuildGet(tProp);
+            result.Get = this.BuildGetForNulls(tProp);
             result.Set = this.BuildSet(tProp);
 
             if (result.Get.IsEnabled)
@@ -135,8 +135,8 @@ namespace Envivo.Fresnel.UiCore
                 }
             }
 
-            var isNull = result.ReferenceValueID == null && result.Value == null;
-            result.Get.IsEnabled = result.Get.IsEnabled & !isNull;
+            // The property may have a null value, so replace the "Get" as necessary:
+            result.Get = this.BuildGetForNulls(tProp, result.Get, result);
 
             result.Create = tProp.IsCollection ? this.BuildCreateForCollection(tProp, result) :
                             tProp.IsDomainObject ? this.BuildCreateForObject(tProp, result) :
@@ -197,7 +197,7 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint BuildGet(PropertyTemplate tProp)
+        private InteractionPoint BuildGetForNulls(PropertyTemplate tProp)
         {
             var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(tProp);
 
@@ -207,6 +207,25 @@ namespace Envivo.Fresnel.UiCore
                 Error = getCheck == null ? null : getCheck.Flatten().Message,
             };
             return result;
+        }
+
+        private InteractionPoint BuildGetForNulls(PropertyTemplate tProp, InteractionPoint existingGetAction, ValueStateVM valueState)
+        {
+            var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
+
+            if (isNull)
+            {
+                var result = new InteractionPoint()
+                {
+                    IsEnabled = false,
+                    Error = string.Concat("Property '", tProp.FriendlyName, "' does not have any value (it is null)")
+                };
+                return result;
+            }
+            else
+            {
+                return existingGetAction;
+            }
         }
 
         private InteractionPoint BuildSet(PropertyTemplate oProp)
@@ -230,7 +249,7 @@ namespace Envivo.Fresnel.UiCore
             var result = new InteractionPoint()
             {
                 IsEnabled = clearCheck == null &&
-                             !isNull,
+                            !isNull,
             };
             return result;
         }

@@ -1,9 +1,14 @@
 ﻿<div class="btn-group btn-group-sm">
-    <button type="button"
-            class="btn btn-default"
-            ng-show="prop.IsCollection"
-            ng-click="openNewExplorerForProperty(prop)"
-            title="Open contents in a new panel">
-        <i class="glyphicon glyphicon-new-window"></i>
-    </button>
+
+    <div class="buttonWrapperForTooltips" title="{{prop.State.Get.Error}}">
+        <button type="button"
+                class="btn btn-default"
+                ng-show="prop.IsCollection"
+                ng-disabled="!prop.State.Get.IsEnabled"
+                ng-click="openNewExplorerForProperty(prop)"
+                title="Open contents in a new panel">
+            <i class="glyphicon glyphicon-new-window"></i>
+        </button>
+    </div>
+
 </div>

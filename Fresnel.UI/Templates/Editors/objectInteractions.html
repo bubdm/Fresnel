@@ -1,35 +1,47 @@
 ﻿<div class="btn-group btn-group-sm">
 
-    <button type="button"
-            class="btn btn-default"
-            ng-show="prop.IsObject && prop.State.Create.IsEnabled"
-            ng-click="createAndAssociate(prop, prop.AllowedClassTypes[0])"
-            title="Create a new item">
-        <i class="fa fa-plus-square"></i>
-    </button>
+    <div class="buttonWrapperForTooltips" title="{{prop.State.Create.Error}}">
+        <button type="button"
+                class="btn btn-default"
+                ng-show="prop.IsObject"
+                ng-disabled="!prop.State.Create.IsEnabled"
+                ng-click="createAndAssociate(prop, prop.AllowedClassTypes[0])"
+                title="Create a new item">
+            <i class="fa fa-plus-square"></i>
+        </button>
+    </div>
 
-    <button type="button"
-            class="btn btn-default"
-            ng-show="prop.IsObject && prop.State.Clear.IsEnabled"
-            ng-click="disassociate(prop)"
-            title="Remove this item">
-        <i class="fa fa-unlink"></i>
-    </button>
+    <div class="buttonWrapperForTooltips" title="{{prop.State.Clear.Error}}">>
+        <button type="button"
+                class="btn btn-default"
+                ng-show="prop.IsObject"
+                ng-disabled="!prop.State.Clear.IsEnabled"
+                ng-click="disassociate(prop)"
+                title="Remove this item">
+            <i class="fa fa-unlink"></i>
+        </button>
+    </div>
 
-    <button type="button"
-            class="btn btn-default"
-            ng-show="prop.IsObject && prop.State.Set.IsEnabled"
-            ng-click="associate(prop)"
-            title="Associate with another item">
-        <i class="fa fa-link"></i>
-    </button>
+    <div class="buttonWrapperForTooltips" title="{{prop.State.Add.Error}}">
+        <button type="button"
+                class="btn btn-default"
+                ng-show="prop.IsObject"
+                ng-disabled="!prop.State.Add.IsEnabled"
+                ng-click="associate(prop)"
+                title="Associate with another item">
+            <i class="fa fa-link"></i>
+        </button>
+    </div>
 
-    <button type="button"
-            class="btn btn-default"
-            ng-show="prop.IsObject && prop.State.Get.IsEnabled"
-            ng-click="openNewExplorerForProperty(prop)"
-            title="Open contents in a new panel">
-        <i class="glyphicon glyphicon-new-window"></i>
-    </button>
+    <div class="buttonWrapperForTooltips" title="{{prop.State.Get.Error}}">
+        <button type="button"
+                class="btn btn-default"
+                ng-show="prop.IsObject"
+                ng-disabled="!prop.State.Get.IsEnabled"
+                ng-click="openNewExplorerForProperty(prop)"
+                title="Open contents in a new panel">
+            <i class="glyphicon glyphicon-new-window"></i>
+        </button>
+    </div>
 
 </div>

@@ -62,11 +62,23 @@ namespace Envivo.Fresnel.UiCore.Commands
                                     null;
 
                 // Done:
-                var infoVM = new MessageVM()
+                MessageVM infoVM = null;
+                if (oReturnValue.IsNullOrEmpty())
                 {
-                    IsSuccess = true,
-                    OccurredAt = _Clock.Now,
-                    Text = string.Concat("Loaded property", oProp.Template.FriendlyName, " for ", oObject.Template.FriendlyName)
+                    infoVM = new MessageVM(){
+                        IsWarning = true,
+                        OccurredAt = _Clock.Now,
+                        Text = string.Concat("Property '", oProp.Template.FriendlyName, "' has no value")
+                    };
+                }
+                else
+                {
+                    infoVM = new MessageVM()
+                    {
+                        IsSuccess = true,
+                        OccurredAt = _Clock.Now,
+                        Text = string.Concat("Loaded property '", oProp.Template.FriendlyName, "' for '", oObject.Template.FriendlyName, "'")
+                    };
                 };
                 return new GetPropertyResponse()
                 {
