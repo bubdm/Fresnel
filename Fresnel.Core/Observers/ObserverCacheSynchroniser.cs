@@ -138,6 +138,11 @@ namespace Envivo.Fresnel.Core.Observers
             }
         }
 
+        /// <summary>
+        /// Associates the given Value Observer with the given Property
+        /// </summary>
+        /// <param name="oProperty"></param>
+        /// <param name="oValue"></param>
         public void Sync(ObjectPropertyObserver oProperty, BaseObjectObserver oValue)
         {
             if (oProperty == null)
@@ -154,7 +159,7 @@ namespace Envivo.Fresnel.Core.Observers
                 var isDifferent = !(object.Equals(oValue.RealObject, oPreviousValue.RealObject));
                 if (isDifferent)
                 {
-                    // Make the object aware that it is associated with this property:
+                    // Make the previous object aware that it's no longer associated with this property:
                     oPreviousValue.DisassociateFrom(oProperty);
                 }
             }
@@ -167,7 +172,8 @@ namespace Envivo.Fresnel.Core.Observers
             oProperty.PreviousValue = oValue.RealObject;
 
             // Make sure the contents are synced too:
-            if (oProperty.Template.IsCollection)
+            if (oProperty.Template.IsCollection &&
+                oValue.HasValue())
             {
                 var oCollection = (CollectionObserver)oValue;
                 this.Sync(oCollection);
