@@ -53,7 +53,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
                 if (oReturnValue != null)
                 {
-                    result = _ObjectVMBuilder.BuildFor(oReturnValue);
+                    result = _ObjectVMBuilder.BuildFor(oObjectProp, oReturnValue);
                 }
 
                 // The Property's lazy-state may have changed, so we need to send the change to the client:

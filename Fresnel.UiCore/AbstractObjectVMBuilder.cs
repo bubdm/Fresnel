@@ -40,5 +40,21 @@ namespace Envivo.Fresnel.UiCore
             return null;
         }
 
+        public ObjectVM BuildFor(ObjectPropertyObserver oProperty, BaseObjectObserver observer)
+        {
+            var oCollection = observer as CollectionObserver;
+            var oObject = observer as ObjectObserver;
+
+            if (oCollection != null)
+            {
+                return _CollectionVmBuilder.BuildFor(oProperty, oCollection);
+            }
+            else if (oObject != null)
+            {
+                return _ObjectVmBuilder.BuildFor(oObject);
+            }
+
+            return null;
+        }
     }
 }
