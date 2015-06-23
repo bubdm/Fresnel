@@ -4,6 +4,7 @@ using Envivo.Fresnel.Core.Permissions;
 using Envivo.Fresnel.Introspection.Templates;
 using Envivo.Fresnel.UiCore.Commands;
 using Envivo.Fresnel.UiCore.Model;
+using Envivo.Fresnel.Utils;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,7 +39,7 @@ namespace Envivo.Fresnel.UiCore
                 Parameters = this.CreateParametersFor(tMethod).ToArray(),
                 IsVisible = !tMethod.IsFrameworkMember && tMethod.IsVisible,
                 IsEnabled = invokeCheck == null,
-                Error = invokeCheck == null ? null : invokeCheck.Flatten().Message
+                Error = invokeCheck == null ? null : invokeCheck.ToSingleMessage()
             };
 
             return methodVM;

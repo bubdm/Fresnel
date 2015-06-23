@@ -174,7 +174,7 @@ namespace Envivo.Fresnel.UiCore
             var tClassType = (ClassTemplate)tProp.InnerClass;
             var createCheck = _CanCreatePermission.IsSatisfiedBy(tClassType);
             result.IsEnabled = createCheck == null;
-            result.Error = result.IsEnabled ? null : createCheck.Flatten().Message;
+            result.Error = result.IsEnabled ? null : createCheck.ToSingleMessage();
             return result;
         }
 
@@ -193,7 +193,7 @@ namespace Envivo.Fresnel.UiCore
             var tClassType = ((CollectionTemplate)tProp.InnerClass).InnerClass;
             var createCheck = _CanCreatePermission.IsSatisfiedBy(tClassType);
             result.IsEnabled = createCheck == null;
-            result.Error = result.IsEnabled ? null : createCheck.Flatten().Message;
+            result.Error = result.IsEnabled ? null : createCheck.ToSingleMessage();
             return result;
         }
 
@@ -204,7 +204,7 @@ namespace Envivo.Fresnel.UiCore
             var result = new InteractionPoint()
             {
                 IsEnabled = getCheck == null,
-                Error = getCheck == null ? null : getCheck.Flatten().Message,
+                Error = getCheck == null ? null : getCheck.ToSingleMessage(),
             };
             return result;
         }
@@ -235,7 +235,7 @@ namespace Envivo.Fresnel.UiCore
             var result = new InteractionPoint()
             {
                 IsEnabled = setCheck == null,
-                Error = setCheck == null ? null : setCheck.Flatten().Message
+                Error = setCheck == null ? null : setCheck.ToSingleMessage()
             };
             return result;
         }

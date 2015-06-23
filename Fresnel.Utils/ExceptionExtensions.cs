@@ -30,5 +30,21 @@ namespace Envivo.Fresnel.Utils
             }
         }
 
+        /// <summary>
+        /// Returns a single message containing all of the errors in the given AggregateException
+        /// </summary>
+        /// <param name="exception"></param>
+        /// <returns></returns>
+        public static string ToSingleMessage(this AggregateException exception)
+        {
+            var exceptions = exception.Flatten().InnerExceptions;
+
+            var messages = exceptions.Select(e => e.Message).ToArray();
+
+            var result = string.Join(Environment.NewLine, messages);
+
+            return result;
+        }
+
     }
 }
