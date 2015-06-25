@@ -38,54 +38,20 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        public MethodVM[] BuildElementFactoryMethods(CollectionObserver oCollection)
-        {
-            var tElement = oCollection.Template.InnerClass;
-            var results = this.BuildFactoryMethods(tElement);
-            return results.ToArray();
-        }
-
-        public MethodVM[] BuildElementSubClassFactoryMethods(CollectionObserver oCollection)
+        public ClassItem[] BuildElementTypesFor(CollectionObserver oCollection)
         {
             var tSubClasses = _ClassHierarchyBuilder.GetSubClasses(oCollection.Template.InnerClass, false, true);
             if (!tSubClasses.Any())
                 return null;
 
-            var results = new List<MethodVM>();
+            var results = new List<ClassItem>();
             foreach (var tSubClass in tSubClasses)
             {
-                results.AddRange(this.BuildFactoryMethods(tSubClass));
+                var classItemVm = _ClassItemBuilder.BuildFor(tSubClass);
+                results.Add(classItemVm);
             }
 
             return results.ToArray();
         }
-
-        private IEnumerable<MethodVM> BuildFactoryMethods(ClassTemplate tSubClass)
-        {
-            var results = new List<MethodVM>();
-
-            var classItemVm = _ClassItemBuilder.BuildFor(tSubClass);
-
-            if (classItemVm.IsVisible)
-            {
-                var defaultCreate = new MethodVM
-                {
-                    Name = classItemVm.Name,
-                    InternalName = tSubClass.FullName,
-                    IsVisible = classItemVm.Create.IsVisible,
-                    IsEnabled = classItemVm.Create.IsEnabled,
-                    Error = classItemVm.Create.Error
-                };
-                results.Add(defaultCreate);
-            }
-
-            if (classItemVm.FactoryMethods != null)
-            {
-                results.AddRange(classItemVm.FactoryMethods);
-            }
-
-            return results;
-        }
-
     }
 }

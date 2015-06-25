@@ -51,9 +51,7 @@ namespace Envivo.Fresnel.UiCore
             var tElement = oCollection.Template.InnerClass;
             var result = this.BuildFor(oCollection, tElement);
 
-            //result.Add = _CollectionInteractionsBuilder.BuildAdd(oCollectionProperty, oCollection);
-            result.ElementFactoryMethods = _CollectionInteractionsBuilder.BuildElementFactoryMethods(oCollection);
-            result.ElementSubClassFactoryMethods = _CollectionInteractionsBuilder.BuildElementSubClassFactoryMethods(oCollection);
+            result.ElementTypes = _CollectionInteractionsBuilder.BuildElementTypesFor(oCollection);
 
             return result;
         }
@@ -65,8 +63,7 @@ namespace Envivo.Fresnel.UiCore
             var result = this.BuildFor(oCollection, tElement);
 
             result.Add = _CollectionInteractionsBuilder.BuildAdd(oCollectionProperty, oCollection);
-            result.ElementFactoryMethods = _CollectionInteractionsBuilder.BuildElementFactoryMethods(oCollection);
-            result.ElementSubClassFactoryMethods = _CollectionInteractionsBuilder.BuildElementSubClassFactoryMethods(oCollection);
+            result.ElementTypes = _CollectionInteractionsBuilder.BuildElementTypesFor(oCollection);
 
             return result;
         }

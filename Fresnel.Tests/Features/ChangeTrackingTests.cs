@@ -242,7 +242,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var setResult = controller.SetProperty(request);
 
                 // Assert:
-                Assert.AreEqual(2, setResult.Modifications.ObjectTitleChanges.Count());
+                Assert.AreEqual(4, setResult.Modifications.ObjectTitleChanges.Count());
 
                 var matchingModification = setResult.Modifications.ObjectTitleChanges.Single(m => m.ObjectID == request.ObjectID);
                 Assert.AreEqual(request.NonReferenceValue, matchingModification.Title);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Envivo.Fresnel.UiCore.Model.Classes;
+using System.Collections.Generic;
 using T4TS;
 
 namespace Envivo.Fresnel.UiCore.Model
@@ -19,14 +20,8 @@ namespace Envivo.Fresnel.UiCore.Model
         public InteractionPoint Add { get; set; }
 
         /// <summary>
-        /// Methods for creating the Element Type
+        /// Interactions for all the sub-classes allowed for this Collection
         /// </summary>
-        public MethodVM[] ElementFactoryMethods { get; set; }
-
-        /// <summary>
-        /// Methods for creating all Sub-Classes of the Element Type
-        /// </summary>
-        public MethodVM[] ElementSubClassFactoryMethods { get; set; }
-
+        public ClassItem[] ElementTypes { get; set; }
     }
 }

@@ -25,23 +25,14 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
-                ng-disabled="!oCol.OuterProperty.State.Create.IsEnabled">
+                ng-disabled="!oCol.ElementTypes">
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li ng-repeat='factoryMethod in oCol.ElementFactoryMethods'
-                ng-disabled="!factoryMethod.IsEnabled"
-                ng-click="invoke(factoryMethod)"
-                data-toggle="tooltip"
-                title="{{factoryMethod.Description}}">
-                <a href="">{{factoryMethod.Name}}</a>
-            </li>
-            <li ng-repeat='factoryMethod in oCol.ElementSubClassFactoryMethods'
-                ng-disabled="!factoryMethod.IsEnabled"
-                ng-click="invoke(factoryMethod)"
-                data-toggle="tooltip"
-                title="{{factoryMethod.Description}}">
-                <a href="">{{factoryMethod.Name}}</a>
+            <li ng-repeat='subClass in oCol.ElementTypes'>
+                <a href="" a-disabled="!subClass.IsEnabled" ng-click="addNewItem(oCol.OuterProperty, subClass.FullTypeName)" data-toggle="tooltip" title="{{subClass.Description}}">
+                    <i class="fa fa-plus-square"></i>Create {{subClass.Name}}
+                </a>
             </li>
         </ul>
     </div>

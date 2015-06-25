@@ -41,14 +41,14 @@
                             </li>
                             <li>
                                 <a href="" ng-show="item.Create.IsVisible" a-disabled="!item.Create.IsEnabled" ng-click="create(item.FullTypeName)" data-toggle="tooltip" title="{{item.Create.Tooltip}}">
-                                    <i class="fa fa-plus-circle"></i>Create
+                                    <i class="fa fa-plus-square"></i>Create
                                 </a>
                             </li>
                             <li class="divider" ng-show="item.FactoryMethods"></li>
 
                             <li ng-repeat="factoryMethod in item.FactoryMethods" class="">
                                 <a href="" a-disabled="!factoryMethod.IsEnabled" ng-click="invokeDependencyMethod(factoryMethod)" data-toggle="tooltip" title="{{factoryMethod.Description}}">
-                                    <i class="fa fa-plus-circle"></i>{{factoryMethod.Name}}
+                                    <i class="fa fa-plus-square"></i>{{factoryMethod.Name}}
                                 </a>
                             </li>
                         </ul>
