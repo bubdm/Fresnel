@@ -39,11 +39,17 @@
   <ItemGroup>
     <Compile Include="Northwind\Note.cs" />
     <Compile Include="Northwind\Services\OrderPlacementService.cs" />
+    <Compile Include="TestTypes\Objects\ConcreteEntityD.cs" />
+    <Compile Include="TestTypes\Objects\ConcreteEntityC.cs" />
+    <Compile Include="TestTypes\Objects\ConcreteEntityB.cs" />
+    <Compile Include="TestTypes\Objects\ConcreteEntityA.cs" />
+    <Compile Include="TestTypes\Objects\AbstractEntity.cs" />
     <Compile Include="TestTypes\InternalClass.cs" />
     <Compile Include="TestTypes\MultiTypeFactory.cs" />
     <Compile Include="TestTypes\MultiType.cs" />
     <Compile Include="Northwind\ProductConsistencyCheck.cs" />
     <Compile Include="Northwind\ProductFilterQuerySpecification.cs" />
+    <Compile Include="TestTypes\Objects\ConcreteEntityCFactory.cs" />
     <Compile Include="TestTypes\ObjectWithCtorInjection.cs" />
     <Compile Include="Northwind\ProductFactory.cs" />
     <Compile Include="Northwind\Places\Country.cs" />
