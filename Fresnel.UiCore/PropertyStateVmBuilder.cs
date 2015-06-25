@@ -213,7 +213,7 @@ namespace Envivo.Fresnel.UiCore
         {
             var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
 
-            if (isNull)
+            if (isNull && tProp.IsReferenceType)
             {
                 var result = new InteractionPoint()
                 {
