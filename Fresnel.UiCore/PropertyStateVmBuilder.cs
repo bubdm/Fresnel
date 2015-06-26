@@ -91,7 +91,7 @@ namespace Envivo.Fresnel.UiCore
         {
             var result = new ValueStateVM();
 
-            result.Get = this.BuildGetForNulls(tProp);
+            result.Get = this.BuildGet(tProp);
             result.Set = this.BuildSet(tProp);
 
             if (result.Get.IsEnabled)
@@ -197,7 +197,7 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint BuildGetForNulls(PropertyTemplate tProp)
+        private InteractionPoint BuildGet(PropertyTemplate tProp)
         {
             var getCheck = _CanGetPropertyPermission.IsSatisfiedBy(tProp);
 
