@@ -50,7 +50,7 @@ namespace Envivo.Fresnel.UiCore
             if (tProp.IsDomainObject)
             {
                 propVM.AllowedClassTypes = _ClassHierarchyBuilder
-                                            .GetCompleteTree((ClassTemplate)tProp.InnerClass)
+                                            .GetSubClasses((ClassTemplate)tProp.InnerClass, true, true)
                                             .Select(t => t.FullName)
                                             .ToArray();
             }
