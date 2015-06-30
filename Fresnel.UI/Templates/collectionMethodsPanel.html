@@ -25,11 +25,11 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
-                ng-disabled="!oCol.ElementTypes">
+                ng-disabled="!oCol.AllowedClassTypes">
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li ng-repeat='subClass in oCol.ElementTypes'>
+            <li ng-repeat='subClass in oCol.AllowedClassTypes'>
                 <a href="" a-disabled="!subClass.IsEnabled" ng-click="addNewItem(oCol.OuterProperty, subClass.FullTypeName)" data-toggle="tooltip" title="{{subClass.Description}}">
                     <i class="fa fa-plus-square"></i>Create {{subClass.Name}}
                 </a>

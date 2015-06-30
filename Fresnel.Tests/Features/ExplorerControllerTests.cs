@@ -124,7 +124,7 @@ namespace Envivo.Fresnel.Tests.Features
                 var collectionVM = (CollectionVM)getResult.ReturnValue;
 
                 // There should be "Create" methods for all sub-classes of the collection's Element type:
-                Assert.AreEqual(4, collectionVM.ElementTypes.Count());
+                Assert.AreEqual(4, collectionVM.AllowedClassTypes.Count());
             }
         }
 

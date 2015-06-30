@@ -19,9 +19,6 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public InteractionPoint Add { get; set; }
 
-        /// <summary>
-        /// Interactions for all the sub-classes allowed for this Collection
-        /// </summary>
-        public ClassItem[] ElementTypes { get; set; }
+        public ClassItem[] AllowedClassTypes { get; set; }
     }
 }
