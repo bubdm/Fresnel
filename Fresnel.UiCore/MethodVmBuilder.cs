@@ -12,12 +12,12 @@ namespace Envivo.Fresnel.UiCore
 {
     public class MethodVmBuilder
     {
-        private AbstractParameterVmBuilder _AbstractParameterVmBuilder;
+        private ParameterVmBuilder _AbstractParameterVmBuilder;
         private CanInvokeMethodPermission _CanInvokeMethodPermission;
 
         public MethodVmBuilder
             (
-            AbstractParameterVmBuilder abstractParameterVmBuilder,
+            ParameterVmBuilder abstractParameterVmBuilder,
             CanInvokeMethodPermission canInvokeMethodPermission
             )
         {

@@ -93,7 +93,7 @@
     <Compile Include="DirtyStateVmBuilder.cs" />
     <Compile Include="SearchFilterPropertyVmBuilder.cs" />
     <Compile Include="SearchResultsVmBuilder.cs" />
-    <Compile Include="AbstractParameterVmBuilder.cs" />
+    <Compile Include="ParameterVmBuilder.cs" />
     <Compile Include="Commands\CollectionRemoveCommand.cs" />
     <Compile Include="Commands\CollectionRemoveRequest.cs" />
     <Compile Include="Commands\CollectionAddCommand.cs" />

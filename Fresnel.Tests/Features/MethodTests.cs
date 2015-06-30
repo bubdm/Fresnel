@@ -17,6 +17,7 @@ using Fresnel.Tests;
 using NUnit.Framework;
 using System;
 using System.Linq;
+using Envivo.Fresnel.SampleModel.Northwind.People;
 
 namespace Envivo.Fresnel.Tests.Features
 {
@@ -165,5 +166,42 @@ namespace Envivo.Fresnel.Tests.Features
             }
         }
 
+
+        [Test]
+        public void ShouldHaveCorrectStateForFactoryMethodParameters()
+        {
+            // From the UI, User should be able to "Create a new Product for Supplier", 
+            // and select a Supplier from a list
+
+            using (var scope = _TestScopeContainer.BeginScope())
+            {
+                // Arrange:
+                var observerRetriever = _TestScopeContainer.Resolve<ObserverRetriever>();
+                var explorerController = _TestScopeContainer.Resolve<ExplorerController>();
+
+                _TestScopeContainer.Resolve<ObserverCache>().CleanUp();
+                var factory = _TestScopeContainer.Resolve<IFactory<Product>>();
+                var oFactory = observerRetriever.GetObserver(factory);
+
+                // Act:
+                var getRequest = new GetObjectRequest()
+                {
+                    ObjectID = oFactory.ID,
+                };
+
+                var getResponse = explorerController.GetObject(getRequest);
+
+                // Asser:t
+                Assert.IsTrue(getResponse.Passed);
+                var objectVM = getResponse.ReturnValue;
+
+                var factoryMethodVm = objectVM.Methods.Single(m => m.InternalName == "CreateForSupplier");
+                var supplierParameterVM = factoryMethodVm.Parameters.Single(p => p.InternalName == "supplier");
+
+                // "Supplier" doesn't have any sub-classes:
+                Assert.AreEqual(1, supplierParameterVM.AllowedClassTypes.Count());
+                Assert.Contains(typeof(Supplier).FullName, supplierParameterVM.AllowedClassTypes);
+            }
+        }
     }
 }

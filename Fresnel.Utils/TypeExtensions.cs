@@ -272,5 +272,18 @@ namespace Envivo.Fresnel.Utils
         {
             return type != typeof(T);
         }
+
+        /// <summary>
+        /// Returns the default value for this Type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static object GetDefaultValue(this Type type)
+        {
+            return type.IsValueType ?
+                   Activator.CreateInstance(type) :
+                   null;
+        }
+
     }
 }
