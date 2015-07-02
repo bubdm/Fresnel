@@ -6,13 +6,13 @@ using System.Linq;
 
 namespace Envivo.Fresnel.UiCore.Model.Classes
 {
-    public class NamespacesBuilder
+    public class DomainClassesBuilder
     {
         private TemplateCache _TemplateCache;
         private NamespaceHierarchyBuilder _NamespaceHierarchyBuilder;
         private ClassItemBuilder _ClassItemBuilder;
 
-        public NamespacesBuilder
+        public DomainClassesBuilder
             (
             TemplateCache templateCache,
             NamespaceHierarchyBuilder namespaceHierarchyBuilder,

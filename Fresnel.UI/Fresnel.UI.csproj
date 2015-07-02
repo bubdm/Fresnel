@@ -1051,6 +1051,7 @@
     <TypeScriptCompile Include="..\Fresnel.UiCore\T4TS.d.ts">
       <Link>AngularApp\T4TS.d.ts</Link>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="AngularApp\ClassLibrary\ToolboxTreeNodeExpanderDirective.ts" />
     <TypeScriptCompile Include="AngularApp\ClassLibrary\IToolboxScope.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ExplorerRow.ts" />
     <TypeScriptCompile Include="AngularApp\Explorers\ISaveScope.ts" />
@@ -1093,7 +1094,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="AngularApp\DisableAnchorDirective.ts" />
     <TypeScriptCompile Include="AngularApp\Session\IdentityMap.ts" />
-    <TypeScriptCompile Include="AngularApp\ClassLibrary\ClassLibraryDirective.ts" />
+    <TypeScriptCompile Include="AngularApp\ClassLibrary\ToolboxTreeNodeTooltipDirective.ts" />
     <TypeScriptCompile Include="AngularApp\IFresnelService.ts" />
     <TypeScriptCompile Include="AngularApp\Bootstrapper.ts" />
   </ItemGroup>

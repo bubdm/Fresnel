@@ -45,11 +45,12 @@ namespace Envivo.Fresnel.Tests.Features.Session
             {
                 var toolboxController = _TestScopeContainer.Resolve<ToolboxController>();
 
-                var getDomainServicesResponse = toolboxController.GetDomainServicesHierarchy();
+                var getDomainLibraryResponse = toolboxController.GetDomainLibrary();
 
-                Assert.AreNotEqual(0, getDomainServicesResponse.Namespaces.Count());
+                var domainServicesHierarchy = getDomainLibraryResponse.DomainServices;
+                Assert.AreNotEqual(0, domainServicesHierarchy.Count());
 
-                var serviceClasses = getDomainServicesResponse.Namespaces.SelectMany(ns => ns.Classes);
+                var serviceClasses = domainServicesHierarchy.SelectMany(ns => ns.Classes);
 
                 foreach (var serviceClass in serviceClasses)
                 {

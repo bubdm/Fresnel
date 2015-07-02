@@ -23,7 +23,8 @@
         .controller("searchExplorerController", FresnelApp.SearchExplorerController)
         .controller("searchModalController", FresnelApp.SearchModalController)
         .controller("saveController", FresnelApp.SaveController)
-        .directive("classLibrary", FresnelApp.ClassLibaryDirective)
+        .directive("toolboxTreeNodeExpander", FresnelApp.ToolboxTreeNodeExpanderDirective)
+        .directive("toolboxTreeNodeTooltip", FresnelApp.ToolboxTreeNodeTooltipDirective)
         .directive("objectExplorer", FresnelApp.ExplorerDirective)
         .directive("aDisabled", FresnelApp.DisableAnchorDirective)
         .config(["$httpProvider", function ($httpProvider) {

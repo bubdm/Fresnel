@@ -4,7 +4,7 @@
 
         classNameFilter: string;
 
-        classHierarchy: Namespace[];
+        domainClassesHierarchy: Namespace[];
 
         domainServicesHierarchy: Namespace[];
 
@@ -12,9 +12,7 @@
 
         searchObjects(fullyQualifiedName: string);
 
-        loadClassHierarchy();
-
-        loadDomainServicesHierarchy();
+        loadDomainLibrary();
 
         invokeDependencyMethod(method: MethodVM);
     }

@@ -55,7 +55,7 @@
     <Compile Include="CollectionInteractionsBuilder.cs" />
     <Compile Include="CollectionVmBuilder.cs" />
     <Compile Include="ObjectVmBuilder.cs" />
-    <Compile Include="Commands\GetDomainServicesResponse.cs" />
+    <Compile Include="Commands\GetDomainLibraryResponse.cs" />
     <Compile Include="Commands\CreateObjectRequest.cs" />
     <Compile Include="Commands\CollectionAddRequest.cs" />
     <Compile Include="Commands\CollectionAddNewRequest.cs" />
@@ -64,7 +64,6 @@
     <Compile Include="Commands\CancelChangesRequest.cs" />
     <Compile Include="Commands\CancelChangesResponse.cs" />
     <Compile Include="Commands\CancelChangesCommand.cs" />
-    <Compile Include="Commands\GetDomainServicesHierarchyCommand.cs" />
     <Compile Include="Commands\InvokeMethodCommand.cs" />
     <Compile Include="Commands\SaveChangesResponse.cs" />
     <Compile Include="Commands\SearchResultsFilterApplier.cs" />
@@ -125,7 +124,7 @@
     <Compile Include="Model\Changes\PropertyChangeVM.cs" />
     <Compile Include="SessionVmBuilder.cs" />
     <Compile Include="Model\SessionVM.cs" />
-    <Compile Include="Model\Classes\NamespaceBuilder.cs" />
+    <Compile Include="Model\Classes\DomainClassesBuilder.cs" />
     <Compile Include="Model\Classes\Namespace.cs" />
     <Compile Include="Commands\BaseCommandResponse.cs" />
     <Compile Include="Commands\GetPropertyResponse.cs" />
@@ -148,7 +147,7 @@
     <Compile Include="Model\InteractionPoint.cs" />
     <Compile Include="Model\Classes\ClassItem.cs" />
     <Compile Include="Model\Classes\ClassItemBuilder.cs" />
-    <Compile Include="Commands\GetClassHierarchyCommand.cs" />
+    <Compile Include="Commands\GetDomainLibraryCommand.cs" />
     <Compile Include="Controllers\ExplorerController.cs" />
     <Compile Include="Controllers\ToolboxController.cs" />
     <Compile Include="Model\Changes\ModificationsVM.cs" />

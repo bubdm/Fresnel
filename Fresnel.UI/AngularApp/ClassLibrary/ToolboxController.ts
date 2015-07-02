@@ -1,9 +1,6 @@
 ﻿module FresnelApp {
 
     export class ToolboxController {
-        public classHierarchy: Namespace[];
-        public domainServicesHierarchy: Namespace[];
-
         static $inject = [
             '$rootScope',
             '$scope',
@@ -22,33 +19,17 @@
             searchService: SearchService,
             methodInvoker: MethodInvoker) {
 
-            $scope.loadClassHierarchy = function () {
-                var promise = fresnelService.getClassHierarchy();
+            $scope.loadDomainLibrary = function () {
+                var promise = fresnelService.getDomainLibrary();
 
                 promise.then((promiseResult) => {
-                    var response = promiseResult.data;
+                    var response: GetDomainLibraryResponse = promiseResult.data;
 
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
 
-                    this.classHierarchy = promiseResult.data;
-                })
-                    .then((promiseResult) => {
-                    // This *must* run after loading the ClassHierarchy:
-                    this.loadDomainServicesHierarchy();
-                })
-            }
-
-            $scope.loadDomainServicesHierarchy = function () {
-                var promise = fresnelService.getDomainServicesHierarchy();
-
-                promise.then((promiseResult) => {
-                    var response: GetDomainServicesResponse = promiseResult.data;
-
-                    appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast(UiEventType.MessagesReceived, response.Messages);
-
-                    this.domainServicesHierarchy = response.Namespaces;
+                    $scope.domainClassesHierarchy = response.DomainClasses;
+                    $scope.domainServicesHierarchy = response.DomainServices;
                 });
             }
 
@@ -80,7 +61,7 @@
 
             // This will run when the page loads:
             angular.element(document).ready(function () {
-                $scope.loadClassHierarchy();
+                $scope.loadDomainLibrary();
             });
 
         }

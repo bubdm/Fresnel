@@ -17,89 +17,58 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
         private TemplateCache _TemplateCache;
         private ObserverRetriever _ObserverRetriever;
         private DomainServiceItemBuilder _DomainServiceItemBuilder;
-        private ModificationsVmBuilder _ModificationsBuilder;
-        private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
 
         public DomainServicesBuilder
             (
             TemplateCache templateCache,
-            ObserverRetriever observerRetriever,
-            DomainServiceItemBuilder domainServiceItemBuilder,
-            ModificationsVmBuilder modificationsBuilder,
-            ExceptionMessagesBuilder exceptionMessagesBuilder
+            DomainServiceItemBuilder domainServiceItemBuilder
         )
         {
             _TemplateCache = templateCache;
-            _ObserverRetriever = observerRetriever;
             _DomainServiceItemBuilder = domainServiceItemBuilder;
-            _ModificationsBuilder = modificationsBuilder;
-            _ExceptionMessagesBuilder = exceptionMessagesBuilder;
         }
 
-        public GetDomainServicesResponse BuildFor(AssemblyReader assemblyReader)
+        public IEnumerable<Namespace> BuildFor(AssemblyReader assemblyReader)
         {
-            try
+            var namespaces = new List<Namespace>();
+
+            var domainServiceTypes = assemblyReader.Assembly.GetTypes()
+                                    .Where(t => t.IsDerivedFrom<IDomainService>())
+                                    .ToArray();
+
+            var tDomainServices = new List<IClassTemplate>();
+            foreach (var domainServiceType in domainServiceTypes)
             {
-                var namespaces = new List<Namespace>();
+                var tService = _TemplateCache.GetTemplate(domainServiceType);
+                tDomainServices.Add(tService);
+            }
 
-                var domainServiceTypes = assemblyReader.Assembly.GetTypes()
-                                        .Where(t => t.IsDerivedFrom<IDomainService>())
-                                        .ToArray();
+            var nodesGroupedByNamespace = tDomainServices
+                                            .GroupBy(t => t.RealType.Namespace);
 
-                var tDomainServices = new List<IClassTemplate>();
-                foreach (var domainServiceType in domainServiceTypes)
+            foreach (var group in nodesGroupedByNamespace)
+            {
+                var classItems = new List<ClassItem>();
+                foreach (var node in group)
                 {
-                    var tService = _TemplateCache.GetTemplate(domainServiceType);
-                    tDomainServices.Add(tService);
+                    var tClass = (ClassTemplate)_TemplateCache.GetTemplate(node.RealType);
+                    var item = _DomainServiceItemBuilder.BuildFor(tClass);
+                    classItems.Add(item);
                 }
 
-                var nodesGroupedByNamespace = tDomainServices
-                                                .GroupBy(t => t.RealType.Namespace);
+                var namespaceFriendlyName = group.Key.Split('.').Last();
 
-                foreach (var group in nodesGroupedByNamespace)
+                var newNamespace = new Namespace()
                 {
-                    var classItems = new List<ClassItem>();
-                    foreach (var node in group)
-                    {
-                        var tClass = (ClassTemplate)_TemplateCache.GetTemplate(node.RealType);
-                        var item = _DomainServiceItemBuilder.BuildFor(tClass);
-                        classItems.Add(item);
-                    }
-
-                    var namespaceFriendlyName = group.Key.Split('.').Last();
-
-                    var newNamespace = new Namespace()
-                    {
-                        FullName = group.Key,
-                        Name = namespaceFriendlyName,
-                        Classes = classItems.ToArray()
-                    };
-                    namespaces.Add(newNamespace);
-                }
-
-                var oDomainServices = _ObserverRetriever.GetAllObservers()
-                                        .OfType<ObjectObserver>()
-                                        .Where(o => o.Template.RealType.IsDerivedFrom<IDomainService>());
-
-                var modifications = _ModificationsBuilder.BuildFrom(oDomainServices, 0);
-
-                return new GetDomainServicesResponse
-                {
-                    Modifications = modifications,
-                    Passed = true,
-                    Namespaces = namespaces.OrderBy(n => n.Name)
+                    FullName = group.Key,
+                    Name = namespaceFriendlyName,
+                    Classes = classItems.ToArray()
                 };
+                namespaces.Add(newNamespace);
             }
-            catch (Exception ex)
-            {
-                var errorVMs = _ExceptionMessagesBuilder.BuildFrom(ex);
 
-                return new GetDomainServicesResponse()
-                {
-                    Failed = true,
-                    Messages = errorVMs
-                };
-            }
+            var results = namespaces.OrderBy(n => n.Name);
+            return results;
         }
     }
 }

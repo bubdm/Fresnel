@@ -26,23 +26,10 @@
             return promise;
         }
 
-        getClassHierarchy(): ng.IPromise<any> {
+        getDomainLibrary(): ng.IPromise<any> {
             this.blockUI.start("Setting up Library...");
 
-            var uri = "api/Toolbox/GetClassHierarchy";
-            var promise = this.http.get(uri);
-
-            promise.finally(() => {
-                this.blockUI.stop();
-            });
-
-            return promise;
-        }
-
-        getDomainServicesHierarchy(): ng.IPromise<any> {
-            this.blockUI.start("Setting up Library...");
-
-            var uri = "api/Toolbox/GetDomainServicesHierarchy";
+            var uri = "api/Toolbox/GetDomainLibrary";
             var promise = this.http.get(uri);
 
             promise.finally(() => {

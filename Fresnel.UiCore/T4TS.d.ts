@@ -63,9 +63,10 @@ declare module FresnelApp {
     /** Generated from Envivo.Fresnel.UiCore.Commands.GenericResponse **/
     export interface GenericResponse extends FresnelApp.BaseCommandResponse {
     }
-    /** Generated from Envivo.Fresnel.UiCore.Commands.GetDomainServicesResponse **/
-    export interface GetDomainServicesResponse extends FresnelApp.BaseCommandResponse {
-        Namespaces: any;
+    /** Generated from Envivo.Fresnel.UiCore.Commands.GetDomainLibraryResponse **/
+    export interface GetDomainLibraryResponse extends FresnelApp.BaseCommandResponse {
+        DomainClasses: FresnelApp.Namespace[];
+        DomainServices: FresnelApp.Namespace[];
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.GetObjectRequest **/
     export interface GetObjectRequest {
@@ -209,6 +210,8 @@ declare module FresnelApp {
         ElementProperties: FresnelApp.PropertyVM[];
         Items: FresnelApp.ObjectVM[];
         DisplayItems: FresnelApp.ObjectVM[];
+        Add: FresnelApp.InteractionPoint;
+        AllowedClassTypes: FresnelApp.ClassItem[];
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.DirtyStateVM **/
     export interface DirtyStateVM {

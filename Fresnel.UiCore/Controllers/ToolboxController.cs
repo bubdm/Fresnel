@@ -9,40 +9,30 @@ namespace Envivo.Fresnel.UiCore.Controllers
 {
     public class ToolboxController : ApiController
     {
-        private GetClassHierarchyCommand _GetClassHierarchyCommand;
-        private GetDomainServicesHierarchyCommand _GetDomainServicesHierarchyCommand;
+        private GetDomainLibraryCommand _GetDomainLibraryCommand;
         private CreateObjectCommand _CreateObjectCommand;
         private InvokeMethodCommand _InvokeMethodCommand;
         private SearchObjectsCommand _SearchObjectsCommand;
 
         public ToolboxController
             (
-            GetClassHierarchyCommand getClassHierarchyCommand,
-            GetDomainServicesHierarchyCommand getDomainServicesHierarchyCommand,
+            GetDomainLibraryCommand getDomainLibraryCommand,
             CreateObjectCommand createObjectCommand,
             InvokeMethodCommand invokeMethodCommand,
             SearchObjectsCommand searchObjectsCommand
             )
         {
-            _GetClassHierarchyCommand = getClassHierarchyCommand;
-            _GetDomainServicesHierarchyCommand = getDomainServicesHierarchyCommand;
+            _GetDomainLibraryCommand = getDomainLibraryCommand;
             _CreateObjectCommand = createObjectCommand;
             _InvokeMethodCommand = invokeMethodCommand;
             _SearchObjectsCommand = searchObjectsCommand;
         }
 
         [HttpGet]
-        public IEnumerable<Namespace> GetClassHierarchy()
+        public GetDomainLibraryResponse GetDomainLibrary()
         {
-            var results = _GetClassHierarchyCommand.Invoke();
+            var results = _GetDomainLibraryCommand.Invoke();
             return results;
-        }
-
-        [HttpGet]
-        public GetDomainServicesResponse GetDomainServicesHierarchy()
-        {
-            var result = _GetDomainServicesHierarchyCommand.Invoke();
-            return result;
         }
 
         [HttpPost]

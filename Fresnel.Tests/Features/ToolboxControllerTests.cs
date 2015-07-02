@@ -39,10 +39,10 @@ namespace Envivo.Fresnel.Tests.Features
                 var controller = _TestScopeContainer.Resolve<ToolboxController>();
 
                 // Act:
-                var results = controller.GetClassHierarchy();
+                var results = controller.GetDomainLibrary();
 
                 // Assert:
-                Assert.AreNotEqual(0, results.Count());
+                Assert.AreNotEqual(0, results.DomainClasses.Count());
             }
         }
 

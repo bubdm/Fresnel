@@ -1,5 +1,22 @@
 var FresnelApp;
 (function (FresnelApp) {
+    function ToolboxTreeNodeExpanderDirective() {
+        return {
+            link: function (scope, elem, attributes) {
+                scope.$watchCollection('domainClassesHierarchy', function (newVal, oldVal) {
+                    // This line is purely for VS "Find References", to remind Devs that this Directive 
+                    // is associated with the collections:
+                    var dummy = scope.domainClassesHierarchy;
+                    // Force the treeview to register any new nodes:
+                    $(".sidebar .treeview").tree();
+                });
+            }
+        };
+    }
+    FresnelApp.ToolboxTreeNodeExpanderDirective = ToolboxTreeNodeExpanderDirective;
+})(FresnelApp || (FresnelApp = {}));
+var FresnelApp;
+(function (FresnelApp) {
     var ExplorerRow = (function () {
         function ExplorerRow() {
         }
@@ -1288,20 +1305,10 @@ var FresnelApp;
             });
             return promise;
         };
-        FresnelService.prototype.getClassHierarchy = function () {
+        FresnelService.prototype.getDomainLibrary = function () {
             var _this = this;
             this.blockUI.start("Setting up Library...");
-            var uri = "api/Toolbox/GetClassHierarchy";
-            var promise = this.http.get(uri);
-            promise.finally(function () {
-                _this.blockUI.stop();
-            });
-            return promise;
-        };
-        FresnelService.prototype.getDomainServicesHierarchy = function () {
-            var _this = this;
-            this.blockUI.start("Setting up Library...");
-            var uri = "api/Toolbox/GetDomainServicesHierarchy";
+            var uri = "api/Toolbox/GetDomainLibrary";
             var promise = this.http.get(uri);
             promise.finally(function () {
                 _this.blockUI.stop();
@@ -1517,27 +1524,14 @@ var FresnelApp;
 (function (FresnelApp) {
     var ToolboxController = (function () {
         function ToolboxController($rootScope, $scope, fresnelService, requestBuilder, appService, searchService, methodInvoker) {
-            $scope.loadClassHierarchy = function () {
-                var _this = this;
-                var promise = fresnelService.getClassHierarchy();
+            $scope.loadDomainLibrary = function () {
+                var promise = fresnelService.getDomainLibrary();
                 promise.then(function (promiseResult) {
                     var response = promiseResult.data;
                     appService.identityMap.merge(response.Modifications);
                     $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
-                    _this.classHierarchy = promiseResult.data;
-                }).then(function (promiseResult) {
-                    // This *must* run after loading the ClassHierarchy:
-                    _this.loadDomainServicesHierarchy();
-                });
-            };
-            $scope.loadDomainServicesHierarchy = function () {
-                var _this = this;
-                var promise = fresnelService.getDomainServicesHierarchy();
-                promise.then(function (promiseResult) {
-                    var response = promiseResult.data;
-                    appService.identityMap.merge(response.Modifications);
-                    $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
-                    _this.domainServicesHierarchy = response.Namespaces;
+                    $scope.domainClassesHierarchy = response.DomainClasses;
+                    $scope.domainServicesHierarchy = response.DomainServices;
                 });
             };
             $scope.create = function (fullyQualifiedName) {
@@ -1562,7 +1556,7 @@ var FresnelApp;
             };
             // This will run when the page loads:
             angular.element(document).ready(function () {
-                $scope.loadClassHierarchy();
+                $scope.loadDomainLibrary();
             });
         }
         ToolboxController.$inject = [
@@ -1830,25 +1824,25 @@ var FresnelApp;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
-    // Used to ensure the Toolbox allows interaction with the Class nodes
-    function ClassLibaryDirective() {
+    function ToolboxTreeNodeTooltipDirective() {
         return {
             link: function (scope, elem, attributes) {
-                scope.$watchCollection('classHierarchy', function (newVal, oldVal) {
-                    // Force the treeview to register any new nodes:
-                    $(".sidebar .treeview").tree();
+                scope.$watchCollection('domainClassesHierarchy', function (newVal, oldVal) {
+                    // This line is purely for VS "Find References", to remind Devs that this Directive 
+                    // is associated with the collections:
+                    var dummy = scope.domainClassesHierarchy;
                     // Force the tooltips to respond:
                     $("[data-toggle='tooltip']").tooltip();
                 });
             }
         };
     }
-    FresnelApp.ClassLibaryDirective = ClassLibaryDirective;
+    FresnelApp.ToolboxTreeNodeTooltipDirective = ToolboxTreeNodeTooltipDirective;
 })(FresnelApp || (FresnelApp = {}));
 var FresnelApp;
 (function (FresnelApp) {
     var requires = ['blockUI', 'inform', 'inform-exception', 'inform-http-exception', 'ngAnimate', 'smart-table', 'ui.bootstrap'];
-    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).service("requestBuilder", FresnelApp.RequestBuilder).service("searchService", FresnelApp.SearchService).service("smartTablePredicateService", FresnelApp.SmartTablePredicateService).service("saveService", FresnelApp.SaveService).service("methodInvoker", FresnelApp.MethodInvoker).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("methodController", FresnelApp.MethodController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).controller("searchExplorerController", FresnelApp.SearchExplorerController).controller("searchModalController", FresnelApp.SearchModalController).controller("saveController", FresnelApp.SaveController).directive("classLibrary", FresnelApp.ClassLibaryDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
+    angular.module("fresnelApp", requires).service("appService", FresnelApp.AppService).service("explorerService", FresnelApp.ExplorerService).service("fresnelService", FresnelApp.FresnelService).service("requestBuilder", FresnelApp.RequestBuilder).service("searchService", FresnelApp.SearchService).service("smartTablePredicateService", FresnelApp.SmartTablePredicateService).service("saveService", FresnelApp.SaveService).service("methodInvoker", FresnelApp.MethodInvoker).controller("appController", FresnelApp.AppController).controller("toolboxController", FresnelApp.ToolboxController).controller("workbenchController", FresnelApp.WorkbenchController).controller("explorerController", FresnelApp.ExplorerController).controller("methodController", FresnelApp.MethodController).controller("collectionExplorerController", FresnelApp.CollectionExplorerController).controller("searchExplorerController", FresnelApp.SearchExplorerController).controller("searchModalController", FresnelApp.SearchModalController).controller("saveController", FresnelApp.SaveController).directive("toolboxTreeNodeExpander", FresnelApp.ToolboxTreeNodeExpanderDirective).directive("toolboxTreeNodeTooltip", FresnelApp.ToolboxTreeNodeTooltipDirective).directive("objectExplorer", FresnelApp.ExplorerDirective).directive("aDisabled", FresnelApp.DisableAnchorDirective).config(["$httpProvider", function ($httpProvider) {
         $httpProvider.defaults.transformResponse.push(function (responseData) {
             convertDateStringsToDates(responseData);
             return responseData;

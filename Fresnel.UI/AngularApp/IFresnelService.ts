@@ -4,9 +4,7 @@
 
         getSession(): ng.IPromise<any>;
 
-        getClassHierarchy(): ng.IPromise<any>;
-
-        getDomainServicesHierarchy(): ng.IPromise<any>;
+        getDomainLibrary(): ng.IPromise<any>;
 
         createObject(request: CreateObjectRequest): ng.IPromise<any>;
 
