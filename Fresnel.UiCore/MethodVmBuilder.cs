@@ -12,7 +12,7 @@ namespace Envivo.Fresnel.UiCore
 {
     public class MethodVmBuilder
     {
-        private ParameterVmBuilder _AbstractParameterVmBuilder;
+        private ParameterVmBuilder _ParameterVmBuilder;
         private CanInvokeMethodPermission _CanInvokeMethodPermission;
 
         public MethodVmBuilder
@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.UiCore
             CanInvokeMethodPermission canInvokeMethodPermission
             )
         {
-            _AbstractParameterVmBuilder = abstractParameterVmBuilder;
+            _ParameterVmBuilder = abstractParameterVmBuilder;
             _CanInvokeMethodPermission = canInvokeMethodPermission;
         }
 
@@ -54,7 +54,7 @@ namespace Envivo.Fresnel.UiCore
                 if (!tParam.IsVisible)
                     continue;
 
-                var paramVM = _AbstractParameterVmBuilder.BuildFor(tParam);
+                var paramVM = _ParameterVmBuilder.BuildFor(tParam);
                 results.Add(paramVM);
             }
 
