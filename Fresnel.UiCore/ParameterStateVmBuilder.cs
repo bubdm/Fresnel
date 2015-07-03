@@ -32,10 +32,10 @@ namespace Envivo.Fresnel.UiCore
             _BooleanValueFormatter = booleanValueFormatter;
             _DateTimeValueFormatter = dateTimeValueFormatter;
         }
-        
+
         public ValueStateVM BuildFor(ParameterObserver oParam)
         {
-            var result = this.BuildFor(oParam.Template, oParam.RealObject);
+            var result = this.BuildFor(oParam.Template, oParam.Value);
             return result;
         }
 
@@ -89,11 +89,9 @@ namespace Envivo.Fresnel.UiCore
                             tParam.IsDomainObject ? this.BuildCreateForObject(tParam, result) :
                             null;
 
-            result.Clear = this.BuildClear(tParam, result);
+            result.Set = this.BuildSet(tParam, result);
 
-            result.Add = tParam.IsCollection ? 
-                            this.BuildAdd(tParam, result) :
-                            null;
+            result.Clear = this.BuildClear(tParam, result);
 
             return result;
         }
@@ -140,6 +138,18 @@ namespace Envivo.Fresnel.UiCore
 
         private InteractionPoint BuildClear(ParameterTemplate tParam, ValueStateVM valueState)
         {
+            var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
+
+            var result = new InteractionPoint()
+            {
+                IsEnabled = !isNull,
+                IsVisible = true
+            };
+            return result;
+        }
+
+        private InteractionPoint BuildSet(ParameterTemplate tParam, ValueStateVM valueState)
+        {
             var result = new InteractionPoint()
             {
                 IsEnabled = true,
@@ -148,16 +158,6 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private InteractionPoint BuildAdd(ParameterTemplate tParam, ValueStateVM valueState)
-        {
-            var result = new InteractionPoint()
-            {
-                IsEnabled = tParam.IsCollection,
-                IsVisible = false
-            };
-            return result;
-        }
-        
         private string CreateFriendlyValue(ParameterTemplate tParam, object value)
         {
             if (tParam.IsCollection)
