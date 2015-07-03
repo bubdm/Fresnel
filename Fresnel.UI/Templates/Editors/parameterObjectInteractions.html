@@ -1,0 +1,23 @@
+﻿<div class="btn-group btn-group-sm">
+
+    <div class="buttonWrapperForTooltips" title="{{prop.State.Set.Error}}">
+        <button type="button"
+                class="btn btn-default"
+                ng-disabled="!prop.State.Set.IsEnabled"
+                ng-click="associate(prop)"
+                title="Select an item">
+            <i class="fa fa-link"></i>
+        </button>
+    </div>
+
+    <div class="buttonWrapperForTooltips" title="{{prop.State.Clear.Error}}">
+        <button type="button"
+                class="btn btn-default"
+                ng-disabled="!prop.State.Clear.IsEnabled"
+                ng-click="disassociate(prop)"
+                title="Clear the selected item">
+            <i class="fa fa-unlink"></i>
+        </button>
+    </div>
+
+</div>

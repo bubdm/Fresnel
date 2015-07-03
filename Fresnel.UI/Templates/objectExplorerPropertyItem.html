@@ -79,17 +79,28 @@
             </div>
 
             <div ng-switch-default>
-                <div ng-switch="prop.IsCollection">
-                    <div ng-switch-when="true">
+                <!-- For Properties, we may be dealing with Objects _or_ Collections: -->
+                <div ng-if="prop.IsProperty">
+                    <div ng-if="prop.IsCollection">
                         <div ng-include="'/Templates/Editors/collectionInteractions.html'"></div>
                     </div>
-                    <div ng-switch-default>
+
+                    <div ng-if="!prop.IsCollection">
                         <input type="text"
                                class="form-control input-sm"
                                ng-model="prop.State.FriendlyValue"
                                ng-disabled="true" />
                         <div ng-include="'/Templates/Editors/objectInteractions.html'"></div>
                     </div>
+                </div>
+
+                <!-- For Parameters, we're only dealing with simplistic Object interactions: -->
+                <div ng-if="prop.IsParameter">
+                    <input type="text"
+                           class="form-control input-sm"
+                           ng-model="prop.State.FriendlyValue"
+                           ng-disabled="true" />
+                    <div ng-include="'/Templates/Editors/parameterObjectInteractions.html'"></div>
                 </div>
             </div>
 

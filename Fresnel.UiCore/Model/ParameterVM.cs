@@ -7,6 +7,6 @@ namespace Envivo.Fresnel.UiCore.Model
     [TypeScriptInterface]
     public class ParameterVM : SettableMemberVM
     {
-
+        public bool IsParameter { get { return true; } }
     }
 }
