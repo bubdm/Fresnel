@@ -3,7 +3,6 @@
     <div class="buttonWrapperForTooltips" title="{{prop.State.Create.Error}}">
         <button type="button"
                 class="btn btn-default"
-                ng-show="prop.IsObject"
                 ng-disabled="!prop.State.Create.IsEnabled"
                 ng-click="createAndAssociate(prop, prop.AllowedClassTypes[0])"
                 title="Create a new item">
@@ -14,7 +13,6 @@
     <div class="buttonWrapperForTooltips" title="{{prop.State.Clear.Error}}">
         <button type="button"
                 class="btn btn-default"
-                ng-show="prop.IsObject"
                 ng-disabled="!prop.State.Clear.IsEnabled"
                 ng-click="disassociate(prop)"
                 title="Remove this item">
@@ -25,7 +23,6 @@
     <div class="buttonWrapperForTooltips" title="{{prop.State.Add.Error}}">
         <button type="button"
                 class="btn btn-default"
-                ng-show="prop.IsObject"
                 ng-disabled="!prop.State.Add.IsEnabled"
                 ng-click="associate(prop)"
                 title="Associate with another item">
@@ -36,7 +33,6 @@
     <div class="buttonWrapperForTooltips" title="{{prop.State.Get.Error}}">
         <button type="button"
                 class="btn btn-default"
-                ng-show="prop.IsObject"
                 ng-disabled="!prop.State.Get.IsEnabled"
                 ng-click="openNewExplorerForProperty(prop)"
                 title="Open contents in a new panel">
