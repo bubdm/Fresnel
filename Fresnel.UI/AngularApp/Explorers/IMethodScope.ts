@@ -16,6 +16,8 @@
 
         associate(param: ParameterVM);
 
+        disassociate(param: ParameterVM);
+
         addExistingItems(collectionParam: ParameterVM, coll: CollectionVM);
 
         setParameterOnServer(param: ParameterVM);

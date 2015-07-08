@@ -85,6 +85,13 @@ module FresnelApp {
                 searchService.showSearchForParameter(method, param, onSelectionConfirmed);
             }
 
+            $scope.disassociate = function (param: ParameterVM) {
+                param.State.ReferenceValueID = null;
+                param.State.Value = null;
+
+                $scope.setParameterOnServer(param);
+            }
+
             $scope.setParameterOnServer = function (param: ParameterVM) {
                 var obj = $scope.explorer.__meta;
                 var method = $scope.method;

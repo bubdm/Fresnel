@@ -614,6 +614,11 @@ var FresnelApp;
                 };
                 searchService.showSearchForParameter(method, param, onSelectionConfirmed);
             };
+            $scope.disassociate = function (param) {
+                param.State.ReferenceValueID = null;
+                param.State.Value = null;
+                $scope.setParameterOnServer(param);
+            };
             $scope.setParameterOnServer = function (param) {
                 var obj = $scope.explorer.__meta;
                 var method = $scope.method;
