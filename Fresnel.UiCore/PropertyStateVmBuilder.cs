@@ -22,8 +22,7 @@ namespace Envivo.Fresnel.UiCore
         private CanClearPermission _CanClearPermission;
 
         private ObserverRetriever _ObserverRetriever;
-        private BooleanValueFormatter _BooleanValueFormatter;
-        private DateTimeValueFormatter _DateTimeValueFormatter;
+        private FriendlyDisplayValueCreator _FriendlyDisplayValueCreator;
 
         public PropertyStateVmBuilder
             (
@@ -32,8 +31,7 @@ namespace Envivo.Fresnel.UiCore
             CanSetPropertyPermission canSetPropertyPermission,
             CanClearPermission canClearPermission,
             ObserverRetriever observerRetriever,
-            BooleanValueFormatter booleanValueFormatter,
-            DateTimeValueFormatter dateTimeValueFormatter
+            FriendlyDisplayValueCreator friendlyDisplayValueCreator
             )
         {
             _CanCreatePermission = canCreatePermission;
@@ -41,8 +39,7 @@ namespace Envivo.Fresnel.UiCore
             _CanSetPropertyPermission = canSetPropertyPermission;
             _CanClearPermission = canClearPermission;
             _ObserverRetriever = observerRetriever;
-            _BooleanValueFormatter = booleanValueFormatter;
-            _DateTimeValueFormatter = dateTimeValueFormatter;
+            _FriendlyDisplayValueCreator = friendlyDisplayValueCreator;
         }
 
         public ValueStateVM BuildFor(BasePropertyObserver oProp)
@@ -107,20 +104,20 @@ namespace Envivo.Fresnel.UiCore
                         var oValue = _ObserverRetriever.GetObserver(realValue, tProp.PropertyType);
                         result.ReferenceValueID = oValue.ID;
                     }
-                    else if (realValue is bool)
-                    {
-                        result.Value = _BooleanValueFormatter.GetValue((bool)realValue);
-                    }
-                    else if (realValue is DateTime)
-                    {
-                        result.Value = _DateTimeValueFormatter.GetValue((DateTime)realValue);
-                    }
+                    //else if (realValue is bool)
+                    //{
+                    //    result.Value = _BooleanValueFormatter.GetValue((bool)realValue);
+                    //}
+                    //else if (realValue is DateTime)
+                    //{
+                    //    result.Value = _DateTimeValueFormatter.GetValue((DateTime)realValue);
+                    //}
                     else
                     {
                         result.Value = realValue;
                     }
 
-                    result.FriendlyValue = this.CreateFriendlyValue(tProp, realValue);
+                    result.FriendlyValue = _FriendlyDisplayValueCreator.Create(tProp, realValue);
 
                     // Hack:
                     if (tProp.PropertyType.IsEnum &&
@@ -213,7 +210,7 @@ namespace Envivo.Fresnel.UiCore
         {
             var isNull = valueState.ReferenceValueID == null && valueState.Value == null;
 
-            if (isNull && tProp.IsReferenceType)
+            if (isNull && tProp.IsReferenceType && !tProp.OuterClass.IsPersistable)
             {
                 var result = new InteractionPoint()
                 {
@@ -268,43 +265,43 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private string CreateFriendlyValue(PropertyTemplate tProp, object value)
-        {
-            if (value == null)
-                return "";
+        //private string CreateFriendlyValue(PropertyTemplate tProp, object value)
+        //{
+        //    if (value == null)
+        //        return "";
 
-            if (tProp.IsCollection)
-                return "...";
+        //    if (tProp.IsCollection)
+        //        return "...";
 
-            if (value is bool)
-            {
-                return _BooleanValueFormatter.GetFriendlyValue((bool)value, tProp.Attributes);
-            }
+        //    if (value is bool)
+        //    {
+        //        return _BooleanValueFormatter.GetFriendlyValue((bool)value, tProp.Attributes);
+        //    }
 
-            if (value is DateTime)
-            {
-                return _DateTimeValueFormatter.GetFriendlyValue((DateTime)value, tProp.Attributes);
-            }
+        //    if (value is DateTime)
+        //    {
+        //        return _DateTimeValueFormatter.GetFriendlyValue((DateTime)value, tProp.Attributes);
+        //    }
 
-            var propertyType = tProp.PropertyType;
-            if (propertyType.IsEnum)
-            {
-                if (((EnumTemplate)tProp.InnerClass).IsBitwiseEnum)
-                {
-                    var enumValue = Enum.ToObject(propertyType, value);
-                    return (int)enumValue == 0 ?
-                            "" :
-                            Enum.Format(propertyType, enumValue, "G");
-                }
-                else
-                {
-                    var enumValue = Enum.ToObject(propertyType, Convert.ToInt64(value));
-                    return Enum.Format(propertyType, enumValue, "G");
-                }
-            }
+        //    var propertyType = tProp.PropertyType;
+        //    if (propertyType.IsEnum)
+        //    {
+        //        if (((EnumTemplate)tProp.InnerClass).IsBitwiseEnum)
+        //        {
+        //            var enumValue = Enum.ToObject(propertyType, value);
+        //            return (int)enumValue == 0 ?
+        //                    "" :
+        //                    Enum.Format(propertyType, enumValue, "G");
+        //        }
+        //        else
+        //        {
+        //            var enumValue = Enum.ToObject(propertyType, Convert.ToInt64(value));
+        //            return Enum.Format(propertyType, enumValue, "G");
+        //        }
+        //    }
 
-            return value == null ? null : value.ToString();
-        }
+        //    return value == null ? null : value.ToString();
+        //}
 
     }
 }

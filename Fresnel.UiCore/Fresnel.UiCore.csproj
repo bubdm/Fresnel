@@ -90,6 +90,7 @@
     <Compile Include="ParameterStateVmBuilder.cs" />
     <Compile Include="EmptyPropertyVmBuilder.cs" />
     <Compile Include="DirtyStateVmBuilder.cs" />
+    <Compile Include="FriendlyDisplayValueCreator.cs" />
     <Compile Include="SearchFilterPropertyVmBuilder.cs" />
     <Compile Include="SearchResultsVmBuilder.cs" />
     <Compile Include="ParameterVmBuilder.cs" />

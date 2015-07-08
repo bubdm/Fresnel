@@ -18,19 +18,16 @@ namespace Envivo.Fresnel.UiCore
     public class ParameterStateVmBuilder
     {
         private ObserverRetriever _ObserverRetriever;
-        private BooleanValueFormatter _BooleanValueFormatter;
-        private DateTimeValueFormatter _DateTimeValueFormatter;
+        private FriendlyDisplayValueCreator _FriendlyDisplayValueCreator;
 
         public ParameterStateVmBuilder
             (
             ObserverRetriever observerRetriever,
-            BooleanValueFormatter booleanValueFormatter,
-            DateTimeValueFormatter dateTimeValueFormatter
+            FriendlyDisplayValueCreator friendlyDisplayValueCreator
             )
         {
             _ObserverRetriever = observerRetriever;
-            _BooleanValueFormatter = booleanValueFormatter;
-            _DateTimeValueFormatter = dateTimeValueFormatter;
+            _FriendlyDisplayValueCreator = friendlyDisplayValueCreator;
         }
 
         public ValueStateVM BuildFor(ParameterObserver oParam)
@@ -44,8 +41,6 @@ namespace Envivo.Fresnel.UiCore
             var result = new ValueStateVM();
 
             result.ValueType = tParam.ParameterType.Name;
-            result.Get = this.BuildGet(tParam);
-            result.Set = this.BuildSet(tParam);
 
             try
             {
@@ -58,20 +53,20 @@ namespace Envivo.Fresnel.UiCore
                     var oValue = _ObserverRetriever.GetObserver(realValue, tParam.ParameterType);
                     result.ReferenceValueID = oValue.ID;
                 }
-                else if (realValue is bool)
-                {
-                    result.Value = _BooleanValueFormatter.GetValue((bool)realValue);
-                }
-                else if (realValue is DateTime)
-                {
-                    result.Value = _DateTimeValueFormatter.GetValue((DateTime)realValue);
-                }
+                //else if (realValue is bool)
+                //{
+                //    result.Value = _FriendlyDisplayValueCreator.Create(tParam, realValue);
+                //}
+                //else if (realValue is DateTime)
+                //{
+                //    result.Value = _DateTimeValueFormatter.GetValue((DateTime)realValue);
+                //}
                 else
                 {
                     result.Value = realValue;
                 }
 
-                result.FriendlyValue = this.CreateFriendlyValue(tParam, realValue);
+                result.FriendlyValue = _FriendlyDisplayValueCreator.Create(tParam, realValue);
 
                 // Hack:
                 if (tParam.ParameterType.IsEnum &&
@@ -85,11 +80,13 @@ namespace Envivo.Fresnel.UiCore
                 result.Get.Error = ex.Message;
             }
 
+            result.Get = this.BuildGet(tParam);
+
+            result.Set = this.BuildSet(tParam, result);
+
             result.Create = tParam.IsCollection ? this.BuildCreateForCollection(tParam, result) :
                             tParam.IsDomainObject ? this.BuildCreateForObject(tParam, result) :
                             null;
-
-            result.Set = this.BuildSet(tParam, result);
 
             result.Clear = this.BuildClear(tParam, result);
 
@@ -101,16 +98,6 @@ namespace Envivo.Fresnel.UiCore
             var result = new InteractionPoint()
             {
                 IsEnabled = true,
-                IsVisible = true
-            };
-            return result;
-        }
-
-        private InteractionPoint BuildSet(ParameterTemplate tParam)
-        {
-            var result = new InteractionPoint()
-            {
-                IsEnabled = tParam.IsDomainObject || tParam.IsCollection,
                 IsVisible = true
             };
             return result;
@@ -158,40 +145,40 @@ namespace Envivo.Fresnel.UiCore
             return result;
         }
 
-        private string CreateFriendlyValue(ParameterTemplate tParam, object value)
-        {
-            if (tParam.IsCollection)
-                return "...";
+        //private string CreateFriendlyValue(ParameterTemplate tParam, object value)
+        //{
+        //    if (tParam.IsCollection)
+        //        return "...";
 
-            if (value is bool)
-            {
-                return _BooleanValueFormatter.GetFriendlyValue((bool)value, tParam.Attributes);
-            }
+        //    if (value is bool)
+        //    {
+        //        return _FriendlyDisplayValueCreator.GetFriendlyValue((bool)value, tParam.Attributes);
+        //    }
 
-            if (value is DateTime)
-            {
-                return _DateTimeValueFormatter.GetFriendlyValue((DateTime)value, tParam.Attributes);
-            }
+        //    if (value is DateTime)
+        //    {
+        //        return _DateTimeValueFormatter.GetFriendlyValue((DateTime)value, tParam.Attributes);
+        //    }
 
-            var paramType = tParam.ParameterType;
-            if (paramType.IsEnum)
-            {
-                if (((EnumTemplate)tParam.InnerClass).IsBitwiseEnum)
-                {
-                    var enumValue = Enum.ToObject(paramType, value);
-                    return (int)enumValue == 0 ?
-                            "" :
-                            Enum.Format(paramType, enumValue, "G");
-                }
-                else
-                {
-                    var enumValue = Enum.ToObject(paramType, Convert.ToInt64(value));
-                    return Enum.Format(paramType, enumValue, "G");
-                }
-            }
+        //    var paramType = tParam.ParameterType;
+        //    if (paramType.IsEnum)
+        //    {
+        //        if (((EnumTemplate)tParam.InnerClass).IsBitwiseEnum)
+        //        {
+        //            var enumValue = Enum.ToObject(paramType, value);
+        //            return (int)enumValue == 0 ?
+        //                    "" :
+        //                    Enum.Format(paramType, enumValue, "G");
+        //        }
+        //        else
+        //        {
+        //            var enumValue = Enum.ToObject(paramType, Convert.ToInt64(value));
+        //            return Enum.Format(paramType, enumValue, "G");
+        //        }
+        //    }
 
-            return value == null ? null : value.ToString();
-        }
+        //    return value == null ? null : value.ToString();
+        //}
 
     }
 }

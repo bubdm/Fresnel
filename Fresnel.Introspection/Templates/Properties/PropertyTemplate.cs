@@ -188,6 +188,11 @@ namespace Envivo.Fresnel.Introspection.Templates
         [JsonIgnore]
         public Type PropertyType { get; internal set; }
 
+        public Type ValueType
+        {
+            get { return this.PropertyType; }
+        }
+
         /// <summary>
         /// Returns the Template of the declared type of the Property.
         /// </summary>

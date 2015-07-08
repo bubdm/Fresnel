@@ -71,6 +71,7 @@ namespace Envivo.Fresnel.CompositionRoot
                 typeof(Fresnel.UiCore.PropertyVmBuilder),
                 typeof(Fresnel.UiCore.PropertyStateVmBuilder),
                 typeof(Fresnel.UiCore.ParameterStateVmBuilder),
+                typeof(Fresnel.UiCore.FriendlyDisplayValueCreator),
                 typeof(Fresnel.UiCore.MethodVmBuilder),
                 typeof(Fresnel.UiCore.ParameterVmBuilder),
                 typeof(Fresnel.UiCore.SearchResultsVmBuilder),

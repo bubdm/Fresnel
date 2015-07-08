@@ -44,6 +44,11 @@ namespace Envivo.Fresnel.Introspection.Templates
         [JsonIgnore]
         public Type ParameterType { get; internal set; }
 
+        public Type ValueType
+        {
+            get { return this.ParameterType; }
+        }
+
         /// <summary>
         /// Returns the Template for the value of the Parameter
         /// </summary>
