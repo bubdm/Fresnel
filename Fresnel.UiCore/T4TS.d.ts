@@ -257,9 +257,12 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.ParameterVM **/
     export interface ParameterVM extends FresnelApp.SettableMemberVM {
+        IsParameter: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.PropertyVM **/
     export interface PropertyVM extends FresnelApp.SettableMemberVM {
+        IsLoaded: boolean;
+        IsProperty: boolean;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.SearchResultItemVM **/
     export interface SearchResultItemVM extends FresnelApp.ObjectVM {
@@ -286,7 +289,6 @@ declare module FresnelApp {
         InternalName: string;
         AllowedClassTypes: string[];
         IsRequired: boolean;
-        IsLoaded: boolean;
         IsObject: boolean;
         IsCollection: boolean;
         IsNonReference: boolean;

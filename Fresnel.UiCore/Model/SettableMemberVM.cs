@@ -28,9 +28,6 @@ namespace Envivo.Fresnel.UiCore.Model
         public bool IsRequired { get; set; }
 
         [DefaultValue(false)]
-        public bool IsLoaded { get; set; }
-
-        [DefaultValue(false)]
         public bool IsObject { get; set; }
 
         [DefaultValue(false)]
