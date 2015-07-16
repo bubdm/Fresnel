@@ -200,7 +200,7 @@ namespace Envivo.Fresnel.Core.Observers
 
                 _ObjectIdMap.Add(objectId, oObject);
 
-                MergeObjectsWithSameId(obj, oObject);
+                //MergeObjectsWithSameId(obj, oObject);
             }
 
             return observer;
@@ -240,27 +240,27 @@ namespace Envivo.Fresnel.Core.Observers
             }
         }
 
-        private void MergeObjectsWithSameId(object obj, ObjectObserver oObject)
-        {
-            if (object.ReferenceEquals(obj, oObject.RealObject))
-                return;
+        //private void MergeObjectsWithSameId(object obj, ObjectObserver oObject)
+        //{
+        //    if (object.ReferenceEquals(obj, oObject.RealObject))
+        //        return;
 
-            // We've been given a *different* Object with the same ID??!!
+        //    // We've been given a *different* Object with the same ID??!!
 
-            System.Diagnostics.Debug.WriteLine("ReferenceEquals failed for " + oObject.DebugID);
+        //    System.Diagnostics.Debug.WriteLine("ReferenceEquals failed for " + oObject.DebugID);
 
-            //// We should update the cached Object from the given instance.
-            //// Note that we don't just replace the Object, as that would break
-            //// existing references to other Domain Objects in the graph:
-            //if (oParent.IsCollection)
-            //{
-            //    _ObjectMerger.MergeCollections(obj, oParent.RealObject);
-            //}
-            //else
-            //{
-            //    _ObjectMerger.MergeValues(obj, oParent.RealObject);
-            //}
-        }
+        //    //// We should update the cached Object from the given instance.
+        //    //// Note that we don't just replace the Object, as that would break
+        //    //// existing references to other Domain Objects in the graph:
+        //    //if (oParent.IsCollection)
+        //    //{
+        //    //    _ObjectMerger.MergeCollections(obj, oParent.RealObject);
+        //    //}
+        //    //else
+        //    //{
+        //    //    _ObjectMerger.MergeValues(obj, oParent.RealObject);
+        //    //}
+        //}
 
         public IEnumerable<ObjectObserver> GetAllObservers()
         {

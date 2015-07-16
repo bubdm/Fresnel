@@ -22,8 +22,15 @@ namespace Envivo.Fresnel.Core.Observers
             Type objectType,
             BaseClassTemplate sourceTemplate
         )
-            : base(obj, objectType, sourceTemplate)
+            : base(objectType, sourceTemplate)
         {
+            if (obj is BaseObserver)
+            {
+                throw new ArgumentOutOfRangeException("Object cannot be an Observer");
+            }
+
+            this.RealObject = obj;
+
             _OuterCollections = new Lazy<List<CollectionObserver>>(
                                     () => new List<CollectionObserver>(),
                                     System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
@@ -41,6 +48,25 @@ namespace Envivo.Fresnel.Core.Observers
         public new BaseClassTemplate Template
         {
             get { return (BaseClassTemplate)base.Template; }
+        }
+
+        /// <summary>
+        /// The object (or value) that is being observed
+        /// </summary>
+        [JsonIgnore]
+        public object RealObject { get; private set; }
+
+        public virtual void SetRealObject(object obj)
+        {
+            if (obj is BaseObserver)
+            {
+                throw new ArgumentOutOfRangeException("Object cannot be an Observer");
+            }
+
+            if (!object.ReferenceEquals(this.RealObject, obj))
+            {
+                this.RealObject = obj;
+            }
         }
 
         /// <summary>

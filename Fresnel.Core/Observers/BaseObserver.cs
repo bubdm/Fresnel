@@ -11,16 +11,10 @@ namespace Envivo.Fresnel.Core.Observers
     {
         private DateTimeOffset _CreatedAt;
 
-        internal BaseObserver(object obj, Type objectType, ITemplate template)
+        internal BaseObserver(Type objectType, ITemplate template)
         {
-            if (obj is BaseObserver)
-            {
-                throw new ArgumentOutOfRangeException("Object cannot be an Observer");
-            }
-
             this.ID = Guid.NewGuid();
             this.Template = template;
-            this.RealObject = obj;
             _CreatedAt = DateTime.UtcNow;
         }
 
@@ -43,25 +37,6 @@ namespace Envivo.Fresnel.Core.Observers
         }
 
         /// <summary>
-        /// The object (or value) that is being observed
-        /// </summary>
-        [JsonIgnore]
-        public object RealObject { get; private set; }
-
-        internal virtual void SetRealObject(object obj)
-        {
-            if (obj is BaseObserver)
-            {
-                throw new ArgumentOutOfRangeException("Object cannot be an Observer");
-            }
-
-            if (object.ReferenceEquals(this.RealObject, obj) == false)
-            {
-                this.RealObject = obj;
-            }
-        }
-
-        /// <summary>
         /// The underlying Template used to create this Observer
         /// </summary>
         [JsonIgnore]
@@ -76,21 +51,12 @@ namespace Envivo.Fresnel.Core.Observers
             return this.InnerObserver as T;
         }
 
-        ///// <summary>
-        ///// Returns TRUE if this Observer was created before the given time point (i.e. DateTime.UtcNow)
-        ///// </summary>
-        //internal bool WasCreatedBefore(DateTimeOffset timePoint)
-        //{
-        //    return _CreatedAt < timePoint;
-        //}
-
         internal virtual void FinaliseConstruction()
         {
         }
 
         public virtual void Dispose()
         {
-            this.RealObject = null;
             this.InnerObserver = null;
             this.Template = null;
         }

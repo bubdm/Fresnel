@@ -15,8 +15,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// <param name="memberTemplate">The MemberTemplate that reflects the Member</param>
 
         internal BaseMemberObserver(ObjectObserver oOuterObject, BaseMemberTemplate tMember)
-            : base(oOuterObject.RealObject,
-                   oOuterObject.Template.RealType,
+            : base(oOuterObject.Template.RealType,
                    tMember)
         {
             this.OuterObject = oOuterObject;

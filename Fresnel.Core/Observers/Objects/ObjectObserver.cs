@@ -260,25 +260,6 @@ namespace Envivo.Fresnel.Core.Observers
         //    return false;
         //}
 
-        internal override void SetRealObject(object obj)
-        {
-            //if (object.ReferenceEquals(this.Object, Object)) return;
-            if (this.RealObject == obj)
-                return;
-
-            base.SetRealObject(obj);
-
-            // Cascade the new Object to all members:
-            foreach (var oProperty in this.Properties.Values)
-            {
-                oProperty.SetRealObject(obj);
-            }
-            foreach (var oMethod in this.Methods.Values)
-            {
-                oMethod.SetRealObject(obj);
-            }
-        }
-
         public override void Dispose()
         {
             if (_Methods != null && _Methods.IsValueCreated)

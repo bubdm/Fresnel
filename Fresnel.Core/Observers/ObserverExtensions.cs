@@ -6,7 +6,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// Returns TRUE if the Observer has no inner value
         /// </summary>
         /// <param name="observer"></param>
-        public static bool IsNullOrEmpty(this BaseObserver observer)
+        public static bool IsNullOrEmpty(this BaseObjectObserver observer)
         {
             return (observer == null) || (observer.RealObject == null);
         }
@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Core.Observers
         /// Returns TRUE if the Observer genuinely has an inner value
         /// </summary>
         /// <param name="observer"></param>
-        public static bool HasValue(this BaseObserver observer)
+        public static bool HasValue(this BaseObjectObserver observer)
         {
             return (observer != null) && (observer.RealObject != null);
         }
