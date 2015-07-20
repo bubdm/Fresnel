@@ -76,6 +76,7 @@ namespace Envivo.Fresnel.CompositionRoot
             // These are created per request:
             return new Type[] {
                 typeof(Fresnel.Core.Observers.ObserverRetriever),
+                typeof(Fresnel.Core.Observers.DomainServiceObserverRetriever),
                 typeof(Fresnel.Core.Observers.ObserverCacheSynchroniser),
 
                 typeof(Fresnel.Core.Commands.AddToCollectionCommand),

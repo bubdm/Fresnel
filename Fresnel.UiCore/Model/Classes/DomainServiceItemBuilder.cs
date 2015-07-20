@@ -12,24 +12,18 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
 {
     public class DomainServiceItemBuilder
     {
-        private TemplateCache _TemplateCache;
-        private ObserverRetriever _ObserverRetriever;
-        private IEnumerable<IDomainService> _DomainServiceInstances;
+        private DomainServiceObserverRetriever _DomainServiceObserverRetriever;
         private MethodVmBuilder _MethodVmBuilder;
         private CanCreatePermission _CanCreatePermission;
 
         public DomainServiceItemBuilder
             (
-            ObserverRetriever observerRetriever,
-            TemplateCache templateCache,
-            IEnumerable<IDomainService> domainServiceInstances,
+            DomainServiceObserverRetriever domainServiceObserverRetriever,
             MethodVmBuilder methodVmBuilder,
             CanCreatePermission canCreatePermission
             )
         {
-            _ObserverRetriever = observerRetriever;
-            _TemplateCache = templateCache;
-            _DomainServiceInstances = domainServiceInstances;
+            _DomainServiceObserverRetriever = domainServiceObserverRetriever;
             _MethodVmBuilder = methodVmBuilder;
             _CanCreatePermission = canCreatePermission;
         }
@@ -55,17 +49,9 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
 
         public MethodVM[] CreateServiceMethods(ClassTemplate tServiceClass)
         {
-            var domainService = _DomainServiceInstances
-                            .SingleOrDefault(ds => ds.GetType().IsDerivedFrom(tServiceClass.RealType));
+            var results = new List<MethodVM>(); 
 
-            if (domainService == null)
-                return null;
-
-            var tDomainService = (ClassTemplate)_TemplateCache.GetTemplate(domainService.GetType());
-            var results = new List<MethodVM>();
-
-            var oDomainService = (ObjectObserver)_ObserverRetriever.GetObserver(domainService, tDomainService.RealType);
-            oDomainService.IsPinned = true;
+            var oDomainService = (ObjectObserver)_DomainServiceObserverRetriever.GetObserver(tServiceClass.RealType);
 
             foreach (var oMethod in oDomainService.Methods.Values)
             {

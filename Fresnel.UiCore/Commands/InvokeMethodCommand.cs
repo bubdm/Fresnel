@@ -7,12 +7,15 @@ using Envivo.Fresnel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Envivo.Fresnel.Introspection;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
     public class InvokeMethodCommand : ICommand
     {
         private ObserverRetriever _ObserverRetriever;
+        private DomainServiceObserverRetriever _DomainServiceObserverRetriever;
         private ObserverCache _ObserverCache;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.InvokeMethodCommand _InvokeMethodCommand;
@@ -22,7 +25,9 @@ namespace Envivo.Fresnel.UiCore.Commands
 
         public InvokeMethodCommand
             (
+            TemplateCache templateCache,
             ObserverRetriever observerRetriever,
+            DomainServiceObserverRetriever domainServiceObserverRetriever,
             ObserverCache observerCache,
             Core.Commands.InvokeMethodCommand invokeMethodCommand,
             AbstractObjectVmBuilder objectVMBuilder,
@@ -32,6 +37,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         )
         {
             _ObserverRetriever = observerRetriever;
+            _DomainServiceObserverRetriever = domainServiceObserverRetriever;
             _ObserverCache = observerCache;
             _InvokeMethodCommand = invokeMethodCommand;
             _ObjectVMBuilder = objectVMBuilder;
@@ -47,7 +53,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var startedAt = SequentialIdGenerator.Next;
 
-                var oObject = _ObserverRetriever.GetObserverById(request.ObjectID) as ObjectObserver;
+                var oObject = this.DetermineObserver(request);
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
@@ -103,6 +109,14 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Messages = errorVMs
                 };
             }
+        }
+
+        private ObjectObserver DetermineObserver(InvokeMethodRequest request)
+        {
+            var result = request.ObjectID.HasValue ?
+                            _ObserverRetriever.GetObserverById(request.ObjectID.Value) :
+                            _DomainServiceObserverRetriever.GetObserver(request.ClassFullTypeName);
+            return result;
         }
 
         private void UpdateParameters(MethodObserver oMethod, InvokeMethodRequest request)

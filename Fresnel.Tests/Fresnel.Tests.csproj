@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Features\Explorer\Add_to_Collection.cs" />
     <Compile Include="Features\Explorer\Saving_transient_Aggregates.cs" />
+    <Compile Include="Features\Session\DomainService_Method_is_invokable.cs" />
     <Compile Include="Features\Session\DomainServices_are_identified.cs" />
     <Compile Include="TestScopeContainer.cs" />
     <Compile Include="AutoFixtureFactory.cs" />

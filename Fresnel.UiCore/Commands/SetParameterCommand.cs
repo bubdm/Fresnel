@@ -8,12 +8,16 @@ using Envivo.Fresnel.UiCore.Model;
 using Envivo.Fresnel.Utils;
 using System;
 using System.Linq;
+using Envivo.Fresnel.Introspection;
+using System.Collections.Generic;
+using Envivo.Fresnel.DomainTypes.Interfaces;
 
 namespace Envivo.Fresnel.UiCore.Commands
 {
     public class SetParameterCommand : ICommand
     {
         private ObserverRetriever _ObserverRetriever;
+        private DomainServiceObserverRetriever _DomainServiceObserverRetriever;
         private AbstractObjectVmBuilder _ObjectVMBuilder;
         private Core.Commands.SetParameterCommand _SetParameterCommand;
         private ModificationsVmBuilder _ModificationsBuilder;
@@ -24,6 +28,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             (
             Core.Commands.SetParameterCommand setParameterCommand,
             ObserverRetriever observerRetriever,
+            DomainServiceObserverRetriever domainServiceObserverRetriever,
             AbstractObjectVmBuilder objectVMBuilder,
             ModificationsVmBuilder modificationsBuilder,
             ExceptionMessagesBuilder exceptionMessagesBuilder,
@@ -32,6 +37,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             _SetParameterCommand = setParameterCommand;
             _ObserverRetriever = observerRetriever;
+            _DomainServiceObserverRetriever = domainServiceObserverRetriever;
             _ObjectVMBuilder = objectVMBuilder;
             _ModificationsBuilder = modificationsBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
@@ -44,7 +50,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             {
                 var startedAt = SequentialIdGenerator.Next;
 
-                var oObject = _ObserverRetriever.GetObserverById(request.ObjectID) as ObjectObserver;
+                var oObject = this.DetermineObserver(request);
                 if (oObject == null)
                     throw new UiCoreException("Cannot find object with ID " + request.ObjectID);
 
@@ -99,5 +105,12 @@ namespace Envivo.Fresnel.UiCore.Commands
             }
         }
 
+        private ObjectObserver DetermineObserver(SetParameterRequest request)
+        {
+            var result = request.ObjectID.HasValue ?
+                            _ObserverRetriever.GetObserverById(request.ObjectID.Value) :
+                            _DomainServiceObserverRetriever.GetObserver(request.ClassFullTypeName);
+            return result;
+        }
     }
 }

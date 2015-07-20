@@ -8,7 +8,9 @@ namespace Envivo.Fresnel.UiCore.Commands
     [TypeScriptInterface]
     public class InvokeMethodRequest
     {
-        public Guid ObjectID { get; set; }
+        public string ClassFullTypeName { get; set; }
+
+        public Guid? ObjectID { get; set; }
 
         public string MethodName { get; set; }
 

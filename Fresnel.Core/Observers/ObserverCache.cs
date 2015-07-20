@@ -15,6 +15,7 @@ namespace Envivo.Fresnel.Core.Observers
         private ConditionalWeakTable<object, ObjectObserver> _ObjectMap = new ConditionalWeakTable<object, ObjectObserver>();
         private Dictionary<Guid, ObjectObserver> _ObjectIdMap = new Dictionary<Guid, ObjectObserver>();
         private Dictionary<object, NonReferenceObserver> _NonReferenceMap = new Dictionary<object, NonReferenceObserver>();
+        private Dictionary<ClassTemplate, ObjectObserver> _ServiceObserverMap = new Dictionary<ClassTemplate, ObjectObserver>();
 
         private TemplateCache _TemplateCache;
         private AbstractObserverBuilder _AbstractObserverBuilder;
@@ -38,7 +39,7 @@ namespace Envivo.Fresnel.Core.Observers
             _ObjectIdResolver = objectIdResolver;
         }
 
-        public BaseObjectObserver GetObserverById(Guid id)
+        public ObjectObserver GetObserverById(Guid id)
         {
             var result = _ObjectIdMap.TryGetValueOrNull(id);
             return result;
@@ -77,6 +78,7 @@ namespace Envivo.Fresnel.Core.Observers
             }
             if (id == Guid.Empty)
             {
+                // If the object can't provide an ID, we'll assign it ourselves:
                 id = Guid.NewGuid();
             }
 
@@ -142,6 +144,21 @@ namespace Envivo.Fresnel.Core.Observers
             }
 
             return oValue;
+        }
+
+        public ObjectObserver GetServiceObserver(Type domainServiceClass)
+        {
+            var tDomainService = _TemplateCache.GetTemplate(domainServiceClass) as ClassTemplate;
+
+            var result = _ServiceObserverMap.TryGetValueOrNull(tDomainService);
+            if (result == null)
+            {
+                var dummyObject = new object();
+                result = this.CreateAndCacheObserver(Guid.NewGuid(), dummyObject, tDomainService) as ObjectObserver;
+                result.IsPinned = true;
+            }
+
+            return result;
         }
 
         private BaseObjectObserver GetCachedObserver(Guid objectId, object obj, ClassTemplate tClass)

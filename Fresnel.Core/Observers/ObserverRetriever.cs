@@ -26,7 +26,7 @@ namespace Envivo.Fresnel.Core.Observers
             _PersistenceService = persistenceService;
         }
 
-        public BaseObjectObserver GetObserverById(Guid id)
+        public ObjectObserver GetObserverById(Guid id)
         {
             var result = _ObserverCache.GetObserverById(id);
             return result;
@@ -55,6 +55,21 @@ namespace Envivo.Fresnel.Core.Observers
             var result = _ObserverCache.GetObserver(obj, objectType);
 
             this.UpdatePersistentStatus(result as ObjectObserver);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns an Observer for a Domain Service. Note that DomainServices are stateless, therefore must be injected whenever this Observer is used.
+        /// </summary>
+        /// <param name="domainServiceType"></param>
+        /// <returns></returns>
+        public BaseObjectObserver GetServiceObserver(Type domainServiceType, IDomainService domainService)
+        {
+            var result = _ObserverCache.GetServiceObserver(domainServiceType);
+
+            // As the DomainService is 'instance per request', we need to associate it with the pinned observer:
+            result.SetRealObject(domainService);
 
             return result;
         }
