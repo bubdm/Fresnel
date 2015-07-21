@@ -17,7 +17,7 @@ namespace Envivo.Fresnel.Core.Commands
 {
     public class SearchCommand
     {
-        private IPersistenceService _PersistenceService;
+        private Lazy<IPersistenceService> _PersistenceService;
 
         private TemplateCache _TemplateCache;
         private ObserverRetriever _ObserverRetriever;
@@ -26,8 +26,7 @@ namespace Envivo.Fresnel.Core.Commands
 
         public SearchCommand
         (
-            IPersistenceService persistenceService,
-
+            Lazy<IPersistenceService> persistenceService,
             TemplateCache templateCache,
             ObserverRetriever observerRetriever,
             IEnumerable<IQuerySpecification> querySpecifications,
@@ -59,7 +58,7 @@ namespace Envivo.Fresnel.Core.Commands
 
             var propertiesToInclude = this.GetTopLevelReferencePropertyNames(tClass);
 
-            return _PersistenceService.GetObjects(tClass.RealType, propertiesToInclude);
+            return _PersistenceService.Value.GetObjects(tClass.RealType, propertiesToInclude);
         }
 
         public IQueryable Search(BasePropertyObserver oProp)
@@ -76,7 +75,7 @@ namespace Envivo.Fresnel.Core.Commands
             var propertiesToInclude = this.GetTopLevelReferencePropertyNames((ClassTemplate)oProp.Template.InnerClass);
 
             var results = this.GetResults(querySpecification, oParent) ??
-                          _PersistenceService.GetObjects(searchType, propertiesToInclude);
+                          _PersistenceService.Value.GetObjects(searchType, propertiesToInclude);
             return results;
         }
 
@@ -94,7 +93,7 @@ namespace Envivo.Fresnel.Core.Commands
             var propertiesToInclude = this.GetTopLevelReferencePropertyNames((ClassTemplate)oParam.Template.InnerClass);
 
             var results = this.GetResults(querySpecification, oParent) ??
-                          _PersistenceService.GetObjects(searchType, propertiesToInclude);
+                          _PersistenceService.Value.GetObjects(searchType, propertiesToInclude);
             return results;
         }
 
@@ -120,7 +119,7 @@ namespace Envivo.Fresnel.Core.Commands
 
         private void CheckIfTypeIsRecognised(Type classType)
         {
-            if (!_PersistenceService.IsTypeRecognised(classType))
+            if (!_PersistenceService.Value.IsTypeRecognised(classType))
                 throw new CoreException(string.Concat(_PersistenceService.GetType().Name, " does not recognise ", classType.FullName));
         }
 

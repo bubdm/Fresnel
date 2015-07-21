@@ -15,7 +15,7 @@ namespace Envivo.Fresnel.Core.Commands
 {
     public class SaveObjectCommand
     {
-        private IPersistenceService _PersistenceService;
+        private Lazy<IPersistenceService> _PersistenceService;
         private TemplateCache _TemplateCache;
         private ObserverRetriever _ObserverRetriever;
         private ConsistencyCheckCommand _ConsistencyCheckCommand;
@@ -24,7 +24,7 @@ namespace Envivo.Fresnel.Core.Commands
 
         public SaveObjectCommand
         (
-            IPersistenceService persistenceService,
+            Lazy<IPersistenceService> persistenceService,
             TemplateCache templateCache,
             ObserverRetriever observerRetriever,
             ConsistencyCheckCommand consistencyCheckCommand,
@@ -65,7 +65,7 @@ namespace Envivo.Fresnel.Core.Commands
                                     .Except(newEntities)
                                     .ToArray();
 
-            var savedItemCount = _PersistenceService.SaveChanges(newEntities, dirtyEntities);
+            var savedItemCount = _PersistenceService.Value.SaveChanges(newEntities, dirtyEntities);
 
             var saveEvent = new SaveObjectEvent(oObj);
             _EventTimeLine.Add(saveEvent);

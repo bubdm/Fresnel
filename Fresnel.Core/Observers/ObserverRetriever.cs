@@ -14,12 +14,12 @@ namespace Envivo.Fresnel.Core.Observers
     public class ObserverRetriever
     {
         private ObserverCache _ObserverCache;
-        private IPersistenceService _PersistenceService;
+        private Lazy<IPersistenceService> _PersistenceService;
 
         public ObserverRetriever
         (
             ObserverCache observerCache,
-            IPersistenceService persistenceService
+            Lazy<IPersistenceService> persistenceService
         )
         {
             _ObserverCache = observerCache;
@@ -94,10 +94,10 @@ namespace Envivo.Fresnel.Core.Observers
                 // Looks like we've already determined the status:
                 return;
 
-            if (!_PersistenceService.IsTypeRecognised(oObject.Template.RealType))
+            if (!_PersistenceService.Value.IsTypeRecognised(oObject.Template.RealType))
                 return;
 
-            if (_PersistenceService.IsPersistent(oObject.ID, oObject.RealObject))
+            if (_PersistenceService.Value.IsPersistent(oObject.ID, oObject.RealObject))
             {
                 oObject.MarkAsPersistent();
             }

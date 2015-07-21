@@ -15,8 +15,8 @@ namespace Envivo.Fresnel.Core.Commands
 {
     public class CreateObjectCommand
     {
-        private IEnumerable<IFactory> _DomainObjectFactories;
-        private IPersistenceService _PersistenceService;
+        private Lazy<IEnumerable<IFactory>> _DomainObjectFactories;
+        private Lazy<IPersistenceService> _PersistenceService;
         private Introspection.Commands.CreateObjectCommand _CreateObjectCommand;
 
         private TemplateCache _TemplateCache;
@@ -26,8 +26,8 @@ namespace Envivo.Fresnel.Core.Commands
 
         public CreateObjectCommand
         (
-            IEnumerable<IFactory> domainObjectFactories,
-            IPersistenceService persistenceService,
+            Lazy<IEnumerable<IFactory>> domainObjectFactories,
+            Lazy<IPersistenceService> persistenceService,
             Introspection.Commands.CreateObjectCommand createObjectCommand,
 
             TemplateCache templateCache,
@@ -80,17 +80,17 @@ namespace Envivo.Fresnel.Core.Commands
 
         private object CreateObjectUsingPersistenceService(ClassTemplate tClass, object constructorArg)
         {
-            if (!_PersistenceService.IsTypeRecognised(tClass.RealType))
+            if (!_PersistenceService.Value.IsTypeRecognised(tClass.RealType))
                 return null;
 
-            return _PersistenceService.CreateObject(tClass.RealType, constructorArg);
+            return _PersistenceService.Value.CreateObject(tClass.RealType, constructorArg);
         }
 
         private object CreateObjectUsingDomainFactory(ClassTemplate tClass, object constructorArg)
         {
             var genericFactory = typeof(IFactory<>);
             var factoryType = genericFactory.MakeGenericType(tClass.RealType);
-            var factory = _DomainObjectFactories.SingleOrDefault(f => f.GetType().IsDerivedFrom(factoryType));
+            var factory = _DomainObjectFactories.Value.SingleOrDefault(f => f.GetType().IsDerivedFrom(factoryType));
 
             if (factory == null)
                 return null;

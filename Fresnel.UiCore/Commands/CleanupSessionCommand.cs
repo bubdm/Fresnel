@@ -10,14 +10,14 @@ namespace Envivo.Fresnel.UiCore.Commands
     public class CleanupSessionCommand : ICommand
     {
         private ObserverCache _ObserverCache;
-        private IPersistenceService _PersistenceService;
+        private Lazy<IPersistenceService> _PersistenceService;
         private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
         private IClock _Clock;
 
         public CleanupSessionCommand
             (
             ObserverCache observerCache,
-            IPersistenceService persistenceService,
+            Lazy<IPersistenceService> persistenceService,
             ExceptionMessagesBuilder exceptionMessagesBuilder,
             IClock clock
             )
@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         {
             try
             {
-                _PersistenceService.RollbackChanges();
+                _PersistenceService.Value.RollbackChanges();
                 _ObserverCache.CleanUp();
 
                 var infoVM = new MessageVM()

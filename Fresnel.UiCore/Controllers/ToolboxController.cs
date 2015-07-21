@@ -9,17 +9,17 @@ namespace Envivo.Fresnel.UiCore.Controllers
 {
     public class ToolboxController : ApiController
     {
-        private GetDomainLibraryCommand _GetDomainLibraryCommand;
-        private CreateObjectCommand _CreateObjectCommand;
-        private InvokeMethodCommand _InvokeMethodCommand;
-        private SearchObjectsCommand _SearchObjectsCommand;
+        private Lazy<GetDomainLibraryCommand> _GetDomainLibraryCommand;
+        private Lazy<CreateObjectCommand> _CreateObjectCommand;
+        private Lazy<InvokeMethodCommand> _InvokeMethodCommand;
+        private Lazy<SearchObjectsCommand> _SearchObjectsCommand;
 
         public ToolboxController
             (
-            GetDomainLibraryCommand getDomainLibraryCommand,
-            CreateObjectCommand createObjectCommand,
-            InvokeMethodCommand invokeMethodCommand,
-            SearchObjectsCommand searchObjectsCommand
+            Lazy<GetDomainLibraryCommand> getDomainLibraryCommand,
+            Lazy<CreateObjectCommand> createObjectCommand,
+            Lazy<InvokeMethodCommand> invokeMethodCommand,
+            Lazy<SearchObjectsCommand> searchObjectsCommand
             )
         {
             _GetDomainLibraryCommand = getDomainLibraryCommand;
@@ -31,7 +31,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         [HttpGet]
         public GetDomainLibraryResponse GetDomainLibrary()
         {
-            var results = _GetDomainLibraryCommand.Invoke();
+            var results = _GetDomainLibraryCommand.Value.Invoke();
             return results;
         }
 
@@ -39,7 +39,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public CreateCommandResponse Create([FromBody]CreateObjectRequest id)
         {
             var request = id;
-            var result = _CreateObjectCommand.Invoke(request);
+            var result = _CreateObjectCommand.Value.Invoke(request);
             return result;
         }
 
@@ -47,14 +47,14 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public InvokeMethodResponse InvokeMethod([FromBody]InvokeMethodRequest id)
         {
             var request = id;
-            var result = _InvokeMethodCommand.Invoke(request);
+            var result = _InvokeMethodCommand.Value.Invoke(request);
             return result;
         }
 
         public SearchResponse SearchObjects(SearchObjectsRequest id)
         {
             var request = id;
-            var result = _SearchObjectsCommand.Invoke(request);
+            var result = _SearchObjectsCommand.Value.Invoke(request);
             return result;
         }
 

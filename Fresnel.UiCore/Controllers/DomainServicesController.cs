@@ -8,19 +8,19 @@ namespace Envivo.Fresnel.UiCore.Controllers
 {
     public class DomainServicesController : ApiController
     {
-        private CreateAndSetPropertyCommand _CreateAndSetPropertyCommand;
-        private GetPropertyCommand _GetPropertyCommand;
-        private SetPropertyCommand _SetPropertyCommand;
-        private SetParameterCommand _SetParameterCommand;
-        private InvokeMethodCommand _InvokeMethodCommand;
+        private Lazy<CreateAndSetPropertyCommand> _CreateAndSetPropertyCommand;
+        private Lazy<GetPropertyCommand> _GetPropertyCommand;
+        private Lazy<SetPropertyCommand> _SetPropertyCommand;
+        private Lazy<SetParameterCommand> _SetParameterCommand;
+        private Lazy<InvokeMethodCommand> _InvokeMethodCommand;
 
         public DomainServicesController
             (
-            CreateAndSetPropertyCommand createAndSetPropertyCommand,
-            GetPropertyCommand getPropertyCommand,
-            SetPropertyCommand setPropertyCommand,
-            SetParameterCommand setParameterCommand,
-            InvokeMethodCommand invokeMethodCommand
+            Lazy<CreateAndSetPropertyCommand> createAndSetPropertyCommand,
+            Lazy<GetPropertyCommand> getPropertyCommand,
+            Lazy<SetPropertyCommand> setPropertyCommand,
+            Lazy<SetParameterCommand> setParameterCommand,
+            Lazy<InvokeMethodCommand> invokeMethodCommand
             )
         {
             _CreateAndSetPropertyCommand = createAndSetPropertyCommand;
@@ -34,7 +34,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public GetPropertyResponse GetObjectProperty([FromBody]GetPropertyRequest id)
         {
             var request = id;
-            var response = _GetPropertyCommand.Invoke(request);
+            var response = _GetPropertyCommand.Value.Invoke(request);
             return response;
         }
 
@@ -42,7 +42,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public GenericResponse SetProperty([FromBody]SetPropertyRequest id)
         {
             var request = id;
-            var response = _SetPropertyCommand.Invoke(request);
+            var response = _SetPropertyCommand.Value.Invoke(request);
             return response;
         }
 
@@ -50,7 +50,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public BaseCommandResponse CreateAndSetProperty([FromBody]CreateAndSetPropertyRequest id)
         {
             var request = id;
-            var response = _CreateAndSetPropertyCommand.Invoke(request);
+            var response = _CreateAndSetPropertyCommand.Value.Invoke(request);
             return response;
         }
 
@@ -58,7 +58,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public GenericResponse SetParameter([FromBody]SetParameterRequest id)
         {
             var request = id;
-            var response = _SetParameterCommand.Invoke(request);
+            var response = _SetParameterCommand.Value.Invoke(request);
             return response;
         }
 
@@ -66,7 +66,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public InvokeMethodResponse InvokeMethod([FromBody]InvokeMethodRequest id)
         {
             var request = id;
-            var response = _InvokeMethodCommand.Invoke(request);
+            var response = _InvokeMethodCommand.Value.Invoke(request);
             return response;
         }
     }

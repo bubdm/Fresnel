@@ -18,8 +18,8 @@ namespace Envivo.Fresnel.Core.Commands
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
         private Fresnel.Introspection.Commands.InvokeMethodCommand _InvokeCommand;
         private RealTypeResolver _RealTypeResolver;
-        private IPersistenceService _PersistenceService;
-        private IEnumerable<IDomainDependency> _DomainDependencies;
+        //private Lazy<IPersistenceService> _PersistenceService;
+        private Lazy<IEnumerable<IDomainDependency>> _DomainDependencies;
 
         public InvokeMethodCommand
             (
@@ -28,8 +28,8 @@ namespace Envivo.Fresnel.Core.Commands
             DirtyObjectNotifier dirtyObjectNotifier,
             Fresnel.Introspection.Commands.InvokeMethodCommand invokeCommand,
             RealTypeResolver realTypeResolver,
-            IPersistenceService persistenceService,
-            IEnumerable<IDomainDependency> domainDependencies
+            //Lazy<IPersistenceService> persistenceService,
+            Lazy<IEnumerable<IDomainDependency>> domainDependencies
             )
         {
             _ObserverRetriever = observerRetriever;
@@ -37,7 +37,7 @@ namespace Envivo.Fresnel.Core.Commands
             _DirtyObjectNotifier = dirtyObjectNotifier;
             _InvokeCommand = invokeCommand;
             _RealTypeResolver = realTypeResolver;
-            _PersistenceService = persistenceService;
+            //_PersistenceService = persistenceService;
             _DomainDependencies = domainDependencies;
         }
 
@@ -87,7 +87,7 @@ namespace Envivo.Fresnel.Core.Commands
                 if (!tParam.IsDomainDependency)
                     continue;
 
-                var dependency = _DomainDependencies.SingleOrDefault(d => d.GetType().IsDerivedFrom(tParam.ParameterType));
+                var dependency = _DomainDependencies.Value.SingleOrDefault(d => d.GetType().IsDerivedFrom(tParam.ParameterType));
                 oParam.Value = dependency;
             }
         }

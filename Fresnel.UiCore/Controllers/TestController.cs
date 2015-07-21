@@ -10,13 +10,13 @@ namespace Envivo.Fresnel.UiCore.Controllers
 {
     public class TestController : ApiController
     {
-        private TemplateCache _TemplateCache;
-        private ObserverCache _ObserverCache;
+        private Lazy<TemplateCache> _TemplateCache;
+        private Lazy<ObserverCache> _ObserverCache;
 
         public TestController
             (
-            TemplateCache templateCache,
-            ObserverCache observerCache
+            Lazy<TemplateCache> templateCache,
+            Lazy<ObserverCache> observerCache
             )
         {
             _TemplateCache = templateCache;
@@ -32,7 +32,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         [HttpGet]
         public IClassTemplate GetTemplate()
         {
-            var tClass = _TemplateCache.GetTemplate(typeof(VisibilityAttribute));
+            var tClass = _TemplateCache.Value.GetTemplate(typeof(VisibilityAttribute));
             return tClass;
         }
 
@@ -40,7 +40,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public BaseObjectObserver GetObserver()
         {
             var instance = new VisibilityAttribute();
-            var observer = _ObserverCache.GetObserver(instance);
+            var observer = _ObserverCache.Value.GetObserver(instance);
             return observer;
         }
     }

@@ -8,33 +8,33 @@ namespace Envivo.Fresnel.UiCore.Controllers
 {
     public class ExplorerController : ApiController
     {
-        private CreateAndSetPropertyCommand _CreateAndSetPropertyCommand;
-        private GetObjectCommand _GetObjectCommand;
-        private GetPropertyCommand _GetPropertyCommand;
-        private SetPropertyCommand _SetPropertyCommand;
-        private SetParameterCommand _SetParameterCommand;
-        private InvokeMethodCommand _InvokeMethodCommand;
-        private CollectionAddCommand _CollectionAddCommand;
-        private CollectionRemoveCommand _CollectionRemoveCommand;
-        private SaveChangesCommand _SaveChangesCommand;
-        private CancelChangesCommand _CancelChangesCommand;
-        private SearchPropertyCommand _SearchPropertyCommand;
-        private SearchParameterCommand _SearchParameterCommand;
+        private Lazy<CreateAndSetPropertyCommand> _CreateAndSetPropertyCommand;
+        private Lazy<GetObjectCommand> _GetObjectCommand;
+        private Lazy<GetPropertyCommand> _GetPropertyCommand;
+        private Lazy<SetPropertyCommand> _SetPropertyCommand;
+        private Lazy<SetParameterCommand> _SetParameterCommand;
+        private Lazy<InvokeMethodCommand> _InvokeMethodCommand;
+        private Lazy<CollectionAddCommand> _CollectionAddCommand;
+        private Lazy<CollectionRemoveCommand> _CollectionRemoveCommand;
+        private Lazy<SaveChangesCommand> _SaveChangesCommand;
+        private Lazy<CancelChangesCommand> _CancelChangesCommand;
+        private Lazy<SearchPropertyCommand> _SearchPropertyCommand;
+        private Lazy<SearchParameterCommand> _SearchParameterCommand;
 
         public ExplorerController
             (
-            CreateAndSetPropertyCommand createAndSetPropertyCommand,
-            GetObjectCommand getObjectCommand,
-            GetPropertyCommand getPropertyCommand,
-            SetPropertyCommand setPropertyCommand,
-            SetParameterCommand setParameterCommand,
-            InvokeMethodCommand invokeMethodCommand,
-            CollectionAddCommand collectionAddCommand,
-            CollectionRemoveCommand collectionRemoveCommand,
-            SaveChangesCommand saveChangesCommand,
-            CancelChangesCommand cancelChangesCommand,
-            SearchPropertyCommand searchPropertyCommand,
-            SearchParameterCommand searchParameterCommand
+            Lazy<CreateAndSetPropertyCommand> createAndSetPropertyCommand,
+            Lazy<GetObjectCommand> getObjectCommand,
+            Lazy<GetPropertyCommand> getPropertyCommand,
+            Lazy<SetPropertyCommand> setPropertyCommand,
+            Lazy<SetParameterCommand> setParameterCommand,
+            Lazy<InvokeMethodCommand> invokeMethodCommand,
+            Lazy<CollectionAddCommand> collectionAddCommand,
+            Lazy<CollectionRemoveCommand> collectionRemoveCommand,
+            Lazy<SaveChangesCommand> saveChangesCommand,
+            Lazy<CancelChangesCommand> cancelChangesCommand,
+            Lazy<SearchPropertyCommand> searchPropertyCommand,
+            Lazy<SearchParameterCommand> searchParameterCommand
             )
         {
             _CreateAndSetPropertyCommand = createAndSetPropertyCommand;
@@ -55,7 +55,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public GetPropertyResponse GetObject([FromBody]GetObjectRequest id)
         {
             var request = id;
-            var response = _GetObjectCommand.Invoke(request);
+            var response = _GetObjectCommand.Value.Invoke(request);
             return response;
         }
 
@@ -63,7 +63,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public GetPropertyResponse GetObjectProperty([FromBody]GetPropertyRequest id)
         {
             var request = id;
-            var response = _GetPropertyCommand.Invoke(request);
+            var response = _GetPropertyCommand.Value.Invoke(request);
             return response;
         }
 
@@ -71,7 +71,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public GenericResponse SetProperty([FromBody]SetPropertyRequest id)
         {
             var request = id;
-            var response = _SetPropertyCommand.Invoke(request);
+            var response = _SetPropertyCommand.Value.Invoke(request);
             return response;
         }
 
@@ -79,7 +79,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public BaseCommandResponse CreateAndSetProperty([FromBody]CreateAndSetPropertyRequest id)
         {
             var request = id;
-            var response = _CreateAndSetPropertyCommand.Invoke(request);
+            var response = _CreateAndSetPropertyCommand.Value.Invoke(request);
             return response;
         }
 
@@ -87,7 +87,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public GenericResponse SetParameter([FromBody]SetParameterRequest id)
         {
             var request = id;
-            var response = _SetParameterCommand.Invoke(request);
+            var response = _SetParameterCommand.Value.Invoke(request);
             return response;
         }
 
@@ -95,7 +95,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public InvokeMethodResponse InvokeMethod([FromBody]InvokeMethodRequest id)
         {
             var request = id;
-            var response = _InvokeMethodCommand.Invoke(request);
+            var response = _InvokeMethodCommand.Value.Invoke(request);
             return response;
         }
 
@@ -103,7 +103,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public CollectionAddResponse AddNewItemToCollection([FromBody]CollectionAddNewRequest id)
         {
             var request = id;
-            var response = _CollectionAddCommand.Invoke(request);
+            var response = _CollectionAddCommand.Value.Invoke(request);
             return response;
         }
 
@@ -111,7 +111,7 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public GenericResponse AddItemsToCollection([FromBody]CollectionAddRequest id)
         {
             var request = id;
-            var response = _CollectionAddCommand.Invoke(request);
+            var response = _CollectionAddCommand.Value.Invoke(request);
             return response;
         }
 
@@ -119,35 +119,35 @@ namespace Envivo.Fresnel.UiCore.Controllers
         public GenericResponse RemoveItemFromCollection([FromBody]CollectionRemoveRequest id)
         {
             var request = id;
-            var response = _CollectionRemoveCommand.Invoke(request);
+            var response = _CollectionRemoveCommand.Value.Invoke(request);
             return response;
         }
 
         [HttpPost]
         public SaveChangesResponse SaveChanges([FromBody]SaveChangesRequest id)
         {
-            var result = _SaveChangesCommand.Invoke(id);
+            var result = _SaveChangesCommand.Value.Invoke(id);
             return result;
         }
 
         [HttpPost]
         public CancelChangesResponse CancelChanges([FromBody]CancelChangesRequest id)
         {
-            var result = _CancelChangesCommand.Invoke(id);
+            var result = _CancelChangesCommand.Value.Invoke(id);
             return result;
         }
 
         public SearchResponse SearchPropertyObjects(SearchPropertyRequest id)
         {
             var fullyQualifiedName = id;
-            var result = _SearchPropertyCommand.Invoke(id);
+            var result = _SearchPropertyCommand.Value.Invoke(id);
             return result;
         }
 
         public SearchResponse SearchParameterObjects(SearchParameterRequest id)
         {
             var fullyQualifiedName = id;
-            var result = _SearchParameterCommand.Invoke(id);
+            var result = _SearchParameterCommand.Value.Invoke(id);
             return result;
         }
     }

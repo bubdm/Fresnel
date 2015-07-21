@@ -20,7 +20,7 @@ namespace Envivo.Fresnel.UiCore.Commands
         private OuterObjectsIdentifier _OuterObjectsIdentifier;
         private Core.Commands.GetPropertyCommand _GetPropertyCommand;
         private Core.Commands.CancelChangesCommand _CancelChangesCommand;
-        private IPersistenceService _PersistenceService;
+        private Lazy<IPersistenceService> _PersistenceService;
         private DirtyObjectNotifier _DirtyObjectNotifier;
         private AbstractObjectVmBuilder _ObjectVmBuilder;
         private ModificationsVmBuilder _ModificationsVmBuilder;
@@ -33,7 +33,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             OuterObjectsIdentifier outerObjectsIdentifier,
             Core.Commands.GetPropertyCommand getPropertyCommand,
             Core.Commands.CancelChangesCommand cancelChangesCommand,
-            IPersistenceService persistenceService,
+            Lazy<IPersistenceService> persistenceService,
             DirtyObjectNotifier dirtyObjectNotifier,
             AbstractObjectVmBuilder objectVmBuilder,
             ModificationsVmBuilder modificationsVmBuilder,
@@ -132,7 +132,7 @@ namespace Envivo.Fresnel.UiCore.Commands
 
             if (oObject.ChangeTracker.IsPersistent)
             {
-                _PersistenceService.Refresh(oObject.RealObject);
+                _PersistenceService.Value.Refresh(oObject.RealObject);
             }
 
             foreach (var oProp in oObject.Properties.Values)
@@ -153,7 +153,7 @@ namespace Envivo.Fresnel.UiCore.Commands
             var oObjectProp = oObject.Properties[propertyName] as ObjectPropertyObserver;
             if (oObjectProp != null)
             {
-                _PersistenceService.LoadProperty(oObject.RealObject, propertyName);
+                _PersistenceService.Value.LoadProperty(oObject.RealObject, propertyName);
                 oObjectProp.IsLazyLoaded = false;
             }
         }

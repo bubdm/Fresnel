@@ -1,4 +1,5 @@
-﻿using Envivo.Fresnel.Core.Observers;
+﻿using System;
+using Envivo.Fresnel.Core.Observers;
 using Envivo.Fresnel.DomainTypes.Interfaces;
 using Envivo.Fresnel.Introspection;
 
@@ -8,7 +9,7 @@ namespace Envivo.Fresnel.Core.Commands
     {
         private ObserverRetriever _ObserverRetriever;
         private ObserverCacheSynchroniser _ObserverCacheSynchroniser;
-        private IPersistenceService _PersistenceService;
+        private Lazy<IPersistenceService> _PersistenceService;
         private Fresnel.Introspection.Commands.GetPropertyCommand _GetCommand;
         private RealTypeResolver _RealTypeResolver;
 
@@ -16,7 +17,7 @@ namespace Envivo.Fresnel.Core.Commands
             (
             ObserverRetriever observerRetriever,
             ObserverCacheSynchroniser observerCacheSynchroniser,
-            IPersistenceService persistenceService,
+            Lazy<IPersistenceService> persistenceService,
             Fresnel.Introspection.Commands.GetPropertyCommand getCommand,
             RealTypeResolver realTypeResolver
             )
@@ -47,7 +48,7 @@ namespace Envivo.Fresnel.Core.Commands
                 if (oOuterObject.ChangeTracker.IsPersistent &&
                      oObjectProperty.IsLazyLoadPending)
                 {
-                    _PersistenceService.LoadProperty(oOuterObject.RealObject, oProperty.Template.Name);
+                    _PersistenceService.Value.LoadProperty(oOuterObject.RealObject, oProperty.Template.Name);
                 }
 
                 // This allows the actual property value to be accessed:
