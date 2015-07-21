@@ -144,29 +144,17 @@ namespace Envivo.Fresnel.Tests.Features.Session
                     new ParameterVM
                     { 
                         InternalName = "customer",
-                        State = new ValueStateVM 
-                        { 
-                            //ValueType = typeof(Customer).Name,
-                            ReferenceValueID = _Parameter1_CustomerId
-                        } 
+                        State = new ValueStateVM { ReferenceValueID = _Parameter1_CustomerId } 
                     },
                     new ParameterVM
                     { 
                         InternalName = "product",
-                        State = new ValueStateVM 
-                        {
-                            //ValueType = typeof(Product).Name,
-                            ReferenceValueID = _Parameter2_ProductId
-                        } 
+                        State = new ValueStateVM { ReferenceValueID = _Parameter2_ProductId } 
                     },
                     new ParameterVM
                     { 
                         InternalName = "quantity",
-                        State = new ValueStateVM 
-                        {
-                            //ValueType = typeof(int).Name,
-                            Value = _Parameter3_Quantity
-                        } 
+                        State = new ValueStateVM { Value = _Parameter3_Quantity } 
                     },
                 };
 
