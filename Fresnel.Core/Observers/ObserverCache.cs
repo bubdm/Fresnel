@@ -156,6 +156,7 @@ namespace Envivo.Fresnel.Core.Observers
                 var dummyObject = new object();
                 result = this.CreateAndCacheObserver(Guid.NewGuid(), dummyObject, tDomainService) as ObjectObserver;
                 result.IsPinned = true;
+                _ServiceObserverMap[tDomainService] = result;
             }
 
             return result;
