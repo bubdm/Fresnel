@@ -46,21 +46,13 @@ namespace Envivo.Fresnel.UiCore
             {
                 if (realValue == null)
                 {
-                    result.Value = realValue;
+                    result.Value = null;
                 }
                 else if (tParam.IsDomainObject || tParam.IsCollection)
                 {
                     var oValue = _ObserverRetriever.GetObserver(realValue, tParam.ParameterType);
                     result.ReferenceValueID = oValue.ID;
                 }
-                //else if (realValue is bool)
-                //{
-                //    result.Value = _FriendlyDisplayValueCreator.Create(tParam, realValue);
-                //}
-                //else if (realValue is DateTime)
-                //{
-                //    result.Value = _DateTimeValueFormatter.GetValue((DateTime)realValue);
-                //}
                 else
                 {
                     result.Value = realValue;
