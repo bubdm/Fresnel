@@ -21,7 +21,7 @@ namespace Envivo.Fresnel.Core.Permissions
                 allExceptions.Add(new CoreException(tProperty.Name + " is not a reference type"));
             }
 
-            if (!tProperty.IsNullableType || !tProperty.IsReferenceType)
+            if (!tProperty.IsReferenceType && !tProperty.IsNullableType)
             {
                 allExceptions.Add(new CoreException(tProperty.Name + " is not a nullable type"));
             }
