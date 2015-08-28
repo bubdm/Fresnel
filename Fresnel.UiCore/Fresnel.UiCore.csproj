@@ -55,6 +55,7 @@
     <Compile Include="CollectionInteractionsBuilder.cs" />
     <Compile Include="CollectionVmBuilder.cs" />
     <Compile Include="Controllers\DomainServicesController.cs" />
+    <Compile Include="Model\Classes\ServiceClassItem.cs" />
     <Compile Include="ObjectVmBuilder.cs" />
     <Compile Include="Commands\GetDomainLibraryResponse.cs" />
     <Compile Include="Commands\CreateObjectRequest.cs" />

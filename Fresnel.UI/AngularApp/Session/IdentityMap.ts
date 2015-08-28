@@ -54,14 +54,14 @@ module FresnelApp {
                 return;
 
             for (var i = 0; i < modifications.NewObjects.length; i++) {
-                var item: ObjectVM = modifications.NewObjects[i];
-                var existingItem = this.getObject(item.ID);
-                if (existingItem == null) {
-                    this.addObject(item);
+                var newObj: ObjectVM = modifications.NewObjects[i];
+                var existingObj = this.getObject(newObj.ID);
+                if (existingObj == null) {
+                    this.addObject(newObj);
                 }
                 else {
                     // Merge the objects:
-                    this.extendDeep(existingItem, item);
+                    this.extendDeep(existingObj, newObj);
                 }
             }
 
@@ -82,12 +82,12 @@ module FresnelApp {
             for (var i = 0; i < modifications.ObjectTitleChanges.length; i++) {
                 var titleChange: ObjectTitleChangeVM = modifications.ObjectTitleChanges[i];
 
-                var existingItem = this.getObject(titleChange.ObjectID);
-                if (existingItem == null) {
+                var existingObj = this.getObject(titleChange.ObjectID);
+                if (existingObj == null) {
                     continue;
                 }
 
-                existingItem.Name = titleChange.Title;
+                existingObj.Name = titleChange.Title;
             }
         }
 
@@ -98,16 +98,16 @@ module FresnelApp {
             for (var i = 0; i < modifications.PropertyChanges.length; i++) {
                 var propertyChange: PropertyChangeVM = modifications.PropertyChanges[i];
 
-                var existingItem = this.getObject(propertyChange.ObjectID);
-                if (existingItem == null) {
+                var existingObj = this.getObject(propertyChange.ObjectID);
+                if (existingObj == null) {
                     continue;
                 }
 
-                var prop: PropertyVM = $.grep(existingItem.Properties, function (e: PropertyVM) {
+                var existingProp: PropertyVM = $.grep(existingObj.Properties, function (e: PropertyVM) {
                     return e.InternalName == propertyChange.PropertyName;
                 }, false)[0];
 
-                this.extendDeep(prop.State, propertyChange.State);
+                this.extendDeep(existingProp.State, propertyChange.State);
 
                 // Finally, we can set the property value:
                 var newPropertyValue = null;
@@ -118,7 +118,7 @@ module FresnelApp {
                     newPropertyValue = propertyChange.State.Value;
                 }
 
-                prop.State.Value = newPropertyValue;
+                existingProp.State.Value = newPropertyValue;
             }
         }
 
@@ -146,20 +146,20 @@ module FresnelApp {
             for (var i = 0; i < modifications.MethodParameterChanges.length; i++) {
                 var parameterChange: ParameterChangeVM = modifications.MethodParameterChanges[i];
 
-                var existingItem = this.getObject(parameterChange.ObjectID);
-                if (existingItem == null) {
+                var existingObj = this.getObject(parameterChange.ObjectID);
+                if (existingObj == null) {
                     continue;
                 }
 
-                var method: MethodVM = $.grep(existingItem.Methods, function (e: MethodVM) {
+                var existingMethod: MethodVM = $.grep(existingObj.Methods, function (e: MethodVM) {
                     return e.InternalName == parameterChange.MethodName;
                 }, false)[0];
 
-                var param: ParameterVM = $.grep(method.Parameters, function (e: ParameterVM) {
+                var existingParam: ParameterVM = $.grep(existingMethod.Parameters, function (e: ParameterVM) {
                     return e.InternalName == parameterChange.ParameterName;
                 }, false)[0];
 
-                this.extendDeep(param.State, parameterChange.State);
+                this.extendDeep(existingParam.State, parameterChange.State);
 
                 // Finally, we can set the parameter value:
                 var paramValue = null;
@@ -170,7 +170,7 @@ module FresnelApp {
                     paramValue = parameterChange.State.Value;
                 }
 
-                param.State.Value = paramValue;
+                existingParam.State.Value = paramValue;
             }
         }
 
@@ -181,12 +181,12 @@ module FresnelApp {
             for (var i = 0; i < modifications.DirtyStateChanges.length; i++) {
                 var dirtyState = modifications.DirtyStateChanges[i];
 
-                var existingItem = this.getObject(dirtyState.ObjectID);
-                if (existingItem == null) {
+                var existingObj = this.getObject(dirtyState.ObjectID);
+                if (existingObj == null) {
                     continue;
                 }
 
-                this.extendDeep(existingItem.DirtyState, dirtyState);
+                this.extendDeep(existingObj.DirtyState, dirtyState);
             }
         }
 
@@ -239,7 +239,15 @@ module FresnelApp {
         }
 
         reset() {
-            this.objectMap = [];
+            // We don't want to remove pinned objects:
+            var itemsToRemove = $.grep(this.objectMap, function (obj: ObjectVM) {
+                return !obj.IsPinned;
+            });
+
+            for (var i = 0; i < itemsToRemove.length; i++) {
+                var obj = itemsToRemove[i];
+                delete this.objectMap[obj.ID];
+            }
         }
 
     }

@@ -16,6 +16,8 @@ namespace Envivo.Fresnel.UiCore.Model
 
         public MethodVM[] Methods { get; set; }
 
+        public bool IsPinned { get; set; }
+
         /// <summary>
         /// Determines if the Object can be saved to a data store
         /// </summary>

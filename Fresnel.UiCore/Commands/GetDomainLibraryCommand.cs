@@ -16,8 +16,6 @@ namespace Envivo.Fresnel.UiCore.Commands
         private AssemblyReaderMap _AssemblyReaderMap;
         private DomainClassesBuilder _DomainClassesBuilder;
         private DomainServicesBuilder _DomainServicesBuilder;
-        private ObserverRetriever _ObserverRetriever;
-        private ModificationsVmBuilder _ModificationsBuilder;
         private ExceptionMessagesBuilder _ExceptionMessagesBuilder;
 
         public GetDomainLibraryCommand
@@ -33,8 +31,6 @@ namespace Envivo.Fresnel.UiCore.Commands
             _AssemblyReaderMap = assemblyReaderMap;
             _DomainClassesBuilder = domainClassesBuilder;
             _DomainServicesBuilder = domainServicesBuilder;
-            _ObserverRetriever = observerRetriever;
-            _ModificationsBuilder = modificationsBuilder;
             _ExceptionMessagesBuilder = exceptionMessagesBuilder;
         }
 
@@ -49,12 +45,8 @@ namespace Envivo.Fresnel.UiCore.Commands
                 var domainClassHierarchy = _DomainClassesBuilder.BuildFor(assemblyReader).ToArray();
                 var domainServicesHierarchy = _DomainServicesBuilder.BuildFor(assemblyReader).ToArray();
 
-                var oDomainServices = this.GetDomainServiceObservers();
-                var modifications = _ModificationsBuilder.BuildFrom(oDomainServices, 0);
-
                 return new GetDomainLibraryResponse
                 {
-                    Modifications = modifications,
                     Passed = true,
                     DomainClasses = domainClassHierarchy,
                     DomainServices = domainServicesHierarchy
@@ -70,14 +62,6 @@ namespace Envivo.Fresnel.UiCore.Commands
                     Messages = errorVMs
                 };
             }
-        }
-
-        private IEnumerable<ObjectObserver> GetDomainServiceObservers()
-        {
-            var results = _ObserverRetriever.GetAllObservers()
-                            .OfType<ObjectObserver>()
-                            .Where(o => o.Template.RealType.IsDerivedFrom<IDomainService>());
-            return results;
         }
     }
 }

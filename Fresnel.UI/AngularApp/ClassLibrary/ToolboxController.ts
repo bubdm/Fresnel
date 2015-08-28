@@ -30,6 +30,17 @@
 
                     $scope.domainClassesHierarchy = response.DomainClasses;
                     $scope.domainServicesHierarchy = response.DomainServices;
+
+                    // Now we need to map the Service instances into the IdentityMap
+                    // (otherwise the Methods won't bind correctly in the UI):
+                    for (var n = 0; n < response.DomainServices.length; n++) {
+                        var serviceClasses = response.DomainServices[n].Classes;
+
+                        for (var c = 0; c < serviceClasses.length; c++) {
+                            var serviceClass = <ServiceClassItem>serviceClasses[c];
+                            appService.identityMap.addObject(serviceClass.AssociatedService);
+                        }
+                    }
                 });
             }
 
@@ -65,6 +76,5 @@
             });
 
         }
-
     }
 }

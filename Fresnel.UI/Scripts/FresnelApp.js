@@ -1173,6 +1173,7 @@ var FresnelApp;
                 ParameterName: param.InternalName,
                 NonReferenceValue: param.State.Value,
                 ReferenceValueId: param.State.ReferenceValueID,
+                ClassFullTypeName: null
             };
             return request;
         };
@@ -1180,7 +1181,8 @@ var FresnelApp;
             var request = {
                 ObjectID: method.ObjectID,
                 MethodName: method.InternalName,
-                Parameters: this.buildParametersFrom(method)
+                Parameters: this.buildParametersFrom(method),
+                ClassFullTypeName: null
             };
             return request;
         };
@@ -1537,6 +1539,13 @@ var FresnelApp;
                     $rootScope.$broadcast(FresnelApp.UiEventType.MessagesReceived, response.Messages);
                     $scope.domainClassesHierarchy = response.DomainClasses;
                     $scope.domainServicesHierarchy = response.DomainServices;
+                    for (var n = 0; n < response.DomainServices.length; n++) {
+                        var serviceClasses = response.DomainServices[n].Classes;
+                        for (var c = 0; c < serviceClasses.length; c++) {
+                            var serviceClass = serviceClasses[c];
+                            appService.identityMap.addObject(serviceClass.AssociatedService);
+                        }
+                    }
                 });
             };
             $scope.create = function (fullyQualifiedName) {
@@ -1669,14 +1678,14 @@ var FresnelApp;
             if (!modifications.NewObjects)
                 return;
             for (var i = 0; i < modifications.NewObjects.length; i++) {
-                var item = modifications.NewObjects[i];
-                var existingItem = this.getObject(item.ID);
-                if (existingItem == null) {
-                    this.addObject(item);
+                var newObj = modifications.NewObjects[i];
+                var existingObj = this.getObject(newObj.ID);
+                if (existingObj == null) {
+                    this.addObject(newObj);
                 }
                 else {
                     // Merge the objects:
-                    this.extendDeep(existingItem, item);
+                    this.extendDeep(existingObj, newObj);
                 }
             }
             for (var i = 0; i < modifications.CollectionAdditions.length; i++) {
@@ -1693,11 +1702,11 @@ var FresnelApp;
                 return;
             for (var i = 0; i < modifications.ObjectTitleChanges.length; i++) {
                 var titleChange = modifications.ObjectTitleChanges[i];
-                var existingItem = this.getObject(titleChange.ObjectID);
-                if (existingItem == null) {
+                var existingObj = this.getObject(titleChange.ObjectID);
+                if (existingObj == null) {
                     continue;
                 }
-                existingItem.Name = titleChange.Title;
+                existingObj.Name = titleChange.Title;
             }
         };
         IdentityMap.prototype.mergePropertyChanges = function (modifications) {
@@ -1705,14 +1714,14 @@ var FresnelApp;
                 return;
             for (var i = 0; i < modifications.PropertyChanges.length; i++) {
                 var propertyChange = modifications.PropertyChanges[i];
-                var existingItem = this.getObject(propertyChange.ObjectID);
-                if (existingItem == null) {
+                var existingObj = this.getObject(propertyChange.ObjectID);
+                if (existingObj == null) {
                     continue;
                 }
-                var prop = $.grep(existingItem.Properties, function (e) {
+                var existingProp = $.grep(existingObj.Properties, function (e) {
                     return e.InternalName == propertyChange.PropertyName;
                 }, false)[0];
-                this.extendDeep(prop.State, propertyChange.State);
+                this.extendDeep(existingProp.State, propertyChange.State);
                 // Finally, we can set the property value:
                 var newPropertyValue = null;
                 if (propertyChange.State.ReferenceValueID != null) {
@@ -1721,7 +1730,7 @@ var FresnelApp;
                 else {
                     newPropertyValue = propertyChange.State.Value;
                 }
-                prop.State.Value = newPropertyValue;
+                existingProp.State.Value = newPropertyValue;
             }
         };
         IdentityMap.prototype.mergeRemovals = function (modifications) {
@@ -1744,17 +1753,17 @@ var FresnelApp;
                 return;
             for (var i = 0; i < modifications.MethodParameterChanges.length; i++) {
                 var parameterChange = modifications.MethodParameterChanges[i];
-                var existingItem = this.getObject(parameterChange.ObjectID);
-                if (existingItem == null) {
+                var existingObj = this.getObject(parameterChange.ObjectID);
+                if (existingObj == null) {
                     continue;
                 }
-                var method = $.grep(existingItem.Methods, function (e) {
+                var existingMethod = $.grep(existingObj.Methods, function (e) {
                     return e.InternalName == parameterChange.MethodName;
                 }, false)[0];
-                var param = $.grep(method.Parameters, function (e) {
+                var existingParam = $.grep(existingMethod.Parameters, function (e) {
                     return e.InternalName == parameterChange.ParameterName;
                 }, false)[0];
-                this.extendDeep(param.State, parameterChange.State);
+                this.extendDeep(existingParam.State, parameterChange.State);
                 // Finally, we can set the parameter value:
                 var paramValue = null;
                 if (parameterChange.State.ReferenceValueID != null) {
@@ -1763,7 +1772,7 @@ var FresnelApp;
                 else {
                     paramValue = parameterChange.State.Value;
                 }
-                param.State.Value = paramValue;
+                existingParam.State.Value = paramValue;
             }
         };
         IdentityMap.prototype.mergeDirtyStateChanges = function (modifications) {
@@ -1771,11 +1780,11 @@ var FresnelApp;
                 return;
             for (var i = 0; i < modifications.DirtyStateChanges.length; i++) {
                 var dirtyState = modifications.DirtyStateChanges[i];
-                var existingItem = this.getObject(dirtyState.ObjectID);
-                if (existingItem == null) {
+                var existingObj = this.getObject(dirtyState.ObjectID);
+                if (existingObj == null) {
                     continue;
                 }
-                this.extendDeep(existingItem.DirtyState, dirtyState);
+                this.extendDeep(existingObj.DirtyState, dirtyState);
             }
         };
         IdentityMap.prototype.mergeObjects = function (existingObj, newObj) {
@@ -1821,7 +1830,14 @@ var FresnelApp;
             return destination;
         };
         IdentityMap.prototype.reset = function () {
-            this.objectMap = [];
+            // We don't want to remove pinned objects:
+            var itemsToRemove = $.grep(this.objectMap, function (obj) {
+                return !obj.IsPinned;
+            });
+            for (var i = 0; i < itemsToRemove.length; i++) {
+                var obj = itemsToRemove[i];
+                delete this.objectMap[obj.ID];
+            }
         };
         return IdentityMap;
     })();

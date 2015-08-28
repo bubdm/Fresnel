@@ -18,6 +18,7 @@
                 ParameterName: param.InternalName,
                 NonReferenceValue: param.State.Value,
                 ReferenceValueId: param.State.ReferenceValueID,
+                ClassFullTypeName: null
             };
 
             return request;
@@ -27,7 +28,8 @@
             var request: InvokeMethodRequest = {
                 ObjectID: method.ObjectID,
                 MethodName: method.InternalName,
-                Parameters: this.buildParametersFrom(method)
+                Parameters: this.buildParametersFrom(method),
+                ClassFullTypeName: null
             };
 
             return request;

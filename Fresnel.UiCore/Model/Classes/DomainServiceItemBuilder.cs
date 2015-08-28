@@ -13,24 +13,29 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
     public class DomainServiceItemBuilder
     {
         private DomainServiceObserverRetriever _DomainServiceObserverRetriever;
+        private ObjectVmBuilder _ObjectVmBuilder;
         private MethodVmBuilder _MethodVmBuilder;
         private CanCreatePermission _CanCreatePermission;
 
         public DomainServiceItemBuilder
             (
             DomainServiceObserverRetriever domainServiceObserverRetriever,
+            ObjectVmBuilder objectVmBuilder,
             MethodVmBuilder methodVmBuilder,
             CanCreatePermission canCreatePermission
             )
         {
             _DomainServiceObserverRetriever = domainServiceObserverRetriever;
+            _ObjectVmBuilder = objectVmBuilder;
             _MethodVmBuilder = methodVmBuilder;
             _CanCreatePermission = canCreatePermission;
         }
 
-        public ClassItem BuildFor(ClassTemplate tServiceClass)
+        public ServiceClassItem BuildFor(ClassTemplate tServiceClass)
         {
-            var item = new ClassItem()
+            var oDomainService = (ObjectObserver)_DomainServiceObserverRetriever.GetObserver(tServiceClass.RealType);
+
+            var item = new ServiceClassItem()
             {
                 Name = tServiceClass.FriendlyName,
                 Type = tServiceClass.RealType.Name,
@@ -39,30 +44,10 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
                 Tooltip = tServiceClass.XmlComments.Remarks,
                 IsEnabled = true,
                 IsVisible = tServiceClass.IsVisible,
+                AssociatedService =_ObjectVmBuilder.BuildFor(oDomainService)
             };
-
-            item.ServiceMethods = this.CreateServiceMethods(tServiceClass);
-            var areFactoryMethodsAvailable = item.FactoryMethods != null;
 
             return item;
         }
-
-        public MethodVM[] CreateServiceMethods(ClassTemplate tServiceClass)
-        {
-            var results = new List<MethodVM>(); 
-
-            var oDomainService = (ObjectObserver)_DomainServiceObserverRetriever.GetObserver(tServiceClass.RealType);
-
-            foreach (var oMethod in oDomainService.Methods.Values)
-            {
-                if (!oMethod.Template.IsVisible)
-                    continue;
-
-                var methodVM = _MethodVmBuilder.BuildFor(oMethod);
-                results.Add(methodVM);
-            }
-            return results.ToArray();
-        }
-
     }
 }

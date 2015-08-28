@@ -64,6 +64,7 @@ namespace Envivo.Fresnel.UiCore
 
                 IsPersistable = oObject.Template.IsPersistable,
                 DirtyState = _DirtyStateVmBuilder.BuildFor(oObject),
+                IsPinned = oObject.IsPinned
             };
 
             return result;

@@ -83,7 +83,8 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.InvokeMethodRequest **/
     export interface InvokeMethodRequest {
-        ObjectID: any;
+        ClassFullTypeName: string;
+        ObjectID?: any;
         MethodName: string;
         Parameters: FresnelApp.ParameterVM[];
     }
@@ -133,7 +134,8 @@ declare module FresnelApp {
     }
     /** Generated from Envivo.Fresnel.UiCore.Commands.SetParameterRequest **/
     export interface SetParameterRequest {
-        ObjectID: any;
+        ClassFullTypeName: string;
+        ObjectID?: any;
         MethodName: string;
         ParameterName: string;
         NonReferenceValue: any;
@@ -196,12 +198,15 @@ declare module FresnelApp {
         Search: FresnelApp.InteractionPoint;
         FactoryMethods: FresnelApp.MethodVM[];
         QueryMethods: FresnelApp.MethodVM[];
-        ServiceMethods: FresnelApp.MethodVM[];
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.Classes.Namespace **/
     export interface Namespace extends FresnelApp.BaseViewModel {
         FullName: string;
         Classes: FresnelApp.ClassItem[];
+    }
+    /** Generated from Envivo.Fresnel.UiCore.Model.Classes.ServiceClassItem **/
+    export interface ServiceClassItem extends FresnelApp.ClassItem {
+        AssociatedService: FresnelApp.ObjectVM;
     }
     /** Generated from Envivo.Fresnel.UiCore.Model.CollectionVM **/
     export interface CollectionVM extends FresnelApp.ObjectVM {
@@ -252,6 +257,7 @@ declare module FresnelApp {
         Type: string;
         Properties: FresnelApp.PropertyVM[];
         Methods: FresnelApp.MethodVM[];
+        IsPinned: boolean;
         IsPersistable: boolean;
         DirtyState: FresnelApp.DirtyStateVM;
     }

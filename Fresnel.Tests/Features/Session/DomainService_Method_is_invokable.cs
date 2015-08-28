@@ -29,7 +29,7 @@ namespace Envivo.Fresnel.Tests.Features.Session
         private readonly string _ServiceMethodName = "PlaceNewOrder";
 
         private SessionVM _Session;
-        private ClassItem _DomainServiceClass;
+        private ServiceClassItem _DomainServiceClass;
         private MethodVM _ServiceMethod;
 
         private Guid _Parameter1_CustomerId;
@@ -61,7 +61,9 @@ namespace Envivo.Fresnel.Tests.Features.Session
                 var domainServicesHierarchy = getDomainLibraryResponse.DomainServices;
                 Assert.AreNotEqual(0, domainServicesHierarchy.Count());
 
-                var serviceClasses = domainServicesHierarchy.SelectMany(ns => ns.Classes);
+                var serviceClasses = domainServicesHierarchy
+                                        .SelectMany(ns => ns.Classes)
+                                        .Cast<ServiceClassItem>();
                 _DomainServiceClass = serviceClasses.Single(s => s.FullTypeName == typeof(OrderPlacementService).FullName);
 
                 Assert.IsNotNull(_DomainServiceClass);
@@ -70,7 +72,7 @@ namespace Envivo.Fresnel.Tests.Features.Session
 
         public void And_given_that_a_Method_is_selected_from_the_DomainService()
         {
-            _ServiceMethod = _DomainServiceClass.ServiceMethods.Single(m => m.InternalName == _ServiceMethodName);
+            _ServiceMethod = _DomainServiceClass.AssociatedService.Methods.Single(m => m.InternalName == _ServiceMethodName);
         }
 
         public void When_the_first_Method_Parameter_is_set()

@@ -79,10 +79,11 @@
                         <span class="classItemIcon {{item.Type}}-Icon" data-toggle="tooltip" title="{{item.Description}}">
                             {{item.Name}}
                         </span>
+                        <div class="hidden">{{item.AssociatedService.ID}}</div>
                     </a>
 
                     <ul class="dropdown-menu" role="menu">
-                        <li ng-repeat="serviceMethod in item.ServiceMethods" class="">
+                        <li ng-repeat="serviceMethod in item.AssociatedService.Methods" class="">
                             <a href="" a-disabled="!serviceMethod.IsEnabled" ng-click="invokeDependencyMethod(serviceMethod)" data-toggle="tooltip" title="{{serviceMethod.Description}}">
                                 <i class="fa fa-play"></i>{{serviceMethod.Name}}
                             </a>

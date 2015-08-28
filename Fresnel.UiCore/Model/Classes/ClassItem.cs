@@ -15,7 +15,5 @@ namespace Envivo.Fresnel.UiCore.Model.Classes
         public MethodVM[] FactoryMethods { get; set; }
 
         public MethodVM[] QueryMethods { get; set; }
-
-        public MethodVM[] ServiceMethods { get; set; }
     }
 }

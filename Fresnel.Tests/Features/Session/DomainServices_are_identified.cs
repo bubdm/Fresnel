@@ -15,6 +15,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using TestStack.BDDfy;
+using System.Collections.Generic;
 
 namespace Envivo.Fresnel.Tests.Features.Session
 {
@@ -24,6 +25,7 @@ namespace Envivo.Fresnel.Tests.Features.Session
         private TestScopeContainer _TestScopeContainer = null;
 
         private SessionVM _Session;
+        private IEnumerable<ServiceClassItem> _ServiceClasses;
 
         public void Given_the_session_is_already_started()
         {
@@ -48,18 +50,32 @@ namespace Envivo.Fresnel.Tests.Features.Session
                 var getDomainLibraryResponse = toolboxController.GetDomainLibrary();
 
                 var domainServicesHierarchy = getDomainLibraryResponse.DomainServices;
-                Assert.AreNotEqual(0, domainServicesHierarchy.Count());
 
-                var serviceClasses = domainServicesHierarchy.SelectMany(ns => ns.Classes);
+                _ServiceClasses = domainServicesHierarchy
+                                    .SelectMany(ns => ns.Classes)
+                                    .Cast<ServiceClassItem>();
 
-                foreach (var serviceClass in serviceClasses)
-                {
-                    Assert.IsNull(serviceClass.Create);
-                    Assert.IsNull(serviceClass.Search);
-                    Assert.IsNull(serviceClass.FactoryMethods);
-                    Assert.IsNull(serviceClass.QueryMethods);
-                    Assert.AreNotEqual(0, serviceClass.ServiceMethods.Count());
-                }
+                Assert.AreNotEqual(0, _ServiceClasses.Count());
+            }
+        }
+
+        public void And_Then_all_DomainServices_should_have_bindable_Instances()
+        {
+            foreach (var serviceClass in _ServiceClasses)
+            {
+                Assert.IsNotNull(serviceClass.AssociatedService);
+            }
+        }
+
+        public void And_Then_all_DomainServices_should_be_populated_correctly()
+        {
+            foreach (var serviceClass in _ServiceClasses)
+            {
+                Assert.IsNull(serviceClass.Create);
+                Assert.IsNull(serviceClass.Search);
+                Assert.IsNull(serviceClass.FactoryMethods);
+                Assert.IsNull(serviceClass.QueryMethods);
+                Assert.AreNotEqual(0, serviceClass.AssociatedService.Methods.Count());
             }
         }
 
