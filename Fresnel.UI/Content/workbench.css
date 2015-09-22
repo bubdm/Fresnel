@@ -111,6 +111,10 @@ a.disabled {
     max-height: 500px;
 }
 
+.collectionExplorerFooter {
+    padding: 4px;
+}
+
 .collectionRowText {
     overflow: hidden;
     white-space: nowrap;
@@ -176,7 +180,7 @@ a.disabled {
 
 .modalDialog {
     width: 100%;
-    height: 500px;
+    /*height: 500px;*/
 }
 
 .searchFilterRow {
