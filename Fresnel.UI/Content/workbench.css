@@ -111,7 +111,9 @@ a.disabled {
     max-height: 500px;
 }
 
+/* NB: This behaves differently when used in an Explorer vs Modal Dialog */
 .collectionExplorerFooter {
+    height: 30px;
     padding: 4px;
 }
 
