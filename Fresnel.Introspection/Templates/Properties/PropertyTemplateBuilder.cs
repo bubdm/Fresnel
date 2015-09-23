@@ -88,6 +88,15 @@ namespace Envivo.Fresnel.Introspection.Templates
                 tProp.IsCompositeRelationship = relationshipAttr.Type == RelationshipType.Owns;
                 tProp.IsAggregateRelationship = relationshipAttr.Type == RelationshipType.Has;
 
+                if (tProp.IsCompositeRelationship)
+                {
+                    tProp.CanAdd = false;
+                }
+                if (tProp.IsAggregateRelationship)
+                {
+                    tProp.CanCreate = false;
+                }
+
                 // We don't want modifications to the list to affect the parent:
                 //TODO collectionPropConfig.UseOptimisticLock = false;
 

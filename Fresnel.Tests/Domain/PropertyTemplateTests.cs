@@ -10,6 +10,7 @@ using Fresnel.Tests;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using System;
+using System.Linq;
 
 namespace Envivo.Fresnel.Tests.Domain
 {
@@ -122,6 +123,31 @@ namespace Envivo.Fresnel.Tests.Domain
             // Assert:
             Assert.AreEqual(employee.Person, person);
             Assert.AreEqual(employee.HiredOn, hiredOn);
+        }
+
+        [Test]
+        public void ShouldIdentifyCollectionPropertyAttributes()
+        {
+            // Arrange:
+            var container = new ContainerFactory().Build();
+            var templateCache = container.Resolve<TemplateCache>();
+
+            var order = _Fixture.Create<Order>();
+
+            var template = (ClassTemplate)templateCache.GetTemplate(order.GetType());
+
+            // Act:
+            var propertyName = LambdaExtensions.NameOf<Order>(x => x.OrderItems);
+            var tProperty = template.Properties.Values.Single(p => p.Name == propertyName);
+
+            // Assert:
+            Assert.IsFalse(tProperty.CanAdd);
+            Assert.IsTrue(tProperty.CanCreate);
+            Assert.IsTrue(tProperty.CanRead);
+            Assert.IsTrue(tProperty.CanWrite);
+
+            Assert.IsTrue(tProperty.IsCompositeRelationship);
+            Assert.IsFalse(tProperty.IsAggregateRelationship);
         }
     }
 }
